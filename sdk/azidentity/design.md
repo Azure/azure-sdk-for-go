@@ -321,9 +321,12 @@ tenant-denial, and non-downgrade cases without customer enable flags.
 
 The [shared policy](../security/keyvault/internal/README.md) now signals PoP on
 authenticated requests, wraps the supplied credential for per-client tenant memory,
-and installs an SDK-internal operation-scoped response classifier. All seven consumers
-use their existing constructors: Secrets, Keys, Certificates, and Administration's
-Backup, EKM, RBAC, and Settings clients. No generated implementation changes were needed.
+and classifies binding-validation responses. All seven consumers (Secrets, Keys,
+Certificates, and Administration's Backup, EKM, RBAC, and Settings clients) add
+`internal.NewTokenBindingPolicy()` to their per-call policies, a one-line change to each
+handwritten `custom_client.go`; generated code is unchanged. PoP is requested only for
+requests that passed through that policy, so a client built before it existed keeps bearer
+authentication when a newer shared module is selected.
 The smoke app no longer sets the resource client's PoP enable flag.
 
 #### Internal bridges and Go adaptations
@@ -340,7 +343,9 @@ The smoke app no longer sets the resource client's PoP enable flag.
   `AuthenticationFailedError` within a chain. A known SDK chain permits fallback only
   when every cause is unavailable or the specifically classified tenant denial.
 - `sdk/internal/exported.ResponseClassifier` connects authentication and outer retry
-  decisions without a public response-classifier option. `azcore` doesn't contain
+  decisions without a public response-classifier option. Key Vault installs it from a
+  per-call policy, ahead of the retry policy, so it flows down the pipeline like other
+  operation values, and it reads the sent request from `res.Request`. `azcore` doesn't contain
   Key Vault error codes. A classified binding response bypasses challenge resends
   and token expiration, leaving count, delay, retry-after, cancellation, and operation
   limits to the normal outer retry policy. Explicit `ShouldRetry` callbacks retain

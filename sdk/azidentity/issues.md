@@ -27,7 +27,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZC-1](#azc-1-mtls-client-cache-is-keyed-by-certificate-pointer) | azcore | mTLS client cache is keyed by certificate pointer | P1 | Fixed |
 | [AZC-2](#azc-2-authorization-scheme-check-scans-the-whole-token) | azcore | Authorization scheme check scans the whole token | P1 | Fixed |
 | [AZC-3](#azc-3-arm-auxiliary-tenant-error-is-retriable) | azcore/arm | ARM auxiliary-tenant error is retriable | P2 | Not an issue |
-| [AZC-4](#azc-4-response-classifier-contract-is-implicit) | azcore/internal | Response classifier contract is implicit | P2 | Open |
+| [AZC-4](#azc-4-response-classifier-contract-is-implicit) | azcore/internal | Response classifier contract is implicit | P2 | Fixed |
 | [AZC-5](#azc-5-bound-401-retries-reuse-the-cached-token) | azcore/keyvault | Bound 401 retries reuse the cached token | — | By design |
 | [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) | azcore | Bound connection pools aren't shared across clients | P2 | Won't fix |
 | [AZC-7](#azc-7-separate-bearer-and-pop-token-caches) | azcore | Separate bearer and PoP token caches | — | By design |
@@ -58,8 +58,7 @@ The modules only build together through local replacements or a temporary worksp
 - [azcore/go.mod](../azcore/go.mod) replaces `sdk/internal` with `../internal`.
 - [keyvault/internal/go.mod](../security/keyvault/internal/go.mod) replaces both `azcore` and `sdk/internal`.
 - [azidentity/go.mod](go.mod) requires released `azcore v1.23.3` and `internal v1.13.0`.
-  Neither has the new APIs, so `go build ./...` fails with
-  `undefined: errorinfo.ErrAuthenticationFailed`.
+  Neither has the new APIs, so `go build ./...` fails with undefined `errorinfo` symbols.
 - [attestation/go.mod](attestation/go.mod) requires `azidentity v1.15.1-beta.1`, which hasn't been published.
 
 **Resolution:** release in dependency order:
@@ -67,6 +66,11 @@ The modules only build together through local replacements or a temporary worksp
 Remove each `replace` directive and bump the `require` versions at each step.
 Until then, validate with a temporary `go.work`.
 That workspace needs a `replace` for `azidentity@v1.15.1-beta.1`.
+
+The Key Vault clients (azsecrets, azkeys, azcertificates, azadmin) must be released too, not just have their dependencies bumped.
+Since [AZC-4](#azc-4-response-classifier-contract-is-implicit), each enables PoP by adding `internal.NewTokenBindingPolicy()` to its pipeline, and a client without that line stays bearer-only.
+Each needs a changelog entry.
+azsecrets and azcertificates currently have no Unreleased section.
 
 ---
 
@@ -165,26 +169,67 @@ Wrapping the error locally would duplicate the central handling, so no change wa
 
 ### AZC-4: Response classifier contract is implicit
 
-**Priority:** P2 · **Status:** Open
+**Priority:** P2 · **Status:** Fixed
 
-`ResponseClassifier` ([sdk/internal/exported](../internal/exported/exported.go#L16)) can run twice on the same 401:
+Key Vault's `ResponseClassifier` operation value was set by Key Vault's per-*retry* policy but read by the retry policy, which runs *before* it.
+That only worked because every `Request.Next()` and `Clone()` copy shares one operation-value map.
 
-- once in the bearer policy ([policy_bearer_token.go](../azcore/runtime/policy_bearer_token.go#L170));
-- once in the retry policy ([policy_retry.go](../azcore/runtime/policy_retry.go#L173)).
+Operation values are meant to flow *down* the pipeline. Every other use in the repo does this:
 
-It also runs on every response in the retry policy.
-The Key Vault classifier works only because `runtime.Payload` buffers the body.
+- the log policy's per-try state;
+- `SkipBodyDownload`;
+- `mtlsRequest`, from the bearer policy to `mtlsPolicy`;
+- Cosmos `retryContext`.
 
-The retry policy can see a classifier set by a policy further down the pipeline only because `opValues` is a shared map.
-Every `Request.Next()` and `Clone()` copy carries that same map.
+So this reverse flow could easily break in a refactor.
+The classifier's other requirements weren't written down either:
 
-**Resolution:** document three requirements in the `ResponseClassifier` doc comment:
+- it runs twice on a 401, once in the bearer policy and once in the retry policy;
+- the retry policy calls it on every response;
+- it must read the body with `runtime.Payload`.
 
-- classifiers must be idempotent;
-- they must be cheap for responses that don't apply;
-- they must read the body with `runtime.Payload` or otherwise make it re-readable.
+**Compared with C#:** the flow is the same, including two evaluations and the classified 401 bypassing challenge handling.
+C#, however, uses Azure.Core's existing public `HttpMessage.ResponseClassifier`.
+Its Key Vault policy wraps that classifier, buffers the body explicitly, and rewinds the stream after reading.
 
-Add a short comment at both call sites noting that this relies on the shared operation-value map.
+**Alternatives considered:**
+
+- **A. Public `Request.SetResponseClassifier`, like C#:** deferred. It would be new public API on GA azcore. It would need decisions on a public classifier type, replace-versus-compose semantics, auth-policy interaction, and `ShouldRetry` precedence, plus azcore review.
+- **B. A classifier field on `runtime.PipelineOptions`:** still public, but narrower API for SDK authors.
+- **C. Document the reverse flow and pin it with a test:** keeps the unusual direction.
+- **D. Install the classifier from a per-call policy:** chosen.
+
+**Fix (D):**
+
+- **[challenge_policy.go](../security/keyvault/internal/challenge_policy.go):**
+  - New `NewTokenBindingPolicy()` per-call policy sets the classifier operation value before the retry policy runs, so it flows downward like every other use.
+  - The classifier is now a stateless `classifyTokenBindingFailure` that reads `x-ms-tokenboundauth` from `res.Request`, the request as sent, instead of capturing the per-try request.
+  - `keyVaultAuthorizer.Do` simply delegates to the bearer policy.
+  - azcore's retry and bearer policies are unchanged.
+- **Compatibility gate:** the challenge policy requests PoP only for requests that passed through `NewTokenBindingPolicy`. `updateTokenRequestOptions` no longer stores `EnableMTLSPoP`; a new `tokenRequestOptions` helper sets it per request.
+  Go selects one `keyvault/internal` version per build, so an already-released client can end up running this module's new challenge policy.
+  Such a client stays bearer-only, rather than getting PoP with a challenge resend instead of a retry.
+  `NewKeyVaultChallengePolicy`'s signature is unchanged; the module is released at v1.
+- **Clients:** azsecrets, azkeys, azcertificates, and azadmin's backup, ekm, rbac and settings each add `PerCall: []policy.Policy{internal.NewTokenBindingPolicy()}`, one line in each handwritten `custom_client.go`.
+- **[ResponseClassifier doc](../internal/exported/exported.go)** now states the contract:
+  - set it before the retry policy;
+  - it may run more than once and must return quickly when it doesn't apply;
+  - read the body with `runtime.Payload`;
+  - inspect `res.Request`;
+  - an error replaces the response.
+- **Tests:**
+  - The binding-retry and automatic-PoP tests add the per-call policy.
+  - New `TestChallengePolicy_MTLSPoPRequiresTokenBindingPolicy` covers the gate.
+  - The `EnableMTLSPoP` assertion the baseline added to `TestChallengePolicy` is removed, because that pipeline has no per-call policy.
+  - Every client's `mtls_pop_test.go` passes, confirming the wiring end to end.
+- **Pre-existing bug fixed along the way:** [azadmin/mtls_pop_test.go](../security/keyvault/azadmin/mtls_pop_test.go) didn't compile. It called the beta method name `GetEkmConnection`, which was renamed to `GetConnection` before release.
+- **Docs:**
+  - the keyvault/internal CHANGELOG and README;
+  - the azidentity CHANGELOG and README: "Updated Key Vault clients", not "shared authentication";
+  - [design.md](design.md).
+
+**Follow-up (optional):** a public response classifier on `policy.Request` (option A), matching C#, is a reasonable future feature on its own merits; it isn't required for this work.
+The retry policy could also call the classifier only for error responses, as C# does; that wasn't done here.
 
 ### AZC-5: Bound 401 retries reuse the cached token
 

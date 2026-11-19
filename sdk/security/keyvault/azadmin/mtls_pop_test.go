@@ -51,7 +51,7 @@ func TestClientsSignalMTLSPoP(t *testing.T) {
 			case "ekm":
 				client, err := ekm.NewClient(endpoint, popCredential{t}, &ekm.ClientOptions{ClientOptions: options})
 				require.NoError(t, err)
-				_, err = client.GetEkmConnection(context.Background(), nil)
+				_, err = client.GetConnection(context.Background(), nil)
 				require.NoError(t, err)
 			case "rbac":
 				client, err := rbac.NewClient(endpoint, popCredential{t}, &rbac.ClientOptions{ClientOptions: options})

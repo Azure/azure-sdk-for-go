@@ -10,9 +10,16 @@ import (
 	"slices"
 )
 
-// ResponseClassifier is an operation value used by authentication and retry policies.
-// A true result defers the response to the outer retry policy instead of handling
-// an authentication challenge. Errors must preserve cancellation and body-read failures.
+// ResponseClassifier is an operation value used by authentication and retry policies. Set it from a
+// policy that precedes the retry policy, such as a per-call policy, so it flows down the pipeline like
+// other operation values. A true result marks the response retriable: authentication policies return
+// it without handling an authentication challenge, and the retry policy retries it.
+//
+// The retry policy calls it for every response, and authentication policies call it for 401 responses,
+// so it can run more than once per response. It must return quickly when it doesn't apply, return the
+// same result each time, and read the body with runtime.Payload so the body remains readable. Inspect
+// res.Request, the request as sent, rather than state captured when the classifier was set. An error
+// replaces the response; errors must preserve cancellation and body-read failures.
 type ResponseClassifier func(*http.Response) (bool, error)
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.

@@ -106,8 +106,8 @@ Activation is process-wide, including transitive imports. Merely requiring the m
 load native libraries, contact endpoints, or create keys. Native attestation remains in MSAL
 and is performed lazily when required for issuance.
 
-The target resource must support certificate-bound tokens. Updated Key Vault shared
-authentication automatically signals PoP support, so ordinary Key Vault client construction
+The target resource must support certificate-bound tokens. Updated Key Vault clients
+automatically signal PoP support, so ordinary Key Vault client construction
 doesn't need an enable flag. Other services aren't automatically opted in; their authentication
 policies must explicitly signal support per token request. There is no client-level PoP enable
 flag. Ordinary bearer requests remain unchanged. Without the import,

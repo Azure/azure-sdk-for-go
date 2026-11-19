@@ -100,7 +100,6 @@ func TestChallengePolicy(t *testing.T) {
 			authenticated := false
 			cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
 				authenticated = true
-				require.True(t, tro.EnableMTLSPoP)
 				require.Equal(t, []string{test.expectedScope}, tro.Scopes)
 				require.Equal(t, "{tenant}", tro.TenantID)
 				return azcore.AccessToken{Token: accessToken, ExpiresOn: time.Now().Add(time.Hour)}, nil
@@ -460,9 +459,12 @@ func TestChallengePolicy_AutomaticMTLSPoP(t *testing.T) {
 				}
 				return tk, nil
 			})
-			pl := runtime.NewPipeline("", "", runtime.PipelineOptions{PerRetry: []policy.Policy{
-				NewKeyVaultChallengePolicy(cred, &KeyVaultChallengePolicyOptions{DisableChallengeResourceVerification: true}),
-			}}, &policy.ClientOptions{
+			pl := runtime.NewPipeline("", "", runtime.PipelineOptions{
+				PerCall: []policy.Policy{NewTokenBindingPolicy()},
+				PerRetry: []policy.Policy{
+					NewKeyVaultChallengePolicy(cred, &KeyVaultChallengePolicyOptions{DisableChallengeResourceVerification: true}),
+				},
+			}, &policy.ClientOptions{
 				Transport: server.Client(), Retry: policy.RetryOptions{MaxRetries: 1, RetryDelay: -1},
 			})
 			for range 2 {
@@ -482,6 +484,28 @@ func TestChallengePolicy_AutomaticMTLSPoP(t *testing.T) {
 			require.Equal(t, wantCalls, calls.Load())
 		})
 	}
+}
+
+func TestChallengePolicy_MTLSPoPRequiresTokenBindingPolicy(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized), mock.WithHeader("WWW-Authenticate", kvChallenge1))
+	srv.AppendResponse()
+	acquisitions := 0
+	cred := credentialFunc(func(_ context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+		acquisitions++
+		require.False(t, tro.EnableMTLSPoP, "a client without the token binding policy can't retry binding failures")
+		return azcore.AccessToken{Token: "token", ExpiresOn: time.Now().Add(time.Hour)}, nil
+	})
+	pl := runtime.NewPipeline("", "", runtime.PipelineOptions{PerRetry: []policy.Policy{
+		NewKeyVaultChallengePolicy(cred, &KeyVaultChallengePolicyOptions{DisableChallengeResourceVerification: true}),
+	}}, &policy.ClientOptions{Transport: srv})
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	res, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, res.StatusCode)
+	require.Equal(t, 1, acquisitions)
 }
 
 func TestChallengePolicy_BindingValidationRetry(t *testing.T) {
@@ -552,8 +576,10 @@ func TestChallengePolicy_BindingValidationRetry(t *testing.T) {
 					return false
 				}
 			}
-			pl := runtime.NewPipeline("", "", runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
-				&policy.ClientOptions{Transport: server.Client(), Retry: retry})
+			pl := runtime.NewPipeline("", "", runtime.PipelineOptions{
+				PerCall:  []policy.Policy{NewTokenBindingPolicy()},
+				PerRetry: []policy.Policy{p},
+			}, &policy.ClientOptions{Transport: server.Client(), Retry: retry})
 			ctx := context.Background()
 			if tc.override {
 				ctx = policy.WithRetryOptions(ctx, policy.RetryOptions{MaxRetries: 1, RetryDelay: -1})

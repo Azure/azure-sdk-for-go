@@ -6,8 +6,8 @@
 
 - `ManagedIdentityCredential` supports certificate-bound mTLS PoP tokens on Windows hosts with
   Credential Guard and IMDSv2. Set `policy.TokenRequestOptions.EnableMTLSPoP` when requesting
-  tokens directly. Updated Key Vault shared authentication automatically signals PoP support
-  without credential or service-client enable flags.
+  tokens directly. Updated Key Vault clients automatically signal PoP support without credential
+  or service-client enable flags.
 - Importing the optional `github.com/Azure/azure-sdk-for-go/sdk/azidentity/attestation` module
   enables automatic attested mTLS PoP selection for eligible managed identity requests, including
   those made through `DefaultAzureCredential`. Selection requires a PoP request and MSAL

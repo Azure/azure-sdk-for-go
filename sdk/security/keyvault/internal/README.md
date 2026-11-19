@@ -4,8 +4,10 @@ This module contains shared code for all the Key Vault SDKs, mainly the challeng
 
 ## Unreleased mTLS proof-of-possession integration
 
-The shared policy automatically signals mTLS PoP support for Secrets, Keys, Certificates,
-and Administration clients, including Managed HSM. It preserves cold unauthenticated
+The shared policy signals mTLS PoP support for requests from clients that add
+`NewTokenBindingPolicy` to their per-call policies: Secrets, Keys, Certificates, and
+Administration clients, including Managed HSM. Clients built without it keep bearer
+authentication. It preserves cold unauthenticated
 challenges, request-body protection, challenge-resource verification, and CAE handling.
 Credentials returning ordinary bearer tokens continue to work without a special transport.
 
@@ -24,7 +26,8 @@ don't permit fallback.
 
 A bound HTTP 401 whose JSON `error.message` contains
 `[MtlsCnfClaimRequestDataValidationFailed]` is retriable under the normal outer retry
-policy. It isn't an authentication challenge resend or bearer fallback. Configured retry
+policy. `NewTokenBindingPolicy` installs that classification ahead of the retry policy.
+It isn't an authentication challenge resend or bearer fallback. Configured retry
 counts, delays, operation overrides, and explicit `ShouldRetry` callbacks still apply.
 RBAC denials, other binding failures, and unsupported transports aren't fallback signals.
 

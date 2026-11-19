@@ -55,6 +55,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			Location: runtime.APIVersionLocationQueryParam,
 			Name:     "api-version",
 		},
+		PerCall:  []policy.Policy{internal.NewTokenBindingPolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.KeyVault",

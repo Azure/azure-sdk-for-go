@@ -104,31 +104,3 @@ The result gate also has credential-free fixtures:
 ```powershell
 ./sdk/data/azcosmos/eng/scripts/Test-LiveResults.Tests.ps1
 ```
-
-### Manual live change-feed split
-
-Use a fresh disposable `/pk` Cosmos DB for NoSQL container with dedicated manual
-throughput (400 RU/s to start) and one physical range. Use the same Entra setup as
-the smoke tests, but set `AZCOSMOS_SPLIT_CONTAINER` to this dedicated container
-and `AZCOSMOS_LIVE_SPLIT=1`. From `sdk/data/azcosmos`, run:
-
-```shell
-go test -v -race -count=1 -timeout=22m -run '^TestAzureLiveChangeFeedSplit$' ./e2e
-```
-
-Wait for `checkpoint saved` before scaling. From another terminal, with an
-identity authorized to change throughput, raise **only the disposable container**
-to 13,000 RU/s:
-
-```shell
-az cosmosdb sql container throughput update --subscription <test-subscription> \
-  --resource-group <disposable-group> --account-name <test-account> \
-  --database-name <test-database> --name <split-container> --throughput 13000
-```
-
-The test waits up to 15 minutes for Azure to report the child ranges. It checks
-idle resume before any new writes, then checks that the original checkpoint
-returns exactly the new items across the child ranges, without replay. A split
-that never appears fails setup, not the recovery assertion. Delete the
-disposable resources after the run, including on failure; scaling down does
-not restore a single range. This test does not run in the smoke CI lane.

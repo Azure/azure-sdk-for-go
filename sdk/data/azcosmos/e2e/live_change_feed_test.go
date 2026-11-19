@@ -193,45 +193,16 @@ func liveSeedHierarchicalItem(t *testing.T, f *liveFixture, id, tenant, user str
 
 // No public SDK range-enumeration API exists. This bounded, read-only metadata
 // request verifies topology without parsing opaque checkpoints or assuming RU implies ranges.
-func liveReadRanges(t *testing.T, f *liveFixture, ctx context.Context) []livePhysicalRange {
-	t.Helper()
-	response := liveReadContainerFeed(t, f, ctx, "pkranges", nil)
-	defer response.Body.Close()
-	require.Empty(t, response.Header.Get("x-ms-continuation"), "all routing ranges must fit in this bounded response")
-	var topology struct {
-		Ranges []livePhysicalRange `json:"PartitionKeyRanges"`
-	}
-	liveNoError(t, "decode physical ranges", json.NewDecoder(io.LimitReader(response.Body, 64*1024)).Decode(&topology))
-	return topology.Ranges
-}
-
-type livePhysicalRange struct {
-	ID  string `json:"id"`
-	Min string `json:"minInclusive"`
-	Max string `json:"maxExclusive"`
-}
-
 func liveRequireSingleRange(t *testing.T, f *liveFixture) {
 	t.Helper()
-	ranges := liveReadRanges(t, f, f.ctx)
-	require.Len(t, ranges, 1, "fixture must have one physical range")
-	require.Empty(t, ranges[0].Min)
-	require.Equal(t, "FF", ranges[0].Max)
-}
-
-func liveReadContainerFeed(t *testing.T, f *liveFixture, ctx context.Context, resource string, headers http.Header) *http.Response {
-	t.Helper()
 	cred, err := credential.New(nil)
-	liveNoError(t, "create feed-probe credential", err)
-	token, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{"https://cosmos.azure.com/.default"}})
-	liveNoError(t, "acquire feed-probe token", err)
+	liveNoError(t, "create topology-read credential", err)
+	token, err := cred.GetToken(f.ctx, policy.TokenRequestOptions{Scopes: []string{"https://cosmos.azure.com/.default"}})
+	liveNoError(t, "acquire topology-read token", err)
 	path := strings.TrimRight(f.endpoint, "/") + "/dbs/" + url.PathEscape(f.databaseID) +
-		"/colls/" + url.PathEscape(f.containerID) + "/" + resource
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
-	liveNoError(t, "construct feed probe", err)
-	if headers != nil {
-		request.Header = headers.Clone()
-	}
+		"/colls/" + url.PathEscape(f.containerID) + "/pkranges"
+	request, err := http.NewRequestWithContext(f.ctx, http.MethodGet, path, nil)
+	liveNoError(t, "construct topology read", err)
 	request.Header.Set("Authorization", url.QueryEscape("type=aad&ver=1.0&sig="+token.Token))
 	request.Header.Set("x-ms-version", "2020-07-15")
 	request.Header.Set("x-ms-date", time.Now().UTC().Format(http.TimeFormat))
@@ -239,12 +210,24 @@ func liveReadContainerFeed(t *testing.T, f *liveFixture, ctx context.Context, re
 		return http.ErrUseLastResponse
 	}}
 	response, err := client.Do(request)
-	liveNoError(t, "read Cosmos feed probe", err)
-	if response.StatusCode != http.StatusOK {
-		response.Body.Close()
-		t.Fatalf("read Cosmos %s feed: HTTP %d", resource, response.StatusCode)
+	liveNoError(t, "read hierarchical topology", err)
+	defer func() {
+		if err := response.Body.Close(); err != nil {
+			t.Errorf("close topology response body: %s", liveErrorSummary(err))
+		}
+	}()
+	require.Equal(t, http.StatusOK, response.StatusCode, "routing metadata read must succeed")
+	require.Empty(t, response.Header.Get("x-ms-continuation"), "all routing ranges must fit in this bounded response")
+	var topology struct {
+		Ranges []struct {
+			Min string `json:"minInclusive"`
+			Max string `json:"maxExclusive"`
+		} `json:"PartitionKeyRanges"`
 	}
-	return response
+	liveNoError(t, "decode hierarchical topology", json.NewDecoder(io.LimitReader(response.Body, 64*1024)).Decode(&topology))
+	require.Len(t, topology.Ranges, 1, "fixture must have one physical range")
+	require.Empty(t, topology.Ranges[0].Min)
+	require.Equal(t, "FF", topology.Ranges[0].Max)
 }
 
 type liveChangeFeedProgress struct {
@@ -273,20 +256,14 @@ func (p *liveChangeFeedProgress) accept(items [][]byte) error {
 		if envelope.Current == nil || envelope.Current.ID == "" {
 			return errors.New("change-feed envelope has no current ID")
 		}
-		if err := p.acceptID(envelope.Current.ID); err != nil {
-			return err
+		id := envelope.Current.ID
+		seen, expected := p.seen[id]
+		if !expected || seen {
+			return errors.New("unexpected or replayed change-feed ID")
 		}
+		p.seen[id] = true
+		p.remaining--
 	}
-	return nil
-}
-
-func (p *liveChangeFeedProgress) acceptID(id string) error {
-	seen, expected := p.seen[id]
-	if !expected || seen {
-		return errors.New("unexpected or replayed change-feed ID")
-	}
-	p.seen[id] = true
-	p.remaining--
 	return nil
 }
 

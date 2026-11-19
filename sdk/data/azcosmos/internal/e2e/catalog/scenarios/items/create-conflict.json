@@ -1,0 +1,40 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "item.create-conflict",
+    "title": "Creating a duplicate identity returns conflict",
+    "requirement": "A duplicate create returns 409 and leaves the original document unchanged.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "python",
+            "path": "sdk/cosmos/azure-cosmos/tests/test_crud.py",
+            "test": "duplicate document create"
+        }
+    ],
+    "profiles": [
+        "smokeTests"
+    ],
+    "tags": [
+        "prSmoke",
+        "item",
+        "negative"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full"
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

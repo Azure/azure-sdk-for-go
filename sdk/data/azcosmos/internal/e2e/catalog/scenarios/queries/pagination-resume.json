@@ -1,0 +1,44 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "query.pagination-resume",
+    "title": "A query resumes from a persisted continuation",
+    "requirement": "A paged query can resume in a new iterator without losing or duplicating ordered results.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_query.rs",
+            "test": "cross_partition_query_with_order_by"
+        }
+    ],
+    "profiles": [
+        "coreOperations"
+    ],
+    "tags": [
+        "query",
+        "continuation",
+        "coreOperations"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "query"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "query",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

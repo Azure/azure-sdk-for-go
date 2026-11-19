@@ -1,927 +1,540 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore Contoso upserted
+
 package azcosmos_test
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
-	"net/http"
-	"os"
+	"io"
+	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
 
-func ExampleNewClient() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	// Obtain a TokenCredential for the current environment
-	// Alternatively, you could use any of the other credential types
-	// For example, azidentity.NewClientSecretCredential("tenantId", "clientId", "clientSecret")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClient(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(client)
-}
-
-func ExampleNewClientWithKey() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	// Create new Cosmos DB client.
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(client)
-}
-
-func ExampleNewClientFromConnectionString() {
-	connectionString, ok := os.LookupEnv("AZURE_COSMOS_CONNECTION_STRING")
-	if !ok {
-		panic("AZURE_COSMOS_CONNECTION_STRING could not be found")
-	}
-
-	client, err := azcosmos.NewClientFromConnectionString(connectionString, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(client)
-}
-
-func ExampleClientOptions_PreferredRegions() {
-	clientOptions := azcosmos.ClientOptions{PreferredRegions: []string{"West US", "Central US"}}
-
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	// Create new Cosmos DB client.
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, &clientOptions)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(client)
-}
-
-func ExampleClient_CreateDatabase() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	databaseProperties := azcosmos.DatabaseProperties{ID: "databaseName"}
-	databaseResponse, err := client.CreateDatabase(context.Background(), databaseProperties, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Database created. ActivityId %s", databaseResponse.ActivityID)
-}
-
-func ExampleClient_NewQueryDatabasesPager() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	queryPager := client.NewQueryDatabasesPager("select * from dbs d", nil)
-	for queryPager.More() {
-		queryResponse, err := queryPager.NextPage(context.Background())
-		if err != nil {
-			var responseErr *azcore.ResponseError
-			errors.As(err, &responseErr)
-			panic(responseErr)
-		}
-
-		for _, container := range queryResponse.Databases {
-			fmt.Printf("Received database %s", container.ID)
-		}
-
-		fmt.Printf("Query page received with %v databases. ActivityId %s consuming %v RU", len(queryResponse.Databases), queryResponse.ActivityID, queryResponse.RequestCharge)
-	}
-}
-
-func ExampleDatabaseClient_CreateContainer() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	database, err := client.NewDatabase("databaseName")
-	if err != nil {
-		panic(err)
-	}
-
-	properties := azcosmos.ContainerProperties{
-		ID: "aContainer",
-		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
-			Paths: []string{"/myPartitionKey"},
-		},
-	}
-
-	throughput := azcosmos.NewManualThroughputProperties(400)
-
-	resp, err := database.CreateContainer(context.Background(), properties, &azcosmos.CreateContainerOptions{ThroughputProperties: &throughput})
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Container created. ActivityId %s", resp.ActivityID)
-}
-func ExampleDatabaseClient_NewQueryContainersPager() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	database, err := client.NewDatabase("databaseName")
-	if err != nil {
-		panic(err)
-	}
-
-	queryPager := database.NewQueryContainersPager("select * from containers c", nil)
-	for queryPager.More() {
-		queryResponse, err := queryPager.NextPage(context.Background())
-		if err != nil {
-			var responseErr *azcore.ResponseError
-			errors.As(err, &responseErr)
-			panic(responseErr)
-		}
-
-		for _, container := range queryResponse.Containers {
-			fmt.Printf("Received container %s", container.ID)
-		}
-
-		fmt.Printf("Query page received with %v containers. ActivityId %s consuming %v RU", len(queryResponse.Containers), queryResponse.ActivityID, queryResponse.RequestCharge)
-	}
-}
-
-func ExampleContainerClient_ReplaceThroughput() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	throughputResponse, err := container.ReadThroughput(context.Background(), nil)
-	if err != nil {
-		panic(err)
-	}
-
-	manualThroughput, hasManual := throughputResponse.ThroughputProperties.ManualThroughput()
-	if !hasManual {
-		panic("Expected to have manual throughput")
-	}
-	fmt.Printf("Container is provisioned with %v RU/s", manualThroughput)
-
-	// Replace manual throughput
-	newScale := azcosmos.NewManualThroughputProperties(500)
-	replaceThroughputResponse, err := container.ReplaceThroughput(context.Background(), newScale, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Throughput updated. ActivityId %s", replaceThroughputResponse.ActivityID)
-}
-
-func ExampleContainerClient_Replace() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	containerResponse, err := container.Read(context.Background(), nil)
-	if err != nil {
-		panic(err)
-	}
-
-	// Changing the indexing policy
-	containerResponse.ContainerProperties.IndexingPolicy = &azcosmos.IndexingPolicy{
-		IncludedPaths: []azcosmos.IncludedPath{},
-		ExcludedPaths: []azcosmos.ExcludedPath{},
-		Automatic:     false,
-		IndexingMode:  azcosmos.IndexingModeNone,
-	}
-
-	// Replace container properties
-	replaceResponse, err := container.Replace(context.Background(), *containerResponse.ContainerProperties, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Container updated. ActivityId %s", replaceResponse.ActivityID)
-}
-
-func ExampleContainerClient_CreateItem() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-
-	item := map[string]string{
-		"id":             "anId",
-		"value":          "2",
-		"myPartitionKey": "newPartitionKey",
-	}
-
-	marshalled, err := json.Marshal(item)
-	if err != nil {
-		panic(err)
-	}
-
-	itemResponse, err := container.CreateItem(context.Background(), pk, marshalled, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Item created. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
-}
-
-func ExampleContainerClient_ReadItem() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-
-	id := "anId"
-	itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	var itemResponseBody map[string]string
-	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
-}
-
-func ExampleContainerClient_ReplaceItem() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-
-	id := "anId"
-	itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	var itemResponseBody map[string]string
-	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
-	if err != nil {
-		panic(err)
-	}
-
-	// Modify some property
-	itemResponseBody["value"] = "newValue"
-	marshalledReplace, err := json.Marshal(itemResponseBody)
-	if err != nil {
-		panic(err)
-	}
-
-	itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
-}
-
-func ExampleContainerClient_DeleteItem() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-
-	id := "anId"
-	itemResponse, err := container.DeleteItem(context.Background(), pk, id, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Item deleted. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
-}
-
-func ExampleContainerClient_ReadItem_sessionConsistency() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-	id := "anId"
-	item := map[string]string{
-		"id":             "anId",
-		"value":          "2",
-		"myPartitionKey": "newPartitionKey",
-	}
-
-	marshalled, err := json.Marshal(item)
-	if err != nil {
-		panic(err)
-	}
-
-	itemResponse, err := container.CreateItem(context.Background(), pk, marshalled, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	itemSessionToken := itemResponse.SessionToken
-	fmt.Printf("Create response contained session %s", *itemSessionToken)
-
-	// In another client, maintain the session by passing the session token
-	itemResponse, err = container.ReadItem(context.Background(), pk, id, &azcosmos.ItemOptions{SessionToken: itemSessionToken})
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
-}
-
-// Azure Cosmos DB supports optimistic concurrency control to prevent lost updates or deletes and detection of conflicting operations.
-// Check the item response status code. If an error is emitted and the response code is 412 then retry operation.
-func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-	id := "anId"
-
-	numberRetry := 3 // Defining a limit on retries
-	err = retryOptimisticConcurrency(numberRetry, 10*time.Millisecond, func() (bool, error) {
-		itemResponse, err := container.ReadItem(context.Background(), pk, id, nil)
-		if err != nil {
-			panic(err)
-		}
-
-		var itemResponseBody map[string]string
-		err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
-		if err != nil {
-			panic(err)
-		}
-
-		// Change a value in the item response body.
-		itemResponseBody["value"] = "newValue"
-
-		marshalledReplace, err := json.Marshal(itemResponseBody)
-		if err != nil {
-			panic(err)
-		}
-
-		// Replace with Etag
-		etag := itemResponse.ETag
-		itemResponse, err = container.ReplaceItem(context.Background(), pk, id, marshalledReplace, &azcosmos.ItemOptions{IfMatchEtag: &etag})
-		var responseErr *azcore.ResponseError
-
-		return (errors.As(err, &responseErr) && responseErr.StatusCode == 412), err
-	})
-	if err != nil {
-		panic(err)
-	}
+type catalogItem struct {
+	ID           string `json:"id"`
+	CategoryName string `json:"categoryName"`
+	Quantity     int    `json:"quantity"`
 }
 
 func ExampleContainerClient_NewQueryItemsPager() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
+	container, closeClient := exampleContainer()
+	query, err := azcosmos.NewQuery("SELECT * FROM c WHERE c.price >= @minimum").
+		WithParameter("@minimum", 10)
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
-
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-
-	queryPager := container.NewQueryItemsPager("select * from docs c", pk, nil)
-	for queryPager.More() {
-		queryResponse, err := queryPager.NextPage(context.Background())
+	scope := azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog"))
+	pager := container.NewQueryItemsPager[catalogItem](query, scope, &azcosmos.QueryOptions{
+		Feed: azcosmos.FeedOptions{PageSizeHint: 25},
+	})
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
 		if err != nil {
-			var responseErr *azcore.ResponseError
-			errors.As(err, &responseErr)
-			panic(responseErr)
+			closeErr := pager.Close()
+			closeClient()
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
 		}
+		log.Printf("received %d items, charge %.2f RU", len(page.Items), page.RequestCharge)
+		// To pause, call pager.ContinuationToken(ctx) before exhaustion, then Close.
+	}
+	if err := pager.Close(); err != nil {
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	closeClient()
+}
 
-		for _, item := range queryResponse.Items {
-			var itemResponseBody map[string]interface{}
-			err = json.Unmarshal(item, &itemResponseBody)
-			if err != nil {
-				panic(err)
-			}
+func ExampleContainerClient_NewReadManyItemsPager() {
+	container, closeClient := exampleContainer()
+	catalog := azcosmos.NewPartitionKeyString("catalog")
+	// Missing items are omitted, and items can arrive in any order.
+	selection := azcosmos.NewReadManyItemsSelection(
+		azcosmos.NewItemIdentity(catalog, "item1"),
+		azcosmos.NewItemIdentity(catalog, "item2"),
+	)
+	pager := container.NewReadManyItemsPager[catalogItem](selection, nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			closeErr := pager.Close()
+			closeClient()
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
 		}
+		for _, item := range page.Items {
+			log.Printf("read %s (quantity %d)", item.ID, item.Quantity)
+		}
+	}
+	if err := pager.Close(); err != nil {
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	closeClient()
+}
 
-		fmt.Printf("Query page received with %v items. ActivityId %s consuming %v RU", len(queryResponse.Items), queryResponse.ActivityID, queryResponse.RequestCharge)
+// exampleContainer builds the client and container the operation examples below work against, so
+// that each of those can show the operation rather than repeating the setup. ExampleNewClient
+// shows the construction it stands in for.
+//
+// The returned function closes the client. It is called rather than deferred because a deferred
+// call would not run if a later log.Fatalf fired.
+func exampleContainer() (*azcosmos.ContainerClient, func()) {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	container, err := client.NewContainer(context.TODO(), "myDatabase", "myContainer")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	return container, func() {
+		if err := client.Close(); err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
 	}
 }
 
-// Azure Cosmos DB supports queries with parameters expressed by the familiar @ notation.
-// Parameterized SQL provides robust handling and escaping of user input, and prevents accidental exposure of data through SQL injection.
-func ExampleContainerClient_NewQueryItemsPager_parametrizedQueries() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
-	}
-
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
+// A client is safe for concurrent use and holds the caches that make requests cheap, so create one
+// per account and keep it for the lifetime of the application rather than one per operation.
+//
+// Close is called directly rather than deferred here only because log.Fatalf would skip a deferred
+// call. In an application that returns errors rather than exiting, defer it.
+func ExampleNewClient() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
-	container, err := client.NewContainer("databaseName", "aContainer")
+	container, err := client.NewContainer(context.TODO(), "myDatabase", "myContainer")
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("ready to operate on container %s", container.ID())
+
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+// An account key authenticates too, though Entra ID is preferable where it is available.
+//
+// Routing is worth setting when the preferred region order is known.
+func ExampleNewClientWithKey() {
+	cred, err := azcosmos.NewKeyCredential("bXktYWNjb3VudC1rZXk=")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
-	opt := &azcosmos.QueryOptions{
-		QueryParameters: []azcosmos.QueryParameter{
-			{"@value", "2"},
+	client, err := azcosmos.NewClientWithKey(context.TODO(), "https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
+		Routing: azcosmos.PreferredRegions(azcosmos.RegionEastUS),
+	})
+
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+func ExampleClient_CreateDatabase() {
+	cred, err := azcosmos.NewKeyCredential("bXktYWNjb3VudC1rZXk=")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	client, err := azcosmos.NewClientWithKey(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	databaseResponse, err := client.CreateDatabase(context.TODO(), azcosmos.DatabaseProperties{
+		ID: "catalog",
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	database, err := client.NewDatabase(databaseResponse.DatabaseProperties.ID)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	containerResponse, err := database.CreateContainer(context.TODO(), azcosmos.ContainerProperties{
+		ID: "products",
+		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
+			Paths: []string{"/category"},
 		},
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-
-	queryPager := container.NewQueryItemsPager("select * from docs c where c.value = @value", pk, opt)
-	for queryPager.More() {
-		queryResponse, err := queryPager.NextPage(context.Background())
-		if err != nil {
-			var responseErr *azcore.ResponseError
-			errors.As(err, &responseErr)
-			panic(responseErr)
-		}
-
-		for _, item := range queryResponse.Items {
-			var itemResponseBody map[string]interface{}
-			err = json.Unmarshal(item, &itemResponseBody)
-			if err != nil {
-				panic(err)
-			}
-		}
-
-		fmt.Printf("Query page received with %v items. ActivityId %s consuming %v RU", len(queryResponse.Items), queryResponse.ActivityID, queryResponse.RequestCharge)
+	container, err := database.NewContainer(context.TODO(), containerResponse.ContainerProperties.ID)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := container.Read(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := container.Delete(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if _, err := database.Delete(context.TODO(), nil); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 }
 
-func ExampleContainerClient_NewTransactionalBatch() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
+// When the regions to prefer are known ahead of time, give them explicitly. The order is a
+// preference, not a restriction: once it is exhausted the client may still use other regions.
+func ExamplePreferredRegions() {
+	options := &azcosmos.ClientOptions{
+		Routing: azcosmos.PreferredRegions(azcosmos.RegionEastUS, azcosmos.RegionWestUS),
 	}
 
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
+	log.Printf("client will prefer East US, then West US: %+v", options.Routing)
+}
 
-	cred, err := azcosmos.NewKeyCredential(key)
+func ExampleContainerClient_CreateItem() {
+	container, closeClient := exampleContainer()
+
+	item := catalogItem{ID: "item-1", CategoryName: "gear-surf-surfboards"}
+
+	// The partition key value must match the value of the partition key path in the item, and the
+	// id must match the item's own id property.
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	response, err := container.CreateItem(context.TODO(), pk, "item-1", item, nil)
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
+	log.Printf("created the item, charged %v RU", response.RequestCharge)
 
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	closeClient()
+}
+
+func ExampleContainerClient_ReadItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	response, err := container.ReadItem(context.TODO(), pk, "item-1", nil)
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
-	container, err := client.NewContainer("databaseName", "aContainer")
+	item, err := response.IntoModel[catalogItem]()
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
+	log.Printf("read item %v, charged %v RU", item.ID, response.RequestCharge)
 
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+	closeClient()
+}
 
-	batch := container.NewTransactionalBatch(pk)
-
-	item := map[string]string{
-		"id":             "anId",
-		"value":          "2",
-		"myPartitionKey": "newPartitionKey",
-	}
-
-	marshalledItem, err := json.Marshal(item)
+func ExampleNewRuntime() {
+	runtime, err := azcosmos.NewRuntime(&azcosmos.RuntimeOptions{
+		ApplicationID: "order-service",
+		Operation:     azcosmos.OperationOptions{EndToEndTimeout: to.Ptr(10 * time.Second)},
+	})
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
-
-	batch.CreateItem(marshalledItem, nil)
-	batch.ReadItem("anIdThatExists", nil)
-	batch.DeleteItem("yetAnotherExistingId", nil)
-
-	batchResponse, err := container.ExecuteTransactionalBatch(context.Background(), batch, nil)
+	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", credential, &azcosmos.ClientOptions{
+		Runtime:   runtime,
+		Operation: azcosmos.OperationOptions{BinaryEncoding: &azcosmos.BinaryEncodingOptions{}},
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	container, err := client.NewContainer(context.TODO(), "database", "container")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	_, err = container.ReadItem(context.TODO(), azcosmos.NewPartitionKeyString("partition"), "item", &azcosmos.ReadItemOptions{
+		Operation: azcosmos.OperationOptions{EndToEndTimeout: to.Ptr(2 * time.Second)},
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := runtime.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
 
-	if batchResponse.Success {
-		// Transaction succeeded
-		// We can inspect the individual operation results
-		for index, operation := range batchResponse.OperationResults {
-			fmt.Printf("Operation %v completed with status code %v consumed %v RU", index, operation.StatusCode, operation.RequestCharge)
-			if index == 1 {
-				// Read operation would have body available
-				var itemResponseBody map[string]string
-				err = json.Unmarshal(operation.ResourceBody, &itemResponseBody)
-				if err != nil {
-					panic(err)
-				}
-			}
-		}
-	} else {
-		// Transaction failed, look for the offending operation
-		for index, operation := range batchResponse.OperationResults {
-			if operation.StatusCode != http.StatusFailedDependency {
-				fmt.Printf("Transaction failed due to operation %v which failed with status code %v", index, operation.StatusCode)
-			}
-		}
+func ExampleContainerClient_ReplaceItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	item := catalogItem{ID: "item-1", CategoryName: "gear-surf-surfboards", Quantity: 3}
+
+	response, err := container.ReplaceItem(context.TODO(), pk, "item-1", item, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
+	log.Printf("replaced the item, charged %v RU", response.RequestCharge)
+
+	closeClient()
+}
+
+func ExampleContainerClient_UpsertItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	item := catalogItem{ID: "item-1", CategoryName: "gear-surf-surfboards", Quantity: 3}
+
+	response, err := container.UpsertItem(context.TODO(), pk, "item-1", item, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("upserted the item, charged %v RU", response.RequestCharge)
+
+	closeClient()
+}
+
+func ExampleContainerClient_DeleteItem() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	response, err := container.DeleteItem(context.TODO(), pk, "item-1", nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("deleted the item, charged %v RU", response.RequestCharge)
+
+	closeClient()
 }
 
 func ExampleContainerClient_PatchItem() {
-	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
-	if !ok {
-		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	var operations azcosmos.PatchOperations
+	if err := operations.AppendSet("/quantity", 5); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := operations.AppendIncrement("/inventoryCount", 1); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 
-	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
-	if !ok {
-		panic("AZURE_COSMOS_KEY could not be found")
-	}
-
-	cred, err := azcosmos.NewKeyCredential(key)
+	response, err := container.PatchItem(context.TODO(), pk, "item-1", operations, nil)
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("patched the item, charged %v RU", response.RequestCharge)
+	if len(response.Value) != 0 {
+		item, err := response.IntoModel[catalogItem]()
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		log.Printf("updated quantity: %d", item.Quantity)
 	}
 
-	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	container, err := client.NewContainer("databaseName", "aContainer")
-	if err != nil {
-		panic(err)
-	}
-
-	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
-
-	id := "anId"
-
-	patch := azcosmos.PatchOperations{}
-
-	patch.AppendAdd("/newField", "newValue")
-	patch.AppendRemove("/oldFieldToRemove")
-
-	itemResponse, err := container.PatchItem(context.Background(), pk, id, patch, nil)
-	if err != nil {
-		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		panic(responseErr)
-	}
-
-	var itemResponseBody map[string]string
-	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Item patched. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
+	closeClient()
 }
 
-func retryOptimisticConcurrency(retryAttempts int, wait time.Duration, retry func() (bool, error)) (result error) {
-	for i := 0; ; i++ {
-		retryResult, err := retry()
-		if err != nil {
-			break
-		}
+type numberPreservingModel map[string]any
 
-		if !(retryResult) {
-			break
-		}
-
-		if i >= (retryAttempts - 1) {
-			break
-		}
-
-		fmt.Printf("retrying after error: %v", err)
-
-		time.Sleep(wait)
+func (m *numberPreservingModel) UnmarshalJSON(data []byte) error {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.UseNumber()
+	if err := decoder.Decode((*map[string]any)(m)); err != nil {
+		return err
 	}
-	return fmt.Errorf("Cosmos DB retry attempts %d, error: %s", retryAttempts, result)
+	var trailing any
+	if err := decoder.Decode(&trailing); err != io.EOF {
+		if err == nil {
+			return errors.New("unexpected trailing JSON value")
+		}
+		return err
+	}
+	return nil
+}
+
+func ExampleContainerClient_NewQueryItemsPager_modelHook() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	client, err := azcosmos.NewClient(context.TODO(), "https://myaccount.documents.azure.com", cred, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	container, err := client.NewContainer(context.TODO(), "myDatabase", "myContainer")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	pager := container.NewQueryItemsPager[numberPreservingModel](
+		azcosmos.NewQuery("SELECT c.quantity FROM c"),
+		azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog")), nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		for _, projection := range page.Items {
+			log.Printf("quantity without float64 rounding: %v", projection["quantity"])
+		}
+	}
+	if err := pager.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+func ExampleContainerClient_NewQueryItemsPager_scalar() {
+	container, closeClient := exampleContainer()
+	pager := container.NewQueryItemsPager[*int](
+		azcosmos.NewQuery("SELECT VALUE c.quantity FROM c"),
+		azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog")), nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		for _, quantity := range page.Items {
+			if quantity != nil {
+				log.Printf("quantity: %d", *quantity)
+			}
+		}
+	}
+	if err := pager.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	closeClient()
+}
+
+// Reads can relax the account's consistency level, and can carry a session token captured from a
+// write elsewhere so that the read is guaranteed to observe it.
+func ExampleContainerClient_ReadItem_sessionConsistency() {
+	container, closeClient := exampleContainer()
+
+	options := &azcosmos.ReadItemOptions{
+		Operation: azcosmos.OperationOptions{
+			ConsistencyStrategy: azcosmos.ReadConsistencyStrategySession,
+		},
+		// Taken from the ItemResponse of the write this read needs to observe.
+		SessionToken: "0:-1#42",
+	}
+
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	if _, err := container.ReadItem(context.TODO(), pk, "item-1", options); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	closeClient()
+}
+
+// A missing item is reported as an *azcosmos.Error with the CodeNotFound code, which is usually
+// something to handle rather than to fail on.
+func ExampleError() {
+	container, closeClient := exampleContainer()
+	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
+
+	_, err := container.ReadItem(context.TODO(), pk, "item-1", nil)
+
+	var cosmosErr *azcosmos.Error
+	switch {
+	case err == nil:
+		log.Println("read the item")
+	case errors.As(err, &cosmosErr) && cosmosErr.Code == azcosmos.CodeNotFound:
+		log.Println("no such item")
+	default:
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	closeClient()
+}
+
+// A container with a hierarchical partition key takes one component per level of its definition,
+// in the order the paths are declared.
+func ExamplePartitionKey_hierarchical() {
+	pk := azcosmos.NewPartitionKeyString("Contoso").
+		AppendString("Redmond").
+		AppendNumber(98052)
+
+	log.Printf("built a partition key with %d components", pk.Len())
 }

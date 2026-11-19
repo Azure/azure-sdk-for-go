@@ -4,134 +4,275 @@
 package azcosmos
 
 import (
-	"errors"
-	"net/http"
+	"encoding/json"
+	"fmt"
+	"sync"
+	"sync/atomic"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// Diagnostics contains request diagnostics for an Azure Cosmos DB operation.
-// The diagnostics string is materialized lazily when String is called from immutable finalized state.
+// EventDiagnostics entries report when an operation's native diagnostics snapshot could not be
+// copied. Diagnostics are informational only: the operation's own outcome never depends on this
+// copy succeeding, so a failure here is logged rather than reported as an operation failure.
+//
+// Declared here rather than in completion_native.go, which is platform-tagged, so the constant
+// stays part of the package's API on every platform: a caller using azcosmos.EventDiagnostics
+// otherwise fails to compile on Windows, unsupported architectures, or CGO_ENABLED=0, where that
+// file is excluded from the build. [EventRouting] in routing_strategy.go follows the same pattern.
+const EventDiagnostics log.Event = "CosmosDiagnostics"
+
+// DiagnosticsVerbosity controls how much detail [Diagnostics.JSON] renders.
+// Set it on [ClientOptions.DiagnosticsVerbosity].
+//
+// It does not affect [Diagnostics.Attempts], [Diagnostics.RegionsContacted] or any scalar field:
+// those are always copied from the native completion regardless of verbosity. It only governs the
+// lazy Go JSON rendering, which is diagnostic text rather than a stable schema.
+//
+// The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary.
+type DiagnosticsVerbosity int32
+
+const (
+	// DiagnosticsVerbosityDefault leaves the rendering choice to the SDK. It currently resolves
+	// to DiagnosticsVerbositySummary; that resolution may change in a future version without
+	// being considered a breaking change.
+	DiagnosticsVerbosityDefault DiagnosticsVerbosity = iota
+
+	// DiagnosticsVerbositySummary renders totals, final status, completion flags, and contacted
+	// regions. It omits retained per-attempt records.
+	DiagnosticsVerbositySummary
+
+	// DiagnosticsVerbosityDetailed renders the summary fields plus every retained record in
+	// [Diagnostics.Attempts]. When [Diagnostics.Compacted] is true, these attempts are only the
+	// native driver's retained subset, not the full timeline.
+	DiagnosticsVerbosityDetailed
+)
+
+// String returns the name of the verbosity level, for logging and error messages.
+func (v DiagnosticsVerbosity) String() string {
+	switch v {
+	case DiagnosticsVerbosityDefault:
+		return "Default"
+	case DiagnosticsVerbositySummary:
+		return "Summary"
+	case DiagnosticsVerbosityDetailed:
+		return "Detailed"
+	default:
+		return fmt.Sprintf("DiagnosticsVerbosity(%d)", int32(v))
+	}
+}
+
+// Diagnostics is a Go-owned snapshot of the native driver's operation diagnostics.
+// It is available only when the driver attaches diagnostics to a completion. In
+// particular, cancellation can return before a native completion is available.
 type Diagnostics struct {
-	root               *finalizedTrace
-	failedRequestCount int
+	// StatusCode and SubStatus describe the final completion. They are zero
+	// when no HTTP status or sub-status is available.
+	StatusCode int
+	SubStatus  int
+
+	// AttemptCount counts recorded native requests, including retries and hedges.
+	// An unfinished request from a canceled losing hedge leg may be absent.
+	// It can exceed len(Attempts) if the driver compacted the timeline.
+	AttemptCount uint32
+
+	// TotalRequestCharge is the charge across all attempts, including retries.
+	TotalRequestCharge float64
+
+	// Elapsed is the native driver's total wall-clock time for the operation.
+	Elapsed time.Duration
+
+	// Completed reports whether the driver recorded a terminal outcome.
+	Completed bool
+
+	// Failed reports whether that terminal outcome was a failure.
+	Failed bool
+
+	// Compacted reports whether the driver discarded older attempt records.
+	Compacted bool
+
+	// RegionsContacted lists distinct regions from recorded attempts in first-contact
+	// order. It may omit a losing hedge region whose unfinished request was canceled.
+	RegionsContacted []string
+
+	// Attempts contains the retained per-attempt records in execution order.
+	Attempts []DiagnosticAttempt
+
+	json atomic.Pointer[diagnosticsJSON]
 }
 
-func newDiagnostics(t *trace) Diagnostics {
-	if t == nil {
-		return Diagnostics{}
+// JSON renders and caches this Go-owned diagnostics snapshot. The rendering uses the
+// [DiagnosticsVerbosity] configured when the client was created and is safe for concurrent calls.
+//
+// The current native ABI exposes totals, elapsed time, request counts, completion flags, contacted
+// regions, and retained attempts. JSON contains only those copied fields; it is not the native
+// driver's full diagnostics schema and callers should not treat its shape as a stable contract.
+// Use the typed fields on Diagnostics when programmatic access is required.
+func (d *Diagnostics) JSON() (string, error) {
+	if d == nil {
+		return "", nil
 	}
-
-	root := t.root()
-	if root == nil {
-		return Diagnostics{}
+	cache := d.json.Load()
+	if cache == nil {
+		candidate := newDiagnosticsJSON(d, DiagnosticsVerbosityDefault)
+		if d.json.CompareAndSwap(nil, candidate) {
+			cache = candidate
+		} else {
+			cache = d.json.Load()
+		}
 	}
+	cache.once.Do(func() {
+		data, err := marshalDiagnosticsJSON(cache.renderValue())
+		if err != nil {
+			cache.err = fmt.Errorf("azcosmos: rendering diagnostics JSON: %w", err)
+			return
+		}
+		cache.value = string(data)
+	})
+	return cache.value, cache.err
+}
 
-	failedRequestCount := 0
-	if root.summary != nil {
-		failedRequestCount = root.summary.failedCount()
+type diagnosticsJSON struct {
+	once      sync.Once
+	verbosity DiagnosticsVerbosity
+	snapshot  diagnosticsJSONSnapshot
+	value     string
+	err       error
+}
+
+type diagnosticsJSONSnapshot struct {
+	StatusCode         int
+	SubStatus          int
+	AttemptCount       uint32
+	TotalRequestCharge float64
+	Elapsed            time.Duration
+	Completed          bool
+	Failed             bool
+	Compacted          bool
+	RegionsContacted   []string
+	Attempts           []DiagnosticAttempt
+}
+
+type diagnosticsJSONSummary struct {
+	StatusCode           int      `json:"statusCode"`
+	SubStatus            int      `json:"subStatus"`
+	AttemptCount         uint32   `json:"attemptCount"`
+	RetainedAttemptCount int      `json:"retainedAttemptCount"`
+	TotalRequestCharge   float64  `json:"totalRequestCharge"`
+	ElapsedTimeMicros    int64    `json:"elapsedTimeMicros"`
+	Completed            bool     `json:"completed"`
+	Failed               bool     `json:"failed"`
+	Compacted            bool     `json:"compacted"`
+	RegionsContacted     []string `json:"regionsContacted"`
+}
+
+type diagnosticsJSONDetailed struct {
+	diagnosticsJSONSummary
+	Attempts []diagnosticAttemptJSON `json:"attempts"`
+}
+
+type diagnosticAttemptJSON struct {
+	Endpoint         string  `json:"endpoint"`
+	Region           string  `json:"region"`
+	StatusCode       int     `json:"statusCode"`
+	SubStatus        int     `json:"subStatus"`
+	LatencyMS        int64   `json:"latencyMS"`
+	RequestCharge    float64 `json:"requestCharge"`
+	ServerDurationMS float64 `json:"serverDurationMS"`
+}
+
+var marshalDiagnosticsJSON = json.Marshal
+
+func (d *Diagnostics) initializeJSON(verbosity DiagnosticsVerbosity) {
+	d.json.Store(newDiagnosticsJSON(d, verbosity))
+}
+
+func (d *Diagnostics) jsonVerbosity() DiagnosticsVerbosity {
+	cache := d.json.Load()
+	if cache == nil {
+		return DiagnosticsVerbosityDefault
 	}
+	return cache.verbosity
+}
 
-	return Diagnostics{
-		root:               root.finalize(time.Now().UTC()),
-		failedRequestCount: failedRequestCount,
+func newDiagnosticsJSON(d *Diagnostics, verbosity DiagnosticsVerbosity) *diagnosticsJSON {
+	return &diagnosticsJSON{
+		verbosity: verbosity,
+		snapshot: diagnosticsJSONSnapshot{
+			StatusCode:         d.StatusCode,
+			SubStatus:          d.SubStatus,
+			AttemptCount:       d.AttemptCount,
+			TotalRequestCharge: d.TotalRequestCharge,
+			Elapsed:            d.Elapsed,
+			Completed:          d.Completed,
+			Failed:             d.Failed,
+			Compacted:          d.Compacted,
+			RegionsContacted:   append([]string(nil), d.RegionsContacted...),
+			Attempts:           append([]DiagnosticAttempt(nil), d.Attempts...),
+		},
 	}
 }
 
-// String returns the lazily materialized diagnostics payload.
-func (d Diagnostics) String() string {
-	if d.root == nil {
-		return ""
+func (d *diagnosticsJSON) renderValue() any {
+	summary := diagnosticsJSONSummary{
+		StatusCode:           d.snapshot.StatusCode,
+		SubStatus:            d.snapshot.SubStatus,
+		AttemptCount:         d.snapshot.AttemptCount,
+		RetainedAttemptCount: len(d.snapshot.Attempts),
+		TotalRequestCharge:   d.snapshot.TotalRequestCharge,
+		ElapsedTimeMicros:    d.snapshot.Elapsed.Microseconds(),
+		Completed:            d.snapshot.Completed,
+		Failed:               d.snapshot.Failed,
+		Compacted:            d.snapshot.Compacted,
+		RegionsContacted:     d.snapshot.RegionsContacted,
 	}
-
-	return writeTraceJSON(d.root)
+	if d.verbosity != DiagnosticsVerbosityDetailed {
+		return summary
+	}
+	attempts := make([]diagnosticAttemptJSON, len(d.snapshot.Attempts))
+	for i, attempt := range d.snapshot.Attempts {
+		attempts[i] = diagnosticAttemptJSON{
+			Endpoint:         attempt.Endpoint,
+			Region:           attempt.Region,
+			StatusCode:       attempt.StatusCode,
+			SubStatus:        attempt.SubStatus,
+			LatencyMS:        attempt.Latency.Milliseconds(),
+			RequestCharge:    attempt.RequestCharge,
+			ServerDurationMS: attempt.ServerDurationMS,
+		}
+	}
+	return diagnosticsJSONDetailed{diagnosticsJSONSummary: summary, Attempts: attempts}
 }
 
-// ClientElapsedTime returns the end-to-end duration of the request.
-func (d Diagnostics) ClientElapsedTime() time.Duration {
-	if d.root == nil || d.root.endTime == nil {
-		return 0
-	}
+// DiagnosticAttempt describes one native request retained in the timeline.
+type DiagnosticAttempt struct {
+	Endpoint string
+	Region   string
 
-	return d.root.endTime.Sub(d.root.startTime)
+	// StatusCode and SubStatus are the status of this attempt. SubStatus is zero
+	// when the driver did not record one.
+	StatusCode int
+	SubStatus  int
+
+	Latency       time.Duration
+	RequestCharge float64
+
+	// ServerDurationMS is negative when the service did not report a duration.
+	ServerDurationMS float64
 }
 
-// StartTimeUTC returns the UTC start time of the request.
-func (d Diagnostics) StartTimeUTC() time.Time {
-	if d.root == nil {
-		return time.Time{}
-	}
-
-	return d.root.startTime
-}
-
-// FailedRequestCount returns the number of failed backend attempts recorded for the request.
-func (d Diagnostics) FailedRequestCount() int {
-	if d.root == nil {
-		return 0
-	}
-
-	return d.failedRequestCount
-}
-
-// DiagnosticsFromError extracts diagnostics from an operation error, if present.
-func DiagnosticsFromError(err error) (Diagnostics, bool) {
-	if err == nil {
-		return Diagnostics{}, false
-	}
-
-	var reqErr *requestError
-	if errors.As(err, &reqErr) {
-		return reqErr.diagnostics, reqErr.diagnostics.root != nil
-	}
-
-	var responseErr *azcore.ResponseError
-	if errors.As(err, &responseErr) && responseErr.RawResponse != nil {
-		diagnostics := diagnosticsFromResponse(responseErr.RawResponse)
-		return diagnostics, diagnostics.root != nil
-	}
-
-	return Diagnostics{}, false
-}
-
-func diagnosticsFromResponse(resp *http.Response) Diagnostics {
-	if resp == nil || resp.Request == nil {
-		return Diagnostics{}
-	}
-
-	state := requestDiagnosticsStateFromContext(resp.Request.Context())
-	if state != nil {
-		return newDiagnostics(state.requestTrace)
-	}
-
-	return diagnosticsFromContext(resp.Request.Context())
-}
-
-type requestError struct {
-	cause       error
-	diagnostics Diagnostics
-}
-
-func (e *requestError) Error() string {
-	return e.cause.Error()
-}
-
-func (e *requestError) Unwrap() error {
-	return e.cause
-}
-
-func wrapRequestError(err error, diagnostics Diagnostics) error {
-	if err == nil || diagnostics.root == nil {
-		return err
-	}
-
-	return &requestError{
-		cause:       err,
-		diagnostics: diagnostics,
-	}
-}
-
-func wrapResponseError(err error, response Response) error {
-	return wrapRequestError(err, response.Diagnostics)
+// OperationDiagnostic describes an item call that passed validation and acquired its client.
+// Diagnostics can be nil when context cancellation returns before native completion.
+type OperationDiagnostic struct {
+	// Operation is the item operation name.
+	Operation string
+	// DatabaseID is the database addressed by the call.
+	DatabaseID string
+	// ContainerID is the container addressed by the call.
+	ContainerID string
+	// Diagnostics is a Go-owned native snapshot, when available.
+	Diagnostics *Diagnostics
+	// Error is the error returned by the Go call.
+	Error error
 }

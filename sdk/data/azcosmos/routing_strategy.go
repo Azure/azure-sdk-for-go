@@ -1,0 +1,76 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package azcosmos
+
+import (
+	"strings"
+	"unicode"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+)
+
+//go:generate go run ./internal/generate/regionproximity
+
+// EventRouting entries contain information about regional routing configuration and fallback.
+const EventRouting log.Event = "CosmosRouting"
+
+// RoutingStrategy decides the order in which a client considers the account's regions.
+//
+// It orders regions, it does not restrict them: once failover exhausts the order, the client may
+// still use any remaining region. Use [ReadItemOptions.ExcludedRegions] and its equivalents to
+// keep an operation away from a region entirely.
+//
+// Build one with [ProximityTo] or [PreferredRegions]. The zero value leaves the order to the
+// account, which is rarely what a latency-sensitive application wants.
+type RoutingStrategy struct {
+	proximityTo      Region
+	proximitySet     bool
+	preferredRegions []Region
+}
+
+// ProximityTo orders regions by estimated geographic proximity to the given region, which should
+// be where the application runs, or the nearest Azure region to it.
+//
+// The estimates are built into the SDK and may not match the round-trip times actually observed.
+//
+// An unrecognized region leaves the order to the account and writes a CosmosRouting warning. Some
+// exported [Region] constants are unrecognized because the shared proximity dataset has no
+// estimates for them yet.
+func ProximityTo(region Region) RoutingStrategy {
+	return RoutingStrategy{proximityTo: region, proximitySet: true}
+}
+
+// PreferredRegions orders regions explicitly, most preferred first.
+func PreferredRegions(regions ...Region) RoutingStrategy {
+	return RoutingStrategy{preferredRegions: append([]Region(nil), regions...)}
+}
+
+// clone copies the region slice so a caller mutating theirs after constructing a client cannot
+// silently change how that client routes.
+func (r RoutingStrategy) clone() RoutingStrategy {
+	r.preferredRegions = append([]Region(nil), r.preferredRegions...)
+	return r
+}
+
+// preferredRegionOrder resolves the strategy to the region order the driver takes. The zero value
+// resolves to none, which leaves the order to the account.
+func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
+	if r.proximitySet {
+		normalized := Region(strings.ToLower(strings.Map(func(value rune) rune {
+			if unicode.IsSpace(value) {
+				return -1
+			}
+			return value
+		}, string(r.proximityTo))))
+		regions, ok := proximityRegionOrderBySource[normalized]
+		if !ok {
+			log.Writef(EventRouting,
+				"unrecognized application region %q; falling back to account-defined region order",
+				r.proximityTo)
+			return nil, nil
+		}
+		return append([]Region(nil), regions...), nil
+	}
+	return r.preferredRegions, nil
+}

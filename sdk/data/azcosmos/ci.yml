@@ -20,12 +20,54 @@ pr:
     include:
     - sdk/data/azcosmos/
 
+parameters:
+  - name: RunLiveTests
+    displayName: Provision resources and run Entra ID smoke tests (billed)
+    type: boolean
+    default: false
+
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'data/azcosmos'
     UsePipelineProxy: false
+    AnalysisGoVersion: '1.27.2'
+    LintVersion: 'v2.14.0'
+    MatrixReplace:
+      - GoVersion=.*/1.27.2
+    ${{ if and(eq(variables['System.TeamProject'], 'internal'), startsWith(variables['Build.SourceBranch'], 'refs/heads/'), ne(variables['Build.Reason'], 'PullRequest'), or(and(eq(variables['Build.Reason'], 'Manual'), parameters.RunLiveTests), eq(variables['Build.Reason'], 'Schedule'), endsWith(variables['Build.DefinitionName'], '- weekly'))) }}:
+      AdditionalNetworkIsolationPolicies:
+        - AzureCosmosDB
+    # Keep the shared build matrix unchanged. Its live path also uses that matrix,
+    # including unsupported native targets, so compose the bounded Linux lane below.
     AdditionalStages:
+      # Linux/amd64 executes native tests in DriverEmulator below. The shared PR matrix
+      # has no macOS agent, so separately compile/link the Darwin/arm64 tests without running them.
+      - stage: DarwinNativeCompile
+        displayName: 'Cosmos Darwin/arm64 native compile'
+        dependsOn: []
+        jobs:
+        - job: CompileNativeTests
+          pool:
+            name: Azure Pipelines
+            vmImage: 'macOS-15'
+            os: macOS
+          steps:
+          - task: GoTool@0
+            inputs:
+              version: '1.27.2'
+            displayName: 'Select Go Version'
+          - script: |
+              set -euo pipefail
+              go test -exec /usr/bin/true ./...
+            workingDirectory: sdk/data/azcosmos
+            displayName: 'Compile and link Darwin/arm64 cgo tests (no execution)'
+            env:
+              CGO_ENABLED: '1'
+              GOOS: darwin
+              GOARCH: arm64
+              CC: clang
+
       - stage: Emulator
         displayName: 'Cosmos Emulator'
         variables:
@@ -59,7 +101,7 @@ extends:
 
           - task: GoTool@0
             inputs:
-              version: '1.26.1'
+              version: '1.27.2'
             displayName: "Select Go Version"
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
@@ -68,7 +110,270 @@ extends:
             parameters:
               ServiceDirectory: 'data/azcosmos'
               Image: $(vm.image)
-              GoVersion: '1.26.1'
+              GoVersion: '1.27.2'
               EnableRaceDetector: true
               EnvVars:
                 EMULATOR: 'true'
+
+      # Driver archives come from platform Go modules; the test emulator is built from pinned Rust source.
+      - stage: DriverEmulator
+        displayName: 'Cosmos Emulator (v2 driver)'
+        # A stage with no dependsOn implicitly depends on the one before it, which would queue this
+        # behind the Windows emulator stage above and skip it entirely whenever that stage fails.
+        # This stage builds its own emulator. An empty dependsOn makes that independence explicit.
+        dependsOn: []
+        variables:
+        - template: /eng/pipelines/templates/variables/globals.yml@self
+        - template: /eng/pipelines/templates/variables/image.yml@self
+        - name: EmulatorBinDir
+          value: $(Agent.TempDirectory)/cosmos-emulator-target/release
+        - name: EmulatorSourceRevision
+          value: 13b9707cf9a73d274c6e2309321d4b0e92b52375
+        - name: EmulatorRustVersion
+          value: '1.95.0'
+        - name: EmulatorCargoHome
+          value: $(Agent.TempDirectory)/cosmos-emulator-cargo
+        jobs:
+        - job: RunDriverEmulatorTests
+          displayName: Run the driver emulator tests
+
+          pool:
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
+            os: linux
+
+          steps:
+          - pwsh: ./sdk/data/azcosmos/eng/scripts/Test-LiveResults.Tests.ps1
+            displayName: 'Verify live result gate without Azure credentials'
+
+          - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml@self
+            parameters:
+              AgentImage: ubuntu
+
+          - script: |
+              set -euo pipefail
+              if ! command -v rustup >/dev/null 2>&1; then
+                curl --fail --show-error --silent --location --proto '=https' --tlsv1.2 \
+                  https://sh.rustup.rs -o "$(Agent.TempDirectory)/cosmos-rustup-init.sh"
+                sh "$(Agent.TempDirectory)/cosmos-rustup-init.sh" \
+                  -y --no-modify-path --profile minimal --default-toolchain none
+                export PATH="$HOME/.cargo/bin:$PATH"
+                echo "##vso[task.prependpath]$HOME/.cargo/bin"
+              fi
+              rustup toolchain install "$(EmulatorRustVersion)" --profile minimal
+
+              source="$(Agent.TempDirectory)/cosmos-emulator-source"
+              git init --quiet "$source"
+              git -C "$source" fetch --depth=1 https://github.com/Azure/azure-sdk-for-rust.git \
+                "$(EmulatorSourceRevision)"
+              git -C "$source" checkout --detach FETCH_HEAD
+              test "$(git -C "$source" rev-parse HEAD)" = "$(EmulatorSourceRevision)"
+
+              mkdir -p "$(EmulatorCargoHome)"
+              cp "$source/eng/templates/config.toml.template" "$(EmulatorCargoHome)/config.toml"
+            displayName: 'Prepare pinned Rust source and Cargo feed configuration'
+
+          # Match Rust CI's endpoint-token workaround for public/fork builds.
+          # https://github.com/microsoft/azure-pipelines-tasks/issues/22421
+          - task: NuGetAuthenticate@1
+            displayName: 'Acquire the Azure Artifacts endpoint token'
+
+          - task: CargoAuthenticate@0
+            displayName: 'Authenticate Cargo to the Azure SDK Rust feed'
+            inputs:
+              configFile: $(EmulatorCargoHome)/config.toml
+            env:
+              SYSTEM_ACCESSTOKEN: $(VSS_NUGET_ACCESSTOKEN)
+
+          - script: |
+              set -euo pipefail
+              cd "$(Agent.TempDirectory)/cosmos-emulator-source"
+              cargo +"$(EmulatorRustVersion)" build --locked --release \
+                -p azure_data_cosmos_emulator \
+                --target-dir "$(Agent.TempDirectory)/cosmos-emulator-target"
+            displayName: 'Build the emulator from pinned Rust source'
+            env:
+              CARGO_HOME: $(EmulatorCargoHome)
+
+          # Fail here rather than leaving the tests to fail with a less obvious message.
+          - script: |
+              set -euo pipefail
+              test -f "$(EmulatorBinDir)/azure_data_cosmos_emulator"
+              test -x "$(EmulatorBinDir)/azure_data_cosmos_emulator"
+              file "$(EmulatorBinDir)/azure_data_cosmos_emulator"
+            displayName: 'Check the built emulator executable'
+
+          # The emulator writes one JSON record to stdout once every listener is bound, and logs to
+          # stderr, so the endpoint is read from that record rather than guessed. Its config asks
+          # for an OS-assigned port, so nothing collides with whatever else is on the agent.
+          - script: |
+              set -euo pipefail
+              config='sdk/data/azcosmos/internal/testdata/emulator-config.json'
+              nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$(Agent.TempDirectory)/emulator-ready.json" \
+                2> "$(Agent.TempDirectory)/emulator.log" &
+
+              for _ in $(seq 1 60); do
+                if grep -q '"event":"ready"' "$(Agent.TempDirectory)/emulator-ready.json" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ready.json")
+                  management_endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['managementEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ready.json")
+                  echo "emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorEndpoint]$endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorManagementEndpoint]$management_endpoint"
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo '##[error] The emulator did not become ready.'
+              tail -50 "$(Agent.TempDirectory)/emulator.log" || true
+              exit 1
+            displayName: 'Start the in-memory Cosmos emulator'
+
+          - script: |
+              # cSpell:ignore ppaf PPAF
+              set -euo pipefail
+              config='sdk/data/azcosmos/internal/testdata/emulator-ppaf-config.json'
+              nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$(Agent.TempDirectory)/emulator-ppaf-ready.json" \
+                2> "$(Agent.TempDirectory)/emulator-ppaf.log" &
+
+              for _ in $(seq 1 60); do
+                if grep -q '"event":"ready"' "$(Agent.TempDirectory)/emulator-ppaf-ready.json" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ppaf-ready.json")
+                  echo "PPAF emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorPPAFEndpoint]$endpoint"
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo '##[error] The PPAF emulator did not become ready.'
+              tail -50 "$(Agent.TempDirectory)/emulator-ppaf.log" || true
+              exit 1
+            displayName: 'Start the PPAF Cosmos emulator'
+
+          - task: GoTool@0
+            inputs:
+              version: '1.27.2'
+            displayName: "Select Go Version"
+
+          - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
+
+          - template:  /eng/pipelines/templates/steps/build-test.yml@self
+            parameters:
+              ServiceDirectory: 'data/azcosmos'
+              Image: $(vm.image)
+              GoVersion: '1.27.2'
+              EnableRaceDetector: true
+              EnvVars:
+                EMULATOR: 'true'
+                AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
+                AZCOSMOS_MANAGEMENT_ENDPOINT: $(EmulatorManagementEndpoint)
+                AZCOSMOS_PPAF_ENDPOINT: $(EmulatorPPAFEndpoint)
+                CGO_ENABLED: '1'
+
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), startsWith(variables['Build.SourceBranch'], 'refs/heads/'), ne(variables['Build.Reason'], 'PullRequest'), or(and(eq(variables['Build.Reason'], 'Manual'), parameters.RunLiveTests), eq(variables['Build.Reason'], 'Schedule'), endsWith(variables['Build.DefinitionName'], '- weekly'))) }}:
+        - stage: AzureLive
+          displayName: 'Cosmos Entra ID live smoke'
+          dependsOn: []
+          variables:
+          - template: /eng/pipelines/templates/variables/globals.yml@self
+          - template: /eng/pipelines/templates/variables/image.yml@self
+          jobs:
+          - job: LinuxAMD64
+            timeoutInMinutes: 45
+            cancelTimeoutInMinutes: 15
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            templateContext:
+              outputs:
+              - output: pipelineArtifact
+                targetPath: '$(Build.ArtifactStagingDirectory)/cosmos-live'
+                artifactName: cosmos-live-linux-amd64
+                condition: succeededOrFailed()
+                sbomEnabled: false
+            steps:
+            - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml@self
+              parameters:
+                AgentImage: ubuntu
+
+            - task: GoTool@0
+              inputs:
+                version: '1.27.2'
+              displayName: 'Select Go Version'
+
+            - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
+
+            - pwsh: |
+                $target = (& go env -json GOOS GOARCH CGO_ENABLED) | ConvertFrom-Json
+                if ($LASTEXITCODE -ne 0 -or $target.GOOS -ne 'linux' -or
+                    $target.GOARCH -ne 'amd64' -or $target.CGO_ENABLED -ne '1' -or
+                    ![System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform(
+                      [System.Runtime.InteropServices.OSPlatform]::Linux) -or
+                    [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture -ne 'X64') {
+                    throw 'Hosted live smoke requires a Linux amd64 agent and cgo native build.'
+                }
+              displayName: 'Reject unsupported live targets before provisioning'
+              workingDirectory: sdk/data/azcosmos
+              env:
+                CGO_ENABLED: '1'
+
+            - template: /eng/common/TestResources/deploy-test-resources.yml@self
+              parameters:
+                ServiceDirectory: data/azcosmos
+                Location: eastus2
+                ServiceConnection: azure-sdk-tests-cosmos
+                UseFederatedAuth: true
+                DeleteAfterHours: 8
+
+            - task: AzurePowerShell@5
+              displayName: 'Run native Go Entra ID smoke scenarios'
+              inputs:
+                azureSubscription: azure-sdk-tests-cosmos
+                azurePowerShellVersion: LatestVersion
+                pwsh: true
+                ScriptType: InlineScript
+                Inline: |
+                  $account = (Get-AzContext).Account
+                  $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+                  $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+                  ./sdk/data/azcosmos/eng/scripts/Invoke-LiveTests.ps1 `
+                    -OutputDirectory '$(Build.ArtifactStagingDirectory)/cosmos-live'
+              env:
+                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+                AZURE_RECORD_MODE: live
+                AZURE_COSMOS_E2E_BACKEND: azureLive
+                AZCOSMOS_ENDPOINT: $(AZCOSMOS_ENDPOINT)
+                AZCOSMOS_DATABASE: $(AZCOSMOS_DATABASE)
+                AZCOSMOS_CONTAINER: $(AZCOSMOS_CONTAINER)
+                AZCOSMOS_REGION: $(AZCOSMOS_REGION)
+                CGO_ENABLED: '1'
+
+            - task: PublishTestResults@2
+              displayName: 'Publish live scenario results'
+              condition: succeededOrFailed()
+              inputs:
+                testResultsFormat: JUnit
+                testResultsFiles: '$(Build.ArtifactStagingDirectory)/cosmos-live/report.xml'
+                failTaskOnFailedTests: true
+                failTaskOnMissingResultsFile: true
+
+            - task: AzurePowerShell@5
+              displayName: 'Remove owned live resources'
+              condition: and(always(), eq(variables['CI_HAS_DEPLOYED_RESOURCES'], 'true'))
+              inputs:
+                azureSubscription: azure-sdk-tests-cosmos
+                azurePowerShellVersion: LatestVersion
+                pwsh: true
+                ScriptType: InlineScript
+                Inline: |
+                  ./eng/common/scripts/Import-AzModules.ps1
+                  $config = @'
+                  $(SubscriptionConfiguration)
+                  '@ | ConvertFrom-Json -AsHashtable
+                  ./eng/common/TestResources/Remove-TestResources.ps1 @config `
+                    -ServiceDirectory data/azcosmos -CI -Force

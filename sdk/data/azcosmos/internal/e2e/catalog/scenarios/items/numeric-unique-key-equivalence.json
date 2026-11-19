@@ -1,0 +1,47 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "item.numeric-unique-key-equivalence",
+    "title": "Numeric unique keys use service number equivalence",
+    "requirement": "Unique-key comparison treats wide JSON integers according to the Cosmos DB service number model within one logical partition.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "service",
+            "path": "https://learn.microsoft.com/azure/cosmos-db/unique-keys",
+            "test": "unique keys are scoped to a logical partition"
+        }
+    ],
+    "profiles": [
+        "coreOperations"
+    ],
+    "tags": [
+        "item",
+        "uniqueKey",
+        "numeric",
+        "coreOperations"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "container",
+                "item"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "container",
+                "item",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

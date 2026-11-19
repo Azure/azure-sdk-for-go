@@ -4,129 +4,89 @@
 package azcosmos
 
 import (
-	"reflect"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
 	"github.com/stretchr/testify/require"
 )
 
-func TestSerialization(t *testing.T) {
-	validTypes := map[string]PartitionKey{
-		"[10.5]":            NewPartitionKeyNumber(float64(10.5)),
-		"[10]":              NewPartitionKeyNumber(float64(10)),
-		"[\"some string\"]": NewPartitionKeyString("some string"),
-		"[true]":            NewPartitionKeyBool(true),
-		"[false]":           NewPartitionKeyBool(false),
-		"[null]":            NullPartitionKey,
-	}
-
-	for expectedSerialization, pk := range validTypes {
-		if len(pk.values) != 1 {
-			t.Errorf("Expected partition key to have 1 component, but it has %v", len(pk.values))
-		}
-
-		serialization, err := pk.toJsonString()
-		if err != nil {
-			t.Errorf("Failed to serialize PK for %v, got %v", pk, err)
-		}
-
-		if serialization != expectedSerialization {
-			t.Errorf("Expected serialization %v, but got %v", expectedSerialization, serialization)
-		}
+func TestPartitionKeyConstructorsProduceOneComponent(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		pk   PartitionKey
+		want partitionKeyComponent
+	}{
+		{"string", NewPartitionKeyString("Contoso"), partitionKeyComponent{kind: partitionKeyKindString, stringValue: "Contoso"}},
+		{"number", NewPartitionKeyNumber(98052), partitionKeyComponent{kind: partitionKeyKindNumber, numberValue: 98052}},
+		{"bool", NewPartitionKeyBool(true), partitionKeyComponent{kind: partitionKeyKindBool, boolValue: true}},
+		{"null", NewPartitionKeyNull(), partitionKeyComponent{kind: partitionKeyKindNull}},
+		{"undefined", NewPartitionKeyUndefined(), partitionKeyComponent{kind: partitionKeyKindUndefined}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, 1, tt.pk.Len())
+			require.Equal(t, tt.want, tt.pk.components[0])
+		})
 	}
 }
 
-func TestPartitionKeyAppends(t *testing.T) {
-	validTypes := map[string]PartitionKey{
-		"[\"key0\"]":           NewPartitionKey().AppendString("key0"),
-		"[true]":               NewPartitionKey().AppendBool(true),
-		"[false]":              NewPartitionKey().AppendBool(false),
-		"[10.5]":               NewPartitionKey().AppendNumber(10.5),
-		"[10]":                 NewPartitionKey().AppendNumber(10),
-		"[null]":               NewPartitionKey().AppendNull(),
-		"[\"key0\",true,10.5]": NewPartitionKey().AppendString("key0").AppendBool(true).AppendNumber(10.5),
-		"[null,null,null]":     NewPartitionKey().AppendNull().AppendNull().AppendNull(),
-	}
-
-	for expectedSerialization, pk := range validTypes {
-		if len(pk.values) < 1 {
-			t.Errorf("Expected partition key to have at least 1 component, but it has %v", len(pk.values))
-		}
-
-		serialization, err := pk.toJsonString()
-		if err != nil {
-			t.Errorf("Failed to serialize PK for %v, got %v", pk, err)
-		}
-
-		if serialization != expectedSerialization {
-			t.Errorf("Expected serialization %v, but got %v", expectedSerialization, serialization)
-		}
-	}
+// Null and undefined route differently in Cosmos DB, so the two must never collapse into the same
+// component.
+func TestPartitionKeyNullAndUndefinedAreDistinct(t *testing.T) {
+	require.NotEqual(t, NewPartitionKeyNull().components[0], NewPartitionKeyUndefined().components[0])
 }
 
-func TestPartitionKeyEquality(t *testing.T) {
-	pk := NewPartitionKeyNumber(float64(10.5))
-	pk2 := NewPartitionKeyNumber(float64(10.5))
-
-	if !reflect.DeepEqual(pk, pk2) {
-		t.Errorf("Expected %v to equal %v", pk, pk2)
-	}
-
-	pk = NewPartitionKeyNumber(float64(50))
-	pk2 = NewPartitionKeyNumber(float64(50))
-
-	if !reflect.DeepEqual(pk, pk2) {
-		t.Errorf("Expected %v to equal %v", pk, pk2)
-	}
-
-	pk = NewPartitionKeyBool(true)
-	pk2 = NewPartitionKeyBool(true)
-
-	if !reflect.DeepEqual(pk, pk2) {
-		t.Errorf("Expected %v to equal %v", pk, pk2)
-	}
-
-	pk = NewPartitionKeyBool(false)
-	pk2 = NewPartitionKeyBool(false)
-
-	if !reflect.DeepEqual(pk, pk2) {
-		t.Errorf("Expected %v to equal %v", pk, pk2)
-	}
-
-	pk = NewPartitionKeyString("some string")
-	pk2 = NewPartitionKeyString("some string")
-
-	if !reflect.DeepEqual(pk, pk2) {
-		t.Errorf("Expected %v to equal %v", pk, pk2)
-	}
-
-	pk = NullPartitionKey
-	pk2 = NullPartitionKey
-	if !reflect.DeepEqual(pk, pk2) {
-		t.Errorf("Expected %v to equal %v", pk, pk2)
-	}
+func TestPartitionKeyEmpty(t *testing.T) {
+	require.Equal(t, 0, NewPartitionKey().Len())
+	require.Equal(t, 0, PartitionKey{}.Len(), "the zero value should be a usable empty key")
 }
 
-// TestComputeEffectivePartitionKey verifies that the computeEffectivePartitionKey
-// method on PartitionKey correctly delegates to the internal/epk package.
-func TestComputeEffectivePartitionKey(t *testing.T) {
-	// V1 Hash delegates to the routing EPK encoder.
-	pk := NewPartitionKeyString("hello")
-	result := pk.computeEffectivePartitionKey(PartitionKeyKindHash, 1)
-	require.Equal(t, epk.ComputeV1([]interface{}{"hello"}), result.EPK)
+func TestPartitionKeyHierarchical(t *testing.T) {
+	pk := NewPartitionKeyString("Contoso").
+		AppendString("Redmond").
+		AppendNumber(98052)
 
-	// V2 Hash: null → known hash (top 2 bits masked for routing: 0x77 & 0x3F = 0x37)
-	result = NullPartitionKey.computeEffectivePartitionKey(PartitionKeyKindHash, 2)
-	require.Equal(t, "378867E4430E67857ACE5C908374FE16", result.EPK)
+	require.Equal(t, 3, pk.Len())
+	require.Equal(t, []partitionKeyComponent{
+		{kind: partitionKeyKindString, stringValue: "Contoso"},
+		{kind: partitionKeyKindString, stringValue: "Redmond"},
+		{kind: partitionKeyKindNumber, numberValue: 98052},
+	}, pk.components)
+}
 
-	// V2 MultiHash: ["a", "b"] → per-component hashes concatenated (each masked)
-	multiPK := NewPartitionKey().AppendString("a").AppendString("b")
-	result = multiPK.computeEffectivePartitionKey(PartitionKeyKindMultiHash, 2)
-	require.Equal(t, "3A5381E1114EB8D3FCC90795045B49B7195644569A78B1E22D200348AF9416CE", result.EPK)
+// Appending must not mutate the receiver, or a caller who holds a partially built key and extends
+// it twice gets a key they never asked for. v1 appended in place, so two keys built from a shared
+// prefix could overwrite each other's components.
+func TestPartitionKeyAppendDoesNotMutateReceiver(t *testing.T) {
+	prefix := NewPartitionKeyString("Contoso")
 
-	// Undefined partition key
-	emptyPK := NewPartitionKey()
-	result = emptyPK.computeEffectivePartitionKey(PartitionKeyKindHash, 1)
-	require.Equal(t, "05C1D529E345DC00", result.EPK)
+	redmond := prefix.AppendString("Redmond")
+	seattle := prefix.AppendString("Seattle")
+
+	require.Equal(t, 1, prefix.Len(), "the shared prefix must be unchanged")
+	require.Equal(t, "Contoso", prefix.components[0].stringValue)
+
+	require.Equal(t, "Redmond", redmond.components[1].stringValue)
+	require.Equal(t, "Seattle", seattle.components[1].stringValue,
+		"branches built from a shared prefix must not share a backing array")
+}
+
+// The same aliasing trap, reached through a longer prefix where the backing array has spare
+// capacity from an earlier append.
+func TestPartitionKeyBranchesFromGrownPrefixAreIndependent(t *testing.T) {
+	prefix := NewPartitionKeyString("a").AppendString("b").AppendString("c")
+
+	first := prefix.AppendString("first")
+	second := prefix.AppendString("second")
+
+	require.Equal(t, "first", first.components[3].stringValue)
+	require.Equal(t, "second", second.components[3].stringValue)
+	require.Equal(t, 3, prefix.Len())
+}
+
+func TestPartitionKeyAppendOnZeroValue(t *testing.T) {
+	var pk PartitionKey
+
+	appended := pk.AppendString("Contoso")
+
+	require.Equal(t, 0, pk.Len(), "appending must not mutate the zero value")
+	require.Equal(t, 1, appended.Len())
 }

@@ -1,0 +1,44 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "batch.atomicity",
+  "title": "Transactional batch commits all operations or none",
+  "requirement": "A successful same-partition batch commits every operation, while one failed operation rolls back every mutation and returns per-operation statuses.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_batch.rs",
+      "test": "batch_create_and_read/batch_atomicity_on_failure"
+    }
+  ],
+  "profiles": [
+    "coreOperations"
+  ],
+  "tags": [
+    "batch",
+    "item",
+    "coreOperations"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "transactionalBatch"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "transactionalBatch",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "supported",
+      "fidelity": "full"
+    }
+  }
+}

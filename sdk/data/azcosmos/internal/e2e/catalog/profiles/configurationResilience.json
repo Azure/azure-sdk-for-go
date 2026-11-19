@@ -1,0 +1,39 @@
+{
+  "$schema": "../schema/profile.v1.json",
+  "specVersion": "1.0",
+  "id": "configurationResilience",
+  "accounts": [
+    {
+      "id": "sessionTwoRegionsDelayed",
+      "writeMode": "single",
+      "consistency": "session",
+      "regions": [
+        {
+          "name": "East US"
+        },
+        {
+          "name": "West US"
+        }
+      ],
+      "replication": {
+        "minDelayMs": 750,
+        "maxDelayMs": 750
+      },
+      "perPartitionFailover": false
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "sdkDefault",
+      "gatewayV2": "backendDefault",
+      "ppcb": "sdkDefault"
+    }
+  ],
+  "clients": [
+    {
+      "id": "sdkDefault",
+      "binaryEncoding": "sdkDefault",
+      "routing": "preferredRegions"
+    }
+  ]
+}

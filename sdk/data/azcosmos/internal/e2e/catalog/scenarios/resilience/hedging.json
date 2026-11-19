@@ -1,0 +1,45 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "resilience.hedging",
+  "title": "A delayed preferred region triggers a hedge",
+  "requirement": "A delayed primary read launches an alternate-region request whose winning result, regions, and terminal hedge state are visible in diagnostics.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos_driver/tests/in_memory_emulator_tests/hedging.rs",
+      "test": "alternate_wins_when_primary_is_slow"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "resilience",
+    "hedging",
+    "diagnostics"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "notApplicable",
+      "fidelity": "none",
+      "reason": "The scenario injects a deterministic regional delay to force a hedge."
+    }
+  }
+}

@@ -3,188 +3,120 @@
 
 package azcosmos
 
-import (
-	"encoding/json"
-	"fmt"
-	"strconv"
-	"strings"
+// partitionKeyKind identifies which member of a [partitionKeyComponent] holds its value. The
+// values mirror the driver's component kinds so the binding can pass them through directly.
+type partitionKeyKind int32
 
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
+const (
+	partitionKeyKindString    partitionKeyKind = 0
+	partitionKeyKindNumber    partitionKeyKind = 1
+	partitionKeyKindBool      partitionKeyKind = 2
+	partitionKeyKindNull      partitionKeyKind = 3
+	partitionKeyKindUndefined partitionKeyKind = 4
 )
 
-// PartitionKey represents a logical partition key value.
+// partitionKeyComponent is one component of a partition key value. Null and undefined components
+// carry no value.
+type partitionKeyComponent struct {
+	kind        partitionKeyKind
+	stringValue string
+	numberValue float64
+	boolValue   bool
+}
+
+// PartitionKey is a logical partition key value.
+//
+// A partition key has one component per path in the container's partition key definition, so a
+// container with a hierarchical partition key takes a value with one component per level. Build
+// those by appending:
+//
+//	pk := azcosmos.NewPartitionKeyString("Contoso").
+//		AppendString("Redmond").
+//		AppendNumber(98052)
+//
+// Cosmos DB distinguishes a component that is explicitly JSON null from one whose value is
+// missing, and they route differently, so [PartitionKey.AppendNull] and
+// [PartitionKey.AppendUndefined] are separate operations.
+//
+// The zero value is a partition key with no components, ready to be appended to. Values are
+// immutable: every append returns a new key and leaves the receiver untouched, so a partially
+// built key can be shared and extended in more than one direction.
 type PartitionKey struct {
-	values []interface{}
+	components []partitionKeyComponent
 }
 
-// NullPartitionKey represents a partition key with a null value.
-var NullPartitionKey PartitionKey = PartitionKey{
-	values: []interface{}{nil},
-}
-
-// NewPartitionKey creates a new partition key.
+// NewPartitionKey creates a partition key with no components, ready to be appended to. It is
+// equivalent to the zero value.
 func NewPartitionKey() PartitionKey {
-	return PartitionKey{
-		values: []interface{}{},
-	}
+	return PartitionKey{}
 }
 
-// NewPartitionKeyString creates a partition key with a string value.
+// NewPartitionKeyString creates a partition key with a single string component.
 func NewPartitionKeyString(value string) PartitionKey {
-	components := []interface{}{value}
-	return PartitionKey{
-		values: components,
-	}
+	return NewPartitionKey().AppendString(value)
 }
 
-// NewPartitionKeyBool creates a partition key with a boolean value.
-func NewPartitionKeyBool(value bool) PartitionKey {
-	components := []interface{}{value}
-	return PartitionKey{
-		values: components,
-	}
-}
-
-// NewPartitionKeyNumber creates a partition key with a numeric value.
+// NewPartitionKeyNumber creates a partition key with a single numeric component.
 func NewPartitionKeyNumber(value float64) PartitionKey {
-	components := []interface{}{value}
-	return PartitionKey{
-		values: components,
-	}
+	return NewPartitionKey().AppendNumber(value)
 }
 
-// AppendString appends a string value to the partition key.
+// NewPartitionKeyBool creates a partition key with a single boolean component.
+func NewPartitionKeyBool(value bool) PartitionKey {
+	return NewPartitionKey().AppendBool(value)
+}
+
+// NewPartitionKeyNull creates a partition key with a single component that is explicitly JSON
+// null. This is not the same as [NewPartitionKeyUndefined]; the two route differently.
+func NewPartitionKeyNull() PartitionKey {
+	return NewPartitionKey().AppendNull()
+}
+
+// NewPartitionKeyUndefined creates a partition key with a single component whose value is missing
+// from the item. This is not the same as [NewPartitionKeyNull]; the two route differently.
+func NewPartitionKeyUndefined() PartitionKey {
+	return NewPartitionKey().AppendUndefined()
+}
+
+// AppendString returns a copy of the partition key with a string component appended.
 func (pk PartitionKey) AppendString(value string) PartitionKey {
-	pk.values = append(pk.values, value)
-	return pk
+	return pk.append(partitionKeyComponent{kind: partitionKeyKindString, stringValue: value})
 }
 
-// AppendBool appends a boolean value to the partition key.
-func (pk PartitionKey) AppendBool(value bool) PartitionKey {
-	pk.values = append(pk.values, value)
-	return pk
-}
-
-// AppendNumber appends a numeric value to the partition key.
+// AppendNumber returns a copy of the partition key with a numeric component appended.
 func (pk PartitionKey) AppendNumber(value float64) PartitionKey {
-	pk.values = append(pk.values, value)
-	return pk
+	return pk.append(partitionKeyComponent{kind: partitionKeyKindNumber, numberValue: value})
 }
 
-// AppendNull appends a null value to the partition key.
+// AppendBool returns a copy of the partition key with a boolean component appended.
+func (pk PartitionKey) AppendBool(value bool) PartitionKey {
+	return pk.append(partitionKeyComponent{kind: partitionKeyKindBool, boolValue: value})
+}
+
+// AppendNull returns a copy of the partition key with a component appended that is explicitly
+// JSON null. This is not the same as [PartitionKey.AppendUndefined]; the two route differently.
 func (pk PartitionKey) AppendNull() PartitionKey {
-	pk.values = append(pk.values, nil)
-	return pk
+	return pk.append(partitionKeyComponent{kind: partitionKeyKindNull})
 }
 
-func (pk *PartitionKey) toJsonString() (string, error) {
-	var completeJson strings.Builder
-	completeJson.Grow(256)
-	fmt.Fprint(&completeJson, "[")
-	for index, i := range pk.values {
-		switch v := i.(type) {
-		case string:
-			// json marshall does not support escaping ASCII as an option
-			escaped := strconv.QuoteToASCII(v)
-			fmt.Fprint(&completeJson, escaped)
-		default:
-			res, err := json.Marshal(v)
-			if err != nil {
-				return "", err
-			}
-			fmt.Fprint(&completeJson, string(res))
-		}
-
-		if index < len(pk.values)-1 {
-			fmt.Fprint(&completeJson, ",")
-		}
-	}
-
-	fmt.Fprint(&completeJson, "]")
-	return completeJson.String(), nil
+// AppendUndefined returns a copy of the partition key with a component appended whose value is
+// missing from the item. This is not the same as [PartitionKey.AppendNull]; the two route
+// differently.
+func (pk PartitionKey) AppendUndefined() PartitionKey {
+	return pk.append(partitionKeyComponent{kind: partitionKeyKindUndefined})
 }
 
-// computeEffectivePartitionKey computes the effective partition key hash for
-// this partition key value.
-func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, version int) epk.EffectivePartitionKey {
-	values := make([]interface{}, len(pk.values))
-	copy(values, pk.values)
-
-	// Empty values → undefined partition key
-	if len(values) == 0 {
-		values = []interface{}{epk.UndefinedMarker{}}
-	}
-
-	var epkStr string
-	switch {
-	case version == 1:
-		epkStr = epk.ComputeV1(values)
-	case kind == PartitionKeyKindMultiHash:
-		epkStr = epk.ComputeV2MultiHashForRouting(values)
-	default:
-		epkStr = epk.ComputeV2HashForRouting(values)
-	}
-
-	return epk.EffectivePartitionKey{EPK: epkStr}
+// Len reports how many components the partition key has. A value for a container with a
+// hierarchical partition key has one component per level.
+func (pk PartitionKey) Len() int {
+	return len(pk.components)
 }
 
-// epkRange represents an effective partition key range for routing.
-// For a point key, Min == Max (both equal to the EPK).
-// For a prefix key on a MultiHash container, Min is the prefix EPK and
-// Max is prefix EPK + "FF" (an exclusive upper bound).
-type epkRange struct {
-	Min string // inclusive
-	Max string // exclusive (empty means same as Min, i.e., point)
-}
-
-// isRange returns true if this represents a range (prefix key) rather than a point.
-func (r epkRange) isRange() bool {
-	return r.Max != "" && r.Min != r.Max
-}
-
-// computeEPKRange computes the EPK range for a partition key given the container's
-// partition key definition. For full keys it returns a point range. For prefix keys
-// on MultiHash containers it returns a range [prefix_epk, prefix_epk+"FF").
-// Non-MultiHash containers require exactly the right number of components.
-func computeEPKRange(pk *PartitionKey, pkDef PartitionKeyDefinition) (epkRange, error) {
-	pkVersion := pkDef.Version
-	if pkVersion == 0 {
-		pkVersion = 1
-	}
-
-	// Undefined PK (no components) is a concrete value, not a prefix.
-	// It hashes to a single deterministic EPK regardless of the number of
-	// definition paths, so always return a point range.
-	if len(pk.values) == 0 {
-		epkVal := pk.computeEffectivePartitionKey(pkDef.Kind, pkVersion)
-		return epkRange{Min: epkVal.EPK, Max: epkVal.EPK}, nil
-	}
-
-	componentCount := len(pk.values)
-	pathCount := len(pkDef.Paths)
-
-	if componentCount > pathCount {
-		return epkRange{}, fmt.Errorf("more partition key components (%d) than definition paths (%d)", componentCount, pathCount)
-	}
-
-	if pkDef.Kind != PartitionKeyKindMultiHash && componentCount != pathCount {
-		return epkRange{}, fmt.Errorf("non-MultiHash containers require exactly %d components, got %d", pathCount, componentCount)
-	}
-
-	epkVal := pk.computeEffectivePartitionKey(pkDef.Kind, pkVersion)
-
-	isPrefix := pkDef.Kind == PartitionKeyKindMultiHash && componentCount < pathCount
-	if isPrefix {
-		// "FF" is safe as an upper-bound sentinel because maskTopBitsForRouting
-		// ensures every EPK component's first hex digit is in [0-3].
-		return epkRange{
-			Min: epkVal.EPK,
-			Max: epkVal.EPK + "FF",
-		}, nil
-	}
-
-	return epkRange{
-		Min: epkVal.EPK,
-		Max: epkVal.EPK,
-	}, nil
+// append copies the component slice rather than extending it in place. Appending in place would
+// let two keys built from a common prefix share a backing array and overwrite each other's
+// components, which is a trap for a type callers reasonably treat as a value.
+func (pk PartitionKey) append(component partitionKeyComponent) PartitionKey {
+	components := make([]partitionKeyComponent, len(pk.components), len(pk.components)+1)
+	copy(components, pk.components)
+	return PartitionKey{components: append(components, component)}
 }

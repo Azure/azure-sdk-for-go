@@ -1,0 +1,49 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "resilience.hedging-topology",
+    "title": "Hedging survives a concurrent region transition",
+    "requirement": "A read whose preferred leg is delayed while that region transitions offline completes from an alternate region with the hedge and topology outcome retained in diagnostics.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos_driver/tests/in_memory_emulator_tests/hedging.rs",
+            "test": "alternate_wins_when_primary_is_slow"
+        }
+    ],
+    "profiles": [
+        "dynamicTopology"
+    ],
+    "tags": [
+        "resilience",
+        "hedging",
+        "topology"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Hosted controls synchronize a virtual regional transition with fault-injected latency.",
+            "requires": [
+                "item",
+                "regionLifecycle"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Hosted controls synchronize a virtual regional transition with fault-injected latency.",
+            "requires": [
+                "item",
+                "regionLifecycle",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario requires deterministic regional delay and offline controls."
+        }
+    }
+}

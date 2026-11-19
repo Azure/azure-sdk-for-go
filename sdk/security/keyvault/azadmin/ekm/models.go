@@ -12,7 +12,7 @@ type Connection struct {
 
 	// REQUIRED; The root CA certificate chain that issued the proxy server's certificate. An array of certificates in the certificate
 	// chain, each in DER format and base64 encoded.
-	ServerCaCertificates [][]byte
+	ServerCACertificates [][]byte
 
 	// Optional path prefix for the EKM proxy (if any).
 	PathPrefix *string
@@ -25,7 +25,7 @@ type Connection struct {
 type ProxyClientCertificateInfo struct {
 	// READ-ONLY; The client root CA certificate chain to authenticate to the EKM proxy. An array of certificates in the certificate
 	// chain, each in DER format and base64 encoded.
-	CaCertificates [][]byte
+	CACertificates [][]byte
 
 	// READ-ONLY; The subject common name of the client certificate used to authenticate to the EKM proxy.
 	SubjectCommonName *string

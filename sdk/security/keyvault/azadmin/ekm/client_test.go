@@ -35,7 +35,7 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 	// CREATE
 	createParams := ekm.Connection{
 		Host:                    to.Ptr(ekmProxyHost),
-		ServerCaCertificates:    [][]byte{ekmCACert},
+		ServerCACertificates:    [][]byte{ekmCACert},
 		ServerSubjectCommonName: to.Ptr(expectedCN),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
@@ -45,7 +45,7 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, created.Host)
 	require.Equal(t, ekmProxyHost, *created.Host)
-	require.NotEmpty(t, created.ServerCaCertificates)
+	require.NotEmpty(t, created.ServerCACertificates)
 	require.NotNil(t, created.PathPrefix)
 	require.Equal(t, "/api/v1", *created.PathPrefix)
 	require.NotNil(t, created.ServerSubjectCommonName)
@@ -57,14 +57,14 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, got.Host)
 	require.Equal(t, ekmProxyHost, *got.Host)
-	require.NotEmpty(t, got.ServerCaCertificates)
+	require.NotEmpty(t, got.ServerCACertificates)
 
 	// UPDATE — change the path prefix while leaving the host (and therefore CN)
 	// the same, since changing the CN without rotating the proxy cert would
 	// break TLS verification.
 	updateParams := ekm.Connection{
 		Host:                    to.Ptr(ekmProxyHost),
-		ServerCaCertificates:    [][]byte{ekmCACert},
+		ServerCACertificates:    [][]byte{ekmCACert},
 		ServerSubjectCommonName: to.Ptr(expectedCN),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
@@ -100,7 +100,7 @@ func TestCreateEkmConnection_ConflictWhenExists(t *testing.T) {
 
 	params := ekm.Connection{
 		Host:                    to.Ptr(ekmProxyHost),
-		ServerCaCertificates:    [][]byte{ekmCACert},
+		ServerCACertificates:    [][]byte{ekmCACert},
 		ServerSubjectCommonName: to.Ptr(serverSubjectCommonNameFor(ekmProxyHost)),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
@@ -129,7 +129,7 @@ func TestGetEkmConnection_NotFound(t *testing.T) {
 	res, err := client.GetConnection(ctx, nil)
 	require.Error(t, err)
 	require.Nil(t, res.Host)
-	require.Empty(t, res.ServerCaCertificates)
+	require.Empty(t, res.ServerCACertificates)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
 	require.GreaterOrEqual(t, httpErr.StatusCode, 400)
@@ -147,7 +147,7 @@ func TestGetEkmCertificate(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, res.SubjectCommonName)
 	require.NotEmpty(t, *res.SubjectCommonName)
-	require.NotEmpty(t, res.CaCertificates)
+	require.NotEmpty(t, res.CACertificates)
 	testSerde(t, &res.ProxyClientCertificateInfo)
 }
 
@@ -162,7 +162,7 @@ func TestCheckEkmConnection(t *testing.T) {
 	deleteExistingConnection(ctx, t, client)
 	params := ekm.Connection{
 		Host:                    to.Ptr(ekmProxyHost),
-		ServerCaCertificates:    [][]byte{ekmCACert},
+		ServerCACertificates:    [][]byte{ekmCACert},
 		ServerSubjectCommonName: to.Ptr(serverSubjectCommonNameFor(ekmProxyHost)),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
@@ -196,14 +196,14 @@ func TestConnectionSerde(t *testing.T) {
 	host := "ekm-proxy.example.com:443"
 	conn := ekm.Connection{
 		Host:                    to.Ptr(host),
-		ServerCaCertificates:    [][]byte{ekmCACert, []byte("second-cert")},
+		ServerCACertificates:    [][]byte{ekmCACert, []byte("second-cert")},
 		ServerSubjectCommonName: to.Ptr(serverSubjectCommonNameFor(host)),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
 	testSerde(t, &conn)
 
 	clientCert := ekm.ProxyClientCertificateInfo{
-		CaCertificates:    [][]byte{ekmCACert},
+		CACertificates:    [][]byte{ekmCACert},
 		SubjectCommonName: to.Ptr("CN=hsm-client"),
 	}
 	testSerde(t, &clientCert)

@@ -4,7 +4,10 @@
 
 package armcognitiveservices
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 // AADAuthTypeConnectionProperties - This connection type covers the AAD auth for any applicable Azure service
 type AADAuthTypeConnectionProperties struct {
@@ -279,6 +282,29 @@ type Account struct {
 	Type *string
 }
 
+// AccountCostControl - A budget that measures consumption and optionally alerts or blocks requests within an account.
+// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+// registration.
+type AccountCostControl struct {
+	// The resource-specific properties for this resource.
+	Properties *CostControlProperties
+
+	// READ-ONLY; The opaque entity tag used for optimistic concurrency.
+	Etag *azcore.ETag
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // AccountKeyAuthTypeConnectionProperties - This connection type covers the account key connection for Azure storage
 type AccountKeyAuthTypeConnectionProperties struct {
 	// CONSTANT; Authentication type of the connection target
@@ -421,6 +447,13 @@ type AccountProperties struct {
 	// The api properties for special APIs.
 	APIProperties *APIProperties
 
+	// Customer-owned AKS hosting configurations for Foundry agents. This property can only be specified when the account is created;
+	// an existing account without a hosting configuration cannot add one later. This API version supports exactly one configuration,
+	// while the array shape is reserved for future API versions that may support multiple configurations. Once set, the configuration
+	// cannot be changed, removed, or reordered. Account update requests should omit this property or send the complete existing
+	// value unchanged. Responses only include hosting configuration types defined by the requested API version.
+	AgentHostingConfigurations []AgentHostingConfigurationClassification
+
 	// Specifies whether this resource support project management as child resources, used as containers for access management,
 	// data isolation and cost in AI Foundry.
 	AllowProjectManagement *bool
@@ -431,6 +464,17 @@ type AccountProperties struct {
 
 	// Specifies the projects, by project name, that are associated with this resource.
 	AssociatedProjects []*string
+
+	// Reusable default agent capability settings inherited by child projects.
+	CapabilitySettings *CapabilitySettings
+
+	// Account-level cost-control telemetry connections. Application Insights is optional.
+	// Budget notifications use their own Event Grid connection IDs; account-level Event Grid configuration is not exposed or
+	// accepted by this API version.
+	// Set this object to null in an account update to clear the Application Insights connection. Existing legacy Event Grid configuration
+	// is preserved.
+	// This property is available independently of Microsoft.CognitiveServices/CostControls subscription registration.
+	CostControlConnections *CostControlConnections
 
 	// Optional subdomain name used for token-based authentication.
 	CustomSubDomainName *string
@@ -444,6 +488,9 @@ type AccountProperties struct {
 
 	// The encryption properties for this resource.
 	Encryption *Encryption
+
+	// Represents the foundry auto-upgrade configuration for a Cognitive Services account.
+	FoundryAutoUpgrade *FoundryAutoUpgrade
 
 	// The multiregion settings of Cognitive Services account.
 	Locations *MultiRegionSettings
@@ -537,6 +584,81 @@ type AccountSKUListResult struct {
 	Value []*AccountSKU
 }
 
+// AdapterDeployment - An independently managed LoRA adapter attached to a managed compute deployment.
+type AdapterDeployment struct {
+	// Properties of the Cognitive Services adapter deployment.
+	Properties *AdapterDeploymentProperties
+
+	// READ-ONLY; The concurrency token for this adapter deployment.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AdapterDeploymentLastOperation - The most recently requested adapter lifecycle operation.
+type AdapterDeploymentLastOperation struct {
+	// REQUIRED; The time at which the operation started.
+	StartedAt *time.Time
+
+	// REQUIRED; The current or terminal operation state.
+	Status *AdapterDeploymentOperationState
+
+	// REQUIRED; The type of lifecycle operation.
+	Type *AdapterDeploymentOperationType
+
+	// The time at which the operation reached a terminal state.
+	CompletedAt *time.Time
+
+	// The target deployment requested by a create or re-target operation.
+	RequestedTargetDeploymentName *string
+}
+
+// AdapterDeploymentListResult - A paginated collection of adapter deployments.
+type AdapterDeploymentListResult struct {
+	// READ-ONLY; Adapter deployments in this page.
+	Value []*AdapterDeployment
+
+	// URL used to retrieve the next page, when one exists.
+	NextLink *string
+}
+
+// AdapterDeploymentProperties - Properties of an adapter deployment.
+type AdapterDeploymentProperties struct {
+	// REQUIRED; The immutable Project Models version produced by Foundry fine-tuning.
+	// The identifier uses the Azure AI project model URI format.
+	// Model and version segments use ASCII letters, digits, periods, underscores, and hyphens.
+	// The service validates LoRA weight type, protected status, provenance,
+	// compatibility metadata, and registration state.
+	SourceModelID *string
+
+	// REQUIRED; The name of the compatible managed compute parent deployment.
+	// The service resolves this name within the adapter's owning account; full
+	// Azure Resource Manager resource IDs and cross-account references are not accepted. It cannot
+	// equal the adapter deployment's resource name. Updating this value
+	// re-targets the adapter while its source model remains unchanged.
+	TargetDeploymentName *string
+
+	// READ-ONLY; The managed compute deployment currently serving the adapter.
+	// During re-targeting this remains the prior deployment until atomic cutover.
+	ActiveTargetDeploymentName *string
+
+	// READ-ONLY; Information about the most recently requested lifecycle operation.
+	LastOperation *AdapterDeploymentLastOperation
+
+	// READ-ONLY; The provisioning state of the adapter deployment.
+	ProvisioningState *ProvisioningState
+}
+
 // AgentApplication - Agent Application resource
 type AgentApplication struct {
 	// REQUIRED; [Required] Additional attributes of the entity.
@@ -624,6 +746,20 @@ type AgentDeploymentResourceArmPaginatedResult struct {
 
 	// An array of objects of type Agent Deployment.
 	Value []*AgentDeployment
+}
+
+// AgentHostingConfiguration - Base configuration for hosting Foundry agents.
+type AgentHostingConfiguration struct {
+	// REQUIRED; Type of infrastructure used to host Foundry agents.
+	HostingType *AgentHostingType
+
+	// REQUIRED; Unique name of the hosting configuration within the Foundry account.
+	Name *string
+}
+
+// GetAgentHostingConfiguration implements the AgentHostingConfigurationClassification interface for type AgentHostingConfiguration.
+func (a *AgentHostingConfiguration) GetAgentHostingConfiguration() *AgentHostingConfiguration {
+	return a
 }
 
 // AgentProtocolVersion - Type modeling the protocol and version used by an agent/exposed by a deployment.
@@ -729,6 +865,206 @@ type ApplicationTrafficRoutingPolicy struct {
 	Rules []*TrafficRoutingRule
 }
 
+// ArcDeployment - Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+type ArcDeployment struct {
+	// REQUIRED; Properties of the Cognitive Services Arc deployment.
+	Properties *ArcDeploymentProperties
+
+	// REQUIRED; The Arc deployment SKU. Only the SKU name is required for Arc deployments.
+	SKU *ArcDeploymentSKU
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ArcDeploymentCPUMemoryResourceRequirements - CPU and memory resource requirements for an Arc deployment replica.
+type ArcDeploymentCPUMemoryResourceRequirements struct {
+	// REQUIRED; Kubernetes CPU quantity string, for example 500m, 2, 4, or 8.
+	CPU *string
+
+	// REQUIRED; Kubernetes memory quantity string, for example 512Mi, 2Gi, or 16Gi.
+	Memory *string
+}
+
+// ArcDeploymentKubernetesResources - Per-replica Kubernetes resource requests and limits for an Arc deployment.
+type ArcDeploymentKubernetesResources struct {
+	// Kubernetes resource limits for each deployment replica.
+	Limits *ArcDeploymentResourceRequirements
+
+	// Kubernetes CPU and memory resource requests for each deployment replica.
+	Requests *ArcDeploymentCPUMemoryResourceRequirements
+}
+
+// ArcDeploymentListResult - The list of Arc deployments.
+type ArcDeploymentListResult struct {
+	// READ-ONLY; Gets the list of Arc deployments and their properties.
+	Value []*ArcDeployment
+
+	// The link used to get the next page of Arc deployments.
+	NextLink *string
+}
+
+// ArcDeploymentModel - Model reference for an Arc deployment.
+type ArcDeploymentModel struct {
+	// REQUIRED; AzureML Registry model asset URI.
+	AssetID *string
+
+	// READ-ONLY; Read-only. Deployment model format resolved from the model asset.
+	Format *string
+
+	// READ-ONLY; Read-only. Deployment model name resolved from the model asset.
+	Name *string
+
+	// READ-ONLY; Read-only. Deployment model version resolved from the model asset.
+	Version *string
+}
+
+// ArcDeploymentPatchCPUMemoryResourceRequirements - CPU and memory resource requirements for an Arc deployment replica update.
+type ArcDeploymentPatchCPUMemoryResourceRequirements struct {
+	// Kubernetes CPU quantity string, for example 500m, 2, 4, or 8.
+	CPU *string
+
+	// Kubernetes memory quantity string, for example 512Mi, 2Gi, or 16Gi.
+	Memory *string
+}
+
+// ArcDeploymentPatchKubernetesResources - Per-replica Kubernetes resource requests and limits for an Arc deployment update.
+type ArcDeploymentPatchKubernetesResources struct {
+	// Kubernetes resource limits for each deployment replica.
+	Limits *ArcDeploymentResourceRequirements
+
+	// Kubernetes CPU and memory resource requests for each deployment replica.
+	Requests *ArcDeploymentPatchCPUMemoryResourceRequirements
+}
+
+// ArcDeploymentProperties - Properties of a Cognitive Services Arc deployment.
+type ArcDeploymentProperties struct {
+	// REQUIRED; Full Azure resource ID of the Foundry inference extension on the target Arc-enabled Kubernetes cluster. Required
+	// on creation and immutable after creation.
+	ExtensionID *string
+
+	// REQUIRED; Model reference. Required on creation and immutable after creation.
+	Model *ArcDeploymentModel
+
+	// REQUIRED; Physical replica count on the Arc cluster.
+	Replicas *int32
+
+	// REQUIRED; Per-replica Kubernetes resource requests and limits.
+	Resources *ArcDeploymentKubernetesResources
+
+	// READ-ONLY; Read-only. Inference runtime resolved from the model asset.
+	Runtime *ArcDeploymentRuntime
+
+	// The deployment state.
+	DeploymentState *DeploymentState
+
+	// Optional deployment template identifier for advanced vLLM tuning. Allowed only when runtime is vllm.
+	// Example: azureml://registries/{registry}/deploymenttemplates/{template}/versions/{version}
+	DeploymentTemplate *string
+
+	// Kubernetes node selector key-value map used to schedule pods onto nodes with matching labels.
+	NodeSelector map[string]*string
+
+	// The name of RAI policy.
+	RaiPolicyName *string
+
+	// READ-ONLY; Read-only. Compute type resolved from the model asset.
+	Compute *ArcDeploymentComputeType
+
+	// READ-ONLY; Read-only. Deployment capabilities represented as key-value pairs.
+	Capabilities map[string]*string
+
+	// READ-ONLY; Read-only. Base URL for inference calls to this deployment on the Arc cluster. Populated when provisioningState
+	// is Succeeded.
+	InferenceEndpoint *string
+
+	// READ-ONLY; Read-only. Status message and timestamp from the last provisioning operation.
+	ProvisioningDetails *ArcDeploymentProvisioningDetails
+
+	// READ-ONLY; Read-only. Current provisioning state.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Read-only. Effective vLLM runtime parameters resolved for the deployed model. Returned only when runtime is
+	// vllm.
+	VllmParameters *ArcDeploymentVllmParameters
+}
+
+// ArcDeploymentProvisioningDetails - Provisioning status details for an Arc deployment.
+type ArcDeploymentProvisioningDetails struct {
+	// Timestamp of the last provisioning operation.
+	LastOperationTimestamp *time.Time
+
+	// A human-readable status message from the last provisioning operation.
+	Message *string
+}
+
+// ArcDeploymentResourceRequirements - Kubernetes resource requirements for an Arc deployment replica.
+// Specify either cpu and memory together, or gpu. GPU is supported only in limits, not requests.
+type ArcDeploymentResourceRequirements struct {
+	// Kubernetes CPU quantity string, for example 500m, 2, 4, or 8.
+	// Required with memory when specifying CPU and memory limits. Do not specify with gpu.
+	CPU *string
+
+	// Kubernetes GPU quantity, for example 1, 2, or 5.
+	// Required when specifying GPU limits. Do not specify with cpu or memory.
+	Gpu *int32
+
+	// Kubernetes memory quantity string, for example 512Mi, 2Gi, or 16Gi.
+	// Required with cpu when specifying CPU and memory limits. Do not specify with gpu.
+	Memory *string
+}
+
+// ArcDeploymentSKU - SKU for an Arc deployment.
+type ArcDeploymentSKU struct {
+	// REQUIRED; The name of the Arc deployment SKU. Must be Arc.
+	Name *ArcDeploymentSKUName
+}
+
+// ArcDeploymentUpdate - The object used to update an Arc deployment.
+type ArcDeploymentUpdate struct {
+	// Properties that can be updated on an Arc deployment.
+	Properties *ArcDeploymentUpdateProperties
+}
+
+// ArcDeploymentUpdateProperties - Mutable properties for an Arc deployment.
+type ArcDeploymentUpdateProperties struct {
+	// Kubernetes node selector key-value map used to schedule pods onto nodes with matching labels.
+	NodeSelector map[string]*string
+
+	// Physical replica count on the Arc cluster.
+	Replicas *int32
+
+	// Per-replica Kubernetes resource requests and limits.
+	Resources *ArcDeploymentPatchKubernetesResources
+}
+
+// ArcDeploymentVllmParameters - Effective vLLM runtime parameters for an Arc deployment.
+type ArcDeploymentVllmParameters struct {
+	// Whether eager execution is enforced for the vLLM runtime.
+	EnforceEager *bool
+
+	// Fraction of GPU memory reserved for model execution.
+	GpuMemoryUtilization *float32
+
+	// Maximum model context length.
+	MaxModelLen *int32
+
+	// Number of GPUs used for tensor parallelism.
+	TensorParallelSize *int32
+}
+
 // AssignedIdentity - Type representing an identity assignment
 type AssignedIdentity struct {
 	// REQUIRED; The client ID of the identity.
@@ -751,6 +1087,400 @@ type AssignedIdentity struct {
 
 	// READ-ONLY; Represents the provisioning state of an identity resource.
 	ProvisioningState *IdentityProvisioningState
+}
+
+// AttachedAksCluster - An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
+type AttachedAksCluster struct {
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *AttachedAksClusterProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AttachedAksClusterAccountIdentityStatus - Account identity associated with the AI Manager integration.
+type AttachedAksClusterAccountIdentityStatus struct {
+	// Identity principal ID.
+	PrincipalID *string
+
+	// ARM resource ID of the account identity.
+	ResourceID *string
+
+	// Identity revision.
+	Revision *int64
+
+	// Identity tenant ID.
+	TenantID *string
+}
+
+// AttachedAksClusterAiManagerStatus - Status of the AI Manager integration on the attached cluster.
+type AttachedAksClusterAiManagerStatus struct {
+	// Attachment incarnation associated with this integration.
+	AttachmentIncarnation *string
+
+	// ARM resource ID of the AKS cluster.
+	ClusterResourceID *string
+
+	// Current integration consumer state, such as Invalid, Degraded, or Ready.
+	ConsumerState *string
+
+	// Deletion policy for the underlying integration resource.
+	DeletePolicy *string
+
+	// Dependency tracking epoch.
+	DependencyEpoch *int64
+
+	// Number of deployments that depend on the integration.
+	DependentDeploymentCount *int32
+
+	// Account identity used by the integration.
+	EffectiveAccountIdentity *AttachedAksClusterAccountIdentityStatus
+
+	// Details of the integration state.
+	Message *string
+
+	// ARM resource ID of the owning Cognitive Services account.
+	OwnerAccountID *string
+
+	// Provisioning state of the AI Manager integration.
+	ProvisioningState *string
+
+	// Whether new dependency references are admitted, such as Open or Closed.
+	ReferenceAdmission *string
+
+	// ARM resource ID of the AI Manager resource.
+	ResourceID *string
+
+	// Role assignment status for the integration.
+	RoleAssignments *AttachedAksClusterRoleAssignmentStatus
+}
+
+// AttachedAksClusterCapabilityStatus - Readiness of an individual attachment capability.
+type AttachedAksClusterCapabilityStatus struct {
+	// Details of the capability's readiness.
+	Message *string
+
+	// Capability name.
+	Name *string
+
+	// Whether the capability is ready.
+	Ready *bool
+}
+
+// AttachedAksClusterConnectorRegistration - Registration details of the attachment connector.
+type AttachedAksClusterConnectorRegistration struct {
+	// Name of the attachment.
+	AttachmentName *string
+
+	// Connector identity client ID.
+	ConnectorClientID *string
+
+	// ARM resource ID of the connector identity.
+	ConnectorIdentityResourceID *string
+
+	// Connector identity tenant ID.
+	ConnectorTenantID *string
+
+	// Connector service endpoint.
+	Endpoint *string
+
+	// Project identifier associated with the registration.
+	ProjectID *string
+
+	// Region associated with the connector registration.
+	ProjectLocation *string
+
+	// Connector registration identifier.
+	RegistrationID *string
+
+	// Authentication audience for the connector service.
+	TokenAudience *string
+}
+
+// AttachedAksClusterExtensionConfiguration - User-configurable training extension settings.
+type AttachedAksClusterExtensionConfiguration struct {
+	// Ray version used by the training extension.
+	RayVersion *string
+}
+
+// AttachedAksClusterExtensionProfile - Configuration of the training extension.
+type AttachedAksClusterExtensionProfile struct {
+	// Supported extension configuration. Other Helm settings are service-managed.
+	Configuration *AttachedAksClusterExtensionConfiguration
+
+	// Extension installation mode. Defaults to Managed.
+	// Manual installation requires service enablement and an exact chart version.
+	InstallationMode *AttachedAksClusterExtensionInstallationMode
+
+	// Extension package release train.
+	ReleaseTrain *string
+
+	// Whether to use an existing KubeRay operator instead of installing one.
+	UseExistingKubeRayOperator *bool
+
+	// Extension package version, or the exact chart version for Manual installation.
+	Version *string
+}
+
+// AttachedAksClusterHealthComponent - Health of an individual attachment component.
+type AttachedAksClusterHealthComponent struct {
+	// Time at which component health was last observed.
+	LastObservedAtUTC *time.Time
+
+	// Details of the component's health.
+	Message *string
+
+	// Component name.
+	Name *string
+
+	// Evaluated component health.
+	State *AttachedAksClusterHealthState
+}
+
+// AttachedAksClusterHealthReason - A reason contributing to attachment health.
+type AttachedAksClusterHealthReason struct {
+	// Machine-readable health reason code.
+	Code *string
+
+	// Component associated with the reason.
+	Component *string
+
+	// Description of the health condition.
+	Message *string
+
+	// Recommended action for the health condition.
+	RecommendedAction *string
+}
+
+// AttachedAksClusterHealthStatus - Evaluated health of an attachment.
+type AttachedAksClusterHealthStatus struct {
+	// Health of individual attachment components.
+	Components []*AttachedAksClusterHealthComponent
+
+	// Time at which health was last observed.
+	LastObservedAtUTC *time.Time
+
+	// Whether the attachment can admit new workloads.
+	NewWorkAdmissionAllowed *bool
+
+	// Reasons contributing to the evaluated health.
+	Reasons []*AttachedAksClusterHealthReason
+
+	// Overall attachment health.
+	State *AttachedAksClusterHealthState
+
+	// Summary of the evaluated health.
+	Summary *string
+}
+
+// AttachedAksClusterIdentityStatus - Identity status for training on the attached cluster.
+type AttachedAksClusterIdentityStatus struct {
+	// Identity client ID.
+	ClientID *string
+
+	// ARM resource ID of the federated identity credential.
+	FederatedIdentityCredentialResourceID *string
+
+	// Kubernetes service account associated with the identity.
+	KubernetesServiceAccountName *string
+
+	// Identity principal ID.
+	PrincipalID *string
+
+	// ARM resource ID of the identity.
+	ResourceID *string
+
+	// Identity tenant ID.
+	TenantID *string
+}
+
+// AttachedAksClusterIntegrationResourceStatus - Status of an integration resource associated with the attachment.
+type AttachedAksClusterIntegrationResourceStatus struct {
+	// Details of the integration state.
+	Message *string
+
+	// Provisioning state of the integration resource.
+	ProvisioningState *string
+
+	// ARM resource ID of the integration resource.
+	ResourceID *string
+}
+
+// AttachedAksClusterListItem - A lightweight attachment resource returned by LIST.
+type AttachedAksClusterListItem struct {
+	// READ-ONLY; ARM resource ID of the attachment.
+	ID *string
+
+	// READ-ONLY; Attachment name.
+	Name *string
+
+	// READ-ONLY; Lightweight attachment properties.
+	Properties *AttachedAksClusterListProperties
+
+	// READ-ONLY; Resource type of the attachment.
+	Type *string
+}
+
+// AttachedAksClusterListProperties - Lightweight attachment properties returned by LIST.
+type AttachedAksClusterListProperties struct {
+	// Capabilities enabled on the attachment.
+	Capabilities []*AttachedAksClusterCapability
+
+	// ARM resource ID of the attached AKS cluster.
+	ClusterResourceID *string
+
+	// Attachment creation time.
+	CreatedTime *time.Time
+
+	// Evaluated attachment health.
+	Health *AttachedAksClusterHealthStatus
+
+	// Attachment modification time.
+	ModifiedTime *time.Time
+
+	// Region associated with the attachment.
+	ProjectLocation *string
+
+	// Current attachment provisioning stage.
+	Stage *AttachedAksClusterProvisioningStage
+}
+
+// AttachedAksClusterListResult - A page of lightweight attachment summaries.
+type AttachedAksClusterListResult struct {
+	// REQUIRED; The items on this page
+	Value []*AttachedAksClusterListItem
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AttachedAksClusterProjectBinding - A server-managed project binding on the attached cluster.
+type AttachedAksClusterProjectBinding struct {
+	// Capabilities available to the project binding.
+	AllowedCapabilities []*AttachedAksClusterCapability
+
+	// Whether the binding is ready for Foundry-native workloads.
+	FoundryNativeReady *bool
+
+	// Whether the binding is ready for KubeRay workloads.
+	KubeRayReady *bool
+
+	// Details of the current binding state.
+	Message *string
+
+	// Kubernetes namespace assigned to the project.
+	Namespace *string
+
+	// Identifier of the bound Foundry project.
+	ProjectID *string
+
+	// Name of the bound Foundry project.
+	ProjectName *string
+
+	// Kubernetes service account used by the project.
+	ServiceAccountName *string
+
+	// Current project binding stage.
+	Stage *AttachedAksClusterProjectBindingStage
+
+	// Client ID of the project's workload identity.
+	WorkloadIdentityClientID *string
+}
+
+// AttachedAksClusterProperties - Properties of an account-level AKS attachment.
+type AttachedAksClusterProperties struct {
+	// REQUIRED; The complete set of capabilities for this attachment, without duplicates.
+	// PUT replaces the set. foundryNative is added automatically unless aiManager
+	// is the only capability. After attach, the only supported change is adding
+	// kuberay; other changes return 409 Conflict and require detaching first.
+	Capabilities []*AttachedAksClusterCapability
+
+	// REQUIRED; ARM resource ID of the existing AKS cluster. This value is immutable.
+	ClusterResourceID *string
+
+	// Configuration of the training extension on the attached cluster.
+	ExtensionProfile *AttachedAksClusterExtensionProfile
+
+	// READ-ONLY; Server-managed project bindings on the attached cluster.
+	ProjectBindings []*AttachedAksClusterProjectBinding
+
+	// READ-ONLY; Server-reported attachment provisioning, integration, and health status.
+	Status *AttachedAksClusterStatus
+}
+
+// AttachedAksClusterReadinessStatus - Readiness of the attachment connector and capabilities.
+type AttachedAksClusterReadinessStatus struct {
+	// Conditions preventing readiness.
+	Blockers []*string
+
+	// Readiness of individual capabilities.
+	Capabilities []*AttachedAksClusterCapabilityStatus
+
+	// Whether the connector is ready.
+	ConnectorReady *bool
+}
+
+// AttachedAksClusterRoleAssignmentStatus - Role assignments associated with the AI Manager integration.
+type AttachedAksClusterRoleAssignmentStatus struct {
+	// ARM resource ID of the contributor role assignment.
+	ContributorID *string
+
+	// ARM resource ID of the inference operator role assignment.
+	InferenceOperatorID *string
+
+	// Current role assignment status.
+	Status *string
+}
+
+// AttachedAksClusterStatus - Current provisioning and health status of an attachment.
+type AttachedAksClusterStatus struct {
+	// Status of the AI Manager integration.
+	AiManager *AttachedAksClusterAiManagerStatus
+
+	// ARM resource ID of the attached AKS cluster.
+	ClusterResourceID *string
+
+	// Time at which the connector was last observed.
+	ConnectorObservedAtUTC *time.Time
+
+	// Connector registration associated with the attachment.
+	ConnectorRegistration *AttachedAksClusterConnectorRegistration
+
+	// Status of the training extension resource.
+	Extension *AttachedAksClusterIntegrationResourceStatus
+
+	// Evaluated attachment health and workload admission status.
+	Health *AttachedAksClusterHealthStatus
+
+	// Identity provisioned for training on the attached cluster.
+	Identity *AttachedAksClusterIdentityStatus
+
+	// Last update time of the attachment status.
+	LastUpdatedTimeUTC *time.Time
+
+	// Details of the current attachment state.
+	Message *string
+
+	// Attachment generation observed by the connector.
+	ObservedGeneration *int64
+
+	// Identifier of an underlying provider operation, when present.
+	ProviderOperationID *string
+
+	// Connector and capability readiness.
+	Readiness *AttachedAksClusterReadinessStatus
+
+	// Current attachment provisioning stage.
+	Stage *AttachedAksClusterProvisioningStage
 }
 
 type BillingMeterInfo struct {
@@ -856,6 +1586,19 @@ type CapabilityHostResourceArmPaginatedResult struct {
 	Value []*CapabilityHost
 }
 
+// CapabilitySettings - Extensible agent capability configuration. Carries the Azure resource IDs of the agent storage dependencies.
+// Modeled as an object so future capability-backed resources can be added without changing the account or project contract.
+type CapabilitySettings struct {
+	// Azure resource ID of the blob store used by agent file and artifact storage.
+	BlobStore *string
+
+	// Azure resource ID of the document store used by agent runtime state.
+	DocumentStore *string
+
+	// Azure resource ID of the vector store used by agent retrieval and indexing.
+	VectorStore *string
+}
+
 // CapacityConfig - The capacity configuration.
 type CapacityConfig struct {
 	// The array of allowed values for capacity.
@@ -922,6 +1665,42 @@ type CheckSKUAvailabilityParameter struct {
 
 	// REQUIRED; The Type of the resource.
 	Type *string
+}
+
+// ClusterComputeProperties - Properties for a Cluster (AKS-backed) compute resource.
+type ClusterComputeProperties struct {
+	// CONSTANT; The type of compute resource.
+	// Field has constant value ComputeTypeCluster, any specified value is ignored.
+	ComputeType *ComputeType
+
+	// REQUIRED; The location of the compute resource.
+	Location *string
+
+	// REQUIRED; Pools attached to this compute cluster.
+	Pools []*Pool
+
+	// ARM ID of the subnet used for compute.
+	SubnetArmID *string
+
+	// READ-ONLY; Creation time of the compute resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the compute resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the compute resource.
+	ProvisioningState *ComputeProvisioningState
+}
+
+// GetComputeProperties implements the ComputePropertiesClassification interface for type ClusterComputeProperties.
+func (c *ClusterComputeProperties) GetComputeProperties() *ComputeProperties {
+	return &ComputeProperties{
+		ComputeType:       c.ComputeType,
+		CreationTime:      c.CreationTime,
+		Errors:            c.Errors,
+		Location:          c.Location,
+		ProvisioningState: c.ProvisioningState,
+	}
 }
 
 // CommitmentCost - Cognitive Services account commitment cost.
@@ -1117,6 +1896,98 @@ type CommitmentTierListResult struct {
 	Value []*CommitmentTier
 }
 
+// Compute - Cognitive Services compute resource. Supports polymorphic compute types
+// (Cluster, ContainerInstance) via the computeType discriminator in properties.
+type Compute struct {
+	// REQUIRED; Polymorphic properties of the compute resource. Use computeType to select Cluster or ContainerInstance.
+	Properties ComputePropertiesClassification
+
+	// Identity for the resource.
+	Identity *Identity
+
+	// The kind (type) of compute resource.
+	Kind *string
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ComputeListResult - The list of cognitive services computes operation response.
+type ComputeListResult struct {
+	// The link used to get the next page of compute list.
+	NextLink *string
+
+	// Gets the list of computes.
+	Value []*Compute
+}
+
+// ComputeOperationStatus - The status of an async compute operation.
+type ComputeOperationStatus struct {
+	// The properties of the compute operation status.
+	Properties *ComputeOperationStatusProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ComputeOperationStatusProperties - The properties of a compute operation status.
+type ComputeOperationStatusProperties struct {
+	// Error details if the operation failed.
+	Error *ErrorDetail
+
+	// The status of the operation.
+	Status *ComputeOperationStatusType
+
+	// READ-ONLY; The end time of the operation.
+	EndTime *time.Time
+
+	// READ-ONLY; The start time of the operation.
+	StartTime *time.Time
+}
+
+// ComputeProperties - Base properties for all compute resource types.
+// The computeType discriminator determines the concrete property shape.
+type ComputeProperties struct {
+	// REQUIRED; The type of compute resource.
+	ComputeType *ComputeType
+
+	// REQUIRED; The location of the compute resource.
+	Location *string
+
+	// READ-ONLY; Creation time of the compute resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the compute resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the compute resource.
+	ProvisioningState *ComputeProvisioningState
+}
+
+// GetComputeProperties implements the ComputePropertiesClassification interface for type ComputeProperties.
+func (c *ComputeProperties) GetComputeProperties() *ComputeProperties { return c }
+
 // ConnectionAPIKey - Api key object for connection credential.
 type ConnectionAPIKey struct {
 	Key *string
@@ -1249,6 +2120,331 @@ type ConnectionUsernamePassword struct {
 	// Optional, required by connections like SalesForce for extra security in addition to UsernamePassword
 	SecurityToken *string
 	Username      *string
+}
+
+// ConnectivityEndpoints - Network connectivity endpoints for a Container Instance compute.
+type ConnectivityEndpoints struct {
+	// READ-ONLY; The public IP address of the compute instance.
+	PublicIPAddress *string
+
+	// READ-ONLY; The SSH port for the compute instance.
+	SSHPort *int32
+}
+
+// ContainerInstanceComputeProperties - Properties for a Container Instance compute resource.
+type ContainerInstanceComputeProperties struct {
+	// CONSTANT; The type of compute resource.
+	// Field has constant value ComputeTypeContainerInstance, any specified value is ignored.
+	ComputeType *ComputeType
+
+	// REQUIRED; Container image URI (e.g., MCR or ACR image path) for the container instance.
+	ImageLink *string
+
+	// REQUIRED; The location of the compute resource.
+	Location *string
+
+	// REQUIRED; ARM resource ID of the parent cluster that hosts this container instance.
+	TargetClusterID *string
+
+	// ISO 8601 duration before the idle instance is automatically shut down (e.g., 'PT30M').
+	IdleTimeBeforeShutdown *string
+
+	// SSH configuration for remote access to the container instance.
+	SSHSettings *SSHSettings
+
+	// READ-ONLY; Network connectivity endpoints assigned to the container instance.
+	ConnectivityEndpoints *ConnectivityEndpoints
+
+	// READ-ONLY; Creation time of the compute resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the compute resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the compute resource.
+	ProvisioningState *ComputeProvisioningState
+}
+
+// GetComputeProperties implements the ComputePropertiesClassification interface for type ContainerInstanceComputeProperties.
+func (c *ContainerInstanceComputeProperties) GetComputeProperties() *ComputeProperties {
+	return &ComputeProperties{
+		ComputeType:       c.ComputeType,
+		CreationTime:      c.CreationTime,
+		Errors:            c.Errors,
+		Location:          c.Location,
+		ProvisioningState: c.ProvisioningState,
+	}
+}
+
+// CostControlAction - Blocks requests when consumption reaches the explicitly configured threshold. No implicit blocking
+// action is created.
+type CostControlAction struct {
+	// CONSTANT; The threshold comparison. Only `GreaterThanOrEqualTo` is supported.
+	// Field has constant value "GreaterThanOrEqualTo", any specified value is ignored.
+	Operator *string
+
+	// REQUIRED; The positive threshold. Percentages cannot exceed 100; absolute thresholds cannot exceed amount and must be whole
+	// numbers for Tokens budgets.
+	Threshold *float64
+
+	// REQUIRED; Whether threshold is a percentage of amount or an absolute value in the budget's unit.
+	ThresholdType *CostControlThresholdType
+
+	// CONSTANT; The enforcement action. Only `Block` is supported.
+	// Field has constant value "Block", any specified value is ignored.
+	Type *string
+}
+
+// CostControlActionPatch - Edits to an existing named blocking action. New actions require all fields after merging; supplied
+// fields cannot be null.
+type CostControlActionPatch struct {
+	// FLAG; CONSTANT; The threshold comparison. Only `GreaterThanOrEqualTo` is supported.
+	// Field has constant value "GreaterThanOrEqualTo", any specified value is ignored.
+	Operator *string
+
+	// The positive threshold. Percentages cannot exceed 100; absolute thresholds cannot exceed amount and must be whole numbers
+	// for Tokens budgets.
+	Threshold *float64
+
+	// Whether threshold is a percentage of amount or an absolute value in the budget's unit.
+	ThresholdType *CostControlThresholdType
+
+	// FLAG; CONSTANT; The enforcement action. Only `Block` is supported.
+	// Field has constant value "Block", any specified value is ignored.
+	Type *string
+}
+
+// CostControlAdditionalInfoFilter - Selects traffic whose named additional-info attribute equals at least one of the supplied
+// values.
+type CostControlAdditionalInfoFilter struct {
+	// REQUIRED; The built-in attribute: agent, sessionId, project, deployment, or tokenType.
+	// Resource selectors use owner-scoped short names, not Azure resource IDs. Agent selections require an explicit project filter
+	// selecting exactly one project; multiple agents in that project are supported.
+	// A project-owned control can select only its owning project. Project, agent, and deployment values must be plain names of
+	// 1-64 characters without leading or trailing whitespace, control characters, path/query/fragment separators, percent signs,
+	// or . and .. path segments.
+	// tokenType accepts input, output, or both for a Tokens budget; omission measures overall tokens.
+	Name *CostControlFilterName
+
+	// CONSTANT; The comparison operator.`In` is supported.
+	// Field has constant value "In", any specified value is ignored.
+	Operator *string
+
+	// REQUIRED; One or more nonempty, non-whitespace strings to match. There is no per-condition value-count limit; the serialized
+	// cost-control definition must not exceed 32 KiB.
+	Values []*string
+}
+
+// CostControlConnections - Account-level telemetry connections. Application Insights is optional and may be removed while
+// controls exist.
+type CostControlConnections struct {
+	// The full resource ID of the optional Application Insights connection. Set to null in an account update to remove it.
+	AppInsightsConnectionID *string
+}
+
+// CostControlFilter - Traffic selection using exactly one of `additionalInfo` or `and`. Additional-info names must be unique
+// across the complete expression.
+// Filters narrow the owner's scope and cannot extend a project-owned control to another project.
+// Values within one condition are alternatives; conditions are combined with AND. An agent selection requires an explicit
+// project filter selecting exactly one project, including for project-owned controls.
+type CostControlFilter struct {
+	// A single additional-info condition. Must not be combined with `and` on the same filter object.
+	AdditionalInfo *CostControlAdditionalInfoFilter
+
+	// A conjunction of at least two conditions. Must not be combined with `additionalInfo` on the same filter object.
+	And []*CostControlFilter
+}
+
+// CostControlGrouping - An additional built-in request attribute used to partition a budget into independent counters.
+type CostControlGrouping struct {
+	// REQUIRED; The built-in attribute to group by. project is available only for account-owned controls.
+	Name *CostControlGroupingName
+
+	// CONSTANT; The grouping kind. Only `AdditionalInfoKey` is supported.
+	// Field has constant value "AdditionalInfoKey", any specified value is ignored.
+	Type *string
+}
+
+// CostControlListResult - A page of cost controls owned by an account.
+type CostControlListResult struct {
+	// REQUIRED; The cost controls in this page.
+	Value []*AccountCostControl
+
+	// The link used to retrieve the next page, when present.
+	NextLink *string
+}
+
+// CostControlNotification - An alert notification with an explicit threshold, enabled state, and Event Grid destination.
+type CostControlNotification struct {
+	// REQUIRED; Whether this notification is enabled. Disabled notifications remain configured but do not publish alerts.
+	Enabled *bool
+
+	// REQUIRED; The full resource ID of the Cognitive Services Event Grid connection used to publish this notification.
+	EventGridConnectionID *string
+
+	// CONSTANT; The threshold comparison. Only `GreaterThanOrEqualTo` is supported.
+	// Field has constant value "GreaterThanOrEqualTo", any specified value is ignored.
+	Operator *string
+
+	// REQUIRED; The positive threshold. Percentages cannot exceed 100; absolute thresholds cannot exceed amount and must be whole
+	// numbers for Tokens budgets.
+	Threshold *float64
+
+	// REQUIRED; Whether threshold is a percentage of amount or an absolute value in the budget's unit.
+	ThresholdType *CostControlThresholdType
+}
+
+// CostControlNotificationPatch - Edits to an existing named notification. New notifications require all fields after merging;
+// supplied fields cannot be null.
+type CostControlNotificationPatch struct {
+	// Whether this notification is enabled. Disabled notifications remain configured but do not publish alerts.
+	Enabled *bool
+
+	// The full resource ID of the Cognitive Services Event Grid connection used to publish this notification.
+	EventGridConnectionID *string
+
+	// FLAG; CONSTANT; The threshold comparison. Only `GreaterThanOrEqualTo` is supported.
+	// Field has constant value "GreaterThanOrEqualTo", any specified value is ignored.
+	Operator *string
+
+	// The positive threshold. Percentages cannot exceed 100; absolute thresholds cannot exceed amount and must be whole numbers
+	// for Tokens budgets.
+	Threshold *float64
+
+	// Whether threshold is a percentage of amount or an absolute value in the budget's unit.
+	ThresholdType *CostControlThresholdType
+}
+
+// CostControlPatch - A partial budget update. Omitting properties preserves all existing budget properties.
+// Setting properties to null or an empty object ({}) clears all existing budget properties.
+// A non-empty properties object updates the supplied fields according to their merge semantics; omitted fields retain their
+// existing values.
+type CostControlPatch struct {
+	// The budget properties to update. Omission preserves existing properties.
+	// Null or an empty object ({}) clears all existing properties.
+	Properties *CostControlPatchProperties
+}
+
+// CostControlPatchProperties - Edits applied when properties is a non-empty object. Omitted fields retain their existing
+// values; no defaults are applied.
+// The complete merged result may contain at most one notification, including disabled notifications, and one Block action.
+// Exceeding either limit returns HTTP 400 without changing the stored definition.
+// Missing registration returns 403 FeatureNotRegistered before merging or no-op detection.
+// Omitting or removing identity selections does not require this registration; omitted stored selections are preserved, subject
+// to existing validation rules.
+type CostControlPatchProperties struct {
+	// Replaces the positive budget amount, measured in United States dollars for the Cost category or in whole tokens for the
+	// Tokens category.
+	Amount *float64
+
+	// The existing measurement category. Changing it after creation is not supported.
+	Category *CostControlCategory
+
+	// Replaces the complete traffic filter. Set to null to select all eligible traffic within the owner's scope.
+	Filter *CostControlFilter
+
+	// Replaces additional grouping. Omission preserves grouping; an empty array restores the owner's default counter. Null is
+	// not accepted.
+	Grouping []*CostControlGrouping
+
+	// Merges notifications by case-insensitive name, preserving existing name casing. Null entries delete notifications; null
+	// clears the collection.
+	// Omission or an empty object preserves existing notifications. New entries must supply all required notification fields
+	// after merging.
+	// The complete merged result may contain at most one notification, including disabled notifications; otherwise the request
+	// returns HTTP 400.
+	Notifications map[string]*CostControlNotificationPatch
+
+	// FLAG; CONSTANT; The resource provider. If supplied, it must be Microsoft.CognitiveServices and cannot be null.
+	// Field has constant value "Microsoft.CognitiveServices", any specified value is ignored.
+	Provider *string
+
+	// Merges provider-specific settings. Set to null to remove all blocking actions; omission preserves them.
+	ProviderProperties *CostControlProviderPropertiesPatch
+
+	// Replaces the calendar-aligned UTC renewal interval.
+	TimeGrain *CostControlTimeGrain
+
+	// Merges supplied dates into the existing validity window; omitted dates remain unchanged.
+	TimePeriod *CostControlTimePeriodPatch
+}
+
+// CostControlProperties - The consumption budget and its traffic selection, notifications, and enforcement actions.
+// A cost control applies within its owner's scope.
+type CostControlProperties struct {
+	// REQUIRED; The positive budget amount, measured in United States dollars for the Cost category or in tokens for the Tokens
+	// category.
+	// Token amounts must be whole numbers.
+	Amount *float64
+
+	// REQUIRED; Whether the budget measures estimated cost in United States dollars or token consumption. This category cannot
+	// be changed after creation.
+	Category *CostControlCategory
+
+	// REQUIRED; The calendar-aligned UTC interval at which consumption counters renew within the validity window.
+	TimeGrain *CostControlTimeGrain
+
+	// REQUIRED; The finite UTC validity window during which the control applies.
+	TimePeriod *CostControlTimePeriod
+
+	// Optional traffic selection. Omission selects all eligible traffic within the owner's scope.
+	Filter *CostControlFilter
+
+	// Optional additional partitioning of consumption. Omission or an empty array uses one counter for the owning account or
+	// Foundry project.
+	// Responses omit owner-default grouping. A project-owned control cannot explicitly group by project.
+	Grouping []*CostControlGrouping
+
+	// Alert notifications keyed by nonempty, case-insensitively unique names. Each notification supplies its own Event Grid connection.
+	// PUT and the complete merged PATCH result may contain at most one notification, including disabled notifications.
+	// Omission on creation creates no notifications.
+	Notifications map[string]*CostControlNotification
+
+	// FLAG; CONSTANT; The resource provider for this budget. Omission selects Microsoft.CognitiveServices; responses return that
+	// value.
+	// Field has constant value "Microsoft.CognitiveServices", any specified value is ignored.
+	Provider *string
+
+	// Optional provider-specific enforcement settings. Omission creates no blocking actions.
+	ProviderProperties *CostControlProviderProperties
+}
+
+// CostControlProviderProperties - Provider-specific budget enforcement settings.
+type CostControlProviderProperties struct {
+	// Blocking actions keyed by nonempty, case-insensitively unique names.
+	// PUT and the complete merged PATCH result may contain at most one Block action, independently of the notification limit.
+	// Omission on creation creates no blocking actions.
+	Actions map[string]*CostControlAction
+}
+
+// CostControlProviderPropertiesPatch - Partial provider-specific edits. Named actions merge rather than replacing the complete
+// collection.
+type CostControlProviderPropertiesPatch struct {
+	// Merges actions by case-insensitive name, preserving existing name casing. Null entries delete actions; null clears the
+	// collection.
+	// Omission or an empty object preserves existing actions. New entries must supply all required action fields after merging.
+	// The complete merged result may contain at most one Block action; otherwise the request returns HTTP 400.
+	Actions map[string]*CostControlActionPatch
+}
+
+// CostControlTimePeriod - A finite validity interval, including its start and excluding its end.
+type CostControlTimePeriod struct {
+	// REQUIRED; The exclusive UTC end, later than startDate, encoded as an ISO 8601 timestamp ending in Z with up to seven fractional
+	// digits.
+	EndDate *time.Time
+
+	// REQUIRED; The inclusive UTC start, encoded as an ISO 8601 timestamp ending in Z with up to seven fractional digits.
+	StartDate *time.Time
+}
+
+// CostControlTimePeriodPatch - Partial edits to a validity interval. Supplied dates cannot be null, and the merged start
+// must precede the merged end.
+type CostControlTimePeriodPatch struct {
+	// The exclusive UTC end, later than startDate, encoded as an ISO 8601 timestamp ending in Z with up to seven fractional digits.
+	EndDate *time.Time
+
+	// The inclusive UTC start, encoded as an ISO 8601 timestamp ending in Z with up to seven fractional digits.
+	StartDate *time.Time
 }
 
 // CustomBlocklistConfig - Gets or sets the source to which filter applies.
@@ -1440,6 +2636,18 @@ type DeploymentModel struct {
 	CallRateLimit *CallRateLimit
 }
 
+// DeploymentPolicyEvaluationResult - Policy evaluation result for a single deployment.
+type DeploymentPolicyEvaluationResult struct {
+	// Error message if the evaluation outcome is Error.
+	ErrorMessage *string
+
+	// The evaluation outcome.
+	EvaluationOutcome *PolicyEvaluationOutcome
+
+	// Details of non-compliant policy assignments.
+	NonCompliantAssignments []*PolicyAssignmentEvaluationDetails
+}
+
 // DeploymentProperties - Properties of Cognitive Services account deployment.
 type DeploymentProperties struct {
 	// Internal use only.
@@ -1476,6 +2684,9 @@ type DeploymentProperties struct {
 	// for standard pricing or 'Priority' for higher-priority processing with premium pricing. Note: Pause operations are only
 	// supported on Standard, DataZoneStandard, and GlobalStandard SKUs.
 	ServiceTier *ServiceTier
+
+	// Speculative decoding settings for the deployment. This configuration applies to Fireworks model formats.
+	SpeculativeDecoding *DeploymentSpeculativeDecoding
 
 	// Specifies the deployment name that should serve requests when the request would have otherwise been throttled due to reaching
 	// current deployment throughput limit.
@@ -1543,6 +2754,15 @@ type DeploymentSizeCapacity struct {
 
 	// READ-ONLY; The total available capacity for this deployment size.
 	TotalAvailableCapacity *int32
+}
+
+// DeploymentSpeculativeDecoding - Speculative decoding settings for a deployment.
+type DeploymentSpeculativeDecoding struct {
+	// REQUIRED; Draft model used to generate speculative decoding tokens.
+	DraftModel *DeploymentModel
+
+	// The number of draft tokens attempted per speculation step.
+	DraftTokenCount *int32
 }
 
 // DomainAvailability - Domain availability.
@@ -1620,6 +2840,79 @@ type EncryptionScopeProperties struct {
 	ProvisioningState *EncryptionScopeProvisioningState
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// EvaluateDeploymentPoliciesDeployment - A hypothetical deployment definition used for policy dry-run evaluation.
+type EvaluateDeploymentPoliciesDeployment struct {
+	// REQUIRED; The name of the hypothetical deployment.
+	Name *string
+
+	// REQUIRED; Properties of the hypothetical deployment.
+	Properties *EvaluateDeploymentPoliciesDeploymentProperties
+}
+
+// EvaluateDeploymentPoliciesDeploymentProperties - Properties of a hypothetical deployment for policy evaluation.
+type EvaluateDeploymentPoliciesDeploymentProperties struct {
+	// REQUIRED; The model to evaluate.
+	Model *DeploymentModel
+
+	// The name of the RAI policy to evaluate.
+	RaiPolicyName *string
+}
+
+// EvaluateDeploymentPoliciesRequest - Request body for the evaluateDeploymentPolicies action.
+type EvaluateDeploymentPoliciesRequest struct {
+	// REQUIRED; The list of hypothetical deployments to evaluate against Azure Policy.
+	Deployments []*EvaluateDeploymentPoliciesDeployment
+}
+
+// EvaluateDeploymentPoliciesResponse - Response body for the evaluateDeploymentPolicies action.
+type EvaluateDeploymentPoliciesResponse struct {
+	// Per-deployment policy evaluation results, keyed by deployment name.
+	Results map[string]*DeploymentPolicyEvaluationResult
+}
+
+// FoundryAutoUpgrade - Represents the foundry auto-upgrade configuration for a Cognitive Services account.
+// Customers can opt out of auto-upgrade by setting mode to Disabled.
+type FoundryAutoUpgrade struct {
+	// Gets or sets the auto-upgrade mode.
+	Mode *FoundryAutoUpgradeMode
+
+	// Gets or sets a value indicating whether the auto-upgrade is planned by Microsoft.
+	PlannedByMicrosoft *bool
+
+	// Gets or sets the scheduled time for the auto-upgrade.
+	ScheduledAt *time.Time
+
+	// Gets or sets the status reason for the auto-upgrade configuration.
+	StatusReason *string
+}
+
 // FqdnOutboundRule - FQDN Outbound Rule for the managed network of a cognitive services account.
 type FqdnOutboundRule struct {
 	// CONSTANT; Type of a managed network Outbound Rule of a cognitive services account.
@@ -1649,6 +2942,13 @@ func (f *FqdnOutboundRule) GetOutboundRule() *OutboundRule {
 		Status:           f.Status,
 		Type:             f.Type,
 	}
+}
+
+// GatedModelAccessProperties - Gated model access configuration for a managed compute deployment.
+type GatedModelAccessProperties struct {
+	// REQUIRED; The fully qualified Azure resource ID of the project connection used to authorize access to a gated model during
+	// deployment creation.
+	ConnectionID *string
 }
 
 // HostedAgentDeployment - Represents a hosted agent deployment where the underlying infrastructure is owned by the platform.
@@ -1787,6 +3087,41 @@ func (m *ManagedAgentDeployment) GetAgentDeploymentProperties() *AgentDeployment
 	}
 }
 
+// ManagedClusterAgentHostingConfiguration - Configuration for hosting Foundry agents on an Azure Kubernetes Service managed
+// cluster.
+type ManagedClusterAgentHostingConfiguration struct {
+	// REQUIRED; Azure resource ID of the customer-owned AKS managed cluster that runs the hosted agent workloads.
+	ClusterResourceID *string
+
+	// REQUIRED; Azure resource ID of the user-assigned managed identity used by the Foundry resource provider to manage the hosting
+	// configuration. The identity must be assigned to the Foundry account in identity.userAssignedIdentities.
+	HostingManagementIdentityResourceID *string
+
+	// CONSTANT; Type of infrastructure used to host Foundry agents.
+	// Field has constant value AgentHostingTypeManagedCluster, any specified value is ignored.
+	HostingType *AgentHostingType
+
+	// REQUIRED; Unique name of the hosting configuration within the Foundry account.
+	Name *string
+
+	// REQUIRED; Azure resource ID of the customer-owned storage account used by the hosted agents. The storage account must be
+	// in the same subscription and region as the AKS cluster, and its data-plane endpoint must be reachable from the workload
+	// network.
+	StorageAccountResourceID *string
+
+	// REQUIRED; Azure resource ID of the separate user-assigned managed identity federated to service accounts on the AKS cluster.
+	// Hosted agents use this identity to access the Azure Storage blob data plane.
+	WorkloadIdentityResourceID *string
+}
+
+// GetAgentHostingConfiguration implements the AgentHostingConfigurationClassification interface for type ManagedClusterAgentHostingConfiguration.
+func (m *ManagedClusterAgentHostingConfiguration) GetAgentHostingConfiguration() *AgentHostingConfiguration {
+	return &AgentHostingConfiguration{
+		HostingType: m.HostingType,
+		Name:        m.Name,
+	}
+}
+
 // ManagedComputeCapacity - Managed compute capacity information for Cognitive Services managed compute deployments.
 // Provides available accelerator capacity per type and region at the subscription level.
 type ManagedComputeCapacity struct {
@@ -1836,6 +3171,165 @@ type ManagedComputeCapacityProperties struct {
 	// READ-ONLY; The total number of available accelerators summed across regions within the scope.
 	// Omitted for deployment-scoped results.
 	TotalAvailableAccelerators *int32
+}
+
+// ManagedComputeDeployment - Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
+type ManagedComputeDeployment struct {
+	// Properties of the Cognitive Services managed compute deployment.
+	Properties *ManagedComputeDeploymentProperties
+
+	// The resource model definition representing SKU
+	SKU *SKU
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ManagedComputeDeploymentInfo - Deployment detail within a managed compute usage entry.
+type ManagedComputeDeploymentInfo struct {
+	// Number of GPUs consumed by this deployment.
+	AcceleratorCount *int64
+
+	// Full ARM resource ID of the deployment.
+	DeploymentID *string
+
+	// Number of instances for this deployment.
+	InstanceCount *int32
+
+	// Model name (e.g., 'azureml://registries//models//versions/gpt-4o').
+	ModelID *string
+
+	// Full ARM resource ID of the account/project.
+	ProjectID *string
+}
+
+// ManagedComputeDeploymentListResult - The list of managed compute deployments.
+type ManagedComputeDeploymentListResult struct {
+	// The link used to get the next page of managed compute deployments.
+	NextLink *string
+
+	// READ-ONLY; Gets the list of managed compute deployments and their properties.
+	Value []*ManagedComputeDeployment
+}
+
+// ManagedComputeDeploymentProperties - Properties of a Cognitive Services managed compute deployment.
+type ManagedComputeDeploymentProperties struct {
+	// REQUIRED; AzureML Registry model asset URI. Required on creation; immutable after creation.
+	// Example: azureml://registries/{registry}/models/{model}/versions/{version}
+	Model *string
+
+	// Accelerator type (e.g., H100_80GB). Optional on creation; immutable after creation.
+	AcceleratorType *string
+
+	// Foundry compute ARM resource ID for VM-backed managed compute deployments. Required when sku.name is VmManagedCompute;
+	// immutable after creation.
+	ComputeID *string
+
+	// Deployment template identifier. Optional on creation.
+	// Accepts an AzureML Registry deployment template URI or a project-scoped deployment template path for VmManagedCompute.
+	// Examples: azureml://registries/{registry}/deploymenttemplates/{template}/versions/{version}, projects/{project}/deploymentTemplates/{template}/versions/{version}
+	DeploymentTemplate *string
+
+	// Configuration used to authorize access to a gated model during deployment creation.
+	GatedModelAccess *GatedModelAccessProperties
+
+	// Scheduling priority for VM-backed managed compute deployments. Immutable after creation.
+	Priority *string
+
+	// Template auto-upgrade policy. Defaults to OnceNewDefaultVersionAvailable.
+	VersionUpgradeOption *DeploymentModelVersionUpgradeOption
+
+	// READ-ONLY; Read-only. Number of accelerators (GPUs) consumed by each model instance, sourced from the deployment template.
+	AcceleratorsPerInstance *int32
+
+	// READ-ONLY; Deployment capabilities represented as key-value pairs.
+	// Example: { assetsV2: "true" }.
+	Capabilities map[string]*string
+
+	// READ-ONLY; Read-only. Status message and timestamp from the last provisioning operation.
+	ProvisioningDetails *ManagedComputeDeploymentProvisioningDetails
+
+	// READ-ONLY; Read-only. Current provisioning state.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Read-only. Inference route paths relative to the account endpoint. Populated when provisioningState is Succeeded.
+	Routes *ManagedComputeDeploymentRoutes
+
+	// READ-ONLY; Read-only. Total accelerators allocated: sku.capacity (instances) x acceleratorsPerInstance.
+	TotalAccelerators *int32
+}
+
+// ManagedComputeDeploymentProvisioningDetails - Provisioning status details for a managed compute deployment.
+type ManagedComputeDeploymentProvisioningDetails struct {
+	// Timestamp of the last provisioning operation.
+	LastOperationTimestamp *time.Time
+
+	// A human-readable status message from the last provisioning operation.
+	Message *string
+}
+
+// ManagedComputeDeploymentRoutes - Inference route paths for a managed compute deployment, relative to the account endpoint.
+// Populated when provisioningState is Succeeded.
+type ManagedComputeDeploymentRoutes struct {
+	// Relative path to the chat completions scoring endpoint.
+	ChatCompletionsScoringPath *string
+
+	// Relative path to the messages API scoring endpoint.
+	MessagesAPIScoringPath *string
+
+	// Relative path to the Swagger/OpenAPI endpoint.
+	Swagger *string
+}
+
+// ManagedComputeUsage - Managed compute quota usage for a specific SKU.
+type ManagedComputeUsage struct {
+	// Current value for this metric.
+	CurrentValue *float64
+
+	// Deployments consuming this managed compute quota.
+	Deployments []*ManagedComputeDeploymentInfo
+
+	// Maximum value for this metric.
+	Limit *float64
+
+	// Offer scope. Supported values are 'Global' and 'DataZone'.
+	OfferScope *string
+
+	// Scope identifier for the managed compute usage. Supported values are '' (empty), 'US', and 'EU'.
+	ScopeID *string
+
+	// The unit of the metric.
+	Unit *UnitType
+
+	// READ-ONLY; Fully qualified resource ID for the managed compute usage.
+	ID *string
+
+	// READ-ONLY; The name information for the metric.
+	Name *MetricName
+
+	// READ-ONLY; The resource type.
+	Type *string
+}
+
+// ManagedComputeUsageListResult - List of managed compute quota entries.
+type ManagedComputeUsageListResult struct {
+	// The link used to get the next page of managed compute usages.
+	NextLink *string
+
+	// Per-SKU managed compute quota usage entries.
+	Value []*ManagedComputeUsage
 }
 
 type ManagedIdentityAuthTypeConnectionProperties struct {
@@ -2584,6 +4078,12 @@ func (p *PATAuthTypeConnectionProperties) GetConnectionPropertiesV2() *Connectio
 	}
 }
 
+// PatchResourceSKU - The object being used to update sku of a resource, in general used for PATCH operations.
+type PatchResourceSKU struct {
+	// The resource model definition representing SKU
+	SKU *SKU
+}
+
 // PatchResourceTagsAndSKU - The object being used to update tags and sku of a resource, in general used for PATCH operations.
 type PatchResourceTagsAndSKU struct {
 	// The resource model definition representing SKU
@@ -2591,6 +4091,66 @@ type PatchResourceTagsAndSKU struct {
 
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// PolicyAssignmentEvaluationDetails - Details of a non-compliant policy assignment.
+type PolicyAssignmentEvaluationDetails struct {
+	// The policy assignment ID.
+	AssignmentID *string
+
+	// The policy effect (e.g., Deny, Audit).
+	Effect *string
+
+	// The evaluation outcome for this assignment.
+	EvaluationOutcome *PolicyEvaluationOutcome
+
+	// Expression-level evaluation details.
+	ExpressionEvaluations []*PolicyExpressionEvaluationDetails
+
+	// The reason for non-compliance.
+	NonComplianceReason *string
+
+	// The policy definition ID.
+	PolicyDefinitionID *string
+
+	// The policy set definition ID.
+	PolicySetDefinitionID *string
+}
+
+// PolicyExpressionEvaluationDetails - Details of a policy expression evaluation.
+type PolicyExpressionEvaluationDetails struct {
+	// The policy expression.
+	Expression *string
+
+	// The kind of expression.
+	ExpressionKind *string
+
+	// The actual value of the expression.
+	ExpressionValue *string
+
+	// The operator used in evaluation.
+	Operator *string
+
+	// The evaluation result.
+	Result *string
+
+	// The target value of the expression.
+	TargetValue *string
+}
+
+// Pool - A compute pool configuration.
+type Pool struct {
+	// REQUIRED; The instance type (VM SKU) used in the pool.
+	InstanceType *string
+
+	// REQUIRED; The name of the pool.
+	Name *string
+
+	// REQUIRED; The number of nodes in the pool.
+	NodeCount *int32
+
+	// The VM priority of the pool.
+	VMPriority *VMPriority
 }
 
 // PrivateEndpoint - The private endpoint resource.
@@ -2816,6 +4376,39 @@ type ProjectCapabilityHostResourceArmPaginatedResult struct {
 	Value []*ProjectCapabilityHost
 }
 
+// ProjectCostControl - A budget that measures consumption and optionally alerts or blocks requests within its owning Foundry
+// project.
+// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+// registration.
+type ProjectCostControl struct {
+	// The resource-specific properties for this resource.
+	Properties *CostControlProperties
+
+	// READ-ONLY; The opaque entity tag used for optimistic concurrency.
+	Etag *azcore.ETag
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProjectCostControlListResult - A page of cost controls owned by a Foundry project.
+type ProjectCostControlListResult struct {
+	// REQUIRED; The cost controls in this page.
+	Value []*ProjectCostControl
+
+	// The link used to retrieve the next page, when present.
+	NextLink *string
+}
+
 // ProjectListResult - The list of cognitive services projects operation response.
 type ProjectListResult struct {
 	// The link used to get the next page of projects.
@@ -2827,11 +4420,19 @@ type ProjectListResult struct {
 
 // ProjectProperties - Properties of Cognitive Services Project'.
 type ProjectProperties struct {
+	// Effective agent capability settings for the project. Optional partial override of the account defaults; omitted fields
+	// inherit from the parent account when present. Settable only at create time.
+	CapabilitySettings *CapabilitySettings
+
 	// The description of the Cognitive Services Project.
 	Description *string
 
 	// The display name of the Cognitive Services Project.
 	DisplayName *string
+
+	// The project-level tool access policy. Omitting this property in a PUT request clears the policy. In PATCH requests, omission
+	// preserves the policy and an explicit null clears it. Responses omit this property when no policy is configured.
+	ToolControls *ToolControls
 
 	// READ-ONLY; The list of endpoint for this Cognitive Services Project.
 	Endpoints map[string]*string
@@ -2931,6 +4532,275 @@ type QuotaTierUpgradeEligibilityInfo struct {
 
 	// Reason in case the subscription is not eligible for upgrade to the next tier.
 	UpgradeUnavailabilityReason *string
+}
+
+// RaiAcsAgentShutdownInterventionPoint - Agent-shutdown binding with the canonical summary target.
+type RaiAcsAgentShutdownInterventionPoint struct {
+	// REQUIRED; The logical policy evaluated at this intervention point.
+	Policy *RaiAcsPolicyBinding
+
+	// CONSTANT; The canonical Agent Hooks snapshot path projected as the policy target.
+	// Field has constant value "$snap.summary", any specified value is ignored.
+	PolicyTarget *string
+
+	// CONSTANT; The semantic kind of the projected policy target.
+	// Field has constant value "agent_summary", any specified value is ignored.
+	PolicyTargetKind *string
+
+	// Optional annotator bindings keyed by declaration name. Results are available to Rego as input.annotations.<name>.
+	Annotations map[string]*RaiAcsAnnotationBinding
+}
+
+// RaiAcsAgentStartupInterventionPoint - Agent-startup binding with the canonical initialization target.
+type RaiAcsAgentStartupInterventionPoint struct {
+	// REQUIRED; The logical policy evaluated at this intervention point.
+	Policy *RaiAcsPolicyBinding
+
+	// CONSTANT; The canonical Agent Hooks snapshot path projected as the policy target.
+	// Field has constant value "$snap.agent_init", any specified value is ignored.
+	PolicyTarget *string
+
+	// CONSTANT; The semantic kind of the projected policy target.
+	// Field has constant value "agent_init", any specified value is ignored.
+	PolicyTargetKind *string
+
+	// Optional annotator bindings keyed by declaration name. Results are available to Rego as input.annotations.<name>.
+	Annotations map[string]*RaiAcsAnnotationBinding
+}
+
+// RaiAcsAnnotationBinding - Binds an annotator to a subject at one intervention point. The map key selects its declaration.
+type RaiAcsAnnotationBinding struct {
+	// REQUIRED; The Agent Control Specification path selecting the subject passed to the annotator.
+	From                 *string
+	AdditionalProperties map[string]any
+}
+
+// RaiAcsAnnotatorDefinition - A named Agent Control Specification annotator declaration with host-defined configuration.
+type RaiAcsAnnotatorDefinition struct {
+	// REQUIRED; The dispatcher kind. Supported configuration is determined by the evaluation host.
+	Type                 *RaiAcsAnnotatorType
+	AdditionalProperties map[string]any
+}
+
+// RaiAcsHarmConfiguration - Selects one Azure AI Content Safety harm-detector configuration.
+type RaiAcsHarmConfiguration struct {
+	// REQUIRED; The logical harm category exposed under input.snapshot.moderation.harm.
+	Category *RaiAcsHarmCategory
+
+	// The Azure AI Content Safety detector configuration identifier. When supplied, it must be the
+	// configuration supported for the selected category.
+	HarmConfigID *string
+}
+
+// RaiAcsInterventionPoint - Binds one logical policy to an Agent Control Specification intervention point.
+type RaiAcsInterventionPoint struct {
+	// REQUIRED; The logical policy evaluated at this intervention point.
+	Policy *RaiAcsPolicyBinding
+
+	// REQUIRED; The canonical Agent Hooks snapshot path projected as the policy target.
+	PolicyTarget *RaiAcsPolicyTarget
+
+	// REQUIRED; The semantic kind of the projected policy target.
+	PolicyTargetKind *RaiAcsPolicyTargetKind
+
+	// Optional annotator bindings keyed by declaration name. Results are available to Rego as input.annotations.<name>.
+	Annotations map[string]*RaiAcsAnnotationBinding
+}
+
+// RaiAcsInterventionPoints - Intervention points supported by the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsInterventionPoints struct {
+	// The policy evaluated when the agent execution session shuts down.
+	AgentShutdown *RaiAcsAgentShutdownInterventionPoint
+
+	// The policy evaluated when the agent execution session starts.
+	AgentStartup *RaiAcsAgentStartupInterventionPoint
+
+	// The policy evaluated for user input.
+	Input *RaiAcsInterventionPoint
+
+	// The policy evaluated for final output.
+	Output *RaiAcsInterventionPoint
+
+	// The policy evaluated after a model call.
+	PostModelCall *RaiAcsPostModelCallInterventionPoint
+
+	// The policy evaluated after a tool call.
+	PostToolCall *RaiAcsToolInterventionPoint
+
+	// The policy evaluated before a model call.
+	PreModelCall *RaiAcsPreModelCallInterventionPoint
+
+	// The policy evaluated before a tool call.
+	PreToolCall *RaiAcsToolInterventionPoint
+}
+
+// RaiAcsManifest - The closed Rego-only Agent Control Specification (ACS) profile supported by
+// Azure AI Content Safety Unified Moderate.
+type RaiAcsManifest struct {
+	// REQUIRED; The declared Agent Control Specification manifest version.
+	AgentControlSpecificationVersion *string
+
+	// REQUIRED; Agent Control Specification intervention-point bindings. At least one intervention point is required.
+	InterventionPoints *RaiAcsInterventionPoints
+
+	// REQUIRED; Named Rego policies in this manifest.
+	Policies map[string]*RaiAcsRegoPolicyDefinition
+
+	// Optional annotator declarations keyed by name. Omitted or empty maps request no annotator declarations.
+	Annotators map[string]*RaiAcsAnnotatorDefinition
+
+	// Non-policy manifest metadata.
+	Metadata map[string]any
+
+	// Static tool catalog keyed by canonical tool name. The catalog may be omitted or empty when no
+	// tool selector is configured. A tool selector requires a non-empty catalog, and an unknown
+	// selected key fails closed.
+	Tools map[string]*RaiAcsToolDefinition
+}
+
+// RaiAcsModerationBindingExtension - Azure AI Content Safety moderation work performed before the Agent Control
+// Specification runtime evaluates the selected Rego query.
+type RaiAcsModerationBindingExtension struct {
+	// REQUIRED; Harm signals requested for this intervention point.
+	HarmConfigs []*RaiAcsHarmConfiguration
+
+	// REQUIRED; How the selected policy target is represented to moderation capabilities.
+	SubjectFormat *RaiAcsModerationSubjectFormat
+}
+
+// RaiAcsPolicyBinding - Identifies the logical policy evaluated at an Agent Control Specification intervention point.
+type RaiAcsPolicyBinding struct {
+	// REQUIRED; The logical policy identifier.
+	ID *string
+
+	// Optional Azure AI Content Safety moderation capabilities invoked before Rego evaluation.
+	AacsModeration *RaiAcsModerationBindingExtension
+
+	// An optional intervention-specific Rego query override.
+	Query *string
+}
+
+// RaiAcsPostModelCallInterventionPoint - Post-model binding with the canonical model-response target.
+type RaiAcsPostModelCallInterventionPoint struct {
+	// REQUIRED; The logical policy evaluated at this intervention point.
+	Policy *RaiAcsPolicyBinding
+
+	// CONSTANT; The canonical Agent Hooks snapshot path projected as the policy target.
+	// Field has constant value "$snap.response", any specified value is ignored.
+	PolicyTarget *string
+
+	// CONSTANT; The semantic kind of the projected policy target.
+	// Field has constant value "model_response", any specified value is ignored.
+	PolicyTargetKind *string
+
+	// Optional annotator bindings keyed by declaration name. Results are available to Rego as input.annotations.<name>.
+	Annotations map[string]*RaiAcsAnnotationBinding
+}
+
+// RaiAcsPreModelCallInterventionPoint - Pre-model binding with the canonical messages target.
+type RaiAcsPreModelCallInterventionPoint struct {
+	// REQUIRED; The logical policy evaluated at this intervention point.
+	Policy *RaiAcsPolicyBinding
+
+	// CONSTANT; The canonical Agent Hooks snapshot path projected as the policy target.
+	// Field has constant value "$snap.messages", any specified value is ignored.
+	PolicyTarget *string
+
+	// CONSTANT; The semantic kind of the projected policy target.
+	// Field has constant value "messages", any specified value is ignored.
+	PolicyTargetKind *string
+
+	// Optional annotator bindings keyed by declaration name. Results are available to Rego as input.annotations.<name>.
+	Annotations map[string]*RaiAcsAnnotationBinding
+}
+
+// RaiAcsRegoPolicyDefinition - A Rego policy definition in the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsRegoPolicyDefinition struct {
+	// REQUIRED; The fully qualified Rego query evaluated for this policy.
+	Query *string
+
+	// REQUIRED; The policy language. This profile supports only Rego.
+	Type *RaiAcsPolicyDefinitionType
+}
+
+// RaiAcsToolDefinition - Static policy metadata for one Agent Control Specification tool catalog entry.
+type RaiAcsToolDefinition struct {
+	AdditionalProperties map[string]any
+
+	// Maximum sensitivity or host-defined clearance metadata.
+	Clearance *string
+
+	// Human-readable policy metadata.
+	Description *string
+
+	// Optional host-defined tool identifier. The catalog map key, not this value, controls tool lookup.
+	ID *string
+
+	// Labels describing the sink or capability.
+	SecurityLabels []*string
+
+	// Optional host-defined tool type.
+	Type *string
+}
+
+// RaiAcsToolInterventionPoint - Binds one logical policy to a tool-call intervention point.
+type RaiAcsToolInterventionPoint struct {
+	// REQUIRED; The logical policy evaluated at this intervention point.
+	Policy *RaiAcsPolicyBinding
+
+	// REQUIRED; The canonical Agent Hooks snapshot path projected as the policy target.
+	PolicyTarget *RaiAcsPolicyTarget
+
+	// REQUIRED; The semantic kind of the projected policy target.
+	PolicyTargetKind *RaiAcsPolicyTargetKind
+
+	// Optional annotator bindings keyed by declaration name. Results are available to Rego as input.annotations.<name>.
+	Annotations map[string]*RaiAcsAnnotationBinding
+
+	// Selects the tool catalog key from the raw Agent Hooks snapshot using an extensible snapshot path.
+	ToolNameFrom *RaiAcsToolNameSelector
+}
+
+// RaiBinding - An account-scoped binding from an Azure resource to an Agent Control Specification policy.
+type RaiBinding struct {
+	// Properties of the RAI binding.
+	Properties *RaiBindingProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RaiBindingListResult - The list of account-scoped RAI bindings.
+type RaiBindingListResult struct {
+	// REQUIRED; The RAI bindings in this page.
+	Value []*RaiBinding
+
+	// The link used to get the next page.
+	NextLink *string
+}
+
+// RaiBindingProperties - Properties of a binding from an Azure resource to an Agent Control Specification policy.
+type RaiBindingProperties struct {
+	// REQUIRED; A valid Azure Resource Manager resource ID of the resource to bind to the target RAI policy.
+	BoundResourceID *string
+
+	// REQUIRED; The same-account Agent Control Specification policy name targeted by the binding.
+	TargetPolicyName *string
 }
 
 // RaiBlockListItemsResult - The list of cognitive services RAI Blocklist Items.
@@ -3321,6 +5191,21 @@ type RaiPolicyContentFilter struct {
 	Source *RaiPolicyContentSource
 }
 
+// RaiPolicyCustomExternalSafetyProviderReference - A customer-visible reference to a subscription-level external safety provider.
+type RaiPolicyCustomExternalSafetyProviderReference struct {
+	// REQUIRED; The registered external safety-provider name.
+	ExternalSafetyProviderName *string
+
+	// REQUIRED; The request stage at which the provider runs.
+	Source *RaiPolicyContentSource
+
+	// Whether a provider rejection blocks the request.
+	Blocking *bool
+
+	// Optional managed identity used when invoking the external safety provider.
+	ManagedIdentityResourceID *string
+}
+
 // RaiPolicyListResult - The list of cognitive services RaiPolicies.
 type RaiPolicyListResult struct {
 	// The link used to get the next page of RaiPolicy.
@@ -3332,6 +5217,12 @@ type RaiPolicyListResult struct {
 
 // RaiPolicyProperties - Azure OpenAI Content Filters properties.
 type RaiPolicyProperties struct {
+	// The ACS manifest. Required by service validation when format is ACS.
+	Acs *RaiAcsManifest
+
+	// Reusable same-account Rego resources loaded with the ACS manifest.
+	AcsRegos []*RaiRegoReference
+
 	// Name of Rai policy.
 	BasePolicyName *string
 
@@ -3341,9 +5232,16 @@ type RaiPolicyProperties struct {
 	// The list of custom Blocklist.
 	CustomBlocklists []*CustomBlocklistConfig
 
+	// Optional external safety-provider references used by this policy.
+	CustomExternalSafetyProviders []*RaiPolicyCustomExternalSafetyProviderReference
+
 	// Egress (outbound network) policy controlling which external endpoints sandboxed
 	// agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
 	EgressPolicy *RaiEgressPolicyConfig
+
+	// The policy representation. Omission selects ContentFilters when creating a policy. ACS policy
+	// creation and replacement require ACS.
+	Format *RaiPolicyFormat
 
 	// Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter =3. Please
 	// use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.
@@ -3354,6 +5252,54 @@ type RaiPolicyProperties struct {
 
 	// READ-ONLY; Content Filters policy type.
 	Type *RaiPolicyType
+}
+
+// RaiRego - An account-scoped reusable Rego artifact.
+type RaiRego struct {
+	// Properties of the reusable Rego artifact.
+	Properties *RaiRegoProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource ETag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RaiRegoListResult - The list of account-scoped reusable Rego resources.
+type RaiRegoListResult struct {
+	// REQUIRED; The Rego resources in this page.
+	Value []*RaiRego
+
+	// The link used to get the next page.
+	NextLink *string
+}
+
+// RaiRegoProperties - Properties of an account-scoped reusable Rego resource.
+type RaiRegoProperties struct {
+	// REQUIRED; Rego source in the selected transport encoding.
+	Rego *string
+
+	// How the Rego source is encoded on the wire. The default is None.
+	Encoding *RaiRegoEncoding
+}
+
+// RaiRegoReference - References one reusable Rego resource on the same account.
+type RaiRegoReference struct {
+	// REQUIRED; The same-account Rego resource name.
+	RegoName *string
 }
 
 // RaiToolLabel - Cognitive Services RAI Tool Label resource.
@@ -3717,6 +5663,15 @@ type SKUResource struct {
 	SKU *SKU
 }
 
+// SSHSettings - SSH configuration for a Container Instance compute.
+type SSHSettings struct {
+	// Whether SSH admin access is enabled.
+	AdminEnabled *bool
+
+	// The SSH public key for authenticating to the compute instance.
+	SSHPublicKey *string
+}
+
 // SafetyProviderConfig - Gets or sets the source to which safety providers applies.
 type SafetyProviderConfig struct {
 	// If blocking would occur.
@@ -3862,6 +5817,33 @@ type ThrottlingRule struct {
 	MatchPatterns            []*RequestMatchPattern
 	MinCount                 *float32
 	RenewalPeriod            *float32
+}
+
+// ToolControlEntry - Identifies a tool by its canonical type and optional MCP server URL or connector.
+type ToolControlEntry struct {
+	// REQUIRED; The canonical tool type. For type mcp, exactly one of serverUrl or connectorId must be specified. Other tool
+	// types must omit both properties.
+	Type *ToolControlType
+
+	// The opaque MCP connector catalog identifier, not an Azure resource ID. Applies only to type mcp and cannot be specified
+	// together with serverUrl.
+	ConnectorID *string
+
+	// The absolute HTTPS URL or URL pattern of an MCP server, stored as a string to support wildcards. The entire URL may contain
+	// at most one literal '*' across its hostname, path, query, and fragment. Supported patterns include https://*.contoso.com/mcp,
+	// https://contoso.com/mcp/*, https://contoso.com/mcp?tenant=*, and https://contoso.com/mcp#*. A hostname wildcard must be
+	// the leftmost label. The URL must not contain user information. Applies only to type mcp and cannot be specified together
+	// with connectorId.
+	ServerURL *string
+}
+
+// ToolControls - Defines the default and per-tool access policy for a Foundry project.
+type ToolControls struct {
+	// The tools explicitly allowed by the policy. Omission or an empty array specifies no explicitly allowed tools.
+	AllowedTools []*ToolControlEntry
+
+	// The action applied when a tool is not listed explicitly. Only Deny is currently supported.
+	DefaultAction *ToolControlsDefaultAction
 }
 
 // TrafficRoutingRule - Represents a rule for routing traffic to a specific deployment.
@@ -4041,4 +6023,118 @@ type VirtualNetworkRule struct {
 
 	// Gets the state of virtual network rule.
 	State *string
+}
+
+// Workbench resource under a Cognitive Services project.
+// Provides interactive compute with data access for AI development.
+type Workbench struct {
+	// REQUIRED; Properties of the workbench resource.
+	Properties *WorkbenchProperties
+
+	// Identity for the resource.
+	Identity *Identity
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkbenchListResult - The list of workbenches operation response.
+type WorkbenchListResult struct {
+	// The link used to get the next page of workbench list.
+	NextLink *string
+
+	// Gets the list of workbenches.
+	Value []*Workbench
+}
+
+// WorkbenchProperties - Properties for a Workbench resource.
+type WorkbenchProperties struct {
+	// REQUIRED; Container image URI (e.g., MCR or ACR image path) for the workbench. Immutable after creation.
+	ImageLink *string
+
+	// REQUIRED; Resource ID of the Foundry Compute or virtual cluster that hosts this workbench. Changing the cluster requires
+	// the workbench to be stopped.
+	TargetClusterID *string
+
+	// The dataset ID to mount for the workbench. Set only during creation.
+	DatasetID *string
+
+	// GPU count for GPU pools or vCPU count for CPU pools. Must be 1, 2, 4, 8, or a positive multiple of 8. A full-node Azure
+	// VM size permits partition selection; omission uses the full node. For an exact Singularity instance type, a supplied count
+	// must match that type; the Singularity.D4_v3 fallback accepts 4.
+	GpuCount *int32
+
+	// ISO 8601 duration before the idle workbench is automatically shut down (e.g., 'PT30M').
+	IdleTimeBeforeShutdown *string
+
+	// For virtual clusters, an exact Singularity instance type or a full-node Azure VM size. If omitted on creation, defaults
+	// to Singularity.D4_v3. Foundry Compute ignores this override and uses the pool configuration. Changing the instance type
+	// requires the workbench to be stopped.
+	InstanceType *string
+
+	// SSH configuration for remote access to the workbench. Set only during creation.
+	SSHSettings *SSHSettings
+
+	// READ-ONLY; Network connectivity endpoints assigned to the workbench.
+	ConnectivityEndpoints *ConnectivityEndpoints
+
+	// READ-ONLY; Creation time of the workbench resource.
+	CreationTime *time.Time
+
+	// READ-ONLY; Error details for the workbench resource.
+	Errors []*ErrorDetail
+
+	// READ-ONLY; Provisioning state of the workbench resource, independent of runtime lifecycle status.
+	ProvisioningState *WorkbenchProvisioningState
+
+	// READ-ONLY; Runtime lifecycle status of the workbench. Independent of resource provisioning; start, stop, restart, and runtime
+	// health changes do not change provisioningState.
+	Status *WorkbenchStatus
+
+	// READ-ONLY; The web endpoint URL for accessing the workbench.
+	WebEndpoint *string
+}
+
+// WorkbenchUpdate - The mutable fields of a workbench resource.
+type WorkbenchUpdate struct {
+	// Identity for the resource. May be changed while the workbench is running only when properties is omitted or null; the change
+	// takes effect after restart. If a properties object is supplied, including an empty object or timeout-only update, changing
+	// identity requires the workbench to be stopped.
+	Identity *Identity
+
+	// Properties of the workbench to update.
+	Properties *WorkbenchUpdateProperties
+}
+
+// WorkbenchUpdateProperties - Mutable properties for a Workbench resource.
+type WorkbenchUpdateProperties struct {
+	// GPU count for GPU pools or vCPU count for CPU pools. Must be 1, 2, 4, 8, or a positive multiple of 8. Omit to preserve
+	// the current value; null clears the override to use the full node or the instance type's default count. Full-node Azure
+	// VM sizes permit partition selection. A supplied count must match an exact Singularity instance type; the Singularity.D4_v3
+	// fallback accepts 4.
+	GpuCount *int32
+
+	// ISO 8601 duration before the idle workbench is automatically shut down (e.g., 'PT30M').
+	IdleTimeBeforeShutdown *string
+
+	// For virtual clusters, an exact Singularity instance type or a full-node Azure VM size. Omit to preserve the current value;
+	// null resets to the Singularity.D4_v3 fallback. Foundry Compute ignores this override and uses the pool configuration. An
+	// actual instance type change requires the workbench to be stopped.
+	InstanceType *string
+
+	// Resource ID of the Foundry Compute or virtual cluster that hosts this workbench. Changing the cluster requires the workbench
+	// to be stopped.
+	TargetClusterID *string
 }

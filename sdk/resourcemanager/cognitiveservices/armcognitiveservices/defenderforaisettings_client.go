@@ -19,7 +19,7 @@ import (
 // DefenderForAISettingsClient contains the methods for the DefenderForAISettings group.
 // Don't use this type directly, use NewDefenderForAISettingsClient() instead.
 //
-// Generated from API version 2026-11-01
+// Generated from API version 2026-11-15-preview
 type DefenderForAISettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *DefenderForAISettingsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -165,7 +165,7 @@ func (client *DefenderForAISettingsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *DefenderForAISettingsClient) listCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261101)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -310,7 +310,7 @@ func (client *DefenderForAISettingsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

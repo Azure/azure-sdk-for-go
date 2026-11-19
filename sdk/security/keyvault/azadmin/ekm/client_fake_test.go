@@ -66,7 +66,7 @@ func newMockClient(t *testing.T, srv *mock.Server) *ekm.Client {
 func sampleConnection() ekm.Connection {
 	return ekm.Connection{
 		Host:                    to.Ptr("ekm-proxy.example.com:443"),
-		ServerCaCertificates:    [][]byte{[]byte("ca-cert-bytes")},
+		ServerCACertificates:    [][]byte{[]byte("ca-cert-bytes")},
 		ServerSubjectCommonName: to.Ptr("ekm-proxy.example.com"),
 		PathPrefix:              to.Ptr("/v1"),
 	}
@@ -87,7 +87,7 @@ func TestCreateEkmConnection_Mock(t *testing.T) {
 	require.Equal(t, "ekm-proxy.example.com:443", *res.Host)
 	require.NotNil(t, res.PathPrefix)
 	require.Equal(t, "/v1", *res.PathPrefix)
-	require.Len(t, res.ServerCaCertificates, 1)
+	require.Len(t, res.ServerCACertificates, 1)
 }
 
 func TestCreateEkmConnection_MockError(t *testing.T) {
@@ -227,7 +227,7 @@ func TestGetEkmCertificate_Mock(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, res.SubjectCommonName)
 	require.Equal(t, "CN=hsm-client", *res.SubjectCommonName)
-	require.Len(t, res.CaCertificates, 1)
+	require.Len(t, res.CACertificates, 1)
 }
 
 func TestGetEkmCertificate_MockError(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/CreateSharedCommitmentPlanAssociation.json
+// Generated from example definition: 2026-11-15-preview/CreateSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdateAssociation() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/CreateSharedCommitmentPlan.json
+// Generated from example definition: 2026-11-15-preview/CreateSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleCommitmentPlansClient_BeginCreateOrUpdatePlan() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/DeleteCommitmentPlan.json
+// Generated from example definition: 2026-11-15-preview/DeleteCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleCommitmentPlansClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/DeleteSharedCommitmentPlanAssociation.json
+// Generated from example definition: 2026-11-15-preview/DeleteSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_BeginDeleteAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleCommitmentPlansClient_BeginDeleteAssociation() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/DeleteSharedCommitmentPlan.json
+// Generated from example definition: 2026-11-15-preview/DeleteSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginDeletePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleCommitmentPlansClient_BeginDeletePlan() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateSharedCommitmentPlan.json
+// Generated from example definition: 2026-11-15-preview/UpdateSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_BeginUpdatePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleCommitmentPlansClient_BeginUpdatePlan() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/PutCommitmentPlan.json
+// Generated from example definition: 2026-11-15-preview/PutCommitmentPlan.json
 func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetCommitmentPlan.json
+// Generated from example definition: 2026-11-15-preview/GetCommitmentPlan.json
 func ExampleCommitmentPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleCommitmentPlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetSharedCommitmentPlanAssociation.json
+// Generated from example definition: 2026-11-15-preview/GetSharedCommitmentPlanAssociation.json
 func ExampleCommitmentPlansClient_GetAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleCommitmentPlansClient_GetAssociation() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetSharedCommitmentPlan.json
+// Generated from example definition: 2026-11-15-preview/GetSharedCommitmentPlan.json
 func ExampleCommitmentPlansClient_GetPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleCommitmentPlansClient_GetPlan() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/ListSharedCommitmentPlanAssociations.json
+// Generated from example definition: 2026-11-15-preview/ListSharedCommitmentPlanAssociations.json
 func ExampleCommitmentPlansClient_NewListAssociationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleCommitmentPlansClient_NewListAssociationsPager() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/ListCommitmentPlans.json
+// Generated from example definition: 2026-11-15-preview/ListCommitmentPlans.json
 func ExampleCommitmentPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -472,7 +472,7 @@ func ExampleCommitmentPlansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/ListSharedCommitmentPlansByResourceGroup.json
+// Generated from example definition: 2026-11-15-preview/ListSharedCommitmentPlansByResourceGroup.json
 func ExampleCommitmentPlansClient_NewListPlansByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -522,7 +522,7 @@ func ExampleCommitmentPlansClient_NewListPlansByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/ListSharedCommitmentPlansBySubscription.json
+// Generated from example definition: 2026-11-15-preview/ListSharedCommitmentPlansBySubscription.json
 func ExampleCommitmentPlansClient_NewListPlansBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

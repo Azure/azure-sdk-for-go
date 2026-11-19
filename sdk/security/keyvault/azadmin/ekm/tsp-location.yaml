@@ -1,5 +1,5 @@
 directory: specification/keyvault/data-plane/Administration/EKM
-commit: cca7d8aa23da771c2f70457092238b6fbdf6dd17
+commit: 4ac82504eaa646635a6305032b2c838058e1bd7d
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
 - specification/keyvault/data-plane/Administration/common/

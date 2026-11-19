@@ -13,6 +13,15 @@ type AgentDeploymentPropertiesClassification interface {
 	GetAgentDeploymentProperties() *AgentDeploymentProperties
 }
 
+// AgentHostingConfigurationClassification provides polymorphic access to related types.
+// Call the interface's GetAgentHostingConfiguration() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AgentHostingConfiguration, *ManagedClusterAgentHostingConfiguration
+type AgentHostingConfigurationClassification interface {
+	// GetAgentHostingConfiguration returns the AgentHostingConfiguration content of the underlying type.
+	GetAgentHostingConfiguration() *AgentHostingConfiguration
+}
+
 // ApplicationAuthorizationPolicyClassification provides polymorphic access to related types.
 // Call the interface's GetApplicationAuthorizationPolicy() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -21,6 +30,15 @@ type AgentDeploymentPropertiesClassification interface {
 type ApplicationAuthorizationPolicyClassification interface {
 	// GetApplicationAuthorizationPolicy returns the ApplicationAuthorizationPolicy content of the underlying type.
 	GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy
+}
+
+// ComputePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetComputeProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ClusterComputeProperties, *ComputeProperties, *ContainerInstanceComputeProperties
+type ComputePropertiesClassification interface {
+	// GetComputeProperties returns the ComputeProperties content of the underlying type.
+	GetComputeProperties() *ComputeProperties
 }
 
 // ConnectionPropertiesV2Classification provides polymorphic access to related types.

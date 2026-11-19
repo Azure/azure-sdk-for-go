@@ -198,6 +198,17 @@ stages:
                 -ParserPath (Join-Path $binDirectory 'apiviewgo') `
                 -OutputDirectory (Join-Path $workDirectory 'bundle')
             displayName: Prepare Go API review hash
+            condition: >-
+              and(
+                succeeded(),
+                not(
+                  and(
+                    eq(variables['Skip.CheckPackageApproval'], 'true'),
+                    eq(variables['Skip.MarkPackageReleased'], 'true'),
+                    eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
+                  )
+                )
+              )
             env:
               SOURCE_DIRECTORY: $(Build.SourcesDirectory)
               PACKAGE_INFO_FILE: $(GoReleasePackageInfoFile)

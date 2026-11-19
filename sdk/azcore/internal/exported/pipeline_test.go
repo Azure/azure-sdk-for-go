@@ -7,11 +7,15 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"net/url"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/sanitizer"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPipelineErrors(t *testing.T) {
-	pl := NewPipeline(nil)
+	pl := NewPipeline(nil, nil)
 	resp, err := pl.Do(nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")
@@ -73,7 +77,7 @@ func TestPipelineDo(t *testing.T) {
 		t.Fatal(err)
 	}
 	tp := mockTransport{succeed: true}
-	pl := NewPipeline(&tp)
+	pl := NewPipeline(nil, &tp)
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
@@ -96,5 +100,49 @@ func TestPipelineDo(t *testing.T) {
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
+	}
+}
+
+func TestPipelineSanitizer(t *testing.T) {
+	t.Run("zero value", func(t *testing.T) {
+		require.Nil(t, PipelineSanitizer(Pipeline{}))
+	})
+
+	u, err := url.Parse("https://example.com?api-version=1&custom=visible&sig=secret")
+	require.NoError(t, err)
+	header := http.Header{"Content-Type": []string{"application/json"}, "Custom": []string{"visible"}}
+	for _, tc := range []struct {
+		name        string
+		pipeline    Pipeline
+		expectedURL string
+		contentType string
+		custom      string
+	}{
+		{
+			name:        "nil sanitizer",
+			pipeline:    NewPipeline(nil, nil),
+			expectedURL: "https://example.com?api-version=1&custom=REDACTED&sig=REDACTED",
+			contentType: "application/json",
+			custom:      "REDACTED",
+		},
+		{
+			name: "custom sanitizer",
+			pipeline: NewPipeline(sanitizer.New(sanitizer.Options{
+				AllowedHeaders:     []string{"Custom"},
+				AllowedQueryParams: []string{"custom"},
+			}), nil),
+			expectedURL: "https://example.com?api-version=1&custom=visible&sig=REDACTED",
+			contentType: "application/json",
+			custom:      "visible",
+		},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			s := PipelineSanitizer(tc.pipeline)
+			require.NotNil(t, s)
+			require.Equal(t, tc.expectedURL, s.GetSanitizedURL(*u))
+			require.Equal(t, "failed: "+tc.expectedURL, s.GetSanitizedURLString("failed: "+u.String(), u))
+			require.Equal(t, tc.contentType, s.GetSanitizedHeader("Content-Type", header))
+			require.Equal(t, tc.custom, s.GetSanitizedHeader("Custom", header))
+		})
 	}
 }

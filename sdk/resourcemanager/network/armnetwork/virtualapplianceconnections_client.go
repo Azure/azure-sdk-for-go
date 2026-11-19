@@ -19,7 +19,7 @@ import (
 // VirtualApplianceConnectionsClient contains the methods for the VirtualApplianceConnections group.
 // Don't use this type directly, use NewVirtualApplianceConnectionsClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type VirtualApplianceConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *VirtualApplianceConnectionsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'
+// createOrUpdate - Creates a connection to Network Virtual Appliance, if it doesn't exist else updates the existing NVA connection'
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualApplianceConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, networkVirtualApplianceConnectionParameters VirtualApplianceConnection, options *VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *VirtualApplianceConnectionsClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualApplianceConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, networkVirtualApplianceConnectionParameters VirtualApplianceConnection, _ *VirtualApplianceConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/networkVirtualApplianceConnections/{connectionName}"
 	if client.subscriptionID == "" {
@@ -115,7 +116,7 @@ func (client *VirtualApplianceConnectionsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -148,7 +149,7 @@ func (client *VirtualApplianceConnectionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Deletes a NVA connection.
+// deleteOperation - Deletes a NVA connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualApplianceConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, options *VirtualApplianceConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *VirtualApplianceConnectionsClient) deleteOperation(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualApplianceConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, connectionName string, _ *VirtualApplianceConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/networkVirtualApplianceConnections/{connectionName}"
 	if client.subscriptionID == "" {
@@ -194,7 +196,7 @@ func (client *VirtualApplianceConnectionsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -219,7 +221,8 @@ func (client *VirtualApplianceConnectionsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return VirtualApplianceConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -246,7 +249,7 @@ func (client *VirtualApplianceConnectionsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +325,7 @@ func (client *VirtualApplianceConnectionsClient) listCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

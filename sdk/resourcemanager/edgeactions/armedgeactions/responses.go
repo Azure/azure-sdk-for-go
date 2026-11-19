@@ -81,8 +81,8 @@ type EdgeActionVersionsClientDeleteResponse struct {
 
 // EdgeActionVersionsClientDeployVersionCodeResponse contains the response from method EdgeActionVersionsClient.BeginDeployVersionCode.
 type EdgeActionVersionsClientDeployVersionCodeResponse struct {
-	// Represents an edge action version
-	EdgeActionVersionProperties
+	// Concrete tracked resource types can be created by aliasing this type using a specific property type.
+	EdgeActionVersion
 }
 
 // EdgeActionVersionsClientGetResponse contains the response from method EdgeActionVersionsClient.Get.

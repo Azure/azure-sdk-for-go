@@ -3,7 +3,79 @@
 
 package arm
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
+
+func ExampleResourceID_ValidateResourceTypeChain() {
+	id, err := ParseResourceID("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	err = id.ValidateResourceTypeChain([]ResourceType{
+		TenantResourceType,
+		SubscriptionResourceType,
+		ResourceGroupResourceType,
+		NewResourceType("Microsoft.ManagedIdentity", "userAssignedIdentities"),
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Validate the full chain before extracting fields for an operation that assumes
+	// the identity belongs directly to a resource group.
+	fmt.Printf("SubscriptionID: %s, ResourceGroupName: %s, Name: %s\n",
+		id.SubscriptionID, id.ResourceGroupName, id.Name)
+}
+
+func ExampleResourceID_ValidateResourceTypeChain_rejectUnexpectedNesting() {
+	id, err := ParseResourceID("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/parentIdentity/providers/Microsoft.ManagedIdentity/userAssignedIdentities/extensionIdentity")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Parsing succeeds, and the final type is userAssignedIdentities. However, the
+	// immediate parent is another identity, not a resource group. This check rejects
+	// the ID before its fields can be used to address a different, top-level identity.
+	err = id.ValidateResourceTypeChain([]ResourceType{
+		TenantResourceType,
+		SubscriptionResourceType,
+		ResourceGroupResourceType,
+		NewResourceType("Microsoft.ManagedIdentity", "userAssignedIdentities"),
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
+
+func ExampleResourceID_ValidateResourceTypeChain_childResource() {
+	id, err := ParseResourceID("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Include the virtual network parent and the subnet's full resource type.
+	err = id.ValidateResourceTypeChain([]ResourceType{
+		TenantResourceType,
+		SubscriptionResourceType,
+		ResourceGroupResourceType,
+		NewResourceType("Microsoft.Network", "virtualNetworks"),
+		NewResourceType("Microsoft.Network", "virtualNetworks/subnets"),
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Printf("Virtual network: %s, Subnet: %s\n", id.Parent.Name, id.Name)
+}
 
 func ExampleParseResourceType() {
 	rawResourceType := "Microsoft.Network/virtualNetworks/subnets"

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/DefaultSecurityRuleGet.json
+// Generated from example definition: 2026-03-01/DefaultSecurityRuleGet.json
 func ExampleDefaultSecurityRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleDefaultSecurityRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/DefaultSecurityRuleList.json
+// Generated from example definition: 2026-03-01/DefaultSecurityRuleList.json
 func ExampleDefaultSecurityRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

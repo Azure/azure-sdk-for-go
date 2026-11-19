@@ -27,13 +27,13 @@ func azTokenOutput(expiresOn string, expires_on int64) []byte {
 		"expires_on": %d,
 `, expires_on)
 	}
-	return []byte(fmt.Sprintf(`{
+	return fmt.Appendf(nil, `{
   "accessToken": %q,
   "expiresOn": %q,%s
   "subscription": "fake-subscription",
   "tenant": %q,
   "tokenType": "Bearer"
-}`, tokenValue, expiresOn, e_o, fakeTenantID))
+}`, tokenValue, expiresOn, e_o, fakeTenantID)
 }
 
 func mockAzFailure(_ context.Context, credName string, _ string) ([]byte, error) {

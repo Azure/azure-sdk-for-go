@@ -19,7 +19,7 @@ import (
 // AccessPolicyAssignmentClient contains the methods for the AccessPolicyAssignment group.
 // Don't use this type directly, use NewAccessPolicyAssignmentClient() instead.
 //
-// Generated from API version 2026-06-01-preview
+// Generated from API version 2026-10-01-preview
 type AccessPolicyAssignmentClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *AccessPolicyAssignmentClient) BeginCreateUpdate(ctx context.Contex
 	}
 }
 
-// CreateUpdate - Creates/Updates a particular access policy assignment for a database
+// createUpdate - Creates/Updates a particular access policy assignment for a database
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPolicyAssignmentClient) createUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, parameters AccessPolicyAssignment, options *AccessPolicyAssignmentClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
@@ -89,12 +89,13 @@ func (client *AccessPolicyAssignmentClient) createUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createUpdateCreateRequest creates the CreateUpdate request.
+// createUpdateCreateRequest creates the createUpdate request.
 func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, parameters AccessPolicyAssignment, _ *AccessPolicyAssignmentClientBeginCreateUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}"
 	if client.subscriptionID == "" {
@@ -122,7 +123,7 @@ func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -159,7 +160,7 @@ func (client *AccessPolicyAssignmentClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Deletes a single access policy assignment.
+// deleteOperation - Deletes a single access policy assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPolicyAssignmentClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, options *AccessPolicyAssignmentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -176,12 +177,13 @@ func (client *AccessPolicyAssignmentClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, _ *AccessPolicyAssignmentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}"
 	if client.subscriptionID == "" {
@@ -209,7 +211,7 @@ func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -237,7 +239,8 @@ func (client *AccessPolicyAssignmentClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AccessPolicyAssignmentClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -268,7 +271,7 @@ func (client *AccessPolicyAssignmentClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -350,7 +353,7 @@ func (client *AccessPolicyAssignmentClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601Preview)
+		reqQP.Set("api-version", version20261001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

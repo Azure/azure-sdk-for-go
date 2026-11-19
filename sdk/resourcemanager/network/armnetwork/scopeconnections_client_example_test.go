@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkManagerScopeConnectionPut.json
+// Generated from example definition: 2026-03-01/NetworkManagerScopeConnectionPut.json
 func ExampleScopeConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleScopeConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerScopeConnectionDelete.json
+// Generated from example definition: 2026-03-01/NetworkManagerScopeConnectionDelete.json
 func ExampleScopeConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleScopeConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerScopeConnectionGet.json
+// Generated from example definition: 2026-03-01/NetworkManagerScopeConnectionGet.json
 func ExampleScopeConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleScopeConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerScopeConnectionList.json
+// Generated from example definition: 2026-03-01/NetworkManagerScopeConnectionList.json
 func ExampleScopeConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

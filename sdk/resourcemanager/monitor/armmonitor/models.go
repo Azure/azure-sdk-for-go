@@ -39,7 +39,9 @@ type AccessModeSettingsExclusion struct {
 // AccessRule - Access rule in a network security perimeter configuration profile
 type AccessRule struct {
 	// Name of the access rule
-	Name       *string
+	Name *string
+
+	// Properties of the access rule
 	Properties *AccessRuleProperties
 }
 
@@ -47,7 +49,9 @@ type AccessRule struct {
 type AccessRuleProperties struct {
 	// Address prefixes in the CIDR format for inbound rules
 	AddressPrefixes []*string
-	Direction       *AccessRuleDirection
+
+	// Direction of the access rule
+	Direction *AccessRuleDirection
 
 	// Email addresses for outbound rules
 	EmailAddresses []*string
@@ -283,9 +287,13 @@ type AlertRuleAllOfCondition struct {
 // AlertRuleAnyOfOrLeafCondition - An Activity Log Alert rule condition that is met when all its member conditions are met.
 // Each condition can be of one of the following types:
 // __Important__: Each type has its unique subset of properties. Properties from different types CANNOT exist in one condition.
-// * __Leaf Condition -__ must contain 'field' and either 'equals' or 'containsAny'.
+//
+//   - __Leaf Condition -__ must contain 'field' and either 'equals' or 'containsAny'.
+//
 // _Please note, 'anyOf' should __not__ be set in a Leaf Condition._
-// * __AnyOf Condition -__ must contain __only__ 'anyOf' (which is an array of Leaf Conditions).
+//
+//   - __AnyOf Condition -__ must contain __only__ 'anyOf' (which is an array of Leaf Conditions).
+//
 // _Please note, 'field', 'equals' and 'containsAny' should __not__ be set in an AnyOf Condition._
 type AlertRuleAnyOfOrLeafCondition struct {
 	// An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
@@ -481,6 +489,11 @@ type AutoscaleSettingResource struct {
 	// REQUIRED; The autoscale setting of the resource.
 	Properties *AutoscaleSetting
 
+	// The managed service identities assigned to this resource. Only user-assigned identities are supported; 'SystemAssigned'
+	// and 'SystemAssigned,UserAssigned' are rejected. At most one user-assigned managed identity may be assigned to an autoscale
+	// setting. To remove the assigned identity, send 'type' as 'None'.
+	Identity *ManagedServiceIdentity
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -508,6 +521,11 @@ type AutoscaleSettingResourceCollection struct {
 
 // AutoscaleSettingResourcePatch - The autoscale setting object for patch operations.
 type AutoscaleSettingResourcePatch struct {
+	// The managed service identities assigned to this resource. Only user-assigned identities are supported; 'SystemAssigned'
+	// and 'SystemAssigned,UserAssigned' are rejected. At most one user-assigned managed identity may be assigned to an autoscale
+	// setting. To remove the assigned identity, send 'type' as 'None'.
+	Identity *ManagedServiceIdentity
+
 	// The autoscale setting properties of the update operation.
 	Properties *AutoscaleSetting
 
@@ -2611,6 +2629,7 @@ type NetworkSecurityPerimeter struct {
 
 // NetworkSecurityPerimeterConfiguration - Network security perimeter (NSP) configuration resource
 type NetworkSecurityPerimeterConfiguration struct {
+	// Network security configuration properties.
 	Properties *NetworkSecurityPerimeterConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -2637,14 +2656,19 @@ type NetworkSecurityPerimeterConfigurationListResult struct {
 
 // NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.
 type NetworkSecurityPerimeterConfigurationProperties struct {
+	// Information about the network security perimeter (NSP)
 	NetworkSecurityPerimeter *NetworkSecurityPerimeter
-	Profile                  *NetworkSecurityProfile
-	ResourceAssociation      *ResourceAssociation
+
+	// Network security perimeter configuration profile
+	Profile *NetworkSecurityProfile
+
+	// Information about the resource association
+	ResourceAssociation *ResourceAssociation
 
 	// READ-ONLY; List of provisioning issues, if any
 	ProvisioningIssues []*ProvisioningIssue
 
-	// READ-ONLY
+	// READ-ONLY; Provisioning state of the network security perimeter configuration
 	ProvisioningState *NetworkSecurityPerimeterConfigurationProvisioningState
 }
 
@@ -3027,6 +3051,9 @@ type PrivateEndpointConnectionProperties struct {
 	// The private endpoint resource.
 	PrivateEndpoint *PrivateEndpoint
 
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
@@ -3137,7 +3164,7 @@ type ProvisioningIssue struct {
 	// READ-ONLY; Name of the issue
 	Name *string
 
-	// READ-ONLY
+	// READ-ONLY; Details of the provisioning issue
 	Properties *ProvisioningIssueProperties
 }
 
@@ -3233,6 +3260,7 @@ type ResolveConfiguration struct {
 
 // ResourceAssociation - Information about resource association
 type ResourceAssociation struct {
+	// Access mode of the resource association
 	AccessMode *ResourceAssociationAccessMode
 
 	// Name of the resource association

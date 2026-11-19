@@ -67,7 +67,8 @@ func (client *DatabaseOperationsClient) Cancel(ctx context.Context, resourceGrou
 		return DatabaseOperationsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return DatabaseOperationsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DatabaseOperationsClientCancelResponse{}, err
 	}
 	return DatabaseOperationsClientCancelResponse{}, nil
 }

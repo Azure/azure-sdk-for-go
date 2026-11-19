@@ -13,7 +13,33 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/ProtectionPolicies_Delete.json
+func ExampleProtectionPoliciesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProtectionPoliciesClient().BeginDelete(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.ProtectionPoliciesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-10-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureVMProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +221,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureVMPro
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateSimpleAzureVMProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +297,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateSimpleAzureVMP
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/V2Policy/IaaS_v2_daily.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/V2Policy/IaaS_v2_daily.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureVMProtectionPolicyWithDailyBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,6 +312,8 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 		Properties: &armrecoveryservicesbackup.AzureIaaSVMProtectionPolicy{
 			BackupManagementType:          to.Ptr("AzureIaasVM"),
 			InstantRpRetentionRangeInDays: to.Ptr[int32](30),
+			InstantAccessSnapshotEnabled:  to.Ptr(true),
+			InstantAccessDurationMinutes:  to.Ptr[int32](120),
 			PolicyType:                    to.Ptr(armrecoveryservicesbackup.IAASVMPolicyTypeV2),
 			RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
 				DailySchedule: &armrecoveryservicesbackup.DailyRetentionSchedule{
@@ -377,6 +405,8 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 	// 		Properties: &armrecoveryservicesbackup.AzureIaaSVMProtectionPolicy{
 	// 			BackupManagementType: to.Ptr("AzureIaasVM"),
 	// 			InstantRpRetentionRangeInDays: to.Ptr[int32](30),
+	// 			InstantAccessSnapshotEnabled: to.Ptr(true),
+	// 			InstantAccessDurationMinutes: to.Ptr[int32](120),
 	// 			PolicyType: to.Ptr(armrecoveryservicesbackup.IAASVMPolicyTypeV2),
 	// 			ProtectedItemsCount: to.Ptr[int32](0),
 	// 			RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
@@ -458,7 +488,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureVMProtectionPolicyWithHourlyBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -645,7 +675,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateEnhancedAzureV
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+// Generated from example definition: 2026-10-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateDailyAzureStorageProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -824,7 +854,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateDailyAzureStor
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
+// Generated from example definition: 2026-10-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateAzureStorageVaultStandardProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1008,7 +1038,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateAzureStorageVa
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
+// Generated from example definition: 2026-10-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateHourlyAzureStorageProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1179,7 +1209,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateHourlyAzureSto
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
+// Generated from example definition: 2026-10-01/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureWorkloadProtectionPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1440,33 +1470,7 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate_createOrUpdateFullAzureWorkl
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_Delete.json
-func ExampleProtectionPoliciesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewProtectionPoliciesClient().BeginDelete(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.ProtectionPoliciesClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-08-01/AzureIaasVm/ProtectionPolicies_Get.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/ProtectionPolicies_Get.json
 func ExampleProtectionPoliciesClient_Get_getAzureIaasVMProtectionPolicyDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1518,7 +1522,7 @@ func ExampleProtectionPoliciesClient_Get_getAzureIaasVMProtectionPolicyDetails()
 	// }
 }
 
-// Generated from example definition: 2026-08-01/AzureIaasVm/V2Policy/v2-Get-Policy.json
+// Generated from example definition: 2026-10-01/AzureIaasVm/V2Policy/v2-Get-Policy.json
 func ExampleProtectionPoliciesClient_Get_getAzureIaasVMEnhancedProtectionPolicyDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

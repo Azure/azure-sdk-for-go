@@ -19,7 +19,7 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-11-01
 type OperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *OperationsClient) GetOperationResult(ctx context.Context, resource
 	if err != nil {
 		return OperationsClientGetOperationResultResponse{}, err
 	}
-	return client.getOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getOperationResultCreateRequest creates the GetOperationResult request.
@@ -92,7 +93,7 @@ func (client *OperationsClient) getOperationResultCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -153,7 +154,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, nextLink 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -192,7 +193,8 @@ func (client *OperationsClient) OperationStatusGet(ctx context.Context, resource
 	if err != nil {
 		return OperationsClientOperationStatusGetResponse{}, err
 	}
-	return client.operationStatusGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.operationStatusGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // operationStatusGetCreateRequest creates the OperationStatusGet request.
@@ -219,7 +221,7 @@ func (client *OperationsClient) operationStatusGetCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

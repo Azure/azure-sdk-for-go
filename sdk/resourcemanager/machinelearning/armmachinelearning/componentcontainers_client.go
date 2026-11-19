@@ -68,7 +68,8 @@ func (client *ComponentContainersClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return ComponentContainersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *ComponentContainersClient) Delete(ctx context.Context, resourceGro
 		return ComponentContainersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ComponentContainersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ComponentContainersClientDeleteResponse{}, err
 	}
 	return ComponentContainersClientDeleteResponse{}, nil
 }
@@ -197,7 +199,8 @@ func (client *ComponentContainersClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ComponentContainersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

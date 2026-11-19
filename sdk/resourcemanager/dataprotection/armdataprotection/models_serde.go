@@ -254,6 +254,7 @@ func (a AzureBackupDiscreteRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTime[datetime.RFC3339](objectMap, "expiryTime", a.ExpiryTime, true)
 	populate(objectMap, "friendlyName", a.FriendlyName)
+	populate(objectMap, "immutabilityProperties", a.ImmutabilityProperties)
 	objectMap["objectType"] = "AzureBackupDiscreteRecoveryPoint"
 	populate(objectMap, "policyName", a.PolicyName)
 	populate(objectMap, "policyVersion", a.PolicyVersion)
@@ -281,6 +282,9 @@ func (a *AzureBackupDiscreteRecoveryPoint) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, "FriendlyName", &a.FriendlyName)
+			delete(rawMsg, key)
+		case "immutabilityProperties":
+			err = unpopulate(val, "ImmutabilityProperties", &a.ImmutabilityProperties)
 			delete(rawMsg, key)
 		case "objectType":
 			err = unpopulate(val, "ObjectType", &a.ObjectType)
@@ -3567,9 +3571,41 @@ func (i *ImmediateCopyOption) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ImmutabilityConfiguration.
+func (i ImmutabilityConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "durationInDays", i.DurationInDays)
+	populate(objectMap, "type", i.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImmutabilityConfiguration.
+func (i *ImmutabilityConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "durationInDays":
+			err = unpopulate(val, "DurationInDays", &i.DurationInDays)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &i.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ImmutabilitySettings.
 func (i ImmutabilitySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "configuration", i.Configuration)
 	populate(objectMap, "state", i.State)
 	return json.Marshal(objectMap)
 }
@@ -3583,6 +3619,9 @@ func (i *ImmutabilitySettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "configuration":
+			err = unpopulate(val, "Configuration", &i.Configuration)
+			delete(rawMsg, key)
 		case "state":
 			err = unpopulate(val, "State", &i.State)
 			delete(rawMsg, key)
@@ -4582,6 +4621,37 @@ func (p *PolicyParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PostgreSQLFlexibleServerBackupDatasourceParameters.
+func (p PostgreSQLFlexibleServerBackupDatasourceParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "backupSolutionType", p.BackupSolutionType)
+	objectMap["objectType"] = "PostgreSqlFlexibleServerBackupDatasourceParameters"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PostgreSQLFlexibleServerBackupDatasourceParameters.
+func (p *PostgreSQLFlexibleServerBackupDatasourceParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "backupSolutionType":
+			err = unpopulate(val, "BackupSolutionType", &p.BackupSolutionType)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, "ObjectType", &p.ObjectType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ProtectionStatusDetails.
 func (p ProtectionStatusDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4698,6 +4768,37 @@ func (r *RecoveryPointDataStoreDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "visible":
 			err = unpopulate(val, "Visible", &r.Visible)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RecoveryPointImmutabilityProperties.
+func (r RecoveryPointImmutabilityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", r.ExpiryTime, true)
+	populate(objectMap, "isImmutable", r.IsImmutable)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPointImmutabilityProperties.
+func (r *RecoveryPointImmutabilityProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "expiryTime":
+			err = unpopulateTime[datetime.RFC3339](val, "ExpiryTime", &r.ExpiryTime)
+			delete(rawMsg, key)
+		case "isImmutable":
+			err = unpopulate(val, "IsImmutable", &r.IsImmutable)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -4,6 +4,7 @@
 package azdatalake
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
@@ -76,3 +77,9 @@ const (
 func PossibleStateTypeValues() []StateType {
 	return lease.PossibleStateTypeValues()
 }
+
+// SessionOptions configures session authentication; set it as ClientOptions.Session. Sessions apply
+// only to clients authenticated with an azcore.TokenCredential, and only to the file reads they send
+// to the blob endpoint, with a session created and cached per file system; requests to the DFS
+// endpoint always use the bearer token. Clients using a shared key, a SAS or no credential ignore it.
+type SessionOptions = azblob.SessionOptions

@@ -154,6 +154,119 @@ func ExampleBmcKeySetsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/BmcKeySets_Patch.json
+func ExampleBmcKeySetsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBmcKeySetsClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", "bmcKeySetName", armnetworkcloud.BmcKeySetPatchParameters{
+		Properties: &armnetworkcloud.BmcKeySetPatchProperties{
+			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
+			UserList: []*armnetworkcloud.KeySetUser{
+				{
+					AzureUserName: to.Ptr("userABC"),
+					Description:   to.Ptr("Needs access for troubleshooting as a part of the support team"),
+					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
+						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+					},
+					UserPrincipalName: to.Ptr("userABC@contoso.com"),
+				},
+				{
+					AzureUserName: to.Ptr("userXYZ"),
+					Description:   to.Ptr("Needs access for troubleshooting as a part of the support team"),
+					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
+						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+					},
+					UserPrincipalName: to.Ptr("userABC@contoso.com"),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("myvalue1"),
+			"key2": to.Ptr("myvalue2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.BmcKeySetsClientUpdateResponse{
+	// 	BmcKeySet: armnetworkcloud.BmcKeySet{
+	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/bmcKeySets/bmcKeySetName"),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("bmcKeySetName"),
+	// 		Properties: &armnetworkcloud.BmcKeySetProperties{
+	// 			AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.BmcKeySetDetailedStatusSomeInvalid),
+	// 			DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
+	// 			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
+	// 			LastValidation: to.Ptr(time.Date(2022, time.December, 12, 12, 0, 0, 8000000, time.UTC)),
+	// 			PrivilegeLevel: to.Ptr(armnetworkcloud.BmcKeySetPrivilegeLevelAdministrator),
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.BmcKeySetProvisioningStateSucceeded),
+	// 			UserList: []*armnetworkcloud.KeySetUser{
+	// 				{
+	// 					AzureUserName: to.Ptr("userABC"),
+	// 					Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
+	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
+	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+	// 					},
+	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
+	// 				},
+	// 				{
+	// 					AzureUserName: to.Ptr("userXYZ"),
+	// 					Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
+	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
+	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+	// 					},
+	// 					UserPrincipalName: to.Ptr("userXYZ@contoso.com"),
+	// 				},
+	// 			},
+	// 			UserListStatus: []*armnetworkcloud.KeySetUserStatus{
+	// 				{
+	// 					AzureUserName: to.Ptr("userABC"),
+	// 					Status: to.Ptr(armnetworkcloud.BareMetalMachineKeySetUserSetupStatusActive),
+	// 					StatusMessage: to.Ptr("User has been provisioned"),
+	// 				},
+	// 				{
+	// 					AzureUserName: to.Ptr("userXYZ"),
+	// 					Status: to.Ptr(armnetworkcloud.BareMetalMachineKeySetUserSetupStatusInvalid),
+	// 					StatusMessage: to.Ptr("User is not a valid Azure user"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/clusters/bmcKeySets"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/BmcKeySets_Get.json
 func ExampleBmcKeySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -328,117 +441,4 @@ func ExampleBmcKeySetsClient_NewListByClusterPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/BmcKeySets_Patch.json
-func ExampleBmcKeySetsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBmcKeySetsClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", "bmcKeySetName", armnetworkcloud.BmcKeySetPatchParameters{
-		Properties: &armnetworkcloud.BmcKeySetPatchProperties{
-			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
-			UserList: []*armnetworkcloud.KeySetUser{
-				{
-					AzureUserName: to.Ptr("userABC"),
-					Description:   to.Ptr("Needs access for troubleshooting as a part of the support team"),
-					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
-						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-					},
-					UserPrincipalName: to.Ptr("userABC@contoso.com"),
-				},
-				{
-					AzureUserName: to.Ptr("userXYZ"),
-					Description:   to.Ptr("Needs access for troubleshooting as a part of the support team"),
-					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
-						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-					},
-					UserPrincipalName: to.Ptr("userABC@contoso.com"),
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("myvalue1"),
-			"key2": to.Ptr("myvalue2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.BmcKeySetsClientUpdateResponse{
-	// 	BmcKeySet: armnetworkcloud.BmcKeySet{
-	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/bmcKeySets/bmcKeySetName"),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("bmcKeySetName"),
-	// 		Properties: &armnetworkcloud.BmcKeySetProperties{
-	// 			AzureGroupID: to.Ptr("f110271b-XXXX-4163-9b99-214d91660f0e"),
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.BmcKeySetDetailedStatusSomeInvalid),
-	// 			DetailedStatusMessage: to.Ptr("Invalid Azure user(s) were provided: userXYZ"),
-	// 			Expiration: to.Ptr(time.Date(2022, time.December, 31, 23, 59, 59, 8000000, time.UTC)),
-	// 			LastValidation: to.Ptr(time.Date(2022, time.December, 12, 12, 0, 0, 8000000, time.UTC)),
-	// 			PrivilegeLevel: to.Ptr(armnetworkcloud.BmcKeySetPrivilegeLevelAdministrator),
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.BmcKeySetProvisioningStateSucceeded),
-	// 			UserList: []*armnetworkcloud.KeySetUser{
-	// 				{
-	// 					AzureUserName: to.Ptr("userABC"),
-	// 					Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
-	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
-	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-	// 					},
-	// 					UserPrincipalName: to.Ptr("userABC@contoso.com"),
-	// 				},
-	// 				{
-	// 					AzureUserName: to.Ptr("userXYZ"),
-	// 					Description: to.Ptr("Needs access for troubleshooting as a part of the support team"),
-	// 					SSHPublicKey: &armnetworkcloud.SSHPublicKey{
-	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-	// 					},
-	// 					UserPrincipalName: to.Ptr("userXYZ@contoso.com"),
-	// 				},
-	// 			},
-	// 			UserListStatus: []*armnetworkcloud.KeySetUserStatus{
-	// 				{
-	// 					AzureUserName: to.Ptr("userABC"),
-	// 					Status: to.Ptr(armnetworkcloud.BareMetalMachineKeySetUserSetupStatusActive),
-	// 					StatusMessage: to.Ptr("User has been provisioned"),
-	// 				},
-	// 				{
-	// 					AzureUserName: to.Ptr("userXYZ"),
-	// 					Status: to.Ptr(armnetworkcloud.BareMetalMachineKeySetUserSetupStatusInvalid),
-	// 					StatusMessage: to.Ptr("User is not a valid Azure user"),
-	// 				},
-	// 			},
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/clusters/bmcKeySets"),
-	// 	},
-	// }
 }

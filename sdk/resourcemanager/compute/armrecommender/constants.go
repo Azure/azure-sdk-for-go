@@ -5,7 +5,7 @@
 package armrecommender
 
 const (
-	version20260905Preview string = "2026-09-05-preview"
+	version20261005Preview string = "2026-10-05-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -66,6 +66,36 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// PlacementScoreValue - Placement score value indicating the likelihood of successfully allocating the requested VM(s).
+type PlacementScoreValue string
+
+const (
+	// PlacementScoreValueDataNotFoundOrStale - Data was not found or is stale.
+	PlacementScoreValueDataNotFoundOrStale PlacementScoreValue = "DataNotFoundOrStale"
+	// PlacementScoreValueHigh - High likelihood of successful allocation.
+	PlacementScoreValueHigh PlacementScoreValue = "High"
+	// PlacementScoreValueInsufficientQuota - Insufficient quota is available to fulfill the request.
+	PlacementScoreValueInsufficientQuota PlacementScoreValue = "InsufficientQuota"
+	// PlacementScoreValueLow - Low likelihood of successful allocation.
+	PlacementScoreValueLow PlacementScoreValue = "Low"
+	// PlacementScoreValueMedium - Medium likelihood of successful allocation.
+	PlacementScoreValueMedium PlacementScoreValue = "Medium"
+	// PlacementScoreValueRestrictedSKUNotAvailable - The requested SKU is restricted and not available.
+	PlacementScoreValueRestrictedSKUNotAvailable PlacementScoreValue = "RestrictedSkuNotAvailable"
+)
+
+// PossiblePlacementScoreValueValues returns the possible values for the PlacementScoreValue const type.
+func PossiblePlacementScoreValueValues() []PlacementScoreValue {
+	return []PlacementScoreValue{
+		PlacementScoreValueDataNotFoundOrStale,
+		PlacementScoreValueHigh,
+		PlacementScoreValueInsufficientQuota,
+		PlacementScoreValueLow,
+		PlacementScoreValueMedium,
+		PlacementScoreValueRestrictedSKUNotAvailable,
 	}
 }
 

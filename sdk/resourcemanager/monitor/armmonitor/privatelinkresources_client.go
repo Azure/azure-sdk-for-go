@@ -30,6 +30,9 @@ type PrivateLinkResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return PrivateLinkResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroup
 func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, groupName string, _ *PrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/privateLinkResources/{groupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +100,11 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesClientGetResponse, error) {
+func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientGetResponse, error) {
 	result := PrivateLinkResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return PrivateLinkResourcesClientGetResponse{}, err
 	}
@@ -129,11 +131,7 @@ func (client *PrivateLinkResourcesClient) ListByPrivateLinkScope(ctx context.Con
 	if err != nil {
 		return PrivateLinkResourcesClientListByPrivateLinkScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByPrivateLinkScopeResponse{}, err
-	}
-	resp, err := client.listByPrivateLinkScopeHandleResponse(httpResp)
+	resp, err := client.listByPrivateLinkScopeHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -141,7 +139,7 @@ func (client *PrivateLinkResourcesClient) ListByPrivateLinkScope(ctx context.Con
 func (client *PrivateLinkResourcesClient) listByPrivateLinkScopeCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, _ *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/privateLinkResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,8 +162,11 @@ func (client *PrivateLinkResourcesClient) listByPrivateLinkScopeCreateRequest(ct
 }
 
 // listByPrivateLinkScopeHandleResponse handles the ListByPrivateLinkScope response.
-func (client *PrivateLinkResourcesClient) listByPrivateLinkScopeHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByPrivateLinkScopeResponse, error) {
+func (client *PrivateLinkResourcesClient) listByPrivateLinkScopeHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByPrivateLinkScopeResponse, error) {
 	result := PrivateLinkResourcesClientListByPrivateLinkScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByPrivateLinkScopeResponse{}, err
 	}

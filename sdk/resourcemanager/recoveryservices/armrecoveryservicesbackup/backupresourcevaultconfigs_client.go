@@ -19,7 +19,7 @@ import (
 // BackupResourceVaultConfigsClient contains the methods for the BackupResourceVaultConfigs group.
 // Don't use this type directly, use NewBackupResourceVaultConfigsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type BackupResourceVaultConfigsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *BackupResourceVaultConfigsClient) Get(ctx context.Context, vaultNa
 	if err != nil {
 		return BackupResourceVaultConfigsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -86,7 +87,7 @@ func (client *BackupResourceVaultConfigsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,7 +124,8 @@ func (client *BackupResourceVaultConfigsClient) Put(ctx context.Context, vaultNa
 	if err != nil {
 		return BackupResourceVaultConfigsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.
@@ -146,7 +148,7 @@ func (client *BackupResourceVaultConfigsClient) putCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
@@ -190,7 +192,8 @@ func (client *BackupResourceVaultConfigsClient) Update(ctx context.Context, vaul
 	if err != nil {
 		return BackupResourceVaultConfigsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -213,7 +216,7 @@ func (client *BackupResourceVaultConfigsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {

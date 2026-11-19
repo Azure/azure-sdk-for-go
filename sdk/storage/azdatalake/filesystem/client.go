@@ -62,8 +62,13 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 	options.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
+		// sessions apply only to the requests this client sends to the blob endpoint
+		Session: conOptions.Session,
 	}
-	blobContainerClient, _ := container.NewClient(containerURL, cred, &containerClientOpts)
+	blobContainerClient, err := container.NewClient(containerURL, cred, &containerClientOpts)
+	if err != nil {
+		return nil, err
+	}
 	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil

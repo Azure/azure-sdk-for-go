@@ -32,9 +32,9 @@ func ExamplePrivateLinkScopeOperationStatusClient_Get() {
 	// res = armmonitor.PrivateLinkScopeOperationStatusClientGetResponse{
 	// 	OperationStatus: armmonitor.OperationStatus{
 	// 		Name: to.Ptr("713192d7-503f-477a-9cfe-4efc3ee2bd11"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T16:13:13.933Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2017, time.January, 1, 16, 13, 13, 933000000, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/613192d7-503f-477a-9cfe-4efc3ee2bd60/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopeOperationStatuses/713192d7-503f-477a-9cfe-4efc3ee2bd11"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-01T13:13:13.933Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2017, time.January, 1, 13, 13, 13, 933000000, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }

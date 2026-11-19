@@ -104,19 +104,19 @@ type OccurrenceExtensionClientListOccurrenceByVMsResponse struct {
 
 // OccurrencesClientCancelResponse contains the response from method OccurrencesClient.BeginCancel.
 type OccurrencesClientCancelResponse struct {
-	// Results of a scheduled action operation for targeted resources.
+	// Results of a recurring bulk action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // OccurrencesClientDelayResponse contains the response from method OccurrencesClient.BeginDelay.
 type OccurrencesClientDelayResponse struct {
-	// Results of a scheduled action operation for targeted resources.
+	// Results of a recurring bulk action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // OccurrencesClientGetResponse contains the response from method OccurrencesClient.Get.
 type OccurrencesClientGetResponse struct {
-	// One scheduled execution of a scheduled action.
+	// One scheduled execution of a recurring bulk action.
 	Occurrence
 }
 
@@ -128,7 +128,7 @@ type OccurrencesClientListByScheduledActionResponse struct {
 
 // OccurrencesClientListResourcesResponse contains the response from method OccurrencesClient.NewListResourcesPager.
 type OccurrencesClientListResourcesResponse struct {
-	// Paged list of resources included in a scheduled action occurrence.
+	// Paged list of resources included in a recurring bulk action occurrence.
 	OccurrenceResourceListResponse
 }
 
@@ -152,19 +152,19 @@ type ScheduledActionOperationStatusClientGetResponse struct {
 
 // ScheduledActionsClientAttachResourcesResponse contains the response from method ScheduledActionsClient.BeginAttachResources.
 type ScheduledActionsClientAttachResourcesResponse struct {
-	// Results of a scheduled action operation for targeted resources.
+	// Results of a recurring bulk action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // ScheduledActionsClientCancelNextOccurrenceResponse contains the response from method ScheduledActionsClient.BeginCancelNextOccurrence.
 type ScheduledActionsClientCancelNextOccurrenceResponse struct {
-	// Results of a scheduled action operation for targeted resources.
+	// Results of a recurring bulk action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // ScheduledActionsClientCreateOrUpdateResponse contains the response from method ScheduledActionsClient.BeginCreateOrUpdate.
 type ScheduledActionsClientCreateOrUpdateResponse struct {
-	// A recurring action that operates on specified compute resources.
+	// A recurring bulk action that operates on specified compute resources.
 	ScheduledAction
 }
 
@@ -175,7 +175,7 @@ type ScheduledActionsClientDeleteResponse struct {
 
 // ScheduledActionsClientDetachResourcesResponse contains the response from method ScheduledActionsClient.BeginDetachResources.
 type ScheduledActionsClientDetachResourcesResponse struct {
-	// Results of a scheduled action operation for targeted resources.
+	// Results of a recurring bulk action operation for targeted resources.
 	ResourceOperationResponse
 }
 
@@ -191,7 +191,7 @@ type ScheduledActionsClientEnableResponse struct {
 
 // ScheduledActionsClientGetResponse contains the response from method ScheduledActionsClient.Get.
 type ScheduledActionsClientGetResponse struct {
-	// A recurring action that operates on specified compute resources.
+	// A recurring bulk action that operates on specified compute resources.
 	ScheduledAction
 }
 
@@ -209,19 +209,19 @@ type ScheduledActionsClientListBySubscriptionResponse struct {
 
 // ScheduledActionsClientListResourcesResponse contains the response from method ScheduledActionsClient.NewListResourcesPager.
 type ScheduledActionsClientListResourcesResponse struct {
-	// A paged list of compute resources associated with a scheduled action.
+	// A paged list of compute resources associated with a recurring bulk action.
 	ResourceListResponse
 }
 
 // ScheduledActionsClientPatchResourcesResponse contains the response from method ScheduledActionsClient.PatchResources.
 type ScheduledActionsClientPatchResourcesResponse struct {
-	// Results of a scheduled action operation for targeted resources.
+	// Results of a recurring bulk action operation for targeted resources.
 	ResourceOperationResponse
 }
 
 // ScheduledActionsClientTriggerManualOccurrenceResponse contains the response from method ScheduledActionsClient.BeginTriggerManualOccurrence.
 type ScheduledActionsClientTriggerManualOccurrenceResponse struct {
-	// One scheduled execution of a scheduled action.
+	// One scheduled execution of a recurring bulk action.
 	Occurrence
 }
 

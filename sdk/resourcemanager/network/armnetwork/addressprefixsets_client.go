@@ -19,7 +19,7 @@ import (
 // AddressPrefixSetsClient contains the methods for the AddressPrefixSets group.
 // Don't use this type directly, use NewAddressPrefixSetsClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type AddressPrefixSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *AddressPrefixSetsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates an address prefix set.
+// createOrUpdate - Creates or updates an address prefix set.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddressPrefixSetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, resource AddressPrefixSet, options *AddressPrefixSetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *AddressPrefixSetsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AddressPrefixSetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, resource AddressPrefixSet, _ *AddressPrefixSetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}/addressPrefixSets/{addressPrefixSetName}"
 	if client.subscriptionID == "" {
@@ -115,7 +116,7 @@ func (client *AddressPrefixSetsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +150,7 @@ func (client *AddressPrefixSetsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes the specified address prefix set.
+// deleteOperation - Deletes the specified address prefix set.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddressPrefixSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, options *AddressPrefixSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *AddressPrefixSetsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AddressPrefixSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationSecurityGroupName string, addressPrefixSetName string, _ *AddressPrefixSetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}/addressPrefixSets/{addressPrefixSetName}"
 	if client.subscriptionID == "" {
@@ -195,7 +197,7 @@ func (client *AddressPrefixSetsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -220,7 +222,8 @@ func (client *AddressPrefixSetsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return AddressPrefixSetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -247,7 +250,7 @@ func (client *AddressPrefixSetsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,7 +326,7 @@ func (client *AddressPrefixSetsClient) listCreateRequest(ctx context.Context, re
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

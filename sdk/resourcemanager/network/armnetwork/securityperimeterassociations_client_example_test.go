@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NspAssociationPut.json
+// Generated from example definition: 2026-03-01/NspAssociationPut.json
 func ExampleSecurityPerimeterAssociationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleSecurityPerimeterAssociationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspAssociationDelete.json
+// Generated from example definition: 2026-03-01/NspAssociationDelete.json
 func ExampleSecurityPerimeterAssociationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleSecurityPerimeterAssociationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspAssociationGet.json
+// Generated from example definition: 2026-03-01/NspAssociationGet.json
 func ExampleSecurityPerimeterAssociationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleSecurityPerimeterAssociationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NspAssociationList.json
+// Generated from example definition: 2026-03-01/NspAssociationList.json
 func ExampleSecurityPerimeterAssociationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleSecurityPerimeterAssociationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NspAssociationReconcile.json
+// Generated from example definition: 2026-03-01/NspAssociationReconcile.json
 func ExampleSecurityPerimeterAssociationsClient_Reconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

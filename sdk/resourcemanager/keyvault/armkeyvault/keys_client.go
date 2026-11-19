@@ -19,7 +19,7 @@ import (
 // KeysClient contains the methods for the Keys group.
 // Don't use this type directly, use NewKeysClient() instead.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-10-01-preview
 type KeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,8 @@ func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return KeysClientCreateIfNotExistResponse{}, err
 	}
-	return client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createIfNotExistCreateRequest creates the CreateIfNotExist request.
@@ -94,7 +95,7 @@ func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -136,7 +137,8 @@ func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vau
 	if err != nil {
 		return KeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -163,7 +165,7 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,7 +204,8 @@ func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return KeysClientGetVersionResponse{}, err
 	}
-	return client.getVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVersionCreateRequest creates the GetVersion request.
@@ -233,7 +236,7 @@ func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -308,7 +311,7 @@ func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupNa
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20261001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -389,7 +392,7 @@ func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20261001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

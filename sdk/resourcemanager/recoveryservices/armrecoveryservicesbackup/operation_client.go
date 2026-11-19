@@ -19,7 +19,7 @@ import (
 // OperationClient contains the methods for the Operation group.
 // Don't use this type directly, use NewOperationClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type OperationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *OperationClient) Validate(ctx context.Context, vaultName string, r
 	if err != nil {
 		return OperationClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.
@@ -87,7 +88,7 @@ func (client *OperationClient) validateCreateRequest(ctx context.Context, vaultN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

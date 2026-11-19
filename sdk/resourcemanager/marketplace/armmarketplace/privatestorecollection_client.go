@@ -59,7 +59,8 @@ func (client *PrivateStoreCollectionClient) ApproveAllItems(ctx context.Context,
 	if err != nil {
 		return PrivateStoreCollectionClientApproveAllItemsResponse{}, err
 	}
-	return client.approveAllItemsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.approveAllItemsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // approveAllItemsCreateRequest creates the ApproveAllItems request.
@@ -116,7 +117,8 @@ func (client *PrivateStoreCollectionClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return PrivateStoreCollectionClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -178,7 +180,8 @@ func (client *PrivateStoreCollectionClient) Delete(ctx context.Context, privateS
 		return PrivateStoreCollectionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PrivateStoreCollectionClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PrivateStoreCollectionClientDeleteResponse{}, err
 	}
 	return PrivateStoreCollectionClientDeleteResponse{}, nil
 }
@@ -224,7 +227,8 @@ func (client *PrivateStoreCollectionClient) DisableApproveAllItems(ctx context.C
 	if err != nil {
 		return PrivateStoreCollectionClientDisableApproveAllItemsResponse{}, err
 	}
-	return client.disableApproveAllItemsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.disableApproveAllItemsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // disableApproveAllItemsCreateRequest creates the DisableApproveAllItems request.
@@ -281,7 +285,8 @@ func (client *PrivateStoreCollectionClient) Get(ctx context.Context, privateStor
 	if err != nil {
 		return PrivateStoreCollectionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -337,7 +342,8 @@ func (client *PrivateStoreCollectionClient) List(ctx context.Context, privateSto
 	if err != nil {
 		return PrivateStoreCollectionClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -391,7 +397,8 @@ func (client *PrivateStoreCollectionClient) Post(ctx context.Context, privateSto
 		return PrivateStoreCollectionClientPostResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return PrivateStoreCollectionClientPostResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PrivateStoreCollectionClientPostResponse{}, err
 	}
 	return PrivateStoreCollectionClientPostResponse{}, nil
 }
@@ -445,7 +452,8 @@ func (client *PrivateStoreCollectionClient) TransferOffers(ctx context.Context, 
 	if err != nil {
 		return PrivateStoreCollectionClientTransferOffersResponse{}, err
 	}
-	return client.transferOffersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.transferOffersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // transferOffersCreateRequest creates the TransferOffers request.

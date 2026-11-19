@@ -68,7 +68,7 @@ func (client *NetworkRacksClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Create Network Rack resource.
+// create - Create Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkRacksClient) create(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRack, options *NetworkRacksClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *NetworkRacksClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *NetworkRacksClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRack, _ *NetworkRacksClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *NetworkRacksClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete Network Rack resource.
+// deleteOperation - Delete Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkRacksClient) deleteOperation(ctx context.Context, resourceGroupName string, networkRackName string, options *NetworkRacksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *NetworkRacksClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NetworkRacksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, _ *NetworkRacksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
 	if client.subscriptionID == "" {
@@ -190,6 +192,83 @@ func (client *NetworkRacksClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
+// BeginUpdate - Update certain properties of the Network Rack resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkRackName - Name of the Network Rack.
+//   - body - Network Rack properties to update.
+//   - options - NetworkRacksClientBeginUpdateOptions contains the optional parameters for the NetworkRacksClient.BeginUpdate
+//     method.
+func (client *NetworkRacksClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*runtime.Poller[NetworkRacksClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, networkRackName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkRacksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkRacksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update certain properties of the Network Rack resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NetworkRacksClient) update(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NetworkRacksClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkRackName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NetworkRacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, _ *NetworkRacksClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkRackName == "" {
+		return nil, errors.New("parameter networkRackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkRackName}", url.PathEscape(networkRackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get Network Rack resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -209,7 +288,8 @@ func (client *NetworkRacksClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return NetworkRacksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -387,80 +467,4 @@ func (client *NetworkRacksClient) listBySubscriptionHandleResponse(resp *http.Re
 		return NetworkRacksClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update certain properties of the Network Rack resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkRackName - Name of the Network Rack.
-//   - body - Network Rack properties to update.
-//   - options - NetworkRacksClientBeginUpdateOptions contains the optional parameters for the NetworkRacksClient.BeginUpdate
-//     method.
-func (client *NetworkRacksClient) BeginUpdate(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*runtime.Poller[NetworkRacksClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, networkRackName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetworkRacksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetworkRacksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update certain properties of the Network Rack resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NetworkRacksClient) update(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NetworkRacksClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, networkRackName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NetworkRacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, _ *NetworkRacksClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkRackName == "" {
-		return nil, errors.New("parameter networkRackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkRackName}", url.PathEscape(networkRackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

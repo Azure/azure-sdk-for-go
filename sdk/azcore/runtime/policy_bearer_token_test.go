@@ -723,7 +723,7 @@ func TestCheckHTTPSForAuth(t *testing.T) {
 
 func TestBearerTokenPolicy_NilCredential(t *testing.T) {
 	policy := NewBearerTokenPolicy(nil, nil, nil)
-	pl := exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	pl := exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		require.Zero(t, req.Header.Get(shared.HeaderAuthorization))
 		return &http.Response{}, nil
 	}), policy)

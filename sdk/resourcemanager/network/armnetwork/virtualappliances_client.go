@@ -19,7 +19,7 @@ import (
 // VirtualAppliancesClient contains the methods for the VirtualAppliances group.
 // Don't use this type directly, use NewVirtualAppliancesClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type VirtualAppliancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *VirtualAppliancesClient) BeginAbortMigration(ctx context.Context, 
 	}
 }
 
-// AbortMigration - Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous
+// abortMigration - Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous
 // state.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualAppliancesClient) abortMigration(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginAbortMigrationOptions) (*http.Response, error) {
@@ -86,12 +86,13 @@ func (client *VirtualAppliancesClient) abortMigration(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// abortMigrationCreateRequest creates the AbortMigration request.
+// abortMigrationCreateRequest creates the abortMigration request.
 func (client *VirtualAppliancesClient) abortMigrationCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, _ *VirtualAppliancesClientBeginAbortMigrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/abortMigration"
 	if client.subscriptionID == "" {
@@ -111,7 +112,7 @@ func (client *VirtualAppliancesClient) abortMigrationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -141,7 +142,7 @@ func (client *VirtualAppliancesClient) BeginCommitMigration(ctx context.Context,
 	}
 }
 
-// CommitMigration - Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed
+// commitMigration - Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed
 // migration workflow.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualAppliancesClient) commitMigration(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualApplianceCommitMigrationRequest, options *VirtualAppliancesClientBeginCommitMigrationOptions) (*http.Response, error) {
@@ -159,12 +160,13 @@ func (client *VirtualAppliancesClient) commitMigration(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// commitMigrationCreateRequest creates the CommitMigration request.
+// commitMigrationCreateRequest creates the commitMigration request.
 func (client *VirtualAppliancesClient) commitMigrationCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualApplianceCommitMigrationRequest, _ *VirtualAppliancesClientBeginCommitMigrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/commitMigration"
 	if client.subscriptionID == "" {
@@ -184,7 +186,7 @@ func (client *VirtualAppliancesClient) commitMigrationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -218,7 +220,7 @@ func (client *VirtualAppliancesClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
+// createOrUpdate - Creates or updates the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualAppliancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters VirtualAppliance, options *VirtualAppliancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -235,12 +237,13 @@ func (client *VirtualAppliancesClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualAppliancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters VirtualAppliance, _ *VirtualAppliancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
 	if client.subscriptionID == "" {
@@ -260,7 +263,7 @@ func (client *VirtualAppliancesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -293,7 +296,7 @@ func (client *VirtualAppliancesClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes the specified Network Virtual Appliance.
+// deleteOperation - Deletes the specified Network Virtual Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualAppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -310,12 +313,13 @@ func (client *VirtualAppliancesClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualAppliancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, _ *VirtualAppliancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
 	if client.subscriptionID == "" {
@@ -335,7 +339,7 @@ func (client *VirtualAppliancesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -365,7 +369,7 @@ func (client *VirtualAppliancesClient) BeginExecuteMigration(ctx context.Context
 	}
 }
 
-// ExecuteMigration - Executes the migration of the specified Network Virtual Appliance. This step performs the migration
+// executeMigration - Executes the migration of the specified Network Virtual Appliance. This step performs the migration
 // workflow that was previously prepared.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualAppliancesClient) executeMigration(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualApplianceExecuteMigrationRequest, options *VirtualAppliancesClientBeginExecuteMigrationOptions) (*http.Response, error) {
@@ -383,12 +387,13 @@ func (client *VirtualAppliancesClient) executeMigration(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// executeMigrationCreateRequest creates the ExecuteMigration request.
+// executeMigrationCreateRequest creates the executeMigration request.
 func (client *VirtualAppliancesClient) executeMigrationCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualApplianceExecuteMigrationRequest, _ *VirtualAppliancesClientBeginExecuteMigrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/executeMigration"
 	if client.subscriptionID == "" {
@@ -408,76 +413,13 @@ func (client *VirtualAppliancesClient) executeMigrationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
-}
-
-// Get - Gets the specified Network Virtual Appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
-//   - options - VirtualAppliancesClientGetOptions contains the optional parameters for the VirtualAppliancesClient.Get method.
-func (client *VirtualAppliancesClient) Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientGetOptions) (VirtualAppliancesClientGetResponse, error) {
-	var err error
-	const operationName = "VirtualAppliancesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
-	if err != nil {
-		return VirtualAppliancesClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VirtualAppliancesClientGetResponse{}, err
-	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
-}
-
-// getCreateRequest creates the Get request.
-func (client *VirtualAppliancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkVirtualApplianceName == "" {
-		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *VirtualAppliancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualAppliancesClientGetResponse, error) {
-	result := VirtualAppliancesClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualAppliance); err != nil {
-		return VirtualAppliancesClientGetResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginGetBootDiagnosticLogs - Retrieves the boot diagnostic logs for a VM instance belonging to the specified Network Virtual
@@ -505,7 +447,7 @@ func (client *VirtualAppliancesClient) BeginGetBootDiagnosticLogs(ctx context.Co
 	}
 }
 
-// GetBootDiagnosticLogs - Retrieves the boot diagnostic logs for a VM instance belonging to the specified Network Virtual
+// getBootDiagnosticLogs - Retrieves the boot diagnostic logs for a VM instance belonging to the specified Network Virtual
 // Appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualAppliancesClient) getBootDiagnosticLogs(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, request VirtualApplianceBootDiagnosticParameters, options *VirtualAppliancesClientBeginGetBootDiagnosticLogsOptions) (*http.Response, error) {
@@ -523,12 +465,13 @@ func (client *VirtualAppliancesClient) getBootDiagnosticLogs(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// getBootDiagnosticLogsCreateRequest creates the GetBootDiagnosticLogs request.
+// getBootDiagnosticLogsCreateRequest creates the getBootDiagnosticLogs request.
 func (client *VirtualAppliancesClient) getBootDiagnosticLogsCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, request VirtualApplianceBootDiagnosticParameters, _ *VirtualAppliancesClientBeginGetBootDiagnosticLogsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/getBootDiagnosticLogs"
 	if client.subscriptionID == "" {
@@ -548,7 +491,7 @@ func (client *VirtualAppliancesClient) getBootDiagnosticLogsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -558,69 +501,302 @@ func (client *VirtualAppliancesClient) getBootDiagnosticLogsCreateRequest(ctx co
 	return req, nil
 }
 
-// NewListPager - Gets all Network Virtual Appliances in a subscription.
-//   - options - VirtualAppliancesClientListOptions contains the optional parameters for the VirtualAppliancesClient.NewListPager
+// BeginPrepareMigration - Prepares the migration of the specified Network Virtual Appliance. This is the first step of a
+// migration workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
+//   - body - Parameters supplied to prepare the migration of the Network Virtual Appliance.
+//   - options - VirtualAppliancesClientBeginPrepareMigrationOptions contains the optional parameters for the VirtualAppliancesClient.BeginPrepareMigration
 //     method.
-func (client *VirtualAppliancesClient) NewListPager(options *VirtualAppliancesClientListOptions) *runtime.Pager[VirtualAppliancesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VirtualAppliancesClientListResponse]{
-		More: func(page VirtualAppliancesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualAppliancesClientListResponse) (VirtualAppliancesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualAppliancesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return VirtualAppliancesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualAppliancesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *VirtualAppliancesClient) BeginPrepareMigration(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualAppliancePrepareMigrationRequest, options *VirtualAppliancesClientBeginPrepareMigrationOptions) (*runtime.Poller[VirtualAppliancesClientPrepareMigrationResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.prepareMigration(ctx, resourceGroupName, networkVirtualApplianceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualAppliancesClientPrepareMigrationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualAppliancesClientPrepareMigrationResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
 }
 
-// listCreateRequest creates the List request.
-func (client *VirtualAppliancesClient) listCreateRequest(ctx context.Context, nextLink string, _ *VirtualAppliancesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
+// prepareMigration - Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+// workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualAppliancesClient) prepareMigration(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualAppliancePrepareMigrationRequest, options *VirtualAppliancesClientBeginPrepareMigrationOptions) (*http.Response, error) {
 	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualAppliances"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
+	const operationName = "VirtualAppliancesClient.BeginPrepareMigration"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.prepareMigrationCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// prepareMigrationCreateRequest creates the prepareMigration request.
+func (client *VirtualAppliancesClient) prepareMigrationCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualAppliancePrepareMigrationRequest, _ *VirtualAppliancesClientBeginPrepareMigrationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/prepareMigration"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkVirtualApplianceName == "" {
+		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *VirtualAppliancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualAppliancesClientListResponse, error) {
-	result := VirtualAppliancesClientListResponse{}
+// BeginReimage - Reimages one VM belonging to the specified Network Virtual Appliance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
+//   - options - VirtualAppliancesClientBeginReimageOptions contains the optional parameters for the VirtualAppliancesClient.BeginReimage
+//     method.
+func (client *VirtualAppliancesClient) BeginReimage(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginReimageOptions) (*runtime.Poller[VirtualAppliancesClientReimageResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reimage(ctx, resourceGroupName, networkVirtualApplianceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualAppliancesClientReimageResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualAppliancesClientReimageResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reimage - Reimages one VM belonging to the specified Network Virtual Appliance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualAppliancesClient) reimage(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginReimageOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VirtualAppliancesClient.BeginReimage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reimageCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// reimageCreateRequest creates the reimage request.
+func (client *VirtualAppliancesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginReimageOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/reimage"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkVirtualApplianceName == "" {
+		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.NetworkVirtualApplianceInstanceIDs != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.NetworkVirtualApplianceInstanceIDs); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginRestart - Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
+//   - options - VirtualAppliancesClientBeginRestartOptions contains the optional parameters for the VirtualAppliancesClient.BeginRestart
+//     method.
+func (client *VirtualAppliancesClient) BeginRestart(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginRestartOptions) (*runtime.Poller[VirtualAppliancesClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, networkVirtualApplianceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualAppliancesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualAppliancesClientRestartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restart - Restarts one or more VMs belonging to the specified Network Virtual Appliance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualAppliancesClient) restart(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginRestartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VirtualAppliancesClient.BeginRestart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// restartCreateRequest creates the restart request.
+func (client *VirtualAppliancesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginRestartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/restart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkVirtualApplianceName == "" {
+		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.NetworkVirtualApplianceInstanceIDs != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.NetworkVirtualApplianceInstanceIDs); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// Get - Gets the specified Network Virtual Appliance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
+//   - options - VirtualAppliancesClientGetOptions contains the optional parameters for the VirtualAppliancesClient.Get method.
+func (client *VirtualAppliancesClient) Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientGetOptions) (VirtualAppliancesClientGetResponse, error) {
+	var err error
+	const operationName = "VirtualAppliancesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
+	if err != nil {
+		return VirtualAppliancesClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualAppliancesClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *VirtualAppliancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkVirtualApplianceName == "" {
+		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *VirtualAppliancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualAppliancesClientGetResponse, error) {
+	result := VirtualAppliancesClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualApplianceListResult); err != nil {
-		return VirtualAppliancesClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualAppliance); err != nil {
+		return VirtualAppliancesClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -678,7 +854,7 @@ func (client *VirtualAppliancesClient) listByResourceGroupCreateRequest(ctx cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -697,237 +873,71 @@ func (client *VirtualAppliancesClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// BeginPrepareMigration - Prepares the migration of the specified Network Virtual Appliance. This is the first step of a
-// migration workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
-//   - body - Parameters supplied to prepare the migration of the Network Virtual Appliance.
-//   - options - VirtualAppliancesClientBeginPrepareMigrationOptions contains the optional parameters for the VirtualAppliancesClient.BeginPrepareMigration
+// NewListPager - Gets all Network Virtual Appliances in a subscription.
+//   - options - VirtualAppliancesClientListOptions contains the optional parameters for the VirtualAppliancesClient.NewListPager
 //     method.
-func (client *VirtualAppliancesClient) BeginPrepareMigration(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualAppliancePrepareMigrationRequest, options *VirtualAppliancesClientBeginPrepareMigrationOptions) (*runtime.Poller[VirtualAppliancesClientPrepareMigrationResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.prepareMigration(ctx, resourceGroupName, networkVirtualApplianceName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualAppliancesClientPrepareMigrationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualAppliancesClientPrepareMigrationResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *VirtualAppliancesClient) NewListPager(options *VirtualAppliancesClientListOptions) *runtime.Pager[VirtualAppliancesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VirtualAppliancesClientListResponse]{
+		More: func(page VirtualAppliancesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualAppliancesClientListResponse) (VirtualAppliancesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualAppliancesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return VirtualAppliancesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualAppliancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// PrepareMigration - Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
-// workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualAppliancesClient) prepareMigration(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualAppliancePrepareMigrationRequest, options *VirtualAppliancesClientBeginPrepareMigrationOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *VirtualAppliancesClient) listCreateRequest(ctx context.Context, nextLink string, _ *VirtualAppliancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "VirtualAppliancesClient.BeginPrepareMigration"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.prepareMigrationCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, body, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualAppliances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// prepareMigrationCreateRequest creates the PrepareMigration request.
-func (client *VirtualAppliancesClient) prepareMigrationCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body VirtualAppliancePrepareMigrationRequest, _ *VirtualAppliancesClientBeginPrepareMigrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/prepareMigration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkVirtualApplianceName == "" {
-		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
 }
 
-// BeginReimage - Reimages one VM belonging to the specified Network Virtual Appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
-//   - options - VirtualAppliancesClientBeginReimageOptions contains the optional parameters for the VirtualAppliancesClient.BeginReimage
-//     method.
-func (client *VirtualAppliancesClient) BeginReimage(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginReimageOptions) (*runtime.Poller[VirtualAppliancesClientReimageResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reimage(ctx, resourceGroupName, networkVirtualApplianceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualAppliancesClientReimageResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualAppliancesClientReimageResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+// listHandleResponse handles the List response.
+func (client *VirtualAppliancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualAppliancesClientListResponse, error) {
+	result := VirtualAppliancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-}
-
-// Reimage - Reimages one VM belonging to the specified Network Virtual Appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualAppliancesClient) reimage(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginReimageOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualAppliancesClient.BeginReimage"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reimageCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
-	if err != nil {
-		return nil, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualApplianceListResult); err != nil {
+		return VirtualAppliancesClientListResponse{}, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// reimageCreateRequest creates the Reimage request.
-func (client *VirtualAppliancesClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginReimageOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/reimage"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkVirtualApplianceName == "" {
-		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.NetworkVirtualApplianceInstanceIDs != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.NetworkVirtualApplianceInstanceIDs); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginRestart - Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkVirtualApplianceName - The name of Network Virtual Appliance.
-//   - options - VirtualAppliancesClientBeginRestartOptions contains the optional parameters for the VirtualAppliancesClient.BeginRestart
-//     method.
-func (client *VirtualAppliancesClient) BeginRestart(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginRestartOptions) (*runtime.Poller[VirtualAppliancesClientRestartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restart(ctx, resourceGroupName, networkVirtualApplianceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualAppliancesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualAppliancesClientRestartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restart - Restarts one or more VMs belonging to the specified Network Virtual Appliance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualAppliancesClient) restart(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginRestartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualAppliancesClient.BeginRestart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartCreateRequest creates the Restart request.
-func (client *VirtualAppliancesClient) restartCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *VirtualAppliancesClientBeginRestartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/restart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkVirtualApplianceName == "" {
-		return nil, errors.New("parameter networkVirtualApplianceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.NetworkVirtualApplianceInstanceIDs != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.NetworkVirtualApplianceInstanceIDs); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
+	return result, nil
 }
 
 // UpdateTags - Updates a Network Virtual Appliance.
@@ -951,7 +961,8 @@ func (client *VirtualAppliancesClient) UpdateTags(ctx context.Context, resourceG
 	if err != nil {
 		return VirtualAppliancesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -974,7 +985,7 @@ func (client *VirtualAppliancesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

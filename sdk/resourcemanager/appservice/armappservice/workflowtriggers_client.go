@@ -45,6 +45,87 @@ func NewWorkflowTriggersClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
+// BeginRun - Runs a workflow trigger.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - triggerName - The workflow trigger name.
+//   - options - WorkflowTriggersClientBeginRunOptions contains the optional parameters for the WorkflowTriggersClient.BeginRun
+//     method.
+func (client *WorkflowTriggersClient) BeginRun(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *WorkflowTriggersClientBeginRunOptions) (*runtime.Poller[WorkflowTriggersClientRunResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.run(ctx, resourceGroupName, name, workflowName, triggerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkflowTriggersClientRunResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkflowTriggersClientRunResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// run - Runs a workflow trigger.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkflowTriggersClient) run(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *WorkflowTriggersClientBeginRunOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkflowTriggersClient.BeginRun"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.runCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// runCreateRequest creates the run request.
+func (client *WorkflowTriggersClient) runCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, _ *WorkflowTriggersClientBeginRunOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/run"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if workflowName == "" {
+		return nil, errors.New("parameter workflowName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	if triggerName == "" {
+		return nil, errors.New("parameter triggerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Get - Gets a workflow trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -66,7 +147,8 @@ func (client *WorkflowTriggersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowTriggersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -137,7 +219,8 @@ func (client *WorkflowTriggersClient) GetSchemaJSON(ctx context.Context, resourc
 	if err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
 	}
-	return client.getSchemaJSONHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSchemaJSONHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSchemaJSONCreateRequest creates the GetSchemaJSON request.
@@ -182,6 +265,78 @@ func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JSONSchema); err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCallbackURL - Get the callback URL for a workflow trigger.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - triggerName - The workflow trigger name.
+//   - options - WorkflowTriggersClientListCallbackURLOptions contains the optional parameters for the WorkflowTriggersClient.ListCallbackURL
+//     method.
+func (client *WorkflowTriggersClient) ListCallbackURL(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *WorkflowTriggersClientListCallbackURLOptions) (WorkflowTriggersClientListCallbackURLResponse, error) {
+	var err error
+	const operationName = "WorkflowTriggersClient.ListCallbackURL"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCallbackURLCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, options)
+	if err != nil {
+		return WorkflowTriggersClientListCallbackURLResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkflowTriggersClientListCallbackURLResponse{}, err
+	}
+	resp, err := client.listCallbackURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listCallbackURLCreateRequest creates the ListCallbackURL request.
+func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, _ *WorkflowTriggersClientListCallbackURLOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/listCallbackUrl"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if workflowName == "" {
+		return nil, errors.New("parameter workflowName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+	if triggerName == "" {
+		return nil, errors.New("parameter triggerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCallbackURLHandleResponse handles the ListCallbackURL response.
+func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *http.Response, successCodes ...int) (WorkflowTriggersClientListCallbackURLResponse, error) {
+	result := WorkflowTriggersClientListCallbackURLResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
+		return WorkflowTriggersClientListCallbackURLResponse{}, err
 	}
 	return result, nil
 }
@@ -272,155 +427,4 @@ func (client *WorkflowTriggersClient) listHandleResponse(resp *http.Response, su
 		return WorkflowTriggersClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// ListCallbackURL - Get the callback URL for a workflow trigger.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Site name.
-//   - workflowName - The workflow name.
-//   - triggerName - The workflow trigger name.
-//   - options - WorkflowTriggersClientListCallbackURLOptions contains the optional parameters for the WorkflowTriggersClient.ListCallbackURL
-//     method.
-func (client *WorkflowTriggersClient) ListCallbackURL(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *WorkflowTriggersClientListCallbackURLOptions) (WorkflowTriggersClientListCallbackURLResponse, error) {
-	var err error
-	const operationName = "WorkflowTriggersClient.ListCallbackURL"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCallbackURLCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, options)
-	if err != nil {
-		return WorkflowTriggersClientListCallbackURLResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkflowTriggersClientListCallbackURLResponse{}, err
-	}
-	return client.listCallbackURLHandleResponse(httpResp, http.StatusOK)
-}
-
-// listCallbackURLCreateRequest creates the ListCallbackURL request.
-func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, _ *WorkflowTriggersClientListCallbackURLOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/listCallbackUrl"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	if triggerName == "" {
-		return nil, errors.New("parameter triggerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCallbackURLHandleResponse handles the ListCallbackURL response.
-func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *http.Response, successCodes ...int) (WorkflowTriggersClientListCallbackURLResponse, error) {
-	result := WorkflowTriggersClientListCallbackURLResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return WorkflowTriggersClientListCallbackURLResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginRun - Runs a workflow trigger.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Site name.
-//   - workflowName - The workflow name.
-//   - triggerName - The workflow trigger name.
-//   - options - WorkflowTriggersClientBeginRunOptions contains the optional parameters for the WorkflowTriggersClient.BeginRun
-//     method.
-func (client *WorkflowTriggersClient) BeginRun(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *WorkflowTriggersClientBeginRunOptions) (*runtime.Poller[WorkflowTriggersClientRunResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.run(ctx, resourceGroupName, name, workflowName, triggerName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkflowTriggersClientRunResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkflowTriggersClientRunResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Run - Runs a workflow trigger.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkflowTriggersClient) run(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, options *WorkflowTriggersClientBeginRunOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkflowTriggersClient.BeginRun"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.runCreateRequest(ctx, resourceGroupName, name, workflowName, triggerName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// runCreateRequest creates the Run request.
-func (client *WorkflowTriggersClient) runCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, _ *WorkflowTriggersClientBeginRunOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/run"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	if triggerName == "" {
-		return nil, errors.New("parameter triggerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

@@ -63,7 +63,7 @@ func (client *CombineClient) BeginCreateNotificationsAtTenantActionGroupResource
 	}
 }
 
-// CreateNotificationsAtTenantActionGroupResourceLevel - Send test notifications to a set of provided receivers
+// createNotificationsAtTenantActionGroupResourceLevel - Send test notifications to a set of provided receivers
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CombineClient) createNotificationsAtTenantActionGroupResourceLevel(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, notificationRequest TenantNotificationRequestBody, options *CombineClientBeginCreateNotificationsAtTenantActionGroupResourceLevelOptions) (*http.Response, error) {
 	var err error
@@ -86,7 +86,7 @@ func (client *CombineClient) createNotificationsAtTenantActionGroupResourceLevel
 	return httpResp, nil
 }
 
-// createNotificationsAtTenantActionGroupResourceLevelCreateRequest creates the CreateNotificationsAtTenantActionGroupResourceLevel request.
+// createNotificationsAtTenantActionGroupResourceLevelCreateRequest creates the createNotificationsAtTenantActionGroupResourceLevel request.
 func (client *CombineClient) createNotificationsAtTenantActionGroupResourceLevelCreateRequest(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, notificationRequest TenantNotificationRequestBody, _ *CombineClientBeginCreateNotificationsAtTenantActionGroupResourceLevelOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Insights/tenantActionGroups/{tenantActionGroupName}/createNotifications"
 	if managementGroupID == "" {
@@ -135,11 +135,7 @@ func (client *CombineClient) GetTestNotificationsAtTenantActionGroupResourceLeve
 	if err != nil {
 		return CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse{}, err
-	}
-	resp, err := client.getTestNotificationsAtTenantActionGroupResourceLevelHandleResponse(httpResp)
+	resp, err := client.getTestNotificationsAtTenantActionGroupResourceLevelHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -171,8 +167,11 @@ func (client *CombineClient) getTestNotificationsAtTenantActionGroupResourceLeve
 }
 
 // getTestNotificationsAtTenantActionGroupResourceLevelHandleResponse handles the GetTestNotificationsAtTenantActionGroupResourceLevel response.
-func (client *CombineClient) getTestNotificationsAtTenantActionGroupResourceLevelHandleResponse(resp *http.Response) (CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse, error) {
+func (client *CombineClient) getTestNotificationsAtTenantActionGroupResourceLevelHandleResponse(resp *http.Response, successCodes ...int) (CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse, error) {
 	result := CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TenantActionGroupTestNotificationDetailsResponse); err != nil {
 		return CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse{}, err
 	}

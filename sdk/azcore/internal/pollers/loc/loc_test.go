@@ -76,7 +76,7 @@ func TestNew(t *testing.T) {
 func TestUpdateSucceeded(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[struct{}](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusNoContent,
 			Body:       http.NoBody,
@@ -94,7 +94,7 @@ func TestUpdateSucceeded(t *testing.T) {
 func TestUpdateFailed(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[struct{}](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		if surl := req.URL.String(); surl == fakeLocationURL {
 			resp := &http.Response{
 				StatusCode: http.StatusAccepted,
@@ -128,7 +128,7 @@ func TestUpdateFailed(t *testing.T) {
 func TestUpdateFailedWithProvisioningState(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	poller, err := New[struct{}](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		if surl := req.URL.String(); surl == fakeLocationURL {
 			resp := &http.Response{
 				StatusCode: http.StatusAccepted,
@@ -181,7 +181,7 @@ func TestWithThrottling(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, srv.URL())
-	lp, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	lp, err := New[struct{}](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return srv.Do(req)
 	})), resp)
 	require.NoError(t, err)
@@ -204,7 +204,7 @@ func TestWithTimeout(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, srv.URL())
-	lp, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	lp, err := New[struct{}](exported.NewPipeline(nil, shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return srv.Do(req)
 	})), resp)
 	require.NoError(t, err)

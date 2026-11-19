@@ -343,6 +343,14 @@ func (c *ClientFactory) NewProtectionContainerRefreshOperationResultsClient() *P
 	}
 }
 
+// NewProtectionContainerRefreshOperationStatusesClient creates a new instance of ProtectionContainerRefreshOperationStatusesClient.
+func (c *ClientFactory) NewProtectionContainerRefreshOperationStatusesClient() *ProtectionContainerRefreshOperationStatusesClient {
+	return &ProtectionContainerRefreshOperationStatusesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewProtectionContainersClient creates a new instance of ProtectionContainersClient.
 func (c *ClientFactory) NewProtectionContainersClient() *ProtectionContainersClient {
 	return &ProtectionContainersClient{

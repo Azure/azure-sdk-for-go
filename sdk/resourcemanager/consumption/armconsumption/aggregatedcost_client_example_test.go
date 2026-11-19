@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/AggregatedCostByManagementGroup.json
+// Generated from example definition: 2026-06-01/AggregatedCostByManagementGroup.json
 func ExampleAggregatedCostClient_GetByManagementGroup_aggregatedCostByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleAggregatedCostClient_GetByManagementGroup_aggregatedCostByManagement
 	// }
 }
 
-// Generated from example definition: 2024-08-01/AggregatedCostByManagementGroupFilterByDate.json
+// Generated from example definition: 2026-06-01/AggregatedCostByManagementGroupFilterByDate.json
 func ExampleAggregatedCostClient_GetByManagementGroup_aggregatedCostByManagementGroupFilterByDate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleAggregatedCostClient_GetByManagementGroup_aggregatedCostByManagement
 	// }
 }
 
-// Generated from example definition: 2024-08-01/AggregatedCostForBillingPeriodByManagementGroup.json
+// Generated from example definition: 2026-06-01/AggregatedCostForBillingPeriodByManagementGroup.json
 func ExampleAggregatedCostClient_GetForBillingPeriodByManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

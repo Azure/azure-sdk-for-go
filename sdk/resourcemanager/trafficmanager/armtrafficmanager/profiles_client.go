@@ -63,7 +63,8 @@ func (client *ProfilesClient) CheckTrafficManagerNameAvailabilityV2(ctx context.
 	if err != nil {
 		return ProfilesClientCheckTrafficManagerNameAvailabilityV2Response{}, err
 	}
-	return client.checkTrafficManagerNameAvailabilityV2HandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkTrafficManagerNameAvailabilityV2HandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkTrafficManagerNameAvailabilityV2CreateRequest creates the CheckTrafficManagerNameAvailabilityV2 request.
@@ -119,7 +120,8 @@ func (client *ProfilesClient) CheckTrafficManagerRelativeDNSNameAvailability(ctx
 	if err != nil {
 		return ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityResponse{}, err
 	}
-	return client.checkTrafficManagerRelativeDNSNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkTrafficManagerRelativeDNSNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkTrafficManagerRelativeDNSNameAvailabilityCreateRequest creates the CheckTrafficManagerRelativeDNSNameAvailability request.
@@ -172,7 +174,8 @@ func (client *ProfilesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProfilesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -236,7 +239,8 @@ func (client *ProfilesClient) Delete(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ProfilesClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -296,7 +300,8 @@ func (client *ProfilesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ProfilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -496,7 +501,8 @@ func (client *ProfilesClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ProfilesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

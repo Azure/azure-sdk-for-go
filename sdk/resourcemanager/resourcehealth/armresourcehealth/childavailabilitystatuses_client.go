@@ -56,7 +56,8 @@ func (client *ChildAvailabilityStatusesClient) GetByResource(ctx context.Context
 	if err != nil {
 		return ChildAvailabilityStatusesClientGetByResourceResponse{}, err
 	}
-	return client.getByResourceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByResourceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByResourceCreateRequest creates the GetByResource request.

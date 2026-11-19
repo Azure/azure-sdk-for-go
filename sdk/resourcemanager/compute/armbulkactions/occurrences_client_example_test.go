@@ -14,7 +14,7 @@ import (
 )
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Cancel_BasicSuccess.json
-func ExampleOccurrencesClient_BeginCancel_oneCancelOperationsInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_BeginCancel_oneCancelOperationsInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -50,7 +50,7 @@ func ExampleOccurrencesClient_BeginCancel_oneCancelOperationsInARecurringSchedul
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Cancel_EntireOccurrenceSuccess.json
-func ExampleOccurrencesClient_BeginCancel_twoCancelAllOperationsInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_BeginCancel_twoCancelAllOperationsInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -83,7 +83,7 @@ func ExampleOccurrencesClient_BeginCancel_twoCancelAllOperationsInARecurringSche
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Cancel_PartialSuccess.json
-func ExampleOccurrencesClient_BeginCancel_threeResponseWithPartialResultsWhenCancelingResourcesInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_BeginCancel_threeResponseWithPartialResultsWhenCancelingResourcesInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -128,7 +128,7 @@ func ExampleOccurrencesClient_BeginCancel_threeResponseWithPartialResultsWhenCan
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Delay_BasicSuccess.json
-func ExampleOccurrencesClient_BeginDelay_oneDelayOperationsInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_BeginDelay_oneDelayOperationsInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -165,7 +165,7 @@ func ExampleOccurrencesClient_BeginDelay_oneDelayOperationsInARecurringScheduled
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Delay_EntireOccurrenceSuccess.json
-func ExampleOccurrencesClient_BeginDelay_twoDelayAllOperationsInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_BeginDelay_twoDelayAllOperationsInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -199,7 +199,7 @@ func ExampleOccurrencesClient_BeginDelay_twoDelayAllOperationsInARecurringSchedu
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Delay_PartialSuccess.json
-func ExampleOccurrencesClient_BeginDelay_threeResponseWithPartialSuccessResultsWhenDelayingOperationsInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_BeginDelay_threeResponseWithPartialSuccessResultsWhenDelayingOperationsInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -231,10 +231,6 @@ func ExampleOccurrencesClient_BeginDelay_threeResponseWithPartialSuccessResultsW
 	// 		TotalResources: to.Ptr[int32](2),
 	// 		ResourcesStatuses: []*armbulkactions.ResourceStatus{
 	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
-	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusSucceeded),
-	// 			},
-	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 	// 				Status: to.Ptr(armbulkactions.ResourceOperationStatusFailed),
 	// 				Error: &armbulkactions.Error{
@@ -249,7 +245,7 @@ func ExampleOccurrencesClient_BeginDelay_threeResponseWithPartialSuccessResultsW
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Get_BasicSuccess.json
-func ExampleOccurrencesClient_Get_oneReadARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_Get_oneReadARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -289,7 +285,7 @@ func ExampleOccurrencesClient_Get_oneReadARecurringScheduledActionOccurrence() {
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_Get_ComprehensiveSuccess.json
-func ExampleOccurrencesClient_Get_twoReadARecurringScheduledActionOccurrenceWithMixedResults() {
+func ExampleOccurrencesClient_Get_twoReadARecurringBulkActionOccurrenceWithMixedResults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -332,7 +328,7 @@ func ExampleOccurrencesClient_Get_twoReadARecurringScheduledActionOccurrenceWith
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888"),
 	// 		Name: to.Ptr("88888888-8888-8888-8888-888888888888"),
-	// 		Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
+	// 		Type: to.Ptr("microsoft.compute/scheduledActions/occurrences"),
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
@@ -346,7 +342,7 @@ func ExampleOccurrencesClient_Get_twoReadARecurringScheduledActionOccurrenceWith
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_ListByScheduledAction_BasicSuccess.json
-func ExampleOccurrencesClient_NewListByScheduledActionPager_oneListRecurringScheduledActionOccurrences() {
+func ExampleOccurrencesClient_NewListByScheduledActionPager_oneListRecurringBulkActionOccurrences() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -386,7 +382,7 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager_oneListRecurringSche
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/77777777-7777-7777-7777-777777777777"),
 		// 				Name: to.Ptr("77777777-7777-7777-7777-777777777777"),
-		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences"),
 		// 			},
 		// 			{
 		// 				Properties: &armbulkactions.OccurrenceProperties{
@@ -404,7 +400,7 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager_oneListRecurringSche
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888"),
 		// 				Name: to.Ptr("88888888-8888-8888-8888-888888888888"),
-		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences"),
 		// 			},
 		// 		},
 		// 	},
@@ -413,7 +409,7 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager_oneListRecurringSche
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_ListByScheduledAction_PagedSuccess.json
-func ExampleOccurrencesClient_NewListByScheduledActionPager_twoListAPageOfRecurringScheduledActionOccurrences() {
+func ExampleOccurrencesClient_NewListByScheduledActionPager_twoListRecurringBulkActionOccurrencesWithMixedResults() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -462,7 +458,7 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager_twoListAPageOfRecurr
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888"),
 		// 				Name: to.Ptr("88888888-8888-8888-8888-888888888888"),
-		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences"),
 		// 			},
 		// 			{
 		// 				Properties: &armbulkactions.OccurrenceProperties{
@@ -480,17 +476,16 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager_twoListAPageOfRecurr
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/99999999-9999-9999-9999-999999999999"),
 		// 				Name: to.Ptr("99999999-9999-9999-9999-999999999999"),
-		// 				Type: to.Ptr("Microsoft.Compute/scheduledActions/occurrences"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_ListResources_BasicSuccess.json
-func ExampleOccurrencesClient_NewListResourcesPager_oneListResourcesInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_NewListResourcesPager_oneListResourcesInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -518,17 +513,17 @@ func ExampleOccurrencesClient_NewListResourcesPager_oneListResourcesInARecurring
 		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
 		// 				ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
 		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
-		// 				Name: to.Ptr("web-vm-01"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/77777777-7777-7777-7777-777777777777/resources/VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-01"),
+		// 				Name: to.Ptr("VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-01"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences/resources"),
 		// 			},
 		// 			{
 		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
 		// 				ScheduledTime: to.Ptr(time.Date(2026, time.September, 15, 14, 0, 0, 0, time.UTC)),
 		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
-		// 				Name: to.Ptr("web-vm-02"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/77777777-7777-7777-7777-777777777777/resources/VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-02"),
+		// 				Name: to.Ptr("VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-02"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences/resources"),
 		// 			},
 		// 		},
 		// 	},
@@ -537,7 +532,7 @@ func ExampleOccurrencesClient_NewListResourcesPager_oneListResourcesInARecurring
 }
 
 // Generated from example definition: 2026-10-06-preview/Occurrences_ListResources_PagedSuccess.json
-func ExampleOccurrencesClient_NewListResourcesPager_twoListAPageOfResourcesInARecurringScheduledActionOccurrence() {
+func ExampleOccurrencesClient_NewListResourcesPager_twoListAPageOfResourcesInARecurringBulkActionOccurrence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -573,9 +568,9 @@ func ExampleOccurrencesClient_NewListResourcesPager_twoListAPageOfResourcesInARe
 		// 				},
 		// 				ScheduledTime: to.Ptr(time.Date(2026, time.September, 16, 14, 0, 0, 0, time.UTC)),
 		// 				ProvisioningState: to.Ptr(armbulkactions.OccurrenceResourceProvisioningStateSucceeded),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
-		// 				Name: to.Ptr("web-vm-01"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888/resources/VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-01"),
+		// 				Name: to.Ptr("VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-01"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences/resources"),
 		// 			},
 		// 			{
 		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
@@ -586,12 +581,12 @@ func ExampleOccurrencesClient_NewListResourcesPager_twoListAPageOfResourcesInARe
 		// 					Message: to.Ptr("The virtual machine cannot be started while it is being deallocated."),
 		// 					Target: to.Ptr("virtualMachines"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"),
-		// 				Name: to.Ptr("web-vm-02"),
-		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888/resources/VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-02"),
+		// 				Name: to.Ptr("VM_00000000-0000-0000-0000-000000000000_example-rg_web-vm-02"),
+		// 				Type: to.Ptr("microsoft.compute/scheduledActions/occurrences/resources"),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888/resources?api-version=2026-10-06-preview&$skiptoken=page2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/scheduledActions/weekday-start/occurrences/88888888-8888-8888-8888-888888888888/resources?api-version=2026-10-06-preview&$skiptoken=L3N1YnNjcmlwdGlvbnMvMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwL3Jlc291cmNlR3JvdXBzL2V4YW1wbGUtcmcvcHJvdmlkZXJzL01pY3Jvc29mdC5Db21wdXRlL3ZpcnR1YWxNYWNoaW5lcy93ZWItdm0tMDM%3D"),
 		// 	},
 		// }
 	}

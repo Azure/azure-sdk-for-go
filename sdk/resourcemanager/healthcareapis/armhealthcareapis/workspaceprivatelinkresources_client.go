@@ -65,7 +65,8 @@ func (client *WorkspacePrivateLinkResourcesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return WorkspacePrivateLinkResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

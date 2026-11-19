@@ -64,7 +64,8 @@ func (client *TriggerRunsClient) Cancel(ctx context.Context, resourceGroupName s
 		return TriggerRunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TriggerRunsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TriggerRunsClientCancelResponse{}, err
 	}
 	return TriggerRunsClientCancelResponse{}, nil
 }
@@ -123,7 +124,8 @@ func (client *TriggerRunsClient) QueryByFactory(ctx context.Context, resourceGro
 	if err != nil {
 		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
-	return client.queryByFactoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryByFactoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
@@ -188,7 +190,8 @@ func (client *TriggerRunsClient) Rerun(ctx context.Context, resourceGroupName st
 		return TriggerRunsClientRerunResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TriggerRunsClientRerunResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TriggerRunsClientRerunResponse{}, err
 	}
 	return TriggerRunsClientRerunResponse{}, nil
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_CreateOrUpdate.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_CreateOrUpdate.json
 func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,12 +29,14 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
 				Stages: []*armcontainerservicefleet.UpdateStage{
 					{
-						Name:           to.Ptr("stage1"),
-						MaxConcurrency: to.Ptr("10"),
+						Name:               to.Ptr("stage1"),
+						MaxConcurrency:     to.Ptr("10"),
+						MaxAllowedFailures: to.Ptr("2"),
 						Groups: []*armcontainerservicefleet.UpdateGroup{
 							{
-								Name:           to.Ptr("group-a"),
-								MaxConcurrency: to.Ptr("2"),
+								Name:               to.Ptr("group-a"),
+								MaxConcurrency:     to.Ptr("2"),
+								MaxAllowedFailures: to.Ptr("1"),
 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 									ByLabel: to.Ptr("tier=frontend"),
 								},
@@ -67,8 +69,9 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
 					},
 					{
-						Name:           to.Ptr("stage2"),
-						MaxConcurrency: to.Ptr("50%"),
+						Name:               to.Ptr("stage2"),
+						MaxConcurrency:     to.Ptr("50%"),
+						MaxAllowedFailures: to.Ptr("25%"),
 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 							ByLabel: to.Ptr("env=production"),
 						},
@@ -129,10 +132,12 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -167,6 +172,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -204,6 +210,8 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
 	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
@@ -211,6 +219,8 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -268,6 +278,8 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 						},
 	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
 	// 						MaxConcurrency: to.Ptr[int32](50),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 						},
@@ -287,6 +299,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 						},
 	// 					},
 	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -294,7 +307,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Delete.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Delete.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +333,477 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Get.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Skip.json
+func ExampleUpdateRunsClient_BeginSkip() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUpdateRunsClient().BeginSkip(ctx, "rg1", "fleet1", "run1", armcontainerservicefleet.SkipProperties{
+		Targets: []*armcontainerservicefleet.SkipTarget{
+			{
+				Type: to.Ptr(armcontainerservicefleet.TargetTypeMember),
+				Name: to.Ptr("member-one"),
+			},
+			{
+				Type: to.Ptr(armcontainerservicefleet.TargetTypeAfterStageWait),
+				Name: to.Ptr("stage1"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.UpdateRunsClientSkipResponse{
+	// 	UpdateRun: armcontainerservicefleet.UpdateRun{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
+	// 		Name: to.Ptr("run1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("@contoso.com"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 		},
+	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
+	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
+	// 				Stages: []*armcontainerservicefleet.UpdateStage{
+	// 					{
+	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
+	// 							{
+	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("group-b"),
+	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
+	// 					},
+	// 				},
+	// 			},
+	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
+	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
+	// 					KubernetesVersion: to.Ptr("1.26.1"),
+	// 				},
+	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+	// 				},
+	// 			},
+	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
+	// 				Status: &armcontainerservicefleet.UpdateStatus{
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 				},
+	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 						},
+	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
+	// 						MaxConcurrency: to.Ptr[int32](10),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 							{
+	// 								Status: &armcontainerservicefleet.UpdateStatus{
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
+	// 								},
+	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
+	// 								MaxConcurrency: to.Ptr[int32](2),
+	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
+	// 									{
+	// 										Status: &armcontainerservicefleet.UpdateStatus{
+	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
+	// 										},
+	// 										Name: to.Ptr("member-one"),
+	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster-1"),
+	// 									},
+	// 								},
+	// 							},
+	// 							{
+	// 								Status: &armcontainerservicefleet.UpdateStatus{
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 								},
+	// 								Name: to.Ptr("group-b"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
+	// 								MaxConcurrency: to.Ptr[int32](2),
+	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
+	// 									{
+	// 										Status: &armcontainerservicefleet.UpdateStatus{
+	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 										},
+	// 										Name: to.Ptr("member-two"),
+	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster-2"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
+	// 						},
+	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
+	// 						},
+	// 					},
+	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		ETag: to.Ptr("\"EtagValue\""),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Start.json
+func ExampleUpdateRunsClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUpdateRunsClient().BeginStart(ctx, "rg1", "fleet1", "run1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.UpdateRunsClientStartResponse{
+	// 	UpdateRun: armcontainerservicefleet.UpdateRun{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
+	// 		Name: to.Ptr("run1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("@contoso.com"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 		},
+	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
+	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
+	// 				Stages: []*armcontainerservicefleet.UpdateStage{
+	// 					{
+	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
+	// 							{
+	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
+	// 					},
+	// 				},
+	// 			},
+	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
+	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
+	// 					KubernetesVersion: to.Ptr("1.26.1"),
+	// 				},
+	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+	// 				},
+	// 			},
+	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
+	// 				Status: &armcontainerservicefleet.UpdateStatus{
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 				},
+	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 						},
+	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
+	// 						MaxConcurrency: to.Ptr[int32](10),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 							{
+	// 								Status: &armcontainerservicefleet.UpdateStatus{
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 								},
+	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
+	// 								MaxConcurrency: to.Ptr[int32](5),
+	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
+	// 									{
+	// 										Status: &armcontainerservicefleet.UpdateStatus{
+	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
+	// 										},
+	// 										Name: to.Ptr("member-one"),
+	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
+	// 						},
+	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
+	// 						},
+	// 					},
+	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
+	// 			},
+	// 		},
+	// 		ETag: to.Ptr("\"EtagValue\""),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Stop.json
+func ExampleUpdateRunsClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUpdateRunsClient().BeginStop(ctx, "rg1", "fleet1", "run1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.UpdateRunsClientStopResponse{
+	// 	UpdateRun: armcontainerservicefleet.UpdateRun{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
+	// 		Name: to.Ptr("run1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("@contoso.com"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 		},
+	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
+	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
+	// 				Stages: []*armcontainerservicefleet.UpdateStage{
+	// 					{
+	// 						Name: to.Ptr("stage1"),
+	// 						MaxConcurrency: to.Ptr("20%"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
+	// 							{
+	// 								Name: to.Ptr("group-a"),
+	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
+	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 									ByLabel: to.Ptr("tier=frontend"),
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("stage2"),
+	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
+	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
+	// 							ByLabel: to.Ptr("env=production"),
+	// 						},
+	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
+	// 					},
+	// 				},
+	// 			},
+	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
+	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
+	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
+	// 					KubernetesVersion: to.Ptr("1.26.1"),
+	// 				},
+	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
+	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
+	// 				},
+	// 			},
+	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
+	// 				Status: &armcontainerservicefleet.UpdateStatus{
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
+	// 				},
+	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
+	// 						},
+	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](1),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
+	// 						MaxConcurrency: to.Ptr[int32](10),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 							{
+	// 								Status: &armcontainerservicefleet.UpdateStatus{
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
+	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
+	// 								},
+	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](1),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
+	// 								MaxConcurrency: to.Ptr[int32](5),
+	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
+	// 									{
+	// 										Status: &armcontainerservicefleet.UpdateStatus{
+	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
+	// 										},
+	// 										Name: to.Ptr("member-one"),
+	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
+	// 						},
+	// 					},
+	// 					{
+	// 						Status: &armcontainerservicefleet.UpdateStatus{
+	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 						},
+	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
+	// 						MaxConcurrency: to.Ptr[int32](50),
+	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
+	// 						},
+	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
+	// 							Status: &armcontainerservicefleet.UpdateStatus{
+	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
+	// 							},
+	// 							WaitDurationInSeconds: to.Ptr[int32](600),
+	// 						},
+	// 					},
+	// 				},
+	// 				FailureCount: to.Ptr[int32](1),
+	// 			},
+	// 		},
+	// 		ETag: to.Ptr("\"EtagValue\""),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Get.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,10 +841,12 @@ func ExampleUpdateRunsClient_Get() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -396,6 +881,7 @@ func ExampleUpdateRunsClient_Get() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -422,6 +908,8 @@ func ExampleUpdateRunsClient_Get() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
 	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
@@ -429,6 +917,8 @@ func ExampleUpdateRunsClient_Get() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -486,6 +976,8 @@ func ExampleUpdateRunsClient_Get() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 						},
 	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
 	// 						MaxConcurrency: to.Ptr[int32](50),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 						},
@@ -497,6 +989,7 @@ func ExampleUpdateRunsClient_Get() {
 	// 						},
 	// 					},
 	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -504,7 +997,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_ListByFleet.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_ListByFleet.json
 func ExampleUpdateRunsClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,10 +1041,12 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 							{
 		// 								Name: to.Ptr("stage1"),
 		// 								MaxConcurrency: to.Ptr("10"),
+		// 								MaxAllowedFailures: to.Ptr("2"),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
 		// 									{
 		// 										Name: to.Ptr("group-a"),
 		// 										MaxConcurrency: to.Ptr("2"),
+		// 										MaxAllowedFailures: to.Ptr("1"),
 		// 										MemberSelector: &armcontainerservicefleet.MemberSelector{
 		// 											ByLabel: to.Ptr("tier=frontend"),
 		// 										},
@@ -586,6 +1081,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 							{
 		// 								Name: to.Ptr("stage2"),
 		// 								MaxConcurrency: to.Ptr("50%"),
+		// 								MaxAllowedFailures: to.Ptr("25%"),
 		// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 		// 									ByLabel: to.Ptr("env=production"),
 		// 								},
@@ -612,6 +1108,8 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 									State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 		// 								},
 		// 								Name: to.Ptr("stage1"),
+		// 								FailureCount: to.Ptr[int32](0),
+		// 								MaxAllowedFailures: to.Ptr[int32](2),
 		// 								MaxConcurrency: to.Ptr[int32](10),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 		// 									{
@@ -619,6 +1117,8 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 		// 										},
 		// 										Name: to.Ptr("group-a"),
+		// 										FailureCount: to.Ptr[int32](0),
+		// 										MaxAllowedFailures: to.Ptr[int32](1),
 		// 										MaxConcurrency: to.Ptr[int32](2),
 		// 										Members: []*armcontainerservicefleet.MemberUpdateStatus{
 		// 											{
@@ -676,6 +1176,8 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 		// 								},
 		// 								Name: to.Ptr("stage2"),
+		// 								FailureCount: to.Ptr[int32](0),
+		// 								MaxAllowedFailures: to.Ptr[int32](1),
 		// 								MaxConcurrency: to.Ptr[int32](50),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 		// 								},
@@ -687,6 +1189,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 								},
 		// 							},
 		// 						},
+		// 						FailureCount: to.Ptr[int32](0),
 		// 					},
 		// 				},
 		// 				ETag: to.Ptr("\"EtagValue\""),
@@ -696,441 +1199,4 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Skip.json
-func ExampleUpdateRunsClient_BeginSkip() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginSkip(ctx, "rg1", "fleet1", "run1", armcontainerservicefleet.SkipProperties{
-		Targets: []*armcontainerservicefleet.SkipTarget{
-			{
-				Type: to.Ptr(armcontainerservicefleet.TargetTypeMember),
-				Name: to.Ptr("member-one"),
-			},
-			{
-				Type: to.Ptr(armcontainerservicefleet.TargetTypeAfterStageWait),
-				Name: to.Ptr("stage1"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientSkipResponse{
-	// 	UpdateRun: armcontainerservicefleet.UpdateRun{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("@contoso.com"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 		},
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr("10"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr("2"),
-	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
-	// 									ByLabel: to.Ptr("tier=frontend"),
-	// 								},
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("group-b"),
-	// 								MaxConcurrency: to.Ptr("2"),
-	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
-	// 									ByLabel: to.Ptr("tier=frontend"),
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("stage2"),
-	// 						MaxConcurrency: to.Ptr("50%"),
-	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
-	// 							ByLabel: to.Ptr("env=production"),
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 				},
-	// 			},
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr[int32](10),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr[int32](2),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster-1"),
-	// 									},
-	// 								},
-	// 							},
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 								},
-	// 								Name: to.Ptr("group-b"),
-	// 								MaxConcurrency: to.Ptr[int32](2),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 										},
-	// 										Name: to.Ptr("member-two"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster-2"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 						},
-	// 						Name: to.Ptr("stage2"),
-	// 						MaxConcurrency: to.Ptr[int32](50),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](600),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Start.json
-func ExampleUpdateRunsClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginStart(ctx, "rg1", "fleet1", "run1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientStartResponse{
-	// 	UpdateRun: armcontainerservicefleet.UpdateRun{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("@contoso.com"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 		},
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr("10"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr("5"),
-	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
-	// 									ByLabel: to.Ptr("tier=frontend"),
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("stage2"),
-	// 						MaxConcurrency: to.Ptr("50%"),
-	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
-	// 							ByLabel: to.Ptr("env=production"),
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 				},
-	// 			},
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr[int32](10),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr[int32](5),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 						},
-	// 						Name: to.Ptr("stage2"),
-	// 						MaxConcurrency: to.Ptr[int32](50),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](600),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Stop.json
-func ExampleUpdateRunsClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUpdateRunsClient().BeginStop(ctx, "rg1", "fleet1", "run1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.UpdateRunsClientStopResponse{
-	// 	UpdateRun: armcontainerservicefleet.UpdateRun{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateRuns/run1"),
-	// 		Name: to.Ptr("run1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets/updateRuns"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("@contoso.com"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 		},
-	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
-	// 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
-	// 				Stages: []*armcontainerservicefleet.UpdateStage{
-	// 					{
-	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr("20%"),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
-	// 							{
-	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr("5"),
-	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
-	// 									ByLabel: to.Ptr("tier=frontend"),
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("stage2"),
-	// 						MaxConcurrency: to.Ptr("50%"),
-	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
-	// 							ByLabel: to.Ptr("env=production"),
-	// 						},
-	// 						AfterStageWaitInSeconds: to.Ptr[int32](600),
-	// 					},
-	// 				},
-	// 			},
-	// 			ManagedClusterUpdate: &armcontainerservicefleet.ManagedClusterUpdate{
-	// 				Upgrade: &armcontainerservicefleet.ManagedClusterUpgradeSpec{
-	// 					Type: to.Ptr(armcontainerservicefleet.ManagedClusterUpgradeTypeFull),
-	// 					KubernetesVersion: to.Ptr("1.26.1"),
-	// 				},
-	// 				NodeImageSelection: &armcontainerservicefleet.NodeImageSelection{
-	// 					Type: to.Ptr(armcontainerservicefleet.NodeImageSelectionTypeLatest),
-	// 				},
-	// 			},
-	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
-	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
-	// 				},
-	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
-	// 						},
-	// 						Name: to.Ptr("stage1"),
-	// 						MaxConcurrency: to.Ptr[int32](10),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 							{
-	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
-	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
-	// 								},
-	// 								Name: to.Ptr("group-a"),
-	// 								MaxConcurrency: to.Ptr[int32](5),
-	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
-	// 									{
-	// 										Status: &armcontainerservicefleet.UpdateStatus{
-	// 											State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
-	// 										},
-	// 										Name: to.Ptr("member-one"),
-	// 										ClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myClusters/providers/Microsoft.ContainerService/managedClusters/myCluster"),
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](3600),
-	// 						},
-	// 					},
-	// 					{
-	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 						},
-	// 						Name: to.Ptr("stage2"),
-	// 						MaxConcurrency: to.Ptr[int32](50),
-	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
-	// 						},
-	// 						AfterStageWaitStatus: &armcontainerservicefleet.WaitStatus{
-	// 							Status: &armcontainerservicefleet.UpdateStatus{
-	// 								State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
-	// 							},
-	// 							WaitDurationInSeconds: to.Ptr[int32](600),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		ETag: to.Ptr("\"EtagValue\""),
-	// 	},
-	// }
 }

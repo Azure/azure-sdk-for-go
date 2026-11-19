@@ -20,7 +20,7 @@ import (
 // VirtualNetworksClient contains the methods for the VirtualNetworks group.
 // Don't use this type directly, use NewVirtualNetworksClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type VirtualNetworksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,69 +43,6 @@ func NewVirtualNetworksClient(subscriptionID string, credential azcore.TokenCred
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// CheckIPAddressAvailability - Checks whether a private IP address is available for use.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - virtualNetworkName - The name of the virtual network.
-//   - ipAddress - The private IP address to be verified.
-//   - options - VirtualNetworksClientCheckIPAddressAvailabilityOptions contains the optional parameters for the VirtualNetworksClient.CheckIPAddressAvailability
-//     method.
-func (client *VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Context, resourceGroupName string, virtualNetworkName string, ipAddress string, options *VirtualNetworksClientCheckIPAddressAvailabilityOptions) (VirtualNetworksClientCheckIPAddressAvailabilityResponse, error) {
-	var err error
-	const operationName = "VirtualNetworksClient.CheckIPAddressAvailability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.checkIPAddressAvailabilityCreateRequest(ctx, resourceGroupName, virtualNetworkName, ipAddress, options)
-	if err != nil {
-		return VirtualNetworksClientCheckIPAddressAvailabilityResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VirtualNetworksClientCheckIPAddressAvailabilityResponse{}, err
-	}
-	return client.checkIPAddressAvailabilityHandleResponse(httpResp, http.StatusOK)
-}
-
-// checkIPAddressAvailabilityCreateRequest creates the CheckIPAddressAvailability request.
-func (client *VirtualNetworksClient) checkIPAddressAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, ipAddress string, _ *VirtualNetworksClientCheckIPAddressAvailabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/checkIPAddressAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkName == "" {
-		return nil, errors.New("parameter virtualNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	reqQP.Set("ipAddress", ipAddress)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// checkIPAddressAvailabilityHandleResponse handles the CheckIPAddressAvailability response.
-func (client *VirtualNetworksClient) checkIPAddressAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworksClientCheckIPAddressAvailabilityResponse, error) {
-	result := VirtualNetworksClientCheckIPAddressAvailabilityResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IPAddressAvailabilityResult); err != nil {
-		return VirtualNetworksClientCheckIPAddressAvailabilityResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a virtual network in the specified resource group.
@@ -132,7 +69,7 @@ func (client *VirtualNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates a virtual network in the specified resource group.
+// createOrUpdate - Creates or updates a virtual network in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, options *VirtualNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -149,12 +86,13 @@ func (client *VirtualNetworksClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters VirtualNetwork, _ *VirtualNetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}"
 	if client.subscriptionID == "" {
@@ -174,7 +112,7 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -207,7 +145,7 @@ func (client *VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes the specified virtual network.
+// deleteOperation - Deletes the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -224,12 +162,13 @@ func (client *VirtualNetworksClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, _ *VirtualNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}"
 	if client.subscriptionID == "" {
@@ -249,9 +188,267 @@ func (client *VirtualNetworksClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// BeginListDdosProtectionStatus - Gets the Ddos Protection Status of all IP Addresses under the Virtual Network
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworkName - The name of the virtual network.
+//   - options - VirtualNetworksClientBeginListDdosProtectionStatusOptions contains the optional parameters for the VirtualNetworksClient.BeginListDdosProtectionStatus
+//     method.
+func (client *VirtualNetworksClient) BeginListDdosProtectionStatus(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginListDdosProtectionStatusOptions) (*runtime.Poller[*runtime.Pager[VirtualNetworksClientListDdosProtectionStatusResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListDdosProtectionStatusResponse]{
+		More: func(page VirtualNetworksClientListDdosProtectionStatusResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualNetworksClientListDdosProtectionStatusResponse) (VirtualNetworksClientListDdosProtectionStatusResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworksClient.BeginListDdosProtectionStatus")
+			req, err := client.listDdosProtectionStatusCreateRequest(ctx, resourceGroupName, virtualNetworkName, *page.NextLink, options)
+			if err != nil {
+				return VirtualNetworksClientListDdosProtectionStatusResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualNetworksClientListDdosProtectionStatusResponse{}, err
+			}
+			return client.listDdosProtectionStatusHandleResponse(resp, http.StatusOK, http.StatusAccepted)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listDdosProtectionStatus(ctx, resourceGroupName, virtualNetworkName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[VirtualNetworksClientListDdosProtectionStatusResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[VirtualNetworksClientListDdosProtectionStatusResponse]]{
+			Response: &pager,
+			Tracer:   client.internal.Tracer(),
+		})
+	}
+}
+
+// listDdosProtectionStatus - Gets the Ddos Protection Status of all IP Addresses under the Virtual Network
+func (client *VirtualNetworksClient) listDdosProtectionStatus(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginListDdosProtectionStatusOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VirtualNetworksClient.BeginListDdosProtectionStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listDdosProtectionStatusCreateRequest(ctx, resourceGroupName, virtualNetworkName, "", options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// listDdosProtectionStatusCreateRequest creates the listDdosProtectionStatus request.
+func (client *VirtualNetworksClient) listDdosProtectionStatusCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, nextLink string, options *VirtualNetworksClientBeginListDdosProtectionStatusOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/ddosProtectionStatus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if virtualNetworkName == "" {
+			return nil, errors.New("parameter virtualNetworkName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listDdosProtectionStatusHandleResponse handles the listDdosProtectionStatus response.
+func (client *VirtualNetworksClient) listDdosProtectionStatusHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworksClientListDdosProtectionStatusResponse, error) {
+	result := VirtualNetworksClientListDdosProtectionStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkDdosProtectionStatusResult); err != nil {
+		return VirtualNetworksClientListDdosProtectionStatusResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginMoveIPConfigurations - Move IP configurations from one virtual network to another.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworkName - The name of the virtual network.
+//   - body - Parameters supplied to move IP configurations from one virtual network to another.
+//   - options - VirtualNetworksClientBeginMoveIPConfigurationsOptions contains the optional parameters for the VirtualNetworksClient.BeginMoveIPConfigurations
+//     method.
+func (client *VirtualNetworksClient) BeginMoveIPConfigurations(ctx context.Context, resourceGroupName string, virtualNetworkName string, body MoveIPConfigurationsRequest, options *VirtualNetworksClientBeginMoveIPConfigurationsOptions) (*runtime.Poller[VirtualNetworksClientMoveIPConfigurationsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.moveIPConfigurations(ctx, resourceGroupName, virtualNetworkName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworksClientMoveIPConfigurationsResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworksClientMoveIPConfigurationsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// moveIPConfigurations - Move IP configurations from one virtual network to another.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualNetworksClient) moveIPConfigurations(ctx context.Context, resourceGroupName string, virtualNetworkName string, body MoveIPConfigurationsRequest, options *VirtualNetworksClientBeginMoveIPConfigurationsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VirtualNetworksClient.BeginMoveIPConfigurations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.moveIPConfigurationsCreateRequest(ctx, resourceGroupName, virtualNetworkName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// moveIPConfigurationsCreateRequest creates the moveIPConfigurations request.
+func (client *VirtualNetworksClient) moveIPConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, body MoveIPConfigurationsRequest, _ *VirtualNetworksClientBeginMoveIPConfigurationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/moveIpConfigurations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualNetworkName == "" {
+		return nil, errors.New("parameter virtualNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// CheckIPAddressAvailability - Checks whether a private IP address is available for use.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualNetworkName - The name of the virtual network.
+//   - ipAddress - The private IP address to be verified.
+//   - options - VirtualNetworksClientCheckIPAddressAvailabilityOptions contains the optional parameters for the VirtualNetworksClient.CheckIPAddressAvailability
+//     method.
+func (client *VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Context, resourceGroupName string, virtualNetworkName string, ipAddress string, options *VirtualNetworksClientCheckIPAddressAvailabilityOptions) (VirtualNetworksClientCheckIPAddressAvailabilityResponse, error) {
+	var err error
+	const operationName = "VirtualNetworksClient.CheckIPAddressAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkIPAddressAvailabilityCreateRequest(ctx, resourceGroupName, virtualNetworkName, ipAddress, options)
+	if err != nil {
+		return VirtualNetworksClientCheckIPAddressAvailabilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualNetworksClientCheckIPAddressAvailabilityResponse{}, err
+	}
+	resp, err := client.checkIPAddressAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// checkIPAddressAvailabilityCreateRequest creates the CheckIPAddressAvailability request.
+func (client *VirtualNetworksClient) checkIPAddressAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, ipAddress string, _ *VirtualNetworksClientCheckIPAddressAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/checkIPAddressAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualNetworkName == "" {
+		return nil, errors.New("parameter virtualNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	reqQP.Set("ipAddress", ipAddress)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// checkIPAddressAvailabilityHandleResponse handles the CheckIPAddressAvailability response.
+func (client *VirtualNetworksClient) checkIPAddressAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworksClientCheckIPAddressAvailabilityResponse, error) {
+	result := VirtualNetworksClientCheckIPAddressAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IPAddressAvailabilityResult); err != nil {
+		return VirtualNetworksClientCheckIPAddressAvailabilityResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets the specified virtual network by resource group.
@@ -273,7 +470,8 @@ func (client *VirtualNetworksClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return VirtualNetworksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -299,7 +497,7 @@ func (client *VirtualNetworksClient) getCreateRequest(ctx context.Context, resou
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -313,6 +511,73 @@ func (client *VirtualNetworksClient) getHandleResponse(resp *http.Response, succ
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetwork); err != nil {
 		return VirtualNetworksClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Gets all virtual networks in a subscription.
+//   - options - VirtualNetworksClientListAllOptions contains the optional parameters for the VirtualNetworksClient.NewListAllPager
+//     method.
+func (client *VirtualNetworksClient) NewListAllPager(options *VirtualNetworksClientListAllOptions) *runtime.Pager[VirtualNetworksClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListAllResponse]{
+		More: func(page VirtualNetworksClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualNetworksClientListAllResponse) (VirtualNetworksClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworksClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return VirtualNetworksClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualNetworksClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *VirtualNetworksClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *VirtualNetworksClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *VirtualNetworksClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworksClientListAllResponse, error) {
+	result := VirtualNetworksClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkListResult); err != nil {
+		return VirtualNetworksClientListAllResponse{}, err
 	}
 	return result, nil
 }
@@ -370,7 +635,7 @@ func (client *VirtualNetworksClient) listCreateRequest(ctx context.Context, reso
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -385,189 +650,6 @@ func (client *VirtualNetworksClient) listHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkListResult); err != nil {
 		return VirtualNetworksClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Gets all virtual networks in a subscription.
-//   - options - VirtualNetworksClientListAllOptions contains the optional parameters for the VirtualNetworksClient.NewListAllPager
-//     method.
-func (client *VirtualNetworksClient) NewListAllPager(options *VirtualNetworksClientListAllOptions) *runtime.Pager[VirtualNetworksClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListAllResponse]{
-		More: func(page VirtualNetworksClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualNetworksClientListAllResponse) (VirtualNetworksClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworksClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return VirtualNetworksClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualNetworksClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *VirtualNetworksClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *VirtualNetworksClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworks"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *VirtualNetworksClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworksClientListAllResponse, error) {
-	result := VirtualNetworksClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkListResult); err != nil {
-		return VirtualNetworksClientListAllResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginListDdosProtectionStatus - Gets the Ddos Protection Status of all IP Addresses under the Virtual Network
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - virtualNetworkName - The name of the virtual network.
-//   - options - VirtualNetworksClientBeginListDdosProtectionStatusOptions contains the optional parameters for the VirtualNetworksClient.BeginListDdosProtectionStatus
-//     method.
-func (client *VirtualNetworksClient) BeginListDdosProtectionStatus(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginListDdosProtectionStatusOptions) (*runtime.Poller[*runtime.Pager[VirtualNetworksClientListDdosProtectionStatusResponse]], error) {
-	pager := runtime.NewPager(runtime.PagingHandler[VirtualNetworksClientListDdosProtectionStatusResponse]{
-		More: func(page VirtualNetworksClientListDdosProtectionStatusResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualNetworksClientListDdosProtectionStatusResponse) (VirtualNetworksClientListDdosProtectionStatusResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualNetworksClient.BeginListDdosProtectionStatus")
-			req, err := client.listDdosProtectionStatusCreateRequest(ctx, resourceGroupName, virtualNetworkName, *page.NextLink, options)
-			if err != nil {
-				return VirtualNetworksClientListDdosProtectionStatusResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualNetworksClientListDdosProtectionStatusResponse{}, err
-			}
-			return client.listDdosProtectionStatusHandleResponse(resp, http.StatusOK, http.StatusAccepted)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.listDdosProtectionStatus(ctx, resourceGroupName, virtualNetworkName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[*runtime.Pager[VirtualNetworksClientListDdosProtectionStatusResponse]]{
-			Response: &pager,
-			Tracer:   client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[VirtualNetworksClientListDdosProtectionStatusResponse]]{
-			Response: &pager,
-			Tracer:   client.internal.Tracer(),
-		})
-	}
-}
-
-// ListDdosProtectionStatus - Gets the Ddos Protection Status of all IP Addresses under the Virtual Network
-func (client *VirtualNetworksClient) listDdosProtectionStatus(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginListDdosProtectionStatusOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworksClient.BeginListDdosProtectionStatus"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listDdosProtectionStatusCreateRequest(ctx, resourceGroupName, virtualNetworkName, "", options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// listDdosProtectionStatusCreateRequest creates the ListDdosProtectionStatus request.
-func (client *VirtualNetworksClient) listDdosProtectionStatusCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, nextLink string, options *VirtualNetworksClientBeginListDdosProtectionStatusOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/ddosProtectionStatus"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if virtualNetworkName == "" {
-			return nil, errors.New("parameter virtualNetworkName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
-		if options != nil && options.SkipToken != nil {
-			reqQP.Set("skipToken", *options.SkipToken)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listDdosProtectionStatusHandleResponse handles the ListDdosProtectionStatus response.
-func (client *VirtualNetworksClient) listDdosProtectionStatusHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworksClientListDdosProtectionStatusResponse, error) {
-	result := VirtualNetworksClientListDdosProtectionStatusResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkDdosProtectionStatusResult); err != nil {
-		return VirtualNetworksClientListDdosProtectionStatusResponse{}, err
 	}
 	return result, nil
 }
@@ -630,7 +712,7 @@ func (client *VirtualNetworksClient) listUsageCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -647,82 +729,6 @@ func (client *VirtualNetworksClient) listUsageHandleResponse(resp *http.Response
 		return VirtualNetworksClientListUsageResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginMoveIPConfigurations - Move IP configurations from one virtual network to another.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - virtualNetworkName - The name of the virtual network.
-//   - body - Parameters supplied to move IP configurations from one virtual network to another.
-//   - options - VirtualNetworksClientBeginMoveIPConfigurationsOptions contains the optional parameters for the VirtualNetworksClient.BeginMoveIPConfigurations
-//     method.
-func (client *VirtualNetworksClient) BeginMoveIPConfigurations(ctx context.Context, resourceGroupName string, virtualNetworkName string, body MoveIPConfigurationsRequest, options *VirtualNetworksClientBeginMoveIPConfigurationsOptions) (*runtime.Poller[VirtualNetworksClientMoveIPConfigurationsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.moveIPConfigurations(ctx, resourceGroupName, virtualNetworkName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworksClientMoveIPConfigurationsResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualNetworksClientMoveIPConfigurationsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// MoveIPConfigurations - Move IP configurations from one virtual network to another.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualNetworksClient) moveIPConfigurations(ctx context.Context, resourceGroupName string, virtualNetworkName string, body MoveIPConfigurationsRequest, options *VirtualNetworksClientBeginMoveIPConfigurationsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualNetworksClient.BeginMoveIPConfigurations"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.moveIPConfigurationsCreateRequest(ctx, resourceGroupName, virtualNetworkName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// moveIPConfigurationsCreateRequest creates the MoveIPConfigurations request.
-func (client *VirtualNetworksClient) moveIPConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, body MoveIPConfigurationsRequest, _ *VirtualNetworksClientBeginMoveIPConfigurationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/moveIpConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkName == "" {
-		return nil, errors.New("parameter virtualNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // UpdateTags - Updates a virtual network tags.
@@ -746,7 +752,8 @@ func (client *VirtualNetworksClient) UpdateTags(ctx context.Context, resourceGro
 	if err != nil {
 		return VirtualNetworksClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -769,7 +776,7 @@ func (client *VirtualNetworksClient) updateTagsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

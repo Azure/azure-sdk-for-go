@@ -7,13 +7,13 @@ package armtrafficmanager
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -64,7 +64,8 @@ func (client *HeatMapClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return HeatMapClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -88,14 +89,26 @@ func (client *HeatMapClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	rawQueryValues := url.Values{}
+	if req.Raw().URL.RawQuery != "" {
+		var queryErr error
+		rawQueryValues, queryErr = preserveQueryExpansions(req.Raw().URL.RawQuery, "topLeft", "botRight")
+		if queryErr != nil {
+			return nil, queryErr
+		}
+	}
 	reqQP.Set("api-version", version20260901)
 	if options != nil && options.BotRight != nil {
-		reqQP.Set("botRight", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.BotRight), "[]")), ","))
+		rawQueryValues.Set("botRight", expandQueryArray(options.BotRight, func(value float64) string {
+			return strconv.FormatFloat(value, 'f', -1, 64)
+		}))
 	}
 	if options != nil && options.TopLeft != nil {
-		reqQP.Set("topLeft", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.TopLeft), "[]")), ","))
+		rawQueryValues.Set("topLeft", expandQueryArray(options.TopLeft, func(value float64) string {
+			return strconv.FormatFloat(value, 'f', -1, 64)
+		}))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = encodeQuery(reqQP, rawQueryValues)
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

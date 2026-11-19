@@ -6,10 +6,10 @@ package armrecommender
 
 import "time"
 
-// ComputeDiagnosticBase - Contains metadata of a diagnostic type
-type ComputeDiagnosticBase struct {
-	// Contains additional properties of a diagnostic
-	Properties *DiagnosticProperties
+// ComputePlacementScoresBase - Contains metadata of the compute placement scoring resource.
+type ComputePlacementScoresBase struct {
+	// Contains additional properties of a placement scores resource.
+	Properties *PlacementScoresProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -24,10 +24,39 @@ type ComputeDiagnosticBase struct {
 	Type *string
 }
 
-// DiagnosticProperties - Contains additional properties of a diagnostic
-type DiagnosticProperties struct {
-	// Describes what are the supported resource types for a diagnostic.
-	SupportedResourceTypes []*string
+// ComputePlacementScoresInput - ComputePlacementScores API Input.
+type ComputePlacementScoresInput struct {
+	// REQUIRED; The desired virtual machine SKU sizes.
+	DesiredSizes []*ResourceSize
+
+	// Defines if the scope is zonal or regional.
+	AvailabilityZones *bool
+
+	// Desired instance count per region/zone based on the scope. If not set, defaults to 1.
+	DesiredCount *int32
+
+	// The desired regions. If not set, the location from the request URI is used as the desired location. Each location in this
+	// list must be a valid Azure region.
+	DesiredLocations []*string
+}
+
+// ComputePlacementScoresResponse - ComputePlacementScores API response.
+type ComputePlacementScoresResponse struct {
+	// Defines if the scope is zonal or regional.
+	AvailabilityZones *bool
+
+	// Desired instance count per region/zone based on the scope.
+	DesiredCount *int32
+
+	// The desired regions
+	DesiredLocations []*string
+
+	// The desired virtual machine SKU sizes.
+	DesiredSizes []*ResourceSize
+
+	// A placement score indicating the likelihood of successfully allocating the specified Spot VM(s), as well as the expected
+	// lifetimes of the Spot VM(s) after allocation.
+	PlacementScores []*PlacementScore
 }
 
 // Operation - REST API Operation
@@ -86,8 +115,8 @@ type PlacementScore struct {
 	// The availability zone.
 	AvailabilityZone *string
 
-	// Whether the desired quota is available.
-	IsQuotaAvailable *bool
+	// Placement preference from 0 to 10 (inclusive). Higher is better.
+	PlacementPreference *int32
 
 	// The region.
 	Region *string
@@ -97,7 +126,13 @@ type PlacementScore struct {
 
 	// A placement score indicating the likelihood of successfully allocating the specified Spot VM(s), as well as the expected
 	// lifetimes of the Spot VM(s) after allocation.
-	Score *string
+	Score *PlacementScoreValue
+}
+
+// PlacementScoresProperties - Contains additional properties of a placement scores resource.
+type PlacementScoresProperties struct {
+	// Describes the supported resource types for placement scoring.
+	SupportedResourceTypes []*string
 }
 
 // ResourceSize - SpotPlacementRecommender API response.
@@ -275,19 +310,38 @@ type SKUMixPlacementZonePreference struct {
 	TargetMaxCapacity *int32
 }
 
+// SpotPlacementScoresBase - Contains metadata of the Spot Placement Scores resource.
+type SpotPlacementScoresBase struct {
+	// Contains additional properties of a placement scores resource.
+	Properties *PlacementScoresProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // SpotPlacementScoresInput - SpotPlacementScores API Input.
 type SpotPlacementScoresInput struct {
+	// REQUIRED; The desired virtual machine SKU sizes.
+	DesiredSizes []*ResourceSize
+
 	// Defines if the scope is zonal or regional.
 	AvailabilityZones *bool
 
-	// Desired instance count per region/zone based on the scope.
+	// Desired instance count per region/zone based on the scope. If not set, defaults to 1.
 	DesiredCount *int32
 
-	// The desired regions
+	// The desired regions. If not set, the location from the request URI is used as the desired location. Each location in this
+	// list must be a valid Azure region.
 	DesiredLocations []*string
-
-	// The desired virtual machine SKU sizes.
-	DesiredSizes []*ResourceSize
 }
 
 // SpotPlacementScoresResponse - SpotPlacementScores API response.

@@ -19,7 +19,7 @@ import (
 // EncryptionScopesClient contains the methods for the EncryptionScopes group.
 // Don't use this type directly, use NewEncryptionScopesClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-11-15-preview
 type EncryptionScopesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,77 +42,6 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// CreateOrUpdate - Update the state of specified encryptionScope associated with the Cognitive Services account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - encryptionScopeName - The name of the encryptionScope associated with the Cognitive Services Account
-//   - encryptionScope - The encryptionScope properties.
-//   - options - EncryptionScopesClientCreateOrUpdateOptions contains the optional parameters for the EncryptionScopesClient.CreateOrUpdate
-//     method.
-func (client *EncryptionScopesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesClientCreateOrUpdateOptions) (EncryptionScopesClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "EncryptionScopesClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
-	if err != nil {
-		return EncryptionScopesClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EncryptionScopesClientCreateOrUpdateResponse{}, err
-	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EncryptionScopesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, _ *EncryptionScopesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if encryptionScopeName == "" {
-		return nil, errors.New("parameter encryptionScopeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{encryptionScopeName}", url.PathEscape(encryptionScopeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, encryptionScope); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EncryptionScopesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (EncryptionScopesClientCreateOrUpdateResponse, error) {
-	result := EncryptionScopesClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
-		return EncryptionScopesClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginDelete - Deletes the specified encryptionScope associated with the Cognitive Services account.
@@ -139,7 +68,7 @@ func (client *EncryptionScopesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes the specified encryptionScope associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified encryptionScope associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EncryptionScopesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -156,12 +85,13 @@ func (client *EncryptionScopesClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EncryptionScopesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, _ *EncryptionScopesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}"
 	if client.subscriptionID == "" {
@@ -185,9 +115,81 @@ func (client *EncryptionScopesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// CreateOrUpdate - Update the state of specified encryptionScope associated with the Cognitive Services account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - encryptionScopeName - The name of the encryptionScope associated with the Cognitive Services Account
+//   - encryptionScope - The encryptionScope properties.
+//   - options - EncryptionScopesClientCreateOrUpdateOptions contains the optional parameters for the EncryptionScopesClient.CreateOrUpdate
+//     method.
+func (client *EncryptionScopesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesClientCreateOrUpdateOptions) (EncryptionScopesClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "EncryptionScopesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
+	if err != nil {
+		return EncryptionScopesClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EncryptionScopesClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *EncryptionScopesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, _ *EncryptionScopesClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if encryptionScopeName == "" {
+		return nil, errors.New("parameter encryptionScopeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{encryptionScopeName}", url.PathEscape(encryptionScopeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, encryptionScope); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *EncryptionScopesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (EncryptionScopesClientCreateOrUpdateResponse, error) {
+	result := EncryptionScopesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EncryptionScope); err != nil {
+		return EncryptionScopesClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets the specified EncryptionScope associated with the Cognitive Services account.
@@ -210,7 +212,8 @@ func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EncryptionScopesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -237,7 +240,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -313,7 +316,7 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

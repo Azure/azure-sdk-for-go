@@ -34,13 +34,13 @@ type QueriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, queryPackName string, options *armoperationalinsights.QueriesClientListOptions) (resp azfake.PagerResponder[armoperationalinsights.QueriesClientListResponse])
 
-	// Put is the fake for method QueriesClient.Put
-	// HTTP status codes to indicate success: http.StatusOK
-	Put func(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload armoperationalinsights.LogAnalyticsQueryPackQuery, options *armoperationalinsights.QueriesClientPutOptions) (resp azfake.Responder[armoperationalinsights.QueriesClientPutResponse], errResp azfake.ErrorResponder)
-
 	// NewSearchPager is the fake for method QueriesClient.NewSearchPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewSearchPager func(resourceGroupName string, queryPackName string, querySearchProperties armoperationalinsights.LogAnalyticsQueryPackQuerySearchProperties, options *armoperationalinsights.QueriesClientSearchOptions) (resp azfake.PagerResponder[armoperationalinsights.QueriesClientSearchResponse])
+
+	// Put is the fake for method QueriesClient.Put
+	// HTTP status codes to indicate success: http.StatusOK
+	Put func(ctx context.Context, resourceGroupName string, queryPackName string, id string, queryPayload armoperationalinsights.LogAnalyticsQueryPackQuery, options *armoperationalinsights.QueriesClientPutOptions) (resp azfake.Responder[armoperationalinsights.QueriesClientPutResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method QueriesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,7 +71,7 @@ func (q *QueriesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return q.dispatchToMethodFake(req, method)
@@ -93,10 +93,10 @@ func (q *QueriesServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = q.dispatchGet(req)
 			case "QueriesClient.NewListPager":
 				res.resp, res.err = q.dispatchNewListPager(req)
-			case "QueriesClient.Put":
-				res.resp, res.err = q.dispatchPut(req)
 			case "QueriesClient.NewSearchPager":
 				res.resp, res.err = q.dispatchNewSearchPager(req)
+			case "QueriesClient.Put":
+				res.resp, res.err = q.dispatchPut(req)
 			case "QueriesClient.Update":
 				res.resp, res.err = q.dispatchUpdate(req)
 			default:
@@ -211,11 +211,8 @@ func (q *QueriesServerTransport) dispatchNewListPager(req *http.Request) (*http.
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -250,6 +247,72 @@ func (q *QueriesServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	}
 	if !server.PagerResponderMore(newListPager) {
 		q.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (q *QueriesServerTransport) dispatchNewSearchPager(req *http.Request) (*http.Response, error) {
+	if q.srv.NewSearchPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewSearchPager not implemented")}
+	}
+	newSearchPager := q.newSearchPager.get(req)
+	if newSearchPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/queryPacks/(?P<queryPackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queries/search`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.LogAnalyticsQueryPackQuerySearchProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		queryPackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("queryPackName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		includeBodyParam, err := parseOptional(qp.Get("includeBody"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armoperationalinsights.QueriesClientSearchOptions
+		if topParam != nil || includeBodyParam != nil || skipTokenParam != nil {
+			options = &armoperationalinsights.QueriesClientSearchOptions{
+				Top:         topParam,
+				IncludeBody: includeBodyParam,
+				SkipToken:   skipTokenParam,
+			}
+		}
+		resp := q.srv.NewSearchPager(resourceGroupNameParam, queryPackNameParam, body, options)
+		newSearchPager = &resp
+		q.newSearchPager.add(req, newSearchPager)
+		server.PagerResponderInjectNextLinks(newSearchPager, req, func(page *armoperationalinsights.QueriesClientSearchResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newSearchPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		q.newSearchPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newSearchPager) {
+		q.newSearchPager.remove(req)
 	}
 	return resp, nil
 }
@@ -291,75 +354,6 @@ func (q *QueriesServerTransport) dispatchPut(req *http.Request) (*http.Response,
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogAnalyticsQueryPackQuery, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (q *QueriesServerTransport) dispatchNewSearchPager(req *http.Request) (*http.Response, error) {
-	if q.srv.NewSearchPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewSearchPager not implemented")}
-	}
-	newSearchPager := q.newSearchPager.get(req)
-	if newSearchPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/queryPacks/(?P<queryPackName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queries/search`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.LogAnalyticsQueryPackQuerySearchProperties](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		queryPackNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("queryPackName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		includeBodyParam, err := parseOptional(qp.Get("includeBody"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armoperationalinsights.QueriesClientSearchOptions
-		if topParam != nil || includeBodyParam != nil || skipTokenParam != nil {
-			options = &armoperationalinsights.QueriesClientSearchOptions{
-				Top:         topParam,
-				IncludeBody: includeBodyParam,
-				SkipToken:   skipTokenParam,
-			}
-		}
-		resp := q.srv.NewSearchPager(resourceGroupNameParam, queryPackNameParam, body, options)
-		newSearchPager = &resp
-		q.newSearchPager.add(req, newSearchPager)
-		server.PagerResponderInjectNextLinks(newSearchPager, req, func(page *armoperationalinsights.QueriesClientSearchResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newSearchPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		q.newSearchPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newSearchPager) {
-		q.newSearchPager.remove(req)
 	}
 	return resp, nil
 }

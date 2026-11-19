@@ -29,6 +29,29 @@ func unmarshalDrillPropertiesClassification(rawMsg json.RawMessage) (DrillProper
 	return b, nil
 }
 
+func unmarshalDrillResourcePropertiesClassification(rawMsg json.RawMessage) (DrillResourcePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DrillResourcePropertiesClassification
+	switch m["drillType"] {
+	case string(DrillTypeRegional):
+		b = &RegionalDrillResourceProperties{}
+	case string(DrillTypeZonal):
+		b = &ZonalDrillResourceProperties{}
+	default:
+		b = &DrillResourceProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalRecoveryGroupBaseActionClassification(rawMsg json.RawMessage) (RecoveryGroupBaseActionClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

@@ -62,7 +62,7 @@ func (client *DependencyOfRelationshipsClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Create a DependencyOfRelationship
+// createOrUpdate - Create a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DependencyOfRelationshipsClient) createOrUpdate(ctx context.Context, resourceURI string, name string, resource DependencyOfRelationship, options *DependencyOfRelationshipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *DependencyOfRelationshipsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DependencyOfRelationshipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, name string, resource DependencyOfRelationship, _ *DependencyOfRelationshipsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}"
 	if resourceURI == "" {
@@ -133,7 +134,7 @@ func (client *DependencyOfRelationshipsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Delete a DependencyOfRelationship
+// deleteOperation - Delete a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DependencyOfRelationshipsClient) deleteOperation(ctx context.Context, resourceURI string, name string, options *DependencyOfRelationshipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -150,12 +151,13 @@ func (client *DependencyOfRelationshipsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DependencyOfRelationshipsClient) deleteCreateRequest(ctx context.Context, resourceURI string, name string, _ *DependencyOfRelationshipsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf/{name}"
 	if resourceURI == "" {
@@ -196,7 +198,8 @@ func (client *DependencyOfRelationshipsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return DependencyOfRelationshipsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

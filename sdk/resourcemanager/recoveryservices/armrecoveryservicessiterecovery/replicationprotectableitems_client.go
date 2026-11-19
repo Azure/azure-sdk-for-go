@@ -19,7 +19,7 @@ import (
 // ReplicationProtectableItemsClient contains the methods for the ReplicationProtectableItems group.
 // Don't use this type directly, use NewReplicationProtectableItemsClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationProtectableItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,8 @@ func (client *ReplicationProtectableItemsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ReplicationProtectableItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -104,7 +105,7 @@ func (client *ReplicationProtectableItemsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -201,7 +202,7 @@ func (client *ReplicationProtectableItemsClient) listByReplicationProtectionCont
 		if options != nil && options.Take != nil {
 			reqQP.Set("$take", *options.Take)
 		}
-		reqQP.Set("api-version", version20250801)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

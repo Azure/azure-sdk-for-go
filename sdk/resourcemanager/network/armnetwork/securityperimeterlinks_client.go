@@ -20,7 +20,7 @@ import (
 // SecurityPerimeterLinksClient contains the methods for the SecurityPerimeterLinks group.
 // Don't use this type directly, use NewSecurityPerimeterLinksClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type SecurityPerimeterLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,77 +43,6 @@ func NewSecurityPerimeterLinksClient(subscriptionID string, credential azcore.To
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// CreateOrUpdate - Creates or updates NSP link resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkSecurityPerimeterName - The name of the network security perimeter.
-//   - linkName - The name of the NSP link.
-//   - parameters - Parameters that hold the NspLink resource to be created/updated.
-//   - options - SecurityPerimeterLinksClientCreateOrUpdateOptions contains the optional parameters for the SecurityPerimeterLinksClient.CreateOrUpdate
-//     method.
-func (client *SecurityPerimeterLinksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, parameters NspLink, options *SecurityPerimeterLinksClientCreateOrUpdateOptions) (SecurityPerimeterLinksClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "SecurityPerimeterLinksClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, linkName, parameters, options)
-	if err != nil {
-		return SecurityPerimeterLinksClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return SecurityPerimeterLinksClientCreateOrUpdateResponse{}, err
-	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SecurityPerimeterLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, parameters NspLink, _ *SecurityPerimeterLinksClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/links/{linkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkSecurityPerimeterName == "" {
-		return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
-	if linkName == "" {
-		return nil, errors.New("parameter linkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{linkName}", url.PathEscape(linkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SecurityPerimeterLinksClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterLinksClientCreateOrUpdateResponse, error) {
-	result := SecurityPerimeterLinksClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NspLink); err != nil {
-		return SecurityPerimeterLinksClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginDelete - Deletes an NSP Link resource.
@@ -140,7 +69,7 @@ func (client *SecurityPerimeterLinksClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Deletes an NSP Link resource.
+// deleteOperation - Deletes an NSP Link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPerimeterLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *SecurityPerimeterLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -157,12 +86,13 @@ func (client *SecurityPerimeterLinksClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SecurityPerimeterLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, _ *SecurityPerimeterLinksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/links/{linkName}"
 	if client.subscriptionID == "" {
@@ -186,9 +116,81 @@ func (client *SecurityPerimeterLinksClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// CreateOrUpdate - Creates or updates NSP link resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkSecurityPerimeterName - The name of the network security perimeter.
+//   - linkName - The name of the NSP link.
+//   - parameters - Parameters that hold the NspLink resource to be created/updated.
+//   - options - SecurityPerimeterLinksClientCreateOrUpdateOptions contains the optional parameters for the SecurityPerimeterLinksClient.CreateOrUpdate
+//     method.
+func (client *SecurityPerimeterLinksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, parameters NspLink, options *SecurityPerimeterLinksClientCreateOrUpdateOptions) (SecurityPerimeterLinksClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "SecurityPerimeterLinksClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, linkName, parameters, options)
+	if err != nil {
+		return SecurityPerimeterLinksClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SecurityPerimeterLinksClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *SecurityPerimeterLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, parameters NspLink, _ *SecurityPerimeterLinksClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/links/{linkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkSecurityPerimeterName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
+	if linkName == "" {
+		return nil, errors.New("parameter linkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{linkName}", url.PathEscape(linkName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *SecurityPerimeterLinksClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterLinksClientCreateOrUpdateResponse, error) {
+	result := SecurityPerimeterLinksClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NspLink); err != nil {
+		return SecurityPerimeterLinksClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets the specified NSP link resource.
@@ -212,7 +214,8 @@ func (client *SecurityPerimeterLinksClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return SecurityPerimeterLinksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -239,7 +242,7 @@ func (client *SecurityPerimeterLinksClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +324,7 @@ func (client *SecurityPerimeterLinksClient) listCreateRequest(ctx context.Contex
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceIPConfigurationGet.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceIPConfigurationGet.json
 func ExampleInterfaceIPConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleInterfaceIPConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkInterfaceIPConfigurationList.json
+// Generated from example definition: 2026-03-01/NetworkInterfaceIPConfigurationList.json
 func ExampleInterfaceIPConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

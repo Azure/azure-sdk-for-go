@@ -19,7 +19,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-11-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *Client) Capabilities(ctx context.Context, location string, input R
 	if err != nil {
 		return ClientCapabilitiesResponse{}, err
 	}
-	return client.capabilitiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.capabilitiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // capabilitiesCreateRequest creates the Capabilities request.
@@ -84,7 +85,7 @@ func (client *Client) capabilitiesCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -132,7 +133,8 @@ func (client *Client) CheckNameAvailability(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -155,7 +157,7 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

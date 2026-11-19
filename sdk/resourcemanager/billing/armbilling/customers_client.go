@@ -60,7 +60,8 @@ func (client *CustomersClient) Get(ctx context.Context, billingAccountName strin
 	if err != nil {
 		return CustomersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -122,7 +123,8 @@ func (client *CustomersClient) GetByBillingAccount(ctx context.Context, billingA
 	if err != nil {
 		return CustomersClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.

@@ -69,7 +69,7 @@ func (client *InvoicesClient) BeginAmend(ctx context.Context, billingAccountName
 	}
 }
 
-// Amend - Regenerate an invoice by billing account name and invoice name. The operation is supported for billing accounts
+// amend - Regenerate an invoice by billing account name and invoice name. The operation is supported for billing accounts
 // with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InvoicesClient) amend(ctx context.Context, billingAccountName string, invoiceName string, options *InvoicesClientBeginAmendOptions) (*http.Response, error) {
@@ -87,12 +87,13 @@ func (client *InvoicesClient) amend(ctx context.Context, billingAccountName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// amendCreateRequest creates the Amend request.
+// amendCreateRequest creates the amend request.
 func (client *InvoicesClient) amendCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *InvoicesClientBeginAmendOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/amend"
 	if billingAccountName == "" {
@@ -137,7 +138,7 @@ func (client *InvoicesClient) BeginDownloadByBillingAccount(ctx context.Context,
 	}
 }
 
-// DownloadByBillingAccount - Gets a URL to download an invoice document. The operation is supported for billing accounts
+// downloadByBillingAccount - Gets a URL to download an invoice document. The operation is supported for billing accounts
 // with agreement type Microsoft Partner Agreement, Microsoft Customer Agreement or Enterprise Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InvoicesClient) downloadByBillingAccount(ctx context.Context, billingAccountName string, invoiceName string, options *InvoicesClientBeginDownloadByBillingAccountOptions) (*http.Response, error) {
@@ -155,12 +156,13 @@ func (client *InvoicesClient) downloadByBillingAccount(ctx context.Context, bill
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// downloadByBillingAccountCreateRequest creates the DownloadByBillingAccount request.
+// downloadByBillingAccountCreateRequest creates the downloadByBillingAccount request.
 func (client *InvoicesClient) downloadByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, options *InvoicesClientBeginDownloadByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/download"
 	if billingAccountName == "" {
@@ -208,7 +210,7 @@ func (client *InvoicesClient) BeginDownloadByBillingSubscription(ctx context.Con
 	}
 }
 
-// DownloadByBillingSubscription - Gets a URL to download an invoice by billing subscription. The operation is supported for
+// downloadByBillingSubscription - Gets a URL to download an invoice by billing subscription. The operation is supported for
 // billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InvoicesClient) downloadByBillingSubscription(ctx context.Context, invoiceName string, options *InvoicesClientBeginDownloadByBillingSubscriptionOptions) (*http.Response, error) {
@@ -226,12 +228,13 @@ func (client *InvoicesClient) downloadByBillingSubscription(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// downloadByBillingSubscriptionCreateRequest creates the DownloadByBillingSubscription request.
+// downloadByBillingSubscriptionCreateRequest creates the downloadByBillingSubscription request.
 func (client *InvoicesClient) downloadByBillingSubscriptionCreateRequest(ctx context.Context, invoiceName string, options *InvoicesClientBeginDownloadByBillingSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download"
 	if client.subscriptionID == "" {
@@ -281,7 +284,7 @@ func (client *InvoicesClient) BeginDownloadDocumentsByBillingAccount(ctx context
 	}
 }
 
-// DownloadDocumentsByBillingAccount - Gets a URL to download multiple invoice documents (invoice pdf, tax receipts, credit
+// downloadDocumentsByBillingAccount - Gets a URL to download multiple invoice documents (invoice pdf, tax receipts, credit
 // notes) as a zip file. The operation is supported for billing accounts with agreement type Microsoft Partner Agreement or
 // Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -300,12 +303,13 @@ func (client *InvoicesClient) downloadDocumentsByBillingAccount(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// downloadDocumentsByBillingAccountCreateRequest creates the DownloadDocumentsByBillingAccount request.
+// downloadDocumentsByBillingAccountCreateRequest creates the downloadDocumentsByBillingAccount request.
 func (client *InvoicesClient) downloadDocumentsByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters []*DocumentDownloadRequest, _ *InvoicesClientBeginDownloadDocumentsByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/downloadDocuments"
 	if billingAccountName == "" {
@@ -351,7 +355,7 @@ func (client *InvoicesClient) BeginDownloadDocumentsByBillingSubscription(ctx co
 	}
 }
 
-// DownloadDocumentsByBillingSubscription - Gets a URL to download multiple invoice documents (invoice pdf, tax receipts,
+// downloadDocumentsByBillingSubscription - Gets a URL to download multiple invoice documents (invoice pdf, tax receipts,
 // credit notes) as a zip file. The operation is supported for billing accounts with agreement type Microsoft Partner Agreement
 // or Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -370,12 +374,13 @@ func (client *InvoicesClient) downloadDocumentsByBillingSubscription(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// downloadDocumentsByBillingSubscriptionCreateRequest creates the DownloadDocumentsByBillingSubscription request.
+// downloadDocumentsByBillingSubscriptionCreateRequest creates the downloadDocumentsByBillingSubscription request.
 func (client *InvoicesClient) downloadDocumentsByBillingSubscriptionCreateRequest(ctx context.Context, parameters []*DocumentDownloadRequest, _ *InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/downloadDocuments"
 	if client.subscriptionID == "" {
@@ -421,7 +426,7 @@ func (client *InvoicesClient) BeginDownloadSummaryByBillingAccount(ctx context.C
 	}
 }
 
-// DownloadSummaryByBillingAccount - Gets a URL to download the summary document for an invoice. The operation is supported
+// downloadSummaryByBillingAccount - Gets a URL to download the summary document for an invoice. The operation is supported
 // for billing accounts with agreement type Enterprise Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InvoicesClient) downloadSummaryByBillingAccount(ctx context.Context, billingAccountName string, invoiceName string, options *InvoicesClientBeginDownloadSummaryByBillingAccountOptions) (*http.Response, error) {
@@ -439,12 +444,13 @@ func (client *InvoicesClient) downloadSummaryByBillingAccount(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// downloadSummaryByBillingAccountCreateRequest creates the DownloadSummaryByBillingAccount request.
+// downloadSummaryByBillingAccountCreateRequest creates the downloadSummaryByBillingAccount request.
 func (client *InvoicesClient) downloadSummaryByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, invoiceName string, _ *InvoicesClientBeginDownloadSummaryByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/downloadSummary"
 	if billingAccountName == "" {
@@ -485,7 +491,8 @@ func (client *InvoicesClient) Get(ctx context.Context, invoiceName string, optio
 	if err != nil {
 		return InvoicesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -539,7 +546,8 @@ func (client *InvoicesClient) GetByBillingAccount(ctx context.Context, billingAc
 	if err != nil {
 		return InvoicesClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -596,7 +604,8 @@ func (client *InvoicesClient) GetByBillingSubscription(ctx context.Context, invo
 	if err != nil {
 		return InvoicesClientGetByBillingSubscriptionResponse{}, err
 	}
-	return client.getByBillingSubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingSubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingSubscriptionCreateRequest creates the GetByBillingSubscription request.

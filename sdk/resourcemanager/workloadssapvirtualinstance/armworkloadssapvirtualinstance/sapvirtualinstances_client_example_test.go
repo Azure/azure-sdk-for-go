@@ -7121,6 +7121,363 @@ func ExampleSAPVirtualInstancesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2024-09-01/SapVirtualInstances_Start.json
+func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{
+			StartVM: to.Ptr(true),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
+	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_StartWithInfraOperations.json
+func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStartWithInfraOperations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{
+		Body: &armworkloadssapvirtualinstance.StartRequest{
+			StartVM: to.Ptr(true),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
+	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_SoftStop.json
+func ExampleSAPVirtualInstancesClient_BeginStop_softStopOfSapVirtualInstancesStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
+			SoftStopTimeoutSeconds: to.Ptr[int64](300),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
+	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_SoftStopVMAndSystem.json
+func ExampleSAPVirtualInstancesClient_BeginStop_softStopTheVirtualMachineSAndTheSapSystemOnIt() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
+			DeallocateVM:           to.Ptr(true),
+			SoftStopTimeoutSeconds: to.Ptr[int64](300),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
+	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_Stop.json
+func ExampleSAPVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
+			SoftStopTimeoutSeconds: to.Ptr[int64](0),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
+	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_StopVMAndSystem.json
+func ExampleSAPVirtualInstancesClient_BeginStop_stopTheVirtualMachineSAndTheSapSystemOnIt() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
+		Body: &armworkloadssapvirtualinstance.StopRequest{
+			DeallocateVM:           to.Ptr(true),
+			SoftStopTimeoutSeconds: to.Ptr[int64](0),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
+	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
+	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_Update.json
+func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
+		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
+		},
+		Properties: &armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceProperties{},
+		Tags: map[string]*string{
+			"key1": to.Ptr("svi1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientUpdateResponse{
+	// 	SAPVirtualInstance: armworkloadssapvirtualinstance.SAPVirtualInstance{
+	// 		Name: to.Ptr("X00"),
+	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
+	// 		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+	// 			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
+	// 		},
+	// 		Location: to.Ptr("westcentralus"),
+	// 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+	// 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+	// 				ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+	// 			},
+	// 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
+	// 			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
+	// 				Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+	// 			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateInfrastructureDeploymentPending),
+	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusStarting),
+	// 		},
+	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("user@xyz.com"),
+	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
+	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("svi1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-09-01/SapVirtualInstances_UpdateTrustedAccess.json
+func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesTrustedAccessEnableUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
+		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
+		},
+		Properties: &armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceProperties{
+			ManagedResourcesNetworkAccessType: to.Ptr(armworkloadssapvirtualinstance.ManagedResourcesNetworkAccessTypePrivate),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("svi1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientUpdateResponse{
+	// 	SAPVirtualInstance: armworkloadssapvirtualinstance.SAPVirtualInstance{
+	// 		Name: to.Ptr("X00"),
+	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
+	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
+	// 		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
+	// 			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
+	// 		},
+	// 		Location: to.Ptr("westcentralus"),
+	// 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
+	// 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
+	// 				ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
+	// 			},
+	// 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
+	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
+	// 			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
+	// 				Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
+	// 			},
+	// 			ManagedResourcesNetworkAccessType: to.Ptr(armworkloadssapvirtualinstance.ManagedResourcesNetworkAccessTypePrivate),
+	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
+	// 			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
+	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateInfrastructureDeploymentPending),
+	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusStarting),
+	// 		},
+	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("user@xyz.com"),
+	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
+	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("svi1"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2024-09-01/SapVirtualInstances_Get.json
 func ExampleSAPVirtualInstancesClient_Get_sapVirtualInstancesGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -9202,361 +9559,4 @@ func ExampleSAPVirtualInstancesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_Start.json
-func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{
-		Body: &armworkloadssapvirtualinstance.StartRequest{
-			StartVM: to.Ptr(true),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse{
-	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_StartWithInfraOperations.json
-func ExampleSAPVirtualInstancesClient_BeginStart_sapVirtualInstancesStartWithInfraOperations() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStart(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStartOptions{
-		Body: &armworkloadssapvirtualinstance.StartRequest{
-			StartVM: to.Ptr(true),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStartResponse{
-	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_SoftStop.json
-func ExampleSAPVirtualInstancesClient_BeginStop_softStopOfSapVirtualInstancesStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
-		Body: &armworkloadssapvirtualinstance.StopRequest{
-			SoftStopTimeoutSeconds: to.Ptr[int64](300),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
-	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_SoftStopVMAndSystem.json
-func ExampleSAPVirtualInstancesClient_BeginStop_softStopTheVirtualMachineSAndTheSapSystemOnIt() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
-		Body: &armworkloadssapvirtualinstance.StopRequest{
-			DeallocateVM:           to.Ptr(true),
-			SoftStopTimeoutSeconds: to.Ptr[int64](300),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
-	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_Stop.json
-func ExampleSAPVirtualInstancesClient_BeginStop_sapVirtualInstancesStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
-		Body: &armworkloadssapvirtualinstance.StopRequest{
-			SoftStopTimeoutSeconds: to.Ptr[int64](0),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
-	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_StopVMAndSystem.json
-func ExampleSAPVirtualInstancesClient_BeginStop_stopTheVirtualMachineSAndTheSapSystemOnIt() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginStop(ctx, "test-rg", "X00", &armworkloadssapvirtualinstance.SAPVirtualInstancesClientBeginStopOptions{
-		Body: &armworkloadssapvirtualinstance.StopRequest{
-			DeallocateVM:           to.Ptr(true),
-			SoftStopTimeoutSeconds: to.Ptr[int64](0),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientStopResponse{
-	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
-	// 		Name: to.Ptr("1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		EndTime: to.Ptr(time.Date(2021, time.August, 19, 3, 38, 7, 0, time.UTC)),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/operations/locations/centralus/1e4193c3-206e-4916-b124-1da16175eb0e"),
-	// 		StartTime: to.Ptr(time.Date(2021, time.August, 19, 3, 36, 7, 0, time.UTC)),
-	// 		Status: to.Ptr("Succeeded"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_Update.json
-func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
-		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
-			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
-		},
-		Properties: &armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceProperties{},
-		Tags: map[string]*string{
-			"key1": to.Ptr("svi1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientUpdateResponse{
-	// 	SAPVirtualInstance: armworkloadssapvirtualinstance.SAPVirtualInstance{
-	// 		Name: to.Ptr("X00"),
-	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
-	// 		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
-	// 			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
-	// 		},
-	// 		Location: to.Ptr("westcentralus"),
-	// 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-	// 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-	// 				ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-	// 			},
-	// 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
-	// 			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 				Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-	// 			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateInfrastructureDeploymentPending),
-	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusStarting),
-	// 		},
-	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("user@xyz.com"),
-	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
-	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("svi1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-09-01/SapVirtualInstances_UpdateTrustedAccess.json
-func ExampleSAPVirtualInstancesClient_BeginUpdate_sapVirtualInstancesTrustedAccessEnableUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadssapvirtualinstance.NewClientFactory("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSAPVirtualInstancesClient().BeginUpdate(ctx, "test-rg", "X00", armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceRequest{
-		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
-			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
-		},
-		Properties: &armworkloadssapvirtualinstance.UpdateSAPVirtualInstanceProperties{
-			ManagedResourcesNetworkAccessType: to.Ptr(armworkloadssapvirtualinstance.ManagedResourcesNetworkAccessTypePrivate),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("svi1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadssapvirtualinstance.SAPVirtualInstancesClientUpdateResponse{
-	// 	SAPVirtualInstance: armworkloadssapvirtualinstance.SAPVirtualInstance{
-	// 		Name: to.Ptr("X00"),
-	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances"),
-	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00"),
-	// 		Identity: &armworkloadssapvirtualinstance.SAPVirtualInstanceIdentity{
-	// 			Type: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceIdentityTypeNone),
-	// 		},
-	// 		Location: to.Ptr("westcentralus"),
-	// 		Properties: &armworkloadssapvirtualinstance.SAPVirtualInstanceProperties{
-	// 			Configuration: &armworkloadssapvirtualinstance.DeploymentConfiguration{
-	// 				ConfigurationType: to.Ptr(armworkloadssapvirtualinstance.SAPConfigurationTypeDeployment),
-	// 			},
-	// 			Environment: to.Ptr(armworkloadssapvirtualinstance.SAPEnvironmentTypeProd),
-	// 			Health: to.Ptr(armworkloadssapvirtualinstance.SAPHealthStateUnknown),
-	// 			ManagedResourceGroupConfiguration: &armworkloadssapvirtualinstance.ManagedRGConfiguration{
-	// 				Name: to.Ptr("mrg-x00-6d875e77-e412-4d7d-9af4-8895278b4443"),
-	// 			},
-	// 			ManagedResourcesNetworkAccessType: to.Ptr(armworkloadssapvirtualinstance.ManagedResourcesNetworkAccessTypePrivate),
-	// 			ProvisioningState: to.Ptr(armworkloadssapvirtualinstance.SapVirtualInstanceProvisioningStateSucceeded),
-	// 			SapProduct: to.Ptr(armworkloadssapvirtualinstance.SAPProductTypeS4HANA),
-	// 			State: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStateInfrastructureDeploymentPending),
-	// 			Status: to.Ptr(armworkloadssapvirtualinstance.SAPVirtualInstanceStatusStarting),
-	// 		},
-	// 		SystemData: &armworkloadssapvirtualinstance.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("user@xyz.com"),
-	// 			CreatedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 19, 15, 10, 46, 196000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@xyz.com"),
-	// 			LastModifiedByType: to.Ptr(armworkloadssapvirtualinstance.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("svi1"),
-	// 		},
-	// 	},
-	// }
 }

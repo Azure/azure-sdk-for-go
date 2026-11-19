@@ -30,6 +30,9 @@ type ActionGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewActionGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActionGroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *ActionGroupsClient) BeginCreateNotificationsAtActionGroupResourceL
 	}
 }
 
-// CreateNotificationsAtActionGroupResourceLevel - Send test notifications to a set of provided receivers
+// createNotificationsAtActionGroupResourceLevel - Send test notifications to a set of provided receivers
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevel(ctx context.Context, resourceGroupName string, actionGroupName string, notificationRequest NotificationRequestBody, options *ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions) (*http.Response, error) {
 	var err error
@@ -88,11 +91,11 @@ func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevel(
 	return httpResp, nil
 }
 
-// createNotificationsAtActionGroupResourceLevelCreateRequest creates the CreateNotificationsAtActionGroupResourceLevel request.
+// createNotificationsAtActionGroupResourceLevelCreateRequest creates the createNotificationsAtActionGroupResourceLevel request.
 func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, notificationRequest NotificationRequestBody, _ *ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/createNotifications"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -118,6 +121,82 @@ func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevelC
 	return req, nil
 }
 
+// BeginReconcileNSP - Reconciles a specified NSP configuration for specified action group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - actionGroupName - The name of the action group.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - ActionGroupsClientBeginReconcileNSPOptions contains the optional parameters for the ActionGroupsClient.BeginReconcileNSP
+//     method.
+func (client *ActionGroupsClient) BeginReconcileNSP(ctx context.Context, resourceGroupName string, actionGroupName string, networkSecurityPerimeterConfigurationName string, options *ActionGroupsClientBeginReconcileNSPOptions) (*runtime.Poller[ActionGroupsClientReconcileNSPResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcileNSP(ctx, resourceGroupName, actionGroupName, networkSecurityPerimeterConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ActionGroupsClientReconcileNSPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ActionGroupsClientReconcileNSPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reconcileNSP - Reconciles a specified NSP configuration for specified action group.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ActionGroupsClient) reconcileNSP(ctx context.Context, resourceGroupName string, actionGroupName string, networkSecurityPerimeterConfigurationName string, options *ActionGroupsClientBeginReconcileNSPOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ActionGroupsClient.BeginReconcileNSP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileNSPCreateRequest(ctx, resourceGroupName, actionGroupName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// reconcileNSPCreateRequest creates the reconcileNSP request.
+func (client *ActionGroupsClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, networkSecurityPerimeterConfigurationName string, _ *ActionGroupsClientBeginReconcileNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if actionGroupName == "" {
+		return nil, errors.New("parameter actionGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20211001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Create a new action group or update an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -139,11 +218,7 @@ func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ActionGroupsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ActionGroupsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -151,7 +226,7 @@ func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGr
 func (client *ActionGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, _ *ActionGroupsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -178,8 +253,11 @@ func (client *ActionGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ActionGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionGroupsClientCreateOrUpdateResponse, error) {
+func (client *ActionGroupsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientCreateOrUpdateResponse, error) {
 	result := ActionGroupsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
 		return ActionGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -216,7 +294,7 @@ func (client *ActionGroupsClient) Delete(ctx context.Context, resourceGroupName 
 func (client *ActionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, _ *ActionGroupsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -270,7 +348,7 @@ func (client *ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGr
 func (client *ActionGroupsClient) enableReceiverCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, _ *ActionGroupsClientEnableReceiverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/subscribe"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -314,11 +392,7 @@ func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ActionGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActionGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -326,7 +400,7 @@ func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName str
 func (client *ActionGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, _ *ActionGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -349,8 +423,11 @@ func (client *ActionGroupsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ActionGroupsClient) getHandleResponse(resp *http.Response) (ActionGroupsClientGetResponse, error) {
+func (client *ActionGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientGetResponse, error) {
 	result := ActionGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
 		return ActionGroupsClientGetResponse{}, err
 	}
@@ -377,11 +454,7 @@ func (client *ActionGroupsClient) GetNSP(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ActionGroupsClientGetNSPResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActionGroupsClientGetNSPResponse{}, err
-	}
-	resp, err := client.getNSPHandleResponse(httpResp)
+	resp, err := client.getNSPHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -389,7 +462,7 @@ func (client *ActionGroupsClient) GetNSP(ctx context.Context, resourceGroupName 
 func (client *ActionGroupsClient) getNSPCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, networkSecurityPerimeterConfigurationName string, _ *ActionGroupsClientGetNSPOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -416,8 +489,11 @@ func (client *ActionGroupsClient) getNSPCreateRequest(ctx context.Context, resou
 }
 
 // getNSPHandleResponse handles the GetNSP response.
-func (client *ActionGroupsClient) getNSPHandleResponse(resp *http.Response) (ActionGroupsClientGetNSPResponse, error) {
+func (client *ActionGroupsClient) getNSPHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientGetNSPResponse, error) {
 	result := ActionGroupsClientGetNSPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
 		return ActionGroupsClientGetNSPResponse{}, err
 	}
@@ -445,11 +521,7 @@ func (client *ActionGroupsClient) GetTestNotificationsAtActionGroupResourceLevel
 	if err != nil {
 		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, err
-	}
-	resp, err := client.getTestNotificationsAtActionGroupResourceLevelHandleResponse(httpResp)
+	resp, err := client.getTestNotificationsAtActionGroupResourceLevelHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -457,7 +529,7 @@ func (client *ActionGroupsClient) GetTestNotificationsAtActionGroupResourceLevel
 func (client *ActionGroupsClient) getTestNotificationsAtActionGroupResourceLevelCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, notificationID string, _ *ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/notificationStatus/{notificationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -484,8 +556,11 @@ func (client *ActionGroupsClient) getTestNotificationsAtActionGroupResourceLevel
 }
 
 // getTestNotificationsAtActionGroupResourceLevelHandleResponse handles the GetTestNotificationsAtActionGroupResourceLevel response.
-func (client *ActionGroupsClient) getTestNotificationsAtActionGroupResourceLevelHandleResponse(resp *http.Response) (ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse, error) {
+func (client *ActionGroupsClient) getTestNotificationsAtActionGroupResourceLevelHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse, error) {
 	result := ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestNotificationDetailsResponse); err != nil {
 		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, err
 	}
@@ -507,43 +582,57 @@ func (client *ActionGroupsClient) NewListByResourceGroupPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ActionGroupsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ActionGroupsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ActionGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ActionGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ActionGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ActionGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ActionGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActionGroupsClientListByResourceGroupResponse, error) {
+func (client *ActionGroupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientListByResourceGroupResponse, error) {
 	result := ActionGroupsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupList); err != nil {
 		return ActionGroupsClientListByResourceGroupResponse{}, err
 	}
@@ -564,39 +653,53 @@ func (client *ActionGroupsClient) NewListBySubscriptionIDPager(options *ActionGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionIDCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionIDCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ActionGroupsClientListBySubscriptionIDResponse{}, err
 			}
-			return client.listBySubscriptionIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ActionGroupsClientListBySubscriptionIDResponse{}, err
+			}
+			return client.listBySubscriptionIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *ActionGroupsClient) listBySubscriptionIDCreateRequest(ctx context.Context, _ *ActionGroupsClientListBySubscriptionIDOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/actionGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ActionGroupsClient) listBySubscriptionIDCreateRequest(ctx context.Context, nextLink string, _ *ActionGroupsClientListBySubscriptionIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/actionGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
-func (client *ActionGroupsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActionGroupsClientListBySubscriptionIDResponse, error) {
+func (client *ActionGroupsClient) listBySubscriptionIDHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientListBySubscriptionIDResponse, error) {
 	result := ActionGroupsClientListBySubscriptionIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupList); err != nil {
 		return ActionGroupsClientListBySubscriptionIDResponse{}, err
 	}
@@ -619,127 +722,65 @@ func (client *ActionGroupsClient) NewListNSPPager(resourceGroupName string, acti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNSPCreateRequest(ctx, resourceGroupName, actionGroupName, options)
-			}, nil)
+			req, err := client.listNSPCreateRequest(ctx, resourceGroupName, actionGroupName, nextLink, options)
 			if err != nil {
 				return ActionGroupsClientListNSPResponse{}, err
 			}
-			return client.listNSPHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ActionGroupsClientListNSPResponse{}, err
+			}
+			return client.listNSPHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNSPCreateRequest creates the ListNSP request.
-func (client *ActionGroupsClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, _ *ActionGroupsClientListNSPOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/networkSecurityPerimeterConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ActionGroupsClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, nextLink string, _ *ActionGroupsClientListNSPOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/networkSecurityPerimeterConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if actionGroupName == "" {
+			return nil, errors.New("parameter actionGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if actionGroupName == "" {
-		return nil, errors.New("parameter actionGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listNSPHandleResponse handles the ListNSP response.
-func (client *ActionGroupsClient) listNSPHandleResponse(resp *http.Response) (ActionGroupsClientListNSPResponse, error) {
+func (client *ActionGroupsClient) listNSPHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientListNSPResponse, error) {
 	result := ActionGroupsClientListNSPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
 		return ActionGroupsClientListNSPResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginReconcileNSP - Reconciles a specified NSP configuration for specified action group.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - actionGroupName - The name of the action group.
-//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
-//   - options - ActionGroupsClientBeginReconcileNSPOptions contains the optional parameters for the ActionGroupsClient.BeginReconcileNSP
-//     method.
-func (client *ActionGroupsClient) BeginReconcileNSP(ctx context.Context, resourceGroupName string, actionGroupName string, networkSecurityPerimeterConfigurationName string, options *ActionGroupsClientBeginReconcileNSPOptions) (*runtime.Poller[ActionGroupsClientReconcileNSPResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reconcileNSP(ctx, resourceGroupName, actionGroupName, networkSecurityPerimeterConfigurationName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ActionGroupsClientReconcileNSPResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ActionGroupsClientReconcileNSPResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReconcileNSP - Reconciles a specified NSP configuration for specified action group.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ActionGroupsClient) reconcileNSP(ctx context.Context, resourceGroupName string, actionGroupName string, networkSecurityPerimeterConfigurationName string, options *ActionGroupsClientBeginReconcileNSPOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ActionGroupsClient.BeginReconcileNSP"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reconcileNSPCreateRequest(ctx, resourceGroupName, actionGroupName, networkSecurityPerimeterConfigurationName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// reconcileNSPCreateRequest creates the ReconcileNSP request.
-func (client *ActionGroupsClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, networkSecurityPerimeterConfigurationName string, _ *ActionGroupsClientBeginReconcileNSPOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if actionGroupName == "" {
-		return nil, errors.New("parameter actionGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
-	if networkSecurityPerimeterConfigurationName == "" {
-		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Update - Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
@@ -762,11 +803,7 @@ func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ActionGroupsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActionGroupsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -774,7 +811,7 @@ func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName 
 func (client *ActionGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, _ *ActionGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -801,8 +838,11 @@ func (client *ActionGroupsClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ActionGroupsClient) updateHandleResponse(resp *http.Response) (ActionGroupsClientUpdateResponse, error) {
+func (client *ActionGroupsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ActionGroupsClientUpdateResponse, error) {
 	result := ActionGroupsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionGroupResource); err != nil {
 		return ActionGroupsClientUpdateResponse{}, err
 	}

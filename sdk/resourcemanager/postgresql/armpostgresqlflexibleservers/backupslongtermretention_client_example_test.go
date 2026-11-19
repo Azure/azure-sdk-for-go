@@ -12,121 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionCheckPrerequisites.json
-func ExampleBackupsLongTermRetentionClient_CheckPrerequisites() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewBackupsLongTermRetentionClient().CheckPrerequisites(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.LtrPreBackupRequest{
-		BackupSettings: &armpostgresqlflexibleservers.BackupSettings{
-			BackupName: to.Ptr("exampleltrbackup"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpostgresqlflexibleservers.BackupsLongTermRetentionClientCheckPrerequisitesResponse{
-	// 	LtrPreBackupResponse: armpostgresqlflexibleservers.LtrPreBackupResponse{
-	// 		Properties: &armpostgresqlflexibleservers.BackupsLongTermRetentionResponseProperties{
-	// 			NumberOfContainers: to.Ptr[int32](1),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionGet.json
-func ExampleBackupsLongTermRetentionClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewBackupsLongTermRetentionClient().Get(ctx, "exampleresourcegroup", "exampleserver", "exampleltrbackup", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpostgresqlflexibleservers.BackupsLongTermRetentionClientGetResponse{
-	// 	BackupsLongTermRetentionOperation: armpostgresqlflexibleservers.BackupsLongTermRetentionOperation{
-	// 		Name: to.Ptr("exampleltrbackup"),
-	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/ltrbackupOperations"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
-	// 		Properties: &armpostgresqlflexibleservers.LtrBackupOperationResponseProperties{
-	// 			BackupMetadata: to.Ptr("backupMetadata"),
-	// 			BackupName: to.Ptr("exampleltrbackup"),
-	// 			DataTransferredInBytes: to.Ptr[int64](9),
-	// 			DatasourceSizeInBytes: to.Ptr[int64](21),
-	// 			EndTime: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123000000, time.UTC)),
-	// 			PercentComplete: to.Ptr[float64](4),
-	// 			StartTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123000000, time.UTC)),
-	// 			Status: to.Ptr(armpostgresqlflexibleservers.ExecutionStatusRunning),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionListByServer.json
-func ExampleBackupsLongTermRetentionClient_NewListByServerPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewBackupsLongTermRetentionClient().NewListByServerPager("exampleresourcegroup", "exampleserver", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerResponse{
-		// 	LtrServerBackupOperationList: armpostgresqlflexibleservers.LtrServerBackupOperationList{
-		// 		Value: []*armpostgresqlflexibleservers.BackupsLongTermRetentionOperation{
-		// 			{
-		// 				Name: to.Ptr("exampleltrbackup"),
-		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/ltrbackupOperations"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
-		// 				Properties: &armpostgresqlflexibleservers.LtrBackupOperationResponseProperties{
-		// 					BackupMetadata: to.Ptr("backupMetadata"),
-		// 					BackupName: to.Ptr("exampleltrbackup"),
-		// 					DataTransferredInBytes: to.Ptr[int64](9),
-		// 					DatasourceSizeInBytes: to.Ptr[int64](21),
-		// 					EndTime: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123000000, time.UTC)),
-		// 					PercentComplete: to.Ptr[float64](4),
-		// 					StartTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123000000, time.UTC)),
-		// 					Status: to.Ptr(armpostgresqlflexibleservers.ExecutionStatusRunning),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/BackupsLongTermRetentionStart.json
+// Generated from example definition: 2026-10-01/BackupsLongTermRetentionStart.json
 func ExampleBackupsLongTermRetentionClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,4 +56,118 @@ func ExampleBackupsLongTermRetentionClient_BeginStart() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-10-01/BackupsLongTermRetentionCheckPrerequisites.json
+func ExampleBackupsLongTermRetentionClient_CheckPrerequisites() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupsLongTermRetentionClient().CheckPrerequisites(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.LtrPreBackupRequest{
+		BackupSettings: &armpostgresqlflexibleservers.BackupSettings{
+			BackupName: to.Ptr("exampleltrbackup"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpostgresqlflexibleservers.BackupsLongTermRetentionClientCheckPrerequisitesResponse{
+	// 	LtrPreBackupResponse: armpostgresqlflexibleservers.LtrPreBackupResponse{
+	// 		Properties: &armpostgresqlflexibleservers.BackupsLongTermRetentionResponseProperties{
+	// 			NumberOfContainers: to.Ptr[int32](1),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/BackupsLongTermRetentionGet.json
+func ExampleBackupsLongTermRetentionClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupsLongTermRetentionClient().Get(ctx, "exampleresourcegroup", "exampleserver", "exampleltrbackup", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpostgresqlflexibleservers.BackupsLongTermRetentionClientGetResponse{
+	// 	BackupsLongTermRetentionOperation: armpostgresqlflexibleservers.BackupsLongTermRetentionOperation{
+	// 		Name: to.Ptr("exampleltrbackup"),
+	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/ltrbackupOperations"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
+	// 		Properties: &armpostgresqlflexibleservers.LtrBackupOperationResponseProperties{
+	// 			BackupMetadata: to.Ptr("backupMetadata"),
+	// 			BackupName: to.Ptr("exampleltrbackup"),
+	// 			DataTransferredInBytes: to.Ptr[int64](9),
+	// 			DatasourceSizeInBytes: to.Ptr[int64](21),
+	// 			EndTime: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123000000, time.UTC)),
+	// 			PercentComplete: to.Ptr[float64](4),
+	// 			StartTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123000000, time.UTC)),
+	// 			Status: to.Ptr(armpostgresqlflexibleservers.ExecutionStatusRunning),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/BackupsLongTermRetentionListByServer.json
+func ExampleBackupsLongTermRetentionClient_NewListByServerPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewBackupsLongTermRetentionClient().NewListByServerPager("exampleresourcegroup", "exampleserver", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpostgresqlflexibleservers.BackupsLongTermRetentionClientListByServerResponse{
+		// 	LtrServerBackupOperationList: armpostgresqlflexibleservers.LtrServerBackupOperationList{
+		// 		Value: []*armpostgresqlflexibleservers.BackupsLongTermRetentionOperation{
+		// 			{
+		// 				Name: to.Ptr("exampleltrbackup"),
+		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/ltrbackupOperations"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
+		// 				Properties: &armpostgresqlflexibleservers.LtrBackupOperationResponseProperties{
+		// 					BackupMetadata: to.Ptr("backupMetadata"),
+		// 					BackupName: to.Ptr("exampleltrbackup"),
+		// 					DataTransferredInBytes: to.Ptr[int64](9),
+		// 					DatasourceSizeInBytes: to.Ptr[int64](21),
+		// 					EndTime: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123000000, time.UTC)),
+		// 					PercentComplete: to.Ptr[float64](4),
+		// 					StartTime: to.Ptr(time.Date(2025, time.June, 1, 18, 30, 22, 123000000, time.UTC)),
+		// 					Status: to.Ptr(armpostgresqlflexibleservers.ExecutionStatusRunning),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

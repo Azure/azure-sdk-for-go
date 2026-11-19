@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31-preview/RecoveryResources_Get_CrossZoneVMRecovery.json
+// Generated from example definition: 2026-10-01/RecoveryResources_Get_CrossZoneVMRecovery.json
 func ExampleRecoveryResourcesClient_Get_recoveryResourcesGetCrossZoneVMRecovery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleRecoveryResourcesClient_Get_recoveryResourcesGetCrossZoneVMRecovery(
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/RecoveryResources_Get_MaximumSet_Gen.json
 func ExampleRecoveryResourcesClient_Get_recoveryResourcesGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleRecoveryResourcesClient_Get_recoveryResourcesGetMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31-preview/RecoveryResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/RecoveryResources_List_MaximumSet_Gen.json
 func ExampleRecoveryResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,15 +282,15 @@ func ExampleRecoveryResourcesClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					SelectedProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
-		// 					SelectedProtectionSolutionSetting: &armresiliencemanagement.ResourceBaseProtectionSolutionSetting{
-		// 						ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionType("ResourceBaseProtectionSolutionSetting")),
+		// 					SelectedProtectionSolutionSetting: &armresiliencemanagement.ResourceNativeProtectionSolutionSetting{
+		// 						ProtectionSolutionType: to.Ptr(armresiliencemanagement.ResourceProtectionSolutionTypeAzureNative),
 		// 					},
 		// 					ResourceLocation: to.Ptr("eastus"),
 		// 					ResourcePhysicalZones: []*string{
 		// 						to.Ptr("eastus2-zone1"),
 		// 					},
 		// 				},
-		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/samplePlanName/recoveryResources/12345678-9012-3456-7890-123456789012"),
+		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/plan1/recoveryResources/12345678-9012-3456-7890-123456789012"),
 		// 				Name: to.Ptr("12345678-9012-3456-7890-123456789012"),
 		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources"),
 		// 				SystemData: &armresiliencemanagement.SystemData{
@@ -303,7 +303,7 @@ func ExampleRecoveryResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/aalhs"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans/plan1/recoveryResources?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

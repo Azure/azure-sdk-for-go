@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionCommitCircuitMigration.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionCommitCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginCommitCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginCommitCircuitMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionUpdate.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionUpdate.json
 func ExampleExpressRouteCrossConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,50 +233,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionGet.json
-func ExampleExpressRouteCrossConnectionsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExpressRouteCrossConnectionsClient().Get(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCrossConnectionsClientGetResponse{
-	// 	ExpressRouteCrossConnection: armnetwork.ExpressRouteCrossConnection{
-	// 		Name: to.Ptr("<circuitServiceKey>"),
-	// 		Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
-	// 		Etag: to.Ptr("W/\"c0e6477e-8150-4d4f-9bf6-bb10e6acb63a\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
-	// 		Location: to.Ptr("brazilsouth"),
-	// 		Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
-	// 			BandwidthInMbps: to.Ptr[int32](1000),
-	// 			ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
-	// 			},
-	// 			PeeringLocation: to.Ptr("SiliconValley"),
-	// 			Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
-	// 			},
-	// 			PrimaryAzurePort: to.Ptr("bvtazureixp01"),
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
-	// 			STag: to.Ptr[int32](2),
-	// 			SecondaryAzurePort: to.Ptr("bvtazureixp01"),
-	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionGetCircuitMigrationInfo.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionGetCircuitMigrationInfo.json
 func ExampleExpressRouteCrossConnectionsClient_BeginGetCircuitMigrationInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,58 +403,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginGetCircuitMigrationInfo() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionList.json
-func ExampleExpressRouteCrossConnectionsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ExpressRouteCrossConnectionsClientListResponse{
-		// 	ExpressRouteCrossConnectionListResult: armnetwork.ExpressRouteCrossConnectionListResult{
-		// 		Value: []*armnetwork.ExpressRouteCrossConnection{
-		// 			{
-		// 				Name: to.Ptr("<circuitServiceKey>"),
-		// 				Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnectionSiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
-		// 				Location: to.Ptr("brazilsouth"),
-		// 				Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
-		// 					BandwidthInMbps: to.Ptr[int32](1000),
-		// 					ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
-		// 					},
-		// 					PeeringLocation: to.Ptr("SiliconValley"),
-		// 					Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
-		// 					},
-		// 					PrimaryAzurePort: to.Ptr("bvtazureixp01"),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
-		// 					STag: to.Ptr[int32](2),
-		// 					SecondaryAzurePort: to.Ptr("bvtazureixp01"),
-		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionsArpTable.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsArpTable.json
 func ExampleExpressRouteCrossConnectionsClient_BeginListArpTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -533,58 +439,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListArpTable() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionListByResourceGroup.json
-func ExampleExpressRouteCrossConnectionsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListByResourceGroupPager("CrossConnection-SiliconValley", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse{
-		// 	ExpressRouteCrossConnectionListResult: armnetwork.ExpressRouteCrossConnectionListResult{
-		// 		Value: []*armnetwork.ExpressRouteCrossConnection{
-		// 			{
-		// 				Name: to.Ptr("<circuitServiceKey>"),
-		// 				Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnectionSilicon-Valley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
-		// 				Location: to.Ptr("brazilsouth"),
-		// 				Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
-		// 					BandwidthInMbps: to.Ptr[int32](1000),
-		// 					ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
-		// 					},
-		// 					PeeringLocation: to.Ptr("SiliconValley"),
-		// 					Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
-		// 					},
-		// 					PrimaryAzurePort: to.Ptr("bvtazureixp01"),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
-		// 					STag: to.Ptr[int32](2),
-		// 					SecondaryAzurePort: to.Ptr("bvtazureixp01"),
-		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionsRouteTable.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsRouteTable.json
 func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,7 +483,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionsRouteTableSummary.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsRouteTableSummary.json
 func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTableSummary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -670,7 +525,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTableSummary() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionMigrateCircuit.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionMigrateCircuit.json
 func ExampleExpressRouteCrossConnectionsClient_BeginMigrateCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -841,7 +696,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginMigrateCircuit() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionPrepareCircuitMigration.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionPrepareCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginPrepareCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +867,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginPrepareCircuitMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionRestoreBgpForCircuitMigration.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionRestoreBgpForCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginRestoreBgpForCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1183,7 +1038,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginRestoreBgpForCircuitMigratio
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionRollbackCircuitMigration.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionRollbackCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginRollbackCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1354,7 +1209,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginRollbackCircuitMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionShutDownBgpForCircuitMigration.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionShutDownBgpForCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginShutDownBgpForCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1525,7 +1380,193 @@ func ExampleExpressRouteCrossConnectionsClient_BeginShutDownBgpForCircuitMigrati
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionUpdateTags.json
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionValidateCircuitMigration.json
+func ExampleExpressRouteCrossConnectionsClient_BeginValidateCircuitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginValidateCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest{
+		TargetPeeringLocation: to.Ptr("SiliconValley"),
+		TargetPortMapping: []*armnetwork.PortMapping{
+			{
+				SourcePortID: to.Ptr("sourcePort1"),
+				TargetPortID: to.Ptr("targetPort1"),
+			},
+			{
+				SourcePortID: to.Ptr("sourcePort2"),
+				TargetPortID: to.Ptr("targetPort2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse{
+	// 	MigrateExpressRouteCircuitValidateResponse: armnetwork.MigrateExpressRouteCircuitValidateResponse{
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionGet.json
+func ExampleExpressRouteCrossConnectionsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExpressRouteCrossConnectionsClient().Get(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ExpressRouteCrossConnectionsClientGetResponse{
+	// 	ExpressRouteCrossConnection: armnetwork.ExpressRouteCrossConnection{
+	// 		Name: to.Ptr("<circuitServiceKey>"),
+	// 		Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
+	// 		Etag: to.Ptr("W/\"c0e6477e-8150-4d4f-9bf6-bb10e6acb63a\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnection-SiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
+	// 		Location: to.Ptr("brazilsouth"),
+	// 		Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
+	// 			BandwidthInMbps: to.Ptr[int32](1000),
+	// 			ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
+	// 			},
+	// 			PeeringLocation: to.Ptr("SiliconValley"),
+	// 			Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
+	// 			},
+	// 			PrimaryAzurePort: to.Ptr("bvtazureixp01"),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
+	// 			STag: to.Ptr[int32](2),
+	// 			SecondaryAzurePort: to.Ptr("bvtazureixp01"),
+	// 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionListByResourceGroup.json
+func ExampleExpressRouteCrossConnectionsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListByResourceGroupPager("CrossConnection-SiliconValley", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ExpressRouteCrossConnectionsClientListByResourceGroupResponse{
+		// 	ExpressRouteCrossConnectionListResult: armnetwork.ExpressRouteCrossConnectionListResult{
+		// 		Value: []*armnetwork.ExpressRouteCrossConnection{
+		// 			{
+		// 				Name: to.Ptr("<circuitServiceKey>"),
+		// 				Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnectionSilicon-Valley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
+		// 				Location: to.Ptr("brazilsouth"),
+		// 				Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
+		// 					BandwidthInMbps: to.Ptr[int32](1000),
+		// 					ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
+		// 					},
+		// 					PeeringLocation: to.Ptr("SiliconValley"),
+		// 					Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
+		// 					},
+		// 					PrimaryAzurePort: to.Ptr("bvtazureixp01"),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
+		// 					STag: to.Ptr[int32](2),
+		// 					SecondaryAzurePort: to.Ptr("bvtazureixp01"),
+		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionList.json
+func ExampleExpressRouteCrossConnectionsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ExpressRouteCrossConnectionsClientListResponse{
+		// 	ExpressRouteCrossConnectionListResult: armnetwork.ExpressRouteCrossConnectionListResult{
+		// 		Value: []*armnetwork.ExpressRouteCrossConnection{
+		// 			{
+		// 				Name: to.Ptr("<circuitServiceKey>"),
+		// 				Type: to.Ptr("Microsoft.Network/expressRouteCrossConnections"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/CrossConnectionSiliconValley/providers/Microsoft.Network/expressRouteCrossConnections/<circuitServiceKey>"),
+		// 				Location: to.Ptr("brazilsouth"),
+		// 				Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
+		// 					BandwidthInMbps: to.Ptr[int32](1000),
+		// 					ExpressRouteCircuit: &armnetwork.ExpressRouteCircuitReference{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ertest/providers/Microsoft.Network/expressRouteCircuits/er1"),
+		// 					},
+		// 					PeeringLocation: to.Ptr("SiliconValley"),
+		// 					Peerings: []*armnetwork.ExpressRouteCrossConnectionPeering{
+		// 					},
+		// 					PrimaryAzurePort: to.Ptr("bvtazureixp01"),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningState("Enabled")),
+		// 					STag: to.Ptr[int32](2),
+		// 					SecondaryAzurePort: to.Ptr("bvtazureixp01"),
+		// 					ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionUpdateTags.json
 func ExampleExpressRouteCrossConnectionsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1572,47 +1613,6 @@ func ExampleExpressRouteCrossConnectionsClient_UpdateTags() {
 	// 			"tag1": to.Ptr("value1"),
 	// 			"tag2": to.Ptr("value2"),
 	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/ExpressRouteCrossConnectionValidateCircuitMigration.json
-func ExampleExpressRouteCrossConnectionsClient_BeginValidateCircuitMigration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginValidateCircuitMigration(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.MigrateExpressRouteCircuitValidateAndHealthCheckRequest{
-		TargetPeeringLocation: to.Ptr("SiliconValley"),
-		TargetPortMapping: []*armnetwork.PortMapping{
-			{
-				SourcePortID: to.Ptr("sourcePort1"),
-				TargetPortID: to.Ptr("targetPort1"),
-			},
-			{
-				SourcePortID: to.Ptr("sourcePort2"),
-				TargetPortID: to.Ptr("targetPort2"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ExpressRouteCrossConnectionsClientValidateCircuitMigrationResponse{
-	// 	MigrateExpressRouteCircuitValidateResponse: armnetwork.MigrateExpressRouteCircuitValidateResponse{
-	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
 }

@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Maintenance module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance/v2
 ```
 
 ## Authorization

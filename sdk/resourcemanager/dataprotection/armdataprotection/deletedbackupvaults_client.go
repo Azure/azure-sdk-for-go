@@ -19,7 +19,7 @@ import (
 // DeletedBackupVaultsClient - Deleted backup vault operations (available from version 2025-09-01)
 // Don't use this type directly, use NewDeletedBackupVaultsClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-07-01
 type DeletedBackupVaultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *DeletedBackupVaultsClient) Get(ctx context.Context, location strin
 	if err != nil {
 		return DeletedBackupVaultsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -86,7 +87,7 @@ func (client *DeletedBackupVaultsClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -157,7 +158,7 @@ func (client *DeletedBackupVaultsClient) listByLocationCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -64,7 +64,7 @@ type uploadFromReaderResponse struct {
 	VersionID *string
 
 	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
-	// Will be a part of response only if uploading data >= internal.MaxUploadBlobBytes (= 256 * 1024 * 1024 // 256MB)
+	// Will be a part of response only if the service returns it for the Upload or CommitBlockList request used.
 	ContentCRC64 []byte
 }
 

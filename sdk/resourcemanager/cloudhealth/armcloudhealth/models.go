@@ -154,6 +154,35 @@ type AzureResourceHealthSignalStatus struct {
 	Value *float64
 }
 
+// AzureResourceMetricRecommendationConfiguration - Azure Resource Metric recommendation configuration.
+type AzureResourceMetricRecommendationConfiguration struct {
+	// REQUIRED; Type of aggregation to apply to the metric.
+	AggregationType *MetricAggregationType
+
+	// REQUIRED; Name of the metric.
+	MetricName *string
+
+	// REQUIRED; Metric namespace.
+	MetricNamespace *string
+
+	// REQUIRED; Kind of the recommended signal.
+	SignalKind *SignalRecommendationKind
+
+	// REQUIRED; Time range of the metric in ISO 8601 duration format (e.g. 'PT5M').
+	TimeGrain *string
+
+	// Optional dimension filter to apply to the metric.
+	DimensionFilter *string
+}
+
+// GetSignalRecommendationConfiguration implements the SignalRecommendationConfigurationClassification interface for type
+// AzureResourceMetricRecommendationConfiguration.
+func (a *AzureResourceMetricRecommendationConfiguration) GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration {
+	return &SignalRecommendationConfiguration{
+		SignalKind: a.SignalKind,
+	}
+}
+
 // AzureResourceSignal - An Azure Resource Metric signal instance assigned to an entity.
 type AzureResourceSignal struct {
 	// REQUIRED; Unique name of the signal within the entity.
@@ -654,6 +683,37 @@ type IconDefinition struct {
 	CustomData *string
 }
 
+// LogAnalyticsQueryRecommendationConfiguration - Log Analytics Query recommendation configuration.
+type LogAnalyticsQueryRecommendationConfiguration struct {
+	// REQUIRED; Query text in KQL syntax. Supported entity template variables, such as `{{entity.azureResourceId}}`, may appear
+	// in the query.
+	QueryText *string
+
+	// REQUIRED; Kind of the recommended signal. This value indicates that a Log Analytics workspace is required.
+	SignalKind *SignalRecommendationKind
+
+	// Diagnostic setting categories required to populate the query's tables.
+	RequiredDiagnosticSettingCategories []*string
+
+	// Log Analytics tables required by the query.
+	RequiredTables []*string
+
+	// Time range of the signal in ISO 8601 duration format (e.g. 'PT5M'). If not specified, the KQL query must define a time
+	// range.
+	TimeGrain *string
+
+	// Name of the numeric result column to evaluate against the thresholds.
+	ValueColumnName *string
+}
+
+// GetSignalRecommendationConfiguration implements the SignalRecommendationConfigurationClassification interface for type
+// LogAnalyticsQueryRecommendationConfiguration.
+func (l *LogAnalyticsQueryRecommendationConfiguration) GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration {
+	return &SignalRecommendationConfiguration{
+		SignalKind: l.SignalKind,
+	}
+}
+
 // LogAnalyticsQuerySignalDefinitionProperties - Log Analytics Query Signal Definition properties
 type LogAnalyticsQuerySignalDefinitionProperties struct {
 	// REQUIRED; Evaluation rules for the signal definition
@@ -852,6 +912,33 @@ type OperationListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// PrometheusMetricsRecommendationConfiguration - Prometheus Metrics Query recommendation configuration.
+type PrometheusMetricsRecommendationConfiguration struct {
+	// REQUIRED; Query text in PromQL syntax. Supported entity template variables, such as `{{entity.name}}`, may appear in the
+	// query.
+	QueryText *string
+
+	// REQUIRED; Kind of the recommended signal. This value indicates that an Azure Monitor workspace is required.
+	SignalKind *SignalRecommendationKind
+
+	// Prometheus metrics required by the query.
+	RequiredMetrics []*string
+
+	// Prometheus scrape targets required to populate the query's metrics.
+	RequiredScrapeTargets []*string
+
+	// Time range of the signal in ISO 8601 duration format (e.g. 'PT5M').
+	TimeGrain *string
+}
+
+// GetSignalRecommendationConfiguration implements the SignalRecommendationConfigurationClassification interface for type
+// PrometheusMetricsRecommendationConfiguration.
+func (p *PrometheusMetricsRecommendationConfiguration) GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration {
+	return &SignalRecommendationConfiguration{
+		SignalKind: p.SignalKind,
+	}
 }
 
 // PrometheusMetricsSignal - A Prometheus Metrics Query signal instance assigned to an entity.
@@ -1110,29 +1197,29 @@ type SignalAggregationGroup struct {
 
 // SignalConfiguration - A signal configuration for an Azure resource type
 type SignalConfiguration struct {
+	// REQUIRED; Kind-specific settings for the recommended signal.
+	Configuration SignalRecommendationConfigurationClassification
+
 	// REQUIRED; Unique identifier of the recommended signal configuration.
 	SignalID *string
 
-	// Type of aggregation to apply to the metric.
-	AggregationType *MetricAggregationType
+	// Azure resource types to which the recommended signal configuration applies.
+	ApplicableResourceTypes []*string
 
-	// Optional dimension filter to apply to the metric.
-	DimensionFilter *string
+	// Unit of the recommended signal result (e.g. Bytes, MilliSeconds, Percent, Count).
+	DataUnit *string
+
+	// Description of the recommended signal configuration.
+	Description *string
+
+	// Display name of the recommended signal configuration.
+	DisplayName *string
 
 	// Evaluation rules with recommended thresholds.
 	EvaluationRules *EvaluationRule
 
-	// Name of the metric (e.g. 'Percentage CPU').
-	MetricName *string
-
-	// Metric namespace (e.g. 'microsoft.compute/virtualmachines').
-	MetricNamespace *string
-
-	// Time range of the metric. ISO 8601 duration format (e.g. 'PT5M').
-	TimeGrain *string
-
-	// Unit of the metric (e.g. Percent, Bytes, Count).
-	Unit *string
+	// Interval in which the recommended signal is evaluated.
+	RefreshInterval *RefreshInterval
 }
 
 // SignalDefinition - A signal definition in a health model
@@ -1276,6 +1363,18 @@ type SignalInstanceProperties struct {
 
 // GetSignalInstanceProperties implements the SignalInstancePropertiesClassification interface for type SignalInstanceProperties.
 func (s *SignalInstanceProperties) GetSignalInstanceProperties() *SignalInstanceProperties { return s }
+
+// SignalRecommendationConfiguration - Kind-specific signal recommendation configuration.
+type SignalRecommendationConfiguration struct {
+	// REQUIRED; Kind of the recommended signal.
+	SignalKind *SignalRecommendationKind
+}
+
+// GetSignalRecommendationConfiguration implements the SignalRecommendationConfigurationClassification interface for type
+// SignalRecommendationConfiguration.
+func (s *SignalRecommendationConfiguration) GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration {
+	return s
+}
 
 // SignalStatus - Status of a signal
 type SignalStatus struct {

@@ -7,6 +7,7 @@ package fake
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
+	"reflect"
 	"sync"
 )
 
@@ -19,8 +20,23 @@ type nonRetriableError struct {
 	error
 }
 
-func (nonRetriableError) NonRetriable() {
+func (*nonRetriableError) NonRetriable() {
 	// marker method
+}
+
+func getHeaderValue(h http.Header, k string) string {
+	v := h[k]
+	if len(v) == 0 {
+		return ""
+	}
+	return v[0]
+}
+
+func getOptional[T any](v T) *T {
+	if reflect.ValueOf(v).IsZero() {
+		return nil
+	}
+	return &v
 }
 
 func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
@@ -29,17 +45,6 @@ func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
 		*dst = src()
 	}
 	mu.Unlock()
-}
-
-func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
-	if v == "" {
-		return nil, nil
-	}
-	t, err := parse(v)
-	if err != nil {
-		return nil, err
-	}
-	return &t, nil
 }
 
 func newTracker[T any]() *tracker[T] {

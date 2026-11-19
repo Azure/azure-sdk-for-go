@@ -67,86 +67,6 @@ func ExampleAvailabilityStatusesClient_GetByResource() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/AvailabilityStatuses_List.json
-func ExampleAvailabilityStatusesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresourcehealth.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAvailabilityStatusesClient().NewListPager("resourceUri", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armresourcehealth.AvailabilityStatusesClientListResponse{
-		// 	AvailabilityStatusListResult: armresourcehealth.AvailabilityStatusListResult{
-		// 		Value: []*armresourcehealth.AvailabilityStatus{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/resourceGroups/rhctestenv/providers/Microsoft.ClassicCompute/virtualMachines/rhctes tenvV1PI/providers/Microsoft.ResourceHealth/availabilityStatuses/current"),
-		// 				Name: to.Ptr("current"),
-		// 				Type: to.Ptr("Microsoft.ResourceHealth/AvailabilityStatuses"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
-		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
-		// 					Title: to.Ptr("Unavailable"),
-		// 					Summary: to.Ptr("We're sorry, we couldn't automatically recover your virtual machine"),
-		// 					ReasonType: to.Ptr("Unplanned"),
-		// 					Context: to.Ptr("Platform Initiated"),
-		// 					Category: to.Ptr("Unplanned"),
-		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
-		// 					DetailedStatus: to.Ptr("Disk problems are preventing us from automatically recovering your virtual machine"),
-		// 					OccurredTime: to.Ptr(time.Date(2016, time.March, 29, 9, 12, 0, 0, time.UTC)),
-		// 					ReportedTime: to.Ptr(time.Date(2016, time.May, 4, 14, 11, 29, 759893100, time.UTC)),
-		// 					RootCauseAttributionTime: to.Ptr(time.Date(2016, time.March, 29, 9, 13, 0, 0, time.UTC)),
-		// 					ResolutionETA: to.Ptr(time.Date(2016, time.March, 29, 9, 37, 0, 0, time.UTC)),
-		// 					ServiceImpactingEvents: []*armresourcehealth.ServiceImpactingEvent{
-		// 						{
-		// 							EventStartTime: to.Ptr(time.Date(2016, time.May, 2, 19, 23, 13, 711512500, time.UTC)),
-		// 							EventStatusLastModifiedTime: to.Ptr(time.Date(2016, time.May, 2, 19, 27, 4, 954349100, time.UTC)),
-		// 							CorrelationID: to.Ptr("b56d0180-2d6c-4f7b-b750-c1eca681874c"),
-		// 							Status: &armresourcehealth.ServiceImpactingEventStatus{
-		// 								Value: to.Ptr("Resolved"),
-		// 							},
-		// 							IncidentProperties: &armresourcehealth.ServiceImpactingEventIncidentProperties{
-		// 								Title: to.Ptr("Virtual Machines - West Europe [West Europe]"),
-		// 								Service: to.Ptr("Virtual Machines"),
-		// 								Region: to.Ptr("East US"),
-		// 								IncidentType: to.Ptr("outage"),
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/resourceGroups/rhctestenv/providers/Microsoft.ClassicCompute/virtualMachines/rhctes tenvV1PI/providers/Microsoft.ResourceHealth/availabilityStatuses/2016-03-28+16%3a23%3a00Z"),
-		// 				Name: to.Ptr("2016-03-28+16%3a23%3a00Z"),
-		// 				Type: to.Ptr("Microsoft.ResourceHealth/AvailabilityStatuses"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
-		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
-		// 					Summary: to.Ptr("This virtual machine is running normally"),
-		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
-		// 					DetailedStatus: to.Ptr("There aren’t any known Azure platform problems affecting this virtual machine"),
-		// 					OccurredTime: to.Ptr(time.Date(2016, time.March, 28, 16, 23, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-05-01/AvailabilityStatuses_ListByResourceGroup.json
 func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -325,6 +245,86 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 		// 					RootCauseAttributionTime: to.Ptr(time.Date(2016, time.March, 29, 9, 13, 0, 0, time.UTC)),
 		// 					Summary: to.Ptr("We are sorry, we couldn't automatically recovery our virtualmachine"),
 		// 					Title: to.Ptr("Unavailable"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/AvailabilityStatuses_List.json
+func ExampleAvailabilityStatusesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresourcehealth.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAvailabilityStatusesClient().NewListPager("resourceUri", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armresourcehealth.AvailabilityStatusesClientListResponse{
+		// 	AvailabilityStatusListResult: armresourcehealth.AvailabilityStatusListResult{
+		// 		Value: []*armresourcehealth.AvailabilityStatus{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/resourceGroups/rhctestenv/providers/Microsoft.ClassicCompute/virtualMachines/rhctes tenvV1PI/providers/Microsoft.ResourceHealth/availabilityStatuses/current"),
+		// 				Name: to.Ptr("current"),
+		// 				Type: to.Ptr("Microsoft.ResourceHealth/AvailabilityStatuses"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
+		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
+		// 					Title: to.Ptr("Unavailable"),
+		// 					Summary: to.Ptr("We're sorry, we couldn't automatically recover your virtual machine"),
+		// 					ReasonType: to.Ptr("Unplanned"),
+		// 					Context: to.Ptr("Platform Initiated"),
+		// 					Category: to.Ptr("Unplanned"),
+		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
+		// 					DetailedStatus: to.Ptr("Disk problems are preventing us from automatically recovering your virtual machine"),
+		// 					OccurredTime: to.Ptr(time.Date(2016, time.March, 29, 9, 12, 0, 0, time.UTC)),
+		// 					ReportedTime: to.Ptr(time.Date(2016, time.May, 4, 14, 11, 29, 759893100, time.UTC)),
+		// 					RootCauseAttributionTime: to.Ptr(time.Date(2016, time.March, 29, 9, 13, 0, 0, time.UTC)),
+		// 					ResolutionETA: to.Ptr(time.Date(2016, time.March, 29, 9, 37, 0, 0, time.UTC)),
+		// 					ServiceImpactingEvents: []*armresourcehealth.ServiceImpactingEvent{
+		// 						{
+		// 							EventStartTime: to.Ptr(time.Date(2016, time.May, 2, 19, 23, 13, 711512500, time.UTC)),
+		// 							EventStatusLastModifiedTime: to.Ptr(time.Date(2016, time.May, 2, 19, 27, 4, 954349100, time.UTC)),
+		// 							CorrelationID: to.Ptr("b56d0180-2d6c-4f7b-b750-c1eca681874c"),
+		// 							Status: &armresourcehealth.ServiceImpactingEventStatus{
+		// 								Value: to.Ptr("Resolved"),
+		// 							},
+		// 							IncidentProperties: &armresourcehealth.ServiceImpactingEventIncidentProperties{
+		// 								Title: to.Ptr("Virtual Machines - West Europe [West Europe]"),
+		// 								Service: to.Ptr("Virtual Machines"),
+		// 								Region: to.Ptr("East US"),
+		// 								IncidentType: to.Ptr("outage"),
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/4abcdefgh-ijkl-mnop-qrstuvwxyz/resourceGroups/rhctestenv/providers/Microsoft.ClassicCompute/virtualMachines/rhctes tenvV1PI/providers/Microsoft.ResourceHealth/availabilityStatuses/2016-03-28+16%3a23%3a00Z"),
+		// 				Name: to.Ptr("2016-03-28+16%3a23%3a00Z"),
+		// 				Type: to.Ptr("Microsoft.ResourceHealth/AvailabilityStatuses"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
+		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
+		// 					Summary: to.Ptr("This virtual machine is running normally"),
+		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
+		// 					DetailedStatus: to.Ptr("There aren’t any known Azure platform problems affecting this virtual machine"),
+		// 					OccurredTime: to.Ptr(time.Date(2016, time.March, 28, 16, 23, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

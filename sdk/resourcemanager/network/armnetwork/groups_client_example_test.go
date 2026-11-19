@@ -12,7 +12,34 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkManagerGroupPut.json
+// Generated from example definition: 2026-03-01/NetworkManagerGroupDelete.json
+func ExampleGroupsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewGroupsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testNetworkGroup", &armnetwork.GroupsClientBeginDeleteOptions{
+		Force: to.Ptr(false)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.GroupsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkManagerGroupPut.json
 func ExampleGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,34 +86,7 @@ func ExampleGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerGroupDelete.json
-func ExampleGroupsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewGroupsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testNetworkGroup", &armnetwork.GroupsClientBeginDeleteOptions{
-		Force: to.Ptr(false)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.GroupsClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkManagerGroupGet.json
+// Generated from example definition: 2026-03-01/NetworkManagerGroupGet.json
 func ExampleGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerGroupList.json
+// Generated from example definition: 2026-03-01/NetworkManagerGroupList.json
 func ExampleGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

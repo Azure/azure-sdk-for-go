@@ -19,7 +19,7 @@ import (
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *ManagementClient) CheckEndpointNameAvailability(ctx context.Contex
 	if err != nil {
 		return ManagementClientCheckEndpointNameAvailabilityResponse{}, err
 	}
-	return client.checkEndpointNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkEndpointNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkEndpointNameAvailabilityCreateRequest creates the CheckEndpointNameAvailability request.
@@ -84,7 +85,7 @@ func (client *ManagementClient) checkEndpointNameAvailabilityCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -126,7 +127,8 @@ func (client *ManagementClient) CheckNameAvailability(ctx context.Context, check
 	if err != nil {
 		return ManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -137,7 +139,7 @@ func (client *ManagementClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -179,7 +181,8 @@ func (client *ManagementClient) CheckNameAvailabilityWithSubscription(ctx contex
 	if err != nil {
 		return ManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
 	}
-	return client.checkNameAvailabilityWithSubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityWithSubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityWithSubscriptionCreateRequest creates the CheckNameAvailabilityWithSubscription request.
@@ -194,7 +197,7 @@ func (client *ManagementClient) checkNameAvailabilityWithSubscriptionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -237,7 +240,8 @@ func (client *ManagementClient) ValidateProbe(ctx context.Context, validateProbe
 	if err != nil {
 		return ManagementClientValidateProbeResponse{}, err
 	}
-	return client.validateProbeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateProbeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateProbeCreateRequest creates the ValidateProbe request.
@@ -252,7 +256,7 @@ func (client *ManagementClient) validateProbeCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

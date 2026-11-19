@@ -19,7 +19,7 @@ import (
 // FirewallPolicyRuleCollectionGroupDraftsClient contains the methods for the FirewallPolicyRuleCollectionGroupDrafts group.
 // Don't use this type directly, use NewFirewallPolicyRuleCollectionGroupDraftsClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type FirewallPolicyRuleCollectionGroupDraftsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,8 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) CreateOrUpdate(ctx 
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -94,7 +95,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) createOrUpdateCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -139,7 +140,8 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) Delete(ctx context.
 		return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, err
 	}
 	return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, nil
 }
@@ -168,7 +170,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) deleteCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -195,7 +197,8 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) Get(ctx context.Con
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupDraftsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -222,7 +225,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) getCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

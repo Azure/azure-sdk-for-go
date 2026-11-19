@@ -66,7 +66,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkAcknowledgeOperationErrors
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
 	}
-	return client.bulkAcknowledgeOperationErrorsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkAcknowledgeOperationErrorsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkAcknowledgeOperationErrorsCreateRequest creates the BulkAcknowledgeOperationErrors request.
@@ -133,7 +134,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkCancelOperations(ctx conte
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkCancelOperationsResponse{}, err
 	}
-	return client.bulkCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkCancelOperationsCreateRequest creates the BulkCancelOperations request.
@@ -200,7 +202,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeallocateOperation(ctx co
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{}, err
 	}
-	return client.bulkDeallocateOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkDeallocateOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkDeallocateOperationCreateRequest creates the BulkDeallocateOperation request.
@@ -268,7 +271,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeleteOperation(ctx contex
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{}, err
 	}
-	return client.bulkDeleteOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkDeleteOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkDeleteOperationCreateRequest creates the BulkDeleteOperation request.
@@ -334,7 +338,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkGetOperationsStatus(ctx co
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse{}, err
 	}
-	return client.bulkGetOperationsStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkGetOperationsStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkGetOperationsStatusCreateRequest creates the BulkGetOperationsStatus request.
@@ -402,7 +407,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkHibernateOperation(ctx con
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{}, err
 	}
-	return client.bulkHibernateOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkHibernateOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkHibernateOperationCreateRequest creates the BulkHibernateOperation request.
@@ -443,6 +449,144 @@ func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationHandleRe
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HibernateResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{}, err
+	}
+	return result, nil
+}
+
+// BulkReimageOperation - This feature is currently in preview.
+// Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents. Bulk Actions
+// begins processing the request immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned
+// IDs to get operation status updates.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The location name.
+//   - requestBody - The virtual machines to reimage and the execution settings for the bulk action.
+//   - options - VirtualMachineBulkOperationsClientBulkReimageOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkReimageOperation
+//     method.
+func (client *VirtualMachineBulkOperationsClient) BulkReimageOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteReimageRequest, options *VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error) {
+	var err error
+	const operationName = "VirtualMachineBulkOperationsClient.BulkReimageOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.bulkReimageOperationCreateRequest(ctx, resourceGroupName, location, requestBody, options)
+	if err != nil {
+		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
+	}
+	resp, err := client.bulkReimageOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// bulkReimageOperationCreateRequest creates the BulkReimageOperation request.
+func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteReimageRequest, _ *VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkReimage"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261006Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// bulkReimageOperationHandleResponse handles the BulkReimageOperation response.
+func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error) {
+	result := VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReimageResourceOperationResponse); err != nil {
+		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
+	}
+	return result, nil
+}
+
+// BulkStartOperation - Start one or more virtual machines. Bulk Actions begins processing the request immediately and returns
+// a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The location name.
+//   - requestBody - The virtual machines to start and the execution settings for the bulk action.
+//   - options - VirtualMachineBulkOperationsClientBulkStartOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkStartOperation
+//     method.
+func (client *VirtualMachineBulkOperationsClient) BulkStartOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteStartContent, options *VirtualMachineBulkOperationsClientBulkStartOperationOptions) (VirtualMachineBulkOperationsClientBulkStartOperationResponse, error) {
+	var err error
+	const operationName = "VirtualMachineBulkOperationsClient.BulkStartOperation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.bulkStartOperationCreateRequest(ctx, resourceGroupName, location, requestBody, options)
+	if err != nil {
+		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
+	}
+	resp, err := client.bulkStartOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// bulkStartOperationCreateRequest creates the BulkStartOperation request.
+func (client *VirtualMachineBulkOperationsClient) bulkStartOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteStartContent, _ *VirtualMachineBulkOperationsClientBulkStartOperationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkStart"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261006Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// bulkStartOperationHandleResponse handles the BulkStartOperation response.
+func (client *VirtualMachineBulkOperationsClient) bulkStartOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkStartOperationResponse, error) {
+	result := VirtualMachineBulkOperationsClientBulkStartOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StartResourceOperationResponse); err != nil {
+		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
 	}
 	return result, nil
 }
@@ -523,142 +667,6 @@ func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsHandleR
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListBulkOperationErrorsResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
-	}
-	return result, nil
-}
-
-// BulkReimageOperation - This feature is currently in preview.
-// Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents. Bulk Actions
-// begins processing the request immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned
-// IDs to get operation status updates.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The location name.
-//   - requestBody - The virtual machines to reimage and the execution settings for the bulk action.
-//   - options - VirtualMachineBulkOperationsClientBulkReimageOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkReimageOperation
-//     method.
-func (client *VirtualMachineBulkOperationsClient) BulkReimageOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteReimageRequest, options *VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error) {
-	var err error
-	const operationName = "VirtualMachineBulkOperationsClient.BulkReimageOperation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.bulkReimageOperationCreateRequest(ctx, resourceGroupName, location, requestBody, options)
-	if err != nil {
-		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
-	}
-	return client.bulkReimageOperationHandleResponse(httpResp, http.StatusOK)
-}
-
-// bulkReimageOperationCreateRequest creates the BulkReimageOperation request.
-func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteReimageRequest, _ *VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkReimage"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261006Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// bulkReimageOperationHandleResponse handles the BulkReimageOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error) {
-	result := VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReimageResourceOperationResponse); err != nil {
-		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
-	}
-	return result, nil
-}
-
-// BulkStartOperation - Start one or more virtual machines. Bulk Actions begins processing the request immediately and returns
-// a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The location name.
-//   - requestBody - The virtual machines to start and the execution settings for the bulk action.
-//   - options - VirtualMachineBulkOperationsClientBulkStartOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkStartOperation
-//     method.
-func (client *VirtualMachineBulkOperationsClient) BulkStartOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteStartContent, options *VirtualMachineBulkOperationsClientBulkStartOperationOptions) (VirtualMachineBulkOperationsClientBulkStartOperationResponse, error) {
-	var err error
-	const operationName = "VirtualMachineBulkOperationsClient.BulkStartOperation"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.bulkStartOperationCreateRequest(ctx, resourceGroupName, location, requestBody, options)
-	if err != nil {
-		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
-	}
-	return client.bulkStartOperationHandleResponse(httpResp, http.StatusOK)
-}
-
-// bulkStartOperationCreateRequest creates the BulkStartOperation request.
-func (client *VirtualMachineBulkOperationsClient) bulkStartOperationCreateRequest(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteStartContent, _ *VirtualMachineBulkOperationsClientBulkStartOperationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkStart"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261006Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, requestBody); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// bulkStartOperationHandleResponse handles the BulkStartOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkStartOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkStartOperationResponse, error) {
-	result := VirtualMachineBulkOperationsClientBulkStartOperationResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StartResourceOperationResponse); err != nil {
-		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
 	}
 	return result, nil
 }

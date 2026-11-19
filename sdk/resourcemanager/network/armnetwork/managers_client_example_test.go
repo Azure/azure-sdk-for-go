@@ -12,7 +12,34 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkManagerPut.json
+// Generated from example definition: 2026-03-01/NetworkManagerDelete.json
+func ExampleManagersClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagersClient().BeginDelete(ctx, "rg1", "testNetworkManager", &armnetwork.ManagersClientBeginDeleteOptions{
+		Force: to.Ptr(false)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.ManagersClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkManagerPut.json
 func ExampleManagersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,34 +106,7 @@ func ExampleManagersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerDelete.json
-func ExampleManagersClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagersClient().BeginDelete(ctx, "rg1", "testNetworkManager", &armnetwork.ManagersClientBeginDeleteOptions{
-		Force: to.Ptr(false)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.ManagersClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkManagerGet.json
+// Generated from example definition: 2026-03-01/NetworkManagerGet.json
 func ExampleManagersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,68 +156,7 @@ func ExampleManagersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerList.json
-func ExampleManagersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagersClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ManagersClientListResponse{
-		// 	ManagerListResult: armnetwork.ManagerListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers?api-version=2025-07-01&$skipToken=10"),
-		// 		Value: []*armnetwork.Manager{
-		// 			{
-		// 				Name: to.Ptr("testNetworkManager"),
-		// 				Type: to.Ptr("Microsoft.Network/networkManagers"),
-		// 				Etag: to.Ptr("sadf-asdf-asdf-asdf"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager"),
-		// 				Properties: &armnetwork.ManagerProperties{
-		// 					Description: to.Ptr("My Test Network Manager"),
-		// 					NetworkManagerScopeAccesses: []*armnetwork.ConfigurationType{
-		// 						to.Ptr(armnetwork.ConfigurationTypeConnectivity),
-		// 					},
-		// 					NetworkManagerScopes: &armnetwork.ManagerPropertiesNetworkManagerScopes{
-		// 						ManagementGroups: []*string{
-		// 						},
-		// 						Subscriptions: []*string{
-		// 							to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				},
-		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
-		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
-		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/NetworkManagerListAll.json
+// Generated from example definition: 2026-03-01/NetworkManagerListAll.json
 func ExampleManagersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +217,68 @@ func ExampleManagersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkManagerPatch.json
+// Generated from example definition: 2026-03-01/NetworkManagerList.json
+func ExampleManagersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewManagersClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ManagersClientListResponse{
+		// 	ManagerListResult: armnetwork.ManagerListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers?api-version=2025-07-01&$skipToken=10"),
+		// 		Value: []*armnetwork.Manager{
+		// 			{
+		// 				Name: to.Ptr("testNetworkManager"),
+		// 				Type: to.Ptr("Microsoft.Network/networkManagers"),
+		// 				Etag: to.Ptr("sadf-asdf-asdf-asdf"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkManagers/testNetworkManager"),
+		// 				Properties: &armnetwork.ManagerProperties{
+		// 					Description: to.Ptr("My Test Network Manager"),
+		// 					NetworkManagerScopeAccesses: []*armnetwork.ConfigurationType{
+		// 						to.Ptr(armnetwork.ConfigurationTypeConnectivity),
+		// 					},
+		// 					NetworkManagerScopes: &armnetwork.ManagerPropertiesNetworkManagerScopes{
+		// 						ManagementGroups: []*string{
+		// 						},
+		// 						Subscriptions: []*string{
+		// 							to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 				SystemData: &armnetwork.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
+		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/NetworkManagerPatch.json
 func ExampleManagersClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

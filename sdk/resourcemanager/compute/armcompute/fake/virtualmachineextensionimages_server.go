@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -52,7 +52,7 @@ func (v *VirtualMachineExtensionImagesServerTransport) Do(req *http.Request) (*h
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return v.dispatchToMethodFake(req, method)
@@ -189,11 +189,8 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListVersions(req 
 	}
 	filterParam := getOptional(qp.Get("$filter"))
 	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err

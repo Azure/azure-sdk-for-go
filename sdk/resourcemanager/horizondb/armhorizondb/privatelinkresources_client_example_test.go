@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/PrivateLinkResources_Get.json
+// Generated from example definition: 2026-10-01-preview/PrivateLinkResources_Get.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "exampleresourcegroup", "examplecluster", "default", nil)
+	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "example-resource-group", "example-cluster", "example-cluster", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -31,14 +31,13 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.PrivateLinkResourcesClientGetResponse{
 	// 	PrivateLinkResource: armhorizondb.PrivateLinkResource{
-	// 		Name: to.Ptr("default"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateLinkResources/example-cluster"),
+	// 		Name: to.Ptr("example-cluster"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/privateLinkResources"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateLinkResources/default"),
 	// 		Properties: &armhorizondb.PrivateLinkResourceProperties{
-	// 			GroupID: to.Ptr("default"),
+	// 			GroupID: to.Ptr("example-cluster"),
 	// 			RequiredMembers: []*string{
-	// 				to.Ptr("examplecluster.clusterid"),
-	// 				to.Ptr("examplecluster.clusterid.ro"),
+	// 				to.Ptr("example-cluster"),
 	// 			},
 	// 			RequiredZoneNames: []*string{
 	// 				to.Ptr("privatelink.horizondb.azure.com"),
@@ -48,7 +47,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/PrivateLinkResources_List.json
+// Generated from example definition: 2026-10-01-preview/PrivateLinkResources_List.json
 func ExamplePrivateLinkResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +58,7 @@ func ExamplePrivateLinkResourcesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPrivateLinkResourcesClient().NewListPager("exampleresourcegroup", "examplecluster", nil)
+	pager := clientFactory.NewPrivateLinkResourcesClient().NewListPager("example-resource-group", "example-cluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -74,14 +73,27 @@ func ExamplePrivateLinkResourcesClient_NewListPager() {
 		// 	PrivateLinkResourceListResult: armhorizondb.PrivateLinkResourceListResult{
 		// 		Value: []*armhorizondb.PrivateLinkResource{
 		// 			{
-		// 				Name: to.Ptr("default"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateLinkResources/example-cluster"),
+		// 				Name: to.Ptr("example-cluster"),
 		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters/privateLinkResources"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateLinkResources/default"),
 		// 				Properties: &armhorizondb.PrivateLinkResourceProperties{
-		// 					GroupID: to.Ptr("default"),
+		// 					GroupID: to.Ptr("example-cluster"),
 		// 					RequiredMembers: []*string{
-		// 						to.Ptr("examplecluster.clusterid"),
-		// 						to.Ptr("examplecluster.clusterid.ro"),
+		// 						to.Ptr("example-cluster"),
+		// 					},
+		// 					RequiredZoneNames: []*string{
+		// 						to.Ptr("privatelink.horizondb.azure.com"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/privateLinkResources/example-pool"),
+		// 				Name: to.Ptr("example-pool"),
+		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters/privateLinkResources"),
+		// 				Properties: &armhorizondb.PrivateLinkResourceProperties{
+		// 					GroupID: to.Ptr("example-pool"),
+		// 					RequiredMembers: []*string{
+		// 						to.Ptr("example-pool"),
 		// 					},
 		// 					RequiredZoneNames: []*string{
 		// 						to.Ptr("privatelink.horizondb.azure.com"),

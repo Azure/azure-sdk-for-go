@@ -19,7 +19,7 @@ import (
 // AccountCapabilityHostsClient contains the methods for the AccountCapabilityHosts group.
 // Don't use this type directly, use NewAccountCapabilityHostsClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-11-15-preview
 type AccountCapabilityHostsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *AccountCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create or update account capabilityHost.
+// createOrUpdate - Create or update account capabilityHost.
 //
 // Create or update account capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,12 +91,13 @@ func (client *AccountCapabilityHostsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AccountCapabilityHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, capabilityHost CapabilityHost, _ *AccountCapabilityHostsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/capabilityHosts/{capabilityHostName}"
 	if client.subscriptionID == "" {
@@ -120,7 +121,7 @@ func (client *AccountCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -156,7 +157,7 @@ func (client *AccountCapabilityHostsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete account capabilityHost.
+// deleteOperation - Delete account capabilityHost.
 //
 // Delete account capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -175,12 +176,13 @@ func (client *AccountCapabilityHostsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccountCapabilityHostsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, _ *AccountCapabilityHostsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/capabilityHosts/{capabilityHostName}"
 	if client.subscriptionID == "" {
@@ -204,7 +206,7 @@ func (client *AccountCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -232,7 +234,8 @@ func (client *AccountCapabilityHostsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AccountCapabilityHostsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -259,7 +262,7 @@ func (client *AccountCapabilityHostsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,7 +340,7 @@ func (client *AccountCapabilityHostsClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

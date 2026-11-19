@@ -533,8 +533,7 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(
-		fmt.Sprintf(`{"status": "Succeeded", "resourceLocation": "%s"}`, srv.URL()))))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody(fmt.Appendf(nil, `{"status": "Succeeded", "resourceLocation": "%s"}`, srv.URL())))
 	// final GET will happen from the URL provided in the resourceLocation
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"size": 2}`)))
 	defer close()

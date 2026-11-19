@@ -20,7 +20,7 @@ import (
 // EntitiesClient contains the methods for the Entities group.
 // Don't use this type directly, use NewEntitiesClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-11-01
 type EntitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,8 @@ func (client *EntitiesClient) AddDataAnnotation(ctx context.Context, resourceGro
 	if err != nil {
 		return EntitiesClientAddDataAnnotationResponse{}, err
 	}
-	return client.addDataAnnotationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addDataAnnotationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addDataAnnotationCreateRequest creates the AddDataAnnotation request.
@@ -94,7 +95,7 @@ func (client *EntitiesClient) addDataAnnotationCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,7 +142,7 @@ func (client *EntitiesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a Entity
+// createOrUpdate - Create a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EntitiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, options *EntitiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -158,12 +159,13 @@ func (client *EntitiesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, _ *EntitiesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}"
 	if client.subscriptionID == "" {
@@ -187,7 +189,7 @@ func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -220,7 +222,7 @@ func (client *EntitiesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Entity
+// deleteOperation - Delete a Entity
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EntitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *EntitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -237,12 +239,13 @@ func (client *EntitiesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, _ *EntitiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}"
 	if client.subscriptionID == "" {
@@ -266,7 +269,7 @@ func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -291,7 +294,8 @@ func (client *EntitiesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -318,7 +322,7 @@ func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -358,7 +362,8 @@ func (client *EntitiesClient) GetDataAnnotations(ctx context.Context, resourceGr
 	if err != nil {
 		return EntitiesClientGetDataAnnotationsResponse{}, err
 	}
-	return client.getDataAnnotationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDataAnnotationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDataAnnotationsCreateRequest creates the GetDataAnnotations request.
@@ -385,7 +390,7 @@ func (client *EntitiesClient) getDataAnnotationsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -428,7 +433,8 @@ func (client *EntitiesClient) GetHistory(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return EntitiesClientGetHistoryResponse{}, err
 	}
-	return client.getHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHistoryCreateRequest creates the GetHistory request.
@@ -455,7 +461,7 @@ func (client *EntitiesClient) getHistoryCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -499,7 +505,8 @@ func (client *EntitiesClient) GetSignalHistory(ctx context.Context, resourceGrou
 	if err != nil {
 		return EntitiesClientGetSignalHistoryResponse{}, err
 	}
-	return client.getSignalHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSignalHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSignalHistoryCreateRequest creates the GetSignalHistory request.
@@ -526,7 +533,7 @@ func (client *EntitiesClient) getSignalHistoryCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -570,7 +577,8 @@ func (client *EntitiesClient) GetSignalRecommendations(ctx context.Context, reso
 	if err != nil {
 		return EntitiesClientGetSignalRecommendationsResponse{}, err
 	}
-	return client.getSignalRecommendationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSignalRecommendationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSignalRecommendationsCreateRequest creates the GetSignalRecommendations request.
@@ -597,7 +605,7 @@ func (client *EntitiesClient) getSignalRecommendationsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -638,7 +646,8 @@ func (client *EntitiesClient) IngestHealthReport(ctx context.Context, resourceGr
 		return EntitiesClientIngestHealthReportResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return EntitiesClientIngestHealthReportResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientIngestHealthReportResponse{}, err
 	}
 	return EntitiesClientIngestHealthReportResponse{}, nil
 }
@@ -667,7 +676,7 @@ func (client *EntitiesClient) ingestHealthReportCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -734,7 +743,7 @@ func (client *EntitiesClient) listByHealthModelCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.Timestamp != nil {
 			reqQP.Set("timestamp", datetime.RFC3339((*options.Timestamp).UTC()).String())
 		}

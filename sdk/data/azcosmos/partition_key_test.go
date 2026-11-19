@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
 	"github.com/stretchr/testify/require"
 )
 
@@ -110,10 +111,10 @@ func TestPartitionKeyEquality(t *testing.T) {
 // TestComputeEffectivePartitionKey verifies that the computeEffectivePartitionKey
 // method on PartitionKey correctly delegates to the internal/epk package.
 func TestComputeEffectivePartitionKey(t *testing.T) {
-	// V1 Hash: string "hello" → known hash
+	// V1 Hash delegates to the routing EPK encoder.
 	pk := NewPartitionKeyString("hello")
 	result := pk.computeEffectivePartitionKey(PartitionKeyKindHash, 1)
-	require.Equal(t, "000000000000000000000000FF69187F", result.EPK)
+	require.Equal(t, epk.ComputeV1([]interface{}{"hello"}), result.EPK)
 
 	// V2 Hash: null → known hash (top 2 bits masked for routing: 0x77 & 0x3F = 0x37)
 	result = NullPartitionKey.computeEffectivePartitionKey(PartitionKeyKindHash, 2)
@@ -127,5 +128,5 @@ func TestComputeEffectivePartitionKey(t *testing.T) {
 	// Undefined partition key
 	emptyPK := NewPartitionKey()
 	result = emptyPK.computeEffectivePartitionKey(PartitionKeyKindHash, 1)
-	require.Equal(t, "000000000000000000000000514E28B7", result.EPK)
+	require.Equal(t, "05C1D529E345DC00", result.EPK)
 }

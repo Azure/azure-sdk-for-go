@@ -19,7 +19,7 @@ import (
 // ServiceAssociationLinksClient contains the methods for the ServiceAssociationLinks group.
 // Don't use this type directly, use NewServiceAssociationLinksClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type ServiceAssociationLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *ServiceAssociationLinksClient) List(ctx context.Context, resourceG
 	if err != nil {
 		return ServiceAssociationLinksClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -92,7 +93,7 @@ func (client *ServiceAssociationLinksClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

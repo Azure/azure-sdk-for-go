@@ -20,7 +20,7 @@ import (
 // ConnectivityConfigurationsClient contains the methods for the ConnectivityConfigurations group.
 // Don't use this type directly, use NewConnectivityConfigurationsClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type ConnectivityConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,77 +43,6 @@ func NewConnectivityConfigurationsClient(subscriptionID string, credential azcor
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// CreateOrUpdate - Creates/Updates a new network manager connectivity configuration
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkManagerName - The name of the network manager.
-//   - configurationName - The name of the network manager connectivity configuration.
-//   - connectivityConfiguration - Parameters supplied to create/update a network manager connectivity configuration
-//   - options - ConnectivityConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ConnectivityConfigurationsClient.CreateOrUpdate
-//     method.
-func (client *ConnectivityConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, connectivityConfiguration ConnectivityConfiguration, options *ConnectivityConfigurationsClientCreateOrUpdateOptions) (ConnectivityConfigurationsClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "ConnectivityConfigurationsClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, connectivityConfiguration, options)
-	if err != nil {
-		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
-	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectivityConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, connectivityConfiguration ConnectivityConfiguration, _ *ConnectivityConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/connectivityConfigurations/{configurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkManagerName == "" {
-		return nil, errors.New("parameter networkManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-	if configurationName == "" {
-		return nil, errors.New("parameter configurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, connectivityConfiguration); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConnectivityConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConnectivityConfigurationsClientCreateOrUpdateResponse, error) {
-	result := ConnectivityConfigurationsClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectivityConfiguration); err != nil {
-		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginDelete - Deletes a network manager connectivity configuration, specified by the resource group, network manager name,
@@ -141,8 +70,8 @@ func (client *ConnectivityConfigurationsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
-// connectivity configuration name
+// deleteOperation - Deletes a network manager connectivity configuration, specified by the resource group, network manager
+// name, and connectivity configuration name
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectivityConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -159,12 +88,13 @@ func (client *ConnectivityConfigurationsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectivityConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/connectivityConfigurations/{configurationName}"
 	if client.subscriptionID == "" {
@@ -188,12 +118,84 @@ func (client *ConnectivityConfigurationsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// CreateOrUpdate - Creates/Updates a new network manager connectivity configuration
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkManagerName - The name of the network manager.
+//   - configurationName - The name of the network manager connectivity configuration.
+//   - connectivityConfiguration - Parameters supplied to create/update a network manager connectivity configuration
+//   - options - ConnectivityConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ConnectivityConfigurationsClient.CreateOrUpdate
+//     method.
+func (client *ConnectivityConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, connectivityConfiguration ConnectivityConfiguration, options *ConnectivityConfigurationsClientCreateOrUpdateOptions) (ConnectivityConfigurationsClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "ConnectivityConfigurationsClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, configurationName, connectivityConfiguration, options)
+	if err != nil {
+		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *ConnectivityConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, connectivityConfiguration ConnectivityConfiguration, _ *ConnectivityConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/connectivityConfigurations/{configurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkManagerName == "" {
+		return nil, errors.New("parameter networkManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
+	if configurationName == "" {
+		return nil, errors.New("parameter configurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, connectivityConfiguration); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *ConnectivityConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConnectivityConfigurationsClientCreateOrUpdateResponse, error) {
+	result := ConnectivityConfigurationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectivityConfiguration); err != nil {
+		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and connectivity
@@ -218,7 +220,8 @@ func (client *ConnectivityConfigurationsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return ConnectivityConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -245,7 +248,7 @@ func (client *ConnectivityConfigurationsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +330,7 @@ func (client *ConnectivityConfigurationsClient) listCreateRequest(ctx context.Co
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

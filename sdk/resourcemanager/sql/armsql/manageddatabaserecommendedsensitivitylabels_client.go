@@ -67,7 +67,8 @@ func (client *ManagedDatabaseRecommendedSensitivityLabelsClient) Update(ctx cont
 		return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, err
 	}
 	return ManagedDatabaseRecommendedSensitivityLabelsClientUpdateResponse{}, nil
 }

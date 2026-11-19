@@ -66,7 +66,8 @@ func (client *StorageInsightConfigsClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return StorageInsightConfigsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *StorageInsightConfigsClient) Delete(ctx context.Context, resourceG
 		return StorageInsightConfigsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StorageInsightConfigsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StorageInsightConfigsClientDeleteResponse{}, err
 	}
 	return StorageInsightConfigsClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *StorageInsightConfigsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return StorageInsightConfigsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

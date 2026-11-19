@@ -58,6 +58,8 @@ func unmarshalLegacyReservationRecommendationPropertiesClassification(rawMsg jso
 	}
 	var b LegacyReservationRecommendationPropertiesClassification
 	switch m["scope"] {
+	case "ManagementGroup":
+		b = &LegacyManagementGroupScopeReservationRecommendationProperties{}
 	case "Shared":
 		b = &LegacySharedScopeReservationRecommendationProperties{}
 	case "Single":
@@ -81,6 +83,8 @@ func unmarshalModernReservationRecommendationPropertiesClassification(rawMsg jso
 	}
 	var b ModernReservationRecommendationPropertiesClassification
 	switch m["scope"] {
+	case "ManagementGroup":
+		b = &ModernManagementGroupScopeReservationRecommendationProperties{}
 	case "Shared":
 		b = &ModernSharedScopeReservationRecommendationProperties{}
 	case "Single":

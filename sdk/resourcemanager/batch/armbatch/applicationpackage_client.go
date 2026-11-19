@@ -71,7 +71,8 @@ func (client *ApplicationPackageClient) Activate(ctx context.Context, resourceGr
 	if err != nil {
 		return ApplicationPackageClientActivateResponse{}, err
 	}
-	return client.activateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.activateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // activateCreateRequest creates the Activate request.
@@ -151,7 +152,8 @@ func (client *ApplicationPackageClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return ApplicationPackageClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -229,7 +231,8 @@ func (client *ApplicationPackageClient) Delete(ctx context.Context, resourceGrou
 		return ApplicationPackageClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ApplicationPackageClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ApplicationPackageClientDeleteResponse{}, err
 	}
 	return ApplicationPackageClientDeleteResponse{}, nil
 }
@@ -290,7 +293,8 @@ func (client *ApplicationPackageClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ApplicationPackageClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

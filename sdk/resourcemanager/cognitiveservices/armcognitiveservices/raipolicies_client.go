@@ -19,7 +19,7 @@ import (
 // RaiPoliciesClient contains the methods for the RaiPolicies group.
 // Don't use this type directly, use NewRaiPoliciesClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-11-15-preview
 type RaiPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,77 +42,6 @@ func NewRaiPoliciesClient(subscriptionID string, credential azcore.TokenCredenti
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// CreateOrUpdate - Update the state of specified Content Filters associated with the Azure OpenAI account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
-//   - raiPolicy - Properties describing the Content Filters.
-//   - options - RaiPoliciesClientCreateOrUpdateOptions contains the optional parameters for the RaiPoliciesClient.CreateOrUpdate
-//     method.
-func (client *RaiPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy RaiPolicy, options *RaiPoliciesClientCreateOrUpdateOptions) (RaiPoliciesClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "RaiPoliciesClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, raiPolicyName, raiPolicy, options)
-	if err != nil {
-		return RaiPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return RaiPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy RaiPolicy, _ *RaiPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if raiPolicyName == "" {
-		return nil, errors.New("parameter raiPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{raiPolicyName}", url.PathEscape(raiPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, raiPolicy); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RaiPoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RaiPoliciesClientCreateOrUpdateResponse, error) {
-	result := RaiPoliciesClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicy); err != nil {
-		return RaiPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginDelete - Deletes the specified Content Filters associated with the Azure OpenAI account.
@@ -138,7 +67,7 @@ func (client *RaiPoliciesClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes the specified Content Filters associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RaiPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -155,13 +84,14 @@ func (client *RaiPoliciesClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
-func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, _ *RaiPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
+// deleteCreateRequest creates the delete request.
+func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -184,9 +114,93 @@ func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
 	return req, nil
+}
+
+// CreateOrUpdate - Update the state of specified Content Filters associated with the Azure OpenAI account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
+//   - raiPolicy - Properties describing the Content Filters.
+//   - options - RaiPoliciesClientCreateOrUpdateOptions contains the optional parameters for the RaiPoliciesClient.CreateOrUpdate
+//     method.
+func (client *RaiPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy RaiPolicy, options *RaiPoliciesClientCreateOrUpdateOptions) (RaiPoliciesClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "RaiPoliciesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, raiPolicyName, raiPolicy, options)
+	if err != nil {
+		return RaiPoliciesClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RaiPoliciesClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy RaiPolicy, options *RaiPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if raiPolicyName == "" {
+		return nil, errors.New("parameter raiPolicyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{raiPolicyName}", url.PathEscape(raiPolicyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, raiPolicy); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *RaiPoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RaiPoliciesClientCreateOrUpdateResponse, error) {
+	result := RaiPoliciesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.EtagHeader = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicy); err != nil {
+		return RaiPoliciesClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets the specified Content Filters associated with the Azure OpenAI account.
@@ -209,7 +223,8 @@ func (client *RaiPoliciesClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return RaiPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -236,7 +251,7 @@ func (client *RaiPoliciesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,6 +262,9 @@ func (client *RaiPoliciesClient) getHandleResponse(resp *http.Response, successC
 	result := RaiPoliciesClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.EtagHeader = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicy); err != nil {
 		return RaiPoliciesClientGetResponse{}, err
@@ -311,7 +329,7 @@ func (client *RaiPoliciesClient) listCreateRequest(ctx context.Context, resource
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

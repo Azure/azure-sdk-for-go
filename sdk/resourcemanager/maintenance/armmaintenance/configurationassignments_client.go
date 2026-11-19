@@ -19,7 +19,7 @@ import (
 // ConfigurationAssignmentsClient contains the methods for the ConfigurationAssignments group.
 // Don't use this type directly, use NewConfigurationAssignmentsClient() instead.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-10-01-preview
 type ConfigurationAssignmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,8 @@ func (client *ConfigurationAssignmentsClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -103,7 +104,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -151,7 +152,8 @@ func (client *ConfigurationAssignmentsClient) CreateOrUpdateParent(ctx context.C
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
 	}
-	return client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateParentCreateRequest creates the CreateOrUpdateParent request.
@@ -194,7 +196,7 @@ func (client *ConfigurationAssignmentsClient) createOrUpdateParentCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -239,7 +241,8 @@ func (client *ConfigurationAssignmentsClient) Delete(ctx context.Context, resour
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -274,7 +277,7 @@ func (client *ConfigurationAssignmentsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -317,7 +320,8 @@ func (client *ConfigurationAssignmentsClient) DeleteParent(ctx context.Context, 
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
 	}
-	return client.deleteParentHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteParentHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteParentCreateRequest creates the DeleteParent request.
@@ -360,7 +364,7 @@ func (client *ConfigurationAssignmentsClient) deleteParentCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -401,7 +405,8 @@ func (client *ConfigurationAssignmentsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return ConfigurationAssignmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -436,7 +441,7 @@ func (client *ConfigurationAssignmentsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -479,7 +484,8 @@ func (client *ConfigurationAssignmentsClient) GetParent(ctx context.Context, res
 	if err != nil {
 		return ConfigurationAssignmentsClientGetParentResponse{}, err
 	}
-	return client.getParentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getParentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getParentCreateRequest creates the GetParent request.
@@ -522,7 +528,7 @@ func (client *ConfigurationAssignmentsClient) getParentCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -610,7 +616,7 @@ func (client *ConfigurationAssignmentsClient) listCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20231001Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -707,7 +713,7 @@ func (client *ConfigurationAssignmentsClient) listParentCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20231001Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -38,7 +39,7 @@ const (
 	// Cross-subscription shared infrastructure for matrix rows #31 and #32. All of these live in
 	// the XDataMove-Synthetics subscription (b6b34ad8-…) and must not be recreated.
 	scenarioCrossSubID                       = "b6b34ad8-ca89-4f85-beb7-c2ec13702dac"
-	scenarioPrivateLinkServiceID             = "/subscriptions/b6b34ad8-ca89-4f85-beb7-c2ec13702dac/resourceGroups/E2E-Management-RGsyn/providers/Microsoft.Network/privateLinkServices/test-pls-wcs"
+	scenarioPrivateLinkServiceIDPrefix       = "/subscriptions/b6b34ad8-ca89-4f85-beb7-c2ec13702dac/resourceGroups/E2E-Management-RGsyn/providers/Microsoft.Network/privateLinkServices/"
 	scenarioPrivateLinkServiceRG             = "E2E-Management-RGsyn"
 	scenarioPrivateLinkServiceName           = "test-pls-wcs"
 	scenarioAwsPrivateS3BucketID             = "/subscriptions/b6b34ad8-ca89-4f85-beb7-c2ec13702dac/resourceGroups/aws_640698235822/providers/Microsoft.AWSConnector/s3Buckets/e2e-sm-rp-private-bucket"
@@ -46,7 +47,11 @@ const (
 	scenarioTestStorageAccountRG             = "CP_Mover_IN_WCUS"
 	scenarioTestStorageAccountName           = "cpmoveraccount"
 	scenarioWestCentralUSLocation            = "westcentralus"
+	scenarioEastUS2EUAPLocation              = "eastus2euap"
 	scenarioStorageBlobDataContributorRoleID = "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
+	scenarioPartnerTenantID                  = "11111111-2222-3333-4444-555555555555"
+	scenarioPartnerSubscriptionID            = "22222222-2222-2222-2222-222222222222"
+	scenarioPartnerStorageAccountIDPrefix    = "/subscriptions/" + scenarioPartnerSubscriptionID + "/resourceGroups/partner-rg/providers/Microsoft.Storage/storageAccounts/partnersa"
 )
 
 // scenarioBaseSuite holds the shared resource group, credentials, and client options used by every
@@ -55,12 +60,14 @@ const (
 type scenarioBaseSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
-	resourceGroupName string
-	subscriptionID    string
+	ctx                    context.Context
+	cred                   azcore.TokenCredential
+	options                *arm.ClientOptions
+	location               string
+	resourceGroupName      string
+	subscriptionID         string
+	privateLinkServiceName string
+	privateLinkServiceID   string
 }
 
 // setupBase initializes recording, credentials, and a fresh resource group for the suite in the
@@ -94,6 +101,11 @@ func (b *scenarioBaseSuite) setupBaseInLocation(location string) {
 	b.cred, b.options = testutil.GetCredAndClientOptions(b.T())
 	b.location = location
 	b.subscriptionID = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	b.privateLinkServiceName = recording.GetEnvVariable("STORAGEMOVER_PRIVATE_LINK_SERVICE_NAME", scenarioPrivateLinkServiceName)
+	b.privateLinkServiceID = scenarioPrivateLinkServiceIDPrefix + b.privateLinkServiceName
+	err = recording.AddGeneralRegexSanitizer(scenarioPrivateLinkServiceName, regexp.QuoteMeta(b.privateLinkServiceName),
+		&recording.RecordingOptions{UseHTTPS: true, TestInstance: b.T()})
+	b.Require().NoError(err, "failed to sanitize the Private Link Service name")
 
 	rg, _, err := testutil.CreateResourceGroup(b.ctx, b.subscriptionID, b.cred, b.options, b.location)
 	b.Require().NoError(err)
@@ -196,4 +208,11 @@ func (b *scenarioBaseSuite) expectResponseError(err error) {
 	var respErr *azcore.ResponseError
 	b.Require().True(errors.As(err, &respErr), "expected azcore.ResponseError, got %T: %v", err, err)
 	b.Require().GreaterOrEqual(respErr.StatusCode, http.StatusBadRequest, "expected non-2xx status, got %d", respErr.StatusCode)
+}
+
+func (b *scenarioBaseSuite) expectInvalidRequestPropertyValue(err error) {
+	var respErr *azcore.ResponseError
+	b.Require().ErrorAs(err, &respErr)
+	b.Require().Equal(http.StatusBadRequest, respErr.StatusCode)
+	b.Require().Equal("InvalidRequestPropertyValue", respErr.ErrorCode)
 }

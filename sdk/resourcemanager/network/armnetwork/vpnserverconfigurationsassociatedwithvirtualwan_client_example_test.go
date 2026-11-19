@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/GetVirtualWanVpnServerConfigurations.json
+// Generated from example definition: 2026-03-01/GetVirtualWanVpnServerConfigurations.json
 func ExampleVPNServerConfigurationsAssociatedWithVirtualWanClient_BeginList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

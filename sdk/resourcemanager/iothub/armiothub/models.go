@@ -76,11 +76,11 @@ type CertificateProperties struct {
 	// The certificate content
 	Certificate *string
 
+	// Full certificate authority resource ID for ADR linked standard SKU hubs.
+	CertificateAuthorityResourceID *string
+
 	// Determines whether certificate has been verified.
 	IsVerified *bool
-
-	// The reference to policy stored in Azure Device Registry (ADR).
-	PolicyResourceID *string
 
 	// READ-ONLY; The certificate's create date and time.
 	Created *time.Time
@@ -101,8 +101,8 @@ type CertificateProperties struct {
 // CertificatePropertiesWithNonce - The description of an X509 CA Certificate including the challenge nonce issued for the
 // Proof-Of-Possession flow.
 type CertificatePropertiesWithNonce struct {
-	// The reference to policy stored in Azure Device Registry (ADR).
-	PolicyResourceID *string
+	// Full certificate authority resource ID for ADR linked standard SKU hubs.
+	CertificateAuthorityResourceID *string
 
 	// READ-ONLY; The certificate content
 	Certificate *string
@@ -216,20 +216,38 @@ type Details struct {
 
 // DeviceRegistry - Represents properties related to the Azure Device Registry (ADR).
 type DeviceRegistry struct {
+	// The host name for the data plane endpoint of the associated Azure Device Registry.
+	DataPlaneHostName *string
+
 	// The identity used to manage the ADR namespace from the data plane.
-	IdentityResourceID *string
+	Identity *DeviceRegistryIdentity
 
 	// The identifier of the Azure Device Registry namespace
 	NamespaceResourceID *string
+
+	// The UUID of the associated Azure Device Registry namespace.
+	NamespaceUUID *string
+
+	// READ-ONLY; The properties related to linking the IoT Hub with the Azure Device Registry.
+	LinkingProperties *DeviceRegistryLinkingProperties
 }
 
-// EncryptionPropertiesDescription - The encryption properties for the IoT hub.
-type EncryptionPropertiesDescription struct {
-	// The source of the key.
-	KeySource *string
+// DeviceRegistryIdentity - The identity used to manage the ADR namespace from the data plane.
+type DeviceRegistryIdentity struct {
+	// The type of the identity.
+	Type *DeviceRegistryIdentityType
 
-	// The properties of the KeyVault key.
-	KeyVaultProperties []*KeyVaultKeyProperties
+	// The user assigned identity if the identity type is 'UserAssigned'.
+	UserAssignedIdentity *string
+}
+
+// DeviceRegistryLinkingProperties - The properties related to linking the IoT Hub with the Azure Device Registry.
+type DeviceRegistryLinkingProperties struct {
+	// READ-ONLY; The last error encountered when linking the IoT Hub with an Azure Device Registry.
+	Error *ErrorDetails
+
+	// READ-ONLY; Indicates whether the IoT Hub is linked with an Azure Device Registry.
+	State *DeviceRegistryLinkingState
 }
 
 // EndpointHealthData - The health data for an endpoint
@@ -278,6 +296,21 @@ type EnrichmentProperties struct {
 
 	// REQUIRED; The value for the enrichment property.
 	Value *string
+}
+
+// ErrorDetails - Error details.
+type ErrorDetails struct {
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details *string
+
+	// READ-ONLY; The HTTP status code.
+	HTTPStatusCode *string
+
+	// READ-ONLY; The error message.
+	Message *string
 }
 
 // EventHubConsumerGroupBodyDescription - The EventHub consumer group.
@@ -383,7 +416,7 @@ type FallbackRouteProperties struct {
 	IsEnabled *bool
 
 	// REQUIRED; The source to which the routing rule is to be applied to. For example, DeviceMessages
-	Source *RoutingSource
+	Source *FallbackRouteSource
 
 	// The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate
 	// to true by default. For grammar, See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
@@ -506,15 +539,6 @@ type JobResponseListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
-}
-
-// KeyVaultKeyProperties - The properties of the KeyVault key.
-type KeyVaultKeyProperties struct {
-	// Managed identity properties of KeyVault Key.
-	Identity *ManagedIdentity
-
-	// The identifier of the key.
-	KeyIdentifier *string
 }
 
 // LocationDescription - Public representation of one of the locations where a resource is provisioned.
@@ -702,12 +726,6 @@ type Properties struct {
 	// IoT hub comments.
 	Comments *string
 
-	// Represents properties related to the Azure Device Registry (ADR).
-	DeviceRegistry *DeviceRegistry
-
-	// The device streams properties of iothub.
-	DeviceStreams *PropertiesDeviceStreams
-
 	// If true, all device(including Edge devices but excluding modules) scoped SAS keys cannot be used for authentication.
 	DisableDeviceSAS *bool
 
@@ -723,9 +741,6 @@ type Properties struct {
 	// If True, file upload notifications are enabled.
 	EnableFileUploadNotifications *bool
 
-	// The encryption properties for the IoT hub.
-	Encryption *EncryptionPropertiesDescription
-
 	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present
 	// in the dictionary while making create or update calls for the IoT hub.
 	EventHubEndpoints map[string]*EventHubProperties
@@ -735,9 +750,6 @@ type Properties struct {
 
 	// The IP filter rules.
 	IPFilterRules []*IPFilterRule
-
-	// This property specifies the IP Version the hub is currently utilizing.
-	IPVersion *IPVersion
 
 	// The messaging endpoint properties for the file upload notification queue.
 	MessagingEndpoints map[string]*MessagingEndpointProperties
@@ -758,9 +770,6 @@ type Properties struct {
 	// If true, egress from IotHub will be restricted to only the allowed FQDNs that are configured via allowedFqdnList.
 	RestrictOutboundNetworkAccess *bool
 
-	// This property store root certificate related information
-	RootCertificate *RootCertificateProperties
-
 	// The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
 	Routing *RoutingProperties
 
@@ -771,6 +780,9 @@ type Properties struct {
 
 	// READ-ONLY; The name of the device host. Supports secure connections over TLS 1.3.
 	DeviceHostName *string
+
+	// READ-ONLY; Represents properties related to the Azure Device Registry (ADR).
+	DeviceRegistry *DeviceRegistry
 
 	// READ-ONLY; The name of the host.
 	HostName *string
@@ -789,12 +801,6 @@ type Properties struct {
 
 	// READ-ONLY; The hub state.
 	State *string
-}
-
-// PropertiesDeviceStreams - The device streams properties of iothub.
-type PropertiesDeviceStreams struct {
-	// List of Device Streams Endpoints.
-	StreamingEndpoints []*string
 }
 
 // QuotaMetricInfo - Quota metrics properties.
@@ -828,15 +834,6 @@ type RegistryStatistics struct {
 
 	// READ-ONLY; The total count of devices in the identity registry.
 	TotalDeviceCount *int64
-}
-
-// RootCertificateProperties - This property store root certificate related information
-type RootCertificateProperties struct {
-	// This property when set to true, hub will use G2 cert; while it's set to false, hub uses Baltimore Cert.
-	EnableRootCertificateV2 *bool
-
-	// READ-ONLY; the last update time to root certificate flag.
-	LastUpdatedTimeUTC *time.Time
 }
 
 // RouteCompilationError - Compilation error when evaluating route

@@ -63,7 +63,8 @@ func (client *AgentClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AgentClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -127,7 +128,8 @@ func (client *AgentClient) Get(ctx context.Context, resourceGroupName string, ma
 	if err != nil {
 		return AgentClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

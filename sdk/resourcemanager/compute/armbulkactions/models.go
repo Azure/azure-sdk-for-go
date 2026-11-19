@@ -73,6 +73,17 @@ type ApplicationProfile struct {
 	GalleryApplications []*VMGalleryApplication
 }
 
+// BillingProfile - Specifies the billing related details of the Azure Spot virtual machines.
+type BillingProfile struct {
+	// Specifies the maximum price, in US Dollars, you are willing to pay per hour for each Azure Spot virtual machine. This price
+	// is compared with the current Azure Spot price for the virtual machine size at create time, and the operation only succeeds
+	// if maxPrice is greater than the current Azure Spot price. It is also used to evict a virtual machine if the current Azure
+	// Spot price rises above it after creation. Possible values are any decimal value greater than zero, or -1 to indicate the
+	// default price is up-to on-demand and the virtual machine should not be evicted for price reasons. The default is -1 when
+	// not provided.
+	MaxPrice *float64
+}
+
 // BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose
 // VM status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM from
 // the hypervisor.
@@ -145,12 +156,20 @@ type BulkCreateCustomOperationStatusListResult struct {
 
 // BulkCreateCustomOverride - A single per-VM override. Extends the shared override fields with a per-VM name.
 type BulkCreateCustomOverride struct {
+	// The extended location this VM is created in. Overrides the operation-level extendedLocation for this VM only; when omitted
+	// the VM inherits the operation-level extendedLocation.
+	ExtendedLocation *ExtendedLocation
+
 	// Extensions. When non-empty they replace the operation-level extensions; when omitted the operation-level extensions are
 	// inherited.
 	Extensions []*BulkactionVMExtension
 
 	// Identity overriding the operation-level identity.
 	Identity *VirtualMachineIdentity
+
+	// The placement constraints applied to this VM. Overrides the operation-level placement for this VM only; when omitted the
+	// VM inherits the operation-level placement.
+	Placement *Placement
 
 	// Plan overriding the operation-level plan.
 	Plan *Plan
@@ -163,6 +182,11 @@ type BulkCreateCustomOverride struct {
 
 	// VM profile, the same shape as operation-level ComputeProfile.virtualMachineProfile. Overrides the operation-level VM profile.
 	VirtualMachineProfile *BulkactionVMProperties
+
+	// The availability zone this VM is created in. Overrides the operation-level zones for this VM only. A null value does not
+	// override, so the VM is placed using the operation-level zones; an empty value does override and deploys this VM as a regional
+	// (non-zonal) VM.
+	Zone *string
 }
 
 // BulkCreateCustomOverridesProfile - Groups the per-VM overrides with the name prefix that names any override that does not
@@ -176,18 +200,6 @@ type BulkCreateCustomOverridesProfile struct {
 	VirtualMachineNamePrefix *string
 }
 
-// BulkCreateCustomPriorityProfile - Configuration options for Regular or Spot instances in BulkCreateCustom.
-type BulkCreateCustomPriorityProfile struct {
-	// Eviction Policy to follow when evicting Spot VMs.
-	EvictionPolicy *EvictionPolicy
-
-	// Price per hour of each Spot VM will never exceed this.
-	MaxPricePerVM *float32
-
-	// The priority type for VM allocation
-	Type *PriorityType
-}
-
 // BulkCreateCustomProperties - Details of the BulkCreateCustom.
 type BulkCreateCustomProperties struct {
 	// REQUIRED; Total capacity to achieve. It can be in terms of VMs or vCPUs.
@@ -196,28 +208,14 @@ type BulkCreateCustomProperties struct {
 	// REQUIRED; Compute Profile to configure the Virtual Machines.
 	ComputeProfile *ComputeProfile
 
-	// REQUIRED; Configuration Options for Regular or Spot instances in BulkCreateCustom.
-	PriorityProfile *BulkCreateCustomPriorityProfile
-
 	// Specifies capacity type for launching instances. It can be in terms of VMs or vCPUs.
 	CapacityType *CapacityType
 
 	// Extra parameters that control how the request is executed, including the retry policy.
 	ExecutionParameters *ExecutionParameters
 
-	// The minimum capacity, expressed in units specified by capacityType, that Azure must be able to allocate for the request
-	// to proceed. If Azure cannot allocate at least this capacity with high confidence, the request is rejected with 409 Conflict
-	// (InsufficientCapacity) and no VMs are created. Otherwise, Azure allocates as much capacity as possible, up to the requested
-	// capacity. Must be greater than 0, less than capacity, and requires partialFulfillmentPolicy.mode to be Enabled.
-	MinCapacity *int32
-
 	// Per-VM overrides and the shared name prefix, specified when the operation is created.
 	OverridesProfile *BulkCreateCustomOverridesProfile
-
-	// Controls how partial fulfillment is handled for a BulkCreateCustom request. When enabled, Azure creates only the VMs or
-	// vCPUs it has high confidence can be successfully allocated, instead of attempting the entire request and potentially returning
-	// allocation failures.
-	PartialFulfillmentPolicy *PartialFulfillmentPolicy
 
 	// READ-ONLY; The UTC time the BulkCreateCustom resource was created.
 	CreatedTime *time.Time
@@ -274,25 +272,11 @@ type BulkCreateProperties struct {
 	// operation.
 	ComputeProfile *ComputeProfile
 
-	// REQUIRED; Configuration Options for Regular or Spot instances in BulkCreate.
-	PriorityProfile *PriorityProfile
-
 	// Specifies capacity type for launching instances. It can be in terms of VMs or vCPUs.
 	CapacityType *CapacityType
 
 	// Extra parameters that control how the request is executed, including the retry policy.
 	ExecutionParameters *ExecutionParameters
-
-	// The minimum capacity, expressed in units specified by capacityType, that Azure must be able to allocate for the request
-	// to proceed. If Azure cannot allocate at least this capacity with high confidence, the request is rejected with 409 Conflict
-	// (InsufficientCapacity) and no VMs are created. Otherwise, Azure allocates as much capacity as possible, up to the requested
-	// capacity. Must be greater than 0, less than capacity, and requires partialFulfillmentPolicy.mode to be Enabled.
-	MinCapacity *int32
-
-	// Controls how partial fulfillment is handled for a BulkCreate request. When enabled, Azure creates only the VMs or vCPUs
-	// it has high confidence can be successfully allocated, instead of attempting the entire request and potentially returning
-	// allocation failures.
-	PartialFulfillmentPolicy *PartialFulfillmentPolicy
 
 	// READ-ONLY; The UTC time the BulkCreate resource was created.
 	CreatedTime *time.Time
@@ -318,12 +302,20 @@ type BulkactionVMProperties struct {
 	// Specifies the gallery applications that should be made available to the VM.
 	ApplicationProfile *ApplicationProfile
 
+	// Specifies the billing related details of the Azure Spot virtual machines. Mirrors the billingProfile property on Microsoft.Compute/virtualMachines.
+	// Only applies when priority is Spot.
+	BillingProfile *BillingProfile
+
 	// Specifies information about the capacity reservation that is used to allocate virtual machine. Minimum compute api-version:
 	// 2021-04-01.
 	CapacityReservation *CapacityReservationProfile
 
 	// Specifies the boot diagnostic settings state. Minimum compute api-version: 2015-06-15.
 	DiagnosticsProfile *DiagnosticsProfile
+
+	// Specifies the eviction policy for the Azure Spot virtual machines. Both Deallocate and Delete are supported. Mirrors the
+	// evictionPolicy property on Microsoft.Compute/virtualMachines. Only applies when priority is Spot.
+	EvictionPolicy *EvictionPolicy
 
 	// Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120 minutes
 	// (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M). Minimum compute api-version:
@@ -348,6 +340,9 @@ type BulkactionVMProperties struct {
 	// once VM is provisioned.
 	OSProfile *OSProfile
 
+	// Specifies the priority for the virtual machines. Mirrors the priority property on Microsoft.Compute/virtualMachines.
+	Priority *PriorityType
+
 	// Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the
 	// virtual machine.
 	ScheduledEventsPolicy *ScheduledEventsPolicy
@@ -369,7 +364,7 @@ type BulkactionVMProperties struct {
 	VMExtensions []*BulkactionVMExtension
 }
 
-// CancelOccurrenceRequest - Request body for canceling a scheduled action occurrence.
+// CancelOccurrenceRequest - Request body for canceling a recurring bulk action occurrence.
 type CancelOccurrenceRequest struct {
 	// REQUIRED; The resources for which operations should be canceled. An empty array cancels all operations for all resources
 	// for the occurrence.
@@ -544,7 +539,7 @@ type DeallocateResourceOperationResponse struct {
 	Results []*ResourceOperation
 }
 
-// DelayRequest - Request body for delaying a scheduled action occurrence.
+// DelayRequest - Request body for delaying a recurring bulk action occurrence.
 type DelayRequest struct {
 	// REQUIRED; The new date and time for the occurrence, including the UTC offset.
 	Delay *time.Time
@@ -757,6 +752,15 @@ type ExecutionParameters struct {
 	VerifyVMAgentHealth *bool
 }
 
+// ExtendedLocation - The complex type of the extended location.
+type ExtendedLocation struct {
+	// REQUIRED; The name of the extended location.
+	Name *string
+
+	// REQUIRED; The type of the extended location.
+	Type *ExtendedLocationType
+}
+
 // FallbackOperationInfo - Information about the fallback operation attempted after the requested operation did not succeed.
 type FallbackOperationInfo struct {
 	// REQUIRED; The type of the additional operation.
@@ -943,8 +947,14 @@ type ListBulkOperationErrorsResponse struct {
 
 // LocationBasedBulkCreate - Location based BulkCreate resource. The location is part of the resource path.
 type LocationBasedBulkCreate struct {
+	// The extended location of the virtual machines created by the BulkCreate operation.
+	ExtendedLocation *ExtendedLocation
+
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
+
+	// The availability zone placement constraints applied to the virtual machines created by the BulkCreate operation.
+	Placement *Placement
 
 	// Details of the resource plan.
 	Plan *Plan
@@ -973,8 +983,14 @@ type LocationBasedBulkCreate struct {
 
 // LocationBasedBulkCreateCustom - Location based BulkCreateCustom resource. The location is part of the resource path.
 type LocationBasedBulkCreateCustom struct {
+	// The extended location of the virtual machines created by the BulkCreateCustom operation.
+	ExtendedLocation *ExtendedLocation
+
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
+
+	// The availability zone placement constraints applied to the virtual machines created by the BulkCreateCustom operation.
+	Placement *Placement
 
 	// Details of the resource plan.
 	Plan *Plan
@@ -1063,7 +1079,7 @@ type NetworkProfile struct {
 	NetworkInterfaces []*NetworkInterfaceReference
 }
 
-// NotificationProperties - Settings for notifications about upcoming scheduled action operations.
+// NotificationProperties - Settings for notifications about upcoming recurring bulk action operations.
 type NotificationProperties struct {
 	// REQUIRED; The notification destination. For email notifications, specify a valid email address.
 	Destination *string
@@ -1206,7 +1222,7 @@ type OSProfileProvisioningData struct {
 	CustomData *string
 }
 
-// Occurrence - One scheduled execution of a scheduled action.
+// Occurrence - One scheduled execution of a recurring bulk action.
 type Occurrence struct {
 	// The resource-specific properties for this resource.
 	Properties *OccurrenceProperties
@@ -1229,7 +1245,7 @@ type OccurrenceExtensionProperties struct {
 	// REQUIRED; The Azure resource ID of the targeted virtual machine.
 	ResourceID *string
 
-	// REQUIRED; The Azure resource ID of the scheduled action that owns the occurrence.
+	// REQUIRED; The Azure resource ID of the recurring bulk action that owns the occurrence.
 	ScheduledActionID *string
 
 	// READ-ONLY; Read-only. The UTC date and time when the operation is scheduled for this resource.
@@ -1245,7 +1261,7 @@ type OccurrenceExtensionProperties struct {
 	ProvisioningState *OccurrenceResourceProvisioningState
 }
 
-// OccurrenceExtensionResource - A scheduled action occurrence associated with a specific compute resource.
+// OccurrenceExtensionResource - A recurring bulk action occurrence associated with a specific compute resource.
 type OccurrenceExtensionResource struct {
 	// The resource-specific properties for this resource.
 	Properties *OccurrenceExtensionProperties
@@ -1281,7 +1297,7 @@ type OccurrenceListResult struct {
 	NextLink *string
 }
 
-// OccurrenceProperties - Properties of a scheduled action occurrence.
+// OccurrenceProperties - Properties of a recurring bulk action occurrence.
 type OccurrenceProperties struct {
 	// READ-ONLY; Read-only. The result summary after the occurrence reaches a final state.
 	ResultSummary *OccurrenceResultSummary
@@ -1293,7 +1309,7 @@ type OccurrenceProperties struct {
 	ProvisioningState *OccurrenceState
 }
 
-// OccurrenceResource - Scheduling and status details for a resource included in a scheduled action occurrence.
+// OccurrenceResource - Scheduling and status details for a resource included in a recurring bulk action occurrence.
 type OccurrenceResource struct {
 	// REQUIRED; The Azure resource ID of the targeted virtual machine.
 	ResourceID *string
@@ -1320,7 +1336,7 @@ type OccurrenceResource struct {
 	Type *string
 }
 
-// OccurrenceResourceListResponse - Paged list of resources included in a scheduled action occurrence.
+// OccurrenceResourceListResponse - Paged list of resources included in a recurring bulk action occurrence.
 type OccurrenceResourceListResponse struct {
 	// REQUIRED; The OccurrenceResource items on this page
 	Value []*OccurrenceResource
@@ -1329,7 +1345,7 @@ type OccurrenceResourceListResponse struct {
 	NextLink *string
 }
 
-// OccurrenceResultSummary - Summary of results for a scheduled action occurrence.
+// OccurrenceResultSummary - Summary of results for a recurring bulk action occurrence.
 type OccurrenceResultSummary struct {
 	// REQUIRED; Resource counts grouped by result code.
 	Statuses []*ResourceResultSummary
@@ -1419,25 +1435,6 @@ type OperationStatusResult struct {
 	ResourceID *string
 }
 
-// PartialFulfillmentPolicy - Controls how partial fulfillment is handled for a BulkCreateCustom request. When enabled, Azure
-// creates only the VMs or vCPUs it has high confidence can be successfully allocated, instead of attempting the entire request
-// and potentially returning allocation failures.
-type PartialFulfillmentPolicy struct {
-	// Specifies whether partial fulfillment is allowed. When Enabled, Azure creates as many VMs as it has high confidence can
-	// be successfully allocated. When Disabled, Azure attempts to create all requested VMs, which may result into allocation
-	// failures.
-	Mode *PartialFulfillmentMode
-
-	// READ-ONLY; The amount of capacity that was actually attempted, expressed in the units specified by capacityType. When partial
-	// fulfillment is enabled, this value can be less than the requested capacity.
-	FulfilledCapacity *int32
-
-	// READ-ONLY; Indicates why the fulfilled capacity is less than the requested capacity. Possible values include InsufficientCapacity
-	// and InsufficientQuota. Returned only in the create response when partial fulfillment is enabled and the request cannot
-	// be fully satisfied.
-	Reason *PartialFulfillmentReason
-}
-
 // PatchSettings - Specifies settings related to VM Guest Patching on Windows.
 type PatchSettings struct {
 	// Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.<br /><br /> Possible values are:<br /><br
@@ -1462,6 +1459,19 @@ type PatchSettings struct {
 	PatchMode *WindowsVMGuestPatchMode
 }
 
+// Placement - The customer-defined constraints for virtual machine placement.
+type Placement struct {
+	// The availability zones that Bulk Actions must not select.
+	ExcludeZones []*string
+
+	// The availability zones that Bulk Actions can select. When omitted, Bulk Actions can consider any supported zone in the
+	// region.
+	IncludeZones []*string
+
+	// The policy used to select an availability zone.
+	ZonePlacementPolicy *ZonePlacementPolicyType
+}
+
 // Plan for the resource.
 type Plan struct {
 	// REQUIRED; A user defined name of the 3rd Party Artifact that is being procured.
@@ -1479,18 +1489,6 @@ type Plan struct {
 
 	// The version of the desired product/artifact.
 	Version *string
-}
-
-// PriorityProfile - The priority and allocation preferences for virtual machines.
-type PriorityProfile struct {
-	// The action applied to a Spot virtual machine when Azure evicts it.
-	EvictionPolicy *EvictionPolicy
-
-	// The maximum hourly price, in US dollars, for each Spot virtual machine.
-	MaxPricePerVM *float32
-
-	// The priority type for virtual machine allocation.
-	Type *PriorityType
 }
 
 // ProxyAgentSettings - Specifies ProxyAgent settings for the virtual machine or virtual machine scale set. Minimum api-version:
@@ -1561,21 +1559,21 @@ type ReimageResourceOverride struct {
 	ResourceID *string
 }
 
-// ResourceAttachRequest - Resources to attach to a scheduled action.
+// ResourceAttachRequest - Resources to attach to a recurring bulk action.
 type ResourceAttachRequest struct {
-	// REQUIRED; The list of resources to attach to the scheduled action.
+	// REQUIRED; The list of resources to attach to the recurring bulk action.
 	Resources []*ScheduledActionResourceInput
 }
 
-// ResourceDetachRequest - Resources to remove from a scheduled action.
+// ResourceDetachRequest - Resources to remove from a recurring bulk action.
 type ResourceDetachRequest struct {
 	// REQUIRED; The Azure resource IDs of the resources to remove.
 	Resources []*string
 }
 
-// ResourceListResponse - A paged list of compute resources associated with a scheduled action.
+// ResourceListResponse - A paged list of compute resources associated with a recurring bulk action.
 type ResourceListResponse struct {
-	// REQUIRED; The compute resources associated with the scheduled action.
+	// REQUIRED; The compute resources associated with the recurring bulk action.
 	Value []*ScheduledActionResource
 
 	// The link to the next page of items
@@ -1661,7 +1659,7 @@ type ResourceOperationError struct {
 	ErrorDetails *string
 }
 
-// ResourceOperationResponse - Results of a scheduled action operation for targeted resources.
+// ResourceOperationResponse - Results of a recurring bulk action operation for targeted resources.
 type ResourceOperationResponse struct {
 	// REQUIRED; The operation result for each resource.
 	ResourcesStatuses []*ResourceStatus
@@ -1670,7 +1668,7 @@ type ResourceOperationResponse struct {
 	TotalResources *int32
 }
 
-// ResourcePatchRequest - Resource-specific settings to update in a scheduled action.
+// ResourcePatchRequest - Resource-specific settings to update in a recurring bulk action.
 type ResourcePatchRequest struct {
 	// REQUIRED; The resources and notification settings to update.
 	Resources []*ScheduledActionResourceInput
@@ -1688,7 +1686,7 @@ type ResourceResultSummary struct {
 	ErrorDetails *Error
 }
 
-// ResourceStatus - Current status for a targeted resource in a scheduled action occurrence.
+// ResourceStatus - Current status for a targeted resource in a recurring bulk action occurrence.
 type ResourceStatus struct {
 	// REQUIRED; The Azure resource ID of the targeted resource.
 	ResourceID *string
@@ -1751,7 +1749,7 @@ type SSHPublicKey struct {
 	Path *string
 }
 
-// ScheduledAction - A recurring action that operates on specified compute resources.
+// ScheduledAction - A recurring bulk action that operates on specified compute resources.
 type ScheduledAction struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -1784,12 +1782,12 @@ type ScheduledActionListResult struct {
 	NextLink *string
 }
 
-// ScheduledActionProperties - Configuration and status of a scheduled action.
+// ScheduledActionProperties - Configuration and status of a recurring bulk action.
 type ScheduledActionProperties struct {
 	// REQUIRED; The operation performed on the targeted resources.
 	ActionType *ScheduledActionType
 
-	// REQUIRED; Notification settings that apply to the scheduled action.
+	// REQUIRED; Notification settings that apply to the recurring bulk action.
 	NotificationSettings []*NotificationProperties
 
 	// REQUIRED; The type of compute resource targeted by the action.
@@ -1807,11 +1805,11 @@ type ScheduledActionProperties struct {
 	// The date and time, including UTC offset, after which no new occurrences are scheduled.
 	EndTime *time.Time
 
-	// READ-ONLY; Read-only. The provisioning state of the scheduled action.
+	// READ-ONLY; Read-only. The provisioning state of the recurring bulk action.
 	ProvisioningState *ScheduledActionsProvisioningState
 }
 
-// ScheduledActionResource - A compute resource associated with a scheduled action.
+// ScheduledActionResource - A compute resource associated with a recurring bulk action.
 type ScheduledActionResource struct {
 	// REQUIRED; The Azure resource ID of the targeted virtual machine.
 	ResourceID *string
@@ -1829,7 +1827,7 @@ type ScheduledActionResource struct {
 	Type *string
 }
 
-// ScheduledActionResourceInput - A compute resource to add to or update in a scheduled action.
+// ScheduledActionResourceInput - A compute resource to add to or update in a recurring bulk action.
 type ScheduledActionResourceInput struct {
 	// REQUIRED; The Azure resource ID of the targeted virtual machine.
 	ResourceID *string
@@ -1838,7 +1836,7 @@ type ScheduledActionResourceInput struct {
 	NotificationSettings []*NotificationProperties
 }
 
-// ScheduledActionResources - A scheduled action associated with a specific compute resource.
+// ScheduledActionResources - A recurring bulk action associated with a specific compute resource.
 type ScheduledActionResources struct {
 	// The resource-specific properties for this resource.
 	Properties *ScheduledActionsExtensionProperties
@@ -1885,7 +1883,7 @@ type ScheduledActionUpdateProperties struct {
 	// The date and time, including UTC offset, after which no new occurrences are scheduled.
 	EndTime *time.Time
 
-	// Notification settings that apply to the scheduled action.
+	// Notification settings that apply to the recurring bulk action.
 	NotificationSettings []*NotificationProperties
 
 	// The type of compute resource targeted by the action.
@@ -1898,18 +1896,18 @@ type ScheduledActionUpdateProperties struct {
 	StartTime *time.Time
 }
 
-// ScheduledActionsExecutionParameters - Settings that control how the scheduled action operation is executed.
+// ScheduledActionsExecutionParameters - Settings that control how the recurring bulk action operation is executed.
 type ScheduledActionsExecutionParameters struct {
 	// The retry settings for failed resource operations.
 	RetryPolicy *ScheduledActionsRetryPolicy
 }
 
-// ScheduledActionsExtensionProperties - A scheduled action associated with a specific compute resource.
+// ScheduledActionsExtensionProperties - A recurring bulk action associated with a specific compute resource.
 type ScheduledActionsExtensionProperties struct {
 	// REQUIRED; The operation performed on the targeted resources.
 	ActionType *ScheduledActionType
 
-	// REQUIRED; Notification settings that apply to the scheduled action.
+	// REQUIRED; Notification settings that apply to the recurring bulk action.
 	NotificationSettings []*NotificationProperties
 
 	// REQUIRED; The type of compute resource targeted by the action.
@@ -1927,14 +1925,14 @@ type ScheduledActionsExtensionProperties struct {
 	// The date and time, including UTC offset, after which no new occurrences are scheduled.
 	EndTime *time.Time
 
-	// READ-ONLY; Read-only. The provisioning state of the scheduled action.
+	// READ-ONLY; Read-only. The provisioning state of the recurring bulk action.
 	ProvisioningState *ScheduledActionsProvisioningState
 
 	// READ-ONLY; Read-only. Notification settings that apply only to the specified compute resource.
 	ResourceNotificationSettings []*NotificationProperties
 }
 
-// ScheduledActionsRetryPolicy - Retry settings for a scheduled action operation.
+// ScheduledActionsRetryPolicy - Retry settings for a recurring bulk action operation.
 type ScheduledActionsRetryPolicy struct {
 	// The resource operation to retry after a failure.
 	OnFailureAction *ScheduledActionsResourceOperationType
@@ -1946,9 +1944,9 @@ type ScheduledActionsRetryPolicy struct {
 	RetryWindowInMinutes *int32
 }
 
-// ScheduledActionsSchedule - The recurring schedule for a scheduled action.
+// ScheduledActionsSchedule - The recurring schedule for a recurring bulk action.
 type ScheduledActionsSchedule struct {
-	// REQUIRED; The local time of day when the scheduled action runs.
+	// REQUIRED; The local time of day when the recurring bulk action runs.
 	ScheduledTime *time.Time
 
 	// REQUIRED; The time zone used to interpret the scheduled time.
@@ -1970,7 +1968,7 @@ type ScheduledActionsSchedule struct {
 	RequestedWeekDays []*WeekDay
 }
 
-// ScheduledActionsScheduleUpdate - Schedule changes for a scheduled action. Omitted properties keep their current values.
+// ScheduledActionsScheduleUpdate - Schedule changes for a recurring bulk action. Omitted properties keep their current values.
 type ScheduledActionsScheduleUpdate struct {
 	// How the scheduled time is interpreted. The default is `InitiateAt`.
 	DeadlineType *ScheduledActionsDeadlineType
@@ -1987,7 +1985,7 @@ type ScheduledActionsScheduleUpdate struct {
 	// The days of the week when the action runs. An empty array means every day of the week.
 	RequestedWeekDays []*WeekDay
 
-	// The local time of day when the scheduled action runs.
+	// The local time of day when the recurring bulk action runs.
 	ScheduledTime *time.Time
 
 	// The time zone used to interpret the scheduled time.

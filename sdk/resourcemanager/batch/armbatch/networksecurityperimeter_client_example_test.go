@@ -11,6 +11,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-06-01/NspConfigurationReconcile.json
+func ExampleNetworkSecurityPerimeterClient_BeginReconcileConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbatch.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkSecurityPerimeterClient().BeginReconcileConfiguration(ctx, "default-azurebatch-japaneast", "sampleacct", "00000000-0000-0000-0000-000000000000.sampleassociation", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-06-01/NspConfigurationGet.json
 func ExampleNetworkSecurityPerimeterClient_GetConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -191,26 +212,5 @@ func ExampleNetworkSecurityPerimeterClient_NewListConfigurationsPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01/NspConfigurationReconcile.json
-func ExampleNetworkSecurityPerimeterClient_BeginReconcileConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbatch.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkSecurityPerimeterClient().BeginReconcileConfiguration(ctx, "default-azurebatch-japaneast", "sampleacct", "00000000-0000-0000-0000-000000000000.sampleassociation", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

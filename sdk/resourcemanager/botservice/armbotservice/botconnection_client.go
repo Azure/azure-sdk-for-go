@@ -65,7 +65,8 @@ func (client *BotConnectionClient) Create(ctx context.Context, resourceGroupName
 	if err != nil {
 		return BotConnectionClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -135,7 +136,8 @@ func (client *BotConnectionClient) Delete(ctx context.Context, resourceGroupName
 		return BotConnectionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return BotConnectionClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BotConnectionClientDeleteResponse{}, err
 	}
 	return BotConnectionClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *BotConnectionClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return BotConnectionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -230,6 +233,125 @@ func (client *BotConnectionClient) getHandleResponse(resp *http.Response, succes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSetting); err != nil {
 		return BotConnectionClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListServiceProviders - Lists the available Service Providers for creating Connection Settings
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - BotConnectionClientListServiceProvidersOptions contains the optional parameters for the BotConnectionClient.ListServiceProviders
+//     method.
+func (client *BotConnectionClient) ListServiceProviders(ctx context.Context, options *BotConnectionClientListServiceProvidersOptions) (BotConnectionClientListServiceProvidersResponse, error) {
+	var err error
+	const operationName = "BotConnectionClient.ListServiceProviders"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listServiceProvidersCreateRequest(ctx, options)
+	if err != nil {
+		return BotConnectionClientListServiceProvidersResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BotConnectionClientListServiceProvidersResponse{}, err
+	}
+	resp, err := client.listServiceProvidersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listServiceProvidersCreateRequest creates the ListServiceProviders request.
+func (client *BotConnectionClient) listServiceProvidersCreateRequest(ctx context.Context, _ *BotConnectionClientListServiceProvidersOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/listAuthServiceProviders"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listServiceProvidersHandleResponse handles the ListServiceProviders response.
+func (client *BotConnectionClient) listServiceProvidersHandleResponse(resp *http.Response, successCodes ...int) (BotConnectionClientListServiceProvidersResponse, error) {
+	result := BotConnectionClientListServiceProvidersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceProviderResponseList); err != nil {
+		return BotConnectionClientListServiceProvidersResponse{}, err
+	}
+	return result, nil
+}
+
+// ListWithSecrets - Get a Connection Setting registration for a Bot Service
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Bot resource.
+//   - connectionName - The name of the Bot Service Connection Setting resource.
+//   - options - BotConnectionClientListWithSecretsOptions contains the optional parameters for the BotConnectionClient.ListWithSecrets
+//     method.
+func (client *BotConnectionClient) ListWithSecrets(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, options *BotConnectionClientListWithSecretsOptions) (BotConnectionClientListWithSecretsResponse, error) {
+	var err error
+	const operationName = "BotConnectionClient.ListWithSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listWithSecretsCreateRequest(ctx, resourceGroupName, resourceName, connectionName, options)
+	if err != nil {
+		return BotConnectionClientListWithSecretsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BotConnectionClientListWithSecretsResponse{}, err
+	}
+	resp, err := client.listWithSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listWithSecretsCreateRequest creates the ListWithSecrets request.
+func (client *BotConnectionClient) listWithSecretsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, _ *BotConnectionClientListWithSecretsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections/{connectionName}/listWithSecrets"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if connectionName == "" {
+		return nil, errors.New("parameter connectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listWithSecretsHandleResponse handles the ListWithSecrets response.
+func (client *BotConnectionClient) listWithSecretsHandleResponse(resp *http.Response, successCodes ...int) (BotConnectionClientListWithSecretsResponse, error) {
+	result := BotConnectionClientListWithSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSetting); err != nil {
+		return BotConnectionClientListWithSecretsResponse{}, err
 	}
 	return result, nil
 }
@@ -311,123 +433,6 @@ func (client *BotConnectionClient) listByBotServiceHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListServiceProviders - Lists the available Service Providers for creating Connection Settings
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - options - BotConnectionClientListServiceProvidersOptions contains the optional parameters for the BotConnectionClient.ListServiceProviders
-//     method.
-func (client *BotConnectionClient) ListServiceProviders(ctx context.Context, options *BotConnectionClientListServiceProvidersOptions) (BotConnectionClientListServiceProvidersResponse, error) {
-	var err error
-	const operationName = "BotConnectionClient.ListServiceProviders"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listServiceProvidersCreateRequest(ctx, options)
-	if err != nil {
-		return BotConnectionClientListServiceProvidersResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return BotConnectionClientListServiceProvidersResponse{}, err
-	}
-	return client.listServiceProvidersHandleResponse(httpResp, http.StatusOK)
-}
-
-// listServiceProvidersCreateRequest creates the ListServiceProviders request.
-func (client *BotConnectionClient) listServiceProvidersCreateRequest(ctx context.Context, _ *BotConnectionClientListServiceProvidersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/listAuthServiceProviders"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230915Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listServiceProvidersHandleResponse handles the ListServiceProviders response.
-func (client *BotConnectionClient) listServiceProvidersHandleResponse(resp *http.Response, successCodes ...int) (BotConnectionClientListServiceProvidersResponse, error) {
-	result := BotConnectionClientListServiceProvidersResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceProviderResponseList); err != nil {
-		return BotConnectionClientListServiceProvidersResponse{}, err
-	}
-	return result, nil
-}
-
-// ListWithSecrets - Get a Connection Setting registration for a Bot Service
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Bot resource.
-//   - connectionName - The name of the Bot Service Connection Setting resource.
-//   - options - BotConnectionClientListWithSecretsOptions contains the optional parameters for the BotConnectionClient.ListWithSecrets
-//     method.
-func (client *BotConnectionClient) ListWithSecrets(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, options *BotConnectionClientListWithSecretsOptions) (BotConnectionClientListWithSecretsResponse, error) {
-	var err error
-	const operationName = "BotConnectionClient.ListWithSecrets"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listWithSecretsCreateRequest(ctx, resourceGroupName, resourceName, connectionName, options)
-	if err != nil {
-		return BotConnectionClientListWithSecretsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return BotConnectionClientListWithSecretsResponse{}, err
-	}
-	return client.listWithSecretsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listWithSecretsCreateRequest creates the ListWithSecrets request.
-func (client *BotConnectionClient) listWithSecretsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, connectionName string, _ *BotConnectionClientListWithSecretsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/connections/{connectionName}/listWithSecrets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if connectionName == "" {
-		return nil, errors.New("parameter connectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230915Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listWithSecretsHandleResponse handles the ListWithSecrets response.
-func (client *BotConnectionClient) listWithSecretsHandleResponse(resp *http.Response, successCodes ...int) (BotConnectionClientListWithSecretsResponse, error) {
-	result := BotConnectionClientListWithSecretsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSetting); err != nil {
-		return BotConnectionClientListWithSecretsResponse{}, err
-	}
-	return result, nil
-}
-
 // Update - Updates a Connection Setting registration for a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -449,7 +454,8 @@ func (client *BotConnectionClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return BotConnectionClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

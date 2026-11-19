@@ -21,8 +21,14 @@ type ServerFactory struct {
 	// AccountConnectionsServer contains the fakes for client AccountConnectionsClient
 	AccountConnectionsServer AccountConnectionsServer
 
+	// AccountCostControlsServer contains the fakes for client AccountCostControlsClient
+	AccountCostControlsServer AccountCostControlsServer
+
 	// AccountsServer contains the fakes for client AccountsClient
 	AccountsServer AccountsServer
+
+	// AdapterDeploymentsServer contains the fakes for client AdapterDeploymentsClient
+	AdapterDeploymentsServer AdapterDeploymentsServer
 
 	// AgentApplicationsServer contains the fakes for client AgentApplicationsClient
 	AgentApplicationsServer AgentApplicationsServer
@@ -32,6 +38,9 @@ type ServerFactory struct {
 
 	// ArcDeploymentsServer contains the fakes for client ArcDeploymentsClient
 	ArcDeploymentsServer ArcDeploymentsServer
+
+	// AttachedAKSClustersServer contains the fakes for client AttachedAKSClustersClient
+	AttachedAKSClustersServer AttachedAKSClustersServer
 
 	// CommitmentPlansServer contains the fakes for client CommitmentPlansClient
 	CommitmentPlansServer CommitmentPlansServer
@@ -108,11 +117,17 @@ type ServerFactory struct {
 	// ProjectConnectionsServer contains the fakes for client ProjectConnectionsClient
 	ProjectConnectionsServer ProjectConnectionsServer
 
+	// ProjectCostControlsServer contains the fakes for client ProjectCostControlsClient
+	ProjectCostControlsServer ProjectCostControlsServer
+
 	// ProjectsServer contains the fakes for client ProjectsClient
 	ProjectsServer ProjectsServer
 
 	// QuotaTiersServer contains the fakes for client QuotaTiersClient
 	QuotaTiersServer QuotaTiersServer
+
+	// RaiBindingsServer contains the fakes for client RaiBindingsClient
+	RaiBindingsServer RaiBindingsServer
 
 	// RaiBlocklistItemsServer contains the fakes for client RaiBlocklistItemsClient
 	RaiBlocklistItemsServer RaiBlocklistItemsServer
@@ -131,6 +146,9 @@ type ServerFactory struct {
 
 	// RaiPoliciesServer contains the fakes for client RaiPoliciesClient
 	RaiPoliciesServer RaiPoliciesServer
+
+	// RaiRegosServer contains the fakes for client RaiRegosClient
+	RaiRegosServer RaiRegosServer
 
 	// RaiToolLabelsServer contains the fakes for client RaiToolLabelsClient
 	RaiToolLabelsServer RaiToolLabelsServer
@@ -170,10 +188,13 @@ type ServerFactoryTransport struct {
 	trMu                                           sync.Mutex
 	trAccountCapabilityHostsServer                 *AccountCapabilityHostsServerTransport
 	trAccountConnectionsServer                     *AccountConnectionsServerTransport
+	trAccountCostControlsServer                    *AccountCostControlsServerTransport
 	trAccountsServer                               *AccountsServerTransport
+	trAdapterDeploymentsServer                     *AdapterDeploymentsServerTransport
 	trAgentApplicationsServer                      *AgentApplicationsServerTransport
 	trAgentDeploymentsServer                       *AgentDeploymentsServerTransport
 	trArcDeploymentsServer                         *ArcDeploymentsServerTransport
+	trAttachedAKSClustersServer                    *AttachedAKSClustersServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
 	trComputeOperationsServer                      *ComputeOperationsServerTransport
@@ -199,14 +220,17 @@ type ServerFactoryTransport struct {
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trProjectCapabilityHostsServer                 *ProjectCapabilityHostsServerTransport
 	trProjectConnectionsServer                     *ProjectConnectionsServerTransport
+	trProjectCostControlsServer                    *ProjectCostControlsServerTransport
 	trProjectsServer                               *ProjectsServerTransport
 	trQuotaTiersServer                             *QuotaTiersServerTransport
+	trRaiBindingsServer                            *RaiBindingsServerTransport
 	trRaiBlocklistItemsServer                      *RaiBlocklistItemsServerTransport
 	trRaiBlocklistsServer                          *RaiBlocklistsServerTransport
 	trRaiContentFiltersServer                      *RaiContentFiltersServerTransport
 	trRaiExternalSafetyProviderServer              *RaiExternalSafetyProviderServerTransport
 	trRaiExternalSafetyProvidersServer             *RaiExternalSafetyProvidersServerTransport
 	trRaiPoliciesServer                            *RaiPoliciesServerTransport
+	trRaiRegosServer                               *RaiRegosServerTransport
 	trRaiToolLabelsServer                          *RaiToolLabelsServerTransport
 	trRaiTopicsServer                              *RaiTopicsServerTransport
 	trResourceSKUsServer                           *ResourceSKUsServerTransport
@@ -221,7 +245,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	client := method[:strings.Index(method, ".")]
@@ -239,9 +263,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAccountConnectionsServerTransport(&s.srv.AccountConnectionsServer)
 		})
 		resp, err = s.trAccountConnectionsServer.Do(req)
+	case "AccountCostControlsClient":
+		initServer(&s.trMu, &s.trAccountCostControlsServer, func() *AccountCostControlsServerTransport {
+			return NewAccountCostControlsServerTransport(&s.srv.AccountCostControlsServer)
+		})
+		resp, err = s.trAccountCostControlsServer.Do(req)
 	case "AccountsClient":
 		initServer(&s.trMu, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
+	case "AdapterDeploymentsClient":
+		initServer(&s.trMu, &s.trAdapterDeploymentsServer, func() *AdapterDeploymentsServerTransport {
+			return NewAdapterDeploymentsServerTransport(&s.srv.AdapterDeploymentsServer)
+		})
+		resp, err = s.trAdapterDeploymentsServer.Do(req)
 	case "AgentApplicationsClient":
 		initServer(&s.trMu, &s.trAgentApplicationsServer, func() *AgentApplicationsServerTransport {
 			return NewAgentApplicationsServerTransport(&s.srv.AgentApplicationsServer)
@@ -257,6 +291,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewArcDeploymentsServerTransport(&s.srv.ArcDeploymentsServer)
 		})
 		resp, err = s.trArcDeploymentsServer.Do(req)
+	case "AttachedAKSClustersClient":
+		initServer(&s.trMu, &s.trAttachedAKSClustersServer, func() *AttachedAKSClustersServerTransport {
+			return NewAttachedAKSClustersServerTransport(&s.srv.AttachedAKSClustersServer)
+		})
+		resp, err = s.trAttachedAKSClustersServer.Do(req)
 	case "CommitmentPlansClient":
 		initServer(&s.trMu, &s.trCommitmentPlansServer, func() *CommitmentPlansServerTransport {
 			return NewCommitmentPlansServerTransport(&s.srv.CommitmentPlansServer)
@@ -370,12 +409,20 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProjectConnectionsServerTransport(&s.srv.ProjectConnectionsServer)
 		})
 		resp, err = s.trProjectConnectionsServer.Do(req)
+	case "ProjectCostControlsClient":
+		initServer(&s.trMu, &s.trProjectCostControlsServer, func() *ProjectCostControlsServerTransport {
+			return NewProjectCostControlsServerTransport(&s.srv.ProjectCostControlsServer)
+		})
+		resp, err = s.trProjectCostControlsServer.Do(req)
 	case "ProjectsClient":
 		initServer(&s.trMu, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)
 	case "QuotaTiersClient":
 		initServer(&s.trMu, &s.trQuotaTiersServer, func() *QuotaTiersServerTransport { return NewQuotaTiersServerTransport(&s.srv.QuotaTiersServer) })
 		resp, err = s.trQuotaTiersServer.Do(req)
+	case "RaiBindingsClient":
+		initServer(&s.trMu, &s.trRaiBindingsServer, func() *RaiBindingsServerTransport { return NewRaiBindingsServerTransport(&s.srv.RaiBindingsServer) })
+		resp, err = s.trRaiBindingsServer.Do(req)
 	case "RaiBlocklistItemsClient":
 		initServer(&s.trMu, &s.trRaiBlocklistItemsServer, func() *RaiBlocklistItemsServerTransport {
 			return NewRaiBlocklistItemsServerTransport(&s.srv.RaiBlocklistItemsServer)
@@ -404,6 +451,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "RaiPoliciesClient":
 		initServer(&s.trMu, &s.trRaiPoliciesServer, func() *RaiPoliciesServerTransport { return NewRaiPoliciesServerTransport(&s.srv.RaiPoliciesServer) })
 		resp, err = s.trRaiPoliciesServer.Do(req)
+	case "RaiRegosClient":
+		initServer(&s.trMu, &s.trRaiRegosServer, func() *RaiRegosServerTransport { return NewRaiRegosServerTransport(&s.srv.RaiRegosServer) })
+		resp, err = s.trRaiRegosServer.Do(req)
 	case "RaiToolLabelsClient":
 		initServer(&s.trMu, &s.trRaiToolLabelsServer, func() *RaiToolLabelsServerTransport {
 			return NewRaiToolLabelsServerTransport(&s.srv.RaiToolLabelsServer)

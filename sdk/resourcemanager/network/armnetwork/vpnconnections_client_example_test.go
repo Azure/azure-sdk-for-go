@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VpnConnectionPut.json
+// Generated from example definition: 2026-03-01/VpnConnectionPut.json
 func ExampleVPNConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleVPNConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VpnConnectionDelete.json
+// Generated from example definition: 2026-03-01/VpnConnectionDelete.json
 func ExampleVPNConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,108 @@ func ExampleVPNConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VpnConnectionGet.json
+// Generated from example definition: 2026-03-01/VpnConnectionStartPacketCapture.json
+func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpnConnectionWithoutFilter() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVPNConnectionsClient().BeginStartPacketCapture(ctx, "rg1", "gateway1", "vpnConnection1", &armnetwork.VPNConnectionsClientBeginStartPacketCaptureOptions{
+		Parameters: &armnetwork.VPNConnectionPacketCaptureStartParameters{
+			LinkConnectionNames: []*string{
+				to.Ptr("siteLink1"),
+				to.Ptr("siteLink2"),
+			},
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VPNConnectionsClientStartPacketCaptureResponse{
+	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VpnConnectionStartPacketCaptureFilterData.json
+func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpnConnectionWithFilter() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVPNConnectionsClient().BeginStartPacketCapture(ctx, "rg1", "gateway1", "vpnConnection1", &armnetwork.VPNConnectionsClientBeginStartPacketCaptureOptions{
+		Parameters: &armnetwork.VPNConnectionPacketCaptureStartParameters{
+			FilterData: to.Ptr("{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
+			LinkConnectionNames: []*string{
+				to.Ptr("siteLink1"),
+				to.Ptr("siteLink2"),
+			},
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VPNConnectionsClientStartPacketCaptureResponse{
+	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VpnConnectionStopPacketCapture.json
+func ExampleVPNConnectionsClient_BeginStopPacketCapture() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVPNConnectionsClient().BeginStopPacketCapture(ctx, "rg1", "gateway1", "vpnConnection1", &armnetwork.VPNConnectionsClientBeginStopPacketCaptureOptions{
+		Parameters: &armnetwork.VPNConnectionPacketCaptureStopParameters{
+			LinkConnectionNames: []*string{
+				to.Ptr("vpnSiteLink1"),
+				to.Ptr("vpnSiteLink2"),
+			},
+			SasURL: to.Ptr("https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D"),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VPNConnectionsClientStopPacketCaptureResponse{
+	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VpnConnectionGet.json
 func ExampleVPNConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +401,7 @@ func ExampleVPNConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VpnConnectionList.json
+// Generated from example definition: 2026-03-01/VpnConnectionList.json
 func ExampleVPNConnectionsClient_NewListByVPNGatewayPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,105 +524,4 @@ func ExampleVPNConnectionsClient_NewListByVPNGatewayPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-01/VpnConnectionStartPacketCapture.json
-func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpnConnectionWithoutFilter() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVPNConnectionsClient().BeginStartPacketCapture(ctx, "rg1", "gateway1", "vpnConnection1", &armnetwork.VPNConnectionsClientBeginStartPacketCaptureOptions{
-		Parameters: &armnetwork.VPNConnectionPacketCaptureStartParameters{
-			LinkConnectionNames: []*string{
-				to.Ptr("siteLink1"),
-				to.Ptr("siteLink2"),
-			},
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VPNConnectionsClientStartPacketCaptureResponse{
-	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VpnConnectionStartPacketCaptureFilterData.json
-func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpnConnectionWithFilter() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVPNConnectionsClient().BeginStartPacketCapture(ctx, "rg1", "gateway1", "vpnConnection1", &armnetwork.VPNConnectionsClientBeginStartPacketCaptureOptions{
-		Parameters: &armnetwork.VPNConnectionPacketCaptureStartParameters{
-			FilterData: to.Ptr("{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
-			LinkConnectionNames: []*string{
-				to.Ptr("siteLink1"),
-				to.Ptr("siteLink2"),
-			},
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VPNConnectionsClientStartPacketCaptureResponse{
-	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VpnConnectionStopPacketCapture.json
-func ExampleVPNConnectionsClient_BeginStopPacketCapture() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVPNConnectionsClient().BeginStopPacketCapture(ctx, "rg1", "gateway1", "vpnConnection1", &armnetwork.VPNConnectionsClientBeginStopPacketCaptureOptions{
-		Parameters: &armnetwork.VPNConnectionPacketCaptureStopParameters{
-			LinkConnectionNames: []*string{
-				to.Ptr("vpnSiteLink1"),
-				to.Ptr("vpnSiteLink2"),
-			},
-			SasURL: to.Ptr("https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D"),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VPNConnectionsClientStopPacketCaptureResponse{
-	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
-	// }
 }

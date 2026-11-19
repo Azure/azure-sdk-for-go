@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
 func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccessPolicyAssignmentCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,6 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccess
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/default-TestEntraApp1"),
 	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 	// 			AccessPolicyName: to.Ptr("default"),
-	// 			AccessString: to.Ptr("+@all ~*"),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 	// 			User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 	// 				ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
@@ -58,7 +57,7 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccess
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.json
 func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +104,7 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate_redisEnterpriseAccess
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
 func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +125,7 @@ func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
 func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignmentGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +150,6 @@ func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignme
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName1"),
 	// 		Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 	// 			AccessPolicyName: to.Ptr("default"),
-	// 			AccessString: to.Ptr("+@all ~*"),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 	// 			User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 	// 				ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
@@ -161,7 +159,7 @@ func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignme
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.json
 func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +199,7 @@ func ExampleAccessPolicyAssignmentClient_Get_redisEnterpriseAccessPolicyAssignme
 	// }
 }
 
-// Generated from example definition: 2026-06-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
 func ExampleAccessPolicyAssignmentClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +230,6 @@ func ExampleAccessPolicyAssignmentClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName1"),
 		// 				Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 		// 					AccessPolicyName: to.Ptr("default"),
-		// 					AccessString: to.Ptr("+@all ~*"),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 		// 					User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 		// 						ObjectID: to.Ptr("6497c918-11ad-41e7-1b0f-7c518a87d0b0"),
@@ -245,7 +242,6 @@ func ExampleAccessPolicyAssignmentClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/accessPolicyAssignmentName2"),
 		// 				Properties: &armredisenterprise.AccessPolicyAssignmentProperties{
 		// 					AccessPolicyName: to.Ptr("default"),
-		// 					AccessString: to.Ptr("+@all ~*"),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 		// 					User: &armredisenterprise.AccessPolicyAssignmentPropertiesUser{
 		// 						ObjectID: to.Ptr("7497c918-11ad-41e7-1b0f-7c518a87d0b0"),

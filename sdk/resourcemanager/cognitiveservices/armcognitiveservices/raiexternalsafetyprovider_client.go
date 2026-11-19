@@ -19,7 +19,7 @@ import (
 // RaiExternalSafetyProviderClient contains the methods for the RaiExternalSafetyProvider group.
 // Don't use this type directly, use NewRaiExternalSafetyProviderClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-11-15-preview
 type RaiExternalSafetyProviderClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,67 +44,6 @@ func NewRaiExternalSafetyProviderClient(subscriptionID string, credential azcore
 	return client, nil
 }
 
-// CreateOrUpdate - Create the rai safety provider associated with the subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
-//   - safetyProvider - Properties describing the rai external safety provider.
-//   - options - RaiExternalSafetyProviderClientCreateOrUpdateOptions contains the optional parameters for the RaiExternalSafetyProviderClient.CreateOrUpdate
-//     method.
-func (client *RaiExternalSafetyProviderClient) CreateOrUpdate(ctx context.Context, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, options *RaiExternalSafetyProviderClientCreateOrUpdateOptions) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "RaiExternalSafetyProviderClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, safetyProviderName, safetyProvider, options)
-	if err != nil {
-		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
-	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RaiExternalSafetyProviderClient) createOrUpdateCreateRequest(ctx context.Context, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, _ *RaiExternalSafetyProviderClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if safetyProviderName == "" {
-		return nil, errors.New("parameter safetyProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{safetyProviderName}", url.PathEscape(safetyProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, safetyProvider); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RaiExternalSafetyProviderClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error) {
-	result := RaiExternalSafetyProviderClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RaiExternalSafetyProviderSchema); err != nil {
-		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginDelete - Deletes the specified custom topic associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
@@ -127,7 +66,7 @@ func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Deletes the specified custom topic associated with the subscription.
+// deleteOperation - Deletes the specified custom topic associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -144,12 +83,13 @@ func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RaiExternalSafetyProviderClient) deleteCreateRequest(ctx context.Context, safetyProviderName string, _ *RaiExternalSafetyProviderClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}"
 	if client.subscriptionID == "" {
@@ -165,9 +105,71 @@ func (client *RaiExternalSafetyProviderClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// CreateOrUpdate - Create the rai safety provider associated with the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - safetyProviderName - The name of the Rai External Safety Provider associated with the Cognitive Services Account
+//   - safetyProvider - Properties describing the rai external safety provider.
+//   - options - RaiExternalSafetyProviderClientCreateOrUpdateOptions contains the optional parameters for the RaiExternalSafetyProviderClient.CreateOrUpdate
+//     method.
+func (client *RaiExternalSafetyProviderClient) CreateOrUpdate(ctx context.Context, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, options *RaiExternalSafetyProviderClientCreateOrUpdateOptions) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "RaiExternalSafetyProviderClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, safetyProviderName, safetyProvider, options)
+	if err != nil {
+		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *RaiExternalSafetyProviderClient) createOrUpdateCreateRequest(ctx context.Context, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, _ *RaiExternalSafetyProviderClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/raiExternalSafetyProviders/{safetyProviderName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if safetyProviderName == "" {
+		return nil, errors.New("parameter safetyProviderName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{safetyProviderName}", url.PathEscape(safetyProviderName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, safetyProvider); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *RaiExternalSafetyProviderClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error) {
+	result := RaiExternalSafetyProviderClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RaiExternalSafetyProviderSchema); err != nil {
+		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets the specified external safety provider associated with the Subscription
@@ -189,7 +191,8 @@ func (client *RaiExternalSafetyProviderClient) Get(ctx context.Context, safetyPr
 	if err != nil {
 		return RaiExternalSafetyProviderClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -208,7 +211,7 @@ func (client *RaiExternalSafetyProviderClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

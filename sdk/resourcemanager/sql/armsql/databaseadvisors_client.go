@@ -65,7 +65,8 @@ func (client *DatabaseAdvisorsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DatabaseAdvisorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -135,7 +136,8 @@ func (client *DatabaseAdvisorsClient) ListByDatabase(ctx context.Context, resour
 	if err != nil {
 		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
 	}
-	return client.listByDatabaseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByDatabaseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -205,7 +207,8 @@ func (client *DatabaseAdvisorsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatabaseAdvisorsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

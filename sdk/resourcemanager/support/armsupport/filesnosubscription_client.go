@@ -59,7 +59,8 @@ func (client *FilesNoSubscriptionClient) Create(ctx context.Context, fileWorkspa
 	if err != nil {
 		return FilesNoSubscriptionClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -119,7 +120,8 @@ func (client *FilesNoSubscriptionClient) Get(ctx context.Context, fileWorkspaceN
 	if err != nil {
 		return FilesNoSubscriptionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -246,7 +248,8 @@ func (client *FilesNoSubscriptionClient) Upload(ctx context.Context, fileWorkspa
 		return FilesNoSubscriptionClientUploadResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return FilesNoSubscriptionClientUploadResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FilesNoSubscriptionClientUploadResponse{}, err
 	}
 	return FilesNoSubscriptionClientUploadResponse{}, nil
 }

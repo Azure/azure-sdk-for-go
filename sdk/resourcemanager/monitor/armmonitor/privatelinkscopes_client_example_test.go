@@ -12,6 +12,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2023-06-01-preview/PrivateLinkScopesDelete.json
+func ExamplePrivateLinkScopesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateLinkScopesClient().BeginDelete(ctx, "my-resource-group", "my-privatelinkscope", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2023-06-01-preview/PrivateLinkScopesCreate.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -55,10 +76,10 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	// 			ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			CreatedBy: to.Ptr("bobby@contoso.com"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("bobby@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},
@@ -114,10 +135,10 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// 			ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			CreatedBy: to.Ptr("bobby@contoso.com"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("bobby@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},
@@ -126,27 +147,6 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2023-06-01-preview/PrivateLinkScopesDelete.json
-func ExamplePrivateLinkScopesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmonitor.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPrivateLinkScopesClient().BeginDelete(ctx, "my-resource-group", "my-privatelinkscope", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2023-06-01-preview/PrivateLinkScopesGet.json
@@ -183,10 +183,10 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			CreatedBy: to.Ptr("bobby@contoso.com"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("bobby@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},
@@ -194,87 +194,6 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2023-06-01-preview/PrivateLinkScopesList.json
-func ExamplePrivateLinkScopesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmonitor.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateLinkScopesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmonitor.PrivateLinkScopesClientListResponse{
-		// 	AzureMonitorPrivateLinkScopeListResult: armmonitor.AzureMonitorPrivateLinkScopeListResult{
-		// 		Value: []*armmonitor.AzureMonitorPrivateLinkScope{
-		// 			{
-		// 				Name: to.Ptr("my-privatelinkscope"),
-		// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes"),
-		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.insights/privateLinkScopes/my-privatelinkscope"),
-		// 				Location: to.Ptr("Global"),
-		// 				Properties: &armmonitor.AzureMonitorPrivateLinkScopeProperties{
-		// 					AccessModeSettings: &armmonitor.AccessModeSettings{
-		// 						Exclusions: []*armmonitor.AccessModeSettingsExclusion{
-		// 						},
-		// 						IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
-		// 						QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
-		// 				},
-		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
-		// 					CreatedBy: to.Ptr("bobby@contoso.com"),
-		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("bobby@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("my-other-privatelinkscope"),
-		// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes"),
-		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-other-resource-group/providers/microsoft.insights/privateLinkScopes/my-other-privatelinkscope"),
-		// 				Location: to.Ptr("Global"),
-		// 				Properties: &armmonitor.AzureMonitorPrivateLinkScopeProperties{
-		// 					AccessModeSettings: &armmonitor.AccessModeSettings{
-		// 						Exclusions: []*armmonitor.AccessModeSettingsExclusion{
-		// 						},
-		// 						IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
-		// 						QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
-		// 				},
-		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
-		// 					CreatedBy: to.Ptr("bobby@contoso.com"),
-		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("bobby@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2023-06-01-preview/PrivateLinkScopesListByResourceGroup.json
@@ -317,10 +236,10 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 		// 					CreatedBy: to.Ptr("bobby@contoso.com"),
 		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("bobby@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 				},
@@ -342,10 +261,91 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armmonitor.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 		// 					CreatedBy: to.Ptr("bobby@contoso.com"),
 		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("bobby@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2023-06-01-preview/PrivateLinkScopesList.json
+func ExamplePrivateLinkScopesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateLinkScopesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmonitor.PrivateLinkScopesClientListResponse{
+		// 	AzureMonitorPrivateLinkScopeListResult: armmonitor.AzureMonitorPrivateLinkScopeListResult{
+		// 		Value: []*armmonitor.AzureMonitorPrivateLinkScope{
+		// 			{
+		// 				Name: to.Ptr("my-privatelinkscope"),
+		// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes"),
+		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.insights/privateLinkScopes/my-privatelinkscope"),
+		// 				Location: to.Ptr("Global"),
+		// 				Properties: &armmonitor.AzureMonitorPrivateLinkScopeProperties{
+		// 					AccessModeSettings: &armmonitor.AccessModeSettings{
+		// 						Exclusions: []*armmonitor.AccessModeSettingsExclusion{
+		// 						},
+		// 						IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
+		// 						QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
+		// 				},
+		// 				SystemData: &armmonitor.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
+		// 					CreatedBy: to.Ptr("bobby@contoso.com"),
+		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("bobby@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("my-other-privatelinkscope"),
+		// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes"),
+		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-other-resource-group/providers/microsoft.insights/privateLinkScopes/my-other-privatelinkscope"),
+		// 				Location: to.Ptr("Global"),
+		// 				Properties: &armmonitor.AzureMonitorPrivateLinkScopeProperties{
+		// 					AccessModeSettings: &armmonitor.AccessModeSettings{
+		// 						Exclusions: []*armmonitor.AccessModeSettingsExclusion{
+		// 						},
+		// 						IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
+		// 						QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
+		// 				},
+		// 				SystemData: &armmonitor.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
+		// 					CreatedBy: to.Ptr("bobby@contoso.com"),
+		// 					CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("bobby@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 				},
@@ -365,7 +365,7 @@ func ExamplePrivateLinkScopesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armmonitor.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armmonitor.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -397,10 +397,10 @@ func ExamplePrivateLinkScopesClient_UpdateTags() {
 	// 			ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armmonitor.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			CreatedBy: to.Ptr("bobby@contoso.com"),
 	// 			CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 16, 12, 59, 57, 51056000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("bobby@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 		},

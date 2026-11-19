@@ -77,18 +77,18 @@
                 "description": "Whether to enable deployment of Managed HSM. The default is false."
             }
         },
+        "hsmAllowedIpRanges": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "IPv4 addresses or CIDR ranges no wider than /28 allowed to reach the Managed HSM. When set, the Managed HSM denies all other traffic, including trusted Azure services. The default allows all networks."
+            }
+        },
         "keyVaultSku": {
             "type": "string",
             "defaultValue": "premium",
             "metadata": {
                 "description": "Key Vault SKU to deploy. The default is 'premium'"
-            }
-        },
-        "baseTime": {
-            "type": "string",
-            "defaultValue": "[utcNow('u')]",
-            "metadata": {
-                "description": "The base time to add 500 minutes to for SAS token expiration. The default is the current time."
             }
         },
         "attestationImage": {
@@ -114,11 +114,16 @@
         "kvName": "[parameters('baseName')]",
         "kvAdminDefinitionId": "00482a5a-887f-4fb3-b363-3b7fe8e74483",
         "kvAdminAssignmentName": "[guid(resourceGroup().id, variables('kvAdminDefinitionId'), parameters('testApplicationOid'))]",
-        "hsmApiVersion": "2021-04-01-preview",
+        "hsmApiVersion": "2025-05-01",
         "hsmName": "[concat(parameters('baseName'), 'hsm')]",
-        "mgmtApiVersion": "2019-04-01",
+        "mgmtApiVersion": "2023-05-01",
         "blobContainerName": "backup",
         "primaryAccountName": "[concat(parameters('baseName'), 'prim')]",
+        "managedIdentityApiVersion": "2023-01-31",
+        "managedIdentityName": "[concat(parameters('baseName'), '-managedIdentity')]",
+        "managedIdentityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]",
+        "blobDataContributorDefinitionId": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+        "blobDataOwnerDefinitionId": "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
         "encryption": {
             "services": {
                 "blob": {
@@ -127,19 +132,17 @@
             },
             "keySource": "Microsoft.Storage"
         },
+        "hsmNetworkAcls": {
+            "bypass": "[if(empty(parameters('hsmAllowedIpRanges')), 'AzureServices', 'None')]",
+            "defaultAction": "[if(empty(parameters('hsmAllowedIpRanges')), 'Allow', 'Deny')]",
+            "ipRules": "[map(parameters('hsmAllowedIpRanges'), lambda('range', createObject('value', lambdaVariables('range'))))]",
+            "virtualNetworkRules": []
+        },
         "networkAcls": {
             "bypass": "AzureServices",
             "virtualNetworkRules": [],
             "ipRules": [],
             "defaultAction": "Allow"
-        },
-        "accountSasProperties": {
-            "signedServices": "b",
-            "signedPermission": "rwdlacu",
-            "signedProtocol": "https",
-            "signedExpiry": "[dateTimeAdd(parameters('baseTime'), 'PT500M')]",
-            "signedResourceTypes": "sco",
-            "keyToSign": "key1"
         }
     },
     "resources": [
@@ -173,14 +176,30 @@
             }
         },
         {
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "apiVersion": "[variables('managedIdentityApiVersion')]",
+            "name": "[variables('managedIdentityName')]",
+            "condition": "[parameters('enableHsm')]",
+            "location": "[parameters('location')]"
+        },
+        {
             "type": "Microsoft.KeyVault/managedHSMs",
             "apiVersion": "[variables('hsmApiVersion')]",
             "name": "[variables('hsmName')]",
             "condition": "[parameters('enableHsm')]",
             "location": "[parameters('hsmLocation')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]"
+            ],
             "sku": {
                 "family": "B",
                 "name": "Standard_B1"
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]": {}
+                }
             },
             "properties": {
                 "tenantId": "[parameters('tenantId')]",
@@ -189,7 +208,7 @@
                 "enableSoftDelete": true,
                 "softDeleteRetentionInDays": 7,
                 "publicNetworkAccess": "Enabled",
-                "networkAcls": "[variables('networkAcls')]"
+                "networkAcls": "[variables('hsmNetworkAcls')]"
             }
         },
         {
@@ -206,7 +225,37 @@
                 "networkAcls": "[variables('networkAcls')]",
                 "supportsHttpsTrafficOnly": true,
                 "encryption": "[variables('encryption')]",
-                "accessTier": "Hot"
+                "accessTier": "Hot",
+                "allowSharedKeyAccess": false
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2022-04-01",
+            "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('blobDataContributorDefinitionId'), variables('managedIdentityId'))]",
+            "condition": "[parameters('enableHsm')]",
+            "scope": "[concat('Microsoft.Storage/storageAccounts/', variables('primaryAccountName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]",
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('managedIdentityName'))]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('blobDataContributorDefinitionId'))]",
+                "principalId": "[if(parameters('enableHsm'), reference(variables('managedIdentityId'), variables('managedIdentityApiVersion')).principalId, '')]",
+                "principalType": "ServicePrincipal"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2022-04-01",
+            "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('blobDataOwnerDefinitionId'), parameters('testApplicationOid'))]",
+            "scope": "[concat('Microsoft.Storage/storageAccounts/', variables('primaryAccountName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('blobDataOwnerDefinitionId'))]",
+                "principalId": "[parameters('testApplicationOid')]"
             }
         },
         {
@@ -306,10 +355,6 @@
         "BLOB_STORAGE_ACCOUNT_NAME": {
             "type": "string",
             "value": "[variables('primaryAccountName')]"
-        },
-        "BLOB_STORAGE_SAS_TOKEN": {
-            "type": "string",
-            "value": "[listAccountSas(variables('primaryAccountName'), '2019-06-01', variables('accountSasProperties')).accountSasToken]"
         },
         "BLOB_CONTAINER_NAME" : {
             "type": "string",

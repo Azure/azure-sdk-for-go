@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceAbortMigration.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceAbortMigration.json
 func ExampleVirtualAppliancesClient_BeginAbortMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleVirtualAppliancesClient_BeginAbortMigration() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceCommitMigration.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceCommitMigration.json
 func ExampleVirtualAppliancesClient_BeginCommitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleVirtualAppliancesClient_BeginCommitMigration() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualAppliancePut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualAppliancePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSaaSPut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSaaSPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtual
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVhubDualStackPut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVhubDualStackPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubForIPv4AndIpv6() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,7 +505,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubFor
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVhubIPv4Put.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVhubIPv4Put.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubForIPv4() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -754,7 +754,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubFor
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPrivateNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -946,7 +946,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1138,7 +1138,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetBasicPut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetBasicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1298,7 +1298,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetDualStackPut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetDualStackPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4AndIpv6() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1471,7 +1471,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4An
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetIPv4Put.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetIPv4Put.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1637,7 +1637,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4()
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetIngressPut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetIngressPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingInternetIngress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1807,7 +1807,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingNetworkProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2079,7 +2079,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceDelete.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceDelete.json
 func ExampleVirtualAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2105,7 +2105,7 @@ func ExampleVirtualAppliancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceExecuteMigration.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceExecuteMigration.json
 func ExampleVirtualAppliancesClient_BeginExecuteMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2130,7 +2130,158 @@ func ExampleVirtualAppliancesClient_BeginExecuteMigration() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceGet.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceBootDiagnostics.json
+func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginGetBootDiagnosticLogs(ctx, "rg1", "nva", armnetwork.VirtualApplianceBootDiagnosticParameters{
+		ConsoleScreenshotStorageSasURL: to.Ptr("https://blobcortextesturl.blob.core.windows.net/nvaBootDiagContainer/consoleScreenshot.png?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
+		InstanceID:                     to.Ptr[int32](0),
+		SerialConsoleStorageSasURL:     to.Ptr("https://blobcortextesturl.blob.core.windows.net/nvaBootDiagContainer/serialLogs.txt?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientGetBootDiagnosticLogsResponse{
+	// 	VirtualApplianceInstanceID: armnetwork.VirtualApplianceInstanceID{
+	// 		InstanceID: to.Ptr[int32](0),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkVirtualAppliancePrepareMigration.json
+func ExampleVirtualAppliancesClient_BeginPrepareMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginPrepareMigration(ctx, "rg1", "nva", armnetwork.VirtualAppliancePrepareMigrationRequest{
+		Properties: &armnetwork.VirtualAppliancePrepareMigrationProperties{
+			MigrationType: to.Ptr(armnetwork.MigrationTypeMigrateToNewILBArchitecture),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSpecificReimage.json
+func ExampleVirtualAppliancesClient_BeginReimage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginReimage(ctx, "rg1", "nva", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientReimageResponse{
+	// 	VirtualApplianceInstanceIDs: armnetwork.VirtualApplianceInstanceIDs{
+	// 		InstanceIDs: []*string{
+	// 			to.Ptr("0"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceEmptyRestart.json
+func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplianceVMSInVMScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginRestart(ctx, "rg1", "nva", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientRestartResponse{
+	// 	VirtualApplianceInstanceIDs: armnetwork.VirtualApplianceInstanceIDs{
+	// 		InstanceIDs: []*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSpecificRestart.json
+func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualApplianceVMSInVMScaleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginRestart(ctx, "rg1", "nva", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientRestartResponse{
+	// 	VirtualApplianceInstanceIDs: armnetwork.VirtualApplianceInstanceIDs{
+	// 		InstanceIDs: []*string{
+	// 			to.Ptr("0"),
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2329,7 +2480,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualAppliance() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVhubDualStackGet.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVhubDualStackGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVirtualHubWithDualStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2432,7 +2583,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVirtualHubWi
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceVnetDualStackGet.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetDualStackGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVNetWithDualStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2552,207 +2703,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVNetWithDual
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceBootDiagnostics.json
-func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualAppliancesClient().BeginGetBootDiagnosticLogs(ctx, "rg1", "nva", armnetwork.VirtualApplianceBootDiagnosticParameters{
-		ConsoleScreenshotStorageSasURL: to.Ptr("https://blobcortextesturl.blob.core.windows.net/nvaBootDiagContainer/consoleScreenshot.png?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
-		InstanceID:                     to.Ptr[int32](0),
-		SerialConsoleStorageSasURL:     to.Ptr("https://blobcortextesturl.blob.core.windows.net/nvaBootDiagContainer/serialLogs.txt?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualAppliancesClientGetBootDiagnosticLogsResponse{
-	// 	VirtualApplianceInstanceID: armnetwork.VirtualApplianceInstanceID{
-	// 		InstanceID: to.Ptr[int32](0),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceListBySubscription.json
-func ExampleVirtualAppliancesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualAppliancesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualAppliancesClientListResponse{
-		// 	VirtualApplianceListResult: armnetwork.VirtualApplianceListResult{
-		// 		Value: []*armnetwork.VirtualAppliance{
-		// 			{
-		// 				Name: to.Ptr("nva"),
-		// 				Type: to.Ptr("Microsoft.Network/networkVirtualAppliances"),
-		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva"),
-		// 				Identity: &armnetwork.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armnetwork.ManagedServiceIdentityUserAssignedIdentities{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": &armnetwork.ManagedServiceIdentityUserAssignedIdentities{
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armnetwork.VirtualAppliancePropertiesFormat{
-		// 					AdditionalNics: []*armnetwork.VirtualApplianceAdditionalNicProperties{
-		// 						{
-		// 							Name: to.Ptr("exrsdwan"),
-		// 							HasPublicIP: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					AddressPrefix: to.Ptr("192.168.1.0/16"),
-		// 					BootStrapConfigurationBlobs: []*string{
-		// 						to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"),
-		// 					},
-		// 					CloudInitConfigurationBlobs: []*string{
-		// 						to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"),
-		// 					},
-		// 					InboundSecurityRules: []*armnetwork.SubResource{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva/InboundSecurityRules/rule1"),
-		// 						},
-		// 					},
-		// 					InternetIngressPublicIPs: []*armnetwork.InternetIngressPublicIPsProperties{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"),
-		// 						},
-		// 					},
-		// 					NetworkProfile: &armnetwork.VirtualAppliancePropertiesFormatNetworkProfile{
-		// 						NetworkInterfaceConfigurations: []*armnetwork.VirtualApplianceNetworkInterfaceConfiguration{
-		// 							{
-		// 								NicType: to.Ptr(armnetwork.NicTypeInRequestPublicNic),
-		// 								Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
-		// 									IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
-		// 										{
-		// 											Name: to.Ptr("publicnicipconfig"),
-		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
-		// 												Primary: to.Ptr(true),
-		// 											},
-		// 										},
-		// 										{
-		// 											Name: to.Ptr("publicnicipconfig-2"),
-		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
-		// 												Primary: to.Ptr(false),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							{
-		// 								NicType: to.Ptr(armnetwork.NicTypeInRequestPrivateNic),
-		// 								Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
-		// 									IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
-		// 										{
-		// 											Name: to.Ptr("privatenicipconfig"),
-		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
-		// 												Primary: to.Ptr(true),
-		// 											},
-		// 										},
-		// 										{
-		// 											Name: to.Ptr("privatenicipconfig-2"),
-		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
-		// 												Primary: to.Ptr(false),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
-		// 						BundledScaleUnit: to.Ptr("1"),
-		// 						MarketPlaceVersion: to.Ptr("12.1"),
-		// 						Vendor: to.Ptr("Cisco SDWAN"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					VirtualApplianceAsn: to.Ptr[int64](10000),
-		// 					VirtualApplianceNics: []*armnetwork.VirtualApplianceNicProperties{
-		// 						{
-		// 							Name: to.Ptr("publicnicipconfig"),
-		// 							InstanceName: to.Ptr("nva_0"),
-		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
-		// 							PrivateIPAddress: to.Ptr("192.168.12.1"),
-		// 							PublicIPAddress: to.Ptr("40.30.2.2"),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("publicnicipconfig-2"),
-		// 							InstanceName: to.Ptr("nva_0"),
-		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
-		// 							PrivateIPAddress: to.Ptr("192.168.12.2"),
-		// 							PublicIPAddress: to.Ptr("40.30.2.3"),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("privatenicipconfig"),
-		// 							InstanceName: to.Ptr("nva_0"),
-		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
-		// 							PrivateIPAddress: to.Ptr("192.168.12.3"),
-		// 							PublicIPAddress: to.Ptr(""),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("privatenicipconfig-2"),
-		// 							InstanceName: to.Ptr("nva_0"),
-		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
-		// 							PrivateIPAddress: to.Ptr("192.168.12.4"),
-		// 							PublicIPAddress: to.Ptr(""),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("exrsdwan"),
-		// 							InstanceName: to.Ptr("nva_0"),
-		// 							NicType: to.Ptr(armnetwork.NicTypeInResponseAdditionalNic),
-		// 							PrivateIPAddress: to.Ptr("10.1.113.4"),
-		// 							PublicIPAddress: to.Ptr("4.231.25.19"),
-		// 						},
-		// 					},
-		// 					VirtualApplianceSites: []*armnetwork.SubResource{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networtkVirtualAppliances/nva/virtualApplianceSites/site1"),
-		// 						},
-		// 					},
-		// 					VirtualHub: &armnetwork.SubResource{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceListByResourceGroup.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceListByResourceGroup.json
 func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2919,8 +2870,8 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualAppliancePrepareMigration.json
-func ExampleVirtualAppliancesClient_BeginPrepareMigration() {
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceListBySubscription.json
+func ExampleVirtualAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2930,114 +2881,163 @@ func ExampleVirtualAppliancesClient_BeginPrepareMigration() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualAppliancesClient().BeginPrepareMigration(ctx, "rg1", "nva", armnetwork.VirtualAppliancePrepareMigrationRequest{
-		Properties: &armnetwork.VirtualAppliancePrepareMigrationProperties{
-			MigrationType: to.Ptr(armnetwork.MigrationTypeMigrateToNewILBArchitecture),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+	pager := clientFactory.NewVirtualAppliancesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.VirtualAppliancesClientListResponse{
+		// 	VirtualApplianceListResult: armnetwork.VirtualApplianceListResult{
+		// 		Value: []*armnetwork.VirtualAppliance{
+		// 			{
+		// 				Name: to.Ptr("nva"),
+		// 				Type: to.Ptr("Microsoft.Network/networkVirtualAppliances"),
+		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva"),
+		// 				Identity: &armnetwork.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armnetwork.ManagedServiceIdentityUserAssignedIdentities{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": &armnetwork.ManagedServiceIdentityUserAssignedIdentities{
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+		// 					AdditionalNics: []*armnetwork.VirtualApplianceAdditionalNicProperties{
+		// 						{
+		// 							Name: to.Ptr("exrsdwan"),
+		// 							HasPublicIP: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					AddressPrefix: to.Ptr("192.168.1.0/16"),
+		// 					BootStrapConfigurationBlobs: []*string{
+		// 						to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"),
+		// 					},
+		// 					CloudInitConfigurationBlobs: []*string{
+		// 						to.Ptr("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"),
+		// 					},
+		// 					InboundSecurityRules: []*armnetwork.SubResource{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva/InboundSecurityRules/rule1"),
+		// 						},
+		// 					},
+		// 					InternetIngressPublicIPs: []*armnetwork.InternetIngressPublicIPsProperties{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"),
+		// 						},
+		// 					},
+		// 					NetworkProfile: &armnetwork.VirtualAppliancePropertiesFormatNetworkProfile{
+		// 						NetworkInterfaceConfigurations: []*armnetwork.VirtualApplianceNetworkInterfaceConfiguration{
+		// 							{
+		// 								NicType: to.Ptr(armnetwork.NicTypeInRequestPublicNic),
+		// 								Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+		// 									IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+		// 										{
+		// 											Name: to.Ptr("publicnicipconfig"),
+		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 												Primary: to.Ptr(true),
+		// 											},
+		// 										},
+		// 										{
+		// 											Name: to.Ptr("publicnicipconfig-2"),
+		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 												Primary: to.Ptr(false),
+		// 											},
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							{
+		// 								NicType: to.Ptr(armnetwork.NicTypeInRequestPrivateNic),
+		// 								Properties: &armnetwork.VirtualApplianceNetworkInterfaceConfigurationProperties{
+		// 									IPConfigurations: []*armnetwork.VirtualApplianceIPConfiguration{
+		// 										{
+		// 											Name: to.Ptr("privatenicipconfig"),
+		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 												Primary: to.Ptr(true),
+		// 											},
+		// 										},
+		// 										{
+		// 											Name: to.Ptr("privatenicipconfig-2"),
+		// 											Properties: &armnetwork.VirtualApplianceIPConfigurationProperties{
+		// 												Primary: to.Ptr(false),
+		// 											},
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
+		// 						BundledScaleUnit: to.Ptr("1"),
+		// 						MarketPlaceVersion: to.Ptr("12.1"),
+		// 						Vendor: to.Ptr("Cisco SDWAN"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					VirtualApplianceAsn: to.Ptr[int64](10000),
+		// 					VirtualApplianceNics: []*armnetwork.VirtualApplianceNicProperties{
+		// 						{
+		// 							Name: to.Ptr("publicnicipconfig"),
+		// 							InstanceName: to.Ptr("nva_0"),
+		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
+		// 							PrivateIPAddress: to.Ptr("192.168.12.1"),
+		// 							PublicIPAddress: to.Ptr("40.30.2.2"),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("publicnicipconfig-2"),
+		// 							InstanceName: to.Ptr("nva_0"),
+		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePublicNic),
+		// 							PrivateIPAddress: to.Ptr("192.168.12.2"),
+		// 							PublicIPAddress: to.Ptr("40.30.2.3"),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("privatenicipconfig"),
+		// 							InstanceName: to.Ptr("nva_0"),
+		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+		// 							PrivateIPAddress: to.Ptr("192.168.12.3"),
+		// 							PublicIPAddress: to.Ptr(""),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("privatenicipconfig-2"),
+		// 							InstanceName: to.Ptr("nva_0"),
+		// 							NicType: to.Ptr(armnetwork.NicTypeInResponsePrivateNic),
+		// 							PrivateIPAddress: to.Ptr("192.168.12.4"),
+		// 							PublicIPAddress: to.Ptr(""),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("exrsdwan"),
+		// 							InstanceName: to.Ptr("nva_0"),
+		// 							NicType: to.Ptr(armnetwork.NicTypeInResponseAdditionalNic),
+		// 							PrivateIPAddress: to.Ptr("10.1.113.4"),
+		// 							PublicIPAddress: to.Ptr("4.231.25.19"),
+		// 						},
+		// 					},
+		// 					VirtualApplianceSites: []*armnetwork.SubResource{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networtkVirtualAppliances/nva/virtualApplianceSites/site1"),
+		// 						},
+		// 					},
+		// 					VirtualHub: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSpecificReimage.json
-func ExampleVirtualAppliancesClient_BeginReimage() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualAppliancesClient().BeginReimage(ctx, "rg1", "nva", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualAppliancesClientReimageResponse{
-	// 	VirtualApplianceInstanceIDs: armnetwork.VirtualApplianceInstanceIDs{
-	// 		InstanceIDs: []*string{
-	// 			to.Ptr("0"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceEmptyRestart.json
-func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplianceVMSInVMScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualAppliancesClient().BeginRestart(ctx, "rg1", "nva", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualAppliancesClientRestartResponse{
-	// 	VirtualApplianceInstanceIDs: armnetwork.VirtualApplianceInstanceIDs{
-	// 		InstanceIDs: []*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSpecificRestart.json
-func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualApplianceVMSInVMScaleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualAppliancesClient().BeginRestart(ctx, "rg1", "nva", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualAppliancesClientRestartResponse{
-	// 	VirtualApplianceInstanceIDs: armnetwork.VirtualApplianceInstanceIDs{
-	// 		InstanceIDs: []*string{
-	// 			to.Ptr("0"),
-	// 			to.Ptr("1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceUpdateTags.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceUpdateTags.json
 func ExampleVirtualAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

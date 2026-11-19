@@ -19,7 +19,7 @@ import (
 // SecurityPINsClient contains the methods for the SecurityPINs group.
 // Don't use this type directly, use NewSecurityPINsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type SecurityPINsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *SecurityPINsClient) Get(ctx context.Context, vaultName string, res
 	if err != nil {
 		return SecurityPINsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -86,7 +87,7 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {

@@ -10,6 +10,24 @@ import "time"
 type ActivateSaaSParameterRequest struct {
 	// REQUIRED; SaaS guid for Activate and Validate SaaS Resource
 	SaaSGUID *string
+
+	// Optional activation request parameters containing user and company details
+	ActivateSaaSRequestParam *ActivateSaaSRequestParam
+
+	// Optional publisher identifier
+	PublisherID *string
+}
+
+// ActivateSaaSRequestParam - Optional activate SaaS request parameters
+type ActivateSaaSRequestParam struct {
+	// Optional company details
+	Company *CompanyProfile
+
+	// Optional Marketplace SaaS resource identifier
+	SaaSResourceID *string
+
+	// Optional user details
+	User *UserDetails
 }
 
 // BackupOptions - The backup options for the VM backup
@@ -75,6 +93,15 @@ type CloudAccount struct {
 	Type *string
 }
 
+// CloudAccountIdentityUpdate - Managed service identity (system assigned and/or user assigned identities)
+type CloudAccountIdentityUpdate struct {
+	// The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+}
+
 // CloudAccountListResult - The response of a CloudAccount list operation.
 type CloudAccountListResult struct {
 	// REQUIRED; The CloudAccount items on this page
@@ -82,6 +109,39 @@ type CloudAccountListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// CloudAccountMarketplaceUpdate - Marketplace details that can be updated on a Commvault Cloud Account.
+type CloudAccountMarketplaceUpdate struct {
+	// Offer details for the marketplace that is selected by the user
+	OfferDetails *CloudAccountOfferDetailsUpdate
+
+	// Marketplace SaaS Resource Id
+	SaasResourceID *string
+
+	// Azure subscription id for the the marketplace offer is purchased from
+	SubscriptionID *string
+}
+
+// CloudAccountOfferDetailsUpdate - Marketplace offer details that can be updated on a Commvault Cloud Account.
+type CloudAccountOfferDetailsUpdate struct {
+	// Offer Id for the marketplace offer
+	OfferID *string
+
+	// Plan Id for the marketplace offer
+	PlanID *string
+
+	// Plan Name for the marketplace offer
+	PlanName *string
+
+	// Publisher Id for the marketplace offer
+	PublisherID *string
+
+	// Plan Display Name for the marketplace offer
+	TermID *string
+
+	// Plan Display Name for the marketplace offer
+	TermUnit *string
 }
 
 // CloudAccountProperties - Properties specific to Commvault Cloud Account resource
@@ -92,12 +152,11 @@ type CloudAccountProperties struct {
 	// REQUIRED; Details of the user.
 	User *UserDetails
 
-	// The backup administrator principal provided during CCA create. Required on create (enforced by backend), ignored on update.
-	BackupAdminOnCcaCreate *EntityInfo
+	// Optional company details for the cloud account
+	Company *CompanyProfile
 
-	// The multi-person authorization (MPA) administrator principal provided during CCA create. Required on create (enforced by
-	// backend), ignored on update.
-	MultiPersonAuthorizationOnCcaCreate *EntityInfo
+	// Role assignments to provision during CCA creation. Each entry maps a Commvault role to its assigned Entra principals.
+	RoleAssignmentsOnCCACreate []*RoleAssignment
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
@@ -109,7 +168,7 @@ type CloudAccountProperties struct {
 // CloudAccountUpdate - The type used for update operations of the CloudAccount.
 type CloudAccountUpdate struct {
 	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
+	Identity *CloudAccountIdentityUpdate
 
 	// The resource-specific properties for this resource.
 	Properties *CloudAccountUpdateProperties
@@ -120,11 +179,32 @@ type CloudAccountUpdate struct {
 
 // CloudAccountUpdateProperties - The updatable properties of the CloudAccount.
 type CloudAccountUpdateProperties struct {
+	// Optional company details for the cloud account
+	Company *CompanyProfile
+
 	// Marketplace details of the resource.
-	Marketplace *MarketplaceDetails
+	Marketplace *CloudAccountMarketplaceUpdate
 
 	// Details of the user.
-	User *UserDetails
+	User *CloudAccountUserUpdate
+}
+
+// CloudAccountUserUpdate - User details that can be updated on a Commvault Cloud Account.
+type CloudAccountUserUpdate struct {
+	// Email address of the user
+	EmailAddress *string
+
+	// First name of the user
+	FirstName *string
+
+	// Last name of the user
+	LastName *string
+
+	// User's phone number
+	PhoneNumber *string
+
+	// User's principal name
+	Upn *string
 }
 
 // CommvaultPlan - A Commvault Plan Resource
@@ -152,6 +232,33 @@ type CommvaultPlanListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// CompanyProfile - Optional company profile information
+type CompanyProfile struct {
+	// City of the company address.
+	City *string
+
+	// Company name
+	CompanyName *string
+
+	// Country of the company address.
+	Country *string
+
+	// Job title
+	JobTitle *string
+
+	// Postal code
+	PostalCode *string
+
+	// State or province of the company address.
+	State *string
+
+	// Street address
+	Street *string
+
+	// Company website
+	Website *string
 }
 
 // CountProtectedItemsRequest - Request to count protected items for the provided CCA resource IDs across subscriptions.
@@ -404,9 +511,6 @@ type ProtectionGroupProperties struct {
 	// REQUIRED; The resources to be protected under Protection Group
 	Resources *ProtectionGroupResources
 
-	// READ-ONLY; The backup activity status indicating if backup is enabled or not on the protection group
-	BackupActivityStatus *string
-
 	// READ-ONLY; The Commvault Protection Group backup time
 	LastBackUpTime *int64
 
@@ -415,6 +519,9 @@ type ProtectionGroupProperties struct {
 
 	// READ-ONLY; The protection group schedule
 	ProtectionStatus *ProtectionStatus
+
+	// READ-ONLY; The backup activity status indicating if backup is enabled or not on the protection group
+	BackupActivityStatus *string
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState
@@ -475,10 +582,10 @@ type Retention struct {
 
 // RoleAssignment - A role assignment mapping a Commvault role to one or more Entra entities (users or groups)
 type RoleAssignment struct {
-	// The Entra entities (users or groups) assigned to this role
+	// REQUIRED; The Entra entities (users or groups) assigned to this role
 	Entities []*EntityInfo
 
-	// The name of the Commvault role
+	// REQUIRED; The name of the Commvault role
 	RoleName *RoleName
 }
 
@@ -664,6 +771,9 @@ type StorageProperties struct {
 
 	// REQUIRED; The vendor of Commvault Storage
 	Vendor *Vendor
+
+	// READ-ONLY; The compliance lock status of the storage.
+	ComplianceLockStatus *ComplianceLockStatus
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ResourceProvisioningState

@@ -19,7 +19,7 @@ import (
 // FirewallPolicyKubeSelectorGroupsClient contains the methods for the FirewallPolicyKubeSelectorGroups group.
 // Don't use this type directly, use NewFirewallPolicyKubeSelectorGroupsClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type FirewallPolicyKubeSelectorGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) BeginCreateOrUpdate(ctx co
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified FirewallPolicyKubeSelectorGroup.
+// createOrUpdate - Creates or updates the specified FirewallPolicyKubeSelectorGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, resource FirewallPolicyKubeSelectorGroup, options *FirewallPolicyKubeSelectorGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, resource FirewallPolicyKubeSelectorGroup, _ *FirewallPolicyKubeSelectorGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/kubeSelectorGroups/{kubeSelectorGroupName}"
 	if client.subscriptionID == "" {
@@ -116,7 +117,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -151,7 +152,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) BeginDelete(ctx context.Co
 	}
 }
 
-// Delete - Deletes the specified FirewallPolicyKubeSelectorGroup.
+// deleteOperation - Deletes the specified FirewallPolicyKubeSelectorGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallPolicyKubeSelectorGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, options *FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -168,12 +169,13 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) deleteOperation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FirewallPolicyKubeSelectorGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, kubeSelectorGroupName string, _ *FirewallPolicyKubeSelectorGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/kubeSelectorGroups/{kubeSelectorGroupName}"
 	if client.subscriptionID == "" {
@@ -197,7 +199,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -224,7 +226,8 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) Get(ctx context.Context, r
 	if err != nil {
 		return FirewallPolicyKubeSelectorGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -251,7 +254,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +330,7 @@ func (client *FirewallPolicyKubeSelectorGroupsClient) listCreateRequest(ctx cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

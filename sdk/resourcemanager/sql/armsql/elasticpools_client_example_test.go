@@ -529,335 +529,6 @@ func ExampleElasticPoolsClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/ElasticPoolGet.json
-func ExampleElasticPoolsClient_Get_getAnElasticPool() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ElasticPoolsClientGetResponse{
-	// 	ElasticPool: armsql.ElasticPool{
-	// 		Name: to.Ptr("sqlcrudtest-8102"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
-	// 		Location: to.Ptr("Japan East"),
-	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
-	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
-	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
-	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-	// 				MaxCapacity: to.Ptr[float64](1),
-	// 				MinCapacity: to.Ptr[float64](0.25),
-	// 			},
-	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
-	// 			ZoneRedundant: to.Ptr(true),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5_2"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ElasticPoolGetWithPreferredEnclaveType.json
-func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParameter() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ElasticPoolsClientGetResponse{
-	// 	ElasticPool: armsql.ElasticPool{
-	// 		Name: to.Ptr("sqlcrudtest-8102"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
-	// 		Kind: to.Ptr("vcore,pool"),
-	// 		Location: to.Ptr("Japan East"),
-	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
-	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
-	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-	// 			MaxSizeBytes: to.Ptr[int64](0),
-	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-	// 				MaxCapacity: to.Ptr[float64](4),
-	// 				MinCapacity: to.Ptr[float64](0),
-	// 			},
-	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
-	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5"),
-	// 			Capacity: to.Ptr[int32](4),
-	// 			Family: to.Ptr("Gen5"),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/GetElasticPoolWithAvailabilityZone.json
-func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ElasticPoolsClientGetResponse{
-	// 	ElasticPool: armsql.ElasticPool{
-	// 		Name: to.Ptr("sqlcrudtest-8102"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
-	// 		Location: to.Ptr("Japan East"),
-	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
-	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
-	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
-	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-	// 				MaxCapacity: to.Ptr[float64](1),
-	// 				MinCapacity: to.Ptr[float64](0.25),
-	// 			},
-	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
-	// 			ZoneRedundant: to.Ptr(true),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_Gen5_2"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/GetElasticPoolWithServerlessProperties.json
-func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ElasticPoolsClientGetResponse{
-	// 	ElasticPool: armsql.ElasticPool{
-	// 		Name: to.Ptr("sqlcrudtest-8102"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
-	// 		Location: to.Ptr("Japan East"),
-	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			AutoPauseDelay: to.Ptr[int32](60),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
-	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
-	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
-	// 			MinCapacity: to.Ptr[float64](0.5),
-	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-	// 				AutoPauseDelay: to.Ptr[int32](60),
-	// 				MaxCapacity: to.Ptr[float64](1),
-	// 				MinCapacity: to.Ptr[float64](0),
-	// 			},
-	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
-	// 			ZoneRedundant: to.Ptr(true),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("GP_S_Gen5_2"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr("GeneralPurpose"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/HyperscaleElasticPoolGet.json
-func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ElasticPoolsClientGetResponse{
-	// 	ElasticPool: armsql.ElasticPool{
-	// 		Name: to.Ptr("sqlcrudtest-8102"),
-	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
-	// 		Kind: to.Ptr("vcore,pool"),
-	// 		Location: to.Ptr("Japan East"),
-	// 		Properties: &armsql.ElasticPoolProperties{
-	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
-	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
-	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
-	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
-	// 			MaxSizeBytes: to.Ptr[int64](0),
-	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-	// 				MaxCapacity: to.Ptr[float64](4),
-	// 				MinCapacity: to.Ptr[float64](0),
-	// 			},
-	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
-	// 			ZoneRedundant: to.Ptr(false),
-	// 		},
-	// 		SKU: &armsql.SKU{
-	// 			Name: to.Ptr("HS_Gen5"),
-	// 			Capacity: to.Ptr[int32](4),
-	// 			Family: to.Ptr("Gen5"),
-	// 			Tier: to.Ptr("Hyperscale"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ElasticPoolListByServer.json
-func ExampleElasticPoolsClient_NewListByServerPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewElasticPoolsClient().NewListByServerPager("sqlcrudtest-2369", "sqlcrudtest-8069", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsql.ElasticPoolsClientListByServerResponse{
-		// 	ElasticPoolListResult: armsql.ElasticPoolListResult{
-		// 		Value: []*armsql.ElasticPool{
-		// 			{
-		// 				Name: to.Ptr("sqlcrudtest-2729"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-2729"),
-		// 				Location: to.Ptr("Japan East"),
-		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 27, 21, 320000000, time.UTC)),
-		// 					LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
-		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
-		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-		// 						MaxCapacity: to.Ptr[float64](1),
-		// 						MinCapacity: to.Ptr[float64](0.25),
-		// 					},
-		// 					State: to.Ptr(armsql.ElasticPoolStateReady),
-		// 					ZoneRedundant: to.Ptr(true),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("GP_Gen4_2"),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr("GeneralPurpose"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sqlcrudtest-3191"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-3191"),
-		// 				Location: to.Ptr("Japan East"),
-		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 26, 26, 450000000, time.UTC)),
-		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
-		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-		// 						MaxCapacity: to.Ptr[float64](5),
-		// 						MinCapacity: to.Ptr[float64](0),
-		// 					},
-		// 					State: to.Ptr(armsql.ElasticPoolStateReady),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BasicPool"),
-		// 					Capacity: to.Ptr[int32](50),
-		// 					Tier: to.Ptr("Basic"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sqlcrudtest-8102"),
-		// 				Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
-		// 				Location: to.Ptr("Japan East"),
-		// 				Properties: &armsql.ElasticPoolProperties{
-		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
-		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
-		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
-		// 						MaxCapacity: to.Ptr[float64](5),
-		// 						MinCapacity: to.Ptr[float64](0),
-		// 					},
-		// 					State: to.Ptr(armsql.ElasticPoolStateReady),
-		// 				},
-		// 				SKU: &armsql.SKU{
-		// 					Name: to.Ptr("BasicPool"),
-		// 					Capacity: to.Ptr[int32](50),
-		// 					Tier: to.Ptr("Basic"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-08-01-preview/ElasticPoolUpdateAssignMaintenanceConfiguration.json
 func ExampleElasticPoolsClient_BeginUpdate_assignsMaintenanceConfigurationToAnElasticPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1303,4 +974,333 @@ func ExampleElasticPoolsClient_BeginUpdate_updateHighAvailabilityReplicaCountOfA
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ElasticPoolGet.json
+func ExampleElasticPoolsClient_Get_getAnElasticPool() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ElasticPoolsClientGetResponse{
+	// 	ElasticPool: armsql.ElasticPool{
+	// 		Name: to.Ptr("sqlcrudtest-8102"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 		Location: to.Ptr("Japan East"),
+	// 		Properties: &armsql.ElasticPoolProperties{
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
+	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
+	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
+	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 				MaxCapacity: to.Ptr[float64](1),
+	// 				MinCapacity: to.Ptr[float64](0.25),
+	// 			},
+	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 			ZoneRedundant: to.Ptr(true),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5_2"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ElasticPoolGetWithPreferredEnclaveType.json
+func ExampleElasticPoolsClient_Get_getAnElasticPoolWithPreferredEnclaveTypeParameter() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ElasticPoolsClientGetResponse{
+	// 	ElasticPool: armsql.ElasticPool{
+	// 		Name: to.Ptr("sqlcrudtest-8102"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 		Kind: to.Ptr("vcore,pool"),
+	// 		Location: to.Ptr("Japan East"),
+	// 		Properties: &armsql.ElasticPoolProperties{
+	// 			CreationDate: to.Ptr(time.Date(2022, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
+	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
+	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 			MaxSizeBytes: to.Ptr[int64](0),
+	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 				MaxCapacity: to.Ptr[float64](4),
+	// 				MinCapacity: to.Ptr[float64](0),
+	// 			},
+	// 			PreferredEnclaveType: to.Ptr(armsql.AlwaysEncryptedEnclaveTypeVBS),
+	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5"),
+	// 			Capacity: to.Ptr[int32](4),
+	// 			Family: to.Ptr("Gen5"),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetElasticPoolWithAvailabilityZone.json
+func ExampleElasticPoolsClient_Get_getAnElasticPoolWithAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ElasticPoolsClientGetResponse{
+	// 	ElasticPool: armsql.ElasticPool{
+	// 		Name: to.Ptr("sqlcrudtest-8102"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 		Location: to.Ptr("Japan East"),
+	// 		Properties: &armsql.ElasticPoolProperties{
+	// 			AvailabilityZone: to.Ptr(armsql.AvailabilityZoneTypeOne),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
+	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
+	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
+	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 				MaxCapacity: to.Ptr[float64](1),
+	// 				MinCapacity: to.Ptr[float64](0.25),
+	// 			},
+	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 			ZoneRedundant: to.Ptr(true),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_Gen5_2"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/GetElasticPoolWithServerlessProperties.json
+func ExampleElasticPoolsClient_Get_getAnElasticPoolWithServerlessProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ElasticPoolsClientGetResponse{
+	// 	ElasticPool: armsql.ElasticPool{
+	// 		Name: to.Ptr("sqlcrudtest-8102"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 		Location: to.Ptr("Japan East"),
+	// 		Properties: &armsql.ElasticPoolProperties{
+	// 			AutoPauseDelay: to.Ptr[int32](60),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.October, 10, 1, 25, 25, 33000000, time.UTC)),
+	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_JapanEast_1"),
+	// 			MaxSizeBytes: to.Ptr[int64](5242880000),
+	// 			MinCapacity: to.Ptr[float64](0.5),
+	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 				AutoPauseDelay: to.Ptr[int32](60),
+	// 				MaxCapacity: to.Ptr[float64](1),
+	// 				MinCapacity: to.Ptr[float64](0),
+	// 			},
+	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 			ZoneRedundant: to.Ptr(true),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("GP_S_Gen5_2"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr("GeneralPurpose"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/HyperscaleElasticPoolGet.json
+func ExampleElasticPoolsClient_Get_getAHyperscaleElasticPool() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticPoolsClient().Get(ctx, "sqlcrudtest-2369", "sqlcrudtest-8069", "sqlcrudtest-8102", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ElasticPoolsClientGetResponse{
+	// 	ElasticPool: armsql.ElasticPool{
+	// 		Name: to.Ptr("sqlcrudtest-8102"),
+	// 		Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+	// 		Kind: to.Ptr("vcore,pool"),
+	// 		Location: to.Ptr("Japan East"),
+	// 		Properties: &armsql.ElasticPoolProperties{
+	// 			CreationDate: to.Ptr(time.Date(2021, time.August, 26, 3, 46, 20, 570000000, time.UTC)),
+	// 			HighAvailabilityReplicaCount: to.Ptr[int32](2),
+	// 			LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+	// 			MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default"),
+	// 			MaxSizeBytes: to.Ptr[int64](0),
+	// 			PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+	// 				MaxCapacity: to.Ptr[float64](4),
+	// 				MinCapacity: to.Ptr[float64](0),
+	// 			},
+	// 			State: to.Ptr(armsql.ElasticPoolStateReady),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armsql.SKU{
+	// 			Name: to.Ptr("HS_Gen5"),
+	// 			Capacity: to.Ptr[int32](4),
+	// 			Family: to.Ptr("Gen5"),
+	// 			Tier: to.Ptr("Hyperscale"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ElasticPoolListByServer.json
+func ExampleElasticPoolsClient_NewListByServerPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewElasticPoolsClient().NewListByServerPager("sqlcrudtest-2369", "sqlcrudtest-8069", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.ElasticPoolsClientListByServerResponse{
+		// 	ElasticPoolListResult: armsql.ElasticPoolListResult{
+		// 		Value: []*armsql.ElasticPool{
+		// 			{
+		// 				Name: to.Ptr("sqlcrudtest-2729"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-2729"),
+		// 				Location: to.Ptr("Japan East"),
+		// 				Properties: &armsql.ElasticPoolProperties{
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 27, 21, 320000000, time.UTC)),
+		// 					LicenseType: to.Ptr(armsql.ElasticPoolLicenseTypeLicenseIncluded),
+		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
+		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+		// 						MaxCapacity: to.Ptr[float64](1),
+		// 						MinCapacity: to.Ptr[float64](0.25),
+		// 					},
+		// 					State: to.Ptr(armsql.ElasticPoolStateReady),
+		// 					ZoneRedundant: to.Ptr(true),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("GP_Gen4_2"),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr("GeneralPurpose"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sqlcrudtest-3191"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-3191"),
+		// 				Location: to.Ptr("Japan East"),
+		// 				Properties: &armsql.ElasticPoolProperties{
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 26, 26, 450000000, time.UTC)),
+		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
+		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+		// 						MaxCapacity: to.Ptr[float64](5),
+		// 						MinCapacity: to.Ptr[float64](0),
+		// 					},
+		// 					State: to.Ptr(armsql.ElasticPoolStateReady),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BasicPool"),
+		// 					Capacity: to.Ptr[int32](50),
+		// 					Tier: to.Ptr("Basic"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sqlcrudtest-8102"),
+		// 				Type: to.Ptr("Microsoft.Sql/servers/elasticPools"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-2369/providers/Microsoft.Sql/servers/sqlcrudtest-8069/elasticPools/sqlcrudtest-8102"),
+		// 				Location: to.Ptr("Japan East"),
+		// 				Properties: &armsql.ElasticPoolProperties{
+		// 					CreationDate: to.Ptr(time.Date(2017, time.February, 10, 1, 25, 25, 33000000, time.UTC)),
+		// 					MaxSizeBytes: to.Ptr[int64](5242880000),
+		// 					PerDatabaseSettings: &armsql.ElasticPoolPerDatabaseSettings{
+		// 						MaxCapacity: to.Ptr[float64](5),
+		// 						MinCapacity: to.Ptr[float64](0),
+		// 					},
+		// 					State: to.Ptr(armsql.ElasticPoolStateReady),
+		// 				},
+		// 				SKU: &armsql.SKU{
+		// 					Name: to.Ptr("BasicPool"),
+		// 					Capacity: to.Ptr[int32](50),
+		// 					Tier: to.Ptr("Basic"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

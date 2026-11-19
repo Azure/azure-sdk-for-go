@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/ArchiveCreate.json
+// Generated from example definition: 2026-10-15-preview/ArchiveCreate.json
 func ExampleArchivesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleArchivesClient_BeginCreate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ArchivesClientCreateResponse{
 	// 	Archive: armcontainerregistry.Archive{
-	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/archives"),
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/packages/archives"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/packages/rpm/archives/myArchiveName"),
 	// 		Name: to.Ptr("myArchiveName"),
 	// 		Properties: &armcontainerregistry.ArchiveProperties{
@@ -62,7 +62,7 @@ func ExampleArchivesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ArchiveDelete.json
+// Generated from example definition: 2026-10-15-preview/ArchiveDelete.json
 func ExampleArchivesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleArchivesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/ArchiveGet.json
+// Generated from example definition: 2026-10-15-preview/ArchiveGet.json
 func ExampleArchivesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleArchivesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ArchiveList.json
+// Generated from example definition: 2026-10-15-preview/ArchiveList.json
 func ExampleArchivesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleArchivesClient_NewListPager() {
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/packages/myPackageType/archives/myArchiveName"),
 		// 				Name: to.Ptr("myArchiveName"),
-		// 				Type: to.Ptr("Microsoft.ContainerRegistry/registries/archives"),
+		// 				Type: to.Ptr("Microsoft.ContainerRegistry/registries/packages/archives"),
 		// 				SystemData: &armcontainerregistry.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
@@ -173,13 +173,12 @@ func ExampleArchivesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("string"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/ArchiveUpdate.json
+// Generated from example definition: 2026-10-15-preview/ArchiveUpdate.json
 func ExampleArchivesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

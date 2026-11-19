@@ -147,7 +147,8 @@ func (client *ServiceClient) RegionConfiguration(ctx context.Context, location s
 	if err != nil {
 		return ServiceClientRegionConfigurationResponse{}, err
 	}
-	return client.regionConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regionConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regionConfigurationCreateRequest creates the RegionConfiguration request.
@@ -210,7 +211,8 @@ func (client *ServiceClient) RegionConfigurationByResourceGroup(ctx context.Cont
 	if err != nil {
 		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
 	}
-	return client.regionConfigurationByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regionConfigurationByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regionConfigurationByResourceGroupCreateRequest creates the RegionConfigurationByResourceGroup request.
@@ -275,7 +277,8 @@ func (client *ServiceClient) ValidateAddress(ctx context.Context, location strin
 	if err != nil {
 		return ServiceClientValidateAddressResponse{}, err
 	}
-	return client.validateAddressHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateAddressHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateAddressCreateRequest creates the ValidateAddress request.
@@ -335,7 +338,8 @@ func (client *ServiceClient) ValidateInputs(ctx context.Context, location string
 	if err != nil {
 		return ServiceClientValidateInputsResponse{}, err
 	}
-	return client.validateInputsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateInputsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateInputsCreateRequest creates the ValidateInputs request.
@@ -397,7 +401,8 @@ func (client *ServiceClient) ValidateInputsByResourceGroup(ctx context.Context, 
 	if err != nil {
 		return ServiceClientValidateInputsByResourceGroupResponse{}, err
 	}
-	return client.validateInputsByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateInputsByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateInputsByResourceGroupCreateRequest creates the ValidateInputsByResourceGroup request.

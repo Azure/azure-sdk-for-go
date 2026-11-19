@@ -56,11 +56,7 @@ func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourc
 	if err != nil {
 		return VMInsightsClientGetOnboardingStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VMInsightsClientGetOnboardingStatusResponse{}, err
-	}
-	resp, err := client.getOnboardingStatusHandleResponse(httpResp)
+	resp, err := client.getOnboardingStatusHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -83,8 +79,11 @@ func (client *VMInsightsClient) getOnboardingStatusCreateRequest(ctx context.Con
 }
 
 // getOnboardingStatusHandleResponse handles the GetOnboardingStatus response.
-func (client *VMInsightsClient) getOnboardingStatusHandleResponse(resp *http.Response) (VMInsightsClientGetOnboardingStatusResponse, error) {
+func (client *VMInsightsClient) getOnboardingStatusHandleResponse(resp *http.Response, successCodes ...int) (VMInsightsClientGetOnboardingStatusResponse, error) {
 	result := VMInsightsClientGetOnboardingStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMInsightsOnboardingStatus); err != nil {
 		return VMInsightsClientGetOnboardingStatusResponse{}, err
 	}

@@ -69,7 +69,7 @@ func (client *LocalRulesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a LocalRulesResource
+// createOrUpdate - Create a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, resource LocalRulesResource, options *LocalRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *LocalRulesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LocalRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, resource LocalRulesResource, _ *LocalRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *LocalRulesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a LocalRulesResource
+// deleteOperation - Delete a LocalRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LocalRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *LocalRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *LocalRulesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *LocalRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, _ *LocalRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/localRules/{priority}"
 	if client.subscriptionID == "" {
@@ -219,7 +221,8 @@ func (client *LocalRulesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return LocalRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -284,7 +287,8 @@ func (client *LocalRulesClient) GetCounters(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return LocalRulesClientGetCountersResponse{}, err
 	}
-	return client.getCountersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCountersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCountersCreateRequest creates the GetCounters request.
@@ -431,7 +435,8 @@ func (client *LocalRulesClient) RefreshCounters(ctx context.Context, resourceGro
 		return LocalRulesClientRefreshCountersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return LocalRulesClientRefreshCountersResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return LocalRulesClientRefreshCountersResponse{}, err
 	}
 	return LocalRulesClientRefreshCountersResponse{}, nil
 }
@@ -489,7 +494,8 @@ func (client *LocalRulesClient) ResetCounters(ctx context.Context, resourceGroup
 	if err != nil {
 		return LocalRulesClientResetCountersResponse{}, err
 	}
-	return client.resetCountersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.resetCountersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // resetCountersCreateRequest creates the ResetCounters request.

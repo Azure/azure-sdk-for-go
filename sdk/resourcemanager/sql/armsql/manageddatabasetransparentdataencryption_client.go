@@ -67,7 +67,8 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -142,7 +143,8 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) Get(ctx context.Co
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

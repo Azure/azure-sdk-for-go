@@ -65,7 +65,8 @@ func (client *DatabaseClient) InviteFollower(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatabaseClientInviteFollowerResponse{}, err
 	}
-	return client.inviteFollowerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.inviteFollowerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // inviteFollowerCreateRequest creates the InviteFollower request.

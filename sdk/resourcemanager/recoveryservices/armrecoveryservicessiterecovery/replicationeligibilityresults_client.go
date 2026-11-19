@@ -19,7 +19,7 @@ import (
 // ReplicationEligibilityResultsClient contains the methods for the ReplicationEligibilityResults group.
 // Don't use this type directly, use NewReplicationEligibilityResultsClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationEligibilityResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,8 @@ func (client *ReplicationEligibilityResultsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ReplicationEligibilityResultsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -89,7 +90,7 @@ func (client *ReplicationEligibilityResultsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -129,7 +130,8 @@ func (client *ReplicationEligibilityResultsClient) List(ctx context.Context, res
 	if err != nil {
 		return ReplicationEligibilityResultsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -152,7 +154,7 @@ func (client *ReplicationEligibilityResultsClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

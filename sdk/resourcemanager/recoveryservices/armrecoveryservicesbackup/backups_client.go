@@ -19,7 +19,7 @@ import (
 // BackupsClient contains the methods for the Backups group.
 // Don't use this type directly, use NewBackupsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type BackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, reso
 		return BackupsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return BackupsClientTriggerResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BackupsClientTriggerResponse{}, err
 	}
 	return BackupsClientTriggerResponse{}, nil
 }
@@ -101,7 +102,7 @@ func (client *BackupsClient) triggerCreateRequest(ctx context.Context, vaultName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

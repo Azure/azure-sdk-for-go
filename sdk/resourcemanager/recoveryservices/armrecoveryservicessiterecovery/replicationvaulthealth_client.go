@@ -19,7 +19,7 @@ import (
 // ReplicationVaultHealthClient contains the methods for the ReplicationVaultHealth group.
 // Don't use this type directly, use NewReplicationVaultHealthClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type ReplicationVaultHealthClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,69 +42,6 @@ func NewReplicationVaultHealthClient(subscriptionID string, credential azcore.To
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// Get - Gets the health summary for the vault.
-//
-// Gets the health details of the vault.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the recovery services vault.
-//   - options - ReplicationVaultHealthClientGetOptions contains the optional parameters for the ReplicationVaultHealthClient.Get
-//     method.
-func (client *ReplicationVaultHealthClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ReplicationVaultHealthClientGetOptions) (ReplicationVaultHealthClientGetResponse, error) {
-	var err error
-	const operationName = "ReplicationVaultHealthClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return ReplicationVaultHealthClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ReplicationVaultHealthClientGetResponse{}, err
-	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
-}
-
-// getCreateRequest creates the Get request.
-func (client *ReplicationVaultHealthClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ReplicationVaultHealthClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultHealth"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *ReplicationVaultHealthClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReplicationVaultHealthClientGetResponse, error) {
-	result := ReplicationVaultHealthClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VaultHealthDetails); err != nil {
-		return ReplicationVaultHealthClientGetResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginRefresh - Refreshes health summary of the vault.
@@ -132,7 +69,7 @@ func (client *ReplicationVaultHealthClient) BeginRefresh(ctx context.Context, re
 	}
 }
 
-// Refresh - Refreshes health summary of the vault.
+// refresh - Refreshes health summary of the vault.
 //
 // Refreshes health summary of the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -151,12 +88,13 @@ func (client *ReplicationVaultHealthClient) refresh(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// refreshCreateRequest creates the Refresh request.
+// refreshCreateRequest creates the refresh request.
 func (client *ReplicationVaultHealthClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ReplicationVaultHealthClientBeginRefreshOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultHealth/default/refresh"
 	if client.subscriptionID == "" {
@@ -176,8 +114,72 @@ func (client *ReplicationVaultHealthClient) refreshCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
+}
+
+// Get - Gets the health summary for the vault.
+//
+// Gets the health details of the vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the recovery services vault.
+//   - options - ReplicationVaultHealthClientGetOptions contains the optional parameters for the ReplicationVaultHealthClient.Get
+//     method.
+func (client *ReplicationVaultHealthClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *ReplicationVaultHealthClientGetOptions) (ReplicationVaultHealthClientGetResponse, error) {
+	var err error
+	const operationName = "ReplicationVaultHealthClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return ReplicationVaultHealthClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ReplicationVaultHealthClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *ReplicationVaultHealthClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ReplicationVaultHealthClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultHealth"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *ReplicationVaultHealthClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReplicationVaultHealthClientGetResponse, error) {
+	result := ReplicationVaultHealthClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VaultHealthDetails); err != nil {
+		return ReplicationVaultHealthClientGetResponse{}, err
+	}
+	return result, nil
 }

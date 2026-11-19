@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/InboundSecurityRulePut.json
+// Generated from example definition: 2026-03-01/InboundSecurityRulePut.json
 func ExampleInboundSecurityRuleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleInboundSecurityRuleClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/InboundSecurityRuleGet.json
+// Generated from example definition: 2026-03-01/InboundSecurityRuleGet.json
 func ExampleInboundSecurityRuleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

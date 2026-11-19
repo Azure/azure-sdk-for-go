@@ -30,7 +30,7 @@ func TestAzurePipelinesCredential(t *testing.T) {
 		))
 		require.NoError(t, err, "test bug: expected URL should parse")
 		srv.AppendResponse(
-			mock.WithBody([]byte(fmt.Sprintf(`{"oidcToken":%q}`, tokenValue))),
+			mock.WithBody(fmt.Appendf(nil, `{"oidcToken":%q}`, tokenValue)),
 			mock.WithPredicate(func(r *http.Request) bool {
 				require.Equal(t, http.MethodPost, r.Method)
 				require.Equal(t, expected.Host, r.Host)

@@ -110,6 +110,62 @@ func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type BlobLayoutEndpoint.
+func (b BlobLayoutEndpoint) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Endpoint"
+	type alias BlobLayoutEndpoint
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&b),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlobLayoutEndpoints.
+func (b BlobLayoutEndpoints) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Endpoints"
+	type alias BlobLayoutEndpoints
+	aux := &struct {
+		*alias
+		Endpoint *[]*BlobLayoutEndpoint `xml:"Endpoint"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.Endpoint != nil {
+		aux.Endpoint = &b.Endpoint
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlobLayoutRange.
+func (b BlobLayoutRange) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Range"
+	type alias BlobLayoutRange
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&b),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type BlobLayoutRanges.
+func (b BlobLayoutRanges) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Ranges"
+	type alias BlobLayoutRanges
+	aux := &struct {
+		*alias
+		Range *[]*BlobLayoutRange `xml:"Range"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.Range != nil {
+		aux.Range = &b.Range
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type BlobProperties.
 func (b BlobProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "Properties"
@@ -345,6 +401,50 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type CreateSessionConfiguration.
+func (c CreateSessionConfiguration) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "CreateSessionRequest"
+	type alias CreateSessionConfiguration
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&c),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type CreateSessionResponse.
+func (c CreateSessionResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "CreateSessionResult"
+	type alias CreateSessionResponse
+	aux := &struct {
+		*alias
+		Expiration *datetime.RFC7231 `xml:"Expiration"`
+	}{
+		alias:      (*alias)(&c),
+		Expiration: (*datetime.RFC7231)(c.Expiration),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type CreateSessionResponse.
+func (c *CreateSessionResponse) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias CreateSessionResponse
+	aux := &struct {
+		*alias
+		Expiration *datetime.RFC7231 `xml:"Expiration"`
+	}{
+		alias: (*alias)(c),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.Expiration != nil && !(*time.Time)(aux.Expiration).IsZero() {
+		c.Expiration = (*time.Time)(aux.Expiration)
+	}
+	return nil
+}
+
 // MarshalXML implements the xml.Marshaller interface for type FilterBlobItem.
 func (f FilterBlobItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "Blob"
@@ -471,6 +571,18 @@ func (p PageList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	}
 	if p.PageRange != nil {
 		aux.PageRange = &p.PageRange
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type SessionCredentials.
+func (s SessionCredentials) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Credentials"
+	type alias SessionCredentials
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&s),
 	}
 	return enc.EncodeElement(aux, start)
 }

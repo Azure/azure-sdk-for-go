@@ -68,7 +68,7 @@ func (client *BulkCreateClient) BeginCancel(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Cancel - Cancels BulkCreate instances that have not yet launched.
+// cancel - Cancels BulkCreate instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *BulkCreateClient) cancel(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *BulkCreateClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}/cancel"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *BulkCreateClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Creates or updates BulkCreates.
+// createOrUpdate - Creates or updates BulkCreates.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreate, options *BulkCreateClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *BulkCreateClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BulkCreateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreate, _ *BulkCreateClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}"
 	if client.subscriptionID == "" {
@@ -223,7 +225,7 @@ func (client *BulkCreateClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes BulkCreates.
+// deleteOperation - Deletes BulkCreates.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkCreateClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -240,12 +242,13 @@ func (client *BulkCreateClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BulkCreateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}"
 	if client.subscriptionID == "" {
@@ -297,7 +300,8 @@ func (client *BulkCreateClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return BulkCreateClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -362,7 +366,8 @@ func (client *BulkCreateClient) GetAsyncOperationStatus(ctx context.Context, loc
 	if err != nil {
 		return BulkCreateClientGetAsyncOperationStatusResponse{}, err
 	}
-	return client.getAsyncOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAsyncOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAsyncOperationStatusCreateRequest creates the GetAsyncOperationStatus request.

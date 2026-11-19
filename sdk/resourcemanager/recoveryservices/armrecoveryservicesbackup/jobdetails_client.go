@@ -19,7 +19,7 @@ import (
 // JobDetailsClient contains the methods for the JobDetails group.
 // Don't use this type directly, use NewJobDetailsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type JobDetailsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,7 +62,8 @@ func (client *JobDetailsClient) Get(ctx context.Context, vaultName string, resou
 	if err != nil {
 		return JobDetailsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -89,7 +90,7 @@ func (client *JobDetailsClient) getCreateRequest(ctx context.Context, vaultName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

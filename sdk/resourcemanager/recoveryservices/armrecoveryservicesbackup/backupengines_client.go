@@ -19,7 +19,7 @@ import (
 // BackupEnginesClient contains the methods for the BackupEngines group.
 // Don't use this type directly, use NewBackupEnginesClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type BackupEnginesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,7 +62,8 @@ func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, re
 	if err != nil {
 		return BackupEnginesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -95,7 +96,7 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -175,7 +176,7 @@ func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultN
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20260801)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

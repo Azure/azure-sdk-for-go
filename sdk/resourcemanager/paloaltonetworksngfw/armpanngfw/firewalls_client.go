@@ -68,7 +68,7 @@ func (client *FirewallsClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Create a FirewallResource
+// createOrUpdate - Create a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallName string, resource FirewallResource, options *FirewallsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FirewallsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, resource FirewallResource, _ *FirewallsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {
@@ -142,7 +143,7 @@ func (client *FirewallsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete a FirewallResource
+// deleteOperation - Delete a FirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallName string, options *FirewallsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -159,12 +160,13 @@ func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FirewallsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *FirewallsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}"
 	if client.subscriptionID == "" {
@@ -208,7 +210,8 @@ func (client *FirewallsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FirewallsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -269,7 +272,8 @@ func (client *FirewallsClient) GetGlobalRulestack(ctx context.Context, resourceG
 	if err != nil {
 		return FirewallsClientGetGlobalRulestackResponse{}, err
 	}
-	return client.getGlobalRulestackHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGlobalRulestackHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGlobalRulestackCreateRequest creates the GetGlobalRulestack request.
@@ -329,7 +333,8 @@ func (client *FirewallsClient) GetLogProfile(ctx context.Context, resourceGroupN
 	if err != nil {
 		return FirewallsClientGetLogProfileResponse{}, err
 	}
-	return client.getLogProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogProfileCreateRequest creates the GetLogProfile request.
@@ -390,7 +395,8 @@ func (client *FirewallsClient) GetSupportInfo(ctx context.Context, resourceGroup
 	if err != nil {
 		return FirewallsClientGetSupportInfoResponse{}, err
 	}
-	return client.getSupportInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSupportInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSupportInfoCreateRequest creates the GetSupportInfo request.
@@ -594,7 +600,8 @@ func (client *FirewallsClient) SaveLogProfile(ctx context.Context, resourceGroup
 		return FirewallsClientSaveLogProfileResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return FirewallsClientSaveLogProfileResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FirewallsClientSaveLogProfileResponse{}, err
 	}
 	return FirewallsClientSaveLogProfileResponse{}, nil
 }
@@ -651,7 +658,8 @@ func (client *FirewallsClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FirewallsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

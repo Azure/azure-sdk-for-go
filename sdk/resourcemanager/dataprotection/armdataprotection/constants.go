@@ -5,7 +5,7 @@
 package armdataprotection
 
 const (
-	version20260601 string = "2026-06-01"
+	version20260701 string = "2026-07-01"
 )
 
 type AKSVolumeTypes string
@@ -93,6 +93,24 @@ func PossibleBCDRSecurityLevelValues() []BCDRSecurityLevel {
 		BCDRSecurityLevelGood,
 		BCDRSecurityLevelNotSupported,
 		BCDRSecurityLevelPoor,
+	}
+}
+
+// BackupSolutionType - Backup solution types for PostgreSQL Flexible Server.
+type BackupSolutionType string
+
+const (
+	// BackupSolutionTypeLogicalBackup - Logical backup type
+	BackupSolutionTypeLogicalBackup BackupSolutionType = "LogicalBackup"
+	// BackupSolutionTypePhysicalBackup - Physical backup type
+	BackupSolutionTypePhysicalBackup BackupSolutionType = "PhysicalBackup"
+)
+
+// PossibleBackupSolutionTypeValues returns the possible values for the BackupSolutionType const type.
+func PossibleBackupSolutionTypeValues() []BackupSolutionType {
+	return []BackupSolutionType{
+		BackupSolutionTypeLogicalBackup,
+		BackupSolutionTypePhysicalBackup,
 	}
 }
 
@@ -390,6 +408,24 @@ func PossibleImmutabilityStateValues() []ImmutabilityState {
 		ImmutabilityStateDisabled,
 		ImmutabilityStateLocked,
 		ImmutabilityStateUnlocked,
+	}
+}
+
+// ImmutabilityType - Type of immutability configuration.
+type ImmutabilityType string
+
+const (
+	// ImmutabilityTypeAsPerPolicy - Immutability is enforced as per the backup policy retention.
+	ImmutabilityTypeAsPerPolicy ImmutabilityType = "AsPerPolicy"
+	// ImmutabilityTypeTimeBased - Time-based immutability with a configurable duration window.
+	ImmutabilityTypeTimeBased ImmutabilityType = "TimeBased"
+)
+
+// PossibleImmutabilityTypeValues returns the possible values for the ImmutabilityType const type.
+func PossibleImmutabilityTypeValues() []ImmutabilityType {
+	return []ImmutabilityType{
+		ImmutabilityTypeAsPerPolicy,
+		ImmutabilityTypeTimeBased,
 	}
 }
 

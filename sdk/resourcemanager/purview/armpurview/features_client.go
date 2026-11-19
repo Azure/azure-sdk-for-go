@@ -68,7 +68,8 @@ func (client *FeaturesClient) AccountGet(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return FeaturesClientAccountGetResponse{}, err
 	}
-	return client.accountGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.accountGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // accountGetCreateRequest creates the AccountGet request.
@@ -137,7 +138,8 @@ func (client *FeaturesClient) SubscriptionGet(ctx context.Context, locations str
 	if err != nil {
 		return FeaturesClientSubscriptionGetResponse{}, err
 	}
-	return client.subscriptionGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.subscriptionGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // subscriptionGetCreateRequest creates the SubscriptionGet request.

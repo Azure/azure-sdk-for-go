@@ -65,7 +65,8 @@ func (client *VMCollectionClient) Update(ctx context.Context, resourceGroupName 
 		return VMCollectionClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return VMCollectionClientUpdateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return VMCollectionClientUpdateResponse{}, err
 	}
 	return VMCollectionClientUpdateResponse{}, nil
 }

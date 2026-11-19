@@ -45,61 +45,6 @@ func NewOrderItemsClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// Cancel - Cancel order item.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - orderItemName - The name of the order item.
-//   - cancellationReason - Reason for cancellation.
-//   - options - OrderItemsClientCancelOptions contains the optional parameters for the OrderItemsClient.Cancel method.
-func (client *OrderItemsClient) Cancel(ctx context.Context, resourceGroupName string, orderItemName string, cancellationReason CancellationReason, options *OrderItemsClientCancelOptions) (OrderItemsClientCancelResponse, error) {
-	var err error
-	const operationName = "OrderItemsClient.Cancel"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.cancelCreateRequest(ctx, resourceGroupName, orderItemName, cancellationReason, options)
-	if err != nil {
-		return OrderItemsClientCancelResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return OrderItemsClientCancelResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return OrderItemsClientCancelResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return OrderItemsClientCancelResponse{}, nil
-}
-
-// cancelCreateRequest creates the Cancel request.
-func (client *OrderItemsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, cancellationReason CancellationReason, _ *OrderItemsClientCancelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}/cancel"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if orderItemName == "" {
-		return nil, errors.New("parameter orderItemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{orderItemName}", url.PathEscape(orderItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, cancellationReason); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // BeginCreate - Create an order item. Existing order item cannot be updated with this api and should instead be updated with
 // the Update order item
 // API.
@@ -125,7 +70,7 @@ func (client *OrderItemsClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Create an order item. Existing order item cannot be updated with this api and should instead be updated with the
+// create - Create an order item. Existing order item cannot be updated with this api and should instead be updated with the
 // Update order item
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -144,12 +89,13 @@ func (client *OrderItemsClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *OrderItemsClient) createCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, orderItemResource OrderItemResource, _ *OrderItemsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}"
 	if client.subscriptionID == "" {
@@ -201,7 +147,7 @@ func (client *OrderItemsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete an order item.
+// deleteOperation - Delete an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrderItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, orderItemName string, options *OrderItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -218,12 +164,13 @@ func (client *OrderItemsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OrderItemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, _ *OrderItemsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}"
 	if client.subscriptionID == "" {
@@ -248,6 +195,216 @@ func (client *OrderItemsClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
+// BeginReturn - Return order item.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - orderItemName - The name of the order item.
+//   - returnOrderItemDetails - Return order item details.
+//   - options - OrderItemsClientBeginReturnOptions contains the optional parameters for the OrderItemsClient.BeginReturn method.
+func (client *OrderItemsClient) BeginReturn(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, options *OrderItemsClientBeginReturnOptions) (*runtime.Poller[OrderItemsClientReturnResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.returnOperation(ctx, resourceGroupName, orderItemName, returnOrderItemDetails, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrderItemsClientReturnResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrderItemsClientReturnResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// returnOperation - Return order item.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrderItemsClient) returnOperation(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, options *OrderItemsClientBeginReturnOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OrderItemsClient.BeginReturn"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.returnCreateRequest(ctx, resourceGroupName, orderItemName, returnOrderItemDetails, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// returnCreateRequest creates the return request.
+func (client *OrderItemsClient) returnCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, _ *OrderItemsClientBeginReturnOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}/return"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if orderItemName == "" {
+		return nil, errors.New("parameter orderItemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{orderItemName}", url.PathEscape(orderItemName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, returnOrderItemDetails); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update the properties of an existing order item.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - orderItemName - The name of the order item.
+//   - orderItemUpdateParameter - Order item update parameters from request body.
+//   - options - OrderItemsClientBeginUpdateOptions contains the optional parameters for the OrderItemsClient.BeginUpdate method.
+func (client *OrderItemsClient) BeginUpdate(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*runtime.Poller[OrderItemsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, orderItemName, orderItemUpdateParameter, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrderItemsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrderItemsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update the properties of an existing order item.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrderItemsClient) update(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OrderItemsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, orderItemName, orderItemUpdateParameter, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OrderItemsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if orderItemName == "" {
+		return nil, errors.New("parameter orderItemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{orderItemName}", url.PathEscape(orderItemName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, orderItemUpdateParameter); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// Cancel - Cancel order item.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - orderItemName - The name of the order item.
+//   - cancellationReason - Reason for cancellation.
+//   - options - OrderItemsClientCancelOptions contains the optional parameters for the OrderItemsClient.Cancel method.
+func (client *OrderItemsClient) Cancel(ctx context.Context, resourceGroupName string, orderItemName string, cancellationReason CancellationReason, options *OrderItemsClientCancelOptions) (OrderItemsClientCancelResponse, error) {
+	var err error
+	const operationName = "OrderItemsClient.Cancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelCreateRequest(ctx, resourceGroupName, orderItemName, cancellationReason, options)
+	if err != nil {
+		return OrderItemsClientCancelResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return OrderItemsClientCancelResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return OrderItemsClientCancelResponse{}, err
+	}
+	return OrderItemsClientCancelResponse{}, nil
+}
+
+// cancelCreateRequest creates the Cancel request.
+func (client *OrderItemsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, cancellationReason CancellationReason, _ *OrderItemsClientCancelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}/cancel"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if orderItemName == "" {
+		return nil, errors.New("parameter orderItemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{orderItemName}", url.PathEscape(orderItemName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, cancellationReason); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -267,7 +424,8 @@ func (client *OrderItemsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return OrderItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -472,156 +630,4 @@ func (client *OrderItemsClient) listBySubscriptionHandleResponse(resp *http.Resp
 		return OrderItemsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginReturn - Return order item.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - orderItemName - The name of the order item.
-//   - returnOrderItemDetails - Return order item details.
-//   - options - OrderItemsClientBeginReturnOptions contains the optional parameters for the OrderItemsClient.BeginReturn method.
-func (client *OrderItemsClient) BeginReturn(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, options *OrderItemsClientBeginReturnOptions) (*runtime.Poller[OrderItemsClientReturnResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.returnOperation(ctx, resourceGroupName, orderItemName, returnOrderItemDetails, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrderItemsClientReturnResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrderItemsClientReturnResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Return - Return order item.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OrderItemsClient) returnOperation(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, options *OrderItemsClientBeginReturnOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OrderItemsClient.BeginReturn"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.returnCreateRequest(ctx, resourceGroupName, orderItemName, returnOrderItemDetails, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// returnCreateRequest creates the Return request.
-func (client *OrderItemsClient) returnCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, _ *OrderItemsClientBeginReturnOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}/return"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if orderItemName == "" {
-		return nil, errors.New("parameter orderItemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{orderItemName}", url.PathEscape(orderItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, returnOrderItemDetails); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update the properties of an existing order item.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - orderItemName - The name of the order item.
-//   - orderItemUpdateParameter - Order item update parameters from request body.
-//   - options - OrderItemsClientBeginUpdateOptions contains the optional parameters for the OrderItemsClient.BeginUpdate method.
-func (client *OrderItemsClient) BeginUpdate(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*runtime.Poller[OrderItemsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, orderItemName, orderItemUpdateParameter, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrderItemsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrderItemsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update the properties of an existing order item.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OrderItemsClient) update(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OrderItemsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, orderItemName, orderItemUpdateParameter, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OrderItemsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems/{orderItemName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if orderItemName == "" {
-		return nil, errors.New("parameter orderItemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{orderItemName}", url.PathEscape(orderItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, orderItemUpdateParameter); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

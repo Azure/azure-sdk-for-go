@@ -19,7 +19,7 @@ import (
 // AzureMonitorWorkspacesClient contains the methods for the AzureMonitorWorkspaces group.
 // Don't use this type directly, use NewAzureMonitorWorkspacesClient() instead.
 //
-// Generated from API version 2025-10-03
+// Generated from API version 2026-09-03-preview
 type AzureMonitorWorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,72 +42,6 @@ func NewAzureMonitorWorkspacesClient(subscriptionID string, credential azcore.To
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// CreateOrUpdate - Creates or updates an Azure Monitor Workspace
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
-//   - resource - Properties that need to be specified to create a new Azure Monitor Workspace
-//   - options - AzureMonitorWorkspacesClientCreateOrUpdateOptions contains the optional parameters for the AzureMonitorWorkspacesClient.CreateOrUpdate
-//     method.
-func (client *AzureMonitorWorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, resource AzureMonitorWorkspaceResource, options *AzureMonitorWorkspacesClientCreateOrUpdateOptions) (AzureMonitorWorkspacesClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "AzureMonitorWorkspacesClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, resource, options)
-	if err != nil {
-		return AzureMonitorWorkspacesClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AzureMonitorWorkspacesClientCreateOrUpdateResponse{}, err
-	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AzureMonitorWorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, resource AzureMonitorWorkspaceResource, _ *AzureMonitorWorkspacesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if azureMonitorWorkspaceName == "" {
-		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AzureMonitorWorkspacesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AzureMonitorWorkspacesClientCreateOrUpdateResponse, error) {
-	result := AzureMonitorWorkspacesClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorWorkspaceResource); err != nil {
-		return AzureMonitorWorkspacesClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginDelete - Deletes an Azure Monitor Workspace
@@ -133,7 +67,7 @@ func (client *AzureMonitorWorkspacesClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Deletes an Azure Monitor Workspace
+// deleteOperation - Deletes an Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AzureMonitorWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -150,12 +84,13 @@ func (client *AzureMonitorWorkspacesClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AzureMonitorWorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, _ *AzureMonitorWorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}"
 	if client.subscriptionID == "" {
@@ -175,9 +110,76 @@ func (client *AzureMonitorWorkspacesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// CreateOrUpdate - Creates or updates an Azure Monitor Workspace
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
+//   - resource - Properties that need to be specified to create a new Azure Monitor Workspace
+//   - options - AzureMonitorWorkspacesClientCreateOrUpdateOptions contains the optional parameters for the AzureMonitorWorkspacesClient.CreateOrUpdate
+//     method.
+func (client *AzureMonitorWorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, resource AzureMonitorWorkspaceResource, options *AzureMonitorWorkspacesClientCreateOrUpdateOptions) (AzureMonitorWorkspacesClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "AzureMonitorWorkspacesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, resource, options)
+	if err != nil {
+		return AzureMonitorWorkspacesClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AzureMonitorWorkspacesClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *AzureMonitorWorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, resource AzureMonitorWorkspaceResource, _ *AzureMonitorWorkspacesClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if azureMonitorWorkspaceName == "" {
+		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260903Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *AzureMonitorWorkspacesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AzureMonitorWorkspacesClientCreateOrUpdateResponse, error) {
+	result := AzureMonitorWorkspacesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AzureMonitorWorkspaceResource); err != nil {
+		return AzureMonitorWorkspacesClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Returns the specified Azure Monitor Workspace
@@ -200,7 +202,8 @@ func (client *AzureMonitorWorkspacesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AzureMonitorWorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -223,7 +226,7 @@ func (client *AzureMonitorWorkspacesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -294,7 +297,7 @@ func (client *AzureMonitorWorkspacesClient) listByResourceGroupCreateRequest(ctx
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251003)
+		reqQP.Set("api-version", version20260903Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -361,7 +364,7 @@ func (client *AzureMonitorWorkspacesClient) listBySubscriptionCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251003)
+		reqQP.Set("api-version", version20260903Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -401,7 +404,8 @@ func (client *AzureMonitorWorkspacesClient) Update(ctx context.Context, resource
 	if err != nil {
 		return AzureMonitorWorkspacesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -424,7 +428,7 @@ func (client *AzureMonitorWorkspacesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -88,7 +88,7 @@ type CapacityReservationGroupsClientCreateOrUpdateResponse struct {
 	CapacityReservationGroup
 }
 
-// CapacityReservationGroupsClientDeleteResponse contains the response from method CapacityReservationGroupsClient.Delete.
+// CapacityReservationGroupsClientDeleteResponse contains the response from method CapacityReservationGroupsClient.BeginDelete.
 type CapacityReservationGroupsClientDeleteResponse struct {
 	// placeholder for future response values
 }

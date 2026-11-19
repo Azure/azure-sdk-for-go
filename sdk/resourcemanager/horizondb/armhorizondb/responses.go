@@ -4,31 +4,119 @@
 
 package armhorizondb
 
-// AdministratorsClientCreateOrUpdateResponse contains the response from method AdministratorsClient.BeginCreateOrUpdate.
-type AdministratorsClientCreateOrUpdateResponse struct {
-	// Represents an Entra ID administrator configured on a HorizonDB cluster.
-	Administrator
+// AuthenticationsClientListResponse contains the response from method AuthenticationsClient.NewListPager.
+type AuthenticationsClientListResponse struct {
+	// The response of a Authentication list operation.
+	AuthenticationListResult
 }
 
-// AdministratorsClientDeleteResponse contains the response from method AdministratorsClient.BeginDelete.
-type AdministratorsClientDeleteResponse struct {
+// CapabilitiesClientGetResponse contains the response from method CapabilitiesClient.Get.
+type CapabilitiesClientGetResponse struct {
+	// The singleton HorizonDB capability catalog entry available to a subscription in a location.
+	Capability
+}
+
+// CapabilitiesClientListResponse contains the response from method CapabilitiesClient.NewListPager.
+type CapabilitiesClientListResponse struct {
+	// The response of a Capability list operation.
+	CapabilityListResult
+}
+
+// ChangeDataCaptureCapabilitiesClientCreateOrReplaceResponse contains the response from method ChangeDataCaptureCapabilitiesClient.BeginCreateOrReplace.
+type ChangeDataCaptureCapabilitiesClientCreateOrReplaceResponse struct {
+	// The singleton change data capture capability for a HorizonDB cluster.
+	ChangeDataCaptureCapability
+}
+
+// ChangeDataCaptureCapabilitiesClientDeleteResponse contains the response from method ChangeDataCaptureCapabilitiesClient.BeginDelete.
+type ChangeDataCaptureCapabilitiesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AdministratorsClientGetResponse contains the response from method AdministratorsClient.Get.
-type AdministratorsClientGetResponse struct {
-	// Represents an Entra ID administrator configured on a HorizonDB cluster.
-	Administrator
+// ChangeDataCaptureCapabilitiesClientGetResponse contains the response from method ChangeDataCaptureCapabilitiesClient.Get.
+type ChangeDataCaptureCapabilitiesClientGetResponse struct {
+	// The singleton change data capture capability for a HorizonDB cluster.
+	ChangeDataCaptureCapability
 }
 
-// AdministratorsClientListResponse contains the response from method AdministratorsClient.NewListPager.
-type AdministratorsClientListResponse struct {
-	// The response of a HorizonDbAdministrator list operation.
-	AdministratorListResult
+// ChangeDataCaptureCapabilitiesClientListResponse contains the response from method ChangeDataCaptureCapabilitiesClient.NewListPager.
+type ChangeDataCaptureCapabilitiesClientListResponse struct {
+	// The response of a ChangeDataCaptureCapability list operation.
+	ChangeDataCaptureCapabilityListResult
 }
 
-// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
-type ClustersClientCreateOrUpdateResponse struct {
+// ChangeDataCaptureCapabilitiesClientUpdateResponse contains the response from method ChangeDataCaptureCapabilitiesClient.BeginUpdate.
+type ChangeDataCaptureCapabilitiesClientUpdateResponse struct {
+	// The singleton change data capture capability for a HorizonDB cluster.
+	ChangeDataCaptureCapability
+}
+
+// ChangeDataCaptureConfigurationsClientCreateOrReplaceResponse contains the response from method ChangeDataCaptureConfigurationsClient.BeginCreateOrReplace.
+type ChangeDataCaptureConfigurationsClientCreateOrReplaceResponse struct {
+	// A HorizonDB database enrollment for Microsoft Fabric Mirroring.
+	ChangeDataCaptureConfiguration
+}
+
+// ChangeDataCaptureConfigurationsClientDeleteResponse contains the response from method ChangeDataCaptureConfigurationsClient.BeginDelete.
+type ChangeDataCaptureConfigurationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ChangeDataCaptureConfigurationsClientGetResponse contains the response from method ChangeDataCaptureConfigurationsClient.Get.
+type ChangeDataCaptureConfigurationsClientGetResponse struct {
+	// A HorizonDB database enrollment for Microsoft Fabric Mirroring.
+	ChangeDataCaptureConfiguration
+}
+
+// ChangeDataCaptureConfigurationsClientListResponse contains the response from method ChangeDataCaptureConfigurationsClient.NewListPager.
+type ChangeDataCaptureConfigurationsClientListResponse struct {
+	// The response of a ChangeDataCaptureConfiguration list operation.
+	ChangeDataCaptureConfigurationListResult
+}
+
+// ChangeDataCaptureConfigurationsClientUpdateResponse contains the response from method ChangeDataCaptureConfigurationsClient.BeginUpdate.
+type ChangeDataCaptureConfigurationsClientUpdateResponse struct {
+	// A HorizonDB database enrollment for Microsoft Fabric Mirroring.
+	ChangeDataCaptureConfiguration
+}
+
+// ChangeDataCaptureDestinationsClientActivateIdentityResponse contains the response from method ChangeDataCaptureDestinationsClient.BeginActivateIdentity.
+type ChangeDataCaptureDestinationsClientActivateIdentityResponse struct {
+	// The completed result of activating a change data capture destination identity.
+	ActivateChangeDataCaptureIdentityResult
+}
+
+// ChangeDataCaptureDestinationsClientCreateOrReplaceResponse contains the response from method ChangeDataCaptureDestinationsClient.BeginCreateOrReplace.
+type ChangeDataCaptureDestinationsClientCreateOrReplaceResponse struct {
+	// A reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
+	ChangeDataCaptureDestination
+}
+
+// ChangeDataCaptureDestinationsClientDeleteResponse contains the response from method ChangeDataCaptureDestinationsClient.BeginDelete.
+type ChangeDataCaptureDestinationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ChangeDataCaptureDestinationsClientGetResponse contains the response from method ChangeDataCaptureDestinationsClient.Get.
+type ChangeDataCaptureDestinationsClientGetResponse struct {
+	// A reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
+	ChangeDataCaptureDestination
+}
+
+// ChangeDataCaptureDestinationsClientListResponse contains the response from method ChangeDataCaptureDestinationsClient.NewListPager.
+type ChangeDataCaptureDestinationsClientListResponse struct {
+	// The response of a ChangeDataCaptureDestination list operation.
+	ChangeDataCaptureDestinationListResult
+}
+
+// ChangeDataCaptureDestinationsClientUpdateResponse contains the response from method ChangeDataCaptureDestinationsClient.BeginUpdate.
+type ChangeDataCaptureDestinationsClientUpdateResponse struct {
+	// A reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
+	ChangeDataCaptureDestination
+}
+
+// ClustersClientCreateOrReplaceResponse contains the response from method ClustersClient.BeginCreateOrReplace.
+type ClustersClientCreateOrReplaceResponse struct {
 	// Represents the HorizonDB cluster.
 	Cluster
 }
@@ -36,6 +124,12 @@ type ClustersClientCreateOrUpdateResponse struct {
 // ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
 type ClustersClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// ClustersClientFailoverResponse contains the response from method ClustersClient.BeginFailover.
+type ClustersClientFailoverResponse struct {
+	// Represents the HorizonDB cluster.
+	Cluster
 }
 
 // ClustersClientGetResponse contains the response from method ClustersClient.Get.
@@ -46,29 +140,14 @@ type ClustersClientGetResponse struct {
 
 // ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
-	// The response of a HorizonDbCluster list operation.
+	// The response of a Cluster list operation.
 	ClusterListResult
 }
 
 // ClustersClientListBySubscriptionResponse contains the response from method ClustersClient.NewListBySubscriptionPager.
 type ClustersClientListBySubscriptionResponse struct {
-	// The response of a HorizonDbCluster list operation.
+	// The response of a Cluster list operation.
 	ClusterListResult
-}
-
-// ClustersClientRestartResponse contains the response from method ClustersClient.BeginRestart.
-type ClustersClientRestartResponse struct {
-	// placeholder for future response values
-}
-
-// ClustersClientStartResponse contains the response from method ClustersClient.BeginStart.
-type ClustersClientStartResponse struct {
-	// placeholder for future response values
-}
-
-// ClustersClientStopResponse contains the response from method ClustersClient.BeginStop.
-type ClustersClientStopResponse struct {
-	// placeholder for future response values
 }
 
 // ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
@@ -77,9 +156,37 @@ type ClustersClientUpdateResponse struct {
 	Cluster
 }
 
-// FirewallRulesClientCreateOrUpdateResponse contains the response from method FirewallRulesClient.BeginCreateOrUpdate.
-type FirewallRulesClientCreateOrUpdateResponse struct {
-	// Represents the HorizonDB firewall rule.
+// DefaultParameterGroupsClientGetResponse contains the response from method DefaultParameterGroupsClient.Get.
+type DefaultParameterGroupsClientGetResponse struct {
+	// A default parameter group available in a specific region. It contains engine-defined parameters and excludes service and
+	// other non-engine entries. For each PostgreSQL version, the DefaultParameterGroups APIs return at most one default parameter
+	// group in a location.
+	DefaultParameterGroup
+}
+
+// DefaultParameterGroupsClientListBySubscriptionAndRegionResponse contains the response from method DefaultParameterGroupsClient.NewListBySubscriptionAndRegionPager.
+type DefaultParameterGroupsClientListBySubscriptionAndRegionResponse struct {
+	// The response of a DefaultParameterGroup list operation.
+	DefaultParameterGroupListResult
+}
+
+// EndpointsClientGetResponse contains the response from method EndpointsClient.Get.
+type EndpointsClientGetResponse struct {
+	// Represents a service-generated, service-managed HorizonDB endpoint. The Cluster-scoped Endpoint is created and deleted
+	// with its parent Cluster. A Pool-scoped Endpoint is created and deleted with the Pool identified by associatedResourceId.
+	// Endpoints cannot be created or deleted independently from their lifecycle owner.
+	Endpoint
+}
+
+// EndpointsClientListResponse contains the response from method EndpointsClient.NewListPager.
+type EndpointsClientListResponse struct {
+	// The response of a Endpoint list operation.
+	EndpointListResult
+}
+
+// FirewallRulesClientCreateOrReplaceResponse contains the response from method FirewallRulesClient.BeginCreateOrReplace.
+type FirewallRulesClientCreateOrReplaceResponse struct {
+	// Represents a customer-managed firewall rule for a HorizonDB pool.
 	FirewallRule
 }
 
@@ -90,14 +197,150 @@ type FirewallRulesClientDeleteResponse struct {
 
 // FirewallRulesClientGetResponse contains the response from method FirewallRulesClient.Get.
 type FirewallRulesClientGetResponse struct {
-	// Represents the HorizonDB firewall rule.
+	// Represents a customer-managed firewall rule for a HorizonDB pool.
 	FirewallRule
 }
 
 // FirewallRulesClientListResponse contains the response from method FirewallRulesClient.NewListPager.
 type FirewallRulesClientListResponse struct {
-	// The response of a HorizonDbFirewallRule list operation.
+	// The response of a FirewallRule list operation.
 	FirewallRuleListResult
+}
+
+// IdentityAssignmentsClientCreateOrReplaceResponse contains the response from method IdentityAssignmentsClient.BeginCreateOrReplace.
+type IdentityAssignmentsClientCreateOrReplaceResponse struct {
+	// A user-assigned managed identity authorized for a HorizonDB change data capture destination.
+	IdentityAssignment
+}
+
+// IdentityAssignmentsClientDeleteResponse contains the response from method IdentityAssignmentsClient.BeginDelete.
+type IdentityAssignmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// IdentityAssignmentsClientGetResponse contains the response from method IdentityAssignmentsClient.Get.
+type IdentityAssignmentsClientGetResponse struct {
+	// A user-assigned managed identity authorized for a HorizonDB change data capture destination.
+	IdentityAssignment
+}
+
+// IdentityAssignmentsClientListResponse contains the response from method IdentityAssignmentsClient.NewListPager.
+type IdentityAssignmentsClientListResponse struct {
+	// The response of a IdentityAssignment list operation.
+	IdentityAssignmentListResult
+}
+
+// LogCaptureConfigurationsClientGetResponse contains the response from method LogCaptureConfigurationsClient.Get.
+type LogCaptureConfigurationsClientGetResponse struct {
+	// A predefined log capture configuration created by the service for a HorizonDB cluster.
+	LogCaptureConfiguration
+}
+
+// LogCaptureConfigurationsClientListResponse contains the response from method LogCaptureConfigurationsClient.NewListPager.
+type LogCaptureConfigurationsClientListResponse struct {
+	// The response of a LogCaptureConfiguration list operation.
+	LogCaptureConfigurationListResult
+}
+
+// LogCaptureConfigurationsClientUpdateResponse contains the response from method LogCaptureConfigurationsClient.BeginUpdate.
+type LogCaptureConfigurationsClientUpdateResponse struct {
+	// A predefined log capture configuration created by the service for a HorizonDB cluster.
+	LogCaptureConfiguration
+}
+
+// LogFilesClientGetResponse contains the response from method LogFilesClient.Get.
+type LogFilesClientGetResponse struct {
+	// A service-generated log file captured for a HorizonDB cluster.
+	LogFile
+}
+
+// LogFilesClientListDownloadUrlsResponse contains the response from method LogFilesClient.ListDownloadUrls.
+type LogFilesClientListDownloadUrlsResponse struct {
+	// A short-lived signed URL for downloading a captured log file.
+	LogFileDownloadURL
+}
+
+// LogFilesClientListResponse contains the response from method LogFilesClient.NewListPager.
+type LogFilesClientListResponse struct {
+	// The response of a LogFile list operation.
+	LogFileListResult
+}
+
+// MaintenanceEventsClientApplyNowResponse contains the response from method MaintenanceEventsClient.BeginApplyNow.
+type MaintenanceEventsClientApplyNowResponse struct {
+	// The response from a maintenance event reschedule or apply-now action.
+	MaintenanceEventActionResponse
+}
+
+// MaintenanceEventsClientGetResponse contains the response from method MaintenanceEventsClient.Get.
+type MaintenanceEventsClientGetResponse struct {
+	// Represents a maintenance event for a HorizonDB pool.
+	MaintenanceEvent
+}
+
+// MaintenanceEventsClientListResponse contains the response from method MaintenanceEventsClient.NewListPager.
+type MaintenanceEventsClientListResponse struct {
+	// The response of a MaintenanceEvent list operation.
+	MaintenanceEventListResult
+}
+
+// MaintenanceEventsClientRescheduleResponse contains the response from method MaintenanceEventsClient.BeginReschedule.
+type MaintenanceEventsClientRescheduleResponse struct {
+	// The response from a maintenance event reschedule or apply-now action.
+	MaintenanceEventActionResponse
+}
+
+// MicrosoftEntraAdministratorsClientCreateOrReplaceResponse contains the response from method MicrosoftEntraAdministratorsClient.BeginCreateOrReplace.
+type MicrosoftEntraAdministratorsClientCreateOrReplaceResponse struct {
+	// Represents a PostgreSQL role that is a member of the azure_pg_admin role and is mapped to a Microsoft Entra principal.
+	MicrosoftEntraAdministrator
+}
+
+// MicrosoftEntraAdministratorsClientDeleteResponse contains the response from method MicrosoftEntraAdministratorsClient.BeginDelete.
+type MicrosoftEntraAdministratorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MicrosoftEntraAdministratorsClientGetResponse contains the response from method MicrosoftEntraAdministratorsClient.Get.
+type MicrosoftEntraAdministratorsClientGetResponse struct {
+	// Represents a PostgreSQL role that is a member of the azure_pg_admin role and is mapped to a Microsoft Entra principal.
+	MicrosoftEntraAdministrator
+}
+
+// MicrosoftEntraAdministratorsClientListResponse contains the response from method MicrosoftEntraAdministratorsClient.NewListPager.
+type MicrosoftEntraAdministratorsClientListResponse struct {
+	// The response of a MicrosoftEntraAdministrator list operation.
+	MicrosoftEntraAdministratorListResult
+}
+
+// MicrosoftEntraAuthenticationsClientCreateOrReplaceResponse contains the response from method MicrosoftEntraAuthenticationsClient.BeginCreateOrReplace.
+type MicrosoftEntraAuthenticationsClientCreateOrReplaceResponse struct {
+	// The service-created Microsoft Entra authentication method for a HorizonDB cluster.
+	MicrosoftEntraAuthentication
+}
+
+// MicrosoftEntraAuthenticationsClientGetResponse contains the response from method MicrosoftEntraAuthenticationsClient.Get.
+type MicrosoftEntraAuthenticationsClientGetResponse struct {
+	// The service-created Microsoft Entra authentication method for a HorizonDB cluster.
+	MicrosoftEntraAuthentication
+}
+
+// MicrosoftEntraAuthenticationsClientUpdateResponse contains the response from method MicrosoftEntraAuthenticationsClient.BeginUpdate.
+type MicrosoftEntraAuthenticationsClientUpdateResponse struct {
+	// The service-created Microsoft Entra authentication method for a HorizonDB cluster.
+	MicrosoftEntraAuthentication
+}
+
+// NodesClientGetResponse contains the response from method NodesClient.Get.
+type NodesClientGetResponse struct {
+	// A service-managed node allocated to a HorizonDB pool.
+	Node
+}
+
+// NodesClientListResponse contains the response from method NodesClient.NewListPager.
+type NodesClientListResponse struct {
+	// The response of a Node list operation.
+	NodeListResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -106,8 +349,8 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// ParameterGroupsClientCreateOrUpdateResponse contains the response from method ParameterGroupsClient.BeginCreateOrUpdate.
-type ParameterGroupsClientCreateOrUpdateResponse struct {
+// ParameterGroupsClientCreateOrReplaceResponse contains the response from method ParameterGroupsClient.BeginCreateOrReplace.
+type ParameterGroupsClientCreateOrReplaceResponse struct {
 	// Represents the HorizonDB parameter group.
 	ParameterGroup
 }
@@ -125,32 +368,61 @@ type ParameterGroupsClientGetResponse struct {
 
 // ParameterGroupsClientListByResourceGroupResponse contains the response from method ParameterGroupsClient.NewListByResourceGroupPager.
 type ParameterGroupsClientListByResourceGroupResponse struct {
-	// The response of a HorizonDbParameterGroup list operation.
+	// The response of a ParameterGroup list operation.
 	ParameterGroupListResult
 }
 
 // ParameterGroupsClientListBySubscriptionResponse contains the response from method ParameterGroupsClient.NewListBySubscriptionPager.
 type ParameterGroupsClientListBySubscriptionResponse struct {
-	// The response of a HorizonDbParameterGroup list operation.
+	// The response of a ParameterGroup list operation.
 	ParameterGroupListResult
 }
 
 // ParameterGroupsClientListConnectionsResponse contains the response from method ParameterGroupsClient.NewListConnectionsPager.
 type ParameterGroupsClientListConnectionsResponse struct {
-	// The response of a HorizonDbParameterGroupConnectionProperties list operation.
-	ParameterGroupConnectionPropertiesListResult
-}
-
-// ParameterGroupsClientListVersionsResponse contains the response from method ParameterGroupsClient.NewListVersionsPager.
-type ParameterGroupsClientListVersionsResponse struct {
-	// The response of a HorizonDbParameterGroup list operation.
-	ParameterGroupListResult
+	// A page of HorizonDB parameter group connections.
+	PagedParameterGroupConnectionProperties
 }
 
 // ParameterGroupsClientUpdateResponse contains the response from method ParameterGroupsClient.BeginUpdate.
 type ParameterGroupsClientUpdateResponse struct {
 	// Represents the HorizonDB parameter group.
 	ParameterGroup
+}
+
+// PasswordAuthenticationsClientCreateOrReplaceResponse contains the response from method PasswordAuthenticationsClient.BeginCreateOrReplace.
+type PasswordAuthenticationsClientCreateOrReplaceResponse struct {
+	// The service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster. This resource configures
+	// the authentication mechanism, including its enabled state and administrator login credentials; it is not a password-only
+	// resource.
+	PasswordAuthentication
+}
+
+// PasswordAuthenticationsClientGetResponse contains the response from method PasswordAuthenticationsClient.Get.
+type PasswordAuthenticationsClientGetResponse struct {
+	// The service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster. This resource configures
+	// the authentication mechanism, including its enabled state and administrator login credentials; it is not a password-only
+	// resource.
+	PasswordAuthentication
+}
+
+// PasswordAuthenticationsClientUpdateResponse contains the response from method PasswordAuthenticationsClient.BeginUpdate.
+type PasswordAuthenticationsClientUpdateResponse struct {
+	// The service-created PostgreSQL username-and-password authentication method for a HorizonDB cluster. This resource configures
+	// the authentication mechanism, including its enabled state and administrator login credentials; it is not a password-only
+	// resource.
+	PasswordAuthentication
+}
+
+// PoolsClientCreateOrReplaceResponse contains the response from method PoolsClient.BeginCreateOrReplace.
+type PoolsClientCreateOrReplaceResponse struct {
+	// Represents the HorizonDB pool.
+	Pool
+}
+
+// PoolsClientDeleteResponse contains the response from method PoolsClient.BeginDelete.
+type PoolsClientDeleteResponse struct {
+	// placeholder for future response values
 }
 
 // PoolsClientGetResponse contains the response from method PoolsClient.Get.
@@ -161,8 +433,38 @@ type PoolsClientGetResponse struct {
 
 // PoolsClientListResponse contains the response from method PoolsClient.NewListPager.
 type PoolsClientListResponse struct {
-	// The response of a HorizonDbPool list operation.
+	// The response of a Pool list operation.
 	PoolListResult
+}
+
+// PoolsClientRestartResponse contains the response from method PoolsClient.BeginRestart.
+type PoolsClientRestartResponse struct {
+	// Represents the HorizonDB pool.
+	Pool
+}
+
+// PoolsClientStartResponse contains the response from method PoolsClient.BeginStart.
+type PoolsClientStartResponse struct {
+	// Represents the HorizonDB pool.
+	Pool
+}
+
+// PoolsClientStopResponse contains the response from method PoolsClient.BeginStop.
+type PoolsClientStopResponse struct {
+	// Represents the HorizonDB pool.
+	Pool
+}
+
+// PoolsClientUpdateResponse contains the response from method PoolsClient.BeginUpdate.
+type PoolsClientUpdateResponse struct {
+	// Represents the HorizonDB pool.
+	Pool
+}
+
+// PrivateEndpointConnectionsClientApproveOrRejectResponse contains the response from method PrivateEndpointConnectionsClient.BeginApproveOrReject.
+type PrivateEndpointConnectionsClientApproveOrRejectResponse struct {
+	// A private endpoint connection resource
+	PrivateEndpointConnectionResource
 }
 
 // PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
@@ -182,12 +484,6 @@ type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionResourceListResult
 }
 
-// PrivateEndpointConnectionsClientUpdateStatusResponse contains the response from method PrivateEndpointConnectionsClient.UpdateStatus.
-type PrivateEndpointConnectionsClientUpdateStatusResponse struct {
-	// A private endpoint connection resource
-	PrivateEndpointConnectionResource
-}
-
 // PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
 type PrivateLinkResourcesClientGetResponse struct {
 	// Represents the HorizonDB private link resource.
@@ -196,35 +492,6 @@ type PrivateLinkResourcesClientGetResponse struct {
 
 // PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
 type PrivateLinkResourcesClientListResponse struct {
-	// The response of a HorizonDbPrivateLinkResource list operation.
+	// The response of a PrivateLinkResource list operation.
 	PrivateLinkResourceListResult
-}
-
-// ReplicasClientCreateOrUpdateResponse contains the response from method ReplicasClient.BeginCreateOrUpdate.
-type ReplicasClientCreateOrUpdateResponse struct {
-	// Represents the HorizonDB replica.
-	Replica
-}
-
-// ReplicasClientDeleteResponse contains the response from method ReplicasClient.BeginDelete.
-type ReplicasClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ReplicasClientGetResponse contains the response from method ReplicasClient.Get.
-type ReplicasClientGetResponse struct {
-	// Represents the HorizonDB replica.
-	Replica
-}
-
-// ReplicasClientListResponse contains the response from method ReplicasClient.NewListPager.
-type ReplicasClientListResponse struct {
-	// The response of a HorizonDbReplica list operation.
-	ReplicaListResult
-}
-
-// ReplicasClientUpdateResponse contains the response from method ReplicasClient.BeginUpdate.
-type ReplicasClientUpdateResponse struct {
-	// Represents the HorizonDB replica.
-	Replica
 }

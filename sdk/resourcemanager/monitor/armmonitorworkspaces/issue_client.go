@@ -19,7 +19,7 @@ import (
 // IssueClient contains the methods for the Issue group.
 // Don't use this type directly, use NewIssueClient() instead.
 //
-// Generated from API version 2025-10-03
+// Generated from API version 2026-09-03-preview
 type IssueClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,8 @@ func (client *IssueClient) AddInvestigationResult(ctx context.Context, resourceG
 	if err != nil {
 		return IssueClientAddInvestigationResultResponse{}, err
 	}
-	return client.addInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addInvestigationResultCreateRequest creates the AddInvestigationResult request.
@@ -93,7 +94,7 @@ func (client *IssueClient) addInvestigationResultCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -136,7 +137,8 @@ func (client *IssueClient) AddOrUpdateAlerts(ctx context.Context, resourceGroupN
 	if err != nil {
 		return IssueClientAddOrUpdateAlertsResponse{}, err
 	}
-	return client.addOrUpdateAlertsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addOrUpdateAlertsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addOrUpdateAlertsCreateRequest creates the AddOrUpdateAlerts request.
@@ -163,7 +165,7 @@ func (client *IssueClient) addOrUpdateAlertsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -207,7 +209,8 @@ func (client *IssueClient) AddOrUpdateResources(ctx context.Context, resourceGro
 	if err != nil {
 		return IssueClientAddOrUpdateResourcesResponse{}, err
 	}
-	return client.addOrUpdateResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addOrUpdateResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addOrUpdateResourcesCreateRequest creates the AddOrUpdateResources request.
@@ -234,7 +237,7 @@ func (client *IssueClient) addOrUpdateResourcesCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -277,7 +280,8 @@ func (client *IssueClient) Create(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return IssueClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -304,7 +308,7 @@ func (client *IssueClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	if options != nil && options.Related != nil {
 		reqQP.Set("related", *options.Related)
 	}
@@ -350,7 +354,8 @@ func (client *IssueClient) Delete(ctx context.Context, resourceGroupName string,
 		return IssueClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return IssueClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IssueClientDeleteResponse{}, err
 	}
 	return IssueClientDeleteResponse{}, nil
 }
@@ -379,7 +384,7 @@ func (client *IssueClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -405,7 +410,8 @@ func (client *IssueClient) FetchBackgroundVisualization(ctx context.Context, res
 	if err != nil {
 		return IssueClientFetchBackgroundVisualizationResponse{}, err
 	}
-	return client.fetchBackgroundVisualizationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchBackgroundVisualizationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchBackgroundVisualizationCreateRequest creates the FetchBackgroundVisualization request.
@@ -432,7 +438,7 @@ func (client *IssueClient) fetchBackgroundVisualizationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -472,7 +478,8 @@ func (client *IssueClient) FetchInvestigationResult(ctx context.Context, resourc
 	if err != nil {
 		return IssueClientFetchInvestigationResultResponse{}, err
 	}
-	return client.fetchInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchInvestigationResultCreateRequest creates the FetchInvestigationResult request.
@@ -499,7 +506,7 @@ func (client *IssueClient) fetchInvestigationResultCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -541,7 +548,8 @@ func (client *IssueClient) Get(ctx context.Context, resourceGroupName string, az
 	if err != nil {
 		return IssueClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -568,7 +576,7 @@ func (client *IssueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -582,6 +590,148 @@ func (client *IssueClient) getHandleResponse(resp *http.Response, successCodes .
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResource); err != nil {
 		return IssueClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListAlerts - List all alerts in the issue - this method uses pagination to return all alerts
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
+//   - issueName - The name of the IssueResource
+//   - body - The content of the action request
+//   - options - IssueClientListAlertsOptions contains the optional parameters for the IssueClient.ListAlerts method.
+func (client *IssueClient) ListAlerts(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, options *IssueClientListAlertsOptions) (IssueClientListAlertsResponse, error) {
+	var err error
+	const operationName = "IssueClient.ListAlerts"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listAlertsCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, issueName, body, options)
+	if err != nil {
+		return IssueClientListAlertsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IssueClientListAlertsResponse{}, err
+	}
+	resp, err := client.listAlertsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listAlertsCreateRequest creates the ListAlerts request.
+func (client *IssueClient) listAlertsCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, _ *IssueClientListAlertsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}/listAlerts"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if azureMonitorWorkspaceName == "" {
+		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
+	if issueName == "" {
+		return nil, errors.New("parameter issueName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{issueName}", url.PathEscape(issueName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260903Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listAlertsHandleResponse handles the ListAlerts response.
+func (client *IssueClient) listAlertsHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListAlertsResponse, error) {
+	result := IssueClientListAlertsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PagedRelatedAlert); err != nil {
+		return IssueClientListAlertsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListResources - List all resources in the issue - this method uses pagination to return all resources
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
+//   - issueName - The name of the IssueResource
+//   - body - The content of the action request
+//   - options - IssueClientListResourcesOptions contains the optional parameters for the IssueClient.ListResources method.
+func (client *IssueClient) ListResources(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, options *IssueClientListResourcesOptions) (IssueClientListResourcesResponse, error) {
+	var err error
+	const operationName = "IssueClient.ListResources"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listResourcesCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, issueName, body, options)
+	if err != nil {
+		return IssueClientListResourcesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IssueClientListResourcesResponse{}, err
+	}
+	resp, err := client.listResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listResourcesCreateRequest creates the ListResources request.
+func (client *IssueClient) listResourcesCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, _ *IssueClientListResourcesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}/listResources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if azureMonitorWorkspaceName == "" {
+		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
+	if issueName == "" {
+		return nil, errors.New("parameter issueName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{issueName}", url.PathEscape(issueName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260903Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listResourcesHandleResponse handles the ListResources response.
+func (client *IssueClient) listResourcesHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListResourcesResponse, error) {
+	result := IssueClientListResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PagedRelatedResource); err != nil {
+		return IssueClientListResourcesResponse{}, err
 	}
 	return result, nil
 }
@@ -643,7 +793,7 @@ func (client *IssueClient) listCreateRequest(ctx context.Context, resourceGroupN
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251003)
+		reqQP.Set("api-version", version20260903Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -658,146 +808,6 @@ func (client *IssueClient) listHandleResponse(resp *http.Response, successCodes 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResourceListResult); err != nil {
 		return IssueClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// ListAlerts - List all alerts in the issue - this method uses pagination to return all alerts
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
-//   - issueName - The name of the IssueResource
-//   - body - The content of the action request
-//   - options - IssueClientListAlertsOptions contains the optional parameters for the IssueClient.ListAlerts method.
-func (client *IssueClient) ListAlerts(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, options *IssueClientListAlertsOptions) (IssueClientListAlertsResponse, error) {
-	var err error
-	const operationName = "IssueClient.ListAlerts"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listAlertsCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, issueName, body, options)
-	if err != nil {
-		return IssueClientListAlertsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IssueClientListAlertsResponse{}, err
-	}
-	return client.listAlertsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listAlertsCreateRequest creates the ListAlerts request.
-func (client *IssueClient) listAlertsCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, _ *IssueClientListAlertsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}/listAlerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if azureMonitorWorkspaceName == "" {
-		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	if issueName == "" {
-		return nil, errors.New("parameter issueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{issueName}", url.PathEscape(issueName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listAlertsHandleResponse handles the ListAlerts response.
-func (client *IssueClient) listAlertsHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListAlertsResponse, error) {
-	result := IssueClientListAlertsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PagedRelatedAlert); err != nil {
-		return IssueClientListAlertsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListResources - List all resources in the issue - this method uses pagination to return all resources
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
-//   - issueName - The name of the IssueResource
-//   - body - The content of the action request
-//   - options - IssueClientListResourcesOptions contains the optional parameters for the IssueClient.ListResources method.
-func (client *IssueClient) ListResources(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, options *IssueClientListResourcesOptions) (IssueClientListResourcesResponse, error) {
-	var err error
-	const operationName = "IssueClient.ListResources"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listResourcesCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, issueName, body, options)
-	if err != nil {
-		return IssueClientListResourcesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IssueClientListResourcesResponse{}, err
-	}
-	return client.listResourcesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listResourcesCreateRequest creates the ListResources request.
-func (client *IssueClient) listResourcesCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, issueName string, body ListParameter, _ *IssueClientListResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}/listResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if azureMonitorWorkspaceName == "" {
-		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	if issueName == "" {
-		return nil, errors.New("parameter issueName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{issueName}", url.PathEscape(issueName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listResourcesHandleResponse handles the ListResources response.
-func (client *IssueClient) listResourcesHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListResourcesResponse, error) {
-	result := IssueClientListResourcesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PagedRelatedResource); err != nil {
-		return IssueClientListResourcesResponse{}, err
 	}
 	return result, nil
 }
@@ -825,7 +835,8 @@ func (client *IssueClient) SetBackgroundVisualization(ctx context.Context, resou
 		return IssueClientSetBackgroundVisualizationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return IssueClientSetBackgroundVisualizationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IssueClientSetBackgroundVisualizationResponse{}, err
 	}
 	return IssueClientSetBackgroundVisualizationResponse{}, nil
 }
@@ -854,7 +865,7 @@ func (client *IssueClient) setBackgroundVisualizationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -884,7 +895,8 @@ func (client *IssueClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return IssueClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -911,7 +923,7 @@ func (client *IssueClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
+	reqQP.Set("api-version", version20260903Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

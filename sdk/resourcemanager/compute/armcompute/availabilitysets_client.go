@@ -44,57 +44,6 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// CancelMigrationToVirtualMachineScaleSet - Cancel the migration operation on an Availability Set.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - availabilitySetName - The name of the availability set.
-//   - options - AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the
-//     AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet method.
-func (client *AvailabilitySetsClient) CancelMigrationToVirtualMachineScaleSet(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse, error) {
-	var err error
-	const operationName = "AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.cancelMigrationToVirtualMachineScaleSetCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
-	if err != nil {
-		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, nil
-}
-
-// cancelMigrationToVirtualMachineScaleSetCreateRequest creates the CancelMigrationToVirtualMachineScaleSet request.
-func (client *AvailabilitySetsClient) cancelMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/cancelMigrationToVirtualMachineScaleSet"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if availabilitySetName == "" {
-		return nil, errors.New("parameter availabilitySetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // BeginConvertToVirtualMachineScaleSet - Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines
 // in the Availability Set. This does not trigger a downtime on the Virtual Machines.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -119,7 +68,7 @@ func (client *AvailabilitySetsClient) BeginConvertToVirtualMachineScaleSet(ctx c
 	}
 }
 
-// ConvertToVirtualMachineScaleSet - Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines
+// convertToVirtualMachineScaleSet - Create a new Flexible Virtual Machine Scale Set and migrate all the Virtual Machines
 // in the Availability Set. This does not trigger a downtime on the Virtual Machines.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSet(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (*http.Response, error) {
@@ -137,12 +86,13 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSet(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// convertToVirtualMachineScaleSetCreateRequest creates the ConvertToVirtualMachineScaleSet request.
+// convertToVirtualMachineScaleSetCreateRequest creates the convertToVirtualMachineScaleSet request.
 func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/convertToVirtualMachineScaleSet"
 	if client.subscriptionID == "" {
@@ -174,6 +124,58 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSetCreateReque
 	return req, nil
 }
 
+// CancelMigrationToVirtualMachineScaleSet - Cancel the migration operation on an Availability Set.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - availabilitySetName - The name of the availability set.
+//   - options - AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the
+//     AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet method.
+func (client *AvailabilitySetsClient) CancelMigrationToVirtualMachineScaleSet(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse, error) {
+	var err error
+	const operationName = "AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelMigrationToVirtualMachineScaleSetCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
+	if err != nil {
+		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
+	}
+	return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, nil
+}
+
+// cancelMigrationToVirtualMachineScaleSetCreateRequest creates the CancelMigrationToVirtualMachineScaleSet request.
+func (client *AvailabilitySetsClient) cancelMigrationToVirtualMachineScaleSetCreateRequest(ctx context.Context, resourceGroupName string, availabilitySetName string, _ *AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}/cancelMigrationToVirtualMachineScaleSet"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if availabilitySetName == "" {
+		return nil, errors.New("parameter availabilitySetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{availabilitySetName}", url.PathEscape(availabilitySetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Create or update an availability set.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -195,7 +197,8 @@ func (client *AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -260,7 +263,8 @@ func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupN
 		return AvailabilitySetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AvailabilitySetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientDeleteResponse{}, err
 	}
 	return AvailabilitySetsClientDeleteResponse{}, nil
 }
@@ -309,7 +313,8 @@ func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -346,78 +351,6 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySet); err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all availability sets in a resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.NewListPager
-//     method.
-func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, options *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListResponse]{
-		More: func(page AvailabilitySetsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListResponse) (AvailabilitySetsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
-			if err != nil {
-				return AvailabilitySetsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AvailabilitySetsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AvailabilitySetsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientListResponse, error) {
-	result := AvailabilitySetsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySetListResult); err != nil {
-		return AvailabilitySetsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -570,6 +503,78 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 	return result, nil
 }
 
+// NewListPager - Lists all availability sets in a resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - AvailabilitySetsClientListOptions contains the optional parameters for the AvailabilitySetsClient.NewListPager
+//     method.
+func (client *AvailabilitySetsClient) NewListPager(resourceGroupName string, options *AvailabilitySetsClientListOptions) *runtime.Pager[AvailabilitySetsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListResponse]{
+		More: func(page AvailabilitySetsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AvailabilitySetsClientListResponse) (AvailabilitySetsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvailabilitySetsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return AvailabilitySetsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AvailabilitySetsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AvailabilitySetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AvailabilitySetsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AvailabilitySetsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AvailabilitySetsClientListResponse, error) {
+	result := AvailabilitySetsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilitySetListResult); err != nil {
+		return AvailabilitySetsClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // StartMigrationToVirtualMachineScaleSet - Start migration operation on an Availability Set to move its Virtual Machines
 // to a Virtual Machine Scale Set. This should be followed by a migrate operation on each Virtual Machine that triggers a
 // downtime on the Virtual Machine.
@@ -594,7 +599,8 @@ func (client *AvailabilitySetsClient) StartMigrationToVirtualMachineScaleSet(ctx
 		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, nil
 }
@@ -648,7 +654,8 @@ func (client *AvailabilitySetsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AvailabilitySetsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -716,7 +723,8 @@ func (client *AvailabilitySetsClient) ValidateMigrationToVirtualMachineScaleSet(
 		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, nil
 }

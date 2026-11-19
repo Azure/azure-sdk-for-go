@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance/v2"
 	"log"
 )
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.json
 func ExampleConfigurationAssignmentsForSubscriptionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleConfigurationAssignmentsForSubscriptionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_Delete.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_Delete.json
 func ExampleConfigurationAssignmentsForSubscriptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleConfigurationAssignmentsForSubscriptionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_Get.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_Get.json
 func ExampleConfigurationAssignmentsForSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleConfigurationAssignmentsForSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForSubscriptions_UpdateForResource.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForSubscriptions_UpdateForResource.json
 func ExampleConfigurationAssignmentsForSubscriptionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -68,7 +68,8 @@ func (client *JobStepsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return JobStepsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -148,7 +149,8 @@ func (client *JobStepsClient) Delete(ctx context.Context, resourceGroupName stri
 		return JobStepsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return JobStepsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobStepsClientDeleteResponse{}, err
 	}
 	return JobStepsClientDeleteResponse{}, nil
 }
@@ -212,7 +214,8 @@ func (client *JobStepsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return JobStepsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -288,7 +291,8 @@ func (client *JobStepsClient) GetByVersion(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobStepsClientGetByVersionResponse{}, err
 	}
-	return client.getByVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByVersionCreateRequest creates the GetByVersion request.

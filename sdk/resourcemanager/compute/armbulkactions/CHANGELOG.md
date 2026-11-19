@@ -1,5 +1,29 @@
 # Release History
 
+## 0.7.0 (2026-10-13)
+### Breaking Changes
+
+- Enum `PartialFulfillmentMode` has been removed
+- Enum `PartialFulfillmentReason` has been removed
+- Struct `BulkCreateCustomPriorityProfile` has been removed
+- Struct `PartialFulfillmentPolicy` has been removed
+- Struct `PriorityProfile` has been removed
+- Field `MinCapacity`, `PartialFulfillmentPolicy`, `PriorityProfile` of struct `BulkCreateCustomProperties` has been removed
+- Field `MinCapacity`, `PartialFulfillmentPolicy`, `PriorityProfile` of struct `BulkCreateProperties` has been removed
+
+### Features Added
+
+- New enum type `ExtendedLocationType` with values `ExtendedLocationTypeCustomLocation`, `ExtendedLocationTypeEdgeZone`
+- New enum type `ZonePlacementPolicyType` with values `ZonePlacementPolicyTypeAny`, `ZonePlacementPolicyTypeAuto`
+- New struct `BillingProfile`
+- New struct `ExtendedLocation`
+- New struct `Placement`
+- New field `ExtendedLocation`, `Placement`, `Zone` in struct `BulkCreateCustomOverride`
+- New field `BillingProfile`, `EvictionPolicy`, `Priority` in struct `BulkactionVMProperties`
+- New field `ExtendedLocation`, `Placement` in struct `LocationBasedBulkCreate`
+- New field `ExtendedLocation`, `Placement` in struct `LocationBasedBulkCreateCustom`
+
+
 ## 0.6.0 (2026-09-29)
 ### Features Added
 

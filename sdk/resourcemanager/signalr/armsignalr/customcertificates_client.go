@@ -68,7 +68,7 @@ func (client *CustomCertificatesClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update a custom certificate.
+// createOrUpdate - Create or update a custom certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CustomCertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, options *CustomCertificatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *CustomCertificatesClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CustomCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, certificateName string, parameters CustomCertificate, _ *CustomCertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customCertificates/{certificateName}"
 	if client.subscriptionID == "" {
@@ -146,7 +147,8 @@ func (client *CustomCertificatesClient) Delete(ctx context.Context, resourceGrou
 		return CustomCertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CustomCertificatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CustomCertificatesClientDeleteResponse{}, err
 	}
 	return CustomCertificatesClientDeleteResponse{}, nil
 }
@@ -200,7 +202,8 @@ func (client *CustomCertificatesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return CustomCertificatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

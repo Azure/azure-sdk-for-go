@@ -1,5 +1,30 @@
 # Release History
 
+## 0.4.0 (2026-11-05)
+### Breaking Changes
+
+- Type of `PlacementScore.Score` has been changed from `*string` to `*PlacementScoreValue`
+- Struct `ComputeDiagnosticBase` has been removed
+- Struct `DiagnosticProperties` has been removed
+- Field `IsQuotaAvailable` of struct `PlacementScore` has been removed
+- Field `ComputeDiagnosticBase` of struct `SpotPlacementScoresClientGetResponse` has been removed
+
+### Features Added
+
+- New enum type `PlacementScoreValue` with values `PlacementScoreValueDataNotFoundOrStale`, `PlacementScoreValueHigh`, `PlacementScoreValueInsufficientQuota`, `PlacementScoreValueLow`, `PlacementScoreValueMedium`, `PlacementScoreValueRestrictedSKUNotAvailable`
+- New function `*ClientFactory.NewComputePlacementScoresClient() *ComputePlacementScoresClient`
+- New function `NewComputePlacementScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputePlacementScoresClient, error)`
+- New function `*ComputePlacementScoresClient.Get(ctx context.Context, location string, options *ComputePlacementScoresClientGetOptions) (ComputePlacementScoresClientGetResponse, error)`
+- New function `*ComputePlacementScoresClient.Post(ctx context.Context, location string, computePlacementScoresInput ComputePlacementScoresInput, options *ComputePlacementScoresClientPostOptions) (ComputePlacementScoresClientPostResponse, error)`
+- New struct `ComputePlacementScoresBase`
+- New struct `ComputePlacementScoresInput`
+- New struct `ComputePlacementScoresResponse`
+- New struct `PlacementScoresProperties`
+- New struct `SpotPlacementScoresBase`
+- New field `PlacementPreference` in struct `PlacementScore`
+- New anonymous field `SpotPlacementScoresBase` in struct `SpotPlacementScoresClientGetResponse`
+
+
 ## 0.3.0 (2026-08-28)
 ### Breaking Changes
 

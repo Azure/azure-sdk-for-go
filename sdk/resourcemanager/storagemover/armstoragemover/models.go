@@ -204,8 +204,25 @@ type AzureStorageBlobContainerEndpointProperties struct {
 	// REQUIRED; The Azure Resource ID of the storage account that is the target destination.
 	StorageAccountResourceID *string
 
+	// Full ARM resource IDs of partner-tenant storage accounts that are allowed
+	// to be the other side of a cross-tenant data transfer pair with this
+	// endpoint. For a source endpoint this lists allowed target storage accounts;
+	// for a target endpoint this lists allowed source storage accounts.
+	// The full list is replaced on PATCH (omit an entry to remove it; include
+	// an entry to add it). Mutual presence in both endpoints' allow lists is
+	// re-validated at every job run start, so removing an entry blocks future
+	// runs that reference the removed storage account.
+	AllowedStorageAccounts []*string
+
 	// A description for the Endpoint.
 	Description *string
+
+	// Opt-in flag enabling this endpoint to be used as one side of a cross-tenant
+	// data transfer pair. When set to true, RBAC for the endpoint's managed
+	// identity is granted on the customer's storage account so that authorization
+	// can be performed entirely in the tenant where this endpoint lives. Defaults
+	// to false. Can be updated via PATCH.
+	EnableCrossTenantTransfer *bool
 
 	// The Endpoint resource kind source or target.
 	EndpointKind *EndpointKind
@@ -229,8 +246,18 @@ type AzureStorageBlobContainerEndpointUpdateProperties struct {
 	// Field has constant value EndpointTypeAzureStorageBlobContainer, any specified value is ignored.
 	EndpointType *EndpointType
 
+	// Replaces the list of partner-tenant storage account ARM IDs allowed to be
+	// the other side of a cross-tenant data transfer pair with this endpoint.
+	// Omit an entry to remove it; include an entry to add it. Removing an entry
+	// blocks future job runs that reference that storage account.
+	AllowedStorageAccounts []*string
+
 	// A description for the Endpoint.
 	Description *string
+
+	// Opt-in flag enabling this endpoint to be used as one side of a cross-tenant
+	// data transfer pair. Defaults to false.
+	EnableCrossTenantTransfer *bool
 }
 
 // GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type AzureStorageBlobContainerEndpointUpdateProperties.
@@ -303,8 +330,25 @@ type AzureStorageSmbFileShareEndpointProperties struct {
 	// REQUIRED; The Azure Resource ID of the storage account.
 	StorageAccountResourceID *string
 
+	// Full ARM resource IDs of partner-tenant storage accounts that are allowed
+	// to be the other side of a cross-tenant data transfer pair with this
+	// endpoint. For a source endpoint this lists allowed target storage accounts;
+	// for a target endpoint this lists allowed source storage accounts.
+	// The full list is replaced on PATCH (omit an entry to remove it; include
+	// an entry to add it). Mutual presence in both endpoints' allow lists is
+	// re-validated at every job run start, so removing an entry blocks future
+	// runs that reference the removed storage account.
+	AllowedStorageAccounts []*string
+
 	// A description for the Endpoint.
 	Description *string
+
+	// Opt-in flag enabling this endpoint to be used as one side of a cross-tenant
+	// data transfer pair. When set to true, RBAC for the endpoint's managed
+	// identity is granted on the customer's storage account so that authorization
+	// can be performed entirely in the tenant where this endpoint lives. Defaults
+	// to false. Can be updated via PATCH.
+	EnableCrossTenantTransfer *bool
 
 	// The Endpoint resource kind source or target.
 	EndpointKind *EndpointKind
@@ -329,8 +373,18 @@ type AzureStorageSmbFileShareEndpointUpdateProperties struct {
 	// Field has constant value EndpointTypeAzureStorageSmbFileShare, any specified value is ignored.
 	EndpointType *EndpointType
 
+	// Replaces the list of partner-tenant storage account ARM IDs allowed to be
+	// the other side of a cross-tenant data transfer pair with this endpoint.
+	// Omit an entry to remove it; include an entry to add it. Removing an entry
+	// blocks future job runs that reference that storage account.
+	AllowedStorageAccounts []*string
+
 	// A description for the Endpoint.
 	Description *string
+
+	// Opt-in flag enabling this endpoint to be used as one side of a cross-tenant
+	// data transfer pair. Defaults to false.
+	EnableCrossTenantTransfer *bool
 }
 
 // GetEndpointBaseUpdateProperties implements the EndpointBaseUpdatePropertiesClassification interface for type AzureStorageSmbFileShareEndpointUpdateProperties.
@@ -516,6 +570,16 @@ type JobDefinitionProperties struct {
 	// List of connections associated to this job
 	Connections []*string
 
+	// Full ARM resource ID of the cross-tenant (foreign) endpoint. On the
+	// source-tenant copy this is the TARGET endpoint; on the
+	// target-tenant copy this is the SOURCE endpoint.
+	CrossTenantEndpointResourceID *string
+
+	// The Azure AD tenant ID of the cross-tenant source endpoint. Required when
+	// `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+	// created.
+	CrossTenantEndpointTenantID *string
+
 	// The checksum validation mode for the job definition.
 	DataIntegrityValidation *DataIntegrityValidation
 
@@ -523,8 +587,18 @@ type JobDefinitionProperties struct {
 	// migrating data between cloud to cloud.
 	Description *string
 
+	// Indicates that this Job Definition is a cross-tenant job where the
+	// counterpart endpoint resides in a different Azure AD tenant. When true,
+	// `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+	// provided. Defaults to false. Cannot be modified after the Job Definition is
+	// created.
+	IsCrossTenantJob *bool
+
 	// The type of the Job.
 	JobType *JobType
+
+	// The last time the mover was synchronized.
+	MoverSyncedUntil *time.Time
 
 	// Boolean to preserve permissions or not.
 	PreservePermissions *bool
@@ -537,6 +611,9 @@ type JobDefinitionProperties struct {
 
 	// The list of cloud endpoints to migrate.
 	SourceTargetMap *JobDefinitionPropertiesSourceTargetMap
+
+	// The synchronization mode for the Job Definition.
+	SyncMode *string
 
 	// The subpath to use when writing to the target Endpoint.
 	TargetSubpath *string
@@ -591,8 +668,14 @@ type JobDefinitionUpdateProperties struct {
 	// A description for the Job Definition.
 	Description *string
 
+	// The last time the mover was synchronized.
+	MoverSyncedUntil *time.Time
+
 	// Schedule information for the Job Definition.
 	Schedule *ScheduleInfo
+
+	// The synchronization mode for the Job Definition.
+	SyncMode *string
 }
 
 // JobRun - The Job Run resource.
@@ -793,6 +876,9 @@ type NfsMountEndpointProperties struct {
 
 	// The NFS protocol version.
 	NfsVersion *NfsVersion
+
+	// Source type to differentiate NFSMount and FSX-SMB endpoints. Default is NFSMount.
+	SourceType *NfsMountSourceType
 
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState
@@ -1014,6 +1100,9 @@ type ScheduleInfo struct {
 	// Whether the schedule is currently active
 	IsActive *bool
 
+	// Repeat interval used for sub-daily schedules.
+	RepeatInterval *string
+
 	// Specific one-time execution date and time
 	StartDate *time.Time
 }
@@ -1048,6 +1137,9 @@ type SmbMountEndpointProperties struct {
 
 	// The Endpoint resource kind source or target.
 	EndpointKind *EndpointKind
+
+	// Source type to differentiate SMBMount and FSX-SMB endpoints. Default is SMBMount.
+	SourceType *SmbMountSourceType
 
 	// READ-ONLY; The provisioning state of this resource.
 	ProvisioningState *ProvisioningState

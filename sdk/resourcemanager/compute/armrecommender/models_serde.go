@@ -13,8 +13,8 @@ import (
 	"time"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type ComputeDiagnosticBase.
-func (c ComputeDiagnosticBase) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComputePlacementScoresBase.
+func (c ComputePlacementScoresBase) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "name", c.Name)
@@ -24,8 +24,8 @@ func (c ComputeDiagnosticBase) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ComputeDiagnosticBase.
-func (c *ComputeDiagnosticBase) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ComputePlacementScoresBase.
+func (c *ComputePlacementScoresBase) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
@@ -56,28 +56,83 @@ func (c *ComputeDiagnosticBase) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DiagnosticProperties.
-func (d DiagnosticProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ComputePlacementScoresInput.
+func (c ComputePlacementScoresInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "supportedResourceTypes", d.SupportedResourceTypes)
+	populate(objectMap, "availabilityZones", c.AvailabilityZones)
+	populate(objectMap, "desiredCount", c.DesiredCount)
+	populate(objectMap, "desiredLocations", c.DesiredLocations)
+	populate(objectMap, "desiredSizes", c.DesiredSizes)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DiagnosticProperties.
-func (d *DiagnosticProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ComputePlacementScoresInput.
+func (c *ComputePlacementScoresInput) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
+		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "supportedResourceTypes":
-			err = unpopulate(val, "SupportedResourceTypes", &d.SupportedResourceTypes)
+		case "availabilityZones":
+			err = unpopulate(val, "AvailabilityZones", &c.AvailabilityZones)
+			delete(rawMsg, key)
+		case "desiredCount":
+			err = unpopulate(val, "DesiredCount", &c.DesiredCount)
+			delete(rawMsg, key)
+		case "desiredLocations":
+			err = unpopulate(val, "DesiredLocations", &c.DesiredLocations)
+			delete(rawMsg, key)
+		case "desiredSizes":
+			err = unpopulate(val, "DesiredSizes", &c.DesiredSizes)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
+			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ComputePlacementScoresResponse.
+func (c ComputePlacementScoresResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "availabilityZones", c.AvailabilityZones)
+	populate(objectMap, "desiredCount", c.DesiredCount)
+	populate(objectMap, "desiredLocations", c.DesiredLocations)
+	populate(objectMap, "desiredSizes", c.DesiredSizes)
+	populate(objectMap, "placementScores", c.PlacementScores)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ComputePlacementScoresResponse.
+func (c *ComputePlacementScoresResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "availabilityZones":
+			err = unpopulate(val, "AvailabilityZones", &c.AvailabilityZones)
+			delete(rawMsg, key)
+		case "desiredCount":
+			err = unpopulate(val, "DesiredCount", &c.DesiredCount)
+			delete(rawMsg, key)
+		case "desiredLocations":
+			err = unpopulate(val, "DesiredLocations", &c.DesiredLocations)
+			delete(rawMsg, key)
+		case "desiredSizes":
+			err = unpopulate(val, "DesiredSizes", &c.DesiredSizes)
+			delete(rawMsg, key)
+		case "placementScores":
+			err = unpopulate(val, "PlacementScores", &c.PlacementScores)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
 		}
 	}
 	return nil
@@ -200,7 +255,7 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 func (p PlacementScore) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "availabilityZone", p.AvailabilityZone)
-	populate(objectMap, "isQuotaAvailable", p.IsQuotaAvailable)
+	populate(objectMap, "placementPreference", p.PlacementPreference)
 	populate(objectMap, "region", p.Region)
 	populate(objectMap, "sku", p.SKU)
 	populate(objectMap, "score", p.Score)
@@ -219,8 +274,8 @@ func (p *PlacementScore) UnmarshalJSON(data []byte) error {
 		case "availabilityZone":
 			err = unpopulate(val, "AvailabilityZone", &p.AvailabilityZone)
 			delete(rawMsg, key)
-		case "isQuotaAvailable":
-			err = unpopulate(val, "IsQuotaAvailable", &p.IsQuotaAvailable)
+		case "placementPreference":
+			err = unpopulate(val, "PlacementPreference", &p.PlacementPreference)
 			delete(rawMsg, key)
 		case "region":
 			err = unpopulate(val, "Region", &p.Region)
@@ -230,6 +285,33 @@ func (p *PlacementScore) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "score":
 			err = unpopulate(val, "Score", &p.Score)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PlacementScoresProperties.
+func (p PlacementScoresProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "supportedResourceTypes", p.SupportedResourceTypes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PlacementScoresProperties.
+func (p *PlacementScoresProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "supportedResourceTypes":
+			err = unpopulate(val, "SupportedResourceTypes", &p.SupportedResourceTypes)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -720,6 +802,49 @@ func (s *SKUMixPlacementZonePreference) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "zone":
 			err = unpopulate(val, "Zone", &s.Zone)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SpotPlacementScoresBase.
+func (s SpotPlacementScoresBase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "type", s.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SpotPlacementScoresBase.
+func (s *SpotPlacementScoresBase) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &s.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &s.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &s.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &s.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

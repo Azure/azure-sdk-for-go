@@ -79,6 +79,94 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// }
 }
 
+// Generated from example definition: 2025-01-01-preview/SignalRReplicas_Restart.json
+func ExampleReplicasClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsignalr.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicasClient().BeginRestart(ctx, "myResourceGroup", "mySignalRService", "mySignalRService-eastus", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-01-01-preview/SignalRReplicas_Update.json
+func ExampleReplicasClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsignalr.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicasClient().BeginUpdate(ctx, "myResourceGroup", "mySignalRService", "mySignalRService-eastus", armsignalr.Replica{
+		Location: to.Ptr("eastus"),
+		Properties: &armsignalr.ReplicaProperties{
+			ResourceStopped: to.Ptr("false"),
+		},
+		SKU: &armsignalr.ResourceSKU{
+			Name:     to.Ptr("Premium_P1"),
+			Capacity: to.Ptr[int32](1),
+			Tier:     to.Ptr(armsignalr.SignalRSKUTierPremium),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsignalr.ReplicasClientUpdateResponse{
+	// 	Replica: armsignalr.Replica{
+	// 		Name: to.Ptr("mySignalRService-eastus"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/SignalR"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/replicas/mySignalRService-eastus"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armsignalr.ReplicaProperties{
+	// 			ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
+	// 			RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 			ResourceStopped: to.Ptr("false"),
+	// 		},
+	// 		SKU: &armsignalr.ResourceSKU{
+	// 			Name: to.Ptr("Premium_P1"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Size: to.Ptr("P1"),
+	// 			Tier: to.Ptr(armsignalr.SignalRSKUTierPremium),
+	// 		},
+	// 		SystemData: &armsignalr.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-01-01-preview/SignalRReplicas_Delete.json
 func ExampleReplicasClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -208,92 +296,4 @@ func ExampleReplicasClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-01-01-preview/SignalRReplicas_Restart.json
-func ExampleReplicasClient_BeginRestart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsignalr.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicasClient().BeginRestart(ctx, "myResourceGroup", "mySignalRService", "mySignalRService-eastus", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-01-01-preview/SignalRReplicas_Update.json
-func ExampleReplicasClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsignalr.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicasClient().BeginUpdate(ctx, "myResourceGroup", "mySignalRService", "mySignalRService-eastus", armsignalr.Replica{
-		Location: to.Ptr("eastus"),
-		Properties: &armsignalr.ReplicaProperties{
-			ResourceStopped: to.Ptr("false"),
-		},
-		SKU: &armsignalr.ResourceSKU{
-			Name:     to.Ptr("Premium_P1"),
-			Capacity: to.Ptr[int32](1),
-			Tier:     to.Ptr(armsignalr.SignalRSKUTierPremium),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsignalr.ReplicasClientUpdateResponse{
-	// 	Replica: armsignalr.Replica{
-	// 		Name: to.Ptr("mySignalRService-eastus"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/SignalR"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/SignalR/mySignalRService/replicas/mySignalRService-eastus"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armsignalr.ReplicaProperties{
-	// 			ProvisioningState: to.Ptr(armsignalr.ProvisioningStateSucceeded),
-	// 			RegionEndpointEnabled: to.Ptr("Enabled"),
-	// 			ResourceStopped: to.Ptr("false"),
-	// 		},
-	// 		SKU: &armsignalr.ResourceSKU{
-	// 			Name: to.Ptr("Premium_P1"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Size: to.Ptr("P1"),
-	// 			Tier: to.Ptr(armsignalr.SignalRSKUTierPremium),
-	// 		},
-	// 		SystemData: &armsignalr.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armsignalr.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 		},
-	// 	},
-	// }
 }

@@ -5,12 +5,18 @@ package arm
 
 import (
 	"context"
+	"errors"
+	"net/http"
+	"net/url"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,6 +59,7 @@ func TestNewClientError(t *testing.T) {
 			},
 		},
 	}
+
 	client, err = NewClient("module", "v1.0.0", fakeCredential{}, &ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Cloud: badCloud,
@@ -60,4 +67,42 @@ func TestNewClientError(t *testing.T) {
 	})
 	require.Error(t, err)
 	require.Nil(t, client)
+}
+
+func TestClientTracingSanitizer(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	endpoint := srv.URL() + "?sig=secret&visible=value"
+	expectedErr := &url.Error{Op: "Get", URL: endpoint, Err: errors.New("failed")}
+	srv.SetError(expectedErr)
+	var description string
+	client, err := NewClient("module", "v1.0.0", fakeCredential{}, &ClientOptions{
+		DisableRPRegistration: true,
+		ClientOptions: azcore.ClientOptions{
+			InsecureAllowCredentialWithHTTP: true,
+			Transport:                       srv,
+			Retry:                           policy.RetryOptions{MaxRetries: -1},
+			Logging:                         policy.LogOptions{AllowedQueryParams: []string{"visible"}},
+			TracingProvider: tracing.NewProvider(func(name, version string) tracing.Tracer {
+				return tracing.NewTracer(func(ctx context.Context, name string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
+					return ctx, tracing.NewSpan(tracing.SpanImpl{
+						SetStatus: func(_ tracing.SpanStatus, desc string) {
+							if name == "Client.Operation" {
+								description = desc
+							}
+						},
+					})
+				}, nil)
+			}, nil),
+		},
+	})
+	require.NoError(t, err)
+	ctx, end := runtime.StartSpan(context.Background(), "Client.Operation", client.Tracer(), nil)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, endpoint)
+	require.NoError(t, err)
+	_, err = client.Pipeline().Do(req)
+	end(err)
+	require.Same(t, expectedErr, err)
+	require.Contains(t, description, "?sig=REDACTED&visible=value")
+	require.NotContains(t, description, "secret")
 }

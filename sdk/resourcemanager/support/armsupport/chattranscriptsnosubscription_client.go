@@ -58,7 +58,8 @@ func (client *ChatTranscriptsNoSubscriptionClient) Get(ctx context.Context, supp
 	if err != nil {
 		return ChatTranscriptsNoSubscriptionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

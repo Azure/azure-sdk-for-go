@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-30/UpdateSummaries_CheckHealth.json
+// Generated from example definition: 2026-10-01/UpdateSummaries_CheckHealth.json
 func ExampleUpdateSummariesOperationGroupClient_BeginCheckHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleUpdateSummariesOperationGroupClient_BeginCheckHealth() {
 	}
 }
 
-// Generated from example definition: 2026-04-30/UpdateSummaries_CheckUpdates.json
+// Generated from example definition: 2026-10-01/UpdateSummaries_CheckUpdates.json
 func ExampleUpdateSummariesOperationGroupClient_BeginCheckUpdates_checkForUpdates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleUpdateSummariesOperationGroupClient_BeginCheckUpdates_checkForUpdate
 	}
 }
 
-// Generated from example definition: 2026-04-30/UpdateSummaries_CheckUpdates_MaximumSet.json
+// Generated from example definition: 2026-10-01/UpdateSummaries_CheckUpdates_MaximumSet.json
 func ExampleUpdateSummariesOperationGroupClient_BeginCheckUpdates_checkForSpecificUpdateByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

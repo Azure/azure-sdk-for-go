@@ -173,6 +173,9 @@ type ReservationRecommendationDetailsClientGetOptions struct {
 	// Used to filter reservation recommendation details by: properties/subscriptionId can be specified for billing account and
 	// billing profile paths.
 	Filter *string
+
+	// Specify the management group ID. Required when recommendation scope is 'ManagementGroup'.
+	ManagementGroupID *string
 }
 
 // ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.NewListPager

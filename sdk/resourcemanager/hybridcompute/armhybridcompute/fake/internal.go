@@ -20,7 +20,7 @@ type nonRetriableError struct {
 	error
 }
 
-func (nonRetriableError) NonRetriable() {
+func (*nonRetriableError) NonRetriable() {
 	// marker method
 }
 
@@ -37,6 +37,17 @@ func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
 		*dst = src()
 	}
 	mu.Unlock()
+}
+
+func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
+	if v == "" {
+		return nil, nil
+	}
+	t, err := parse(v)
+	if err != nil {
+		return nil, err
+	}
+	return &t, nil
 }
 
 func newTracker[T any]() *tracker[T] {

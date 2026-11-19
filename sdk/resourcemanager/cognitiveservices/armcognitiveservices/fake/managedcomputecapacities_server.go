@@ -46,7 +46,7 @@ func (m *ManagedComputeCapacitiesServerTransport) Do(req *http.Request) (*http.R
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return m.dispatchToMethodFake(req, method)
@@ -95,11 +95,13 @@ func (m *ManagedComputeCapacitiesServerTransport) dispatchNewListPager(req *http
 		qp := req.URL.Query()
 		acceleratorTypeParam := getOptional(qp.Get("acceleratorType"))
 		deploymentIDParam := getOptional(qp.Get("deploymentId"))
+		locationParam := getOptional(qp.Get("location"))
 		var options *armcognitiveservices.ManagedComputeCapacitiesClientListOptions
-		if acceleratorTypeParam != nil || deploymentIDParam != nil {
+		if acceleratorTypeParam != nil || deploymentIDParam != nil || locationParam != nil {
 			options = &armcognitiveservices.ManagedComputeCapacitiesClientListOptions{
 				AcceleratorType: acceleratorTypeParam,
 				DeploymentID:    deploymentIDParam,
+				Location:        locationParam,
 			}
 		}
 		resp := m.srv.NewListPager(qp.Get("offer"), options)

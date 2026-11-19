@@ -68,7 +68,8 @@ func (client *ContainerAppsRevisionsClient) ActivateRevision(ctx context.Context
 		return ContainerAppsRevisionsClientActivateRevisionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ContainerAppsRevisionsClientActivateRevisionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsRevisionsClientActivateRevisionResponse{}, err
 	}
 	return ContainerAppsRevisionsClientActivateRevisionResponse{}, nil
 }
@@ -126,7 +127,8 @@ func (client *ContainerAppsRevisionsClient) DeactivateRevision(ctx context.Conte
 		return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, err
 	}
 	return ContainerAppsRevisionsClientDeactivateRevisionResponse{}, nil
 }
@@ -183,7 +185,8 @@ func (client *ContainerAppsRevisionsClient) GetRevision(ctx context.Context, res
 	if err != nil {
 		return ContainerAppsRevisionsClientGetRevisionResponse{}, err
 	}
-	return client.getRevisionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRevisionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRevisionCreateRequest creates the GetRevision request.
@@ -334,7 +337,8 @@ func (client *ContainerAppsRevisionsClient) RestartRevision(ctx context.Context,
 		return ContainerAppsRevisionsClientRestartRevisionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ContainerAppsRevisionsClientRestartRevisionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsRevisionsClientRestartRevisionResponse{}, err
 	}
 	return ContainerAppsRevisionsClientRestartRevisionResponse{}, nil
 }

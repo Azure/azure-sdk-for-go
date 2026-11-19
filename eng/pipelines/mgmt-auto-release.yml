@@ -7,6 +7,7 @@ extends:
     stages:
       - stage:
         variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
         jobs:
           - job:
@@ -38,7 +39,7 @@ extends:
 
               - task: GoTool@0
                 inputs:
-                  version: '1.25.4'
+                  version: '$(GO_VERSION_LATEST)'
 
               - template: /eng/common/pipelines/templates/steps/login-to-github.yml
 

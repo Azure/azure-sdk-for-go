@@ -69,7 +69,7 @@ func (client *ServerConfigurationOptionsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Updates managed instance server configuration option.
+// createOrUpdate - Updates managed instance server configuration option.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerConfigurationOptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, serverConfigurationOptionName ServerConfigurationOptionName, parameters ServerConfigurationOption, options *ServerConfigurationOptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *ServerConfigurationOptionsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServerConfigurationOptionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, serverConfigurationOptionName ServerConfigurationOptionName, parameters ServerConfigurationOption, _ *ServerConfigurationOptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/serverConfigurationOptions/{serverConfigurationOptionName}"
 	if client.subscriptionID == "" {
@@ -146,7 +147,8 @@ func (client *ServerConfigurationOptionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return ServerConfigurationOptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

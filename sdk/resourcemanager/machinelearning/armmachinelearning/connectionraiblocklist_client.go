@@ -71,7 +71,7 @@ func (client *ConnectionRaiBlocklistClient) BeginCreate(ctx context.Context, res
 	}
 }
 
-// Create - Update the state of specified blocklist associated with the Azure OpenAI connection.
+// create - Update the state of specified blocklist associated with the Azure OpenAI connection.
 //
 // Update the state of specified blocklist associated with the Azure OpenAI connection.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -90,12 +90,13 @@ func (client *ConnectionRaiBlocklistClient) create(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ConnectionRaiBlocklistClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, body RaiBlocklistPropertiesBasicResource, options *ConnectionRaiBlocklistClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}"
 	if client.subscriptionID == "" {
@@ -163,7 +164,7 @@ func (client *ConnectionRaiBlocklistClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Deletes the specified custom blocklist associated with the Azure OpenAI connection.
+// deleteOperation - Deletes the specified custom blocklist associated with the Azure OpenAI connection.
 //
 // Deletes the specified custom blocklist associated with the Azure OpenAI connection.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -182,12 +183,13 @@ func (client *ConnectionRaiBlocklistClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectionRaiBlocklistClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, options *ConnectionRaiBlocklistClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}"
 	if client.subscriptionID == "" {
@@ -247,7 +249,8 @@ func (client *ConnectionRaiBlocklistClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ConnectionRaiBlocklistClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

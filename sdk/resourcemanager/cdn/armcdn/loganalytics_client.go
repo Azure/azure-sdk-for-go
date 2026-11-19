@@ -22,7 +22,7 @@ import (
 // LogAnalyticsClient contains the methods for the LogAnalytics group.
 // Don't use this type directly, use NewLogAnalyticsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type LogAnalyticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsLocations(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsLocationsResponse{}, err
 	}
-	return client.getLogAnalyticsLocationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsLocationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsLocationsCreateRequest creates the GetLogAnalyticsLocations request.
@@ -91,7 +92,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -130,7 +131,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsMetrics(ctx context.Context, re
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsMetricsResponse{}, err
 	}
-	return client.getLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsMetricsCreateRequest creates the GetLogAnalyticsMetrics request.
@@ -153,7 +155,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.Continents != nil {
 		for _, qv := range options.Continents {
 			reqQP.Add("continents", qv)
@@ -219,7 +221,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, r
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsRankingsResponse{}, err
 	}
-	return client.getLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsRankingsCreateRequest creates the GetLogAnalyticsRankings request.
@@ -242,7 +245,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	if options != nil && options.CustomDomains != nil {
 		for _, qv := range options.CustomDomains {
 			reqQP.Add("customDomains", qv)
@@ -295,7 +298,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsResources(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsResourcesResponse{}, err
 	}
-	return client.getLogAnalyticsResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsResourcesCreateRequest creates the GetLogAnalyticsResources request.
@@ -318,7 +322,7 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -357,7 +361,8 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsMetrics(ctx context.Context,
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}, err
 	}
-	return client.getWafLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWafLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWafLogAnalyticsMetricsCreateRequest creates the GetWafLogAnalyticsMetrics request.
@@ -385,7 +390,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	reqQP.Set("dateTimeBegin", datetime.RFC3339((dateTimeBegin).UTC()).String())
 	reqQP.Set("dateTimeEnd", datetime.RFC3339((dateTimeEnd).UTC()).String())
 	reqQP.Set("granularity", string(granularity))
@@ -440,7 +445,8 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}, err
 	}
-	return client.getWafLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWafLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWafLogAnalyticsRankingsCreateRequest creates the GetWafLogAnalyticsRankings request.
@@ -468,7 +474,7 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 			reqQP.Add("actions", string(qv))
 		}
 	}
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	reqQP.Set("dateTimeBegin", datetime.RFC3339((dateTimeBegin).UTC()).String())
 	reqQP.Set("dateTimeEnd", datetime.RFC3339((dateTimeEnd).UTC()).String())
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))

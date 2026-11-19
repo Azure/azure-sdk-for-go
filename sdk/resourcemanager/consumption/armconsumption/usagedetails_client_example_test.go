@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/UsageDetailsExpand.json
+// Generated from example definition: 2026-06-01/UsageDetailsExpand.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsExpandLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsExpandLegacy() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsList.json
+// Generated from example definition: 2026-06-01/UsageDetailsList.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListLegacy() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByBillingAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByBillingAccount.json
 func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListLegacy
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByDepartment.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByDepartment.json
 func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListLegacy() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByEnrollmentAccount.json
 func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,7 +390,7 @@ func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListLeg
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCABillingAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCABillingAccount.json
 func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -494,7 +494,7 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListModern
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCABillingProfile.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCABillingProfile.json
 func ExampleUsageDetailsClient_NewListPager_billingProfileUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,7 +598,7 @@ func ExampleUsageDetailsClient_NewListPager_billingProfileUsageDetailsListModern
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCACustomer.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCACustomer.json
 func ExampleUsageDetailsClient_NewListPager_customerUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -702,7 +702,7 @@ func ExampleUsageDetailsClient_NewListPager_customerUsageDetailsListModern() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCAInvoiceSection.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCAInvoiceSection.json
 func ExampleUsageDetailsClient_NewListPager_invoiceSectionUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,7 +806,7 @@ func ExampleUsageDetailsClient_NewListPager_invoiceSectionUsageDetailsListModern
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByManagementGroup.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByManagementGroup.json
 func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -921,7 +921,7 @@ func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListLegac
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMetricActualCost.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMetricActualCost.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricActualCostLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -995,7 +995,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricActualCostLe
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMetricAmortizedCost.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMetricAmortizedCost.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricAmortizedCostLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1070,7 +1070,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricAmortizedCos
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMetricUsage.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMetricUsage.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricUsageLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1144,7 +1144,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricUsageLegacy(
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListFilterByTag.json
+// Generated from example definition: 2026-06-01/UsageDetailsListFilterByTag.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListFilterByTagLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1217,7 +1217,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListFilterByTagLegacy() 
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriod.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriod.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1290,7 +1290,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListForBillingPeriodLega
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByBillingAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByBillingAccount.json
 func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1363,7 +1363,7 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListForBil
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByDepartment.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByDepartment.json
 func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1436,7 +1436,7 @@ func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListForBilling
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByEnrollmentAccount.json
 func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1509,7 +1509,7 @@ func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListFor
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByManagementGroup.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByManagementGroup.json
 func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

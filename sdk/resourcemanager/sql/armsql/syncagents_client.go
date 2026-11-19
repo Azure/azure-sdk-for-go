@@ -69,7 +69,7 @@ func (client *SyncAgentsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Creates or updates a sync agent.
+// createOrUpdate - Creates or updates a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, options *SyncAgentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SyncAgentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, parameters SyncAgent, _ *SyncAgentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *SyncAgentsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes a sync agent.
+// deleteOperation - Deletes a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SyncAgentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, _ *SyncAgentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}"
 	if client.subscriptionID == "" {
@@ -219,7 +221,8 @@ func (client *SyncAgentsClient) GenerateKey(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return SyncAgentsClientGenerateKeyResponse{}, err
 	}
-	return client.generateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateKeyCreateRequest creates the GenerateKey request.
@@ -284,7 +287,8 @@ func (client *SyncAgentsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SyncAgentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

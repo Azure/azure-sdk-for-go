@@ -99,6 +99,24 @@ client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, nil)
 handle(err)
 ```
 
+### Resource name validation
+
+Set `ClientOptions.EnableResourceNameValidation` to `true` when creating a client
+to validate database, container, and item IDs locally before request construction.
+IDs must be valid UTF-8 and non-empty, cannot equal `.` or `..`, and cannot contain
+`/`, `\`, `?`, `#`, tab, line feed, or carriage return. This applies to item point
+operations, read-many operations, and top-level `id` properties in item Create,
+Upsert, and Replace bodies, including transactional batches. Other item properties,
+including nested `id` properties, are not subject to resource-name validation.
+Invalid batch operations are reported by `ExecuteTransactionalBatch` before any
+request is sent.
+
+Validation is disabled by default for compatibility with existing names; some
+service-accepted names cannot be safely addressed by point operations. Existing
+non-empty checks on database and container client constructors and read-many item
+identities still apply. Transactional batch IDs are always JSON-escaped, and
+malformed batch item bodies are always rejected, regardless of this option.
+
 ### Create Database
 
 Using the client created in previous example, you can create a database like this:
@@ -230,6 +248,15 @@ If you encounter bugs or have suggestions, please
 
 ## Contributing
 
+### Multi-partition ReadMany integration test
+
+From this module directory, run `go test . -run '^TestReadMany_MultiplePhysicalPartitions$' -count=1 -v`.
+Set `EMULATOR=true` to use the local emulator, or set `AZURE_COSMOS_CONNECTION_STRING` to use an Azure test account.
+The test creates a temporary database and sequentially provisions containers at **11,000 RU/s**, which incurs charges on Azure.
+It deletes the containers and database during cleanup. Use a provisioned-throughput account with sufficient available capacity, not a serverless account.
+The test requires at least two physical ranges and verifies that items occupy multiple ranges; a single-partition fixture fails rather than silently reducing coverage.
+It covers omitted-version V1, explicit V1, and V2 containers.
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License
 Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For
 details, visit https://cla.microsoft.com.
@@ -241,4 +268,3 @@ do this once across all repos using our CLA.
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-

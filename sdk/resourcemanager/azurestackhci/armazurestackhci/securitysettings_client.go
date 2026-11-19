@@ -19,7 +19,7 @@ import (
 // SecuritySettingsClient contains the methods for the SecuritySettings group.
 // Don't use this type directly, use NewSecuritySettingsClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type SecuritySettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *SecuritySettingsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a security setting
+// createOrUpdate - Create a security setting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecuritySettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, securitySettingsName string, resource SecuritySetting, options *SecuritySettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *SecuritySettingsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SecuritySettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, securitySettingsName string, resource SecuritySetting, _ *SecuritySettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/securitySettings/{securitySettingsName}"
 	if client.subscriptionID == "" {
@@ -115,7 +116,7 @@ func (client *SecuritySettingsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +150,7 @@ func (client *SecuritySettingsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a SecuritySetting
+// deleteOperation - Delete a SecuritySetting
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecuritySettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, securitySettingsName string, options *SecuritySettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *SecuritySettingsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SecuritySettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, securitySettingsName string, _ *SecuritySettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/securitySettings/{securitySettingsName}"
 	if client.subscriptionID == "" {
@@ -195,7 +197,7 @@ func (client *SecuritySettingsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -220,7 +222,8 @@ func (client *SecuritySettingsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SecuritySettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -247,7 +250,7 @@ func (client *SecuritySettingsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,7 +326,7 @@ func (client *SecuritySettingsClient) listByClustersCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

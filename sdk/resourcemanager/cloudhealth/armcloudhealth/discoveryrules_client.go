@@ -20,7 +20,7 @@ import (
 // DiscoveryRulesClient contains the methods for the DiscoveryRules group.
 // Don't use this type directly, use NewDiscoveryRulesClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-11-01
 type DiscoveryRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -70,7 +70,7 @@ func (client *DiscoveryRulesClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create a DiscoveryRule
+// createOrUpdate - Create a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscoveryRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, options *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *DiscoveryRulesClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, _ *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}"
 	if client.subscriptionID == "" {
@@ -116,7 +117,7 @@ func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -150,7 +151,7 @@ func (client *DiscoveryRulesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a DiscoveryRule
+// deleteOperation - Delete a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiscoveryRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *DiscoveryRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *DiscoveryRulesClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DiscoveryRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, _ *DiscoveryRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}"
 	if client.subscriptionID == "" {
@@ -196,7 +198,7 @@ func (client *DiscoveryRulesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -221,7 +223,8 @@ func (client *DiscoveryRulesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return DiscoveryRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -248,7 +251,7 @@ func (client *DiscoveryRulesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +327,7 @@ func (client *DiscoveryRulesClient) listByHealthModelCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.Timestamp != nil {
 			reqQP.Set("timestamp", datetime.RFC3339((*options.Timestamp).UTC()).String())
 		}

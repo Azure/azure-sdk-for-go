@@ -7,8 +7,8 @@ package exported
 type StorageResponseFormat string
 
 const (
-	// StorageResponseFormatAuto lets the SDK choose the response format.
-	// For the current release this resolves to XML; a future release will resolve to Arrow.
+	// StorageResponseFormatAuto lets the SDK choose the response format. It currently resolves to
+	// StorageResponseFormatXML; Arrow is opt-in.
 	StorageResponseFormatAuto StorageResponseFormat = ""
 
 	// StorageResponseFormatXML forces XML-only responses. Use when you need raw XML responses (e.g. debugging).
@@ -17,6 +17,7 @@ const (
 	// StorageResponseFormatArrow sends both Arrow and XML in the Accept header; the service returns Arrow
 	// when Photon is enabled, otherwise falls back to XML. The SDK handles both transparently.
 	// Arrow format is only supported on non-HNS (hierarchical namespace) accounts via the Blob endpoint.
+	// An Arrow listing doesn't carry the service endpoint, so ServiceEndpoint is nil in its response.
 	StorageResponseFormatArrow StorageResponseFormat = "arrow"
 )
 

@@ -19,7 +19,7 @@ import (
 // ProtectionGroupsClient contains the methods for the ProtectionGroups group.
 // Don't use this type directly, use NewProtectionGroupsClient() instead.
 //
-// Generated from API version 2026-07-03-preview
+// Generated from API version 2026-11-03
 type ProtectionGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *ProtectionGroupsClient) Backup(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProtectionGroupsClientBackupResponse{}, err
 	}
-	return client.backupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.backupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // backupCreateRequest creates the Backup request.
@@ -92,7 +93,7 @@ func (client *ProtectionGroupsClient) backupCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -139,7 +140,7 @@ func (client *ProtectionGroupsClient) BeginCreateOrupdate(ctx context.Context, r
 	}
 }
 
-// CreateOrupdate - Create a ProtectionGroup
+// createOrupdate - Create a ProtectionGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProtectionGroupsClient) createOrupdate(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, resource ProtectionGroup, options *ProtectionGroupsClientBeginCreateOrupdateOptions) (*http.Response, error) {
 	var err error
@@ -156,12 +157,13 @@ func (client *ProtectionGroupsClient) createOrupdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrupdateCreateRequest creates the CreateOrupdate request.
+// createOrupdateCreateRequest creates the createOrupdate request.
 func (client *ProtectionGroupsClient) createOrupdateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, resource ProtectionGroup, _ *ProtectionGroupsClientBeginCreateOrupdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}"
 	if client.subscriptionID == "" {
@@ -185,7 +187,7 @@ func (client *ProtectionGroupsClient) createOrupdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -219,7 +221,7 @@ func (client *ProtectionGroupsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a ProtectionGroup
+// deleteOperation - Delete a ProtectionGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProtectionGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *ProtectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -236,12 +238,13 @@ func (client *ProtectionGroupsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ProtectionGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, _ *ProtectionGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}"
 	if client.subscriptionID == "" {
@@ -265,8 +268,89 @@ func (client *ProtectionGroupsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginStopBackup - Stop Backup for a Protection Group
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudAccountName - Name of the Cloud Account resource
+//   - protectionGroupName - Name of the ProtectionGroup resource
+//   - request - The body type of the operation request.
+//   - options - ProtectionGroupsClientBeginStopBackupOptions contains the optional parameters for the ProtectionGroupsClient.BeginStopBackup
+//     method.
+func (client *ProtectionGroupsClient) BeginStopBackup(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request StopBackupProtectionGroupRequest, options *ProtectionGroupsClientBeginStopBackupOptions) (*runtime.Poller[ProtectionGroupsClientStopBackupResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stopBackup(ctx, resourceGroupName, cloudAccountName, protectionGroupName, request, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProtectionGroupsClientStopBackupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProtectionGroupsClientStopBackupResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stopBackup - Stop Backup for a Protection Group
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ProtectionGroupsClient) stopBackup(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request StopBackupProtectionGroupRequest, options *ProtectionGroupsClientBeginStopBackupOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ProtectionGroupsClient.BeginStopBackup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopBackupCreateRequest(ctx, resourceGroupName, cloudAccountName, protectionGroupName, request, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// stopBackupCreateRequest creates the stopBackup request.
+func (client *ProtectionGroupsClient) stopBackupCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request StopBackupProtectionGroupRequest, _ *ProtectionGroupsClientBeginStopBackupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/stopBackup"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudAccountName == "" {
+		return nil, errors.New("parameter cloudAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+	if protectionGroupName == "" {
+		return nil, errors.New("parameter protectionGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{protectionGroupName}", url.PathEscape(protectionGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261103)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, request); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -290,7 +374,8 @@ func (client *ProtectionGroupsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ProtectionGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -317,7 +402,7 @@ func (client *ProtectionGroupsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -393,7 +478,7 @@ func (client *ProtectionGroupsClient) listByCloudAccountCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260703Preview)
+		reqQP.Set("api-version", version20261103)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -434,7 +519,8 @@ func (client *ProtectionGroupsClient) Restore(ctx context.Context, resourceGroup
 	if err != nil {
 		return ProtectionGroupsClientRestoreResponse{}, err
 	}
-	return client.restoreHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restoreHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restoreCreateRequest creates the Restore request.
@@ -461,7 +547,7 @@ func (client *ProtectionGroupsClient) restoreCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -505,7 +591,8 @@ func (client *ProtectionGroupsClient) ResumeBackup(ctx context.Context, resource
 		return ProtectionGroupsClientResumeBackupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return ProtectionGroupsClientResumeBackupResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProtectionGroupsClientResumeBackupResponse{}, err
 	}
 	return ProtectionGroupsClientResumeBackupResponse{}, nil
 }
@@ -534,87 +621,7 @@ func (client *ProtectionGroupsClient) resumeBackupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginStopBackup - Stop Backup for a Protection Group
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudAccountName - Name of the Cloud Account resource
-//   - protectionGroupName - Name of the ProtectionGroup resource
-//   - request - The body type of the operation request.
-//   - options - ProtectionGroupsClientBeginStopBackupOptions contains the optional parameters for the ProtectionGroupsClient.BeginStopBackup
-//     method.
-func (client *ProtectionGroupsClient) BeginStopBackup(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request StopBackupProtectionGroupRequest, options *ProtectionGroupsClientBeginStopBackupOptions) (*runtime.Poller[ProtectionGroupsClientStopBackupResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stopBackup(ctx, resourceGroupName, cloudAccountName, protectionGroupName, request, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ProtectionGroupsClientStopBackupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ProtectionGroupsClientStopBackupResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// StopBackup - Stop Backup for a Protection Group
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProtectionGroupsClient) stopBackup(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request StopBackupProtectionGroupRequest, options *ProtectionGroupsClientBeginStopBackupOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ProtectionGroupsClient.BeginStopBackup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopBackupCreateRequest(ctx, resourceGroupName, cloudAccountName, protectionGroupName, request, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopBackupCreateRequest creates the StopBackup request.
-func (client *ProtectionGroupsClient) stopBackupCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, request StopBackupProtectionGroupRequest, _ *ProtectionGroupsClientBeginStopBackupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/stopBackup"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudAccountName == "" {
-		return nil, errors.New("parameter cloudAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
-	if protectionGroupName == "" {
-		return nil, errors.New("parameter protectionGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{protectionGroupName}", url.PathEscape(protectionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, request); err != nil {
-		return nil, err
-	}
 	return req, nil
 }

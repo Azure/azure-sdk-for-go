@@ -19,7 +19,7 @@ import (
 // UpdateSummariesOperationGroupClient contains the methods for the UpdateSummariesOperationGroup group.
 // Don't use this type directly, use NewUpdateSummariesOperationGroupClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type UpdateSummariesOperationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,7 @@ func (client *UpdateSummariesOperationGroupClient) BeginCheckHealth(ctx context.
 	}
 }
 
-// CheckHealth - Check health of UpdateSummaries
+// checkHealth - Check health of UpdateSummaries
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdateSummariesOperationGroupClient) checkHealth(ctx context.Context, resourceGroupName string, clusterName string, options *UpdateSummariesOperationGroupClientBeginCheckHealthOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *UpdateSummariesOperationGroupClient) checkHealth(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// checkHealthCreateRequest creates the CheckHealth request.
+// checkHealthCreateRequest creates the checkHealth request.
 func (client *UpdateSummariesOperationGroupClient) checkHealthCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpdateSummariesOperationGroupClientBeginCheckHealthOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default/checkHealth"
 	if client.subscriptionID == "" {
@@ -109,7 +110,7 @@ func (client *UpdateSummariesOperationGroupClient) checkHealthCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -138,7 +139,7 @@ func (client *UpdateSummariesOperationGroupClient) BeginCheckUpdates(ctx context
 	}
 }
 
-// CheckUpdates - Check for updates
+// checkUpdates - Check for updates
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdateSummariesOperationGroupClient) checkUpdates(ctx context.Context, resourceGroupName string, clusterName string, body CheckUpdatesRequest, options *UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions) (*http.Response, error) {
 	var err error
@@ -155,12 +156,13 @@ func (client *UpdateSummariesOperationGroupClient) checkUpdates(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// checkUpdatesCreateRequest creates the CheckUpdates request.
+// checkUpdatesCreateRequest creates the checkUpdates request.
 func (client *UpdateSummariesOperationGroupClient) checkUpdatesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, body CheckUpdatesRequest, _ *UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default/checkUpdates"
 	if client.subscriptionID == "" {
@@ -180,7 +182,7 @@ func (client *UpdateSummariesOperationGroupClient) checkUpdatesCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -44,72 +44,6 @@ func NewStoragePoolsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// ConfigurePlatformConsoleAuth - Configure authentication settings for platform console access to the storage pool
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - config - Platform console authentication configuration
-//   - options - StoragePoolsClientConfigurePlatformConsoleAuthOptions contains the optional parameters for the StoragePoolsClient.ConfigurePlatformConsoleAuth
-//     method.
-func (client *StoragePoolsClient) ConfigurePlatformConsoleAuth(ctx context.Context, resourceGroupName string, storagePoolName string, config PlatformConsoleAuthConfigClassification, options *StoragePoolsClientConfigurePlatformConsoleAuthOptions) (StoragePoolsClientConfigurePlatformConsoleAuthResponse, error) {
-	var err error
-	const operationName = "StoragePoolsClient.ConfigurePlatformConsoleAuth"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.configurePlatformConsoleAuthCreateRequest(ctx, resourceGroupName, storagePoolName, config, options)
-	if err != nil {
-		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
-	}
-	return client.configurePlatformConsoleAuthHandleResponse(httpResp, http.StatusOK)
-}
-
-// configurePlatformConsoleAuthCreateRequest creates the ConfigurePlatformConsoleAuth request.
-func (client *StoragePoolsClient) configurePlatformConsoleAuthCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, config PlatformConsoleAuthConfigClassification, _ *StoragePoolsClientConfigurePlatformConsoleAuthOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/configurePlatformConsoleAuth"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, config); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// configurePlatformConsoleAuthHandleResponse handles the ConfigurePlatformConsoleAuth response.
-func (client *StoragePoolsClient) configurePlatformConsoleAuthHandleResponse(resp *http.Response, successCodes ...int) (StoragePoolsClientConfigurePlatformConsoleAuthResponse, error) {
-	result := StoragePoolsClientConfigurePlatformConsoleAuthResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginCreate - Create a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -134,7 +68,7 @@ func (client *StoragePoolsClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Create a storage pool
+// create - Create a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragePoolsClient) create(ctx context.Context, resourceGroupName string, storagePoolName string, resource StoragePool, options *StoragePoolsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -151,12 +85,13 @@ func (client *StoragePoolsClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *StoragePoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, resource StoragePool, _ *StoragePoolsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
 	if client.subscriptionID == "" {
@@ -209,7 +144,7 @@ func (client *StoragePoolsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete a storage pool
+// deleteOperation - Delete a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -226,12 +161,13 @@ func (client *StoragePoolsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StoragePoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
 	if client.subscriptionID == "" {
@@ -279,7 +215,7 @@ func (client *StoragePoolsClient) BeginDisableAvsConnection(ctx context.Context,
 	}
 }
 
-// DisableAvsConnection - Disable the existing AVS connection
+// disableAvsConnection - Disable the existing AVS connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragePoolsClient) disableAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginDisableAvsConnectionOptions) (*http.Response, error) {
 	var err error
@@ -296,12 +232,13 @@ func (client *StoragePoolsClient) disableAvsConnection(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// disableAvsConnectionCreateRequest creates the DisableAvsConnection request.
+// disableAvsConnectionCreateRequest creates the disableAvsConnection request.
 func (client *StoragePoolsClient) disableAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginDisableAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/disableAvsConnection"
 	if client.subscriptionID == "" {
@@ -350,7 +287,7 @@ func (client *StoragePoolsClient) BeginEnableAvsConnection(ctx context.Context, 
 	}
 }
 
-// EnableAvsConnection - Initiate a connection between the storage pool and a specified AVS SDDC resource
+// enableAvsConnection - Initiate a connection between the storage pool and a specified AVS SDDC resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragePoolsClient) enableAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolEnableAvsConnectionPost, options *StoragePoolsClientBeginEnableAvsConnectionOptions) (*http.Response, error) {
 	var err error
@@ -367,12 +304,13 @@ func (client *StoragePoolsClient) enableAvsConnection(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// enableAvsConnectionCreateRequest creates the EnableAvsConnection request.
+// enableAvsConnectionCreateRequest creates the enableAvsConnection request.
 func (client *StoragePoolsClient) enableAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolEnableAvsConnectionPost, _ *StoragePoolsClientBeginEnableAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/enableAvsConnection"
 	if client.subscriptionID == "" {
@@ -425,7 +363,7 @@ func (client *StoragePoolsClient) BeginFinalizeAvsConnection(ctx context.Context
 	}
 }
 
-// FinalizeAvsConnection - Finalize an already started AVS connection to a specific AVS SDDC
+// finalizeAvsConnection - Finalize an already started AVS connection to a specific AVS SDDC
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragePoolsClient) finalizeAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolFinalizeAvsConnectionPost, options *StoragePoolsClientBeginFinalizeAvsConnectionOptions) (*http.Response, error) {
 	var err error
@@ -442,12 +380,13 @@ func (client *StoragePoolsClient) finalizeAvsConnection(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// finalizeAvsConnectionCreateRequest creates the FinalizeAvsConnection request.
+// finalizeAvsConnectionCreateRequest creates the finalizeAvsConnection request.
 func (client *StoragePoolsClient) finalizeAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolFinalizeAvsConnectionPost, _ *StoragePoolsClientBeginFinalizeAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/finalizeAvsConnection"
 	if client.subscriptionID == "" {
@@ -476,6 +415,223 @@ func (client *StoragePoolsClient) finalizeAvsConnectionCreateRequest(ctx context
 	return req, nil
 }
 
+// BeginRepairAvsConnection - Test and repair, if needed, all configuration elements of the storage pool connection to the
+// AVS instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - options - StoragePoolsClientBeginRepairAvsConnectionOptions contains the optional parameters for the StoragePoolsClient.BeginRepairAvsConnection
+//     method.
+func (client *StoragePoolsClient) BeginRepairAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginRepairAvsConnectionOptions) (*runtime.Poller[StoragePoolsClientRepairAvsConnectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.repairAvsConnection(ctx, resourceGroupName, storagePoolName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StoragePoolsClientRepairAvsConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StoragePoolsClientRepairAvsConnectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// repairAvsConnection - Test and repair, if needed, all configuration elements of the storage pool connection to the AVS
+// instance
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StoragePoolsClient) repairAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginRepairAvsConnectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "StoragePoolsClient.BeginRepairAvsConnection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.repairAvsConnectionCreateRequest(ctx, resourceGroupName, storagePoolName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// repairAvsConnectionCreateRequest creates the repairAvsConnection request.
+func (client *StoragePoolsClient) repairAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginRepairAvsConnectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/repairAvsConnection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a storage pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - properties - The resource properties to be updated.
+//   - options - StoragePoolsClientBeginUpdateOptions contains the optional parameters for the StoragePoolsClient.BeginUpdate
+//     method.
+func (client *StoragePoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, options *StoragePoolsClientBeginUpdateOptions) (*runtime.Poller[StoragePoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, storagePoolName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StoragePoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StoragePoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a storage pool
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StoragePoolsClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, options *StoragePoolsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "StoragePoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, storagePoolName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *StoragePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, _ *StoragePoolsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// ConfigurePlatformConsoleAuth - Configure authentication settings for platform console access to the storage pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - config - Platform console authentication configuration
+//   - options - StoragePoolsClientConfigurePlatformConsoleAuthOptions contains the optional parameters for the StoragePoolsClient.ConfigurePlatformConsoleAuth
+//     method.
+func (client *StoragePoolsClient) ConfigurePlatformConsoleAuth(ctx context.Context, resourceGroupName string, storagePoolName string, config PlatformConsoleAuthConfigClassification, options *StoragePoolsClientConfigurePlatformConsoleAuthOptions) (StoragePoolsClientConfigurePlatformConsoleAuthResponse, error) {
+	var err error
+	const operationName = "StoragePoolsClient.ConfigurePlatformConsoleAuth"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.configurePlatformConsoleAuthCreateRequest(ctx, resourceGroupName, storagePoolName, config, options)
+	if err != nil {
+		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
+	}
+	resp, err := client.configurePlatformConsoleAuthHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// configurePlatformConsoleAuthCreateRequest creates the ConfigurePlatformConsoleAuth request.
+func (client *StoragePoolsClient) configurePlatformConsoleAuthCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, config PlatformConsoleAuthConfigClassification, _ *StoragePoolsClientConfigurePlatformConsoleAuthOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/configurePlatformConsoleAuth"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, config); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// configurePlatformConsoleAuthHandleResponse handles the ConfigurePlatformConsoleAuth response.
+func (client *StoragePoolsClient) configurePlatformConsoleAuthHandleResponse(resp *http.Response, successCodes ...int) (StoragePoolsClientConfigurePlatformConsoleAuthResponse, error) {
+	result := StoragePoolsClientConfigurePlatformConsoleAuthResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
+		return StoragePoolsClientConfigurePlatformConsoleAuthResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Get a storage pool
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -495,7 +651,8 @@ func (client *StoragePoolsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return StoragePoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -556,7 +713,8 @@ func (client *StoragePoolsClient) GetAvsConnection(ctx context.Context, resource
 	if err != nil {
 		return StoragePoolsClientGetAvsConnectionResponse{}, err
 	}
-	return client.getAvsConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAvsConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAvsConnectionCreateRequest creates the GetAvsConnection request.
@@ -617,7 +775,8 @@ func (client *StoragePoolsClient) GetAvsStatus(ctx context.Context, resourceGrou
 	if err != nil {
 		return StoragePoolsClientGetAvsStatusResponse{}, err
 	}
-	return client.getAvsStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAvsStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAvsStatusCreateRequest creates the GetAvsStatus request.
@@ -678,7 +837,8 @@ func (client *StoragePoolsClient) GetHealthStatus(ctx context.Context, resourceG
 	if err != nil {
 		return StoragePoolsClientGetHealthStatusResponse{}, err
 	}
-	return client.getHealthStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHealthStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHealthStatusCreateRequest creates the GetHealthStatus request.
@@ -715,6 +875,68 @@ func (client *StoragePoolsClient) getHealthStatusHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StoragePoolHealthInfo); err != nil {
 		return StoragePoolsClientGetHealthStatusResponse{}, err
+	}
+	return result, nil
+}
+
+// ListPlatformConsoleActivationCode - Returns a one-time activation code for platform console access to the storage pool
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - options - StoragePoolsClientListPlatformConsoleActivationCodeOptions contains the optional parameters for the StoragePoolsClient.ListPlatformConsoleActivationCode
+//     method.
+func (client *StoragePoolsClient) ListPlatformConsoleActivationCode(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientListPlatformConsoleActivationCodeOptions) (StoragePoolsClientListPlatformConsoleActivationCodeResponse, error) {
+	var err error
+	const operationName = "StoragePoolsClient.ListPlatformConsoleActivationCode"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPlatformConsoleActivationCodeCreateRequest(ctx, resourceGroupName, storagePoolName, options)
+	if err != nil {
+		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
+	}
+	resp, err := client.listPlatformConsoleActivationCodeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listPlatformConsoleActivationCodeCreateRequest creates the ListPlatformConsoleActivationCode request.
+func (client *StoragePoolsClient) listPlatformConsoleActivationCodeCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientListPlatformConsoleActivationCodeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/listPlatformConsoleActivationCode"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPlatformConsoleActivationCodeHandleResponse handles the ListPlatformConsoleActivationCode response.
+func (client *StoragePoolsClient) listPlatformConsoleActivationCodeHandleResponse(resp *http.Response, successCodes ...int) (StoragePoolsClientListPlatformConsoleActivationCodeResponse, error) {
+	result := StoragePoolsClientListPlatformConsoleActivationCodeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PlatformConsoleActivationCode); err != nil {
+		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
 	}
 	return result, nil
 }
@@ -856,213 +1078,4 @@ func (client *StoragePoolsClient) listBySubscriptionHandleResponse(resp *http.Re
 		return StoragePoolsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// ListPlatformConsoleActivationCode - Returns a one-time activation code for platform console access to the storage pool
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - options - StoragePoolsClientListPlatformConsoleActivationCodeOptions contains the optional parameters for the StoragePoolsClient.ListPlatformConsoleActivationCode
-//     method.
-func (client *StoragePoolsClient) ListPlatformConsoleActivationCode(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientListPlatformConsoleActivationCodeOptions) (StoragePoolsClientListPlatformConsoleActivationCodeResponse, error) {
-	var err error
-	const operationName = "StoragePoolsClient.ListPlatformConsoleActivationCode"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listPlatformConsoleActivationCodeCreateRequest(ctx, resourceGroupName, storagePoolName, options)
-	if err != nil {
-		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
-	}
-	return client.listPlatformConsoleActivationCodeHandleResponse(httpResp, http.StatusOK)
-}
-
-// listPlatformConsoleActivationCodeCreateRequest creates the ListPlatformConsoleActivationCode request.
-func (client *StoragePoolsClient) listPlatformConsoleActivationCodeCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientListPlatformConsoleActivationCodeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/listPlatformConsoleActivationCode"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listPlatformConsoleActivationCodeHandleResponse handles the ListPlatformConsoleActivationCode response.
-func (client *StoragePoolsClient) listPlatformConsoleActivationCodeHandleResponse(resp *http.Response, successCodes ...int) (StoragePoolsClientListPlatformConsoleActivationCodeResponse, error) {
-	result := StoragePoolsClientListPlatformConsoleActivationCodeResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PlatformConsoleActivationCode); err != nil {
-		return StoragePoolsClientListPlatformConsoleActivationCodeResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginRepairAvsConnection - Test and repair, if needed, all configuration elements of the storage pool connection to the
-// AVS instance
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - options - StoragePoolsClientBeginRepairAvsConnectionOptions contains the optional parameters for the StoragePoolsClient.BeginRepairAvsConnection
-//     method.
-func (client *StoragePoolsClient) BeginRepairAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginRepairAvsConnectionOptions) (*runtime.Poller[StoragePoolsClientRepairAvsConnectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.repairAvsConnection(ctx, resourceGroupName, storagePoolName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StoragePoolsClientRepairAvsConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StoragePoolsClientRepairAvsConnectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RepairAvsConnection - Test and repair, if needed, all configuration elements of the storage pool connection to the AVS
-// instance
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *StoragePoolsClient) repairAvsConnection(ctx context.Context, resourceGroupName string, storagePoolName string, options *StoragePoolsClientBeginRepairAvsConnectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "StoragePoolsClient.BeginRepairAvsConnection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.repairAvsConnectionCreateRequest(ctx, resourceGroupName, storagePoolName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// repairAvsConnectionCreateRequest creates the RepairAvsConnection request.
-func (client *StoragePoolsClient) repairAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginRepairAvsConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/repairAvsConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginUpdate - Update a storage pool
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - properties - The resource properties to be updated.
-//   - options - StoragePoolsClientBeginUpdateOptions contains the optional parameters for the StoragePoolsClient.BeginUpdate
-//     method.
-func (client *StoragePoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, options *StoragePoolsClientBeginUpdateOptions) (*runtime.Poller[StoragePoolsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, storagePoolName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StoragePoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StoragePoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a storage pool
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *StoragePoolsClient) update(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, options *StoragePoolsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "StoragePoolsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, storagePoolName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *StoragePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, _ *StoragePoolsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

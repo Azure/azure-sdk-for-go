@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"log"
 )
 
@@ -115,6 +115,85 @@ func ExampleGalleryApplicationsClient_BeginDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryApplicationsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-03/galleryExamples/GalleryApplication_Update.json
+func ExampleGalleryApplicationsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewGalleryApplicationsClient().BeginUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryApplicationName", armcompute.GalleryApplicationUpdate{
+		Properties: &armcompute.GalleryApplicationProperties{
+			Description:         to.Ptr("This is the gallery application description."),
+			Eula:                to.Ptr("This is the gallery application EULA."),
+			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
+			ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
+			SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
+			CustomActions: []*armcompute.GalleryApplicationCustomAction{
+				{
+					Name:        to.Ptr("myCustomAction"),
+					Script:      to.Ptr("myCustomActionScript"),
+					Description: to.Ptr("This is the custom action description."),
+					Parameters: []*armcompute.GalleryApplicationCustomActionParameter{
+						{
+							Name:         to.Ptr("myCustomActionParameter"),
+							Required:     to.Ptr(false),
+							Type:         to.Ptr(armcompute.GalleryApplicationCustomActionParameterTypeString),
+							DefaultValue: to.Ptr("default value of parameter."),
+							Description:  to.Ptr("This is the description of the parameter"),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.GalleryApplicationsClientUpdateResponse{
+	// 	GalleryApplication: armcompute.GalleryApplication{
+	// 		Properties: &armcompute.GalleryApplicationProperties{
+	// 			Description: to.Ptr("This is the gallery application description."),
+	// 			Eula: to.Ptr("This is the gallery application EULA."),
+	// 			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
+	// 			ReleaseNoteURI: to.Ptr("myReleaseNoteUri"),
+	// 			SupportedOSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 			CustomActions: []*armcompute.GalleryApplicationCustomAction{
+	// 				{
+	// 					Name: to.Ptr("myCustomAction"),
+	// 					Script: to.Ptr("myCustomActionScript"),
+	// 					Description: to.Ptr("This is the custom action description."),
+	// 					Parameters: []*armcompute.GalleryApplicationCustomActionParameter{
+	// 						{
+	// 							Name: to.Ptr("myCustomActionParameter"),
+	// 							Required: to.Ptr(false),
+	// 							Type: to.Ptr(armcompute.GalleryApplicationCustomActionParameterTypeString),
+	// 							DefaultValue: to.Ptr("default value of parameter."),
+	// 							Description: to.Ptr("This is the description of the parameter"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		Name: to.Ptr("myGalleryApplicationName"),
+	// 		Type: to.Ptr("Microsoft.Compute/galleries"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/applications/myGalleryApplicationName"),
+	// 	},
 	// }
 }
 
@@ -226,83 +305,4 @@ func ExampleGalleryApplicationsClient_NewListByGalleryPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-03/galleryExamples/GalleryApplication_Update.json
-func ExampleGalleryApplicationsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewGalleryApplicationsClient().BeginUpdate(ctx, "myResourceGroup", "myGalleryName", "myGalleryApplicationName", armcompute.GalleryApplicationUpdate{
-		Properties: &armcompute.GalleryApplicationProperties{
-			Description:         to.Ptr("This is the gallery application description."),
-			Eula:                to.Ptr("This is the gallery application EULA."),
-			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
-			ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
-			SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
-			CustomActions: []*armcompute.GalleryApplicationCustomAction{
-				{
-					Name:        to.Ptr("myCustomAction"),
-					Script:      to.Ptr("myCustomActionScript"),
-					Description: to.Ptr("This is the custom action description."),
-					Parameters: []*armcompute.GalleryApplicationCustomActionParameter{
-						{
-							Name:         to.Ptr("myCustomActionParameter"),
-							Required:     to.Ptr(false),
-							Type:         to.Ptr(armcompute.GalleryApplicationCustomActionParameterTypeString),
-							DefaultValue: to.Ptr("default value of parameter."),
-							Description:  to.Ptr("This is the description of the parameter"),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.GalleryApplicationsClientUpdateResponse{
-	// 	GalleryApplication: armcompute.GalleryApplication{
-	// 		Properties: &armcompute.GalleryApplicationProperties{
-	// 			Description: to.Ptr("This is the gallery application description."),
-	// 			Eula: to.Ptr("This is the gallery application EULA."),
-	// 			PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
-	// 			ReleaseNoteURI: to.Ptr("myReleaseNoteUri"),
-	// 			SupportedOSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 			CustomActions: []*armcompute.GalleryApplicationCustomAction{
-	// 				{
-	// 					Name: to.Ptr("myCustomAction"),
-	// 					Script: to.Ptr("myCustomActionScript"),
-	// 					Description: to.Ptr("This is the custom action description."),
-	// 					Parameters: []*armcompute.GalleryApplicationCustomActionParameter{
-	// 						{
-	// 							Name: to.Ptr("myCustomActionParameter"),
-	// 							Required: to.Ptr(false),
-	// 							Type: to.Ptr(armcompute.GalleryApplicationCustomActionParameterTypeString),
-	// 							DefaultValue: to.Ptr("default value of parameter."),
-	// 							Description: to.Ptr("This is the description of the parameter"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("West US"),
-	// 		Name: to.Ptr("myGalleryApplicationName"),
-	// 		Type: to.Ptr("Microsoft.Compute/galleries"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/applications/myGalleryApplicationName"),
-	// 	},
-	// }
 }

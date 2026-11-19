@@ -42,8 +42,14 @@ const (
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
+// NFS List V2 values are generated but not yet exposed.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
-	return generated.PossibleListFilesIncludeTypeValues()
+	return []ListFilesIncludeType{
+		ListFilesIncludeTypeAttributes,
+		ListFilesIncludeTypeETag,
+		ListFilesIncludeTypePermissionKey,
+		ListFilesIncludeTypeTimestamps,
+	}
 }
 
 // ShareTokenIntent is required if authorization header specifies an OAuth token.

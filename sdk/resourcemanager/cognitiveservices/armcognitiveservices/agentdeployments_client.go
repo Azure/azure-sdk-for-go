@@ -20,7 +20,7 @@ import (
 // AgentDeploymentsClient contains the methods for the AgentDeployments group.
 // Don't use this type directly, use NewAgentDeploymentsClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-11-15-preview
 type AgentDeploymentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -74,7 +74,7 @@ func (client *AgentDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates an Agent Deployment (asynchronous).
+// createOrUpdate - Creates or updates an Agent Deployment (asynchronous).
 //
 // Creates or updates an Agent Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -93,12 +93,13 @@ func (client *AgentDeploymentsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AgentDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, body AgentDeployment, _ *AgentDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
@@ -130,7 +131,7 @@ func (client *AgentDeploymentsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -168,7 +169,7 @@ func (client *AgentDeploymentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete Agent Deployment.
+// deleteOperation - Delete Agent Deployment.
 //
 // Delete Agent Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -187,12 +188,13 @@ func (client *AgentDeploymentsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AgentDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, _ *AgentDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/applications/{appName}/agentDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
@@ -224,7 +226,7 @@ func (client *AgentDeploymentsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -253,7 +255,8 @@ func (client *AgentDeploymentsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AgentDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -288,7 +291,7 @@ func (client *AgentDeploymentsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,7 +382,7 @@ func (client *AgentDeploymentsClient) listCreateRequest(ctx context.Context, res
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		if options != nil && options.Count != nil {
 			reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 		}
@@ -437,7 +440,8 @@ func (client *AgentDeploymentsClient) Start(ctx context.Context, resourceGroupNa
 		return AgentDeploymentsClientStartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AgentDeploymentsClientStartResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AgentDeploymentsClientStartResponse{}, err
 	}
 	return AgentDeploymentsClientStartResponse{}, nil
 }
@@ -474,7 +478,7 @@ func (client *AgentDeploymentsClient) startCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -504,7 +508,8 @@ func (client *AgentDeploymentsClient) Stop(ctx context.Context, resourceGroupNam
 		return AgentDeploymentsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AgentDeploymentsClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AgentDeploymentsClientStopResponse{}, err
 	}
 	return AgentDeploymentsClientStopResponse{}, nil
 }
@@ -541,7 +546,7 @@ func (client *AgentDeploymentsClient) stopCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

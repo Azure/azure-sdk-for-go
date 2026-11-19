@@ -20,7 +20,7 @@ import (
 // SecurityPerimeterAccessRulesClient contains the methods for the SecurityPerimeterAccessRules group.
 // Don't use this type directly, use NewSecurityPerimeterAccessRulesClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type SecurityPerimeterAccessRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,8 @@ func (client *SecurityPerimeterAccessRulesClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -99,7 +100,7 @@ func (client *SecurityPerimeterAccessRulesClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -144,7 +145,8 @@ func (client *SecurityPerimeterAccessRulesClient) Delete(ctx context.Context, re
 		return SecurityPerimeterAccessRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SecurityPerimeterAccessRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterAccessRulesClientDeleteResponse{}, err
 	}
 	return SecurityPerimeterAccessRulesClientDeleteResponse{}, nil
 }
@@ -177,7 +179,7 @@ func (client *SecurityPerimeterAccessRulesClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -204,7 +206,8 @@ func (client *SecurityPerimeterAccessRulesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -235,7 +238,7 @@ func (client *SecurityPerimeterAccessRulesClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +325,7 @@ func (client *SecurityPerimeterAccessRulesClient) listCreateRequest(ctx context.
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -364,7 +367,8 @@ func (client *SecurityPerimeterAccessRulesClient) Reconcile(ctx context.Context,
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientReconcileResponse{}, err
 	}
-	return client.reconcileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.reconcileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // reconcileCreateRequest creates the Reconcile request.
@@ -395,7 +399,7 @@ func (client *SecurityPerimeterAccessRulesClient) reconcileCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

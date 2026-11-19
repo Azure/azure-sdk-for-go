@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/AdministratorsMicrosoftEntraAdd.json
+// Generated from example definition: 2026-10-01/AdministratorsMicrosoftEntraAdd.json
 func ExampleAdministratorsMicrosoftEntraClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleAdministratorsMicrosoftEntraClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/AdministratorsMicrosoftEntraDelete.json
+// Generated from example definition: 2026-10-01/AdministratorsMicrosoftEntraDelete.json
 func ExampleAdministratorsMicrosoftEntraClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleAdministratorsMicrosoftEntraClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/AdministratorsMicrosoftEntraGet.json
+// Generated from example definition: 2026-10-01/AdministratorsMicrosoftEntraGet.json
 func ExampleAdministratorsMicrosoftEntraClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleAdministratorsMicrosoftEntraClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/AdministratorsMicrosoftEntraListByServer.json
+// Generated from example definition: 2026-10-01/AdministratorsMicrosoftEntraListByServer.json
 func ExampleAdministratorsMicrosoftEntraClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

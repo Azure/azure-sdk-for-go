@@ -19,7 +19,7 @@ import (
 // RecoveryResourcesClient - Operations for managing recovery resources.
 // Don't use this type directly, use NewRecoveryResourcesClient() instead.
 //
-// Generated from API version 2026-08-31-preview
+// Generated from API version 2026-10-01
 type RecoveryResourcesClient struct {
 	internal *arm.Client
 }
@@ -58,7 +58,8 @@ func (client *RecoveryResourcesClient) Get(ctx context.Context, serviceGroupName
 	if err != nil {
 		return RecoveryResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -81,7 +82,7 @@ func (client *RecoveryResourcesClient) getCreateRequest(ctx context.Context, ser
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -153,7 +154,7 @@ func (client *RecoveryResourcesClient) listCreateRequest(ctx context.Context, se
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

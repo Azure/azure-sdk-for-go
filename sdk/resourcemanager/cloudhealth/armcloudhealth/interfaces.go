@@ -40,3 +40,13 @@ type SignalInstancePropertiesClassification interface {
 	// GetSignalInstanceProperties returns the SignalInstanceProperties content of the underlying type.
 	GetSignalInstanceProperties() *SignalInstanceProperties
 }
+
+// SignalRecommendationConfigurationClassification provides polymorphic access to related types.
+// Call the interface's GetSignalRecommendationConfiguration() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureResourceMetricRecommendationConfiguration, *LogAnalyticsQueryRecommendationConfiguration, *PrometheusMetricsRecommendationConfiguration,
+// - *SignalRecommendationConfiguration
+type SignalRecommendationConfigurationClassification interface {
+	// GetSignalRecommendationConfiguration returns the SignalRecommendationConfiguration content of the underlying type.
+	GetSignalRecommendationConfiguration() *SignalRecommendationConfiguration
+}

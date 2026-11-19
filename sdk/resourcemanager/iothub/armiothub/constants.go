@@ -5,7 +5,7 @@
 package armiothub
 
 const (
-	version20260501Preview string = "2026-05-01-preview"
+	version20261101 string = "2026-11-01"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -143,6 +143,48 @@ func PossibleDefaultActionValues() []DefaultAction {
 	}
 }
 
+// DeviceRegistryIdentityType - The type of the identity.
+type DeviceRegistryIdentityType string
+
+const (
+	// DeviceRegistryIdentityTypeSystemAssigned - Use a system-assigned managed identity to manage the ADR namespace.
+	DeviceRegistryIdentityTypeSystemAssigned DeviceRegistryIdentityType = "SystemAssigned"
+	// DeviceRegistryIdentityTypeUserAssigned - Use a user-assigned managed identity to manage the ADR namespace.
+	DeviceRegistryIdentityTypeUserAssigned DeviceRegistryIdentityType = "UserAssigned"
+)
+
+// PossibleDeviceRegistryIdentityTypeValues returns the possible values for the DeviceRegistryIdentityType const type.
+func PossibleDeviceRegistryIdentityTypeValues() []DeviceRegistryIdentityType {
+	return []DeviceRegistryIdentityType{
+		DeviceRegistryIdentityTypeSystemAssigned,
+		DeviceRegistryIdentityTypeUserAssigned,
+	}
+}
+
+// DeviceRegistryLinkingState - Indicates whether the IoT Hub is linked with an Azure Device Registry.
+type DeviceRegistryLinkingState string
+
+const (
+	// DeviceRegistryLinkingStateFailed - The IoT Hub failed to link with an Azure Device Registry.
+	DeviceRegistryLinkingStateFailed DeviceRegistryLinkingState = "Failed"
+	// DeviceRegistryLinkingStateInProgress - The IoT Hub linking with an Azure Device Registry is in progress.
+	DeviceRegistryLinkingStateInProgress DeviceRegistryLinkingState = "InProgress"
+	// DeviceRegistryLinkingStateOrphaned - The linked Azure Device Registry is no longer associated with the IoT Hub.
+	DeviceRegistryLinkingStateOrphaned DeviceRegistryLinkingState = "Orphaned"
+	// DeviceRegistryLinkingStateSuccess - The IoT Hub is successfully linked with an Azure Device Registry.
+	DeviceRegistryLinkingStateSuccess DeviceRegistryLinkingState = "Success"
+)
+
+// PossibleDeviceRegistryLinkingStateValues returns the possible values for the DeviceRegistryLinkingState const type.
+func PossibleDeviceRegistryLinkingStateValues() []DeviceRegistryLinkingState {
+	return []DeviceRegistryLinkingState{
+		DeviceRegistryLinkingStateFailed,
+		DeviceRegistryLinkingStateInProgress,
+		DeviceRegistryLinkingStateOrphaned,
+		DeviceRegistryLinkingStateSuccess,
+	}
+}
+
 // EndpointHealthStatus - Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting
 // messages as expected. The 'unhealthy' status shows that the endpoint is not accepting messages as expected and IoT Hub
 // is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to healthy when IoT Hub
@@ -191,6 +233,21 @@ func PossibleEventStreamAuthenticationTypeValues() []EventStreamAuthenticationTy
 	}
 }
 
+// FallbackRouteSource - The source to which the fallback route is applied.
+type FallbackRouteSource string
+
+const (
+	// FallbackRouteSourceDeviceMessages - Device-to-cloud messages sent by devices.
+	FallbackRouteSourceDeviceMessages FallbackRouteSource = "DeviceMessages"
+)
+
+// PossibleFallbackRouteSourceValues returns the possible values for the FallbackRouteSource const type.
+func PossibleFallbackRouteSourceValues() []FallbackRouteSource {
+	return []FallbackRouteSource{
+		FallbackRouteSourceDeviceMessages,
+	}
+}
+
 // GatewayVersion - The IoT hub Gateway version.
 type GatewayVersion string
 
@@ -224,27 +281,6 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 	return []IPFilterActionType{
 		IPFilterActionTypeAccept,
 		IPFilterActionTypeReject,
-	}
-}
-
-// IPVersion - This property specifies the IP Version the hub is currently utilizing.
-type IPVersion string
-
-const (
-	// IPVersionIPv4 - ipv4
-	IPVersionIPv4 IPVersion = "ipv4"
-	// IPVersionIPv4IPv6 - ipv4ipv6
-	IPVersionIPv4IPv6 IPVersion = "ipv4ipv6"
-	// IPVersionIPv6 - ipv6
-	IPVersionIPv6 IPVersion = "ipv6"
-)
-
-// PossibleIPVersionValues returns the possible values for the IPVersion const type.
-func PossibleIPVersionValues() []IPVersion {
-	return []IPVersion{
-		IPVersionIPv4,
-		IPVersionIPv4IPv6,
-		IPVersionIPv6,
 	}
 }
 
@@ -546,12 +582,8 @@ const (
 	RoutingSourceDeviceLifecycleEvents RoutingSource = "DeviceLifecycleEvents"
 	// RoutingSourceDeviceMessages - DeviceMessages
 	RoutingSourceDeviceMessages RoutingSource = "DeviceMessages"
-	// RoutingSourceDigitalTwinChangeEvents - DigitalTwinChangeEvents
-	RoutingSourceDigitalTwinChangeEvents RoutingSource = "DigitalTwinChangeEvents"
 	// RoutingSourceInvalid - Invalid
 	RoutingSourceInvalid RoutingSource = "Invalid"
-	// RoutingSourceMqttBrokerMessages - MqttBrokerMessages
-	RoutingSourceMqttBrokerMessages RoutingSource = "MqttBrokerMessages"
 	// RoutingSourceTwinChangeEvents - TwinChangeEvents
 	RoutingSourceTwinChangeEvents RoutingSource = "TwinChangeEvents"
 )
@@ -563,9 +595,7 @@ func PossibleRoutingSourceValues() []RoutingSource {
 		RoutingSourceDeviceJobLifecycleEvents,
 		RoutingSourceDeviceLifecycleEvents,
 		RoutingSourceDeviceMessages,
-		RoutingSourceDigitalTwinChangeEvents,
 		RoutingSourceInvalid,
-		RoutingSourceMqttBrokerMessages,
 		RoutingSourceTwinChangeEvents,
 	}
 }

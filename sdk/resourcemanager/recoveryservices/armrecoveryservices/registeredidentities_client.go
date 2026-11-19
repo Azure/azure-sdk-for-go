@@ -19,7 +19,7 @@ import (
 // RegisteredIdentitiesClient contains the methods for the RegisteredIdentities group.
 // Don't use this type directly, use NewRegisteredIdentitiesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-11-01
 type RegisteredIdentitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,8 @@ func (client *RegisteredIdentitiesClient) Delete(ctx context.Context, resourceGr
 		return RegisteredIdentitiesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RegisteredIdentitiesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RegisteredIdentitiesClientDeleteResponse{}, err
 	}
 	return RegisteredIdentitiesClientDeleteResponse{}, nil
 }
@@ -95,7 +96,7 @@ func (client *RegisteredIdentitiesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

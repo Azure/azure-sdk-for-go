@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewProtectionContainerRefreshOperationResultsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type ProtectionContainerRefreshOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,8 @@ func (client *ProtectionContainerRefreshOperationResultsClient) Get(ctx context.
 		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, err
 	}
 	return ProtectionContainerRefreshOperationResultsClientGetResponse{}, nil
 }
@@ -101,7 +102,7 @@ func (client *ProtectionContainerRefreshOperationResultsClient) getCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

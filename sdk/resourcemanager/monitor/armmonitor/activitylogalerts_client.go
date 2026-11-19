@@ -30,6 +30,9 @@ type ActivityLogAlertsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewActivityLogAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityLogAlertsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resou
 func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRule ActivityLogAlertResource, _ *ActivityLogAlertsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +100,11 @@ func (client *ActivityLogAlertsClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (ActivityLogAlertsClientCreateOrUpdateResponse, error) {
+func (client *ActivityLogAlertsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ActivityLogAlertsClientCreateOrUpdateResponse, error) {
 	result := ActivityLogAlertsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
 		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
@@ -140,7 +142,7 @@ func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroup
 func (client *ActivityLogAlertsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, _ *ActivityLogAlertsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -180,11 +182,7 @@ func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ActivityLogAlertsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActivityLogAlertsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -192,7 +190,7 @@ func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupNam
 func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, _ *ActivityLogAlertsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -215,8 +213,11 @@ func (client *ActivityLogAlertsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (ActivityLogAlertsClientGetResponse, error) {
+func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ActivityLogAlertsClientGetResponse, error) {
 	result := ActivityLogAlertsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
 		return ActivityLogAlertsClientGetResponse{}, err
 	}
@@ -238,43 +239,57 @@ func (client *ActivityLogAlertsClient) NewListByResourceGroupPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ActivityLogAlertsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ActivityLogAlertsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ActivityLogAlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ActivityLogAlertsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (ActivityLogAlertsClientListByResourceGroupResponse, error) {
+func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ActivityLogAlertsClientListByResourceGroupResponse, error) {
 	result := ActivityLogAlertsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleList); err != nil {
 		return ActivityLogAlertsClientListByResourceGroupResponse{}, err
 	}
@@ -295,39 +310,53 @@ func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *Act
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionIDCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionIDCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
 			}
-			return client.listBySubscriptionIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
+			}
+			return client.listBySubscriptionIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx context.Context, _ *ActivityLogAlertsClientListBySubscriptionIDOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/activityLogAlerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ActivityLogAlertsClient) listBySubscriptionIDCreateRequest(ctx context.Context, nextLink string, _ *ActivityLogAlertsClientListBySubscriptionIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/activityLogAlerts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionIDHandleResponse handles the ListBySubscriptionID response.
-func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *http.Response) (ActivityLogAlertsClientListBySubscriptionIDResponse, error) {
+func (client *ActivityLogAlertsClient) listBySubscriptionIDHandleResponse(resp *http.Response, successCodes ...int) (ActivityLogAlertsClientListBySubscriptionIDResponse, error) {
 	result := ActivityLogAlertsClientListBySubscriptionIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleList); err != nil {
 		return ActivityLogAlertsClientListBySubscriptionIDResponse{}, err
 	}
@@ -356,11 +385,7 @@ func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return ActivityLogAlertsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActivityLogAlertsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -368,7 +393,7 @@ func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroup
 func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertRulePatch AlertRulePatchObject, _ *ActivityLogAlertsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/activityLogAlerts/{activityLogAlertName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -395,8 +420,11 @@ func (client *ActivityLogAlertsClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ActivityLogAlertsClient) updateHandleResponse(resp *http.Response) (ActivityLogAlertsClientUpdateResponse, error) {
+func (client *ActivityLogAlertsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ActivityLogAlertsClientUpdateResponse, error) {
 	result := ActivityLogAlertsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityLogAlertResource); err != nil {
 		return ActivityLogAlertsClientUpdateResponse{}, err
 	}

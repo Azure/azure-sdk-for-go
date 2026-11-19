@@ -29,9 +29,14 @@ type DatabaseProperties struct {
 
 // MarshalJSON implements the json.Marshaler interface
 func (tp DatabaseProperties) MarshalJSON() ([]byte, error) {
+	id, err := json.Marshal(tp.ID)
+	if err != nil {
+		return nil, err
+	}
 	buffer := bytes.NewBufferString("{")
 
-	fmt.Fprintf(buffer, "\"id\":\"%s\"", tp.ID)
+	fmt.Fprint(buffer, "\"id\":")
+	buffer.Write(id)
 
 	if tp.ResourceID != "" {
 		fmt.Fprintf(buffer, ",\"_rid\":\"%s\"", tp.ResourceID)

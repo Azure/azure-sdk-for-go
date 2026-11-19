@@ -12,362 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithBillingAccountId.json
-func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingAccountId() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345", armconsumption.DatagrainDailyGrain, &armconsumption.ReservationsSummariesClientListOptions{
-		Filter: to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsSummariesClientListResponse{
-		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
-		// 		Value: []*armconsumption.ReservationSummary{
-		// 			{
-		// 				Name: to.Ptr("reservationSummaries_Id1"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
-		// 				Properties: &armconsumption.ReservationSummaryProperties{
-		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
-		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
-		// 					MinUtilizationPercentage: to.Ptr[float64](0),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](720),
-		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](0),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithBillingProfileId.json
-func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingProfileId() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", armconsumption.DatagrainDailyGrain, &armconsumption.ReservationsSummariesClientListOptions{
-		EndDate:   to.Ptr("2017-11-20"),
-		StartDate: to.Ptr("2017-10-01")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsSummariesClientListResponse{
-		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
-		// 		Value: []*armconsumption.ReservationSummary{
-		// 			{
-		// 				Name: to.Ptr("reservationSummaries_Id1"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
-		// 				Properties: &armconsumption.ReservationSummaryProperties{
-		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
-		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
-		// 					MinUtilizationPercentage: to.Ptr[float64](0),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](720),
-		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](0),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingAccountId.json
-func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingAccountId() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345", armconsumption.DatagrainMonthlyGrain, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsSummariesClientListResponse{
-		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
-		// 		Value: []*armconsumption.ReservationSummary{
-		// 			{
-		// 				Name: to.Ptr("reservationSummaries_Id1"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
-		// 				Properties: &armconsumption.ReservationSummaryProperties{
-		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
-		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
-		// 					MinUtilizationPercentage: to.Ptr[float64](0),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](720),
-		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](0),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingProfileId.json
-func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileId() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", armconsumption.DatagrainMonthlyGrain, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsSummariesClientListResponse{
-		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
-		// 		Value: []*armconsumption.ReservationSummary{
-		// 			{
-		// 				Name: to.Ptr("reservationSummaries_Id1"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
-		// 				Properties: &armconsumption.ReservationSummaryProperties{
-		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
-		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
-		// 					MinUtilizationPercentage: to.Ptr[float64](0),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](720),
-		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](0),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingProfileIdReservationId.json
-func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileIdReservationId() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", armconsumption.DatagrainMonthlyGrain, &armconsumption.ReservationsSummariesClientListOptions{
-		ReservationID:      to.Ptr("1c6b6358-709f-484c-85f1-72e862a0cf3b"),
-		ReservationOrderID: to.Ptr("9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsSummariesClientListResponse{
-		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
-		// 		Value: []*armconsumption.ReservationSummary{
-		// 			{
-		// 				Name: to.Ptr("reservationSummaries_Id1"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
-		// 				Properties: &armconsumption.ReservationSummaryProperties{
-		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
-		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
-		// 					MinUtilizationPercentage: to.Ptr[float64](0),
-		// 					ReservationID: to.Ptr("1c6b6358-709f-484c-85f1-72e862a0cf3b"),
-		// 					ReservationOrderID: to.Ptr("9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc"),
-		// 					ReservedHours: to.Ptr[float64](720),
-		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](0),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-08-01/ReservationSummariesDaily.json
-func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesDaily() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsSummariesClient().NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000", armconsumption.DatagrainDailyGrain, &armconsumption.ReservationsSummariesClientListByReservationOrderOptions{
-		Filter: to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsSummariesClientListByReservationOrderResponse{
-		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
-		// 		Value: []*armconsumption.ReservationSummary{
-		// 			{
-		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171001"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
-		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationSummaries/20171001"),
-		// 				Properties: &armconsumption.ReservationSummaryProperties{
-		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
-		// 					Kind: to.Ptr("Reservation"),
-		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
-		// 					MinUtilizationPercentage: to.Ptr[float64](0),
-		// 					PurchasedQuantity: to.Ptr[float64](0),
-		// 					RemainingQuantity: to.Ptr[float64](0),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](0),
-		// 					SKUName: to.Ptr("Standard_D8s_v3"),
-		// 					TotalReservedQuantity: to.Ptr[float64](155),
-		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](0),
-		// 					UsedQuantity: to.Ptr[float64](0),
-		// 					UtilizedPercentage: to.Ptr[float64](0),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"dev": to.Ptr("tools"),
-		// 					"env": to.Ptr("newcrp"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthly.json
-func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesMonthly() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsSummariesClient().NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000", armconsumption.DatagrainMonthlyGrain, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsSummariesClientListByReservationOrderResponse{
-		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
-		// 		Value: []*armconsumption.ReservationSummary{
-		// 			{
-		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171001"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
-		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationSummaries/20171001"),
-		// 				Properties: &armconsumption.ReservationSummaryProperties{
-		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
-		// 					Kind: to.Ptr("Reservation"),
-		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
-		// 					MinUtilizationPercentage: to.Ptr[float64](0),
-		// 					PurchasedQuantity: to.Ptr[float64](0),
-		// 					RemainingQuantity: to.Ptr[float64](0),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](0),
-		// 					SKUName: to.Ptr("Standard_D8s_v3"),
-		// 					TotalReservedQuantity: to.Ptr[float64](155),
-		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](0),
-		// 					UsedQuantity: to.Ptr[float64](0),
-		// 					UtilizedPercentage: to.Ptr[float64](0),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"dev": to.Ptr("tools"),
-		// 					"env": to.Ptr("newcrp"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithReservationId.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationPager_reservationSummariesDailyWithReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -425,7 +70,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationP
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithReservationId.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationPager_reservationSummariesMonthlyWithReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -474,6 +119,361 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationP
 		// 				Tags: map[string]*string{
 		// 					"dev": to.Ptr("tools"),
 		// 					"env": to.Ptr("newcrp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationSummariesDaily.json
+func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesDaily() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsSummariesClient().NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000", armconsumption.DatagrainDailyGrain, &armconsumption.ReservationsSummariesClientListByReservationOrderOptions{
+		Filter: to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsSummariesClientListByReservationOrderResponse{
+		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
+		// 		Value: []*armconsumption.ReservationSummary{
+		// 			{
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171001"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
+		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationSummaries/20171001"),
+		// 				Properties: &armconsumption.ReservationSummaryProperties{
+		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
+		// 					Kind: to.Ptr("Reservation"),
+		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
+		// 					MinUtilizationPercentage: to.Ptr[float64](0),
+		// 					PurchasedQuantity: to.Ptr[float64](0),
+		// 					RemainingQuantity: to.Ptr[float64](0),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](0),
+		// 					SKUName: to.Ptr("Standard_D8s_v3"),
+		// 					TotalReservedQuantity: to.Ptr[float64](155),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](0),
+		// 					UsedQuantity: to.Ptr[float64](0),
+		// 					UtilizedPercentage: to.Ptr[float64](0),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"dev": to.Ptr("tools"),
+		// 					"env": to.Ptr("newcrp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthly.json
+func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesMonthly() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsSummariesClient().NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000", armconsumption.DatagrainMonthlyGrain, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsSummariesClientListByReservationOrderResponse{
+		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
+		// 		Value: []*armconsumption.ReservationSummary{
+		// 			{
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171001"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
+		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationSummaries/20171001"),
+		// 				Properties: &armconsumption.ReservationSummaryProperties{
+		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
+		// 					Kind: to.Ptr("Reservation"),
+		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
+		// 					MinUtilizationPercentage: to.Ptr[float64](0),
+		// 					PurchasedQuantity: to.Ptr[float64](0),
+		// 					RemainingQuantity: to.Ptr[float64](0),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](0),
+		// 					SKUName: to.Ptr("Standard_D8s_v3"),
+		// 					TotalReservedQuantity: to.Ptr[float64](155),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](0),
+		// 					UsedQuantity: to.Ptr[float64](0),
+		// 					UtilizedPercentage: to.Ptr[float64](0),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"dev": to.Ptr("tools"),
+		// 					"env": to.Ptr("newcrp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithBillingAccountId.json
+func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingAccountId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345", armconsumption.DatagrainDailyGrain, &armconsumption.ReservationsSummariesClientListOptions{
+		Filter: to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsSummariesClientListResponse{
+		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
+		// 		Value: []*armconsumption.ReservationSummary{
+		// 			{
+		// 				Name: to.Ptr("reservationSummaries_Id1"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
+		// 				Properties: &armconsumption.ReservationSummaryProperties{
+		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
+		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
+		// 					MinUtilizationPercentage: to.Ptr[float64](0),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](720),
+		// 					SKUName: to.Ptr("Standard_B1s"),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](0),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithBillingProfileId.json
+func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingProfileId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", armconsumption.DatagrainDailyGrain, &armconsumption.ReservationsSummariesClientListOptions{
+		EndDate:   to.Ptr("2017-11-20"),
+		StartDate: to.Ptr("2017-10-01")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsSummariesClientListResponse{
+		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
+		// 		Value: []*armconsumption.ReservationSummary{
+		// 			{
+		// 				Name: to.Ptr("reservationSummaries_Id1"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
+		// 				Properties: &armconsumption.ReservationSummaryProperties{
+		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
+		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
+		// 					MinUtilizationPercentage: to.Ptr[float64](0),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](720),
+		// 					SKUName: to.Ptr("Standard_B1s"),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](0),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingAccountId.json
+func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingAccountId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345", armconsumption.DatagrainMonthlyGrain, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsSummariesClientListResponse{
+		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
+		// 		Value: []*armconsumption.ReservationSummary{
+		// 			{
+		// 				Name: to.Ptr("reservationSummaries_Id1"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
+		// 				Properties: &armconsumption.ReservationSummaryProperties{
+		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
+		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
+		// 					MinUtilizationPercentage: to.Ptr[float64](0),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](720),
+		// 					SKUName: to.Ptr("Standard_B1s"),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](0),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingProfileId.json
+func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", armconsumption.DatagrainMonthlyGrain, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsSummariesClientListResponse{
+		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
+		// 		Value: []*armconsumption.ReservationSummary{
+		// 			{
+		// 				Name: to.Ptr("reservationSummaries_Id1"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
+		// 				Properties: &armconsumption.ReservationSummaryProperties{
+		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
+		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
+		// 					MinUtilizationPercentage: to.Ptr[float64](0),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](720),
+		// 					SKUName: to.Ptr("Standard_B1s"),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](0),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingProfileIdReservationId.json
+func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileIdReservationId() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsSummariesClient().NewListPager("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", armconsumption.DatagrainMonthlyGrain, &armconsumption.ReservationsSummariesClientListOptions{
+		ReservationID:      to.Ptr("1c6b6358-709f-484c-85f1-72e862a0cf3b"),
+		ReservationOrderID: to.Ptr("9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsSummariesClientListResponse{
+		// 	ReservationSummariesListResult: armconsumption.ReservationSummariesListResult{
+		// 		Value: []*armconsumption.ReservationSummary{
+		// 			{
+		// 				Name: to.Ptr("reservationSummaries_Id1"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationSummaries"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579/providers/Microsoft.Consumption/reservationSummaries/reservationSummaries_Id1"),
+		// 				Properties: &armconsumption.ReservationSummaryProperties{
+		// 					AvgUtilizationPercentage: to.Ptr[float64](0),
+		// 					MaxUtilizationPercentage: to.Ptr[float64](0),
+		// 					MinUtilizationPercentage: to.Ptr[float64](0),
+		// 					ReservationID: to.Ptr("1c6b6358-709f-484c-85f1-72e862a0cf3b"),
+		// 					ReservationOrderID: to.Ptr("9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc"),
+		// 					ReservedHours: to.Ptr[float64](720),
+		// 					SKUName: to.Ptr("Standard_B1s"),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](0),
 		// 				},
 		// 			},
 		// 		},

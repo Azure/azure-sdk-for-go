@@ -4,31 +4,130 @@
 
 package armhorizondb
 
-// AdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AdministratorsClient.BeginCreateOrUpdate
+// AuthenticationsClientListOptions contains the optional parameters for the AuthenticationsClient.NewListPager method.
+type AuthenticationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapabilitiesClientGetOptions contains the optional parameters for the CapabilitiesClient.Get method.
+type CapabilitiesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapabilitiesClientListOptions contains the optional parameters for the CapabilitiesClient.NewListPager method.
+type CapabilitiesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ChangeDataCaptureCapabilitiesClientBeginCreateOrReplaceOptions contains the optional parameters for the ChangeDataCaptureCapabilitiesClient.BeginCreateOrReplace
 // method.
-type AdministratorsClientBeginCreateOrUpdateOptions struct {
+type ChangeDataCaptureCapabilitiesClientBeginCreateOrReplaceOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete method.
-type AdministratorsClientBeginDeleteOptions struct {
+// ChangeDataCaptureCapabilitiesClientBeginDeleteOptions contains the optional parameters for the ChangeDataCaptureCapabilitiesClient.BeginDelete
+// method.
+type ChangeDataCaptureCapabilitiesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
-type AdministratorsClientGetOptions struct {
+// ChangeDataCaptureCapabilitiesClientBeginUpdateOptions contains the optional parameters for the ChangeDataCaptureCapabilitiesClient.BeginUpdate
+// method.
+type ChangeDataCaptureCapabilitiesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureCapabilitiesClientGetOptions contains the optional parameters for the ChangeDataCaptureCapabilitiesClient.Get
+// method.
+type ChangeDataCaptureCapabilitiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AdministratorsClientListOptions contains the optional parameters for the AdministratorsClient.NewListPager method.
-type AdministratorsClientListOptions struct {
+// ChangeDataCaptureCapabilitiesClientListOptions contains the optional parameters for the ChangeDataCaptureCapabilitiesClient.NewListPager
+// method.
+type ChangeDataCaptureCapabilitiesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
-type ClustersClientBeginCreateOrUpdateOptions struct {
+// ChangeDataCaptureConfigurationsClientBeginCreateOrReplaceOptions contains the optional parameters for the ChangeDataCaptureConfigurationsClient.BeginCreateOrReplace
+// method.
+type ChangeDataCaptureConfigurationsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureConfigurationsClientBeginDeleteOptions contains the optional parameters for the ChangeDataCaptureConfigurationsClient.BeginDelete
+// method.
+type ChangeDataCaptureConfigurationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureConfigurationsClientBeginUpdateOptions contains the optional parameters for the ChangeDataCaptureConfigurationsClient.BeginUpdate
+// method.
+type ChangeDataCaptureConfigurationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureConfigurationsClientGetOptions contains the optional parameters for the ChangeDataCaptureConfigurationsClient.Get
+// method.
+type ChangeDataCaptureConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ChangeDataCaptureConfigurationsClientListOptions contains the optional parameters for the ChangeDataCaptureConfigurationsClient.NewListPager
+// method.
+type ChangeDataCaptureConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ChangeDataCaptureDestinationsClientBeginActivateIdentityOptions contains the optional parameters for the ChangeDataCaptureDestinationsClient.BeginActivateIdentity
+// method.
+type ChangeDataCaptureDestinationsClientBeginActivateIdentityOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureDestinationsClientBeginCreateOrReplaceOptions contains the optional parameters for the ChangeDataCaptureDestinationsClient.BeginCreateOrReplace
+// method.
+type ChangeDataCaptureDestinationsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureDestinationsClientBeginDeleteOptions contains the optional parameters for the ChangeDataCaptureDestinationsClient.BeginDelete
+// method.
+type ChangeDataCaptureDestinationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureDestinationsClientBeginUpdateOptions contains the optional parameters for the ChangeDataCaptureDestinationsClient.BeginUpdate
+// method.
+type ChangeDataCaptureDestinationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ChangeDataCaptureDestinationsClientGetOptions contains the optional parameters for the ChangeDataCaptureDestinationsClient.Get
+// method.
+type ChangeDataCaptureDestinationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ChangeDataCaptureDestinationsClientListOptions contains the optional parameters for the ChangeDataCaptureDestinationsClient.NewListPager
+// method.
+type ChangeDataCaptureDestinationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientBeginCreateOrReplaceOptions contains the optional parameters for the ClustersClient.BeginCreateOrReplace
+// method.
+type ClustersClientBeginCreateOrReplaceOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -39,20 +138,8 @@ type ClustersClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// ClustersClientBeginRestartOptions contains the optional parameters for the ClustersClient.BeginRestart method.
-type ClustersClientBeginRestartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginStartOptions contains the optional parameters for the ClustersClient.BeginStart method.
-type ClustersClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClustersClientBeginStopOptions contains the optional parameters for the ClustersClient.BeginStop method.
-type ClustersClientBeginStopOptions struct {
+// ClustersClientBeginFailoverOptions contains the optional parameters for the ClustersClient.BeginFailover method.
+type ClustersClientBeginFailoverOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -80,9 +167,30 @@ type ClustersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrUpdate
+// DefaultParameterGroupsClientGetOptions contains the optional parameters for the DefaultParameterGroupsClient.Get method.
+type DefaultParameterGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DefaultParameterGroupsClientListBySubscriptionAndRegionOptions contains the optional parameters for the DefaultParameterGroupsClient.NewListBySubscriptionAndRegionPager
 // method.
-type FirewallRulesClientBeginCreateOrUpdateOptions struct {
+type DefaultParameterGroupsClientListBySubscriptionAndRegionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointsClientGetOptions contains the optional parameters for the EndpointsClient.Get method.
+type EndpointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointsClientListOptions contains the optional parameters for the EndpointsClient.NewListPager method.
+type EndpointsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallRulesClientBeginCreateOrReplaceOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrReplace
+// method.
+type FirewallRulesClientBeginCreateOrReplaceOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -103,14 +211,152 @@ type FirewallRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// IdentityAssignmentsClientBeginCreateOrReplaceOptions contains the optional parameters for the IdentityAssignmentsClient.BeginCreateOrReplace
+// method.
+type IdentityAssignmentsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityAssignmentsClientBeginDeleteOptions contains the optional parameters for the IdentityAssignmentsClient.BeginDelete
+// method.
+type IdentityAssignmentsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityAssignmentsClientGetOptions contains the optional parameters for the IdentityAssignmentsClient.Get method.
+type IdentityAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityAssignmentsClientListOptions contains the optional parameters for the IdentityAssignmentsClient.NewListPager method.
+type IdentityAssignmentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogCaptureConfigurationsClientBeginUpdateOptions contains the optional parameters for the LogCaptureConfigurationsClient.BeginUpdate
+// method.
+type LogCaptureConfigurationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// LogCaptureConfigurationsClientGetOptions contains the optional parameters for the LogCaptureConfigurationsClient.Get method.
+type LogCaptureConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogCaptureConfigurationsClientListOptions contains the optional parameters for the LogCaptureConfigurationsClient.NewListPager
+// method.
+type LogCaptureConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogFilesClientGetOptions contains the optional parameters for the LogFilesClient.Get method.
+type LogFilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogFilesClientListDownloadUrlsOptions contains the optional parameters for the LogFilesClient.ListDownloadUrls method.
+type LogFilesClientListDownloadUrlsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogFilesClientListOptions contains the optional parameters for the LogFilesClient.NewListPager method.
+type LogFilesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceEventsClientBeginApplyNowOptions contains the optional parameters for the MaintenanceEventsClient.BeginApplyNow
+// method.
+type MaintenanceEventsClientBeginApplyNowOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceEventsClientBeginRescheduleOptions contains the optional parameters for the MaintenanceEventsClient.BeginReschedule
+// method.
+type MaintenanceEventsClientBeginRescheduleOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceEventsClientGetOptions contains the optional parameters for the MaintenanceEventsClient.Get method.
+type MaintenanceEventsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceEventsClientListOptions contains the optional parameters for the MaintenanceEventsClient.NewListPager method.
+type MaintenanceEventsClientListOptions struct {
+	// The OData filter expression to apply to the list operation.
+	Filter *string
+}
+
+// MicrosoftEntraAdministratorsClientBeginCreateOrReplaceOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.BeginCreateOrReplace
+// method.
+type MicrosoftEntraAdministratorsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MicrosoftEntraAdministratorsClientBeginDeleteOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.BeginDelete
+// method.
+type MicrosoftEntraAdministratorsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MicrosoftEntraAdministratorsClientGetOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.Get
+// method.
+type MicrosoftEntraAdministratorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MicrosoftEntraAdministratorsClientListOptions contains the optional parameters for the MicrosoftEntraAdministratorsClient.NewListPager
+// method.
+type MicrosoftEntraAdministratorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MicrosoftEntraAuthenticationsClientBeginCreateOrReplaceOptions contains the optional parameters for the MicrosoftEntraAuthenticationsClient.BeginCreateOrReplace
+// method.
+type MicrosoftEntraAuthenticationsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MicrosoftEntraAuthenticationsClientBeginUpdateOptions contains the optional parameters for the MicrosoftEntraAuthenticationsClient.BeginUpdate
+// method.
+type MicrosoftEntraAuthenticationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MicrosoftEntraAuthenticationsClientGetOptions contains the optional parameters for the MicrosoftEntraAuthenticationsClient.Get
+// method.
+type MicrosoftEntraAuthenticationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NodesClientGetOptions contains the optional parameters for the NodesClient.Get method.
+type NodesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NodesClientListOptions contains the optional parameters for the NodesClient.NewListPager method.
+type NodesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ParameterGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ParameterGroupsClient.BeginCreateOrUpdate
+// ParameterGroupsClientBeginCreateOrReplaceOptions contains the optional parameters for the ParameterGroupsClient.BeginCreateOrReplace
 // method.
-type ParameterGroupsClientBeginCreateOrUpdateOptions struct {
+type ParameterGroupsClientBeginCreateOrReplaceOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -150,11 +396,59 @@ type ParameterGroupsClientListConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ParameterGroupsClientListVersionsOptions contains the optional parameters for the ParameterGroupsClient.NewListVersionsPager
+// PasswordAuthenticationsClientBeginCreateOrReplaceOptions contains the optional parameters for the PasswordAuthenticationsClient.BeginCreateOrReplace
 // method.
-type ParameterGroupsClientListVersionsOptions struct {
-	// The version number to filter by.
-	Version *int32
+type PasswordAuthenticationsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PasswordAuthenticationsClientBeginUpdateOptions contains the optional parameters for the PasswordAuthenticationsClient.BeginUpdate
+// method.
+type PasswordAuthenticationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PasswordAuthenticationsClientGetOptions contains the optional parameters for the PasswordAuthenticationsClient.Get method.
+type PasswordAuthenticationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PoolsClientBeginCreateOrReplaceOptions contains the optional parameters for the PoolsClient.BeginCreateOrReplace method.
+type PoolsClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
+type PoolsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PoolsClientBeginRestartOptions contains the optional parameters for the PoolsClient.BeginRestart method.
+type PoolsClientBeginRestartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PoolsClientBeginStartOptions contains the optional parameters for the PoolsClient.BeginStart method.
+type PoolsClientBeginStartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PoolsClientBeginStopOptions contains the optional parameters for the PoolsClient.BeginStop method.
+type PoolsClientBeginStopOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PoolsClientBeginUpdateOptions contains the optional parameters for the PoolsClient.BeginUpdate method.
+type PoolsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
@@ -165,6 +459,13 @@ type PoolsClientGetOptions struct {
 // PoolsClientListOptions contains the optional parameters for the PoolsClient.NewListPager method.
 type PoolsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginApproveOrRejectOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginApproveOrReject
+// method.
+type PrivateEndpointConnectionsClientBeginApproveOrRejectOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
@@ -186,12 +487,6 @@ type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientUpdateStatusOptions contains the optional parameters for the PrivateEndpointConnectionsClient.UpdateStatus
-// method.
-type PrivateEndpointConnectionsClientUpdateStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
 type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -200,33 +495,5 @@ type PrivateLinkResourcesClientGetOptions struct {
 // PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
 // method.
 type PrivateLinkResourcesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReplicasClientBeginCreateOrUpdateOptions contains the optional parameters for the ReplicasClient.BeginCreateOrUpdate method.
-type ReplicasClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ReplicasClientBeginDeleteOptions contains the optional parameters for the ReplicasClient.BeginDelete method.
-type ReplicasClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ReplicasClientBeginUpdateOptions contains the optional parameters for the ReplicasClient.BeginUpdate method.
-type ReplicasClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ReplicasClientGetOptions contains the optional parameters for the ReplicasClient.Get method.
-type ReplicasClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ReplicasClientListOptions contains the optional parameters for the ReplicasClient.NewListPager method.
-type ReplicasClientListOptions struct {
 	// placeholder for future optional parameters
 }

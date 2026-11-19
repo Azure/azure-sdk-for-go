@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayUpdate.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayUpdate.json
 func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetworkGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkScalableGatewayUpdate.json
+// Generated from example definition: 2026-03-01/VirtualNetworkScalableGatewayUpdate.json
 func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetworkScalableGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,7 +387,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayDelete.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayDelete.json
 func ExampleVirtualNetworkGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -413,7 +413,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewaysDisconnectP2sVpnConnections.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewaysDisconnectP2sVpnConnections.json
 func ExampleVirtualNetworkGatewaysClient_BeginDisconnectVirtualNetworkGatewayVPNConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginDisconnectVirtualNetworkGatewayVPN
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGenerateVpnProfile.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGenerateVpnProfile.json
 func ExampleVirtualNetworkGatewaysClient_BeginGenerateVPNProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +471,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGenerateVPNProfile() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGenerateVpnClientPackage.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGenerateVpnClientPackage.json
 func ExampleVirtualNetworkGatewaysClient_BeginGeneratevpnclientpackage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -498,7 +498,876 @@ func ExampleVirtualNetworkGatewaysClient_BeginGeneratevpnclientpackage() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGet.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetAdvertisedRoutes.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetAdvertisedRoutes() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetAdvertisedRoutes(ctx, "rg1", "vpngw", "test", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse{
+	// 	GatewayRouteListResult: armnetwork.GatewayRouteListResult{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetBGPPeerStatus.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetBgpPeerStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetBgpPeerStatus(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse{
+	// 	BgpPeerStatusListResult: armnetwork.BgpPeerStatusListResult{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetEffectiveRoutes.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetEffectiveRoutes() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetEffectiveRoutes(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetEffectiveRoutesResponse{
+	// 	GatewayEffectiveRouteListResult: armnetwork.GatewayEffectiveRouteListResult{
+	// 		Value: []*armnetwork.GatewayEffectiveRoute{
+	// 			{
+	// 				LocalAddress: to.Ptr("10.1.0.5"),
+	// 				AddressPrefixes: []*string{
+	// 					to.Ptr("10.2.0.0/16"),
+	// 				},
+	// 				NextHopIPAddress: to.Ptr("10.3.0.1"),
+	// 				NextHopType: to.Ptr(armnetwork.GatewayEffectiveRouteNextHopTypeTunnel),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetFailoverAllTestsDetails.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverAllTestDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetFailoverAllTestDetails(ctx, "rg1", "ergw", "SingleSiteFailover", true, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse{
+	// 	ExpressRouteFailoverTestDetailsArray: []*armnetwork.ExpressRouteFailoverTestDetails{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverSingleTestDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetFailoverSingleTestDetails(ctx, "rg1", "ergw", "Vancouver", "fe458ae8-d2ae-4520-a104-44bc233bde7e", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse{
+	// 	ExpressRouteFailoverSingleTestDetailsArray: []*armnetwork.ExpressRouteFailoverSingleTestDetails{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayLearnedRoutes.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetLearnedRoutes() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetLearnedRoutes(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetLearnedRoutesResponse{
+	// 	GatewayRouteListResult: armnetwork.GatewayRouteListResult{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetResiliencyInformation.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetResiliencyInformation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetResiliencyInformation(ctx, "rg1", "vpngw", &armnetwork.VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions{
+		AttemptRefresh: to.Ptr(true)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetResiliencyInformationResponse{
+	// 	GatewayResiliencyInformation: armnetwork.GatewayResiliencyInformation{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetRoutesInformation.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetRoutesInformation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetRoutesInformation(ctx, "rg1", "vpngw", &armnetwork.VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions{
+		AttemptRefresh: to.Ptr(false)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetRoutesInformationResponse{
+	// 	GatewayRouteSetsInformation: armnetwork.GatewayRouteSetsInformation{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetVPNProfilePackageURL() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetVPNProfilePackageURL(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse{
+	// 	Value: to.Ptr(""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientConnectionHealth() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetVpnclientConnectionHealth(ctx, "p2s-vnet-test", "vpnp2sgw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse{
+	// 	VPNClientConnectionHealthDetailListResult: armnetwork.VPNClientConnectionHealthDetailListResult{
+	// 		Value: []*armnetwork.VPNClientConnectionHealthDetail{
+	// 			{
+	// 				EgressBytesTransferred: to.Ptr[int64](33420),
+	// 				EgressPacketsTransferred: to.Ptr[int64](557),
+	// 				IngressBytesTransferred: to.Ptr[int64](33420),
+	// 				IngressPacketsTransferred: to.Ptr[int64](557),
+	// 				MaxBandwidth: to.Ptr[int64](240000000),
+	// 				MaxPacketsPerSecond: to.Ptr[int64](4),
+	// 				PrivateIPAddress: to.Ptr("192.168.210.2"),
+	// 				PublicIPAddress: to.Ptr("167.220.2.232:45522"),
+	// 				VPNConnectionDuration: to.Ptr[int64](900),
+	// 				VPNConnectionID: to.Ptr("IKEv2_1e1cfe59-5c7c-4315-a876-b11fbfdfeed4"),
+	// 				VPNConnectionTime: to.Ptr("2019-05-02T22:26:22"),
+	// 				VPNUserName: to.Ptr("gwp2schildcert"),
+	// 			},
+	// 			{
+	// 				EgressBytesTransferred: to.Ptr[int64](23420),
+	// 				EgressPacketsTransferred: to.Ptr[int64](357),
+	// 				IngressBytesTransferred: to.Ptr[int64](23420),
+	// 				IngressPacketsTransferred: to.Ptr[int64](357),
+	// 				MaxBandwidth: to.Ptr[int64](220000000),
+	// 				MaxPacketsPerSecond: to.Ptr[int64](4),
+	// 				PrivateIPAddress: to.Ptr("192.168.210.1"),
+	// 				PublicIPAddress: to.Ptr("167.220.2.232:45213"),
+	// 				VPNConnectionDuration: to.Ptr[int64](800),
+	// 				VPNConnectionID: to.Ptr("IKEv2_571cfe59-2c7d-1415-e813-c51fbfdfea16"),
+	// 				VPNConnectionTime: to.Ptr("2019-05-01T21:06:12"),
+	// 				VPNUserName: to.Ptr("gwp2schildcert"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
+func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientIPSecParameters() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetVpnclientIPSecParameters(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse{
+	// 	VPNClientIPsecParameters: armnetwork.VPNClientIPsecParameters{
+	// 		DhGroup: to.Ptr(armnetwork.DhGroupDHGroup2),
+	// 		IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
+	// 		IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
+	// 		IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
+	// 		IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
+	// 		PfsGroup: to.Ptr(armnetwork.PfsGroupPFS2),
+	// 		SaDataSizeKilobytes: to.Ptr[int32](429497),
+	// 		SaLifeTimeSeconds: to.Ptr[int32](86473),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayAbortMigration.json
+func ExampleVirtualNetworkGatewaysClient_BeginInvokeAbortMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokeAbortMigration(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayCommitMigration.json
+func ExampleVirtualNetworkGatewaysClient_BeginInvokeCommitMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokeCommitMigration(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayExecuteMigration.json
+func ExampleVirtualNetworkGatewaysClient_BeginInvokeExecuteMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokeExecuteMigration(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayPrepareMigration.json
+func ExampleVirtualNetworkGatewaysClient_BeginInvokePrepareMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokePrepareMigration(ctx, "rg1", "vpngw", armnetwork.VirtualNetworkGatewayMigrationParameters{
+		MigrationType: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationTypeUpgradeDeploymentToStandardIP),
+		ResourceURL:   to.Ptr("testUrl"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayReset.json
+func ExampleVirtualNetworkGatewaysClient_BeginReset() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginReset(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientResetResponse{
+	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
+	// 		Name: to.Ptr("vpngw"),
+	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
+	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw"),
+	// 		Location: to.Ptr("centralus"),
+	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
+	// 			Active: to.Ptr(false),
+	// 			BgpSettings: &armnetwork.BgpSettings{
+	// 				Asn: to.Ptr[int64](65514),
+	// 				BgpPeeringAddress: to.Ptr("10.0.1.30"),
+	// 				BgpPeeringAddresses: []*armnetwork.IPConfigurationBgpPeeringAddress{
+	// 					{
+	// 						CustomBgpIPAddresses: []*string{
+	// 							to.Ptr("169.254.21.10"),
+	// 						},
+	// 						DefaultBgpIPAddresses: []*string{
+	// 							to.Ptr("10.3.1.254"),
+	// 						},
+	// 						IPConfigurationID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
+	// 						TunnelIPAddresses: []*string{
+	// 							to.Ptr("52.161.10.135"),
+	// 						},
+	// 					},
+	// 				},
+	// 				PeerWeight: to.Ptr[int32](0),
+	// 			},
+	// 			CustomRoutes: &armnetwork.AddressSpace{
+	// 				AddressPrefixes: []*string{
+	// 					to.Ptr("101.168.0.6/32"),
+	// 				},
+	// 			},
+	// 			DisableIPSecReplayProtection: to.Ptr(false),
+	// 			EnableBgp: to.Ptr(false),
+	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
+	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
+	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("gwipconfig1"),
+	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
+	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PublicIPAddress: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
+	// 						},
+	// 						Subnet: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
+	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
+	// 				Capacity: to.Ptr[int32](0),
+	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
+	// 			},
+	// 			VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayResetVpnClientSharedKey.json
+func ExampleVirtualNetworkGatewaysClient_BeginResetVPNClientSharedKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginResetVPNClientSharedKey(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse{
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
+func ExampleVirtualNetworkGatewaysClient_BeginSetVpnclientIPSecParameters() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginSetVpnclientIPSecParameters(ctx, "rg1", "vpngw", armnetwork.VPNClientIPsecParameters{
+		DhGroup:             to.Ptr(armnetwork.DhGroupDHGroup2),
+		IkeEncryption:       to.Ptr(armnetwork.IkeEncryptionAES256),
+		IkeIntegrity:        to.Ptr(armnetwork.IkeIntegritySHA384),
+		IPSecEncryption:     to.Ptr(armnetwork.IPSecEncryptionAES256),
+		IPSecIntegrity:      to.Ptr(armnetwork.IPSecIntegritySHA256),
+		PfsGroup:            to.Ptr(armnetwork.PfsGroupPFS2),
+		SaDataSizeKilobytes: to.Ptr[int32](429497),
+		SaLifeTimeSeconds:   to.Ptr[int32](86473),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse{
+	// 	VPNClientIPsecParameters: armnetwork.VPNClientIPsecParameters{
+	// 		DhGroup: to.Ptr(armnetwork.DhGroupDHGroup2),
+	// 		IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
+	// 		IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
+	// 		IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
+	// 		IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
+	// 		PfsGroup: to.Ptr(armnetwork.PfsGroupPFS2),
+	// 		SaDataSizeKilobytes: to.Ptr[int32](429497),
+	// 		SaLifeTimeSeconds: to.Ptr[int32](86473),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStartSiteFailoverSimulation.json
+func ExampleVirtualNetworkGatewaysClient_BeginStartExpressRouteSiteFailoverSimulation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStartExpressRouteSiteFailoverSimulation(ctx, "rg1", "ergw", "Vancouver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse{
+	// 	Value: to.Ptr(""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStartPacketCapture.json
+func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithoutFilter() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStartPacketCapture(ctx, "rg1", "vpngw", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientStartPacketCaptureResponse{
+	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStartPacketCaptureFilterData.json
+func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithFilter() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStartPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions{
+		Parameters: &armnetwork.VPNPacketCaptureStartParameters{
+			FilterData: to.Ptr("{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientStartPacketCaptureResponse{
+	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStopSiteFailoverSimulation.json
+func ExampleVirtualNetworkGatewaysClient_BeginStopExpressRouteSiteFailoverSimulation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStopExpressRouteSiteFailoverSimulation(ctx, "rg1", "ergw", armnetwork.ExpressRouteFailoverStopAPIParameters{
+		PeeringLocation:         to.Ptr("Vancouver"),
+		WasSimulationSuccessful: to.Ptr(true),
+		Details: []*armnetwork.FailoverConnectionDetails{
+			{
+				FailoverConnectionName: to.Ptr("conn1"),
+				FailoverLocation:       to.Ptr("Denver"),
+				IsVerified:             to.Ptr(false),
+			},
+			{
+				FailoverConnectionName: to.Ptr("conn2"),
+				FailoverLocation:       to.Ptr("Amsterdam"),
+				IsVerified:             to.Ptr(true),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse{
+	// 	Value: to.Ptr(""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStopPacketCapture.json
+func ExampleVirtualNetworkGatewaysClient_BeginStopPacketCapture() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStopPacketCapture(ctx, "rg1", "vpngw", armnetwork.VPNPacketCaptureStopParameters{
+		SasURL: to.Ptr("https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientStopPacketCaptureResponse{
+	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayUpdateTags.json
+func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginUpdateTags(ctx, "rg1", "vpngw", armnetwork.TagsObject{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworkGatewaysClientUpdateTagsResponse{
+	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
+	// 		Name: to.Ptr("vpngw"),
+	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw"),
+	// 		Identity: &armnetwork.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armnetwork.ManagedServiceIdentityUserAssignedIdentities{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": &armnetwork.ManagedServiceIdentityUserAssignedIdentities{
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
+	// 			Active: to.Ptr(false),
+	// 			AllowRemoteVnetTraffic: to.Ptr(false),
+	// 			AllowVirtualWanTraffic: to.Ptr(false),
+	// 			BgpSettings: &armnetwork.BgpSettings{
+	// 				Asn: to.Ptr[int64](65515),
+	// 				BgpPeeringAddress: to.Ptr("10.0.0.254"),
+	// 				BgpPeeringAddresses: []*armnetwork.IPConfigurationBgpPeeringAddress{
+	// 					{
+	// 						CustomBgpIPAddresses: []*string{
+	// 							to.Ptr("169.254.21.10"),
+	// 						},
+	// 						DefaultBgpIPAddresses: []*string{
+	// 							to.Ptr("10.3.1.254"),
+	// 						},
+	// 						IPConfigurationID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
+	// 						TunnelIPAddresses: []*string{
+	// 							to.Ptr("52.161.10.135"),
+	// 						},
+	// 					},
+	// 				},
+	// 				PeerWeight: to.Ptr[int32](0),
+	// 			},
+	// 			CustomRoutes: &armnetwork.AddressSpace{
+	// 				AddressPrefixes: []*string{
+	// 					to.Ptr("101.168.0.6/32"),
+	// 				},
+	// 			},
+	// 			DisableIPSecReplayProtection: to.Ptr(false),
+	// 			EnableBgp: to.Ptr(false),
+	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
+	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
+	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("default"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/default"),
+	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PublicIPAddress: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/testpub1"),
+	// 						},
+	// 						Subnet: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/GatewaySubnet"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
+	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
+	// 				Capacity: to.Ptr[int32](2),
+	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
+	// 			},
+	// 			VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
+	// 			VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGet.json
 func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -657,7 +1526,7 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkScalableGatewayGet.json
+// Generated from example definition: 2026-03-01/VirtualNetworkScalableGatewayGet.json
 func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -730,102 +1599,42 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() 
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetAdvertisedRoutes.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetAdvertisedRoutes() {
+// Generated from example definition: 2026-03-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
+func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("72f988bf-86f1-41af-91ab-2d7cd011db47", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetAdvertisedRoutes(ctx, "rg1", "vpngw", "test", nil)
+	res, err := clientFactory.NewVirtualNetworkGatewaysClient().ListRadiusSecrets(ctx, "rg1", "vpngw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse{
-	// 	GatewayRouteListResult: armnetwork.GatewayRouteListResult{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetBGPPeerStatus.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetBgpPeerStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetBgpPeerStatus(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse{
-	// 	BgpPeerStatusListResult: armnetwork.BgpPeerStatusListResult{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetEffectiveRoutes.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetEffectiveRoutes() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetEffectiveRoutes(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetEffectiveRoutesResponse{
-	// 	GatewayEffectiveRouteListResult: armnetwork.GatewayEffectiveRouteListResult{
-	// 		Value: []*armnetwork.GatewayEffectiveRoute{
+	// res = armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsResponse{
+	// 	RadiusAuthServerListResult: armnetwork.RadiusAuthServerListResult{
+	// 		Value: []*armnetwork.RadiusAuthServer{
 	// 			{
-	// 				LocalAddress: to.Ptr("10.1.0.5"),
-	// 				AddressPrefixes: []*string{
-	// 					to.Ptr("10.2.0.0/16"),
-	// 				},
-	// 				NextHopIPAddress: to.Ptr("10.3.0.1"),
-	// 				NextHopType: to.Ptr(armnetwork.GatewayEffectiveRouteNextHopTypeTunnel),
+	// 				RadiusServerAddress: to.Ptr("1.1.1.1"),
+	// 				RadiusServerSecret: to.Ptr("*****"),
+	// 			},
+	// 			{
+	// 				RadiusServerAddress: to.Ptr("2.2.2.2"),
+	// 				RadiusServerSecret: to.Ptr("*****"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetFailoverAllTestsDetails.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverAllTestDetails() {
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewaysListConnections.json
+func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -835,346 +1644,54 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverAllTestDetails() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetFailoverAllTestDetails(ctx, "rg1", "ergw", "SingleSiteFailover", true, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse{
-	// 	ExpressRouteFailoverTestDetailsArray: []*armnetwork.ExpressRouteFailoverTestDetails{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverSingleTestDetails() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetFailoverSingleTestDetails(ctx, "rg1", "ergw", "Vancouver", "fe458ae8-d2ae-4520-a104-44bc233bde7e", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse{
-	// 	ExpressRouteFailoverSingleTestDetailsArray: []*armnetwork.ExpressRouteFailoverSingleTestDetails{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayLearnedRoutes.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetLearnedRoutes() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetLearnedRoutes(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetLearnedRoutesResponse{
-	// 	GatewayRouteListResult: armnetwork.GatewayRouteListResult{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetResiliencyInformation.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetResiliencyInformation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetResiliencyInformation(ctx, "rg1", "vpngw", &armnetwork.VirtualNetworkGatewaysClientBeginGetResiliencyInformationOptions{
-		AttemptRefresh: to.Ptr(true)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetResiliencyInformationResponse{
-	// 	GatewayResiliencyInformation: armnetwork.GatewayResiliencyInformation{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetRoutesInformation.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetRoutesInformation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetRoutesInformation(ctx, "rg1", "vpngw", &armnetwork.VirtualNetworkGatewaysClientBeginGetRoutesInformationOptions{
-		AttemptRefresh: to.Ptr(false)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetRoutesInformationResponse{
-	// 	GatewayRouteSetsInformation: armnetwork.GatewayRouteSetsInformation{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetVPNProfilePackageURL() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetVPNProfilePackageURL(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse{
-	// 	Value: to.Ptr(""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientConnectionHealth() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetVpnclientConnectionHealth(ctx, "p2s-vnet-test", "vpnp2sgw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse{
-	// 	VPNClientConnectionHealthDetailListResult: armnetwork.VPNClientConnectionHealthDetailListResult{
-	// 		Value: []*armnetwork.VPNClientConnectionHealthDetail{
-	// 			{
-	// 				EgressBytesTransferred: to.Ptr[int64](33420),
-	// 				EgressPacketsTransferred: to.Ptr[int64](557),
-	// 				IngressBytesTransferred: to.Ptr[int64](33420),
-	// 				IngressPacketsTransferred: to.Ptr[int64](557),
-	// 				MaxBandwidth: to.Ptr[int64](240000000),
-	// 				MaxPacketsPerSecond: to.Ptr[int64](4),
-	// 				PrivateIPAddress: to.Ptr("192.168.210.2"),
-	// 				PublicIPAddress: to.Ptr("167.220.2.232:45522"),
-	// 				VPNConnectionDuration: to.Ptr[int64](900),
-	// 				VPNConnectionID: to.Ptr("IKEv2_1e1cfe59-5c7c-4315-a876-b11fbfdfeed4"),
-	// 				VPNConnectionTime: to.Ptr("2019-05-02T22:26:22"),
-	// 				VPNUserName: to.Ptr("gwp2schildcert"),
-	// 			},
-	// 			{
-	// 				EgressBytesTransferred: to.Ptr[int64](23420),
-	// 				EgressPacketsTransferred: to.Ptr[int64](357),
-	// 				IngressBytesTransferred: to.Ptr[int64](23420),
-	// 				IngressPacketsTransferred: to.Ptr[int64](357),
-	// 				MaxBandwidth: to.Ptr[int64](220000000),
-	// 				MaxPacketsPerSecond: to.Ptr[int64](4),
-	// 				PrivateIPAddress: to.Ptr("192.168.210.1"),
-	// 				PublicIPAddress: to.Ptr("167.220.2.232:45213"),
-	// 				VPNConnectionDuration: to.Ptr[int64](800),
-	// 				VPNConnectionID: to.Ptr("IKEv2_571cfe59-2c7d-1415-e813-c51fbfdfea16"),
-	// 				VPNConnectionTime: to.Ptr("2019-05-01T21:06:12"),
-	// 				VPNUserName: to.Ptr("gwp2schildcert"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
-func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientIPSecParameters() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginGetVpnclientIPSecParameters(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse{
-	// 	VPNClientIPsecParameters: armnetwork.VPNClientIPsecParameters{
-	// 		DhGroup: to.Ptr(armnetwork.DhGroupDHGroup2),
-	// 		IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
-	// 		IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
-	// 		IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
-	// 		IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
-	// 		PfsGroup: to.Ptr(armnetwork.PfsGroupPFS2),
-	// 		SaDataSizeKilobytes: to.Ptr[int32](429497),
-	// 		SaLifeTimeSeconds: to.Ptr[int32](86473),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayAbortMigration.json
-func ExampleVirtualNetworkGatewaysClient_BeginInvokeAbortMigration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokeAbortMigration(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+	pager := clientFactory.NewVirtualNetworkGatewaysClient().NewListConnectionsPager("testrg", "test-vpn-gateway-1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse{
+		// 	VirtualNetworkGatewayListConnectionsResult: armnetwork.VirtualNetworkGatewayListConnectionsResult{
+		// 		Value: []*armnetwork.VirtualNetworkGatewayConnectionListEntity{
+		// 			{
+		// 				Name: to.Ptr("test-vpn-connection"),
+		// 				Type: to.Ptr("Microsoft.Network/connections"),
+		// 				Etag: to.Ptr("W/\\\"00000000-0000-0000-0000-000000000000\\\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/connections/test-vpn-connection"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.VirtualNetworkGatewayConnectionListEntityPropertiesFormat{
+		// 					ConnectionType: to.Ptr(armnetwork.VirtualNetworkGatewayConnectionTypeVnet2Vnet),
+		// 					EgressBytesTransferred: to.Ptr[int64](0),
+		// 					EnableBgp: to.Ptr(true),
+		// 					IngressBytesTransferred: to.Ptr[int64](0),
+		// 					IPSecPolicies: []*armnetwork.IPSecPolicy{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					RoutingWeight: to.Ptr[int32](22),
+		// 					TrafficSelectorPolicies: []*armnetwork.TrafficSelectorPolicy{
+		// 					},
+		// 					UsePolicyBasedTrafficSelectors: to.Ptr(false),
+		// 					VirtualNetworkGateway1: &armnetwork.VirtualNetworkConnectionGatewayReference{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-1"),
+		// 					},
+		// 					VirtualNetworkGateway2: &armnetwork.VirtualNetworkConnectionGatewayReference{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg-2/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-2"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayCommitMigration.json
-func ExampleVirtualNetworkGatewaysClient_BeginInvokeCommitMigration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokeCommitMigration(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayExecuteMigration.json
-func ExampleVirtualNetworkGatewaysClient_BeginInvokeExecuteMigration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokeExecuteMigration(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayPrepareMigration.json
-func ExampleVirtualNetworkGatewaysClient_BeginInvokePrepareMigration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginInvokePrepareMigration(ctx, "rg1", "vpngw", armnetwork.VirtualNetworkGatewayMigrationParameters{
-		MigrationType: to.Ptr(armnetwork.VirtualNetworkGatewayMigrationTypeUpgradeDeploymentToStandardIP),
-		ResourceURL:   to.Ptr("testUrl"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayList.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayList.json
 func ExampleVirtualNetworkGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1429,416 +1946,7 @@ func ExampleVirtualNetworkGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewaysListConnections.json
-func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualNetworkGatewaysClient().NewListConnectionsPager("testrg", "test-vpn-gateway-1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualNetworkGatewaysClientListConnectionsResponse{
-		// 	VirtualNetworkGatewayListConnectionsResult: armnetwork.VirtualNetworkGatewayListConnectionsResult{
-		// 		Value: []*armnetwork.VirtualNetworkGatewayConnectionListEntity{
-		// 			{
-		// 				Name: to.Ptr("test-vpn-connection"),
-		// 				Type: to.Ptr("Microsoft.Network/connections"),
-		// 				Etag: to.Ptr("W/\\\"00000000-0000-0000-0000-000000000000\\\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/connections/test-vpn-connection"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.VirtualNetworkGatewayConnectionListEntityPropertiesFormat{
-		// 					ConnectionType: to.Ptr(armnetwork.VirtualNetworkGatewayConnectionTypeVnet2Vnet),
-		// 					EgressBytesTransferred: to.Ptr[int64](0),
-		// 					EnableBgp: to.Ptr(true),
-		// 					IngressBytesTransferred: to.Ptr[int64](0),
-		// 					IPSecPolicies: []*armnetwork.IPSecPolicy{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					RoutingWeight: to.Ptr[int32](22),
-		// 					TrafficSelectorPolicies: []*armnetwork.TrafficSelectorPolicy{
-		// 					},
-		// 					UsePolicyBasedTrafficSelectors: to.Ptr(false),
-		// 					VirtualNetworkGateway1: &armnetwork.VirtualNetworkConnectionGatewayReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-1"),
-		// 					},
-		// 					VirtualNetworkGateway2: &armnetwork.VirtualNetworkConnectionGatewayReference{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg-2/providers/Microsoft.Network/virtualNetworkGateways/test-vpn-gateway-2"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
-func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("72f988bf-86f1-41af-91ab-2d7cd011db47", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualNetworkGatewaysClient().ListRadiusSecrets(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientListRadiusSecretsResponse{
-	// 	RadiusAuthServerListResult: armnetwork.RadiusAuthServerListResult{
-	// 		Value: []*armnetwork.RadiusAuthServer{
-	// 			{
-	// 				RadiusServerAddress: to.Ptr("1.1.1.1"),
-	// 				RadiusServerSecret: to.Ptr("*****"),
-	// 			},
-	// 			{
-	// 				RadiusServerAddress: to.Ptr("2.2.2.2"),
-	// 				RadiusServerSecret: to.Ptr("*****"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayReset.json
-func ExampleVirtualNetworkGatewaysClient_BeginReset() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginReset(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientResetResponse{
-	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
-	// 		Name: to.Ptr("vpngw"),
-	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
-	// 		Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw"),
-	// 		Location: to.Ptr("centralus"),
-	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
-	// 			Active: to.Ptr(false),
-	// 			BgpSettings: &armnetwork.BgpSettings{
-	// 				Asn: to.Ptr[int64](65514),
-	// 				BgpPeeringAddress: to.Ptr("10.0.1.30"),
-	// 				BgpPeeringAddresses: []*armnetwork.IPConfigurationBgpPeeringAddress{
-	// 					{
-	// 						CustomBgpIPAddresses: []*string{
-	// 							to.Ptr("169.254.21.10"),
-	// 						},
-	// 						DefaultBgpIPAddresses: []*string{
-	// 							to.Ptr("10.3.1.254"),
-	// 						},
-	// 						IPConfigurationID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
-	// 						TunnelIPAddresses: []*string{
-	// 							to.Ptr("52.161.10.135"),
-	// 						},
-	// 					},
-	// 				},
-	// 				PeerWeight: to.Ptr[int32](0),
-	// 			},
-	// 			CustomRoutes: &armnetwork.AddressSpace{
-	// 				AddressPrefixes: []*string{
-	// 					to.Ptr("101.168.0.6/32"),
-	// 				},
-	// 			},
-	// 			DisableIPSecReplayProtection: to.Ptr(false),
-	// 			EnableBgp: to.Ptr(false),
-	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
-	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
-	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
-	// 				{
-	// 					Name: to.Ptr("gwipconfig1"),
-	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
-	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						PublicIPAddress: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
-	// 						},
-	// 						Subnet: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
-	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
-	// 				Capacity: to.Ptr[int32](0),
-	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
-	// 			},
-	// 			VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayResetVpnClientSharedKey.json
-func ExampleVirtualNetworkGatewaysClient_BeginResetVPNClientSharedKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginResetVPNClientSharedKey(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse{
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
-func ExampleVirtualNetworkGatewaysClient_BeginSetVpnclientIPSecParameters() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginSetVpnclientIPSecParameters(ctx, "rg1", "vpngw", armnetwork.VPNClientIPsecParameters{
-		DhGroup:             to.Ptr(armnetwork.DhGroupDHGroup2),
-		IkeEncryption:       to.Ptr(armnetwork.IkeEncryptionAES256),
-		IkeIntegrity:        to.Ptr(armnetwork.IkeIntegritySHA384),
-		IPSecEncryption:     to.Ptr(armnetwork.IPSecEncryptionAES256),
-		IPSecIntegrity:      to.Ptr(armnetwork.IPSecIntegritySHA256),
-		PfsGroup:            to.Ptr(armnetwork.PfsGroupPFS2),
-		SaDataSizeKilobytes: to.Ptr[int32](429497),
-		SaLifeTimeSeconds:   to.Ptr[int32](86473),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse{
-	// 	VPNClientIPsecParameters: armnetwork.VPNClientIPsecParameters{
-	// 		DhGroup: to.Ptr(armnetwork.DhGroupDHGroup2),
-	// 		IkeEncryption: to.Ptr(armnetwork.IkeEncryptionAES256),
-	// 		IkeIntegrity: to.Ptr(armnetwork.IkeIntegritySHA384),
-	// 		IPSecEncryption: to.Ptr(armnetwork.IPSecEncryptionAES256),
-	// 		IPSecIntegrity: to.Ptr(armnetwork.IPSecIntegritySHA256),
-	// 		PfsGroup: to.Ptr(armnetwork.PfsGroupPFS2),
-	// 		SaDataSizeKilobytes: to.Ptr[int32](429497),
-	// 		SaLifeTimeSeconds: to.Ptr[int32](86473),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayStartSiteFailoverSimulation.json
-func ExampleVirtualNetworkGatewaysClient_BeginStartExpressRouteSiteFailoverSimulation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStartExpressRouteSiteFailoverSimulation(ctx, "rg1", "ergw", "Vancouver", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse{
-	// 	Value: to.Ptr(""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayStartPacketCapture.json
-func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithoutFilter() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStartPacketCapture(ctx, "rg1", "vpngw", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientStartPacketCaptureResponse{
-	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayStartPacketCaptureFilterData.json
-func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithFilter() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStartPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VirtualNetworkGatewaysClientBeginStartPacketCaptureOptions{
-		Parameters: &armnetwork.VPNPacketCaptureStartParameters{
-			FilterData: to.Ptr("{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientStartPacketCaptureResponse{
-	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayStopSiteFailoverSimulation.json
-func ExampleVirtualNetworkGatewaysClient_BeginStopExpressRouteSiteFailoverSimulation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStopExpressRouteSiteFailoverSimulation(ctx, "rg1", "ergw", armnetwork.ExpressRouteFailoverStopAPIParameters{
-		PeeringLocation:         to.Ptr("Vancouver"),
-		WasSimulationSuccessful: to.Ptr(true),
-		Details: []*armnetwork.FailoverConnectionDetails{
-			{
-				FailoverConnectionName: to.Ptr("conn1"),
-				FailoverLocation:       to.Ptr("Denver"),
-				IsVerified:             to.Ptr(false),
-			},
-			{
-				FailoverConnectionName: to.Ptr("conn2"),
-				FailoverLocation:       to.Ptr("Amsterdam"),
-				IsVerified:             to.Ptr(true),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse{
-	// 	Value: to.Ptr(""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayStopPacketCapture.json
-func ExampleVirtualNetworkGatewaysClient_BeginStopPacketCapture() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginStopPacketCapture(ctx, "rg1", "vpngw", armnetwork.VPNPacketCaptureStopParameters{
-		SasURL: to.Ptr("https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientStopPacketCaptureResponse{
-	// 	Value: to.Ptr("\"{\"Status\":\"Successful\",\"Data\":null}\""),
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewaySupportedVpnDevice.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewaySupportedVpnDevice.json
 func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1861,115 +1969,7 @@ func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayUpdateTags.json
-func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginUpdateTags(ctx, "rg1", "vpngw", armnetwork.TagsObject{
-		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualNetworkGatewaysClientUpdateTagsResponse{
-	// 	VirtualNetworkGateway: armnetwork.VirtualNetworkGateway{
-	// 		Name: to.Ptr("vpngw"),
-	// 		Type: to.Ptr("Microsoft.Network/virtualNetworkGateways"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw"),
-	// 		Identity: &armnetwork.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armnetwork.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armnetwork.ManagedServiceIdentityUserAssignedIdentities{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": &armnetwork.ManagedServiceIdentityUserAssignedIdentities{
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
-	// 			Active: to.Ptr(false),
-	// 			AllowRemoteVnetTraffic: to.Ptr(false),
-	// 			AllowVirtualWanTraffic: to.Ptr(false),
-	// 			BgpSettings: &armnetwork.BgpSettings{
-	// 				Asn: to.Ptr[int64](65515),
-	// 				BgpPeeringAddress: to.Ptr("10.0.0.254"),
-	// 				BgpPeeringAddresses: []*armnetwork.IPConfigurationBgpPeeringAddress{
-	// 					{
-	// 						CustomBgpIPAddresses: []*string{
-	// 							to.Ptr("169.254.21.10"),
-	// 						},
-	// 						DefaultBgpIPAddresses: []*string{
-	// 							to.Ptr("10.3.1.254"),
-	// 						},
-	// 						IPConfigurationID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/gwipconfig1"),
-	// 						TunnelIPAddresses: []*string{
-	// 							to.Ptr("52.161.10.135"),
-	// 						},
-	// 					},
-	// 				},
-	// 				PeerWeight: to.Ptr[int32](0),
-	// 			},
-	// 			CustomRoutes: &armnetwork.AddressSpace{
-	// 				AddressPrefixes: []*string{
-	// 					to.Ptr("101.168.0.6/32"),
-	// 				},
-	// 			},
-	// 			DisableIPSecReplayProtection: to.Ptr(false),
-	// 			EnableBgp: to.Ptr(false),
-	// 			EnableBgpRouteTranslationForNat: to.Ptr(false),
-	// 			GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeVPN),
-	// 			IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
-	// 				{
-	// 					Name: to.Ptr("default"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/ipConfigurations/default"),
-	// 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
-	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 						PublicIPAddress: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/testpub1"),
-	// 						},
-	// 						Subnet: &armnetwork.SubResource{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/GatewaySubnet"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
-	// 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameVPNGw1),
-	// 				Capacity: to.Ptr[int32](2),
-	// 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierVPNGw1),
-	// 			},
-	// 			VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
-	// 			VPNType: to.Ptr(armnetwork.VPNTypeRouteBased),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tag1": to.Ptr("value1"),
-	// 			"tag2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
+// Generated from example definition: 2026-03-01/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
 func ExampleVirtualNetworkGatewaysClient_VPNDeviceConfigurationScript() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

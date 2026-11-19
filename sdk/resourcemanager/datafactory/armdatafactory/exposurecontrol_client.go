@@ -64,7 +64,8 @@ func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locati
 	if err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
-	return client.getFeatureValueHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFeatureValueHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFeatureValueCreateRequest creates the GetFeatureValue request.
@@ -126,7 +127,8 @@ func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Contex
 	if err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
-	return client.getFeatureValueByFactoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFeatureValueByFactoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFeatureValueByFactoryCreateRequest creates the GetFeatureValueByFactory request.
@@ -192,7 +194,8 @@ func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Con
 	if err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
-	return client.queryFeatureValuesByFactoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryFeatureValuesByFactoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryFeatureValuesByFactoryCreateRequest creates the QueryFeatureValuesByFactory request.

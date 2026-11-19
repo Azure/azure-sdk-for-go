@@ -64,7 +64,8 @@ func (client *PrivateLinkResourcesClient) ListByStorageSyncService(ctx context.C
 	if err != nil {
 		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
 	}
-	return client.listByStorageSyncServiceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByStorageSyncServiceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.

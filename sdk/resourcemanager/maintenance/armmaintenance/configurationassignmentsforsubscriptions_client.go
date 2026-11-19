@@ -19,7 +19,7 @@ import (
 // ConfigurationAssignmentsForSubscriptionsClient contains the methods for the ConfigurationAssignmentsForSubscriptions group.
 // Don't use this type directly, use NewConfigurationAssignmentsForSubscriptionsClient() instead.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-10-01-preview
 type ConfigurationAssignmentsForSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -83,7 +84,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -124,7 +125,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Delete(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -143,7 +145,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +182,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Get(ctx context.Co
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -199,7 +202,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -237,7 +240,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Update(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -256,7 +260,7 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -94,7 +94,7 @@ func TestCreateCertificateRequestIncludesPlatformManaged(t *testing.T) {
 	defer func() {
 		require.NoError(t, req.Raw().Body.Close())
 	}()
-	require.Equal(t, version20260301Preview, req.Raw().URL.Query().Get("api-version"))
+	require.Equal(t, version20260401, req.Raw().URL.Query().Get("api-version"))
 
 	body, err := io.ReadAll(req.Raw().Body)
 	require.NoError(t, err)
@@ -129,7 +129,7 @@ func TestUpdateCertificatePolicyRequestIncludesPlatformManaged(t *testing.T) {
 	defer func() {
 		require.NoError(t, req.Raw().Body.Close())
 	}()
-	require.Equal(t, version20260301Preview, req.Raw().URL.Query().Get("api-version"))
+	require.Equal(t, version20260401, req.Raw().URL.Query().Get("api-version"))
 
 	body, err := io.ReadAll(req.Raw().Body)
 	require.NoError(t, err)

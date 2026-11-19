@@ -66,7 +66,8 @@ func (client *InstanceHistoriesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return InstanceHistoriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

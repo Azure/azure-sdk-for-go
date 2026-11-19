@@ -19,7 +19,7 @@ import (
 // ValidateOperationClient contains the methods for the ValidateOperation group.
 // Don't use this type directly, use NewValidateOperationClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type ValidateOperationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *ValidateOperationClient) BeginTrigger(ctx context.Context, vaultNa
 	}
 }
 
-// Trigger - Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking headers
+// trigger - Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking headers
 // which can be tracked using GetValidateOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, options *ValidateOperationClientBeginTriggerOptions) (*http.Response, error) {
@@ -87,12 +87,13 @@ func (client *ValidateOperationClient) trigger(ctx context.Context, vaultName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// triggerCreateRequest creates the Trigger request.
+// triggerCreateRequest creates the trigger request.
 func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters ValidateOperationRequestResource, _ *ValidateOperationClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTriggerValidateOperation"
 	if client.subscriptionID == "" {
@@ -112,7 +113,7 @@ func (client *ValidateOperationClient) triggerCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

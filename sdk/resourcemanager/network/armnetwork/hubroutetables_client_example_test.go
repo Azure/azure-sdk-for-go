@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/HubRouteTablePut.json
+// Generated from example definition: 2026-03-01/HubRouteTablePut.json
 func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/HubRouteTableDelete.json
+// Generated from example definition: 2026-03-01/HubRouteTableDelete.json
 func ExampleHubRouteTablesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleHubRouteTablesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/HubRouteTableGet.json
+// Generated from example definition: 2026-03-01/HubRouteTableGet.json
 func ExampleHubRouteTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleHubRouteTablesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/HubRouteTableList.json
+// Generated from example definition: 2026-03-01/HubRouteTableList.json
 func ExampleHubRouteTablesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

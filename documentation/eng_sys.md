@@ -2,10 +2,25 @@
 
 * [Build and Test](#build-and-test)
 * [Analyze Stages](#analyze-stages)
+* [Pull Request Automation](#pull-request-automation)
 
 ## Build and Test
 
 Our build system runs PR changes against the latest two versions of Go on both Windows and Linux.
+
+## Pull Request Automation
+
+Management review uses an unprivileged `pull_request` intake workflow followed by trusted `workflow_run` workflows on the default branch. Privileged jobs never check out or execute PR code.
+
+### Management review
+
+Apply `mgmt-review-needed` to request a review. The [review intake](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/pr-review-intake.yml) wakes the [router](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/pr-review-router.yml), which dispatches the [management reviewer](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/workflows/mgmt-review.md) on the default branch. The router and reviewer independently verify the intake workflow, its current attempt's successful `request` job, the current PR head, and the exact GitHub label-event ID. The original label requester must have write, maintain, or admin access; rerunning an intake as a maintainer does not authorize another requester. Bot label requests are not authorized in this repository.
+
+The label must have been added by the original intake actor within five minutes before the run's original creation time. Runner queue time and reruns do not renew this window. Reapply the label or manually dispatch the reviewer on the default branch if the request is stale or ambiguous. Manual dispatch requires `item_number`; `head_sha` is optional. The router supplies the other inputs.
+
+Requests for a PR are serialized rather than cancelling an active review. The reviewer claims the exact label event, marks the PR `mgmt-review-in-progress`, and publishes only while the reviewed head is still current and the PR is open. Completion replaces the in-progress label with `mgmt-review-analyzed`. If publication is rejected because the head changed or the PR closed, trusted cleanup removes only the in-progress label and preserves any newly applied `mgmt-review-needed` label.
+
+GitHub's normal fork-workflow approval requirements still apply, and PR intakes cannot run while the PR has merge conflicts. Resolve conflicts before retrying; management review can also be dispatched manually.
 
 ## Analyze
 

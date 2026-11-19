@@ -50,6 +50,46 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
+func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient().BeginUpdate(ctx, "resourceGroup", "testsvr", "testdb,131403269876900000", armsql.ManagedShortTermRetentionPolicyNameDefault, armsql.ManagedBackupShortTermRetentionPolicy{
+		Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
+			RetentionDays:    to.Ptr[int32](14),
+			LockImmutability: to.Ptr(false),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse{
+	// 	ManagedBackupShortTermRetentionPolicy: armsql.ManagedBackupShortTermRetentionPolicy{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/restorableDroppedDatabases/backupShortTermRetentionPolicies"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb,131403269876900000/backupShortTermRetentionPolicies/default"),
+	// 		Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
+	// 			RetentionDays: to.Ptr[int32](14),
+	// 			ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/GetManagedShortTermRetentionPolicyRestorableDropped.json
 func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -128,44 +168,4 @@ func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClie
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01-preview/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
-func ExampleManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient().BeginUpdate(ctx, "resourceGroup", "testsvr", "testdb,131403269876900000", armsql.ManagedShortTermRetentionPolicyNameDefault, armsql.ManagedBackupShortTermRetentionPolicy{
-		Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
-			RetentionDays:    to.Ptr[int32](14),
-			LockImmutability: to.Ptr(false),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientUpdateResponse{
-	// 	ManagedBackupShortTermRetentionPolicy: armsql.ManagedBackupShortTermRetentionPolicy{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/restorableDroppedDatabases/backupShortTermRetentionPolicies"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup/providers/Microsoft.Sql/managedInstances/testsvr/restorableDroppedDatabases/testdb,131403269876900000/backupShortTermRetentionPolicies/default"),
-	// 		Properties: &armsql.ManagedBackupShortTermRetentionPolicyProperties{
-	// 			RetentionDays: to.Ptr[int32](14),
-	// 			ImmutabilityStatus: to.Ptr(armsql.ImmutabilityStatusEnabled),
-	// 		},
-	// 	},
-	// }
 }

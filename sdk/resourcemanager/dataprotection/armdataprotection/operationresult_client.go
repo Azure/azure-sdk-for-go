@@ -20,7 +20,7 @@ import (
 // OperationResultClient contains the methods for the OperationResult group.
 // Don't use this type directly, use NewOperationResultClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-07-01
 type OperationResultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *OperationResultClient) Get(ctx context.Context, operationID string
 	if err != nil {
 		return OperationResultClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -88,7 +89,7 @@ func (client *OperationResultClient) getCreateRequest(ctx context.Context, opera
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

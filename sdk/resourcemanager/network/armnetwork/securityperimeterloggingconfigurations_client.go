@@ -19,7 +19,7 @@ import (
 // SecurityPerimeterLoggingConfigurationsClient contains the methods for the SecurityPerimeterLoggingConfigurations group.
 // Don't use this type directly, use NewSecurityPerimeterLoggingConfigurationsClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-03-01
 type SecurityPerimeterLoggingConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) CreateOrUpdate(ctx c
 	if err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -93,7 +94,7 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) createOrUpdateCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -137,7 +138,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) Delete(ctx context.C
 		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, err
 	}
 	return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, nil
 }
@@ -166,7 +168,7 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) deleteCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -192,7 +194,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) Get(ctx context.Cont
 	if err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -219,7 +222,7 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -295,7 +298,7 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) listCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

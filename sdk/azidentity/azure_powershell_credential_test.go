@@ -17,10 +17,10 @@ import (
 )
 
 func azurePowerShellTokenOutput(expiresOn int64) []byte {
-	return []byte(fmt.Sprintf(`{
+	return fmt.Appendf(nil, `{
   "Token": %q,
   "ExpiresOn": %d
-}`, tokenValue, expiresOn))
+}`, tokenValue, expiresOn)
 }
 
 func mockAzurePowerShellFailure(_ context.Context, credName string, _ string) ([]byte, error) {

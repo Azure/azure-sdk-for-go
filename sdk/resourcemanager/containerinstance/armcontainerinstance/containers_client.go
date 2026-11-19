@@ -20,7 +20,7 @@ import (
 // ContainersClient contains the methods for the Containers group.
 // Don't use this type directly, use NewContainersClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-07-01
 type ContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,8 @@ func (client *ContainersClient) Attach(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ContainersClientAttachResponse{}, err
 	}
-	return client.attachHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.attachHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // attachCreateRequest creates the Attach request.
@@ -94,7 +95,7 @@ func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -136,7 +137,8 @@ func (client *ContainersClient) ExecuteCommand(ctx context.Context, resourceGrou
 	if err != nil {
 		return ContainersClientExecuteCommandResponse{}, err
 	}
-	return client.executeCommandHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeCommandHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeCommandCreateRequest creates the ExecuteCommand request.
@@ -163,7 +165,7 @@ func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -207,7 +209,8 @@ func (client *ContainersClient) ListLogs(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ContainersClientListLogsResponse{}, err
 	}
-	return client.listLogsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listLogsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listLogsCreateRequest creates the ListLogs request.
@@ -234,7 +237,7 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	if options != nil && options.Tail != nil {
 		reqQP.Set("tail", strconv.FormatInt(int64(*options.Tail), 10))
 	}

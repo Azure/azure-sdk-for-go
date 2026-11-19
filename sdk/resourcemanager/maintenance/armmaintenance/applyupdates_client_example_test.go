@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance/v2"
 	"log"
 )
 
-// Generated from example definition: 2023-10-01-preview/ApplyUpdates_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/ApplyUpdates_CreateOrUpdate.json
 func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ApplyUpdates_CreateOrUpdateOnly_NoCancellation.json
+// Generated from example definition: 2025-10-01-preview/ApplyUpdates_CreateOrUpdateOnly_NoCancellation.json
 func ExampleApplyUpdatesClient_CreateOrUpdateOrCancel_applyUpdatesCreateOrUpdateOnlyNoCancellation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateOrCancel_applyUpdatesCreateOrUpdate
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ApplyUpdates_CreateOrUpdate_CancelMaintenance.json
+// Generated from example definition: 2025-10-01-preview/ApplyUpdates_CreateOrUpdate_CancelMaintenance.json
 func ExampleApplyUpdatesClient_CreateOrUpdateOrCancel_applyUpdatesCreateOrUpdateOrCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateOrCancel_applyUpdatesCreateOrUpdate
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ApplyUpdates_CreateOrUpdateParent.json
+// Generated from example definition: 2025-10-01-preview/ApplyUpdates_CreateOrUpdateParent.json
 func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ApplyUpdates_Get.json
+// Generated from example definition: 2025-10-01-preview/ApplyUpdates_Get.json
 func ExampleApplyUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleApplyUpdatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ApplyUpdates_GetParent.json
+// Generated from example definition: 2025-10-01-preview/ApplyUpdates_GetParent.json
 func ExampleApplyUpdatesClient_GetParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleApplyUpdatesClient_GetParent() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ApplyUpdates_List.json
+// Generated from example definition: 2025-10-01-preview/ApplyUpdates_List.json
 func ExampleApplyUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

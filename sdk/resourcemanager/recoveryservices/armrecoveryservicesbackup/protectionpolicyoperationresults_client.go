@@ -19,7 +19,7 @@ import (
 // ProtectionPolicyOperationResultsClient contains the methods for the ProtectionPolicyOperationResults group.
 // Don't use this type directly, use NewProtectionPolicyOperationResultsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type ProtectionPolicyOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *ProtectionPolicyOperationResultsClient) Get(ctx context.Context, v
 	if err != nil {
 		return ProtectionPolicyOperationResultsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -94,7 +95,7 @@ func (client *ProtectionPolicyOperationResultsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

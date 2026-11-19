@@ -48,6 +48,14 @@ func (c *ClientFactory) NewClient() *Client {
 	}
 }
 
+// NewClustersClient creates a new instance of ClustersClient.
+func (c *ClientFactory) NewClustersClient() *ClustersClient {
+	return &ClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDatabasesClient creates a new instance of DatabasesClient.
 func (c *ClientFactory) NewDatabasesClient() *DatabasesClient {
 	return &DatabasesClient{

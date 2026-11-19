@@ -4908,6 +4908,33 @@ func (e *ExternalHealthPolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type FlexProfile.
+func (f FlexProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "preferredVMSize", f.PreferredVMSize)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FlexProfile.
+func (f *FlexProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "preferredVMSize":
+			err = unpopulate(val, "PreferredVMSize", &f.PreferredVMSize)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Gallery.
 func (g Gallery) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -11534,7 +11561,7 @@ func (r *ResourceSKURestrictions) UnmarshalJSON(data []byte) error {
 func (r ResourceSKUZoneDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "capabilities", r.Capabilities)
-	populate(objectMap, "name", r.Name)
+	populate(objectMap, "Name", r.Name)
 	return json.Marshal(objectMap)
 }
 
@@ -11550,7 +11577,7 @@ func (r *ResourceSKUZoneDetails) UnmarshalJSON(data []byte) error {
 		case "capabilities":
 			err = unpopulate(val, "Capabilities", &r.Capabilities)
 			delete(rawMsg, key)
-		case "name":
+		case "Name":
 			err = unpopulate(val, "Name", &r.Name)
 			delete(rawMsg, key)
 		}
@@ -17640,6 +17667,7 @@ func (v VirtualMachineNetworkInterfaceIPConfigurationProperties) MarshalJSON() (
 	populate(objectMap, "applicationSecurityGroups", v.ApplicationSecurityGroups)
 	populate(objectMap, "loadBalancerBackendAddressPools", v.LoadBalancerBackendAddressPools)
 	populate(objectMap, "primary", v.Primary)
+	populate(objectMap, "privateIPAddressPrefixLength", v.PrivateIPAddressPrefixLength)
 	populate(objectMap, "privateIPAddressVersion", v.PrivateIPAddressVersion)
 	populate(objectMap, "publicIPAddressConfiguration", v.PublicIPAddressConfiguration)
 	populate(objectMap, "subnet", v.Subnet)
@@ -17666,6 +17694,9 @@ func (v *VirtualMachineNetworkInterfaceIPConfigurationProperties) UnmarshalJSON(
 			delete(rawMsg, key)
 		case "primary":
 			err = unpopulate(val, "Primary", &v.Primary)
+			delete(rawMsg, key)
+		case "privateIPAddressPrefixLength":
+			err = unpopulate(val, "PrivateIPAddressPrefixLength", &v.PrivateIPAddressPrefixLength)
 			delete(rawMsg, key)
 		case "privateIPAddressVersion":
 			err = unpopulate(val, "PrivateIPAddressVersion", &v.PrivateIPAddressVersion)
@@ -17730,6 +17761,7 @@ func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "diagnosticsProfile", v.DiagnosticsProfile)
 	populate(objectMap, "evictionPolicy", v.EvictionPolicy)
 	populate(objectMap, "extensionsTimeBudget", v.ExtensionsTimeBudget)
+	populate(objectMap, "flexProfile", v.FlexProfile)
 	populate(objectMap, "hardwareProfile", v.HardwareProfile)
 	populate(objectMap, "host", v.Host)
 	populate(objectMap, "hostGroup", v.HostGroup)
@@ -17786,6 +17818,9 @@ func (v *VirtualMachineProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "extensionsTimeBudget":
 			err = unpopulate(val, "ExtensionsTimeBudget", &v.ExtensionsTimeBudget)
+			delete(rawMsg, key)
+		case "flexProfile":
+			err = unpopulate(val, "FlexProfile", &v.FlexProfile)
 			delete(rawMsg, key)
 		case "hardwareProfile":
 			err = unpopulate(val, "HardwareProfile", &v.HardwareProfile)
@@ -18735,6 +18770,7 @@ func (v VirtualMachineScaleSetIPConfigurationProperties) MarshalJSON() ([]byte, 
 	populate(objectMap, "loadBalancerBackendAddressPools", v.LoadBalancerBackendAddressPools)
 	populate(objectMap, "loadBalancerInboundNatPools", v.LoadBalancerInboundNatPools)
 	populate(objectMap, "primary", v.Primary)
+	populate(objectMap, "privateIPAddressPrefixLength", v.PrivateIPAddressPrefixLength)
 	populate(objectMap, "privateIPAddressVersion", v.PrivateIPAddressVersion)
 	populate(objectMap, "publicIPAddressConfiguration", v.PublicIPAddressConfiguration)
 	populate(objectMap, "subnet", v.Subnet)
@@ -18764,6 +18800,9 @@ func (v *VirtualMachineScaleSetIPConfigurationProperties) UnmarshalJSON(data []b
 			delete(rawMsg, key)
 		case "primary":
 			err = unpopulate(val, "Primary", &v.Primary)
+			delete(rawMsg, key)
+		case "privateIPAddressPrefixLength":
+			err = unpopulate(val, "PrivateIPAddressPrefixLength", &v.PrivateIPAddressPrefixLength)
 			delete(rawMsg, key)
 		case "privateIPAddressVersion":
 			err = unpopulate(val, "PrivateIPAddressVersion", &v.PrivateIPAddressVersion)
@@ -19908,6 +19947,7 @@ func (v VirtualMachineScaleSetUpdateIPConfigurationProperties) MarshalJSON() ([]
 	populate(objectMap, "loadBalancerBackendAddressPools", v.LoadBalancerBackendAddressPools)
 	populate(objectMap, "loadBalancerInboundNatPools", v.LoadBalancerInboundNatPools)
 	populate(objectMap, "primary", v.Primary)
+	populate(objectMap, "privateIPAddressPrefixLength", v.PrivateIPAddressPrefixLength)
 	populate(objectMap, "privateIPAddressVersion", v.PrivateIPAddressVersion)
 	populate(objectMap, "publicIPAddressConfiguration", v.PublicIPAddressConfiguration)
 	populate(objectMap, "subnet", v.Subnet)
@@ -19937,6 +19977,9 @@ func (v *VirtualMachineScaleSetUpdateIPConfigurationProperties) UnmarshalJSON(da
 			delete(rawMsg, key)
 		case "primary":
 			err = unpopulate(val, "Primary", &v.Primary)
+			delete(rawMsg, key)
+		case "privateIPAddressPrefixLength":
+			err = unpopulate(val, "PrivateIPAddressPrefixLength", &v.PrivateIPAddressPrefixLength)
 			delete(rawMsg, key)
 		case "privateIPAddressVersion":
 			err = unpopulate(val, "PrivateIPAddressVersion", &v.PrivateIPAddressVersion)

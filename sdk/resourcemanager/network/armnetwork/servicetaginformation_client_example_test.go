@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ServiceTagInformationListResult.json
+// Generated from example definition: 2026-03-01/ServiceTagInformationListResult.json
 func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTags() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceTagInformationListResultWithNoAddressPrefixes.json
+// Generated from example definition: 2026-03-01/ServiceTagInformationListResultWithNoAddressPrefixes.json
 func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithNoAddressPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithNoA
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceTagInformationListResultWithTagname.json
+// Generated from example definition: 2026-03-01/ServiceTagInformationListResultWithTagname.json
 func ExampleServiceTagInformationClient_NewListPager_getListOfServiceTagsWithTagName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

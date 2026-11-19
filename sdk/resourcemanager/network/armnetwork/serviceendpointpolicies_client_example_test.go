@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ServiceEndpointPolicyCreate.json
+// Generated from example definition: 2026-03-01/ServiceEndpointPolicyCreate.json
 func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpointPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceEndpointPolicyCreateWithDefinition.json
+// Generated from example definition: 2026-03-01/ServiceEndpointPolicyCreateWithDefinition.json
 func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpointPolicyWithDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceEndpointPolicyDelete.json
+// Generated from example definition: 2026-03-01/ServiceEndpointPolicyDelete.json
 func ExampleServiceEndpointPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleServiceEndpointPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceEndpointPolicyGet.json
+// Generated from example definition: 2026-03-01/ServiceEndpointPolicyGet.json
 func ExampleServiceEndpointPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,90 @@ func ExampleServiceEndpointPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ServiceEndpointPolicyListAll.json
+// Generated from example definition: 2026-03-01/ServiceEndpointPolicyList.json
+func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServiceEndpointPoliciesClient().NewListByResourceGroupPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.ServiceEndpointPoliciesClientListByResourceGroupResponse{
+		// 	ServiceEndpointPolicyListResult: armnetwork.ServiceEndpointPolicyListResult{
+		// 		Value: []*armnetwork.ServiceEndpointPolicy{
+		// 			{
+		// 				Name: to.Ptr("testServiceEndpointPolicy"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ServiceEndpointPolicyPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
+		// 					ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
+		// 						{
+		// 							Name: to.Ptr("StorageServiceEndpointPolicyDefinition"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition"),
+		// 							Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
+		// 								Description: to.Ptr("Storage Service EndpointPolicy Definition"),
+		// 								Service: to.Ptr("Microsoft.Storage"),
+		// 								ServiceResources: []*string{
+		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000resourceGroups/storageRg"),
+		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					Subnets: []*armnetwork.Subnet{
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testServiceEndpointPolicy1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.ServiceEndpointPolicyPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
+		// 					ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
+		// 						{
+		// 							Name: to.Ptr("StorageServiceEndpointPolicyDefinition1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy1/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition1"),
+		// 							Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
+		// 								Description: to.Ptr("Storage Service EndpointPolicy Definition"),
+		// 								Service: to.Ptr("Microsoft.Storage"),
+		// 								ServiceResources: []*string{
+		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/storageRg"),
+		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					Subnets: []*armnetwork.Subnet{
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/ServiceEndpointPolicyListAll.json
 func ExampleServiceEndpointPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,90 +368,7 @@ func ExampleServiceEndpointPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ServiceEndpointPolicyList.json
-func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServiceEndpointPoliciesClient().NewListByResourceGroupPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.ServiceEndpointPoliciesClientListByResourceGroupResponse{
-		// 	ServiceEndpointPolicyListResult: armnetwork.ServiceEndpointPolicyListResult{
-		// 		Value: []*armnetwork.ServiceEndpointPolicy{
-		// 			{
-		// 				Name: to.Ptr("testServiceEndpointPolicy"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ServiceEndpointPolicyPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
-		// 					ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
-		// 						{
-		// 							Name: to.Ptr("StorageServiceEndpointPolicyDefinition"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition"),
-		// 							Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
-		// 								Description: to.Ptr("Storage Service EndpointPolicy Definition"),
-		// 								Service: to.Ptr("Microsoft.Storage"),
-		// 								ServiceResources: []*string{
-		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000resourceGroups/storageRg"),
-		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					Subnets: []*armnetwork.Subnet{
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testServiceEndpointPolicy1"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.ServiceEndpointPolicyPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("6A7C139D-8B8D-499B-B7CB-4F3F02A8A44F"),
-		// 					ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
-		// 						{
-		// 							Name: to.Ptr("StorageServiceEndpointPolicyDefinition1"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/serviceEndpointPolicies/testServiceEndpointPolicy1/serviceEndpointPolicyDefinitions/StorageServiceEndpointPolicyDefinition1"),
-		// 							Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
-		// 								Description: to.Ptr("Storage Service EndpointPolicy Definition"),
-		// 								Service: to.Ptr("Microsoft.Storage"),
-		// 								ServiceResources: []*string{
-		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/storageRg"),
-		// 									to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					Subnets: []*armnetwork.Subnet{
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/ServiceEndpointPolicyUpdateTags.json
+// Generated from example definition: 2026-03-01/ServiceEndpointPolicyUpdateTags.json
 func ExampleServiceEndpointPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

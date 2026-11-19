@@ -7,11 +7,11 @@ package armcontainerregistry_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/ArchiveVersionCreate.json
+// Generated from example definition: 2026-10-15-preview/ArchiveVersionCreate.json
 func ExampleArchiveVersionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleArchiveVersionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ArchiveVersionDelete.json
+// Generated from example definition: 2026-10-15-preview/ArchiveVersionDelete.json
 func ExampleArchiveVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleArchiveVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/ArchiveVersionGet.json
+// Generated from example definition: 2026-10-15-preview/ArchiveVersionGet.json
 func ExampleArchiveVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,9 +86,9 @@ func ExampleArchiveVersionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ArchiveVersionsClientGetResponse{
 	// 	ArchiveVersion: armcontainerregistry.ArchiveVersion{
-	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/packages/archives"),
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/packages/archives/versions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/packages/rpm/archives/myArchiveName/versions/myArchiveVersionName"),
-	// 		Name: to.Ptr("myArchiveName"),
+	// 		Name: to.Ptr("myArchiveVersionName"),
 	// 		SystemData: &armcontainerregistry.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
@@ -105,7 +105,7 @@ func ExampleArchiveVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ArchiveVersionList.json
+// Generated from example definition: 2026-10-15-preview/ArchiveVersionList.json
 func ExampleArchiveVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,6 @@ func ExampleArchiveVersionsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("string"),
 		// 	},
 		// }
 	}

@@ -23,8 +23,9 @@ import (
 const timeFormat = time.RFC3339Nano
 
 const (
-	appConfigStagingDomain = "appconfig-staging.azure.com"
-	defaultAudience        = "https://appconfig.azure.com"
+	appConfigStagingDomain         = "appconfig-staging.azure.com"
+	appConfigRegionalStagingDomain = "appconfig-stage.azure.com"
+	defaultAudience                = "https://appconfig.azure.com"
 )
 
 // Client is the struct for interacting with an Azure App Configuration instance.
@@ -57,7 +58,8 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 
 func getAudience(endpoint *url.URL) string {
 	host := strings.ToLower(endpoint.Hostname())
-	if strings.HasSuffix(host, "."+appConfigStagingDomain) {
+	// Regional staging endpoints use "appconfig-stage" but share the staging audience.
+	if strings.HasSuffix(host, "."+appConfigStagingDomain) || strings.HasSuffix(host, "."+appConfigRegionalStagingDomain) {
 		return "https://" + appConfigStagingDomain
 	}
 
@@ -259,7 +261,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 // NewListRevisionsPager creates a pager that retrieves the revisions of one or more
 // configuration setting entities that match the specified setting selector.
 func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRevisionsOptions) *runtime.Pager[ListRevisionsPageResponse] {
-	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGeneratedGetRevisions())
+	pagerInternal := c.appConfigClient.NewGetRevisionsPagerWithNextLinks(selector.toGeneratedGetRevisions())
 	return runtime.NewPager(runtime.PagingHandler[ListRevisionsPageResponse]{
 		More: func(ListRevisionsPageResponse) bool {
 			return pagerInternal.More()
@@ -358,7 +360,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 		}
 	}
 
-	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
+	ssRespPager := c.appConfigClient.NewGetSnapshotsPagerWithNextLinks(opts)
 
 	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsResponse]{
 		More: func(ListSnapshotsResponse) bool {
@@ -417,7 +419,7 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 		options = &ListSettingsForSnapshotOptions{}
 	}
 
-	ssRespPager := c.appConfigClient.NewGetKeyValuesPager(&generated.AzureAppConfigurationClientGetKeyValuesOptions{
+	ssRespPager := c.appConfigClient.NewGetKeyValuesPagerWithNextLinks(&generated.AzureAppConfigurationClientGetKeyValuesOptions{
 		AcceptDatetime: options.AcceptDatetime,
 		After:          options.After,
 		IfMatch:        (*string)(options.IfMatch),

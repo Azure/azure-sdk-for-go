@@ -82,7 +82,7 @@ type AccessPolicyAssignmentProvisioningError struct {
 
 // AzureCacheForRedisMigrationProperties - Properties for Redis Enterprise migration operation for Azure Cache for Redis.
 type AzureCacheForRedisMigrationProperties struct {
-	// REQUIRED; Sets whether the data is migrated from source to target or not. This property must be true during the preview.
+	// REQUIRED; Sets whether the data is migrated from source to target or not. Set this property to true to skip data migration.
 	SkipDataMigration *bool
 
 	// REQUIRED; The source resource ID to migrate from. This is the resource ID of the Azure Cache for Redis.
@@ -110,6 +110,11 @@ type AzureCacheForRedisMigrationProperties struct {
 	// READ-ONLY; Current provisioning status of the migration
 	ProvisioningState *MigrationProvisioningState
 
+	// READ-ONLY; The timestamp until which a successful migration remains eligible to be undone (rolled back) to the source cache.
+	// This property is only returned while the migration is in the Succeeded state, and is calculated from the time the migration
+	// succeeded plus the rollback window. After this time the source cache is released and the migration can no longer be undone.
+	RollbackEligibleUntil *time.Time
+
 	// READ-ONLY; Additional details about the migration operation's status in free text format.
 	StatusDetails *string
 
@@ -120,12 +125,13 @@ type AzureCacheForRedisMigrationProperties struct {
 // GetMigrationProperties implements the MigrationPropertiesClassification interface for type AzureCacheForRedisMigrationProperties.
 func (a *AzureCacheForRedisMigrationProperties) GetMigrationProperties() *MigrationProperties {
 	return &MigrationProperties{
-		CreationTime:      a.CreationTime,
-		LastModifiedTime:  a.LastModifiedTime,
-		ProvisioningState: a.ProvisioningState,
-		SourceType:        a.SourceType,
-		StatusDetails:     a.StatusDetails,
-		TargetResourceID:  a.TargetResourceID,
+		CreationTime:          a.CreationTime,
+		LastModifiedTime:      a.LastModifiedTime,
+		ProvisioningState:     a.ProvisioningState,
+		RollbackEligibleUntil: a.RollbackEligibleUntil,
+		SourceType:            a.SourceType,
+		StatusDetails:         a.StatusDetails,
+		TargetResourceID:      a.TargetResourceID,
 	}
 }
 
@@ -173,6 +179,16 @@ type ClusterCreateProperties struct {
 
 	// Encryption-at-rest configuration for the cluster.
 	Encryption *ClusterPropertiesEncryption
+
+	// The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At most 250 rules are supported, and non-empty
+	// rules require publicNetworkAccess to be Enabled.
+	// On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears all rules.
+	// On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules absent from
+	// it are deleted. Supplying an empty array clears all rules.
+	// Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set allows all
+	// public traffic; it does not deny all traffic.
+	// Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+	FirewallRules []*FirewallRule
 
 	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
 	// and increases the risk of data loss.
@@ -265,6 +281,16 @@ type ClusterUpdate struct {
 type ClusterUpdateProperties struct {
 	// Encryption-at-rest configuration for the cluster.
 	Encryption *ClusterPropertiesEncryption
+
+	// The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At most 250 rules are supported, and non-empty
+	// rules require publicNetworkAccess to be Enabled.
+	// On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears all rules.
+	// On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules absent from
+	// it are deleted. Supplying an empty array clears all rules.
+	// Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set allows all
+	// public traffic; it does not deny all traffic.
+	// Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+	FirewallRules []*FirewallRule
 
 	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
 	// and increases the risk of data loss.
@@ -480,6 +506,17 @@ type ExportClusterParameters struct {
 	SasURI *string
 }
 
+// FirewallRule - A firewall rule associated with the cluster.
+type FirewallRule struct {
+	// REQUIRED; The name of the firewall rule, unique within the cluster ignoring case. Must be 1-80 characters and contain only
+	// letters, numbers, hyphens, or underscores.
+	Name *string
+
+	// REQUIRED; An IPv4 address (for example, "203.0.113.1"), IPv4 CIDR prefix (for example, "203.0.113.0/24"), or Azure service
+	// tag (for example, "AzureCloud"). IPv6 addresses are not supported.
+	SourceAddressPrefix *string
+}
+
 // FlushParameters - Parameters for a Redis Enterprise active geo-replication flush operation
 type FlushParameters struct {
 	// The identifiers of all the other database resources in the georeplication group to be flushed.
@@ -608,6 +645,11 @@ type MigrationProperties struct {
 	// READ-ONLY; Current provisioning status of the migration
 	ProvisioningState *MigrationProvisioningState
 
+	// READ-ONLY; The timestamp until which a successful migration remains eligible to be undone (rolled back) to the source cache.
+	// This property is only returned while the migration is in the Succeeded state, and is calculated from the time the migration
+	// succeeded plus the rollback window. After this time the source cache is released and the migration can no longer be undone.
+	RollbackEligibleUntil *time.Time
+
 	// READ-ONLY; Additional details about the migration operation's status in free text format.
 	StatusDetails *string
 
@@ -617,6 +659,13 @@ type MigrationProperties struct {
 
 // GetMigrationProperties implements the MigrationPropertiesClassification interface for type MigrationProperties.
 func (m *MigrationProperties) GetMigrationProperties() *MigrationProperties { return m }
+
+// MigrationUndoRequest - Parameters supplied to the undo migration operation.
+type MigrationUndoRequest struct {
+	// The reason for undoing (rolling back) the migration. Choose the value that best describes why the rollback is needed. This
+	// information helps us improve the migration experience and does not change how the rollback is performed.
+	RollbackReason *MigrationRollbackReason
+}
 
 // MigrationValidationDisparity - Represents a specific validation issue found during migration validation.
 type MigrationValidationDisparity struct {
@@ -638,11 +687,6 @@ type MigrationValidationError struct {
 type MigrationValidationRequest struct {
 	// REQUIRED; The source resource ID to validate migration from. This is the resource ID of the Azure Cache for Redis.
 	SourceResourceID *string
-
-	// Sets whether to ignore warnings when validating if the source cache can be migrated to the target cache. If this property
-	// is true, the isValid property in the response will ignore warning-level disparities between the source and target resource.
-	// The default value is false.
-	ForceMigrate *bool
 
 	// Sets whether the data is migrated from source to target or not. The default value is true.
 	SkipDataMigration *bool

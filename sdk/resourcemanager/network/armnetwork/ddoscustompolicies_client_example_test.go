@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/DdosCustomPolicyCreate.json
+// Generated from example definition: 2026-03-01/DdosCustomPolicyCreate.json
 func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,6 +34,65 @@ func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 						TrafficDetectionRule: &armnetwork.TrafficDetectionRule{
 							PacketsPerSecond: to.Ptr[int32](1000000),
 							TrafficType:      to.Ptr(armnetwork.DdosTrafficTypeTCP),
+						},
+					},
+				},
+			},
+			MitigationRules: []*armnetwork.DdosMitigationRule{
+				{
+					Name: to.Ptr("mitigationRuleTcp"),
+					Properties: &armnetwork.DdosMitigationRulePropertiesFormat{
+						TrafficScope: to.Ptr(armnetwork.DdosMitigationTrafficScopeTCP),
+						TCPDefaultMitigations: &armnetwork.DdosTCPDefaultMitigations{
+							PerSourceRateLimiting: &armnetwork.DdosTCPPerSourceRateLimitPolicy{
+								PacketsPerSecond: to.Ptr[int32](100000),
+							},
+							PerSourceConnectionRateLimiting: &armnetwork.DdosTCPPerSourceConnectionRateLimitPolicy{
+								ConnectionsPerSecond: to.Ptr[int32](1000),
+							},
+						},
+						SourcePolicyOverrides: []*armnetwork.DdosSourcePolicyOverride{
+							{
+								PolicyAction: &armnetwork.DdosSourcePolicyAction{
+									ActionType: to.Ptr(armnetwork.DdosSourcePolicyActionTypeDeny),
+								},
+								Conditions: &armnetwork.DdosSourceMatchConditions{
+									IPPrefixes: []*string{
+										to.Ptr("198.51.100.0/24"),
+									},
+									GeoMatches: []*armnetwork.DdosGeoMatch{
+										{
+											CountryCode: to.Ptr("CA"),
+										},
+									},
+								},
+							},
+							{
+								PolicyAction: &armnetwork.DdosSourcePolicyAction{
+									ActionType: to.Ptr(armnetwork.DdosSourcePolicyActionTypePermit),
+								},
+								Conditions: &armnetwork.DdosSourceMatchConditions{
+									IPPrefixes: []*string{
+										to.Ptr("203.0.113.0/24"),
+									},
+									GeoMatches: []*armnetwork.DdosGeoMatch{
+										{
+											Continent: to.Ptr(armnetwork.DdosContinentNorthAmerica),
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				{
+					Name: to.Ptr("mitigationRuleUdp"),
+					Properties: &armnetwork.DdosMitigationRulePropertiesFormat{
+						TrafficScope: to.Ptr(armnetwork.DdosMitigationTrafficScopeUDP),
+						UDPDefaultMitigations: &armnetwork.DdosUDPDefaultMitigations{
+							PerSourceRateLimiting: &armnetwork.DdosUDPPerSourceRateLimitPolicy{
+								PacketsPerSecond: to.Ptr[int32](50000),
+							},
 						},
 					},
 				},
@@ -73,6 +132,73 @@ func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			MitigationRules: []*armnetwork.DdosMitigationRule{
+	// 				{
+	// 					Name: to.Ptr("mitigationRuleTcp"),
+	// 					Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosMitigationRules"),
+	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosMitigationRules/mitigationRuleTcp"),
+	// 					Properties: &armnetwork.DdosMitigationRulePropertiesFormat{
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						TrafficScope: to.Ptr(armnetwork.DdosMitigationTrafficScopeTCP),
+	// 						TCPDefaultMitigations: &armnetwork.DdosTCPDefaultMitigations{
+	// 							PerSourceRateLimiting: &armnetwork.DdosTCPPerSourceRateLimitPolicy{
+	// 								PacketsPerSecond: to.Ptr[int32](100000),
+	// 							},
+	// 							PerSourceConnectionRateLimiting: &armnetwork.DdosTCPPerSourceConnectionRateLimitPolicy{
+	// 								ConnectionsPerSecond: to.Ptr[int32](1000),
+	// 							},
+	// 						},
+	// 						SourcePolicyOverrides: []*armnetwork.DdosSourcePolicyOverride{
+	// 							{
+	// 								PolicyAction: &armnetwork.DdosSourcePolicyAction{
+	// 									ActionType: to.Ptr(armnetwork.DdosSourcePolicyActionTypeDeny),
+	// 								},
+	// 								Conditions: &armnetwork.DdosSourceMatchConditions{
+	// 									IPPrefixes: []*string{
+	// 										to.Ptr("198.51.100.0/24"),
+	// 									},
+	// 									GeoMatches: []*armnetwork.DdosGeoMatch{
+	// 										{
+	// 											CountryCode: to.Ptr("CA"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 							{
+	// 								PolicyAction: &armnetwork.DdosSourcePolicyAction{
+	// 									ActionType: to.Ptr(armnetwork.DdosSourcePolicyActionTypePermit),
+	// 								},
+	// 								Conditions: &armnetwork.DdosSourceMatchConditions{
+	// 									IPPrefixes: []*string{
+	// 										to.Ptr("203.0.113.0/24"),
+	// 									},
+	// 									GeoMatches: []*armnetwork.DdosGeoMatch{
+	// 										{
+	// 											Continent: to.Ptr(armnetwork.DdosContinentNorthAmerica),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("mitigationRuleUdp"),
+	// 					Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosMitigationRules"),
+	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosMitigationRules/mitigationRuleUdp"),
+	// 					Properties: &armnetwork.DdosMitigationRulePropertiesFormat{
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						TrafficScope: to.Ptr(armnetwork.DdosMitigationTrafficScopeUDP),
+	// 						UDPDefaultMitigations: &armnetwork.DdosUDPDefaultMitigations{
+	// 							PerSourceRateLimiting: &armnetwork.DdosUDPPerSourceRateLimitPolicy{
+	// 								PacketsPerSecond: to.Ptr[int32](50000),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
@@ -80,7 +206,7 @@ func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/DdosCustomPolicyDelete.json
+// Generated from example definition: 2026-03-01/DdosCustomPolicyDelete.json
 func ExampleDdosCustomPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +232,7 @@ func ExampleDdosCustomPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/DdosCustomPolicyGet.json
+// Generated from example definition: 2026-03-01/DdosCustomPolicyGet.json
 func ExampleDdosCustomPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,6 +273,73 @@ func ExampleDdosCustomPoliciesClient_Get() {
 	// 					},
 	// 				},
 	// 			},
+	// 			MitigationRules: []*armnetwork.DdosMitigationRule{
+	// 				{
+	// 					Name: to.Ptr("mitigationRuleTcp"),
+	// 					Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosMitigationRules"),
+	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosMitigationRules/mitigationRuleTcp"),
+	// 					Properties: &armnetwork.DdosMitigationRulePropertiesFormat{
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						TrafficScope: to.Ptr(armnetwork.DdosMitigationTrafficScopeTCP),
+	// 						TCPDefaultMitigations: &armnetwork.DdosTCPDefaultMitigations{
+	// 							PerSourceRateLimiting: &armnetwork.DdosTCPPerSourceRateLimitPolicy{
+	// 								PacketsPerSecond: to.Ptr[int32](100000),
+	// 							},
+	// 							PerSourceConnectionRateLimiting: &armnetwork.DdosTCPPerSourceConnectionRateLimitPolicy{
+	// 								ConnectionsPerSecond: to.Ptr[int32](1000),
+	// 							},
+	// 						},
+	// 						SourcePolicyOverrides: []*armnetwork.DdosSourcePolicyOverride{
+	// 							{
+	// 								PolicyAction: &armnetwork.DdosSourcePolicyAction{
+	// 									ActionType: to.Ptr(armnetwork.DdosSourcePolicyActionTypeDeny),
+	// 								},
+	// 								Conditions: &armnetwork.DdosSourceMatchConditions{
+	// 									IPPrefixes: []*string{
+	// 										to.Ptr("198.51.100.0/24"),
+	// 									},
+	// 									GeoMatches: []*armnetwork.DdosGeoMatch{
+	// 										{
+	// 											CountryCode: to.Ptr("CA"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 							{
+	// 								PolicyAction: &armnetwork.DdosSourcePolicyAction{
+	// 									ActionType: to.Ptr(armnetwork.DdosSourcePolicyActionTypePermit),
+	// 								},
+	// 								Conditions: &armnetwork.DdosSourceMatchConditions{
+	// 									IPPrefixes: []*string{
+	// 										to.Ptr("203.0.113.0/24"),
+	// 									},
+	// 									GeoMatches: []*armnetwork.DdosGeoMatch{
+	// 										{
+	// 											Continent: to.Ptr(armnetwork.DdosContinentNorthAmerica),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("mitigationRuleUdp"),
+	// 					Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosMitigationRules"),
+	// 					Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosMitigationRules/mitigationRuleUdp"),
+	// 					Properties: &armnetwork.DdosMitigationRulePropertiesFormat{
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						TrafficScope: to.Ptr(armnetwork.DdosMitigationTrafficScopeUDP),
+	// 						UDPDefaultMitigations: &armnetwork.DdosUDPDefaultMitigations{
+	// 							PerSourceRateLimiting: &armnetwork.DdosUDPPerSourceRateLimitPolicy{
+	// 								PacketsPerSecond: to.Ptr[int32](50000),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
@@ -154,74 +347,7 @@ func ExampleDdosCustomPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/DdosCustomPolicyList.json
-func ExampleDdosCustomPoliciesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDdosCustomPoliciesClient().NewListPager("rg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.DdosCustomPoliciesClientListResponse{
-		// 	DdosCustomPolicyListResult: armnetwork.DdosCustomPolicyListResult{
-		// 		Value: []*armnetwork.DdosCustomPolicy{
-		// 			{
-		// 				Name: to.Ptr("test-ddos-custom-policy"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy"),
-		// 				Type: to.Ptr("Microsoft.Network/ddosCustomPolicies"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					DetectionRules: []*armnetwork.DdosDetectionRule{
-		// 						{
-		// 							Name: to.Ptr("detectionRuleTcp"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosDetectionRules/detectionRuleTcp"),
-		// 							Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
-		// 							Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosDetectionRules"),
-		// 							Properties: &armnetwork.DdosDetectionRulePropertiesFormat{
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								DetectionMode: to.Ptr(armnetwork.DdosDetectionModeTrafficThreshold),
-		// 								TrafficDetectionRule: &armnetwork.TrafficDetectionRule{
-		// 									TrafficType: to.Ptr(armnetwork.DdosTrafficTypeTCP),
-		// 									PacketsPerSecond: to.Ptr[int32](1000000),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("test-ddos-custom-policy-2"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy-2"),
-		// 				Type: to.Ptr("Microsoft.Network/ddosCustomPolicies"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
-		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000001"),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-01-01/DdosCustomPolicyListAll.json
+// Generated from example definition: 2026-03-01/DdosCustomPolicyListAll.json
 func ExampleDdosCustomPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +414,74 @@ func ExampleDdosCustomPoliciesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/DdosCustomPolicyUpdateTags.json
+// Generated from example definition: 2026-03-01/DdosCustomPolicyList.json
+func ExampleDdosCustomPoliciesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDdosCustomPoliciesClient().NewListPager("rg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.DdosCustomPoliciesClientListResponse{
+		// 	DdosCustomPolicyListResult: armnetwork.DdosCustomPolicyListResult{
+		// 		Value: []*armnetwork.DdosCustomPolicy{
+		// 			{
+		// 				Name: to.Ptr("test-ddos-custom-policy"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy"),
+		// 				Type: to.Ptr("Microsoft.Network/ddosCustomPolicies"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					DetectionRules: []*armnetwork.DdosDetectionRule{
+		// 						{
+		// 							Name: to.Ptr("detectionRuleTcp"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosDetectionRules/detectionRuleTcp"),
+		// 							Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+		// 							Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosDetectionRules"),
+		// 							Properties: &armnetwork.DdosDetectionRulePropertiesFormat{
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								DetectionMode: to.Ptr(armnetwork.DdosDetectionModeTrafficThreshold),
+		// 								TrafficDetectionRule: &armnetwork.TrafficDetectionRule{
+		// 									TrafficType: to.Ptr(armnetwork.DdosTrafficTypeTCP),
+		// 									PacketsPerSecond: to.Ptr[int32](1000000),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("test-ddos-custom-policy-2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy-2"),
+		// 				Type: to.Ptr("Microsoft.Network/ddosCustomPolicies"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
+		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/DdosCustomPolicyUpdateTags.json
 func ExampleDdosCustomPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

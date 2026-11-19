@@ -67,7 +67,8 @@ func (client *IncidentsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return IncidentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *IncidentsClient) Delete(ctx context.Context, resourceGroupName str
 		return IncidentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return IncidentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IncidentsClientDeleteResponse{}, err
 	}
 	return IncidentsClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *IncidentsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return IncidentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -232,6 +235,204 @@ func (client *IncidentsClient) getHandleResponse(resp *http.Response, successCod
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Incident); err != nil {
 		return IncidentsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListAlerts - Gets all alerts for an incident.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the monitor workspace.
+//   - incidentID - Incident ID
+//   - options - IncidentsClientListAlertsOptions contains the optional parameters for the IncidentsClient.ListAlerts method.
+func (client *IncidentsClient) ListAlerts(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListAlertsOptions) (IncidentsClientListAlertsResponse, error) {
+	var err error
+	const operationName = "IncidentsClient.ListAlerts"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listAlertsCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
+	if err != nil {
+		return IncidentsClientListAlertsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IncidentsClientListAlertsResponse{}, err
+	}
+	resp, err := client.listAlertsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listAlertsCreateRequest creates the ListAlerts request.
+func (client *IncidentsClient) listAlertsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, _ *IncidentsClientListAlertsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/alerts"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if incidentID == "" {
+		return nil, errors.New("parameter incidentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listAlertsHandleResponse handles the ListAlerts response.
+func (client *IncidentsClient) listAlertsHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListAlertsResponse, error) {
+	result := IncidentsClientListAlertsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentAlertList); err != nil {
+		return IncidentsClientListAlertsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListBookmarks - Gets all bookmarks for an incident.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the monitor workspace.
+//   - incidentID - Incident ID
+//   - options - IncidentsClientListBookmarksOptions contains the optional parameters for the IncidentsClient.ListBookmarks method.
+func (client *IncidentsClient) ListBookmarks(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListBookmarksOptions) (IncidentsClientListBookmarksResponse, error) {
+	var err error
+	const operationName = "IncidentsClient.ListBookmarks"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listBookmarksCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
+	if err != nil {
+		return IncidentsClientListBookmarksResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IncidentsClientListBookmarksResponse{}, err
+	}
+	resp, err := client.listBookmarksHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listBookmarksCreateRequest creates the ListBookmarks request.
+func (client *IncidentsClient) listBookmarksCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, _ *IncidentsClientListBookmarksOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/bookmarks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if incidentID == "" {
+		return nil, errors.New("parameter incidentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listBookmarksHandleResponse handles the ListBookmarks response.
+func (client *IncidentsClient) listBookmarksHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListBookmarksResponse, error) {
+	result := IncidentsClientListBookmarksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentBookmarkList); err != nil {
+		return IncidentsClientListBookmarksResponse{}, err
+	}
+	return result, nil
+}
+
+// ListEntities - Gets all entities for an incident.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the monitor workspace.
+//   - incidentID - Incident ID
+//   - options - IncidentsClientListEntitiesOptions contains the optional parameters for the IncidentsClient.ListEntities method.
+func (client *IncidentsClient) ListEntities(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListEntitiesOptions) (IncidentsClientListEntitiesResponse, error) {
+	var err error
+	const operationName = "IncidentsClient.ListEntities"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listEntitiesCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
+	if err != nil {
+		return IncidentsClientListEntitiesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IncidentsClientListEntitiesResponse{}, err
+	}
+	resp, err := client.listEntitiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listEntitiesCreateRequest creates the ListEntities request.
+func (client *IncidentsClient) listEntitiesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, _ *IncidentsClientListEntitiesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/entities"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if incidentID == "" {
+		return nil, errors.New("parameter incidentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listEntitiesHandleResponse handles the ListEntities response.
+func (client *IncidentsClient) listEntitiesHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListEntitiesResponse, error) {
+	result := IncidentsClientListEntitiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentEntitiesResponse); err != nil {
+		return IncidentsClientListEntitiesResponse{}, err
 	}
 	return result, nil
 }
@@ -324,201 +525,6 @@ func (client *IncidentsClient) listHandleResponse(resp *http.Response, successCo
 	return result, nil
 }
 
-// ListAlerts - Gets all alerts for an incident.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
-//   - incidentID - Incident ID
-//   - options - IncidentsClientListAlertsOptions contains the optional parameters for the IncidentsClient.ListAlerts method.
-func (client *IncidentsClient) ListAlerts(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListAlertsOptions) (IncidentsClientListAlertsResponse, error) {
-	var err error
-	const operationName = "IncidentsClient.ListAlerts"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listAlertsCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
-	if err != nil {
-		return IncidentsClientListAlertsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IncidentsClientListAlertsResponse{}, err
-	}
-	return client.listAlertsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listAlertsCreateRequest creates the ListAlerts request.
-func (client *IncidentsClient) listAlertsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, _ *IncidentsClientListAlertsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/alerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if incidentID == "" {
-		return nil, errors.New("parameter incidentID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAlertsHandleResponse handles the ListAlerts response.
-func (client *IncidentsClient) listAlertsHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListAlertsResponse, error) {
-	result := IncidentsClientListAlertsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentAlertList); err != nil {
-		return IncidentsClientListAlertsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListBookmarks - Gets all bookmarks for an incident.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
-//   - incidentID - Incident ID
-//   - options - IncidentsClientListBookmarksOptions contains the optional parameters for the IncidentsClient.ListBookmarks method.
-func (client *IncidentsClient) ListBookmarks(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListBookmarksOptions) (IncidentsClientListBookmarksResponse, error) {
-	var err error
-	const operationName = "IncidentsClient.ListBookmarks"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listBookmarksCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
-	if err != nil {
-		return IncidentsClientListBookmarksResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IncidentsClientListBookmarksResponse{}, err
-	}
-	return client.listBookmarksHandleResponse(httpResp, http.StatusOK)
-}
-
-// listBookmarksCreateRequest creates the ListBookmarks request.
-func (client *IncidentsClient) listBookmarksCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, _ *IncidentsClientListBookmarksOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/bookmarks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if incidentID == "" {
-		return nil, errors.New("parameter incidentID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listBookmarksHandleResponse handles the ListBookmarks response.
-func (client *IncidentsClient) listBookmarksHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListBookmarksResponse, error) {
-	result := IncidentsClientListBookmarksResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentBookmarkList); err != nil {
-		return IncidentsClientListBookmarksResponse{}, err
-	}
-	return result, nil
-}
-
-// ListEntities - Gets all entities for an incident.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
-//   - incidentID - Incident ID
-//   - options - IncidentsClientListEntitiesOptions contains the optional parameters for the IncidentsClient.ListEntities method.
-func (client *IncidentsClient) ListEntities(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListEntitiesOptions) (IncidentsClientListEntitiesResponse, error) {
-	var err error
-	const operationName = "IncidentsClient.ListEntities"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listEntitiesCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, options)
-	if err != nil {
-		return IncidentsClientListEntitiesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return IncidentsClientListEntitiesResponse{}, err
-	}
-	return client.listEntitiesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listEntitiesCreateRequest creates the ListEntities request.
-func (client *IncidentsClient) listEntitiesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, _ *IncidentsClientListEntitiesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/entities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if incidentID == "" {
-		return nil, errors.New("parameter incidentID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listEntitiesHandleResponse handles the ListEntities response.
-func (client *IncidentsClient) listEntitiesHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListEntitiesResponse, error) {
-	result := IncidentsClientListEntitiesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentEntitiesResponse); err != nil {
-		return IncidentsClientListEntitiesResponse{}, err
-	}
-	return result, nil
-}
-
 // RunPlaybook - Triggers playbook on a specific incident
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -539,7 +545,8 @@ func (client *IncidentsClient) RunPlaybook(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return IncidentsClientRunPlaybookResponse{}, err
 	}
-	return client.runPlaybookHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.runPlaybookHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // runPlaybookCreateRequest creates the RunPlaybook request.

@@ -63,7 +63,8 @@ func (client *ManagementClient) CheckServiceProviderAvailability(ctx context.Con
 	if err != nil {
 		return ManagementClientCheckServiceProviderAvailabilityResponse{}, err
 	}
-	return client.checkServiceProviderAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkServiceProviderAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkServiceProviderAvailabilityCreateRequest creates the CheckServiceProviderAvailability request.

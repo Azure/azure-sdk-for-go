@@ -19,7 +19,7 @@ import (
 // RestorableTimeRangesClient contains the methods for the RestorableTimeRanges group.
 // Don't use this type directly, use NewRestorableTimeRangesClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-07-01
 type RestorableTimeRangesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,8 @@ func (client *RestorableTimeRangesClient) Find(ctx context.Context, resourceGrou
 	if err != nil {
 		return RestorableTimeRangesClientFindResponse{}, err
 	}
-	return client.findHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.findHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // findCreateRequest creates the Find request.
@@ -93,7 +94,7 @@ func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

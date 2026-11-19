@@ -69,7 +69,8 @@ func (client *Client) ClusterGetVersion(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ClientClusterGetVersionResponse{}, err
 	}
-	return client.clusterGetVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.clusterGetVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // clusterGetVersionCreateRequest creates the ClusterGetVersion request.
@@ -122,6 +123,210 @@ func (client *Client) clusterGetVersionHandleResponse(resp *http.Response, succe
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTypeVersionForReleaseTrain); err != nil {
 		return ClientClusterGetVersionResponse{}, err
+	}
+	return result, nil
+}
+
+// Get - Get an Extension Type installable to the cluster based region and type for the cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
+//   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters,
+//     appliances.
+//   - clusterName - The name of the kubernetes cluster.
+//   - extensionTypeName - Name of the Extension Type.
+//   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
+func (client *Client) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, options *ClientGetOptions) (ClientGetResponse, error) {
+	var err error
+	const operationName = "Client.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionTypeName, options)
+	if err != nil {
+		return ClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, _ *ClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensionTypes/{extensionTypeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterRp == "" {
+		return nil, errors.New("parameter clusterRp cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
+	if clusterResourceName == "" {
+		return nil, errors.New("parameter clusterResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if extensionTypeName == "" {
+		return nil, errors.New("parameter extensionTypeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int) (ClientGetResponse, error) {
+	result := ClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionType); err != nil {
+		return ClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetVersion - Get details of a version for an extension type and location
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The location name.
+//   - extensionTypeName - Name of the Extension Type.
+//   - versionNumber - Version number of the Extension Type.
+//   - options - ClientGetVersionOptions contains the optional parameters for the Client.GetVersion method.
+func (client *Client) GetVersion(ctx context.Context, location string, extensionTypeName string, versionNumber string, options *ClientGetVersionOptions) (ClientGetVersionResponse, error) {
+	var err error
+	const operationName = "Client.GetVersion"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getVersionCreateRequest(ctx, location, extensionTypeName, versionNumber, options)
+	if err != nil {
+		return ClientGetVersionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientGetVersionResponse{}, err
+	}
+	resp, err := client.getVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getVersionCreateRequest creates the GetVersion request.
+func (client *Client) getVersionCreateRequest(ctx context.Context, location string, extensionTypeName string, versionNumber string, _ *ClientGetVersionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/locations/{location}/extensionTypes/{extensionTypeName}/versions/{versionNumber}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if extensionTypeName == "" {
+		return nil, errors.New("parameter extensionTypeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
+	if versionNumber == "" {
+		return nil, errors.New("parameter versionNumber cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{versionNumber}", url.PathEscape(versionNumber))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getVersionHandleResponse handles the GetVersion response.
+func (client *Client) getVersionHandleResponse(resp *http.Response, successCodes ...int) (ClientGetVersionResponse, error) {
+	result := ClientGetVersionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTypeVersionForReleaseTrain); err != nil {
+		return ClientGetVersionResponse{}, err
+	}
+	return result, nil
+}
+
+// LocationGet - Get an extension type for the location.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The location name.
+//   - extensionTypeName - Name of the Extension Type.
+//   - options - ClientLocationGetOptions contains the optional parameters for the Client.LocationGet method.
+func (client *Client) LocationGet(ctx context.Context, location string, extensionTypeName string, options *ClientLocationGetOptions) (ClientLocationGetResponse, error) {
+	var err error
+	const operationName = "Client.LocationGet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.locationGetCreateRequest(ctx, location, extensionTypeName, options)
+	if err != nil {
+		return ClientLocationGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientLocationGetResponse{}, err
+	}
+	resp, err := client.locationGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// locationGetCreateRequest creates the LocationGet request.
+func (client *Client) locationGetCreateRequest(ctx context.Context, location string, extensionTypeName string, _ *ClientLocationGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/locations/{location}/extensionTypes/{extensionTypeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if extensionTypeName == "" {
+		return nil, errors.New("parameter extensionTypeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// locationGetHandleResponse handles the LocationGet response.
+func (client *Client) locationGetHandleResponse(resp *http.Response, successCodes ...int) (ClientLocationGetResponse, error) {
+	result := ClientLocationGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionType); err != nil {
+		return ClientLocationGetResponse{}, err
 	}
 	return result, nil
 }
@@ -224,147 +429,6 @@ func (client *Client) clusterListVersionsHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTypeVersionsList); err != nil {
 		return ClientClusterListVersionsResponse{}, err
-	}
-	return result, nil
-}
-
-// Get - Get an Extension Type installable to the cluster based region and type for the cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
-//   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters,
-//     appliances.
-//   - clusterName - The name of the kubernetes cluster.
-//   - extensionTypeName - Name of the Extension Type.
-//   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
-func (client *Client) Get(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, options *ClientGetOptions) (ClientGetResponse, error) {
-	var err error
-	const operationName = "Client.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionTypeName, options)
-	if err != nil {
-		return ClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientGetResponse{}, err
-	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
-}
-
-// getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName string, clusterRp string, clusterResourceName string, clusterName string, extensionTypeName string, _ *ClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensionTypes/{extensionTypeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterRp == "" {
-		return nil, errors.New("parameter clusterRp cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterRp}", url.PathEscape(clusterRp))
-	if clusterResourceName == "" {
-		return nil, errors.New("parameter clusterResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterResourceName}", url.PathEscape(clusterResourceName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if extensionTypeName == "" {
-		return nil, errors.New("parameter extensionTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int) (ClientGetResponse, error) {
-	result := ClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionType); err != nil {
-		return ClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// GetVersion - Get details of a version for an extension type and location
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
-//   - extensionTypeName - Name of the Extension Type.
-//   - versionNumber - Version number of the Extension Type.
-//   - options - ClientGetVersionOptions contains the optional parameters for the Client.GetVersion method.
-func (client *Client) GetVersion(ctx context.Context, location string, extensionTypeName string, versionNumber string, options *ClientGetVersionOptions) (ClientGetVersionResponse, error) {
-	var err error
-	const operationName = "Client.GetVersion"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getVersionCreateRequest(ctx, location, extensionTypeName, versionNumber, options)
-	if err != nil {
-		return ClientGetVersionResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientGetVersionResponse{}, err
-	}
-	return client.getVersionHandleResponse(httpResp, http.StatusOK)
-}
-
-// getVersionCreateRequest creates the GetVersion request.
-func (client *Client) getVersionCreateRequest(ctx context.Context, location string, extensionTypeName string, versionNumber string, _ *ClientGetVersionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/locations/{location}/extensionTypes/{extensionTypeName}/versions/{versionNumber}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if extensionTypeName == "" {
-		return nil, errors.New("parameter extensionTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
-	if versionNumber == "" {
-		return nil, errors.New("parameter versionNumber cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{versionNumber}", url.PathEscape(versionNumber))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getVersionHandleResponse handles the GetVersion response.
-func (client *Client) getVersionHandleResponse(resp *http.Response, successCodes ...int) (ClientGetVersionResponse, error) {
-	result := ClientGetVersionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTypeVersionForReleaseTrain); err != nil {
-		return ClientGetVersionResponse{}, err
 	}
 	return result, nil
 }
@@ -552,66 +616,6 @@ func (client *Client) listVersionsHandleResponse(resp *http.Response, successCod
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionTypeVersionsList); err != nil {
 		return ClientListVersionsResponse{}, err
-	}
-	return result, nil
-}
-
-// LocationGet - Get an extension type for the location.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
-//   - extensionTypeName - Name of the Extension Type.
-//   - options - ClientLocationGetOptions contains the optional parameters for the Client.LocationGet method.
-func (client *Client) LocationGet(ctx context.Context, location string, extensionTypeName string, options *ClientLocationGetOptions) (ClientLocationGetResponse, error) {
-	var err error
-	const operationName = "Client.LocationGet"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.locationGetCreateRequest(ctx, location, extensionTypeName, options)
-	if err != nil {
-		return ClientLocationGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientLocationGetResponse{}, err
-	}
-	return client.locationGetHandleResponse(httpResp, http.StatusOK)
-}
-
-// locationGetCreateRequest creates the LocationGet request.
-func (client *Client) locationGetCreateRequest(ctx context.Context, location string, extensionTypeName string, _ *ClientLocationGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KubernetesConfiguration/locations/{location}/extensionTypes/{extensionTypeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if extensionTypeName == "" {
-		return nil, errors.New("parameter extensionTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{extensionTypeName}", url.PathEscape(extensionTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// locationGetHandleResponse handles the LocationGet response.
-func (client *Client) locationGetHandleResponse(resp *http.Response, successCodes ...int) (ClientLocationGetResponse, error) {
-	result := ClientLocationGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExtensionType); err != nil {
-		return ClientLocationGetResponse{}, err
 	}
 	return result, nil
 }

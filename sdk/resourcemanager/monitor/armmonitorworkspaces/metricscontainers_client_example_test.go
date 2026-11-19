@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-03/MetricsContainers_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/MetricsContainers_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleMetricsContainersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,7 +25,12 @@ func ExampleMetricsContainersClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewMetricsContainersClient().CreateOrUpdate(ctx, "rgazuremonitorworkspace", "myAzureMonitorWorkspace", "default", armmonitorworkspaces.MetricsContainerResource{
 		Properties: &armmonitorworkspaces.MetricsContainer{
-			Version: to.Ptr("1.0"),
+			Limits: &armmonitorworkspaces.MetricsLimits{
+				MaxActiveTimeSeries: to.Ptr[int64](100000),
+				MaxEventsPerMinute:  to.Ptr[int64](100000),
+				EnableAutoScale:     to.Ptr(true),
+			},
+			Version: to.Ptr("2.0"),
 		},
 	}, nil)
 	if err != nil {
@@ -37,8 +42,12 @@ func ExampleMetricsContainersClient_CreateOrUpdate() {
 	// res = armmonitorworkspaces.MetricsContainersClientCreateOrUpdateResponse{
 	// 	MetricsContainerResource: armmonitorworkspaces.MetricsContainerResource{
 	// 		Properties: &armmonitorworkspaces.MetricsContainer{
-	// 			Version: to.Ptr("1.0"),
-	// 			ProvisioningState: to.Ptr(armmonitorworkspaces.ResourceProvisioningStateSucceeded),
+	// 			Limits: &armmonitorworkspaces.MetricsLimits{
+	// 				MaxActiveTimeSeries: to.Ptr[int64](100000),
+	// 				MaxEventsPerMinute: to.Ptr[int64](100000),
+	// 				EnableAutoScale: to.Ptr(true),
+	// 			},
+	// 			Version: to.Ptr("2.0"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/metricsContainers/default"),
 	// 		Name: to.Ptr("default"),
@@ -55,7 +64,7 @@ func ExampleMetricsContainersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-03/MetricsContainers_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/MetricsContainers_Get_MaximumSet_Gen.json
 func ExampleMetricsContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,8 +85,12 @@ func ExampleMetricsContainersClient_Get() {
 	// res = armmonitorworkspaces.MetricsContainersClientGetResponse{
 	// 	MetricsContainerResource: armmonitorworkspaces.MetricsContainerResource{
 	// 		Properties: &armmonitorworkspaces.MetricsContainer{
-	// 			Version: to.Ptr("1.0"),
-	// 			ProvisioningState: to.Ptr(armmonitorworkspaces.ResourceProvisioningStateSucceeded),
+	// 			Limits: &armmonitorworkspaces.MetricsLimits{
+	// 				MaxActiveTimeSeries: to.Ptr[int64](100000),
+	// 				MaxEventsPerMinute: to.Ptr[int64](100000),
+	// 				EnableAutoScale: to.Ptr(true),
+	// 			},
+	// 			Version: to.Ptr("2.0"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/metricsContainers/default"),
 	// 		Name: to.Ptr("default"),
@@ -94,7 +107,7 @@ func ExampleMetricsContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-03/MetricsContainers_ListByAzureMonitorWorkspace_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-03-preview/MetricsContainers_ListByAzureMonitorWorkspace_MaximumSet_Gen.json
 func ExampleMetricsContainersClient_NewListByAzureMonitorWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,8 +134,12 @@ func ExampleMetricsContainersClient_NewListByAzureMonitorWorkspacePager() {
 		// 		Value: []*armmonitorworkspaces.MetricsContainerResource{
 		// 			{
 		// 				Properties: &armmonitorworkspaces.MetricsContainer{
-		// 					ProvisioningState: to.Ptr(armmonitorworkspaces.ResourceProvisioningStateSucceeded),
-		// 					Version: to.Ptr("1.0"),
+		// 					Limits: &armmonitorworkspaces.MetricsLimits{
+		// 						MaxActiveTimeSeries: to.Ptr[int64](1000000),
+		// 						MaxEventsPerMinute: to.Ptr[int64](100000),
+		// 						EnableAutoScale: to.Ptr(true),
+		// 					},
+		// 					Version: to.Ptr("2.0"),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/rgazuremonitorworkspace/providers/Microsoft.Monitor/accounts/myAzureMonitorWorkspace/metricsContainers/default"),
 		// 				Name: to.Ptr("default"),

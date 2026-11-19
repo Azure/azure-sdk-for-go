@@ -5,7 +5,7 @@
 package armchaos
 
 const (
-	version20260801Preview string = "2026-08-01-preview"
+	version20261101 string = "2026-11-01"
 )
 
 // ActionDependencyType - Enum for action dependency type.
@@ -98,8 +98,6 @@ const (
 	ConnectionKindAksExtension ConnectionKind = "AksExtension"
 	// ConnectionKindChaosAgent - A connection backed by the Chaos agent installed on the target resource.
 	ConnectionKindChaosAgent ConnectionKind = "ChaosAgent"
-	// ConnectionKindCsfi - A connection backed by Cloud Service Fault Injection (CSFI).
-	ConnectionKindCsfi ConnectionKind = "Csfi"
 )
 
 // PossibleConnectionKindValues returns the possible values for the ConnectionKind const type.
@@ -107,7 +105,6 @@ func PossibleConnectionKindValues() []ConnectionKind {
 	return []ConnectionKind{
 		ConnectionKindAksExtension,
 		ConnectionKindChaosAgent,
-		ConnectionKindCsfi,
 	}
 }
 
@@ -178,6 +175,31 @@ func PossibleExperimentActionTypeValues() []ExperimentActionType {
 	}
 }
 
+// FailureBehavior - Enum of how a scenario run reacts when an action fails.
+type FailureBehavior string
+
+const (
+	// FailureBehaviorContinue - The action failure is suppressed: it does not by itself end the scenario run, and the run
+	// continues with its remaining actions. Suppression affects the run's result only. It does not
+	// change dependency scheduling, which stays under the control of each action's `runAfter` —
+	// an action that should still start after a failed dependency says so there.
+	// A run that completes normally and whose action failures were all suppressed terminates as
+	// `PartiallySucceeded`. Any failure that is not suppressed still drives the run to `Failed`,
+	// and cancellation keeps its existing result.
+	FailureBehaviorContinue FailureBehavior = "Continue"
+	// FailureBehaviorStop - The action failure stops the scenario run and drives it to the `Failed` terminal state.
+	// This is the effective behavior when no `failureBehavior` is supplied.
+	FailureBehaviorStop FailureBehavior = "Stop"
+)
+
+// PossibleFailureBehaviorValues returns the possible values for the FailureBehavior const type.
+func PossibleFailureBehaviorValues() []FailureBehavior {
+	return []FailureBehavior{
+		FailureBehaviorContinue,
+		FailureBehaviorStop,
+	}
+}
+
 // FilterType - Enum that discriminates between filter types. Currently only `Simple` type is supported.
 type FilterType string
 
@@ -239,6 +261,33 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// ParameterFormatType - Enum of the built-in formats a scenario parameter's value can be validated against.
+type ParameterFormatType string
+
+const (
+	// ParameterFormatTypeAzureRegion - The value must be an Azure region name.
+	ParameterFormatTypeAzureRegion ParameterFormatType = "AzureRegion"
+	// ParameterFormatTypeAzureResourceID - The value must be an Azure resource ID.
+	ParameterFormatTypeAzureResourceID ParameterFormatType = "AzureResourceId"
+	// ParameterFormatTypeAzureZone - The value must be an Azure availability zone.
+	ParameterFormatTypeAzureZone ParameterFormatType = "AzureZone"
+	// ParameterFormatTypeDuration - The value must be an ISO 8601 duration.
+	ParameterFormatTypeDuration ParameterFormatType = "Duration"
+	// ParameterFormatTypeJSON - The value must be well-formed JSON.
+	ParameterFormatTypeJSON ParameterFormatType = "Json"
+)
+
+// PossibleParameterFormatTypeValues returns the possible values for the ParameterFormatType const type.
+func PossibleParameterFormatTypeValues() []ParameterFormatType {
+	return []ParameterFormatType{
+		ParameterFormatTypeAzureRegion,
+		ParameterFormatTypeAzureResourceID,
+		ParameterFormatTypeAzureZone,
+		ParameterFormatTypeDuration,
+		ParameterFormatTypeJSON,
+	}
+}
+
 // ParameterType - Enum for parameter types.
 type ParameterType string
 
@@ -296,27 +345,6 @@ func PossiblePermissionsFixStateValues() []PermissionsFixState {
 	}
 }
 
-// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
-type PrivateEndpointServiceConnectionStatus string
-
-const (
-	// PrivateEndpointServiceConnectionStatusApproved - Approved status.
-	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	// PrivateEndpointServiceConnectionStatusPending - Pending status.
-	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
-	// PrivateEndpointServiceConnectionStatusRejected - Rejected status.
-	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
-)
-
-// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
-func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
-		PrivateEndpointServiceConnectionStatusApproved,
-		PrivateEndpointServiceConnectionStatusPending,
-		PrivateEndpointServiceConnectionStatusRejected,
-	}
-}
-
 // ProvisioningState - Current provisioning state for a given Azure Chaos resource.
 type ProvisioningState string
 
@@ -347,24 +375,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateRunning,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
-	}
-}
-
-// PublicNetworkAccessOption - Public Network Access Control for PrivateAccess resource.
-type PublicNetworkAccessOption string
-
-const (
-	// PublicNetworkAccessOptionDisabled - Disabled access.
-	PublicNetworkAccessOptionDisabled PublicNetworkAccessOption = "Disabled"
-	// PublicNetworkAccessOptionEnabled - Enabled access.
-	PublicNetworkAccessOptionEnabled PublicNetworkAccessOption = "Enabled"
-)
-
-// PossiblePublicNetworkAccessOptionValues returns the possible values for the PublicNetworkAccessOption const type.
-func PossiblePublicNetworkAccessOptionValues() []PublicNetworkAccessOption {
-	return []PublicNetworkAccessOption{
-		PublicNetworkAccessOptionDisabled,
-		PublicNetworkAccessOptionEnabled,
 	}
 }
 
@@ -443,6 +453,27 @@ func PossibleRunAfterBehaviorValues() []RunAfterBehavior {
 	}
 }
 
+// ScenarioActionSelectorName - The supported action selector names.
+type ScenarioActionSelectorName string
+
+const (
+	// ScenarioActionSelectorNameLocation - Select targets by Azure location.
+	ScenarioActionSelectorNameLocation ScenarioActionSelectorName = "location"
+	// ScenarioActionSelectorNameLogicalZone - Select targets by logical availability zone.
+	ScenarioActionSelectorNameLogicalZone ScenarioActionSelectorName = "logicalZone"
+	// ScenarioActionSelectorNamePhysicalZone - Select targets by physical availability zone.
+	ScenarioActionSelectorNamePhysicalZone ScenarioActionSelectorName = "physicalZone"
+)
+
+// PossibleScenarioActionSelectorNameValues returns the possible values for the ScenarioActionSelectorName const type.
+func PossibleScenarioActionSelectorNameValues() []ScenarioActionSelectorName {
+	return []ScenarioActionSelectorName{
+		ScenarioActionSelectorNameLocation,
+		ScenarioActionSelectorNameLogicalZone,
+		ScenarioActionSelectorNamePhysicalZone,
+	}
+}
+
 // ScenarioRunState - Enum of the scenario run state.
 type ScenarioRunState string
 
@@ -457,6 +488,9 @@ const (
 	ScenarioRunStateFailed ScenarioRunState = "Failed"
 	// ScenarioRunStateGenerating - The scenario run is in the process of being generated.
 	ScenarioRunStateGenerating ScenarioRunState = "Generating"
+	// ScenarioRunStatePartiallySucceeded - The scenario run completed, but one or more actions failed and every one of those
+	// failures was suppressed by the effective `failureBehavior`.
+	ScenarioRunStatePartiallySucceeded ScenarioRunState = "PartiallySucceeded"
 	// ScenarioRunStatePreparing - The scenario run is in the process of being prepared.
 	ScenarioRunStatePreparing ScenarioRunState = "Preparing"
 	// ScenarioRunStateQueued - The scenario run has been queued and is waiting to start.
@@ -483,6 +517,7 @@ func PossibleScenarioRunStateValues() []ScenarioRunState {
 		ScenarioRunStateCleaningUp,
 		ScenarioRunStateFailed,
 		ScenarioRunStateGenerating,
+		ScenarioRunStatePartiallySucceeded,
 		ScenarioRunStatePreparing,
 		ScenarioRunStateQueued,
 		ScenarioRunStateResolving,
@@ -491,6 +526,34 @@ func PossibleScenarioRunStateValues() []ScenarioRunState {
 		ScenarioRunStateSucceeded,
 		ScenarioRunStateValidating,
 		ScenarioRunStateValidationSucceeded,
+	}
+}
+
+// ScenarioRunTargetState - Enum of the execution states for a concrete action target.
+type ScenarioRunTargetState string
+
+const (
+	// ScenarioRunTargetStateFailed - Evaluation, authorization, lookup, mutation, or cleanup failed for the target.
+	ScenarioRunTargetStateFailed ScenarioRunTargetState = "Failed"
+	// ScenarioRunTargetStateNotApplicable - Evaluation determined that the action cannot apply because the target lacks required
+	// properties or capabilities, or does not satisfy the action criteria. For example,
+	// a SQL server without failover configured.
+	ScenarioRunTargetStateNotApplicable ScenarioRunTargetState = "NotApplicable"
+	// ScenarioRunTargetStateSkipped - The action applies, but execution intentionally made no change because the target is
+	// already in the desired state or the change would not be safely recoverable. For example,
+	// a virtual machine that is already shut down.
+	ScenarioRunTargetStateSkipped ScenarioRunTargetState = "Skipped"
+	// ScenarioRunTargetStateSucceeded - The action completed successfully for the target.
+	ScenarioRunTargetStateSucceeded ScenarioRunTargetState = "Succeeded"
+)
+
+// PossibleScenarioRunTargetStateValues returns the possible values for the ScenarioRunTargetState const type.
+func PossibleScenarioRunTargetStateValues() []ScenarioRunTargetState {
+	return []ScenarioRunTargetState{
+		ScenarioRunTargetStateFailed,
+		ScenarioRunTargetStateNotApplicable,
+		ScenarioRunTargetStateSkipped,
+		ScenarioRunTargetStateSucceeded,
 	}
 }
 
@@ -608,6 +671,35 @@ func PossibleTargetReferenceTypeValues() []TargetReferenceType {
 	}
 }
 
+// WorkspaceDiscoveryCompleteness - The coverage classification of the accepted Azure Resource Manager discovery result, independent
+// of operation status and cause.
+type WorkspaceDiscoveryCompleteness string
+
+const (
+	// WorkspaceDiscoveryCompletenessBaselineUnknown - Required work completed without an observed gap, but a complete inventory
+	// denominator is structurally unavailable.
+	WorkspaceDiscoveryCompletenessBaselineUnknown WorkspaceDiscoveryCompleteness = "BaselineUnknown"
+	// WorkspaceDiscoveryCompletenessEstablished - All attainable expected resource occurrences were classified and represented,
+	// with no observed shortfall.
+	WorkspaceDiscoveryCompletenessEstablished WorkspaceDiscoveryCompleteness = "Established"
+	// WorkspaceDiscoveryCompletenessKnownPartial - Confirmed undelivered obligations remain and no required system-verification
+	// gap remains.
+	WorkspaceDiscoveryCompletenessKnownPartial WorkspaceDiscoveryCompleteness = "KnownPartial"
+	// WorkspaceDiscoveryCompletenessVerificationIncomplete - Required system verification did not complete or a proven accessible
+	// required resource was not represented.
+	WorkspaceDiscoveryCompletenessVerificationIncomplete WorkspaceDiscoveryCompleteness = "VerificationIncomplete"
+)
+
+// PossibleWorkspaceDiscoveryCompletenessValues returns the possible values for the WorkspaceDiscoveryCompleteness const type.
+func PossibleWorkspaceDiscoveryCompletenessValues() []WorkspaceDiscoveryCompleteness {
+	return []WorkspaceDiscoveryCompleteness{
+		WorkspaceDiscoveryCompletenessBaselineUnknown,
+		WorkspaceDiscoveryCompletenessEstablished,
+		WorkspaceDiscoveryCompletenessKnownPartial,
+		WorkspaceDiscoveryCompletenessVerificationIncomplete,
+	}
+}
+
 // WorkspaceDiscoveryStatus - Enum of the workspace discovery status.
 type WorkspaceDiscoveryStatus string
 
@@ -618,6 +710,10 @@ const (
 	WorkspaceDiscoveryStatusFailed WorkspaceDiscoveryStatus = "Failed"
 	// WorkspaceDiscoveryStatusInProgress - The discovery is in progress.
 	WorkspaceDiscoveryStatusInProgress WorkspaceDiscoveryStatus = "InProgress"
+	// WorkspaceDiscoveryStatusPartiallySucceeded - Discovery produced an admissible result with an observed coverage shortfall.
+	// This status does not itself block scenario runs or evaluations; consumers requiring established coverage must also check
+	// completeness.
+	WorkspaceDiscoveryStatusPartiallySucceeded WorkspaceDiscoveryStatus = "PartiallySucceeded"
 	// WorkspaceDiscoveryStatusPending - The discovery is pending and has not started.
 	WorkspaceDiscoveryStatusPending WorkspaceDiscoveryStatus = "Pending"
 	// WorkspaceDiscoveryStatusQueued - The discovery has been accepted and is queued for execution.
@@ -632,9 +728,81 @@ func PossibleWorkspaceDiscoveryStatusValues() []WorkspaceDiscoveryStatus {
 		WorkspaceDiscoveryStatusCanceled,
 		WorkspaceDiscoveryStatusFailed,
 		WorkspaceDiscoveryStatusInProgress,
+		WorkspaceDiscoveryStatusPartiallySucceeded,
 		WorkspaceDiscoveryStatusPending,
 		WorkspaceDiscoveryStatusQueued,
 		WorkspaceDiscoveryStatusSucceeded,
+	}
+}
+
+// WorkspaceDiscoveryWarningReason - The confirmed guidance reason. Unknown future reasons preserve the common warning fields
+// and must not be interpreted as a permission denial.
+type WorkspaceDiscoveryWarningReason string
+
+const (
+	// WorkspaceDiscoveryWarningReasonAccessIndeterminate - Access versus absence could not be determined; guidance must state
+	// both possibilities.
+	WorkspaceDiscoveryWarningReasonAccessIndeterminate WorkspaceDiscoveryWarningReason = "AccessIndeterminate"
+	// WorkspaceDiscoveryWarningReasonRBACValidationFailed - The affected resource could not be read because of a confirmed authorization
+	// denial.
+	WorkspaceDiscoveryWarningReasonRBACValidationFailed WorkspaceDiscoveryWarningReason = "RbacValidationFailed"
+	// WorkspaceDiscoveryWarningReasonTargetNotFound - The affected resource or configured membership was confirmed missing.
+	WorkspaceDiscoveryWarningReasonTargetNotFound WorkspaceDiscoveryWarningReason = "TargetNotFound"
+)
+
+// PossibleWorkspaceDiscoveryWarningReasonValues returns the possible values for the WorkspaceDiscoveryWarningReason const type.
+func PossibleWorkspaceDiscoveryWarningReasonValues() []WorkspaceDiscoveryWarningReason {
+	return []WorkspaceDiscoveryWarningReason{
+		WorkspaceDiscoveryWarningReasonAccessIndeterminate,
+		WorkspaceDiscoveryWarningReasonRBACValidationFailed,
+		WorkspaceDiscoveryWarningReasonTargetNotFound,
+	}
+}
+
+// WorkspaceEncryptionProtection - The last directly observed protection of active Workspace customer data.
+type WorkspaceEncryptionProtection string
+
+const (
+	// WorkspaceEncryptionProtectionCustomerManaged - Active customer data uses customer-managed key protection.
+	WorkspaceEncryptionProtectionCustomerManaged WorkspaceEncryptionProtection = "CustomerManaged"
+	// WorkspaceEncryptionProtectionMicrosoftManaged - Active customer data uses Microsoft-managed key protection.
+	WorkspaceEncryptionProtectionMicrosoftManaged WorkspaceEncryptionProtection = "MicrosoftManaged"
+)
+
+// PossibleWorkspaceEncryptionProtectionValues returns the possible values for the WorkspaceEncryptionProtection const type.
+func PossibleWorkspaceEncryptionProtectionValues() []WorkspaceEncryptionProtection {
+	return []WorkspaceEncryptionProtection{
+		WorkspaceEncryptionProtectionCustomerManaged,
+		WorkspaceEncryptionProtectionMicrosoftManaged,
+	}
+}
+
+// WorkspaceEncryptionState - The observed encryption state; this does not replace Workspace provisioningState.
+type WorkspaceEncryptionState string
+
+const (
+	// WorkspaceEncryptionStateApplied - A fresh check confirms the requested customer key and scoped customer-data access.
+	WorkspaceEncryptionStateApplied WorkspaceEncryptionState = "Applied"
+	// WorkspaceEncryptionStateFailed - An encryption configuration step or health check failed. See the error for corrective
+	// action.
+	WorkspaceEncryptionStateFailed WorkspaceEncryptionState = "Failed"
+	// WorkspaceEncryptionStateNotConfigured - No per-Workspace encryption configuration exists. Microsoft-managed protection
+	// applies.
+	WorkspaceEncryptionStateNotConfigured WorkspaceEncryptionState = "NotConfigured"
+	// WorkspaceEncryptionStatePending - An encryption configuration operation is in progress.
+	WorkspaceEncryptionStatePending WorkspaceEncryptionState = "Pending"
+	// WorkspaceEncryptionStateUnknown - No usable fresh observation is available.
+	WorkspaceEncryptionStateUnknown WorkspaceEncryptionState = "Unknown"
+)
+
+// PossibleWorkspaceEncryptionStateValues returns the possible values for the WorkspaceEncryptionState const type.
+func PossibleWorkspaceEncryptionStateValues() []WorkspaceEncryptionState {
+	return []WorkspaceEncryptionState{
+		WorkspaceEncryptionStateApplied,
+		WorkspaceEncryptionStateFailed,
+		WorkspaceEncryptionStateNotConfigured,
+		WorkspaceEncryptionStatePending,
+		WorkspaceEncryptionStateUnknown,
 	}
 }
 
@@ -642,14 +810,19 @@ func PossibleWorkspaceDiscoveryStatusValues() []WorkspaceDiscoveryStatus {
 type WorkspaceEvaluationStatus string
 
 const (
-	// WorkspaceEvaluationStatusCanceled - The evaluation was canceled.
+	// WorkspaceEvaluationStatusCanceled - Cancellation won terminal settlement, or all admitted template tests were canceled.
+	// Previously recorded outcomes may remain. A later callback cannot replace this terminal result, and cancellation cannot
+	// replace an already settled result.
 	WorkspaceEvaluationStatusCanceled WorkspaceEvaluationStatus = "Canceled"
-	// WorkspaceEvaluationStatusFailed - The evaluation failed.
+	// WorkspaceEvaluationStatusFailed - No template applicability test completed and at least one failed, unless cancellation
+	// won terminal settlement. The accepted resource snapshot and discovery result reference remain present; an admission failure
+	// creates no evaluation result.
 	WorkspaceEvaluationStatusFailed WorkspaceEvaluationStatus = "Failed"
 	// WorkspaceEvaluationStatusInProgress - The evaluation is in progress.
 	WorkspaceEvaluationStatusInProgress WorkspaceEvaluationStatus = "InProgress"
-	// WorkspaceEvaluationStatusPartiallySucceeded - The evaluation partially succeeded — some scenarios succeeded while others
-	// failed.
+	// WorkspaceEvaluationStatusPartiallySucceeded - Unless cancellation won terminal settlement, at least one template applicability
+	// test completed and at least one failed or was canceled. Discovery completeness does not determine this processing status.
+	// The first terminal settlement is authoritative; a later cancellation does not replace it.
 	WorkspaceEvaluationStatusPartiallySucceeded WorkspaceEvaluationStatus = "PartiallySucceeded"
 	// WorkspaceEvaluationStatusPending - The evaluation is pending and has not started.
 	WorkspaceEvaluationStatusPending WorkspaceEvaluationStatus = "Pending"

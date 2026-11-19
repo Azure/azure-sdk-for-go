@@ -57,10 +57,11 @@ func formatTimeWithDefaultFormat(t *time.Time) string {
 
 // formatTime format time with given format, use ISO 8601 in "yyyy-MM-ddTHH:mm:ssZ" by default.
 func formatTime(t *time.Time, format string) string {
+	// SAS times are UTC; convert first so non-UTC inputs keep the same instant.
 	if format != "" {
-		return t.Format(format)
+		return t.UTC().Format(format)
 	}
-	return t.Format(timeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
+	return t.UTC().Format(timeFormat) // By default, "yyyy-MM-ddTHH:mm:ssZ" is used
 }
 
 // ParseTime try to parse a SAS time string.
@@ -323,8 +324,8 @@ func (p *QueryParameters) Encode() string {
 	if p.signedOID != "" {
 		v.Add("skoid", p.signedOID)
 		v.Add("sktid", p.signedTID)
-		v.Add("skt", p.signedStart.Format(timeFormat))
-		v.Add("ske", p.signedExpiry.Format(timeFormat))
+		v.Add("skt", p.signedStart.UTC().Format(timeFormat))
+		v.Add("ske", p.signedExpiry.UTC().Format(timeFormat))
 		v.Add("sks", p.signedService)
 		v.Add("skv", p.signedVersion)
 	}

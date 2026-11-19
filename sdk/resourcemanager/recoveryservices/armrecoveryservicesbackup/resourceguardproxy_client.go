@@ -19,7 +19,7 @@ import (
 // ResourceGuardProxyClient contains the methods for the ResourceGuardProxy group.
 // Don't use this type directly, use NewResourceGuardProxyClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type ResourceGuardProxyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *ResourceGuardProxyClient) Delete(ctx context.Context, vaultName st
 		return ResourceGuardProxyClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ResourceGuardProxyClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ResourceGuardProxyClientDeleteResponse{}, err
 	}
 	return ResourceGuardProxyClientDeleteResponse{}, nil
 }
@@ -93,7 +94,7 @@ func (client *ResourceGuardProxyClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -116,7 +117,8 @@ func (client *ResourceGuardProxyClient) Get(ctx context.Context, vaultName strin
 	if err != nil {
 		return ResourceGuardProxyClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -143,7 +145,7 @@ func (client *ResourceGuardProxyClient) getCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +182,8 @@ func (client *ResourceGuardProxyClient) Put(ctx context.Context, vaultName strin
 	if err != nil {
 		return ResourceGuardProxyClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.
@@ -207,7 +210,7 @@ func (client *ResourceGuardProxyClient) putCreateRequest(ctx context.Context, va
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -248,7 +251,8 @@ func (client *ResourceGuardProxyClient) UnlockDelete(ctx context.Context, vaultN
 	if err != nil {
 		return ResourceGuardProxyClientUnlockDeleteResponse{}, err
 	}
-	return client.unlockDeleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.unlockDeleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // unlockDeleteCreateRequest creates the UnlockDelete request.
@@ -275,7 +279,7 @@ func (client *ResourceGuardProxyClient) unlockDeleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

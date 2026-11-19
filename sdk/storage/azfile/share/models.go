@@ -58,6 +58,13 @@ type CreateOptions struct {
 	// Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this is
 	// not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
 	ShareProvisionedIops *int64
+
+	// Optional. Boolean. Default if not specified is false. This property enables change feed on the share.
+	EnableChangeFeed *bool
+
+	// Optional. Integer. Specifies the number of days that change feed records are retained, between 1 and 365.
+	// Default if not specified is 7 days.
+	ChangeFeedRetentionInDays *int32
 }
 
 func (o *CreateOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientCreateOptions {
@@ -80,6 +87,8 @@ func (o *CreateOptions) format(fileRequestIntent *generated.ShareTokenIntent) *g
 	opts.PaidBurstingMaxIops = o.PaidBurstingMaxIops
 	opts.ShareProvisionedBandwidthMibps = o.ShareProvisionedBandwidthMibps
 	opts.ShareProvisionedIops = o.ShareProvisionedIops
+	opts.EnableChangeFeed = o.EnableChangeFeed
+	opts.ChangeFeedRetentionInDays = o.ChangeFeedRetentionInDays
 	return opts
 }
 
@@ -178,6 +187,13 @@ type SetPropertiesOptions struct {
 	// Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this is
 	// not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
 	ShareProvisionedIops *int64
+
+	// Optional. Boolean. Default if not specified is false. This property enables change feed on the share.
+	EnableChangeFeed *bool
+
+	// Optional. Integer. Specifies the number of days that change feed records are retained, between 1 and 365.
+	// Default if not specified is 7 days.
+	ChangeFeedRetentionInDays *int32
 }
 
 func (o *SetPropertiesOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.ShareClientSetPropertiesOptions {
@@ -198,6 +214,8 @@ func (o *SetPropertiesOptions) format(fileRequestIntent *generated.ShareTokenInt
 	opts.PaidBurstingMaxIops = o.PaidBurstingMaxIops
 	opts.ShareProvisionedIops = o.ShareProvisionedIops
 	opts.ShareProvisionedBandwidthMibps = o.ShareProvisionedBandwidthMibps
+	opts.EnableChangeFeed = o.EnableChangeFeed
+	opts.ChangeFeedRetentionInDays = o.ChangeFeedRetentionInDays
 	if o.LeaseAccessConditions != nil {
 		opts.LeaseID = o.LeaseAccessConditions.LeaseID
 	}

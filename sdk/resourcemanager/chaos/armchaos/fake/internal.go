@@ -20,8 +20,16 @@ type nonRetriableError struct {
 	error
 }
 
-func (nonRetriableError) NonRetriable() {
+func (*nonRetriableError) NonRetriable() {
 	// marker method
+}
+
+func getHeaderValue(h http.Header, k string) string {
+	v := h[k]
+	if len(v) == 0 {
+		return ""
+	}
+	return v[0]
 }
 
 func getOptional[T any](v T) *T {

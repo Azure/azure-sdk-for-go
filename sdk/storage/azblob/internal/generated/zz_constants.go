@@ -5,7 +5,7 @@
 package generated
 
 const (
-	version20261206 string = "2026-12-06"
+	version20270307 string = "2027-03-07"
 )
 
 // AccessTier - The access tiers.
@@ -119,6 +119,21 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 		ArchiveStatusRehydratePendingToCool,
 		ArchiveStatusRehydratePendingToHot,
 		ArchiveStatusRehydratePendingToSmart,
+	}
+}
+
+// AuthenticationType - The type of authentication required to create the session. The only type currently supported is HMAC.
+type AuthenticationType string
+
+const (
+	// AuthenticationTypeHmac - HMAC authentication.
+	AuthenticationTypeHmac AuthenticationType = "HMAC"
+)
+
+// PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{
+		AuthenticationTypeHmac,
 	}
 }
 
@@ -260,6 +275,21 @@ func PossibleDeleteTypeValues() []DeleteType {
 	return []DeleteType{
 		DeleteTypeNone,
 		DeleteTypePermanent,
+	}
+}
+
+// DownloadHint - The download hint for a blob.
+type DownloadHint string
+
+const (
+	// DownloadHintLayout - The blob layout can be retrieved with the Get Blob Layout operation.
+	DownloadHintLayout DownloadHint = "layout"
+)
+
+// PossibleDownloadHintValues returns the possible values for the DownloadHint const type.
+func PossibleDownloadHintValues() []DownloadHint {
+	return []DownloadHint{
+		DownloadHintLayout,
 	}
 }
 

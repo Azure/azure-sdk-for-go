@@ -19,7 +19,7 @@ import (
 // ReservationsSummariesClient contains the methods for the ReservationsSummaries group.
 // Don't use this type directly, use NewReservationsSummariesClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationsSummariesClient struct {
 	internal *arm.Client
 }
@@ -36,168 +36,6 @@ func NewReservationsSummariesClient(credential azcore.TokenCredential, options *
 		internal: cl,
 	}
 	return client, nil
-}
-
-// NewListPager - Lists the reservations summaries for the defined scope daily or monthly grain. Note: ARM has a payload size
-// limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should
-// be made with smaller date ranges.
-//   - resourceScope - The fully qualified Azure Resource manager identifier of the resource.
-//   - grain - Can be daily or monthly
-//   - options - ReservationsSummariesClientListOptions contains the optional parameters for the ReservationsSummariesClient.NewListPager
-//     method.
-func (client *ReservationsSummariesClient) NewListPager(resourceScope string, grain Datagrain, options *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListResponse]{
-		More: func(page ReservationsSummariesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ReservationsSummariesClientListResponse) (ReservationsSummariesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsSummariesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceScope, grain, nextLink, options)
-			if err != nil {
-				return ReservationsSummariesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReservationsSummariesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, resourceScope string, grain Datagrain, nextLink string, options *ReservationsSummariesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries"
-		if resourceScope == "" {
-			return nil, errors.New("parameter resourceScope cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20240801)
-		if options != nil && options.EndDate != nil {
-			reqQP.Set("endDate", *options.EndDate)
-		}
-		reqQP.Set("grain", string(grain))
-		if options != nil && options.ReservationID != nil {
-			reqQP.Set("reservationId", *options.ReservationID)
-		}
-		if options != nil && options.ReservationOrderID != nil {
-			reqQP.Set("reservationOrderId", *options.ReservationOrderID)
-		}
-		if options != nil && options.StartDate != nil {
-			reqQP.Set("startDate", *options.StartDate)
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReservationsSummariesClientListResponse, error) {
-	result := ReservationsSummariesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByReservationOrderPager - Lists the reservations summaries for daily or monthly grain. Note: ARM has a payload size
-// limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should
-// be made with smaller date ranges.
-//   - reservationOrderID - Order Id of the reservation
-//   - grain - Can be daily or monthly
-//   - options - ReservationsSummariesClientListByReservationOrderOptions contains the optional parameters for the ReservationsSummariesClient.NewListByReservationOrderPager
-//     method.
-func (client *ReservationsSummariesClient) NewListByReservationOrderPager(reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListByReservationOrderResponse]{
-		More: func(page ReservationsSummariesClientListByReservationOrderResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ReservationsSummariesClientListByReservationOrderResponse) (ReservationsSummariesClientListByReservationOrderResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsSummariesClient.NewListByReservationOrderPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByReservationOrderCreateRequest(ctx, reservationOrderID, grain, nextLink, options)
-			if err != nil {
-				return ReservationsSummariesClientListByReservationOrderResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReservationsSummariesClientListByReservationOrderResponse{}, err
-			}
-			return client.listByReservationOrderHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByReservationOrderCreateRequest creates the ListByReservationOrder request.
-func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, grain Datagrain, nextLink string, options *ReservationsSummariesClientListByReservationOrderOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationSummaries"
-		if reservationOrderID == "" {
-			return nil, errors.New("parameter reservationOrderID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20240801)
-		reqQP.Set("grain", string(grain))
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByReservationOrderHandleResponse handles the ListByReservationOrder response.
-func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(resp *http.Response, successCodes ...int) (ReservationsSummariesClientListByReservationOrderResponse, error) {
-	result := ReservationsSummariesClientListByReservationOrderResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesClientListByReservationOrderResponse{}, err
-	}
-	return result, nil
 }
 
 // NewListByReservationOrderAndReservationPager - Lists the reservations summaries for daily or monthly grain. Note: ARM has
@@ -260,7 +98,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationC
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20240801)
+		reqQP.Set("api-version", version20260601)
 		reqQP.Set("grain", string(grain))
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
@@ -276,6 +114,168 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationH
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
 		return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByReservationOrderPager - Lists the reservations summaries for daily or monthly grain. Note: ARM has a payload size
+// limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should
+// be made with smaller date ranges.
+//   - reservationOrderID - Order Id of the reservation
+//   - grain - Can be daily or monthly
+//   - options - ReservationsSummariesClientListByReservationOrderOptions contains the optional parameters for the ReservationsSummariesClient.NewListByReservationOrderPager
+//     method.
+func (client *ReservationsSummariesClient) NewListByReservationOrderPager(reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) *runtime.Pager[ReservationsSummariesClientListByReservationOrderResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListByReservationOrderResponse]{
+		More: func(page ReservationsSummariesClientListByReservationOrderResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ReservationsSummariesClientListByReservationOrderResponse) (ReservationsSummariesClientListByReservationOrderResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsSummariesClient.NewListByReservationOrderPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByReservationOrderCreateRequest(ctx, reservationOrderID, grain, nextLink, options)
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderResponse{}, err
+			}
+			return client.listByReservationOrderHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByReservationOrderCreateRequest creates the ListByReservationOrder request.
+func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, grain Datagrain, nextLink string, options *ReservationsSummariesClientListByReservationOrderOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationSummaries"
+		if reservationOrderID == "" {
+			return nil, errors.New("parameter reservationOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260601)
+		reqQP.Set("grain", string(grain))
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByReservationOrderHandleResponse handles the ListByReservationOrder response.
+func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(resp *http.Response, successCodes ...int) (ReservationsSummariesClientListByReservationOrderResponse, error) {
+	result := ReservationsSummariesClientListByReservationOrderResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
+		return ReservationsSummariesClientListByReservationOrderResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists the reservations summaries for the defined scope daily or monthly grain. Note: ARM has a payload size
+// limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should
+// be made with smaller date ranges.
+//   - resourceScope - The fully qualified Azure Resource manager identifier of the resource.
+//   - grain - Can be daily or monthly
+//   - options - ReservationsSummariesClientListOptions contains the optional parameters for the ReservationsSummariesClient.NewListPager
+//     method.
+func (client *ReservationsSummariesClient) NewListPager(resourceScope string, grain Datagrain, options *ReservationsSummariesClientListOptions) *runtime.Pager[ReservationsSummariesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsSummariesClientListResponse]{
+		More: func(page ReservationsSummariesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ReservationsSummariesClientListResponse) (ReservationsSummariesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsSummariesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceScope, grain, nextLink, options)
+			if err != nil {
+				return ReservationsSummariesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, resourceScope string, grain Datagrain, nextLink string, options *ReservationsSummariesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries"
+		if resourceScope == "" {
+			return nil, errors.New("parameter resourceScope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260601)
+		if options != nil && options.EndDate != nil {
+			reqQP.Set("endDate", *options.EndDate)
+		}
+		reqQP.Set("grain", string(grain))
+		if options != nil && options.ReservationID != nil {
+			reqQP.Set("reservationId", *options.ReservationID)
+		}
+		if options != nil && options.ReservationOrderID != nil {
+			reqQP.Set("reservationOrderId", *options.ReservationOrderID)
+		}
+		if options != nil && options.StartDate != nil {
+			reqQP.Set("startDate", *options.StartDate)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReservationsSummariesClientListResponse, error) {
+	result := ReservationsSummariesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
+		return ReservationsSummariesClientListResponse{}, err
 	}
 	return result, nil
 }

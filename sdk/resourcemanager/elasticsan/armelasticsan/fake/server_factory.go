@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// ElasticSansServer contains the fakes for client ElasticSansClient
 	ElasticSansServer ElasticSansServer
 
+	// ManagementServer contains the fakes for client ManagementClient
+	ManagementServer ManagementServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -55,6 +58,7 @@ type ServerFactoryTransport struct {
 	srv                                *ServerFactory
 	trMu                               sync.Mutex
 	trElasticSansServer                *ElasticSansServerTransport
+	trManagementServer                 *ManagementServerTransport
 	trOperationsServer                 *OperationsServerTransport
 	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
@@ -69,7 +73,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	client := method[:strings.Index(method, ".")]
@@ -80,6 +84,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ElasticSansClient":
 		initServer(&s.trMu, &s.trElasticSansServer, func() *ElasticSansServerTransport { return NewElasticSansServerTransport(&s.srv.ElasticSansServer) })
 		resp, err = s.trElasticSansServer.Do(req)
+	case "ManagementClient":
+		initServer(&s.trMu, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
+		resp, err = s.trManagementServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

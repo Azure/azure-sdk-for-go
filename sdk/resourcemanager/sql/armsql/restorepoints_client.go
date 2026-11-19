@@ -69,7 +69,7 @@ func (client *RestorePointsClient) BeginCreate(ctx context.Context, resourceGrou
 	}
 }
 
-// Create - Creates a restore point for a data warehouse.
+// create - Creates a restore point for a data warehouse.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, options *RestorePointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *RestorePointsClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *RestorePointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters CreateDatabaseRestorePointDefinition, _ *RestorePointsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints"
 	if client.subscriptionID == "" {
@@ -147,7 +148,8 @@ func (client *RestorePointsClient) Delete(ctx context.Context, resourceGroupName
 		return RestorePointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RestorePointsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RestorePointsClientDeleteResponse{}, err
 	}
 	return RestorePointsClientDeleteResponse{}, nil
 }
@@ -206,7 +208,8 @@ func (client *RestorePointsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RestorePointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

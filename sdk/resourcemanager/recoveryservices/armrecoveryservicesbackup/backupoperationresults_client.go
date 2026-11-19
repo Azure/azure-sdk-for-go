@@ -19,7 +19,7 @@ import (
 // BackupOperationResultsClient contains the methods for the BackupOperationResults group.
 // Don't use this type directly, use NewBackupOperationResultsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type BackupOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,8 @@ func (client *BackupOperationResultsClient) Get(ctx context.Context, vaultName s
 		return BackupOperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return BackupOperationResultsClientGetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BackupOperationResultsClientGetResponse{}, err
 	}
 	return BackupOperationResultsClientGetResponse{}, nil
 }
@@ -98,7 +99,7 @@ func (client *BackupOperationResultsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

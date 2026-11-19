@@ -57,7 +57,8 @@ func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options
 	if err != nil {
 		return SubscriptionClientCheckResourceNameResponse{}, err
 	}
-	return client.checkResourceNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkResourceNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkResourceNameCreateRequest creates the CheckResourceName request.

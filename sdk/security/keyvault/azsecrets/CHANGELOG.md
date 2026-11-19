@@ -1,14 +1,12 @@
 # Release History
 
-## 1.5.1-beta.1 (Unreleased)
-
+## 1.5.1 (2026-10-27)
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service API version `2026-04-01`, which is now the default, and for explicitly selecting it via `serviceVersion`.
 
 ### Other Changes
+- Updated generated files and metadata for the `2026-04-01` stable release.
 
 ## 1.5.0 (2026-05-26)
 

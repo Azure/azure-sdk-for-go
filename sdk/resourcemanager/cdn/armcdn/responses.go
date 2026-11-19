@@ -583,13 +583,10 @@ type RoutesClientUpdateResponse struct {
 	Route
 }
 
-// RuleSetsClientCreateResponse contains the response from method RuleSetsClient.Create.
+// RuleSetsClientCreateResponse contains the response from method RuleSetsClient.BeginCreate.
 type RuleSetsClientCreateResponse struct {
 	// Friendly RuleSet name mapping to the any RuleSet or secret related information.
 	RuleSet
-
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
-	RetryAfter *int32
 }
 
 // RuleSetsClientDeleteResponse contains the response from method RuleSetsClient.BeginDelete.

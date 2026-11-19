@@ -20,7 +20,7 @@ import (
 // ApplyUpdatesClient contains the methods for the ApplyUpdates group.
 // Don't use this type directly, use NewApplyUpdatesClient() instead.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-10-01-preview
 type ApplyUpdatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,8 @@ func (client *ApplyUpdatesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -100,7 +101,7 @@ func (client *ApplyUpdatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -150,7 +151,8 @@ func (client *ApplyUpdatesClient) CreateOrUpdateOrCancel(ctx context.Context, re
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateOrCancelResponse{}, err
 	}
-	return client.createOrUpdateOrCancelHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateOrCancelHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateOrCancelCreateRequest creates the CreateOrUpdateOrCancel request.
@@ -185,7 +187,7 @@ func (client *ApplyUpdatesClient) createOrUpdateOrCancelCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -233,7 +235,8 @@ func (client *ApplyUpdatesClient) CreateOrUpdateParent(ctx context.Context, reso
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateParentResponse{}, err
 	}
-	return client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateParentCreateRequest creates the CreateOrUpdateParent request.
@@ -272,7 +275,7 @@ func (client *ApplyUpdatesClient) createOrUpdateParentCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +323,8 @@ func (client *ApplyUpdatesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ApplyUpdatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -355,7 +359,7 @@ func (client *ApplyUpdatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -397,7 +401,8 @@ func (client *ApplyUpdatesClient) GetParent(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ApplyUpdatesClientGetParentResponse{}, err
 	}
-	return client.getParentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getParentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getParentCreateRequest creates the GetParent request.
@@ -440,7 +445,7 @@ func (client *ApplyUpdatesClient) getParentCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -505,7 +510,7 @@ func (client *ApplyUpdatesClient) listCreateRequest(ctx context.Context, nextLin
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20231001Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

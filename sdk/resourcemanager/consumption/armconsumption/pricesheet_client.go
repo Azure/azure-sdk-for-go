@@ -20,7 +20,7 @@ import (
 // PriceSheetClient contains the methods for the PriceSheet group.
 // Don't use this type directly, use NewPriceSheetClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type PriceSheetClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *PriceSheetClient) BeginDownloadByBillingAccountPeriod(ctx context.
 	}
 }
 
-// DownloadByBillingAccountPeriod - Generates the pricesheet for the provided billing period asynchronously based on the enrollment
+// downloadByBillingAccountPeriod - Generates the pricesheet for the provided billing period asynchronously based on the enrollment
 // id
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PriceSheetClient) downloadByBillingAccountPeriod(ctx context.Context, billingAccountID string, billingPeriodName string, options *PriceSheetClientBeginDownloadByBillingAccountPeriodOptions) (*http.Response, error) {
@@ -87,12 +87,13 @@ func (client *PriceSheetClient) downloadByBillingAccountPeriod(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// downloadByBillingAccountPeriodCreateRequest creates the DownloadByBillingAccountPeriod request.
+// downloadByBillingAccountPeriodCreateRequest creates the downloadByBillingAccountPeriod request.
 func (client *PriceSheetClient) downloadByBillingAccountPeriodCreateRequest(ctx context.Context, billingAccountID string, billingPeriodName string, _ *PriceSheetClientBeginDownloadByBillingAccountPeriodOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingPeriods/{billingPeriodName}/providers/Microsoft.Consumption/pricesheets/download"
 	if billingAccountID == "" {
@@ -108,7 +109,7 @@ func (client *PriceSheetClient) downloadByBillingAccountPeriodCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -131,7 +132,8 @@ func (client *PriceSheetClient) Get(ctx context.Context, options *PriceSheetClie
 	if err != nil {
 		return PriceSheetClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -155,7 +157,7 @@ func (client *PriceSheetClient) getCreateRequest(ctx context.Context, options *P
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +195,8 @@ func (client *PriceSheetClient) GetByBillingPeriod(ctx context.Context, billingP
 	if err != nil {
 		return PriceSheetClientGetByBillingPeriodResponse{}, err
 	}
-	return client.getByBillingPeriodHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingPeriodHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingPeriodCreateRequest creates the GetByBillingPeriod request.
@@ -221,7 +224,7 @@ func (client *PriceSheetClient) getByBillingPeriodCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

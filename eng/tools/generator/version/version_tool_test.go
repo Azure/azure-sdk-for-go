@@ -24,6 +24,54 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestUpdateVersionGoFile(t *testing.T) {
+	for _, name := range []string{"moduleVersion", "serviceLibVersion", "version"} {
+		for _, declaration := range []struct {
+			name   string
+			format string
+		}{
+			{"block", "const (\n\tNAME = \"VERSION\"\n)\n"},
+			{"single", "const NAME = \"VERSION\"\n"},
+			{"typed", "const NAME string = \"VERSION\"\n"},
+			{"comment", "const NAME = \"VERSION\" // previously \"v1.0.0\"\n"},
+			{"CRLF", "const (\r\n\tNAME = \"VERSION\"\r\n)\r\n"},
+		} {
+			t.Run(name+"/"+declaration.name, func(t *testing.T) {
+				modulePath := t.TempDir()
+				versionFile := filepath.Join(modulePath, "version.go")
+				content := "package test\n\n" + strings.ReplaceAll(declaration.format, "NAME", name)
+				content += "const version20260401 string = \"2026-04-01\"\n"
+				content += "const unrelatedVersion = \"v1.5.1-beta.1\"\n"
+				original := strings.ReplaceAll(content, "VERSION", "v1.5.1-beta.1")
+				expected := strings.ReplaceAll(content, "VERSION", "v1.6.0")
+				require.NoError(t, os.WriteFile(versionFile, []byte(original), 0644))
+				newVersion, err := semver.NewVersion("1.6.0")
+				require.NoError(t, err)
+
+				for i := 0; i < 2; i++ {
+					require.NoError(t, UpdateVersionGoFile(modulePath, newVersion))
+					actual, err := os.ReadFile(versionFile)
+					require.NoError(t, err)
+					require.Equal(t, expected, string(actual))
+				}
+			})
+		}
+	}
+
+	t.Run("comments are not declarations", func(t *testing.T) {
+		modulePath := t.TempDir()
+		versionFile := filepath.Join(modulePath, "version.go")
+		content := "package test\n\n// moduleVersion = \"v1.5.1-beta.1\"\nconst version20260401 string = \"2026-04-01\"\n"
+		require.NoError(t, os.WriteFile(versionFile, []byte(content), 0644))
+		newVersion, err := semver.NewVersion("1.6.0")
+		require.NoError(t, err)
+		require.NoError(t, UpdateVersionGoFile(modulePath, newVersion))
+		actual, err := os.ReadFile(versionFile)
+		require.NoError(t, err)
+		require.Equal(t, content, string(actual))
+	})
+}
+
 func TestCalculateNewVersion(t *testing.T) {
 	fixChange := &changelog.Changelog{Modified: &report.Package{}}
 	breakingChange := &changelog.Changelog{RemovedPackage: true, Modified: &report.Package{}}

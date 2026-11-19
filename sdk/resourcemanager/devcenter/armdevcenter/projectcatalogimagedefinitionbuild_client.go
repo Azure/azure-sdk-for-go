@@ -70,7 +70,7 @@ func (client *ProjectCatalogImageDefinitionBuildClient) BeginCancel(ctx context.
 	}
 }
 
-// Cancel - Cancels the specified build for an image definition.
+// cancel - Cancels the specified build for an image definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProjectCatalogImageDefinitionBuildClient) cancel(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, buildName string, options *ProjectCatalogImageDefinitionBuildClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *ProjectCatalogImageDefinitionBuildClient) cancel(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *ProjectCatalogImageDefinitionBuildClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, buildName string, _ *ProjectCatalogImageDefinitionBuildClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/builds/{buildName}/cancel"
 	if client.subscriptionID == "" {
@@ -152,7 +153,8 @@ func (client *ProjectCatalogImageDefinitionBuildClient) Get(ctx context.Context,
 	if err != nil {
 		return ProjectCatalogImageDefinitionBuildClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -228,7 +230,8 @@ func (client *ProjectCatalogImageDefinitionBuildClient) GetBuildDetails(ctx cont
 	if err != nil {
 		return ProjectCatalogImageDefinitionBuildClientGetBuildDetailsResponse{}, err
 	}
-	return client.getBuildDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBuildDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBuildDetailsCreateRequest creates the GetBuildDetails request.

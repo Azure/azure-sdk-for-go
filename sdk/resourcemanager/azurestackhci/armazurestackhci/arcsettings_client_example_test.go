@@ -12,131 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-30/ConsentAndInstallDefaultExtensions.json
-func ExampleArcSettingsClient_ConsentAndInstallDefaultExtensions() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewArcSettingsClient().ConsentAndInstallDefaultExtensions(ctx, "test-rg", "myCluster", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{
-	// 	ArcSetting: armazurestackhci.ArcSetting{
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
-	// 		Properties: &armazurestackhci.ArcSettingProperties{
-	// 			AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStateCreating),
-	// 			ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
-	// 			ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
-	// 				Enabled: to.Ptr(false),
-	// 				ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
-	// 				},
-	// 			},
-	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
-	// 				{
-	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 				},
-	// 			},
-	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
-	// 				{
-	// 					Name: to.Ptr("Node-1"),
-	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
-	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Node-2"),
-	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
-	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-30/PutArcSetting.json
-func ExampleArcSettingsClient_Create() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewArcSettingsClient().Create(ctx, "test-rg", "myCluster", "default", armazurestackhci.ArcSetting{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ArcSettingsClientCreateResponse{
-	// 	ArcSetting: armazurestackhci.ArcSetting{
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
-	// 		Properties: &armazurestackhci.ArcSettingProperties{
-	// 			AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStateCreating),
-	// 			ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
-	// 			ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
-	// 				Enabled: to.Ptr(false),
-	// 				ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
-	// 				},
-	// 			},
-	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
-	// 				{
-	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 				},
-	// 			},
-	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
-	// 				{
-	// 					Name: to.Ptr("Node-1"),
-	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
-	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Node-2"),
-	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
-	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-30/CreateArcIdentity.json
+// Generated from example definition: 2026-10-01/CreateArcIdentity.json
 func ExampleArcSettingsClient_BeginCreateIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +46,7 @@ func ExampleArcSettingsClient_BeginCreateIdentity() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/DeleteArcSetting.json
+// Generated from example definition: 2026-10-01/DeleteArcSetting.json
 func ExampleArcSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,104 +72,7 @@ func ExampleArcSettingsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/GeneratePassword.json
-func ExampleArcSettingsClient_GeneratePassword() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewArcSettingsClient().GeneratePassword(ctx, "test-rg", "myCluster", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ArcSettingsClientGeneratePasswordResponse{
-	// 	PasswordCredential: armazurestackhci.PasswordCredential{
-	// 		EndDateTime: to.Ptr(time.Date(2121, time.February, 17, 10, 54, 23, 626437700, time.UTC)),
-	// 		KeyID: to.Ptr("00000000-2d47-4fb2-8ed2-fed71a5c197b"),
-	// 		SecretText: to.Ptr("secretText"),
-	// 		StartDateTime: to.Ptr(time.Date(2022, time.February, 17, 10, 54, 23, 626400500, time.UTC)),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-30/GetArcSetting.json
-func ExampleArcSettingsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewArcSettingsClient().Get(ctx, "test-rg", "myCluster", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhci.ArcSettingsClientGetResponse{
-	// 	ArcSetting: armazurestackhci.ArcSetting{
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
-	// 		Properties: &armazurestackhci.ArcSettingProperties{
-	// 			AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStatePartiallyConnected),
-	// 			ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
-	// 			ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
-	// 				Enabled: to.Ptr(false),
-	// 				ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
-	// 					{
-	// 						Port: to.Ptr[int64](6516),
-	// 						ServiceName: to.Ptr(armazurestackhci.ServiceNameWAC),
-	// 					},
-	// 				},
-	// 			},
-	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
-	// 				{
-	// 					Category: to.Ptr("Telemetry"),
-	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 				},
-	// 				{
-	// 					Category: to.Ptr("Supportability"),
-	// 				},
-	// 			},
-	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
-	// 				{
-	// 					Name: to.Ptr("Node-1"),
-	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
-	// 					State: to.Ptr(armazurestackhci.NodeArcStateConnected),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("Node-2"),
-	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
-	// 					State: to.Ptr(armazurestackhci.NodeArcStateDisconnected),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armazurestackhci.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-30/InitializeDisableProcess.json
+// Generated from example definition: 2026-10-01/InitializeDisableProcess.json
 func ExampleArcSettingsClient_BeginInitializeDisableProcess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,85 +98,7 @@ func ExampleArcSettingsClient_BeginInitializeDisableProcess() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ListArcSettingsByCluster.json
-func ExampleArcSettingsClient_NewListByClusterPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewArcSettingsClient().NewListByClusterPager("test-rg", "myCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armazurestackhci.ArcSettingsClientListByClusterResponse{
-		// 	ArcSettingList: armazurestackhci.ArcSettingList{
-		// 		Value: []*armazurestackhci.ArcSetting{
-		// 			{
-		// 				Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
-		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
-		// 				Properties: &armazurestackhci.ArcSettingProperties{
-		// 					AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStatePartiallyConnected),
-		// 					ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
-		// 					ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
-		// 						Enabled: to.Ptr(false),
-		// 						ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
-		// 							{
-		// 								Port: to.Ptr[int64](6516),
-		// 								ServiceName: to.Ptr(armazurestackhci.ServiceNameWAC),
-		// 							},
-		// 						},
-		// 					},
-		// 					DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
-		// 						{
-		// 							Category: to.Ptr("Telemetry"),
-		// 							ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-		// 						},
-		// 						{
-		// 							Category: to.Ptr("Supportability"),
-		// 						},
-		// 					},
-		// 					PerNodeDetails: []*armazurestackhci.PerNodeState{
-		// 						{
-		// 							Name: to.Ptr("Node-1"),
-		// 							ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
-		// 							State: to.Ptr(armazurestackhci.NodeArcStateConnected),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("Node-2"),
-		// 							ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
-		// 							State: to.Ptr(armazurestackhci.NodeArcStateDisconnected),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
-		// 				},
-		// 				SystemData: &armazurestackhci.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-		// 					CreatedBy: to.Ptr("user1"),
-		// 					CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user2"),
-		// 					LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-30/reconcileArcSettings.json
+// Generated from example definition: 2026-10-01/reconcileArcSettings.json
 func ExampleArcSettingsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -479,7 +180,306 @@ func ExampleArcSettingsClient_BeginReconcile() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/PatchArcSetting.json
+// Generated from example definition: 2026-10-01/ConsentAndInstallDefaultExtensions.json
+func ExampleArcSettingsClient_ConsentAndInstallDefaultExtensions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewArcSettingsClient().ConsentAndInstallDefaultExtensions(ctx, "test-rg", "myCluster", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
+	// 		Properties: &armazurestackhci.ArcSettingProperties{
+	// 			AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStateCreating),
+	// 			ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
+	// 			ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
+	// 				Enabled: to.Ptr(false),
+	// 				ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
+	// 				},
+	// 			},
+	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
+	// 				{
+	// 					Category: to.Ptr("Telemetry"),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 				},
+	// 			},
+	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
+	// 				{
+	// 					Name: to.Ptr("Node-1"),
+	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
+	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Node-2"),
+	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
+	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armazurestackhci.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/PutArcSetting.json
+func ExampleArcSettingsClient_Create() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewArcSettingsClient().Create(ctx, "test-rg", "myCluster", "default", armazurestackhci.ArcSetting{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ArcSettingsClientCreateResponse{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
+	// 		Properties: &armazurestackhci.ArcSettingProperties{
+	// 			AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStateCreating),
+	// 			ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
+	// 			ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
+	// 				Enabled: to.Ptr(false),
+	// 				ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
+	// 				},
+	// 			},
+	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
+	// 				{
+	// 					Category: to.Ptr("Telemetry"),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 				},
+	// 			},
+	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
+	// 				{
+	// 					Name: to.Ptr("Node-1"),
+	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
+	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Node-2"),
+	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
+	// 					State: to.Ptr(armazurestackhci.NodeArcStateCreating),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armazurestackhci.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/GeneratePassword.json
+func ExampleArcSettingsClient_GeneratePassword() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewArcSettingsClient().GeneratePassword(ctx, "test-rg", "myCluster", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ArcSettingsClientGeneratePasswordResponse{
+	// 	PasswordCredential: armazurestackhci.PasswordCredential{
+	// 		EndDateTime: to.Ptr(time.Date(2121, time.February, 17, 10, 54, 23, 626437700, time.UTC)),
+	// 		KeyID: to.Ptr("00000000-2d47-4fb2-8ed2-fed71a5c197b"),
+	// 		SecretText: to.Ptr("secretText"),
+	// 		StartDateTime: to.Ptr(time.Date(2022, time.February, 17, 10, 54, 23, 626400500, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/GetArcSetting.json
+func ExampleArcSettingsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewArcSettingsClient().Get(ctx, "test-rg", "myCluster", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhci.ArcSettingsClientGetResponse{
+	// 	ArcSetting: armazurestackhci.ArcSetting{
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
+	// 		Properties: &armazurestackhci.ArcSettingProperties{
+	// 			AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStatePartiallyConnected),
+	// 			ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
+	// 			ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
+	// 				Enabled: to.Ptr(false),
+	// 				ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
+	// 					{
+	// 						Port: to.Ptr[int64](6516),
+	// 						ServiceName: to.Ptr(armazurestackhci.ServiceNameWAC),
+	// 					},
+	// 				},
+	// 			},
+	// 			DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
+	// 				{
+	// 					Category: to.Ptr("Telemetry"),
+	// 					ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 				},
+	// 				{
+	// 					Category: to.Ptr("Supportability"),
+	// 				},
+	// 			},
+	// 			PerNodeDetails: []*armazurestackhci.PerNodeState{
+	// 				{
+	// 					Name: to.Ptr("Node-1"),
+	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
+	// 					State: to.Ptr(armazurestackhci.NodeArcStateConnected),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("Node-2"),
+	// 					ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
+	// 					State: to.Ptr(armazurestackhci.NodeArcStateDisconnected),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armazurestackhci.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/ListArcSettingsByCluster.json
+func ExampleArcSettingsClient_NewListByClusterPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhci.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewArcSettingsClient().NewListByClusterPager("test-rg", "myCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armazurestackhci.ArcSettingsClientListByClusterResponse{
+		// 	ArcSettingList: armazurestackhci.ArcSettingList{
+		// 		Value: []*armazurestackhci.ArcSetting{
+		// 			{
+		// 				Type: to.Ptr("Microsoft.AzureStackHCI/clusters/arcSettings"),
+		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/arcSettings/default"),
+		// 				Properties: &armazurestackhci.ArcSettingProperties{
+		// 					AggregateState: to.Ptr(armazurestackhci.ArcSettingAggregateStatePartiallyConnected),
+		// 					ArcInstanceResourceGroup: to.Ptr("ArcInstance-rg"),
+		// 					ConnectivityProperties: &armazurestackhci.ArcConnectivityProperties{
+		// 						Enabled: to.Ptr(false),
+		// 						ServiceConfigurations: []*armazurestackhci.ServiceConfiguration{
+		// 							{
+		// 								Port: to.Ptr[int64](6516),
+		// 								ServiceName: to.Ptr(armazurestackhci.ServiceNameWAC),
+		// 							},
+		// 						},
+		// 					},
+		// 					DefaultExtensions: []*armazurestackhci.DefaultExtensionDetails{
+		// 						{
+		// 							Category: to.Ptr("Telemetry"),
+		// 							ConsentTime: to.Ptr(time.Date(2023, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+		// 						},
+		// 						{
+		// 							Category: to.Ptr("Supportability"),
+		// 						},
+		// 					},
+		// 					PerNodeDetails: []*armazurestackhci.PerNodeState{
+		// 						{
+		// 							Name: to.Ptr("Node-1"),
+		// 							ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"),
+		// 							State: to.Ptr(armazurestackhci.NodeArcStateConnected),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("Node-2"),
+		// 							ArcInstance: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"),
+		// 							State: to.Ptr(armazurestackhci.NodeArcStateDisconnected),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armazurestackhci.ProvisioningStateSucceeded),
+		// 				},
+		// 				SystemData: &armazurestackhci.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user2"),
+		// 					LastModifiedByType: to.Ptr(armazurestackhci.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-01/PatchArcSetting.json
 func ExampleArcSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

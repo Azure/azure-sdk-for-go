@@ -19,7 +19,7 @@ import (
 // StoragesClient contains the methods for the Storages group.
 // Don't use this type directly, use NewStoragesClient() instead.
 //
-// Generated from API version 2026-07-03-preview
+// Generated from API version 2026-11-03
 type StoragesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *StoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a Storage
+// createOrUpdate - Create a Storage
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, resource Storage, options *StoragesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, resource Storage, _ *StoragesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}"
 	if client.subscriptionID == "" {
@@ -115,7 +116,7 @@ func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -148,7 +149,7 @@ func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Storage
+// deleteOperation - Delete a Storage
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, _ *StoragesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}"
 	if client.subscriptionID == "" {
@@ -194,9 +196,145 @@ func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// DisableComplianceLock - Disable compliance lock on the storage. Initiates an out-of-band multi-person authorization (MPA)
+// email approval workflow on the partner side. The storage compliance lock status transitions to 'DisablementPending' immediately;
+// once the MPA approval completes, the status becomes 'Disabled' (observable via the refresh action).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudAccountName - Name of the Cloud Account resource
+//   - storageName - Name of the Storage resource
+//   - options - StoragesClientDisableComplianceLockOptions contains the optional parameters for the StoragesClient.DisableComplianceLock
+//     method.
+func (client *StoragesClient) DisableComplianceLock(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientDisableComplianceLockOptions) (StoragesClientDisableComplianceLockResponse, error) {
+	var err error
+	const operationName = "StoragesClient.DisableComplianceLock"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.disableComplianceLockCreateRequest(ctx, resourceGroupName, cloudAccountName, storageName, options)
+	if err != nil {
+		return StoragesClientDisableComplianceLockResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StoragesClientDisableComplianceLockResponse{}, err
+	}
+	resp, err := client.disableComplianceLockHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// disableComplianceLockCreateRequest creates the DisableComplianceLock request.
+func (client *StoragesClient) disableComplianceLockCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, _ *StoragesClientDisableComplianceLockOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/disableComplianceLock"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudAccountName == "" {
+		return nil, errors.New("parameter cloudAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+	if storageName == "" {
+		return nil, errors.New("parameter storageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261103)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// disableComplianceLockHandleResponse handles the DisableComplianceLock response.
+func (client *StoragesClient) disableComplianceLockHandleResponse(resp *http.Response, successCodes ...int) (StoragesClientDisableComplianceLockResponse, error) {
+	result := StoragesClientDisableComplianceLockResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Storage); err != nil {
+		return StoragesClientDisableComplianceLockResponse{}, err
+	}
+	return result, nil
+}
+
+// EnableComplianceLock - Enable compliance lock on the storage. Synchronous operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudAccountName - Name of the Cloud Account resource
+//   - storageName - Name of the Storage resource
+//   - options - StoragesClientEnableComplianceLockOptions contains the optional parameters for the StoragesClient.EnableComplianceLock
+//     method.
+func (client *StoragesClient) EnableComplianceLock(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientEnableComplianceLockOptions) (StoragesClientEnableComplianceLockResponse, error) {
+	var err error
+	const operationName = "StoragesClient.EnableComplianceLock"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.enableComplianceLockCreateRequest(ctx, resourceGroupName, cloudAccountName, storageName, options)
+	if err != nil {
+		return StoragesClientEnableComplianceLockResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StoragesClientEnableComplianceLockResponse{}, err
+	}
+	resp, err := client.enableComplianceLockHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// enableComplianceLockCreateRequest creates the EnableComplianceLock request.
+func (client *StoragesClient) enableComplianceLockCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, _ *StoragesClientEnableComplianceLockOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/enableComplianceLock"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudAccountName == "" {
+		return nil, errors.New("parameter cloudAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+	if storageName == "" {
+		return nil, errors.New("parameter storageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261103)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// enableComplianceLockHandleResponse handles the EnableComplianceLock response.
+func (client *StoragesClient) enableComplianceLockHandleResponse(resp *http.Response, successCodes ...int) (StoragesClientEnableComplianceLockResponse, error) {
+	result := StoragesClientEnableComplianceLockResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Storage); err != nil {
+		return StoragesClientEnableComplianceLockResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Get a Storage
@@ -219,7 +357,8 @@ func (client *StoragesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return StoragesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -246,7 +385,7 @@ func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +461,7 @@ func (client *StoragesClient) listByCloudAccountCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260703Preview)
+		reqQP.Set("api-version", version20261103)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -337,6 +476,73 @@ func (client *StoragesClient) listByCloudAccountHandleResponse(resp *http.Respon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageListResult); err != nil {
 		return StoragesClientListByCloudAccountResponse{}, err
+	}
+	return result, nil
+}
+
+// Refresh - Refresh storage state from partner. Fetches latest compliance lock status from Commvault and updates the ARM
+// resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cloudAccountName - Name of the Cloud Account resource
+//   - storageName - Name of the Storage resource
+//   - options - StoragesClientRefreshOptions contains the optional parameters for the StoragesClient.Refresh method.
+func (client *StoragesClient) Refresh(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, options *StoragesClientRefreshOptions) (StoragesClientRefreshResponse, error) {
+	var err error
+	const operationName = "StoragesClient.Refresh"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshCreateRequest(ctx, resourceGroupName, cloudAccountName, storageName, options)
+	if err != nil {
+		return StoragesClientRefreshResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StoragesClientRefreshResponse{}, err
+	}
+	resp, err := client.refreshHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// refreshCreateRequest creates the Refresh request.
+func (client *StoragesClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, storageName string, _ *StoragesClientRefreshOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/storages/{storageName}/refresh"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cloudAccountName == "" {
+		return nil, errors.New("parameter cloudAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+	if storageName == "" {
+		return nil, errors.New("parameter storageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261103)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// refreshHandleResponse handles the Refresh response.
+func (client *StoragesClient) refreshHandleResponse(resp *http.Response, successCodes ...int) (StoragesClientRefreshResponse, error) {
+	result := StoragesClientRefreshResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Storage); err != nil {
+		return StoragesClientRefreshResponse{}, err
 	}
 	return result, nil
 }

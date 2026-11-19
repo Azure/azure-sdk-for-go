@@ -44,7 +44,7 @@ func NewScheduledActionOperationStatusClient(subscriptionID string, credential a
 	return client, nil
 }
 
-// Get - Gets the status of the specified scheduled action operation.
+// Get - Gets the status of the specified recurring bulk action operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The Azure region where the operation is running.
 //   - operationID - The operation ID in UUID format.
@@ -64,7 +64,8 @@ func (client *ScheduledActionOperationStatusClient) Get(ctx context.Context, loc
 	if err != nil {
 		return ScheduledActionOperationStatusClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

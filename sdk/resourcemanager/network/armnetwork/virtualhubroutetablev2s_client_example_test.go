@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VirtualHubRouteTableV2Put.json
+// Generated from example definition: 2026-03-01/VirtualHubRouteTableV2Put.json
 func ExampleVirtualHubRouteTableV2SClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleVirtualHubRouteTableV2SClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubRouteTableV2Delete.json
+// Generated from example definition: 2026-03-01/VirtualHubRouteTableV2Delete.json
 func ExampleVirtualHubRouteTableV2SClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleVirtualHubRouteTableV2SClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubRouteTableV2Get.json
+// Generated from example definition: 2026-03-01/VirtualHubRouteTableV2Get.json
 func ExampleVirtualHubRouteTableV2SClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleVirtualHubRouteTableV2SClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubRouteTableV2List.json
+// Generated from example definition: 2026-03-01/VirtualHubRouteTableV2List.json
 func ExampleVirtualHubRouteTableV2SClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

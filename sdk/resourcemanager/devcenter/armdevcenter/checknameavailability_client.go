@@ -63,7 +63,8 @@ func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvai
 	if err != nil {
 		return CheckNameAvailabilityClientExecuteResponse{}, err
 	}
-	return client.executeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeCreateRequest creates the Execute request.

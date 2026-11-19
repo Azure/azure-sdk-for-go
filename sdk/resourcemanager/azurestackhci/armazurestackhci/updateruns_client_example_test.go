@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-30/DeleteUpdateRuns.json
+// Generated from example definition: 2026-10-01/DeleteUpdateRuns.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/GetUpdateRuns.json
+// Generated from example definition: 2026-10-01/GetUpdateRuns.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ListUpdateRuns.json
+// Generated from example definition: 2026-10-01/ListUpdateRuns.json
 func ExampleUpdateRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleUpdateRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-30/PutUpdateRuns.json
+// Generated from example definition: 2026-10-01/PutUpdateRuns.json
 func ExampleUpdateRunsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

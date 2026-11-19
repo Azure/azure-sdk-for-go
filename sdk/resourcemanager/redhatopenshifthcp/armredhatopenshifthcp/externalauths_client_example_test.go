@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,6 +133,17 @@ func ExampleExternalAuthsClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Status: &armredhatopenshifthcp.ExternalAuthResourceStatus{
+	// 				Conditions: []*armredhatopenshifthcp.Condition{
+	// 					{
+	// 						Type: to.Ptr(armredhatopenshifthcp.ConditionTypeAvailable),
+	// 						Status: to.Ptr(armredhatopenshifthcp.StatusTypeTrue),
+	// 						LastTransitionTime: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+	// 						Reason: to.Ptr("AsExpected"),
+	// 						Message: to.Ptr("External auth is available"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
 	// 		Name: to.Ptr("cabt"),
@@ -149,7 +160,7 @@ func ExampleExternalAuthsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ExternalAuths_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/ExternalAuths_Delete_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,185 +181,7 @@ func ExampleExternalAuthsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/ExternalAuths_Get_MaximumSet_Gen.json
-func ExampleExternalAuthsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewExternalAuthsClient().Get(ctx, "rgopenapi", "hcpCluster-name", "my-cool-auth", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armredhatopenshifthcp.ExternalAuthsClientGetResponse{
-	// 	ExternalAuth: armredhatopenshifthcp.ExternalAuth{
-	// 		Properties: &armredhatopenshifthcp.ExternalAuthProperties{
-	// 			ProvisioningState: to.Ptr(armredhatopenshifthcp.ExternalAuthProvisioningStateSucceeded),
-	// 			Issuer: &armredhatopenshifthcp.TokenIssuerProfile{
-	// 				URL: to.Ptr("https://microsoft.com/a"),
-	// 				Audiences: []*string{
-	// 					to.Ptr("audience1"),
-	// 					to.Ptr("audience2"),
-	// 					to.Ptr("audience3"),
-	// 					to.Ptr("audience4"),
-	// 					to.Ptr("audience5"),
-	// 				},
-	// 				CA: to.Ptr("lrakpuqodeqscdauefb"),
-	// 			},
-	// 			Clients: []*armredhatopenshifthcp.ExternalAuthClientProfile{
-	// 				{
-	// 					Component: &armredhatopenshifthcp.ExternalAuthClientComponentProfile{
-	// 						Name: to.Ptr("my-cool-component"),
-	// 						AuthClientNamespace: to.Ptr("my-cool-namespace"),
-	// 					},
-	// 					ClientID: to.Ptr("vobxtzobefgl"),
-	// 					ExtraScopes: []*string{
-	// 						to.Ptr("ejmvezdxvoozyiickteiqnvpxqciep"),
-	// 					},
-	// 					Type: to.Ptr(armredhatopenshifthcp.ExternalAuthClientTypeConfidential),
-	// 				},
-	// 			},
-	// 			Claim: &armredhatopenshifthcp.ExternalAuthClaimProfile{
-	// 				Mappings: &armredhatopenshifthcp.TokenClaimMappingsProfile{
-	// 					Username: &armredhatopenshifthcp.UsernameClaimProfile{
-	// 						Claim: to.Ptr("utlmketyrdxmwijowjzbuqyawuoqrlriryuknigayeviriulgjvuwvxjrsrhpmvavyyxzapgkfeyedcklnoddeviibefgvubvecffqgdhntammtlwjsjemhsqhafmmorskpuwbtjgkoggxq"),
-	// 						Prefix: to.Ptr("ojmwi"),
-	// 						PrefixPolicy: to.Ptr(armredhatopenshifthcp.UsernameClaimPrefixPolicy("mdbghfytgejdqobfllqmajtc")),
-	// 					},
-	// 					Groups: &armredhatopenshifthcp.GroupClaimProfile{
-	// 						Claim: to.Ptr("icvcoadhpyprqygxyvqhewaycjdtzrwjzbjgmyralburdaolouyvkymfpetymlcwpqsoteryaatoapieizbsnttmkkxsrhyaacnucznujhgmxkmnmgtcjntjsmuabplpoyxberrjdikkkqqiqfnlvwngpbfajzhxzdgqicoconqtrrstzzumdurgfsheypcm"),
-	// 						Prefix: to.Ptr("kjlxhbjdvwarcwdu"),
-	// 					},
-	// 				},
-	// 				ValidationRules: []*armredhatopenshifthcp.TokenClaimValidationRule{
-	// 					{
-	// 						Type: to.Ptr(armredhatopenshifthcp.TokenValidationRuleTypeRequiredClaim),
-	// 						RequiredClaim: &armredhatopenshifthcp.TokenRequiredClaim{
-	// 							Claim: to.Ptr("ciapdmvrnfitudpx"),
-	// 							RequiredValue: to.Ptr("mqzzjiozgxfgflhdrnwawpke"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
-	// 		Name: to.Ptr("cabt"),
-	// 		Type: to.Ptr("x"),
-	// 		SystemData: &armredhatopenshifthcp.SystemData{
-	// 			CreatedBy: to.Ptr("lsrkqcuijqfp"),
-	// 			CreatedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("tgpmwu"),
-	// 			LastModifiedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-09-01-preview/ExternalAuths_ListByParent_MaximumSet_Gen.json
-func ExampleExternalAuthsClient_NewListByParentPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewExternalAuthsClient().NewListByParentPager("rgopenapi", "hcpCluster-name", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armredhatopenshifthcp.ExternalAuthsClientListByParentResponse{
-		// 	ExternalAuthListResult: armredhatopenshifthcp.ExternalAuthListResult{
-		// 		Value: []*armredhatopenshifthcp.ExternalAuth{
-		// 			{
-		// 				Properties: &armredhatopenshifthcp.ExternalAuthProperties{
-		// 					ProvisioningState: to.Ptr(armredhatopenshifthcp.ExternalAuthProvisioningStateSucceeded),
-		// 					Issuer: &armredhatopenshifthcp.TokenIssuerProfile{
-		// 						URL: to.Ptr("https://microsoft.com/a"),
-		// 						Audiences: []*string{
-		// 							to.Ptr("audience1"),
-		// 							to.Ptr("audience2"),
-		// 							to.Ptr("audience3"),
-		// 							to.Ptr("audience4"),
-		// 							to.Ptr("audience5"),
-		// 						},
-		// 						CA: to.Ptr("lrakpuqodeqscdauefb"),
-		// 					},
-		// 					Clients: []*armredhatopenshifthcp.ExternalAuthClientProfile{
-		// 						{
-		// 							Component: &armredhatopenshifthcp.ExternalAuthClientComponentProfile{
-		// 								Name: to.Ptr("my-cool-component"),
-		// 								AuthClientNamespace: to.Ptr("my-cool-namespace"),
-		// 							},
-		// 							ClientID: to.Ptr("vobxtzobefgl"),
-		// 							ExtraScopes: []*string{
-		// 								to.Ptr("ejmvezdxvoozyiickteiqnvpxqciep"),
-		// 							},
-		// 							Type: to.Ptr(armredhatopenshifthcp.ExternalAuthClientTypeConfidential),
-		// 						},
-		// 					},
-		// 					Claim: &armredhatopenshifthcp.ExternalAuthClaimProfile{
-		// 						Mappings: &armredhatopenshifthcp.TokenClaimMappingsProfile{
-		// 							Username: &armredhatopenshifthcp.UsernameClaimProfile{
-		// 								Claim: to.Ptr("utlmketyrdxmwijowjzbuqyawuoqrlriryuknigayeviriulgjvuwvxjrsrhpmvavyyxzapgkfeyedcklnoddeviibefgvubvecffqgdhntammtlwjsjemhsqhafmmorskpuwbtjgkoggxq"),
-		// 								Prefix: to.Ptr("ojmwi"),
-		// 								PrefixPolicy: to.Ptr(armredhatopenshifthcp.UsernameClaimPrefixPolicy("mdbghfytgejdqobfllqmajtc")),
-		// 							},
-		// 							Groups: &armredhatopenshifthcp.GroupClaimProfile{
-		// 								Claim: to.Ptr("icvcoadhpyprqygxyvqhewaycjdtzrwjzbjgmyralburdaolouyvkymfpetymlcwpqsoteryaatoapieizbsnttmkkxsrhyaacnucznujhgmxkmnmgtcjntjsmuabplpoyxberrjdikkkqqiqfnlvwngpbfajzhxzdgqicoconqtrrstzzumdurgfsheypcm"),
-		// 								Prefix: to.Ptr("kjlxhbjdvwarcwdu"),
-		// 							},
-		// 						},
-		// 						ValidationRules: []*armredhatopenshifthcp.TokenClaimValidationRule{
-		// 							{
-		// 								Type: to.Ptr(armredhatopenshifthcp.TokenValidationRuleTypeRequiredClaim),
-		// 								RequiredClaim: &armredhatopenshifthcp.TokenRequiredClaim{
-		// 									Claim: to.Ptr("ciapdmvrnfitudpx"),
-		// 									RequiredValue: to.Ptr("mqzzjiozgxfgflhdrnwawpke"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
-		// 				Name: to.Ptr("cabt"),
-		// 				Type: to.Ptr("x"),
-		// 				SystemData: &armredhatopenshifthcp.SystemData{
-		// 					CreatedBy: to.Ptr("lsrkqcuijqfp"),
-		// 					CreatedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("tgpmwu"),
-		// 					LastModifiedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/amycub"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-09-01-preview/ExternalAuths_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/ExternalAuths_Update_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,6 +302,17 @@ func ExampleExternalAuthsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Status: &armredhatopenshifthcp.ExternalAuthResourceStatus{
+	// 				Conditions: []*armredhatopenshifthcp.Condition{
+	// 					{
+	// 						Type: to.Ptr(armredhatopenshifthcp.ConditionTypeAvailable),
+	// 						Status: to.Ptr(armredhatopenshifthcp.StatusTypeTrue),
+	// 						LastTransitionTime: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+	// 						Reason: to.Ptr("AsExpected"),
+	// 						Message: to.Ptr("External auth is available"),
+	// 					},
+	// 				},
+	// 			},
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
 	// 		Name: to.Ptr("cabt"),
@@ -483,4 +327,204 @@ func ExampleExternalAuthsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-10-01/ExternalAuths_Get_MaximumSet_Gen.json
+func ExampleExternalAuthsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExternalAuthsClient().Get(ctx, "rgopenapi", "hcpCluster-name", "my-cool-auth", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armredhatopenshifthcp.ExternalAuthsClientGetResponse{
+	// 	ExternalAuth: armredhatopenshifthcp.ExternalAuth{
+	// 		Properties: &armredhatopenshifthcp.ExternalAuthProperties{
+	// 			ProvisioningState: to.Ptr(armredhatopenshifthcp.ExternalAuthProvisioningStateSucceeded),
+	// 			Issuer: &armredhatopenshifthcp.TokenIssuerProfile{
+	// 				URL: to.Ptr("https://microsoft.com/a"),
+	// 				Audiences: []*string{
+	// 					to.Ptr("audience1"),
+	// 					to.Ptr("audience2"),
+	// 					to.Ptr("audience3"),
+	// 					to.Ptr("audience4"),
+	// 					to.Ptr("audience5"),
+	// 				},
+	// 				CA: to.Ptr("lrakpuqodeqscdauefb"),
+	// 			},
+	// 			Clients: []*armredhatopenshifthcp.ExternalAuthClientProfile{
+	// 				{
+	// 					Component: &armredhatopenshifthcp.ExternalAuthClientComponentProfile{
+	// 						Name: to.Ptr("my-cool-component"),
+	// 						AuthClientNamespace: to.Ptr("my-cool-namespace"),
+	// 					},
+	// 					ClientID: to.Ptr("vobxtzobefgl"),
+	// 					ExtraScopes: []*string{
+	// 						to.Ptr("ejmvezdxvoozyiickteiqnvpxqciep"),
+	// 					},
+	// 					Type: to.Ptr(armredhatopenshifthcp.ExternalAuthClientTypeConfidential),
+	// 				},
+	// 			},
+	// 			Claim: &armredhatopenshifthcp.ExternalAuthClaimProfile{
+	// 				Mappings: &armredhatopenshifthcp.TokenClaimMappingsProfile{
+	// 					Username: &armredhatopenshifthcp.UsernameClaimProfile{
+	// 						Claim: to.Ptr("utlmketyrdxmwijowjzbuqyawuoqrlriryuknigayeviriulgjvuwvxjrsrhpmvavyyxzapgkfeyedcklnoddeviibefgvubvecffqgdhntammtlwjsjemhsqhafmmorskpuwbtjgkoggxq"),
+	// 						Prefix: to.Ptr("ojmwi"),
+	// 						PrefixPolicy: to.Ptr(armredhatopenshifthcp.UsernameClaimPrefixPolicy("mdbghfytgejdqobfllqmajtc")),
+	// 					},
+	// 					Groups: &armredhatopenshifthcp.GroupClaimProfile{
+	// 						Claim: to.Ptr("icvcoadhpyprqygxyvqhewaycjdtzrwjzbjgmyralburdaolouyvkymfpetymlcwpqsoteryaatoapieizbsnttmkkxsrhyaacnucznujhgmxkmnmgtcjntjsmuabplpoyxberrjdikkkqqiqfnlvwngpbfajzhxzdgqicoconqtrrstzzumdurgfsheypcm"),
+	// 						Prefix: to.Ptr("kjlxhbjdvwarcwdu"),
+	// 					},
+	// 				},
+	// 				ValidationRules: []*armredhatopenshifthcp.TokenClaimValidationRule{
+	// 					{
+	// 						Type: to.Ptr(armredhatopenshifthcp.TokenValidationRuleTypeRequiredClaim),
+	// 						RequiredClaim: &armredhatopenshifthcp.TokenRequiredClaim{
+	// 							Claim: to.Ptr("ciapdmvrnfitudpx"),
+	// 							RequiredValue: to.Ptr("mqzzjiozgxfgflhdrnwawpke"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Status: &armredhatopenshifthcp.ExternalAuthResourceStatus{
+	// 				Conditions: []*armredhatopenshifthcp.Condition{
+	// 					{
+	// 						Type: to.Ptr(armredhatopenshifthcp.ConditionTypeAvailable),
+	// 						Status: to.Ptr(armredhatopenshifthcp.StatusTypeTrue),
+	// 						LastTransitionTime: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+	// 						Reason: to.Ptr("AsExpected"),
+	// 						Message: to.Ptr("External auth is available"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
+	// 		Name: to.Ptr("cabt"),
+	// 		Type: to.Ptr("x"),
+	// 		SystemData: &armredhatopenshifthcp.SystemData{
+	// 			CreatedBy: to.Ptr("lsrkqcuijqfp"),
+	// 			CreatedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("tgpmwu"),
+	// 			LastModifiedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/ExternalAuths_ListByParent_MaximumSet_Gen.json
+func ExampleExternalAuthsClient_NewListByParentPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredhatopenshifthcp.NewClientFactory("FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewExternalAuthsClient().NewListByParentPager("rgopenapi", "hcpCluster-name", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armredhatopenshifthcp.ExternalAuthsClientListByParentResponse{
+		// 	ExternalAuthListResult: armredhatopenshifthcp.ExternalAuthListResult{
+		// 		Value: []*armredhatopenshifthcp.ExternalAuth{
+		// 			{
+		// 				Properties: &armredhatopenshifthcp.ExternalAuthProperties{
+		// 					ProvisioningState: to.Ptr(armredhatopenshifthcp.ExternalAuthProvisioningStateSucceeded),
+		// 					Issuer: &armredhatopenshifthcp.TokenIssuerProfile{
+		// 						URL: to.Ptr("https://microsoft.com/a"),
+		// 						Audiences: []*string{
+		// 							to.Ptr("audience1"),
+		// 							to.Ptr("audience2"),
+		// 							to.Ptr("audience3"),
+		// 							to.Ptr("audience4"),
+		// 							to.Ptr("audience5"),
+		// 						},
+		// 						CA: to.Ptr("lrakpuqodeqscdauefb"),
+		// 					},
+		// 					Clients: []*armredhatopenshifthcp.ExternalAuthClientProfile{
+		// 						{
+		// 							Component: &armredhatopenshifthcp.ExternalAuthClientComponentProfile{
+		// 								Name: to.Ptr("my-cool-component"),
+		// 								AuthClientNamespace: to.Ptr("my-cool-namespace"),
+		// 							},
+		// 							ClientID: to.Ptr("vobxtzobefgl"),
+		// 							ExtraScopes: []*string{
+		// 								to.Ptr("ejmvezdxvoozyiickteiqnvpxqciep"),
+		// 							},
+		// 							Type: to.Ptr(armredhatopenshifthcp.ExternalAuthClientTypeConfidential),
+		// 						},
+		// 					},
+		// 					Claim: &armredhatopenshifthcp.ExternalAuthClaimProfile{
+		// 						Mappings: &armredhatopenshifthcp.TokenClaimMappingsProfile{
+		// 							Username: &armredhatopenshifthcp.UsernameClaimProfile{
+		// 								Claim: to.Ptr("utlmketyrdxmwijowjzbuqyawuoqrlriryuknigayeviriulgjvuwvxjrsrhpmvavyyxzapgkfeyedcklnoddeviibefgvubvecffqgdhntammtlwjsjemhsqhafmmorskpuwbtjgkoggxq"),
+		// 								Prefix: to.Ptr("ojmwi"),
+		// 								PrefixPolicy: to.Ptr(armredhatopenshifthcp.UsernameClaimPrefixPolicy("mdbghfytgejdqobfllqmajtc")),
+		// 							},
+		// 							Groups: &armredhatopenshifthcp.GroupClaimProfile{
+		// 								Claim: to.Ptr("icvcoadhpyprqygxyvqhewaycjdtzrwjzbjgmyralburdaolouyvkymfpetymlcwpqsoteryaatoapieizbsnttmkkxsrhyaacnucznujhgmxkmnmgtcjntjsmuabplpoyxberrjdikkkqqiqfnlvwngpbfajzhxzdgqicoconqtrrstzzumdurgfsheypcm"),
+		// 								Prefix: to.Ptr("kjlxhbjdvwarcwdu"),
+		// 							},
+		// 						},
+		// 						ValidationRules: []*armredhatopenshifthcp.TokenClaimValidationRule{
+		// 							{
+		// 								Type: to.Ptr(armredhatopenshifthcp.TokenValidationRuleTypeRequiredClaim),
+		// 								RequiredClaim: &armredhatopenshifthcp.TokenRequiredClaim{
+		// 									Claim: to.Ptr("ciapdmvrnfitudpx"),
+		// 									RequiredValue: to.Ptr("mqzzjiozgxfgflhdrnwawpke"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					Status: &armredhatopenshifthcp.ExternalAuthResourceStatus{
+		// 						Conditions: []*armredhatopenshifthcp.Condition{
+		// 							{
+		// 								Type: to.Ptr(armredhatopenshifthcp.ConditionTypeAvailable),
+		// 								Status: to.Ptr(armredhatopenshifthcp.StatusTypeTrue),
+		// 								LastTransitionTime: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+		// 								Reason: to.Ptr("AsExpected"),
+		// 								Message: to.Ptr("External auth is available"),
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/FDEA43EA-0230-4A7D-BDEE-F3AFF2183B1D/resourceGroups/resourceGroupName/providers/Microsoft.RedHatOpenShift/resourceType/resourceName"),
+		// 				Name: to.Ptr("cabt"),
+		// 				Type: to.Ptr("x"),
+		// 				SystemData: &armredhatopenshifthcp.SystemData{
+		// 					CreatedBy: to.Ptr("lsrkqcuijqfp"),
+		// 					CreatedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("tgpmwu"),
+		// 					LastModifiedByType: to.Ptr(armredhatopenshifthcp.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.March, 27, 14, 57, 32, 578000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/amycub"),
+		// 	},
+		// }
+	}
 }

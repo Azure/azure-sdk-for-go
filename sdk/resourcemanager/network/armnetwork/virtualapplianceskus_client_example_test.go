@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSkuGet.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSkuGet.json
 func ExampleVirtualApplianceSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleVirtualApplianceSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkVirtualApplianceSkuList.json
+// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSkuList.json
 func ExampleVirtualApplianceSKUsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

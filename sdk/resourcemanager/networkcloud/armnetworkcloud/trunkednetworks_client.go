@@ -69,7 +69,7 @@ func (client *TrunkedNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create a new trunked network or update the properties of the existing trunked network.
+// createOrUpdate - Create a new trunked network or update the properties of the existing trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TrunkedNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkParameters TrunkedNetwork, options *TrunkedNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *TrunkedNetworksClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TrunkedNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, trunkedNetworkParameters TrunkedNetwork, options *TrunkedNetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *TrunkedNetworksClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete the provided trunked network.
+// deleteOperation - Delete the provided trunked network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TrunkedNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *TrunkedNetworksClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TrunkedNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trunkedNetworkName string, options *TrunkedNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}"
 	if client.subscriptionID == "" {
@@ -222,7 +224,8 @@ func (client *TrunkedNetworksClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return TrunkedNetworksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -434,7 +437,8 @@ func (client *TrunkedNetworksClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return TrunkedNetworksClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

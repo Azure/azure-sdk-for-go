@@ -5,7 +5,7 @@
 package armcognitiveservices
 
 const (
-	version20260715Preview string = "2026-07-15-preview"
+	version20261115Preview string = "2026-11-15-preview"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -36,6 +36,51 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AdapterDeploymentOperationState - Lifecycle operation states reported by an adapter deployment.
+type AdapterDeploymentOperationState string
+
+const (
+	// AdapterDeploymentOperationStateAccepted - The operation was accepted.
+	AdapterDeploymentOperationStateAccepted AdapterDeploymentOperationState = "Accepted"
+	// AdapterDeploymentOperationStateFailed - The operation failed.
+	AdapterDeploymentOperationStateFailed AdapterDeploymentOperationState = "Failed"
+	// AdapterDeploymentOperationStateRunning - The operation is running.
+	AdapterDeploymentOperationStateRunning AdapterDeploymentOperationState = "Running"
+	// AdapterDeploymentOperationStateSucceeded - The operation completed successfully.
+	AdapterDeploymentOperationStateSucceeded AdapterDeploymentOperationState = "Succeeded"
+)
+
+// PossibleAdapterDeploymentOperationStateValues returns the possible values for the AdapterDeploymentOperationState const type.
+func PossibleAdapterDeploymentOperationStateValues() []AdapterDeploymentOperationState {
+	return []AdapterDeploymentOperationState{
+		AdapterDeploymentOperationStateAccepted,
+		AdapterDeploymentOperationStateFailed,
+		AdapterDeploymentOperationStateRunning,
+		AdapterDeploymentOperationStateSucceeded,
+	}
+}
+
+// AdapterDeploymentOperationType - Lifecycle operation types reported by an adapter deployment.
+type AdapterDeploymentOperationType string
+
+const (
+	// AdapterDeploymentOperationTypeCreate - Creates the adapter deployment.
+	AdapterDeploymentOperationTypeCreate AdapterDeploymentOperationType = "Create"
+	// AdapterDeploymentOperationTypeDelete - Deletes the adapter deployment.
+	AdapterDeploymentOperationTypeDelete AdapterDeploymentOperationType = "Delete"
+	// AdapterDeploymentOperationTypeUpdate - Re-targets the adapter deployment.
+	AdapterDeploymentOperationTypeUpdate AdapterDeploymentOperationType = "Update"
+)
+
+// PossibleAdapterDeploymentOperationTypeValues returns the possible values for the AdapterDeploymentOperationType const type.
+func PossibleAdapterDeploymentOperationTypeValues() []AdapterDeploymentOperationType {
+	return []AdapterDeploymentOperationType{
+		AdapterDeploymentOperationTypeCreate,
+		AdapterDeploymentOperationTypeDelete,
+		AdapterDeploymentOperationTypeUpdate,
 	}
 }
 
@@ -241,6 +286,138 @@ const (
 func PossibleArcDeploymentSKUNameValues() []ArcDeploymentSKUName {
 	return []ArcDeploymentSKUName{
 		ArcDeploymentSKUNameArc,
+	}
+}
+
+// AttachedAksClusterCapability - A capability supported by an AKS attachment.
+type AttachedAksClusterCapability string
+
+const (
+	// AttachedAksClusterCapabilityAiManager - AI Manager inference workloads.
+	AttachedAksClusterCapabilityAiManager AttachedAksClusterCapability = "aiManager"
+	// AttachedAksClusterCapabilityFoundryNative - Foundry-native training workloads.
+	AttachedAksClusterCapabilityFoundryNative AttachedAksClusterCapability = "foundryNative"
+	// AttachedAksClusterCapabilityKuberay - KubeRay workloads.
+	AttachedAksClusterCapabilityKuberay AttachedAksClusterCapability = "kuberay"
+)
+
+// PossibleAttachedAksClusterCapabilityValues returns the possible values for the AttachedAksClusterCapability const type.
+func PossibleAttachedAksClusterCapabilityValues() []AttachedAksClusterCapability {
+	return []AttachedAksClusterCapability{
+		AttachedAksClusterCapabilityAiManager,
+		AttachedAksClusterCapabilityFoundryNative,
+		AttachedAksClusterCapabilityKuberay,
+	}
+}
+
+// AttachedAksClusterExtensionInstallationMode - How the training extension is installed.
+type AttachedAksClusterExtensionInstallationMode string
+
+const (
+	// AttachedAksClusterExtensionInstallationModeManaged - The service manages installation of the extension.
+	AttachedAksClusterExtensionInstallationModeManaged AttachedAksClusterExtensionInstallationMode = "Managed"
+	// AttachedAksClusterExtensionInstallationModeManual - The extension is installed manually, when enabled by the service.
+	AttachedAksClusterExtensionInstallationModeManual AttachedAksClusterExtensionInstallationMode = "Manual"
+)
+
+// PossibleAttachedAksClusterExtensionInstallationModeValues returns the possible values for the AttachedAksClusterExtensionInstallationMode const type.
+func PossibleAttachedAksClusterExtensionInstallationModeValues() []AttachedAksClusterExtensionInstallationMode {
+	return []AttachedAksClusterExtensionInstallationMode{
+		AttachedAksClusterExtensionInstallationModeManaged,
+		AttachedAksClusterExtensionInstallationModeManual,
+	}
+}
+
+// AttachedAksClusterHealthState - Health state of an attachment or one of its components.
+type AttachedAksClusterHealthState string
+
+const (
+	// AttachedAksClusterHealthStateDegraded - The attachment or component is degraded.
+	AttachedAksClusterHealthStateDegraded AttachedAksClusterHealthState = "Degraded"
+	// AttachedAksClusterHealthStateHealthy - The attachment or component is healthy.
+	AttachedAksClusterHealthStateHealthy AttachedAksClusterHealthState = "Healthy"
+	// AttachedAksClusterHealthStateUnhealthy - The attachment or component is unhealthy.
+	AttachedAksClusterHealthStateUnhealthy AttachedAksClusterHealthState = "Unhealthy"
+	// AttachedAksClusterHealthStateUnknown - Health has not yet been established.
+	AttachedAksClusterHealthStateUnknown AttachedAksClusterHealthState = "Unknown"
+)
+
+// PossibleAttachedAksClusterHealthStateValues returns the possible values for the AttachedAksClusterHealthState const type.
+func PossibleAttachedAksClusterHealthStateValues() []AttachedAksClusterHealthState {
+	return []AttachedAksClusterHealthState{
+		AttachedAksClusterHealthStateDegraded,
+		AttachedAksClusterHealthStateHealthy,
+		AttachedAksClusterHealthStateUnhealthy,
+		AttachedAksClusterHealthStateUnknown,
+	}
+}
+
+// AttachedAksClusterProjectBindingStage - Provisioning stage of a project binding.
+type AttachedAksClusterProjectBindingStage string
+
+const (
+	// AttachedAksClusterProjectBindingStageBlocked - The binding is blocked.
+	AttachedAksClusterProjectBindingStageBlocked AttachedAksClusterProjectBindingStage = "Blocked"
+	// AttachedAksClusterProjectBindingStageDegraded - The binding is degraded.
+	AttachedAksClusterProjectBindingStageDegraded AttachedAksClusterProjectBindingStage = "Degraded"
+	// AttachedAksClusterProjectBindingStageReady - The binding is ready.
+	AttachedAksClusterProjectBindingStageReady AttachedAksClusterProjectBindingStage = "Ready"
+	// AttachedAksClusterProjectBindingStageReconciling - The binding is being reconciled.
+	AttachedAksClusterProjectBindingStageReconciling AttachedAksClusterProjectBindingStage = "Reconciling"
+)
+
+// PossibleAttachedAksClusterProjectBindingStageValues returns the possible values for the AttachedAksClusterProjectBindingStage const type.
+func PossibleAttachedAksClusterProjectBindingStageValues() []AttachedAksClusterProjectBindingStage {
+	return []AttachedAksClusterProjectBindingStage{
+		AttachedAksClusterProjectBindingStageBlocked,
+		AttachedAksClusterProjectBindingStageDegraded,
+		AttachedAksClusterProjectBindingStageReady,
+		AttachedAksClusterProjectBindingStageReconciling,
+	}
+}
+
+// AttachedAksClusterProvisioningStage - Provisioning stage reported by an attachment.
+type AttachedAksClusterProvisioningStage string
+
+const (
+	// AttachedAksClusterProvisioningStageAccepted - The attachment request was accepted.
+	AttachedAksClusterProvisioningStageAccepted AttachedAksClusterProvisioningStage = "Accepted"
+	// AttachedAksClusterProvisioningStageBlocked - The attachment is blocked.
+	AttachedAksClusterProvisioningStageBlocked AttachedAksClusterProvisioningStage = "Blocked"
+	// AttachedAksClusterProvisioningStageClusterReady - The cluster is ready.
+	AttachedAksClusterProvisioningStageClusterReady AttachedAksClusterProvisioningStage = "ClusterReady"
+	// AttachedAksClusterProvisioningStageDegraded - The attachment is degraded.
+	AttachedAksClusterProvisioningStageDegraded AttachedAksClusterProvisioningStage = "Degraded"
+	// AttachedAksClusterProvisioningStageDeleting - The attachment is being deleted.
+	AttachedAksClusterProvisioningStageDeleting AttachedAksClusterProvisioningStage = "Deleting"
+	// AttachedAksClusterProvisioningStageFailed - Attachment provisioning failed.
+	AttachedAksClusterProvisioningStageFailed AttachedAksClusterProvisioningStage = "Failed"
+	// AttachedAksClusterProvisioningStagePendingBootstrap - Cluster bootstrap is pending.
+	AttachedAksClusterProvisioningStagePendingBootstrap AttachedAksClusterProvisioningStage = "PendingBootstrap"
+	// AttachedAksClusterProvisioningStageProvisioningCluster - Cluster provisioning is in progress.
+	AttachedAksClusterProvisioningStageProvisioningCluster AttachedAksClusterProvisioningStage = "ProvisioningCluster"
+	// AttachedAksClusterProvisioningStageProvisioningIdentity - Identity provisioning is in progress.
+	AttachedAksClusterProvisioningStageProvisioningIdentity AttachedAksClusterProvisioningStage = "ProvisioningIdentity"
+	// AttachedAksClusterProvisioningStageReady - The attachment is ready.
+	AttachedAksClusterProvisioningStageReady AttachedAksClusterProvisioningStage = "Ready"
+	// AttachedAksClusterProvisioningStageValidating - The attachment is being validated.
+	AttachedAksClusterProvisioningStageValidating AttachedAksClusterProvisioningStage = "Validating"
+)
+
+// PossibleAttachedAksClusterProvisioningStageValues returns the possible values for the AttachedAksClusterProvisioningStage const type.
+func PossibleAttachedAksClusterProvisioningStageValues() []AttachedAksClusterProvisioningStage {
+	return []AttachedAksClusterProvisioningStage{
+		AttachedAksClusterProvisioningStageAccepted,
+		AttachedAksClusterProvisioningStageBlocked,
+		AttachedAksClusterProvisioningStageClusterReady,
+		AttachedAksClusterProvisioningStageDegraded,
+		AttachedAksClusterProvisioningStageDeleting,
+		AttachedAksClusterProvisioningStageFailed,
+		AttachedAksClusterProvisioningStagePendingBootstrap,
+		AttachedAksClusterProvisioningStageProvisioningCluster,
+		AttachedAksClusterProvisioningStageProvisioningIdentity,
+		AttachedAksClusterProvisioningStageReady,
+		AttachedAksClusterProvisioningStageValidating,
 	}
 }
 
@@ -566,48 +743,50 @@ const (
 	ConnectionCategoryOdbc                         ConnectionCategory = "Odbc"
 	ConnectionCategoryOffice365                    ConnectionCategory = "Office365"
 	ConnectionCategoryOpenAI                       ConnectionCategory = "OpenAI"
-	ConnectionCategoryOracle                       ConnectionCategory = "Oracle"
-	ConnectionCategoryOracleCloudStorage           ConnectionCategory = "OracleCloudStorage"
-	ConnectionCategoryOracleServiceCloud           ConnectionCategory = "OracleServiceCloud"
-	ConnectionCategoryPayPal                       ConnectionCategory = "PayPal"
-	ConnectionCategoryPhoenix                      ConnectionCategory = "Phoenix"
-	ConnectionCategoryPinecone                     ConnectionCategory = "Pinecone"
-	ConnectionCategoryPostgreSQL                   ConnectionCategory = "PostgreSql"
-	ConnectionCategoryPowerPlatformEnvironment     ConnectionCategory = "PowerPlatformEnvironment"
-	ConnectionCategoryPresto                       ConnectionCategory = "Presto"
-	ConnectionCategoryPythonFeed                   ConnectionCategory = "PythonFeed"
-	ConnectionCategoryQuickBooks                   ConnectionCategory = "QuickBooks"
-	ConnectionCategoryRedis                        ConnectionCategory = "Redis"
-	ConnectionCategoryRemoteA2A                    ConnectionCategory = "RemoteA2A"
-	ConnectionCategoryRemoteTool                   ConnectionCategory = "RemoteTool"
-	ConnectionCategoryResponsys                    ConnectionCategory = "Responsys"
-	ConnectionCategoryS3                           ConnectionCategory = "S3"
-	ConnectionCategorySQLServer                    ConnectionCategory = "SqlServer"
-	ConnectionCategorySalesforce                   ConnectionCategory = "Salesforce"
-	ConnectionCategorySalesforceMarketingCloud     ConnectionCategory = "SalesforceMarketingCloud"
-	ConnectionCategorySalesforceServiceCloud       ConnectionCategory = "SalesforceServiceCloud"
-	ConnectionCategorySapBw                        ConnectionCategory = "SapBw"
-	ConnectionCategorySapCloudForCustomer          ConnectionCategory = "SapCloudForCustomer"
-	ConnectionCategorySapEcc                       ConnectionCategory = "SapEcc"
-	ConnectionCategorySapHana                      ConnectionCategory = "SapHana"
-	ConnectionCategorySapOpenHub                   ConnectionCategory = "SapOpenHub"
-	ConnectionCategorySapTable                     ConnectionCategory = "SapTable"
-	ConnectionCategorySerp                         ConnectionCategory = "Serp"
-	ConnectionCategoryServerless                   ConnectionCategory = "Serverless"
-	ConnectionCategoryServiceNow                   ConnectionCategory = "ServiceNow"
-	ConnectionCategorySftp                         ConnectionCategory = "Sftp"
-	ConnectionCategorySharePointOnlineList         ConnectionCategory = "SharePointOnlineList"
-	ConnectionCategorySharepoint                   ConnectionCategory = "Sharepoint"
-	ConnectionCategoryShopify                      ConnectionCategory = "Shopify"
-	ConnectionCategorySnowflake                    ConnectionCategory = "Snowflake"
-	ConnectionCategorySpark                        ConnectionCategory = "Spark"
-	ConnectionCategorySquare                       ConnectionCategory = "Square"
-	ConnectionCategorySybase                       ConnectionCategory = "Sybase"
-	ConnectionCategoryTeradata                     ConnectionCategory = "Teradata"
-	ConnectionCategoryVertica                      ConnectionCategory = "Vertica"
-	ConnectionCategoryWebTable                     ConnectionCategory = "WebTable"
-	ConnectionCategoryXero                         ConnectionCategory = "Xero"
-	ConnectionCategoryZoho                         ConnectionCategory = "Zoho"
+	// ConnectionCategoryOpenAPI - Connection to an endpoint described by an OpenAPI specification.
+	ConnectionCategoryOpenAPI                  ConnectionCategory = "OpenAPI"
+	ConnectionCategoryOracle                   ConnectionCategory = "Oracle"
+	ConnectionCategoryOracleCloudStorage       ConnectionCategory = "OracleCloudStorage"
+	ConnectionCategoryOracleServiceCloud       ConnectionCategory = "OracleServiceCloud"
+	ConnectionCategoryPayPal                   ConnectionCategory = "PayPal"
+	ConnectionCategoryPhoenix                  ConnectionCategory = "Phoenix"
+	ConnectionCategoryPinecone                 ConnectionCategory = "Pinecone"
+	ConnectionCategoryPostgreSQL               ConnectionCategory = "PostgreSql"
+	ConnectionCategoryPowerPlatformEnvironment ConnectionCategory = "PowerPlatformEnvironment"
+	ConnectionCategoryPresto                   ConnectionCategory = "Presto"
+	ConnectionCategoryPythonFeed               ConnectionCategory = "PythonFeed"
+	ConnectionCategoryQuickBooks               ConnectionCategory = "QuickBooks"
+	ConnectionCategoryRedis                    ConnectionCategory = "Redis"
+	ConnectionCategoryRemoteA2A                ConnectionCategory = "RemoteA2A"
+	ConnectionCategoryRemoteTool               ConnectionCategory = "RemoteTool"
+	ConnectionCategoryResponsys                ConnectionCategory = "Responsys"
+	ConnectionCategoryS3                       ConnectionCategory = "S3"
+	ConnectionCategorySQLServer                ConnectionCategory = "SqlServer"
+	ConnectionCategorySalesforce               ConnectionCategory = "Salesforce"
+	ConnectionCategorySalesforceMarketingCloud ConnectionCategory = "SalesforceMarketingCloud"
+	ConnectionCategorySalesforceServiceCloud   ConnectionCategory = "SalesforceServiceCloud"
+	ConnectionCategorySapBw                    ConnectionCategory = "SapBw"
+	ConnectionCategorySapCloudForCustomer      ConnectionCategory = "SapCloudForCustomer"
+	ConnectionCategorySapEcc                   ConnectionCategory = "SapEcc"
+	ConnectionCategorySapHana                  ConnectionCategory = "SapHana"
+	ConnectionCategorySapOpenHub               ConnectionCategory = "SapOpenHub"
+	ConnectionCategorySapTable                 ConnectionCategory = "SapTable"
+	ConnectionCategorySerp                     ConnectionCategory = "Serp"
+	ConnectionCategoryServerless               ConnectionCategory = "Serverless"
+	ConnectionCategoryServiceNow               ConnectionCategory = "ServiceNow"
+	ConnectionCategorySftp                     ConnectionCategory = "Sftp"
+	ConnectionCategorySharePointOnlineList     ConnectionCategory = "SharePointOnlineList"
+	ConnectionCategorySharepoint               ConnectionCategory = "Sharepoint"
+	ConnectionCategoryShopify                  ConnectionCategory = "Shopify"
+	ConnectionCategorySnowflake                ConnectionCategory = "Snowflake"
+	ConnectionCategorySpark                    ConnectionCategory = "Spark"
+	ConnectionCategorySquare                   ConnectionCategory = "Square"
+	ConnectionCategorySybase                   ConnectionCategory = "Sybase"
+	ConnectionCategoryTeradata                 ConnectionCategory = "Teradata"
+	ConnectionCategoryVertica                  ConnectionCategory = "Vertica"
+	ConnectionCategoryWebTable                 ConnectionCategory = "WebTable"
+	ConnectionCategoryXero                     ConnectionCategory = "Xero"
+	ConnectionCategoryZoho                     ConnectionCategory = "Zoho"
 )
 
 // PossibleConnectionCategoryValues returns the possible values for the ConnectionCategory const type.
@@ -691,6 +870,7 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryOdbc,
 		ConnectionCategoryOffice365,
 		ConnectionCategoryOpenAI,
+		ConnectionCategoryOpenAPI,
 		ConnectionCategoryOracle,
 		ConnectionCategoryOracleCloudStorage,
 		ConnectionCategoryOracleServiceCloud,
@@ -777,6 +957,113 @@ func PossibleContentLevelValues() []ContentLevel {
 		ContentLevelHigh,
 		ContentLevelLow,
 		ContentLevelMedium,
+	}
+}
+
+// CostControlCategory - The measurement used for the budget amount and absolute thresholds.
+type CostControlCategory string
+
+const (
+	// CostControlCategoryCost - Estimated consumption cost in United States dollars.
+	CostControlCategoryCost CostControlCategory = "Cost"
+	// CostControlCategoryTokens - The number of consumed tokens, optionally selected by a tokenType filter.
+	CostControlCategoryTokens CostControlCategory = "Tokens"
+)
+
+// PossibleCostControlCategoryValues returns the possible values for the CostControlCategory const type.
+func PossibleCostControlCategoryValues() []CostControlCategory {
+	return []CostControlCategory{
+		CostControlCategoryCost,
+		CostControlCategoryTokens,
+	}
+}
+
+// CostControlFilterName - Built-in request attributes supported for traffic filtering.
+type CostControlFilterName string
+
+const (
+	// CostControlFilterNameAgent - The Foundry agent name within the single explicitly selected Foundry project.
+	CostControlFilterNameAgent CostControlFilterName = "agent"
+	// CostControlFilterNameDeployment - The deployment name within the owning account.
+	CostControlFilterNameDeployment CostControlFilterName = "deployment"
+	// CostControlFilterNameProject - The Foundry project name within the owning account.
+	CostControlFilterNameProject CostControlFilterName = "project"
+	// CostControlFilterNameSessionID - The Foundry session ID.
+	CostControlFilterNameSessionID CostControlFilterName = "sessionId"
+	// CostControlFilterNameTokenType - The input or output token category.
+	CostControlFilterNameTokenType CostControlFilterName = "tokenType"
+)
+
+// PossibleCostControlFilterNameValues returns the possible values for the CostControlFilterName const type.
+func PossibleCostControlFilterNameValues() []CostControlFilterName {
+	return []CostControlFilterName{
+		CostControlFilterNameAgent,
+		CostControlFilterNameDeployment,
+		CostControlFilterNameProject,
+		CostControlFilterNameSessionID,
+		CostControlFilterNameTokenType,
+	}
+}
+
+// CostControlGroupingName - Built-in attributes supported for additional budget partitioning.
+type CostControlGroupingName string
+
+const (
+	// CostControlGroupingNameAgent - Creates an independent counter for each Foundry agent, qualified by its Foundry project
+	// so identical agent names in different projects do not share counters.
+	CostControlGroupingNameAgent CostControlGroupingName = "agent"
+	// CostControlGroupingNameProject - Creates an independent counter for each Foundry project in the owning account.
+	CostControlGroupingNameProject CostControlGroupingName = "project"
+	// CostControlGroupingNameSessionID - Creates an independent counter for each Foundry session ID.
+	CostControlGroupingNameSessionID CostControlGroupingName = "sessionId"
+)
+
+// PossibleCostControlGroupingNameValues returns the possible values for the CostControlGroupingName const type.
+func PossibleCostControlGroupingNameValues() []CostControlGroupingName {
+	return []CostControlGroupingName{
+		CostControlGroupingNameAgent,
+		CostControlGroupingNameProject,
+		CostControlGroupingNameSessionID,
+	}
+}
+
+// CostControlThresholdType - The interpretation of a notification or blocking-action threshold.
+type CostControlThresholdType string
+
+const (
+	// CostControlThresholdTypeAbsolute - The threshold is expressed in United States dollars or tokens, according to the budget
+	// category.
+	CostControlThresholdTypeAbsolute CostControlThresholdType = "Absolute"
+	// CostControlThresholdTypePercentage - The threshold is a percentage of the configured budget amount.
+	CostControlThresholdTypePercentage CostControlThresholdType = "Percentage"
+)
+
+// PossibleCostControlThresholdTypeValues returns the possible values for the CostControlThresholdType const type.
+func PossibleCostControlThresholdTypeValues() []CostControlThresholdType {
+	return []CostControlThresholdType{
+		CostControlThresholdTypeAbsolute,
+		CostControlThresholdTypePercentage,
+	}
+}
+
+// CostControlTimeGrain - Calendar-aligned UTC renewal intervals.
+type CostControlTimeGrain string
+
+const (
+	// CostControlTimeGrainDaily - Renews each day at 00:00 UTC.
+	CostControlTimeGrainDaily CostControlTimeGrain = "Daily"
+	// CostControlTimeGrainMonthly - Renews on the first day of each month at 00:00 UTC.
+	CostControlTimeGrainMonthly CostControlTimeGrain = "Monthly"
+	// CostControlTimeGrainWeekly - Renews each Monday at 00:00 UTC.
+	CostControlTimeGrainWeekly CostControlTimeGrain = "Weekly"
+)
+
+// PossibleCostControlTimeGrainValues returns the possible values for the CostControlTimeGrain const type.
+func PossibleCostControlTimeGrainValues() []CostControlTimeGrain {
+	return []CostControlTimeGrain{
+		CostControlTimeGrainDaily,
+		CostControlTimeGrainMonthly,
+		CostControlTimeGrainWeekly,
 	}
 }
 
@@ -1474,6 +1761,185 @@ func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	}
 }
 
+// RaiAcsAnnotatorType - Extensible kinds of Agent Control Specification annotator dispatchers.
+type RaiAcsAnnotatorType string
+
+const (
+	// RaiAcsAnnotatorTypeClassifier - Obtains annotations from a classifier dispatcher.
+	RaiAcsAnnotatorTypeClassifier RaiAcsAnnotatorType = "classifier"
+	// RaiAcsAnnotatorTypeEndpoint - Obtains annotations from an external endpoint dispatcher.
+	RaiAcsAnnotatorTypeEndpoint RaiAcsAnnotatorType = "endpoint"
+	// RaiAcsAnnotatorTypeLlm - Obtains annotations from a language-model dispatcher.
+	RaiAcsAnnotatorTypeLlm RaiAcsAnnotatorType = "llm"
+)
+
+// PossibleRaiAcsAnnotatorTypeValues returns the possible values for the RaiAcsAnnotatorType const type.
+func PossibleRaiAcsAnnotatorTypeValues() []RaiAcsAnnotatorType {
+	return []RaiAcsAnnotatorType{
+		RaiAcsAnnotatorTypeClassifier,
+		RaiAcsAnnotatorTypeEndpoint,
+		RaiAcsAnnotatorTypeLlm,
+	}
+}
+
+// RaiAcsHarmCategory - Harm categories supported by the Unified Moderate text profile.
+type RaiAcsHarmCategory string
+
+const (
+	// RaiAcsHarmCategoryHate - Hate-related content.
+	RaiAcsHarmCategoryHate RaiAcsHarmCategory = "Hate"
+	// RaiAcsHarmCategoryPromptInjection - Prompt-injection content.
+	RaiAcsHarmCategoryPromptInjection RaiAcsHarmCategory = "PromptInjection"
+	// RaiAcsHarmCategoryProtectedMaterialCode - Protected source-code material.
+	RaiAcsHarmCategoryProtectedMaterialCode RaiAcsHarmCategory = "ProtectedMaterialCode"
+	// RaiAcsHarmCategoryProtectedMaterialText - Protected text material.
+	RaiAcsHarmCategoryProtectedMaterialText RaiAcsHarmCategory = "ProtectedMaterialText"
+	// RaiAcsHarmCategorySelfHarm - Self-harm-related content.
+	RaiAcsHarmCategorySelfHarm RaiAcsHarmCategory = "SelfHarm"
+	// RaiAcsHarmCategorySexual - Sexual content.
+	RaiAcsHarmCategorySexual RaiAcsHarmCategory = "Sexual"
+	// RaiAcsHarmCategoryViolence - Violent content.
+	RaiAcsHarmCategoryViolence RaiAcsHarmCategory = "Violence"
+)
+
+// PossibleRaiAcsHarmCategoryValues returns the possible values for the RaiAcsHarmCategory const type.
+func PossibleRaiAcsHarmCategoryValues() []RaiAcsHarmCategory {
+	return []RaiAcsHarmCategory{
+		RaiAcsHarmCategoryHate,
+		RaiAcsHarmCategoryPromptInjection,
+		RaiAcsHarmCategoryProtectedMaterialCode,
+		RaiAcsHarmCategoryProtectedMaterialText,
+		RaiAcsHarmCategorySelfHarm,
+		RaiAcsHarmCategorySexual,
+		RaiAcsHarmCategoryViolence,
+	}
+}
+
+// RaiAcsModerationSubjectFormat - The representation sent to Azure AI Content Safety moderation capabilities.
+type RaiAcsModerationSubjectFormat string
+
+const (
+	// RaiAcsModerationSubjectFormatCanonicalJSON - Moderates the canonical JSON representation of the selected policy target.
+	RaiAcsModerationSubjectFormatCanonicalJSON RaiAcsModerationSubjectFormat = "canonical_json"
+	// RaiAcsModerationSubjectFormatText - Moderates the selected policy target as text.
+	RaiAcsModerationSubjectFormatText RaiAcsModerationSubjectFormat = "text"
+)
+
+// PossibleRaiAcsModerationSubjectFormatValues returns the possible values for the RaiAcsModerationSubjectFormat const type.
+func PossibleRaiAcsModerationSubjectFormatValues() []RaiAcsModerationSubjectFormat {
+	return []RaiAcsModerationSubjectFormat{
+		RaiAcsModerationSubjectFormatCanonicalJSON,
+		RaiAcsModerationSubjectFormatText,
+	}
+}
+
+// RaiAcsPolicyDefinitionType - The policy language supported by the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsPolicyDefinitionType string
+
+const (
+	// RaiAcsPolicyDefinitionTypeRego - A policy evaluated by Rego.
+	RaiAcsPolicyDefinitionTypeRego RaiAcsPolicyDefinitionType = "rego"
+)
+
+// PossibleRaiAcsPolicyDefinitionTypeValues returns the possible values for the RaiAcsPolicyDefinitionType const type.
+func PossibleRaiAcsPolicyDefinitionTypeValues() []RaiAcsPolicyDefinitionType {
+	return []RaiAcsPolicyDefinitionType{
+		RaiAcsPolicyDefinitionTypeRego,
+	}
+}
+
+// RaiAcsPolicyTarget - Canonical policy targets supported by the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsPolicyTarget string
+
+const (
+	// RaiAcsPolicyTargetAgentInitialization - Selects the agent initialization payload.
+	RaiAcsPolicyTargetAgentInitialization RaiAcsPolicyTarget = "$snap.agent_init"
+	// RaiAcsPolicyTargetAgentSummary - Selects the final agent execution summary.
+	RaiAcsPolicyTargetAgentSummary RaiAcsPolicyTarget = "$snap.summary"
+	// RaiAcsPolicyTargetInput - Selects the incoming user input.
+	RaiAcsPolicyTargetInput RaiAcsPolicyTarget = "$snap.input"
+	// RaiAcsPolicyTargetModelMessages - Selects the model messages proposed for dispatch.
+	RaiAcsPolicyTargetModelMessages RaiAcsPolicyTarget = "$snap.messages"
+	// RaiAcsPolicyTargetModelResponse - Selects the completed model response.
+	RaiAcsPolicyTargetModelResponse RaiAcsPolicyTarget = "$snap.response"
+	// RaiAcsPolicyTargetOutput - Selects the assistant output.
+	RaiAcsPolicyTargetOutput RaiAcsPolicyTarget = "$snap.output"
+	// RaiAcsPolicyTargetToolArguments - Selects tool-call arguments.
+	RaiAcsPolicyTargetToolArguments RaiAcsPolicyTarget = "$snap.tool_call.args"
+	// RaiAcsPolicyTargetToolResult - Selects a tool result.
+	RaiAcsPolicyTargetToolResult RaiAcsPolicyTarget = "$snap.tool_result.value"
+)
+
+// PossibleRaiAcsPolicyTargetValues returns the possible values for the RaiAcsPolicyTarget const type.
+func PossibleRaiAcsPolicyTargetValues() []RaiAcsPolicyTarget {
+	return []RaiAcsPolicyTarget{
+		RaiAcsPolicyTargetAgentInitialization,
+		RaiAcsPolicyTargetAgentSummary,
+		RaiAcsPolicyTargetInput,
+		RaiAcsPolicyTargetModelMessages,
+		RaiAcsPolicyTargetModelResponse,
+		RaiAcsPolicyTargetOutput,
+		RaiAcsPolicyTargetToolArguments,
+		RaiAcsPolicyTargetToolResult,
+	}
+}
+
+// RaiAcsPolicyTargetKind - Canonical target kinds supported by the Azure AI Content Safety Unified Moderate host profile.
+type RaiAcsPolicyTargetKind string
+
+const (
+	// RaiAcsPolicyTargetKindAgentInitialization - The target contains agent initialization state.
+	RaiAcsPolicyTargetKindAgentInitialization RaiAcsPolicyTargetKind = "agent_init"
+	// RaiAcsPolicyTargetKindAgentSummary - The target contains the final agent execution summary.
+	RaiAcsPolicyTargetKindAgentSummary RaiAcsPolicyTargetKind = "agent_summary"
+	// RaiAcsPolicyTargetKindAssistantOutput - The target contains assistant output.
+	RaiAcsPolicyTargetKindAssistantOutput RaiAcsPolicyTargetKind = "assistant_output"
+	// RaiAcsPolicyTargetKindModelMessages - The target contains model messages.
+	RaiAcsPolicyTargetKindModelMessages RaiAcsPolicyTargetKind = "messages"
+	// RaiAcsPolicyTargetKindModelResponse - The target contains a completed model response.
+	RaiAcsPolicyTargetKindModelResponse RaiAcsPolicyTargetKind = "model_response"
+	// RaiAcsPolicyTargetKindToolArguments - The target contains tool-call arguments.
+	RaiAcsPolicyTargetKindToolArguments RaiAcsPolicyTargetKind = "tool_args"
+	// RaiAcsPolicyTargetKindToolResult - The target contains a tool result.
+	RaiAcsPolicyTargetKindToolResult RaiAcsPolicyTargetKind = "tool_result"
+	// RaiAcsPolicyTargetKindUserInput - The target contains user input.
+	RaiAcsPolicyTargetKindUserInput RaiAcsPolicyTargetKind = "user_input"
+)
+
+// PossibleRaiAcsPolicyTargetKindValues returns the possible values for the RaiAcsPolicyTargetKind const type.
+func PossibleRaiAcsPolicyTargetKindValues() []RaiAcsPolicyTargetKind {
+	return []RaiAcsPolicyTargetKind{
+		RaiAcsPolicyTargetKindAgentInitialization,
+		RaiAcsPolicyTargetKindAgentSummary,
+		RaiAcsPolicyTargetKindAssistantOutput,
+		RaiAcsPolicyTargetKindModelMessages,
+		RaiAcsPolicyTargetKindModelResponse,
+		RaiAcsPolicyTargetKindToolArguments,
+		RaiAcsPolicyTargetKindToolResult,
+		RaiAcsPolicyTargetKindUserInput,
+	}
+}
+
+// RaiAcsToolNameSelector - Snapshot paths for selecting a tool catalog entry.
+// The listed values are recognized by the Azure AI Content Safety Unified Moderate host profile; other values are allowed
+// for forward compatibility.
+type RaiAcsToolNameSelector string
+
+const (
+	// RaiAcsToolNameSelectorToolCallName - Selects the tool-call name from the canonical snapshot root.
+	RaiAcsToolNameSelectorToolCallName RaiAcsToolNameSelector = "$snap.tool_call.name"
+	// RaiAcsToolNameSelectorToolCallNameAlias - Selects the tool-call name through the snapshot-root alias.
+	RaiAcsToolNameSelectorToolCallNameAlias RaiAcsToolNameSelector = "$.tool_call.name"
+)
+
+// PossibleRaiAcsToolNameSelectorValues returns the possible values for the RaiAcsToolNameSelector const type.
+func PossibleRaiAcsToolNameSelectorValues() []RaiAcsToolNameSelector {
+	return []RaiAcsToolNameSelector{
+		RaiAcsToolNameSelectorToolCallName,
+		RaiAcsToolNameSelectorToolCallNameAlias,
+	}
+}
+
 // RaiActionType - The action types to apply to the content filters
 type RaiActionType string
 
@@ -1619,9 +2085,17 @@ func PossibleRaiEgressSchemeValues() []RaiEgressScheme {
 type RaiPolicyContentSource string
 
 const (
+	// RaiPolicyContentSourceAgentShutdown - Content evaluated when an agent execution session shuts down.
+	RaiPolicyContentSourceAgentShutdown RaiPolicyContentSource = "AgentShutdown"
+	// RaiPolicyContentSourceAgentStartup - Content evaluated when an agent execution session starts.
+	RaiPolicyContentSourceAgentStartup RaiPolicyContentSource = "AgentStartup"
 	RaiPolicyContentSourceCompletion   RaiPolicyContentSource = "Completion"
-	RaiPolicyContentSourcePostRun      RaiPolicyContentSource = "PostRun"
-	RaiPolicyContentSourcePostToolCall RaiPolicyContentSource = "PostToolCall"
+	// RaiPolicyContentSourcePostModelCall - Content evaluated after a model call returns.
+	RaiPolicyContentSourcePostModelCall RaiPolicyContentSource = "PostModelCall"
+	RaiPolicyContentSourcePostRun       RaiPolicyContentSource = "PostRun"
+	RaiPolicyContentSourcePostToolCall  RaiPolicyContentSource = "PostToolCall"
+	// RaiPolicyContentSourcePreModelCall - Content evaluated before a model call is made.
+	RaiPolicyContentSourcePreModelCall RaiPolicyContentSource = "PreModelCall"
 	RaiPolicyContentSourcePreRun       RaiPolicyContentSource = "PreRun"
 	RaiPolicyContentSourcePreToolCall  RaiPolicyContentSource = "PreToolCall"
 	RaiPolicyContentSourcePrompt       RaiPolicyContentSource = "Prompt"
@@ -1630,12 +2104,34 @@ const (
 // PossibleRaiPolicyContentSourceValues returns the possible values for the RaiPolicyContentSource const type.
 func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
 	return []RaiPolicyContentSource{
+		RaiPolicyContentSourceAgentShutdown,
+		RaiPolicyContentSourceAgentStartup,
 		RaiPolicyContentSourceCompletion,
+		RaiPolicyContentSourcePostModelCall,
 		RaiPolicyContentSourcePostRun,
 		RaiPolicyContentSourcePostToolCall,
+		RaiPolicyContentSourcePreModelCall,
 		RaiPolicyContentSourcePreRun,
 		RaiPolicyContentSourcePreToolCall,
 		RaiPolicyContentSourcePrompt,
+	}
+}
+
+// RaiPolicyFormat - The public representation used by a RAI policy body.
+type RaiPolicyFormat string
+
+const (
+	// RaiPolicyFormatACS - An Agent Control Specification policy.
+	RaiPolicyFormatACS RaiPolicyFormat = "ACS"
+	// RaiPolicyFormatContentFilters - A legacy content-filter policy.
+	RaiPolicyFormatContentFilters RaiPolicyFormat = "ContentFilters"
+)
+
+// PossibleRaiPolicyFormatValues returns the possible values for the RaiPolicyFormat const type.
+func PossibleRaiPolicyFormatValues() []RaiPolicyFormat {
+	return []RaiPolicyFormat{
+		RaiPolicyFormatACS,
+		RaiPolicyFormatContentFilters,
 	}
 }
 
@@ -1673,6 +2169,24 @@ func PossibleRaiPolicyTypeValues() []RaiPolicyType {
 	return []RaiPolicyType{
 		RaiPolicyTypeSystemManaged,
 		RaiPolicyTypeUserManaged,
+	}
+}
+
+// RaiRegoEncoding - The transport encoding of reusable Rego source.
+type RaiRegoEncoding string
+
+const (
+	// RaiRegoEncodingBase64 - The Rego property contains Base64-encoded UTF-8 source.
+	RaiRegoEncodingBase64 RaiRegoEncoding = "Base64"
+	// RaiRegoEncodingNone - The Rego property contains plain UTF-8 source.
+	RaiRegoEncodingNone RaiRegoEncoding = "None"
+)
+
+// PossibleRaiRegoEncodingValues returns the possible values for the RaiRegoEncoding const type.
+func PossibleRaiRegoEncodingValues() []RaiRegoEncoding {
+	return []RaiRegoEncoding{
+		RaiRegoEncodingBase64,
+		RaiRegoEncodingNone,
 	}
 }
 
@@ -1921,6 +2435,120 @@ func PossibleTierUpgradePolicyValues() []TierUpgradePolicy {
 	}
 }
 
+// ToolControlType - The canonical tool type supported by Foundry agents. Additional tool types may be specified as strings.
+type ToolControlType string
+
+const (
+	// ToolControlTypeA2A - Agent-to-agent tool.
+	ToolControlTypeA2A ToolControlType = "a2a"
+	// ToolControlTypeA2APreview - Agent-to-agent preview tool.
+	ToolControlTypeA2APreview ToolControlType = "a2a_preview"
+	// ToolControlTypeApplyPatch - Apply patch tool.
+	ToolControlTypeApplyPatch ToolControlType = "apply_patch"
+	// ToolControlTypeAzureAiSearch - Azure AI Search tool.
+	ToolControlTypeAzureAiSearch ToolControlType = "azure_ai_search"
+	// ToolControlTypeAzureFunction - Azure Function tool.
+	ToolControlTypeAzureFunction ToolControlType = "azure_function"
+	// ToolControlTypeBingCustomSearchPreview - Grounding with Bing Custom Search preview tool.
+	ToolControlTypeBingCustomSearchPreview ToolControlType = "bing_custom_search_preview"
+	// ToolControlTypeBingGrounding - Grounding with Bing Search tool.
+	ToolControlTypeBingGrounding ToolControlType = "bing_grounding"
+	// ToolControlTypeBrowserAutomation - Browser automation tool.
+	ToolControlTypeBrowserAutomation ToolControlType = "browser_automation"
+	// ToolControlTypeBrowserAutomationPreview - Browser automation preview tool.
+	ToolControlTypeBrowserAutomationPreview ToolControlType = "browser_automation_preview"
+	// ToolControlTypeCaptureStructuredOutputs - Capture structured outputs tool.
+	ToolControlTypeCaptureStructuredOutputs ToolControlType = "capture_structured_outputs"
+	// ToolControlTypeCodeInterpreter - Code interpreter tool.
+	ToolControlTypeCodeInterpreter ToolControlType = "code_interpreter"
+	// ToolControlTypeComputerUsePreview - Computer use tool.
+	ToolControlTypeComputerUsePreview ToolControlType = "computer_use_preview"
+	// ToolControlTypeCustom - Custom tool.
+	ToolControlTypeCustom ToolControlType = "custom"
+	// ToolControlTypeFabricDataagentPreview - Fabric data agent preview tool.
+	ToolControlTypeFabricDataagentPreview ToolControlType = "fabric_dataagent_preview"
+	// ToolControlTypeFabricIqPreview - Fabric IQ preview tool.
+	ToolControlTypeFabricIqPreview ToolControlType = "fabric_iq_preview"
+	// ToolControlTypeFileSearch - File search tool.
+	ToolControlTypeFileSearch ToolControlType = "file_search"
+	// ToolControlTypeFunction - Function tool.
+	ToolControlTypeFunction ToolControlType = "function"
+	// ToolControlTypeImageGeneration - Image generation tool.
+	ToolControlTypeImageGeneration ToolControlType = "image_generation"
+	// ToolControlTypeLocalShell - Local shell tool.
+	ToolControlTypeLocalShell ToolControlType = "local_shell"
+	// ToolControlTypeMcp - Model Context Protocol (MCP) tool.
+	ToolControlTypeMcp ToolControlType = "mcp"
+	// ToolControlTypeMemorySearchPreview - Memory search preview tool.
+	ToolControlTypeMemorySearchPreview ToolControlType = "memory_search_preview"
+	// ToolControlTypeOpenapi - OpenAPI tool.
+	ToolControlTypeOpenapi ToolControlType = "openapi"
+	// ToolControlTypeSharepointGroundingPreview - SharePoint grounding preview tool.
+	ToolControlTypeSharepointGroundingPreview ToolControlType = "sharepoint_grounding_preview"
+	// ToolControlTypeShell - Shell tool.
+	ToolControlTypeShell ToolControlType = "shell"
+	// ToolControlTypeToolboxSearchPreview - Toolbox search preview tool.
+	ToolControlTypeToolboxSearchPreview ToolControlType = "toolbox_search_preview"
+	// ToolControlTypeWebIqPreview - Web IQ preview tool.
+	ToolControlTypeWebIqPreview ToolControlType = "web_iq_preview"
+	// ToolControlTypeWebSearch - Web search tool.
+	ToolControlTypeWebSearch ToolControlType = "web_search"
+	// ToolControlTypeWebSearchPreview - Web search preview tool.
+	ToolControlTypeWebSearchPreview ToolControlType = "web_search_preview"
+	// ToolControlTypeWorkIqPreview - Work IQ preview tool.
+	ToolControlTypeWorkIqPreview ToolControlType = "work_iq_preview"
+)
+
+// PossibleToolControlTypeValues returns the possible values for the ToolControlType const type.
+func PossibleToolControlTypeValues() []ToolControlType {
+	return []ToolControlType{
+		ToolControlTypeA2A,
+		ToolControlTypeA2APreview,
+		ToolControlTypeApplyPatch,
+		ToolControlTypeAzureAiSearch,
+		ToolControlTypeAzureFunction,
+		ToolControlTypeBingCustomSearchPreview,
+		ToolControlTypeBingGrounding,
+		ToolControlTypeBrowserAutomation,
+		ToolControlTypeBrowserAutomationPreview,
+		ToolControlTypeCaptureStructuredOutputs,
+		ToolControlTypeCodeInterpreter,
+		ToolControlTypeComputerUsePreview,
+		ToolControlTypeCustom,
+		ToolControlTypeFabricDataagentPreview,
+		ToolControlTypeFabricIqPreview,
+		ToolControlTypeFileSearch,
+		ToolControlTypeFunction,
+		ToolControlTypeImageGeneration,
+		ToolControlTypeLocalShell,
+		ToolControlTypeMcp,
+		ToolControlTypeMemorySearchPreview,
+		ToolControlTypeOpenapi,
+		ToolControlTypeSharepointGroundingPreview,
+		ToolControlTypeShell,
+		ToolControlTypeToolboxSearchPreview,
+		ToolControlTypeWebIqPreview,
+		ToolControlTypeWebSearch,
+		ToolControlTypeWebSearchPreview,
+		ToolControlTypeWorkIqPreview,
+	}
+}
+
+// ToolControlsDefaultAction - Specifies the default action for a tool that is not listed explicitly.
+type ToolControlsDefaultAction string
+
+const (
+	// ToolControlsDefaultActionDeny - Tools that are not listed explicitly are denied.
+	ToolControlsDefaultActionDeny ToolControlsDefaultAction = "Deny"
+)
+
+// PossibleToolControlsDefaultActionValues returns the possible values for the ToolControlsDefaultAction const type.
+func PossibleToolControlsDefaultActionValues() []ToolControlsDefaultAction {
+	return []ToolControlsDefaultAction{
+		ToolControlsDefaultActionDeny,
+	}
+}
+
 // TrafficRoutingProtocol - Traffic routing protocol, used to distribute an application's inbound traffic to its deployments.
 type TrafficRoutingProtocol string
 
@@ -1933,6 +2561,21 @@ const (
 func PossibleTrafficRoutingProtocolValues() []TrafficRoutingProtocol {
 	return []TrafficRoutingProtocol{
 		TrafficRoutingProtocolFixedRatio,
+	}
+}
+
+// TrustedCertificateSourceType - Type of Azure resource containing trusted CA certificate bundles.
+type TrustedCertificateSourceType string
+
+const (
+	// TrustedCertificateSourceTypeAzureKeyVault - Azure Key Vault secrets containing CA certificates or certificate bundles.
+	TrustedCertificateSourceTypeAzureKeyVault TrustedCertificateSourceType = "AzureKeyVault"
+)
+
+// PossibleTrustedCertificateSourceTypeValues returns the possible values for the TrustedCertificateSourceType const type.
+func PossibleTrustedCertificateSourceTypeValues() []TrustedCertificateSourceType {
+	return []TrustedCertificateSourceType{
+		TrustedCertificateSourceTypeAzureKeyVault,
 	}
 }
 
@@ -1993,5 +2636,71 @@ func PossibleVMPriorityValues() []VMPriority {
 	return []VMPriority{
 		VMPriorityRegular,
 		VMPrioritySpot,
+	}
+}
+
+// WorkbenchProvisioningState - Provisioning state of a workbench resource, independent of runtime lifecycle status.
+type WorkbenchProvisioningState string
+
+const (
+	// WorkbenchProvisioningStateCanceled - Provisioning of the workbench resource was canceled.
+	WorkbenchProvisioningStateCanceled WorkbenchProvisioningState = "Canceled"
+	// WorkbenchProvisioningStateCreating - The workbench resource is being created.
+	WorkbenchProvisioningStateCreating WorkbenchProvisioningState = "Creating"
+	// WorkbenchProvisioningStateFailed - Provisioning of the workbench resource failed.
+	WorkbenchProvisioningStateFailed WorkbenchProvisioningState = "Failed"
+	// WorkbenchProvisioningStateSucceeded - The workbench resource has been provisioned.
+	WorkbenchProvisioningStateSucceeded WorkbenchProvisioningState = "Succeeded"
+)
+
+// PossibleWorkbenchProvisioningStateValues returns the possible values for the WorkbenchProvisioningState const type.
+func PossibleWorkbenchProvisioningStateValues() []WorkbenchProvisioningState {
+	return []WorkbenchProvisioningState{
+		WorkbenchProvisioningStateCanceled,
+		WorkbenchProvisioningStateCreating,
+		WorkbenchProvisioningStateFailed,
+		WorkbenchProvisioningStateSucceeded,
+	}
+}
+
+// WorkbenchStatus - Runtime lifecycle status of a workbench.
+type WorkbenchStatus string
+
+const (
+	// WorkbenchStatusCreating - The runtime is being created.
+	WorkbenchStatusCreating WorkbenchStatus = "Creating"
+	// WorkbenchStatusDeleting - The runtime is being deleted.
+	WorkbenchStatusDeleting WorkbenchStatus = "Deleting"
+	// WorkbenchStatusFailed - The runtime has failed.
+	WorkbenchStatusFailed WorkbenchStatus = "Failed"
+	// WorkbenchStatusRestarting - The runtime is restarting.
+	WorkbenchStatusRestarting WorkbenchStatus = "Restarting"
+	// WorkbenchStatusRunning - The runtime is running.
+	WorkbenchStatusRunning WorkbenchStatus = "Running"
+	// WorkbenchStatusStarting - The runtime is starting.
+	WorkbenchStatusStarting WorkbenchStatus = "Starting"
+	// WorkbenchStatusStopped - The runtime is stopped.
+	WorkbenchStatusStopped WorkbenchStatus = "Stopped"
+	// WorkbenchStatusStopping - The runtime is stopping.
+	WorkbenchStatusStopping WorkbenchStatus = "Stopping"
+	// WorkbenchStatusUnknown - The runtime status is unknown.
+	WorkbenchStatusUnknown WorkbenchStatus = "Unknown"
+	// WorkbenchStatusUpdating - The runtime is being updated.
+	WorkbenchStatusUpdating WorkbenchStatus = "Updating"
+)
+
+// PossibleWorkbenchStatusValues returns the possible values for the WorkbenchStatus const type.
+func PossibleWorkbenchStatusValues() []WorkbenchStatus {
+	return []WorkbenchStatus{
+		WorkbenchStatusCreating,
+		WorkbenchStatusDeleting,
+		WorkbenchStatusFailed,
+		WorkbenchStatusRestarting,
+		WorkbenchStatusRunning,
+		WorkbenchStatusStarting,
+		WorkbenchStatusStopped,
+		WorkbenchStatusStopping,
+		WorkbenchStatusUnknown,
+		WorkbenchStatusUpdating,
 	}
 }

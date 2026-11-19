@@ -19,7 +19,7 @@ import (
 // OutboundRuleClient contains the methods for the OutboundRule group.
 // Don't use this type directly, use NewOutboundRuleClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-11-15-preview
 type OutboundRuleClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -73,7 +73,7 @@ func (client *OutboundRuleClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - The PUT API for creating or updating a single outbound rule of the managed network associated with the
+// createOrUpdate - The PUT API for creating or updating a single outbound rule of the managed network associated with the
 // cognitive services account.
 //
 // The PUT API for creating or updating a single outbound rule of the managed network associated with the cognitive services
@@ -94,12 +94,13 @@ func (client *OutboundRuleClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OutboundRuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, body OutboundRuleBasicResource, _ *OutboundRuleClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {
@@ -127,7 +128,7 @@ func (client *OutboundRuleClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -165,8 +166,8 @@ func (client *OutboundRuleClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services
-// account.
+// deleteOperation - The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive
+// services account.
 //
 // The DELETE API for deleting a single outbound rule of the managed network associated with the cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -185,12 +186,13 @@ func (client *OutboundRuleClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OutboundRuleClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, _ *OutboundRuleClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}"
 	if client.subscriptionID == "" {
@@ -218,7 +220,7 @@ func (client *OutboundRuleClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -246,7 +248,8 @@ func (client *OutboundRuleClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return OutboundRuleClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -277,7 +280,7 @@ func (client *OutboundRuleClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -360,7 +363,7 @@ func (client *OutboundRuleClient) listCreateRequest(ctx context.Context, resourc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

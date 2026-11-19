@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VirtualHubPut.json
+// Generated from example definition: 2026-03-01/VirtualHubPut.json
 func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubDelete.json
+// Generated from example definition: 2026-03-01/VirtualHubDelete.json
 func ExampleVirtualHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,63 +111,7 @@ func ExampleVirtualHubsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubGet.json
-func ExampleVirtualHubsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualHubsClient().Get(ctx, "rg1", "virtualHub1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetwork.VirtualHubsClientGetResponse{
-	// 	VirtualHub: armnetwork.VirtualHub{
-	// 		Name: to.Ptr("virtualHub1"),
-	// 		Type: to.Ptr("Microsoft.Network/virtualHubs"),
-	// 		Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armnetwork.VirtualHubProperties{
-	// 			AddressPrefix: to.Ptr("10.10.1.0/24"),
-	// 			AddressPrefixV6: to.Ptr("2001:db8::/56"),
-	// 			AllowBranchToBranchTraffic: to.Ptr(false),
-	// 			HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
-	// 			PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
-	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 			RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
-	// 			SKU: to.Ptr("Basic"),
-	// 			VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
-	// 			},
-	// 			VirtualRouterAsn: to.Ptr[int64](65515),
-	// 			VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
-	// 				MinCapacity: to.Ptr[int32](2),
-	// 			},
-	// 			VirtualRouterIPs: []*string{
-	// 				to.Ptr("10.10.1.12"),
-	// 				to.Ptr("10.10.1.13"),
-	// 			},
-	// 			VirtualRouterIPsV6: []*string{
-	// 				to.Ptr("2001:db8:0:1::5"),
-	// 				to.Ptr("2001:db8:0:1::4"),
-	// 			},
-	// 			VirtualWan: &armnetwork.SubResource{
-	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/EffectiveRoutesListForConnection.json
+// Generated from example definition: 2026-03-01/EffectiveRoutesListForConnection.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForAConnectionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +167,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2026-01-01/EffectiveRoutesListForRouteTable.json
+// Generated from example definition: 2026-03-01/EffectiveRoutesListForRouteTable.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForARouteTableResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +223,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2026-01-01/EffectiveRoutesListForVirtualHub.json
+// Generated from example definition: 2026-03-01/EffectiveRoutesListForVirtualHub.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForTheVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +275,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2026-01-01/GetInboundRoutes.json
+// Generated from example definition: 2026-03-01/GetInboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -374,7 +318,7 @@ func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/GetOutboundRoutes.json
+// Generated from example definition: 2026-03-01/GetOutboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,8 +361,8 @@ func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubList.json
-func ExampleVirtualHubsClient_NewListPager() {
+// Generated from example definition: 2026-03-01/VirtualHubGet.json
+func ExampleVirtualHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -428,163 +372,52 @@ func ExampleVirtualHubsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualHubsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetwork.VirtualHubsClientListResponse{
-		// 	ListVirtualHubsResult: armnetwork.ListVirtualHubsResult{
-		// 		Value: []*armnetwork.VirtualHub{
-		// 			{
-		// 				Name: to.Ptr("virtualHub1"),
-		// 				Type: to.Ptr("Microsoft.Network/virtualHubs"),
-		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armnetwork.VirtualHubProperties{
-		// 					AddressPrefix: to.Ptr("10.10.1.0/24"),
-		// 					AddressPrefixV6: to.Ptr("2001:db8::/56"),
-		// 					AllowBranchToBranchTraffic: to.Ptr(false),
-		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
-		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
-		// 					SKU: to.Ptr("Basic"),
-		// 					VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
-		// 						{
-		// 							Name: to.Ptr("rt2a"),
-		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeTables/virtualHubRouteTable1"),
-		// 							Properties: &armnetwork.VirtualHubRouteTableV2Properties{
-		// 								AttachedConnections: []*string{
-		// 									to.Ptr("All_Vnets"),
-		// 								},
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								Routes: []*armnetwork.VirtualHubRouteV2{
-		// 									{
-		// 										DestinationType: to.Ptr("CIDR"),
-		// 										Destinations: []*string{
-		// 											to.Ptr("20.10.0.0/16"),
-		// 											to.Ptr("20.20.0.0/16"),
-		// 										},
-		// 										NextHopType: to.Ptr("IPAddress"),
-		// 										NextHops: []*string{
-		// 											to.Ptr("10.0.0.68"),
-		// 										},
-		// 									},
-		// 									{
-		// 										DestinationType: to.Ptr("CIDR"),
-		// 										Destinations: []*string{
-		// 											to.Ptr("0.0.0.0/0"),
-		// 										},
-		// 										NextHopType: to.Ptr("IPAddress"),
-		// 										NextHops: []*string{
-		// 											to.Ptr("10.0.0.68"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					VirtualRouterAsn: to.Ptr[int64](65515),
-		// 					VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
-		// 						MinCapacity: to.Ptr[int32](2),
-		// 					},
-		// 					VirtualRouterIPs: []*string{
-		// 						to.Ptr("10.10.1.12"),
-		// 						to.Ptr("10.10.1.13"),
-		// 					},
-		// 					VirtualRouterIPsV6: []*string{
-		// 						to.Ptr("2001:db8:0:1::5"),
-		// 						to.Ptr("2001:db8:0:1::4"),
-		// 					},
-		// 					VirtualWan: &armnetwork.SubResource{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("virtualHub2"),
-		// 				Type: to.Ptr("Microsoft.Network/virtualHubs"),
-		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub2"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armnetwork.VirtualHubProperties{
-		// 					AddressPrefix: to.Ptr("210.10.1.0/24"),
-		// 					AddressPrefixV6: to.Ptr("2001:db8:1::/56"),
-		// 					AllowBranchToBranchTraffic: to.Ptr(false),
-		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
-		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
-		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 					RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
-		// 					SKU: to.Ptr("Basic"),
-		// 					VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
-		// 						{
-		// 							Name: to.Ptr("rt2a"),
-		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub2/routeTables/virtualHubRouteTable2"),
-		// 							Properties: &armnetwork.VirtualHubRouteTableV2Properties{
-		// 								AttachedConnections: []*string{
-		// 									to.Ptr("All_Vnets"),
-		// 								},
-		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-		// 								Routes: []*armnetwork.VirtualHubRouteV2{
-		// 									{
-		// 										DestinationType: to.Ptr("CIDR"),
-		// 										Destinations: []*string{
-		// 											to.Ptr("20.10.0.0/16"),
-		// 											to.Ptr("20.20.0.0/16"),
-		// 										},
-		// 										NextHopType: to.Ptr("IPAddress"),
-		// 										NextHops: []*string{
-		// 											to.Ptr("10.0.0.68"),
-		// 										},
-		// 									},
-		// 									{
-		// 										DestinationType: to.Ptr("CIDR"),
-		// 										Destinations: []*string{
-		// 											to.Ptr("0.0.0.0/0"),
-		// 										},
-		// 										NextHopType: to.Ptr("IPAddress"),
-		// 										NextHops: []*string{
-		// 											to.Ptr("10.0.0.68"),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					VirtualRouterAsn: to.Ptr[int64](65515),
-		// 					VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
-		// 						MinCapacity: to.Ptr[int32](2),
-		// 					},
-		// 					VirtualRouterIPs: []*string{
-		// 						to.Ptr("10.10.1.12"),
-		// 						to.Ptr("10.10.1.13"),
-		// 					},
-		// 					VirtualRouterIPsV6: []*string{
-		// 						to.Ptr("2001:db8:1:1::5"),
-		// 						to.Ptr("2001:db8:1:1::4"),
-		// 					},
-		// 					VirtualWan: &armnetwork.SubResource{
-		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewVirtualHubsClient().Get(ctx, "rg1", "virtualHub1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualHubsClientGetResponse{
+	// 	VirtualHub: armnetwork.VirtualHub{
+	// 		Name: to.Ptr("virtualHub1"),
+	// 		Type: to.Ptr("Microsoft.Network/virtualHubs"),
+	// 		Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armnetwork.VirtualHubProperties{
+	// 			AddressPrefix: to.Ptr("10.10.1.0/24"),
+	// 			AddressPrefixV6: to.Ptr("2001:db8::/56"),
+	// 			AllowBranchToBranchTraffic: to.Ptr(false),
+	// 			HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
+	// 			PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
+	// 			SKU: to.Ptr("Basic"),
+	// 			VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
+	// 			},
+	// 			VirtualRouterAsn: to.Ptr[int64](65515),
+	// 			VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
+	// 				MinCapacity: to.Ptr[int32](2),
+	// 			},
+	// 			VirtualRouterIPs: []*string{
+	// 				to.Ptr("10.10.1.12"),
+	// 				to.Ptr("10.10.1.13"),
+	// 			},
+	// 			VirtualRouterIPsV6: []*string{
+	// 				to.Ptr("2001:db8:0:1::5"),
+	// 				to.Ptr("2001:db8:0:1::4"),
+	// 			},
+	// 			VirtualWan: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubListByResourceGroup.json
+// Generated from example definition: 2026-03-01/VirtualHubListByResourceGroup.json
 func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -751,7 +584,174 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VirtualHubUpdateTags.json
+// Generated from example definition: 2026-03-01/VirtualHubList.json
+func ExampleVirtualHubsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualHubsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.VirtualHubsClientListResponse{
+		// 	ListVirtualHubsResult: armnetwork.ListVirtualHubsResult{
+		// 		Value: []*armnetwork.VirtualHub{
+		// 			{
+		// 				Name: to.Ptr("virtualHub1"),
+		// 				Type: to.Ptr("Microsoft.Network/virtualHubs"),
+		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armnetwork.VirtualHubProperties{
+		// 					AddressPrefix: to.Ptr("10.10.1.0/24"),
+		// 					AddressPrefixV6: to.Ptr("2001:db8::/56"),
+		// 					AllowBranchToBranchTraffic: to.Ptr(false),
+		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
+		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
+		// 					SKU: to.Ptr("Basic"),
+		// 					VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
+		// 						{
+		// 							Name: to.Ptr("rt2a"),
+		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeTables/virtualHubRouteTable1"),
+		// 							Properties: &armnetwork.VirtualHubRouteTableV2Properties{
+		// 								AttachedConnections: []*string{
+		// 									to.Ptr("All_Vnets"),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								Routes: []*armnetwork.VirtualHubRouteV2{
+		// 									{
+		// 										DestinationType: to.Ptr("CIDR"),
+		// 										Destinations: []*string{
+		// 											to.Ptr("20.10.0.0/16"),
+		// 											to.Ptr("20.20.0.0/16"),
+		// 										},
+		// 										NextHopType: to.Ptr("IPAddress"),
+		// 										NextHops: []*string{
+		// 											to.Ptr("10.0.0.68"),
+		// 										},
+		// 									},
+		// 									{
+		// 										DestinationType: to.Ptr("CIDR"),
+		// 										Destinations: []*string{
+		// 											to.Ptr("0.0.0.0/0"),
+		// 										},
+		// 										NextHopType: to.Ptr("IPAddress"),
+		// 										NextHops: []*string{
+		// 											to.Ptr("10.0.0.68"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					VirtualRouterAsn: to.Ptr[int64](65515),
+		// 					VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
+		// 						MinCapacity: to.Ptr[int32](2),
+		// 					},
+		// 					VirtualRouterIPs: []*string{
+		// 						to.Ptr("10.10.1.12"),
+		// 						to.Ptr("10.10.1.13"),
+		// 					},
+		// 					VirtualRouterIPsV6: []*string{
+		// 						to.Ptr("2001:db8:0:1::5"),
+		// 						to.Ptr("2001:db8:0:1::4"),
+		// 					},
+		// 					VirtualWan: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("virtualHub2"),
+		// 				Type: to.Ptr("Microsoft.Network/virtualHubs"),
+		// 				Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub2"),
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armnetwork.VirtualHubProperties{
+		// 					AddressPrefix: to.Ptr("210.10.1.0/24"),
+		// 					AddressPrefixV6: to.Ptr("2001:db8:1::/56"),
+		// 					AllowBranchToBranchTraffic: to.Ptr(false),
+		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
+		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					RoutingState: to.Ptr(armnetwork.RoutingStateProvisioned),
+		// 					SKU: to.Ptr("Basic"),
+		// 					VirtualHubRouteTableV2S: []*armnetwork.VirtualHubRouteTableV2{
+		// 						{
+		// 							Name: to.Ptr("rt2a"),
+		// 							Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub2/routeTables/virtualHubRouteTable2"),
+		// 							Properties: &armnetwork.VirtualHubRouteTableV2Properties{
+		// 								AttachedConnections: []*string{
+		// 									to.Ptr("All_Vnets"),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								Routes: []*armnetwork.VirtualHubRouteV2{
+		// 									{
+		// 										DestinationType: to.Ptr("CIDR"),
+		// 										Destinations: []*string{
+		// 											to.Ptr("20.10.0.0/16"),
+		// 											to.Ptr("20.20.0.0/16"),
+		// 										},
+		// 										NextHopType: to.Ptr("IPAddress"),
+		// 										NextHops: []*string{
+		// 											to.Ptr("10.0.0.68"),
+		// 										},
+		// 									},
+		// 									{
+		// 										DestinationType: to.Ptr("CIDR"),
+		// 										Destinations: []*string{
+		// 											to.Ptr("0.0.0.0/0"),
+		// 										},
+		// 										NextHopType: to.Ptr("IPAddress"),
+		// 										NextHops: []*string{
+		// 											to.Ptr("10.0.0.68"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					VirtualRouterAsn: to.Ptr[int64](65515),
+		// 					VirtualRouterAutoScaleConfiguration: &armnetwork.VirtualRouterAutoScaleConfiguration{
+		// 						MinCapacity: to.Ptr[int32](2),
+		// 					},
+		// 					VirtualRouterIPs: []*string{
+		// 						to.Ptr("10.10.1.12"),
+		// 						to.Ptr("10.10.1.13"),
+		// 					},
+		// 					VirtualRouterIPsV6: []*string{
+		// 						to.Ptr("2001:db8:1:1::5"),
+		// 						to.Ptr("2001:db8:1:1::4"),
+		// 					},
+		// 					VirtualWan: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-03-01/VirtualHubUpdateTags.json
 func ExampleVirtualHubsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NatRulePut.json
+// Generated from example definition: 2026-03-01/NatRulePut.json
 func ExampleNatRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleNatRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NatRuleDelete.json
+// Generated from example definition: 2026-03-01/NatRuleDelete.json
 func ExampleNatRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleNatRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NatRuleGet.json
+// Generated from example definition: 2026-03-01/NatRuleGet.json
 func ExampleNatRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleNatRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NatRuleList.json
+// Generated from example definition: 2026-03-01/NatRuleList.json
 func ExampleNatRulesClient_NewListByVPNGatewayPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -27,7 +27,7 @@ func (client *FileClient) ListAllRangesCreateRequest(ctx context.Context, option
 }
 
 func (client *FileClient) ListAllRangesHandleResponse(resp *http.Response) (FileClientListAllRangesResponse, error) {
-	return client.listAllRangesHandleResponse(resp)
+	return client.listAllRangesHandleResponse(resp, http.StatusOK)
 }
 
 func NewFileClient(endpoint string, azClient *azcore.Client) *FileClient {

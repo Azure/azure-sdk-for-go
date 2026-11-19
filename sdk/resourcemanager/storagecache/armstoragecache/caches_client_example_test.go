@@ -514,736 +514,6 @@ func ExampleCachesClient_BeginFlush() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01/Caches_Get.json
-func ExampleCachesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCachesClient().Get(ctx, "scgroup", "sc1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragecache.CachesClientGetResponse{
-	// 	Cache: armstoragecache.Cache{
-	// 		Name: to.Ptr("sc1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/Cache"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armstoragecache.CacheProperties{
-	// 			CacheSizeGB: to.Ptr[int32](3072),
-	// 			DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
-	// 				ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-	// 					CacheNetBiosName: to.Ptr("contosoSmb"),
-	// 					DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
-	// 					DomainName: to.Ptr("contosoAd.contoso.local"),
-	// 					DomainNetBiosName: to.Ptr("contosoAd"),
-	// 					PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
-	// 					SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
-	// 				},
-	// 				UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
-	// 					AutoDownloadCertificate: to.Ptr(false),
-	// 					CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
-	// 					EncryptLdapConnection: to.Ptr(false),
-	// 					ExtendedGroups: to.Ptr(true),
-	// 					GroupFileURI: to.Ptr("http://contoso.net/group.file"),
-	// 					LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
-	// 					LdapServer: to.Ptr("192.0.2.12"),
-	// 					RequireValidCertificate: to.Ptr(false),
-	// 					UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
-	// 					UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
-	// 					UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
-	// 				},
-	// 			},
-	// 			EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
-	// 				KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
-	// 					KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
-	// 					SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
-	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
-	// 					},
-	// 				},
-	// 			},
-	// 			Health: &armstoragecache.CacheHealth{
-	// 				Conditions: []*armstoragecache.Condition{
-	// 					{
-	// 						Message: to.Ptr("Cannot contact DNS server"),
-	// 						Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-	// 					},
-	// 				},
-	// 				State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
-	// 				StatusDescription: to.Ptr("Cache is being created."),
-	// 			},
-	// 			MountAddresses: []*string{
-	// 				to.Ptr("192.168.1.1"),
-	// 				to.Ptr("192.168.1.2"),
-	// 			},
-	// 			NetworkSettings: &armstoragecache.CacheNetworkSettings{
-	// 				DNSSearchDomain: to.Ptr("contoso.com"),
-	// 				DNSServers: []*string{
-	// 					to.Ptr("10.1.22.33"),
-	// 					to.Ptr("10.1.12.33"),
-	// 				},
-	// 				Mtu: to.Ptr[int32](1500),
-	// 				NtpServer: to.Ptr("time.contoso.com"),
-	// 			},
-	// 			PrimingJobs: []*armstoragecache.PrimingJob{
-	// 				{
-	// 					PrimingJobDetails: to.Ptr("Files: Cached=635, Failed=0, Excluded=80, Data=346030 bytes, Directories: Cached=1003, Failed=0, Excluded=0"),
-	// 					PrimingJobID: to.Ptr("00000000000_0000000000"),
-	// 					PrimingJobName: to.Ptr("contosoJob1"),
-	// 					PrimingJobPercentComplete: to.Ptr[float64](100),
-	// 					PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateComplete),
-	// 					PrimingJobStatus: to.Ptr("success"),
-	// 				},
-	// 				{
-	// 					PrimingJobDetails: to.Ptr(""),
-	// 					PrimingJobID: to.Ptr("11111111111_1111111111"),
-	// 					PrimingJobName: to.Ptr("contosoJob2"),
-	// 					PrimingJobPercentComplete: to.Ptr[float64](0),
-	// 					PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateQueued),
-	// 					PrimingJobStatus: to.Ptr(""),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-	// 			SecuritySettings: &armstoragecache.CacheSecuritySettings{
-	// 				AccessPolicies: []*armstoragecache.NfsAccessPolicy{
-	// 					{
-	// 						Name: to.Ptr("default"),
-	// 						AccessRules: []*armstoragecache.NfsAccessRule{
-	// 							{
-	// 								Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
-	// 								RootSquash: to.Ptr(false),
-	// 								Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
-	// 								SubmountAccess: to.Ptr(true),
-	// 								Suid: to.Ptr(false),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
-	// 				{
-	// 					Name: to.Ptr("st1"),
-	// 					AllocationPercentage: to.Ptr[int32](25),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("st2"),
-	// 					AllocationPercentage: to.Ptr[int32](50),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("st3"),
-	// 					AllocationPercentage: to.Ptr[int32](25),
-	// 				},
-	// 			},
-	// 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
-	// 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-	// 				ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
-	// 				UpgradeScheduleEnabled: to.Ptr(true),
-	// 			},
-	// 			UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-	// 				CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-	// 				FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-	// 				FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-	// 				LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
-	// 				PendingFirmwareVersion: to.Ptr("2022.08.1"),
-	// 			},
-	// 			Zones: []*string{
-	// 				to.Ptr("1"),
-	// 			},
-	// 		},
-	// 		SKU: &armstoragecache.CacheSKU{
-	// 			Name: to.Ptr("Standard_2G"),
-	// 		},
-	// 		SystemData: &armstoragecache.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2"),
-	// 			LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Dept": to.Ptr("Contoso"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01/Caches_List.json
-func ExampleCachesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCachesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armstoragecache.CachesClientListResponse{
-		// 	CachesListResult: armstoragecache.CachesListResult{
-		// 		Value: []*armstoragecache.Cache{
-		// 			{
-		// 				Name: to.Ptr("sc1"),
-		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armstoragecache.CacheProperties{
-		// 					CacheSizeGB: to.Ptr[int32](3072),
-		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
-		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
-		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
-		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
-		// 							DomainNetBiosName: to.Ptr("contosoAd"),
-		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
-		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
-		// 						},
-		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
-		// 							AutoDownloadCertificate: to.Ptr(false),
-		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
-		// 							EncryptLdapConnection: to.Ptr(false),
-		// 							ExtendedGroups: to.Ptr(true),
-		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
-		// 							LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
-		// 							LdapServer: to.Ptr("192.0.2.12"),
-		// 							RequireValidCertificate: to.Ptr(false),
-		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
-		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
-		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
-		// 						},
-		// 					},
-		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
-		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
-		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
-		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
-		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
-		// 							},
-		// 						},
-		// 					},
-		// 					Health: &armstoragecache.CacheHealth{
-		// 						Conditions: []*armstoragecache.Condition{
-		// 							{
-		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 							},
-		// 						},
-		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
-		// 						StatusDescription: to.Ptr("Cache is being created."),
-		// 					},
-		// 					MountAddresses: []*string{
-		// 						to.Ptr("192.168.1.1"),
-		// 						to.Ptr("192.168.1.2"),
-		// 					},
-		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
-		// 						DNSSearchDomain: to.Ptr("contoso.com"),
-		// 						DNSServers: []*string{
-		// 							to.Ptr("10.1.22.33"),
-		// 							to.Ptr("10.1.12.33"),
-		// 						},
-		// 						Mtu: to.Ptr[int32](1500),
-		// 						NtpServer: to.Ptr("time.contoso.com"),
-		// 					},
-		// 					PrimingJobs: []*armstoragecache.PrimingJob{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
-		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
-		// 							{
-		// 								Name: to.Ptr("default"),
-		// 								AccessRules: []*armstoragecache.NfsAccessRule{
-		// 									{
-		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
-		// 										RootSquash: to.Ptr(false),
-		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
-		// 										SubmountAccess: to.Ptr(true),
-		// 										Suid: to.Ptr(false),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
-		// 						{
-		// 							Name: to.Ptr("st1"),
-		// 							AllocationPercentage: to.Ptr[int32](25),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("st2"),
-		// 							AllocationPercentage: to.Ptr[int32](50),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("st3"),
-		// 							AllocationPercentage: to.Ptr[int32](25),
-		// 						},
-		// 					},
-		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
-		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
-		// 						UpgradeScheduleEnabled: to.Ptr(true),
-		// 					},
-		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
-		// 					},
-		// 				},
-		// 				SKU: &armstoragecache.CacheSKU{
-		// 					Name: to.Ptr("Standard_2G"),
-		// 				},
-		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-		// 					CreatedBy: to.Ptr("user1"),
-		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user2"),
-		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Dept": to.Ptr("Contoso"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sc2"),
-		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armstoragecache.CacheProperties{
-		// 					CacheSizeGB: to.Ptr[int32](3072),
-		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
-		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
-		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
-		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
-		// 							DomainNetBiosName: to.Ptr("contosoAd"),
-		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
-		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
-		// 						},
-		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
-		// 							AutoDownloadCertificate: to.Ptr(false),
-		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
-		// 							EncryptLdapConnection: to.Ptr(false),
-		// 							ExtendedGroups: to.Ptr(true),
-		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
-		// 							LdapBaseDN: to.Ptr(""),
-		// 							LdapServer: to.Ptr(""),
-		// 							RequireValidCertificate: to.Ptr(false),
-		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
-		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
-		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
-		// 						},
-		// 					},
-		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
-		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
-		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
-		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
-		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
-		// 							},
-		// 						},
-		// 					},
-		// 					Health: &armstoragecache.CacheHealth{
-		// 						Conditions: []*armstoragecache.Condition{
-		// 							{
-		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 							},
-		// 						},
-		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
-		// 						StatusDescription: to.Ptr("Cache is being created."),
-		// 					},
-		// 					MountAddresses: []*string{
-		// 						to.Ptr("192.168.1.1"),
-		// 						to.Ptr("192.168.1.2"),
-		// 					},
-		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
-		// 						DNSSearchDomain: to.Ptr("contoso.com"),
-		// 						DNSServers: []*string{
-		// 							to.Ptr("10.1.22.33"),
-		// 							to.Ptr("10.1.12.33"),
-		// 						},
-		// 						Mtu: to.Ptr[int32](1500),
-		// 						NtpServer: to.Ptr("time.contoso.com"),
-		// 					},
-		// 					PrimingJobs: []*armstoragecache.PrimingJob{
-		// 						{
-		// 							PrimingJobDetails: to.Ptr("Files: Cached=635, Failed=0, Excluded=80, Data=346030 bytes, Directories: Cached=1003, Failed=0, Excluded=0"),
-		// 							PrimingJobID: to.Ptr("00000000000_0000000000"),
-		// 							PrimingJobName: to.Ptr("contosoJob1"),
-		// 							PrimingJobPercentComplete: to.Ptr[float64](100),
-		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateComplete),
-		// 							PrimingJobStatus: to.Ptr("success"),
-		// 						},
-		// 						{
-		// 							PrimingJobDetails: to.Ptr(""),
-		// 							PrimingJobID: to.Ptr("11111111111_1111111111"),
-		// 							PrimingJobName: to.Ptr("contosoJob2"),
-		// 							PrimingJobPercentComplete: to.Ptr[float64](0),
-		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateQueued),
-		// 							PrimingJobStatus: to.Ptr(""),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeUpdating),
-		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
-		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
-		// 							{
-		// 								Name: to.Ptr("default"),
-		// 								AccessRules: []*armstoragecache.NfsAccessRule{
-		// 									{
-		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
-		// 										RootSquash: to.Ptr(false),
-		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
-		// 										SubmountAccess: to.Ptr(true),
-		// 										Suid: to.Ptr(false),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
-		// 					},
-		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2"),
-		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
-		// 						UpgradeScheduleEnabled: to.Ptr(true),
-		// 					},
-		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
-		// 					},
-		// 					Zones: []*string{
-		// 						to.Ptr("1"),
-		// 					},
-		// 				},
-		// 				SKU: &armstoragecache.CacheSKU{
-		// 					Name: to.Ptr("Standard_2G"),
-		// 				},
-		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-		// 					CreatedBy: to.Ptr("user1"),
-		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user2"),
-		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Dept": to.Ptr("Contoso"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01/Caches_ListByResourceGroup.json
-func ExampleCachesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCachesClient().NewListByResourceGroupPager("scgroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armstoragecache.CachesClientListByResourceGroupResponse{
-		// 	CachesListResult: armstoragecache.CachesListResult{
-		// 		Value: []*armstoragecache.Cache{
-		// 			{
-		// 				Name: to.Ptr("sc1"),
-		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armstoragecache.CacheProperties{
-		// 					CacheSizeGB: to.Ptr[int32](3072),
-		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
-		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
-		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
-		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
-		// 							DomainNetBiosName: to.Ptr("contosoAd"),
-		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
-		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
-		// 						},
-		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
-		// 							AutoDownloadCertificate: to.Ptr(false),
-		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
-		// 							EncryptLdapConnection: to.Ptr(false),
-		// 							ExtendedGroups: to.Ptr(true),
-		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
-		// 							LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
-		// 							LdapServer: to.Ptr("192.0.2.12"),
-		// 							RequireValidCertificate: to.Ptr(false),
-		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
-		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
-		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
-		// 						},
-		// 					},
-		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
-		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
-		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
-		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
-		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
-		// 							},
-		// 						},
-		// 					},
-		// 					Health: &armstoragecache.CacheHealth{
-		// 						Conditions: []*armstoragecache.Condition{
-		// 							{
-		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 							},
-		// 						},
-		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
-		// 						StatusDescription: to.Ptr("Cache is being created."),
-		// 					},
-		// 					MountAddresses: []*string{
-		// 						to.Ptr("192.168.1.1"),
-		// 						to.Ptr("192.168.1.2"),
-		// 					},
-		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
-		// 						DNSSearchDomain: to.Ptr("contoso.com"),
-		// 						DNSServers: []*string{
-		// 							to.Ptr("10.1.22.33"),
-		// 							to.Ptr("10.1.12.33"),
-		// 						},
-		// 						Mtu: to.Ptr[int32](1500),
-		// 						NtpServer: to.Ptr("time.contoso.com"),
-		// 					},
-		// 					PrimingJobs: []*armstoragecache.PrimingJob{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
-		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
-		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
-		// 							{
-		// 								Name: to.Ptr("default"),
-		// 								AccessRules: []*armstoragecache.NfsAccessRule{
-		// 									{
-		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
-		// 										RootSquash: to.Ptr(false),
-		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
-		// 										SubmountAccess: to.Ptr(true),
-		// 										Suid: to.Ptr(false),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
-		// 						{
-		// 							Name: to.Ptr("st1"),
-		// 							AllocationPercentage: to.Ptr[int32](25),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("st2"),
-		// 							AllocationPercentage: to.Ptr[int32](50),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("st3"),
-		// 							AllocationPercentage: to.Ptr[int32](25),
-		// 						},
-		// 					},
-		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
-		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
-		// 						UpgradeScheduleEnabled: to.Ptr(true),
-		// 					},
-		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
-		// 					},
-		// 					Zones: []*string{
-		// 						to.Ptr("1"),
-		// 					},
-		// 				},
-		// 				SKU: &armstoragecache.CacheSKU{
-		// 					Name: to.Ptr("Standard_2G"),
-		// 				},
-		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-		// 					CreatedBy: to.Ptr("user1"),
-		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user2"),
-		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Dept": to.Ptr("Contoso"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sc2"),
-		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armstoragecache.CacheProperties{
-		// 					CacheSizeGB: to.Ptr[int32](3072),
-		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
-		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
-		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
-		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
-		// 							DomainNetBiosName: to.Ptr("contosoAd"),
-		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
-		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
-		// 						},
-		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
-		// 							AutoDownloadCertificate: to.Ptr(false),
-		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
-		// 							EncryptLdapConnection: to.Ptr(false),
-		// 							ExtendedGroups: to.Ptr(true),
-		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
-		// 							LdapBaseDN: to.Ptr(""),
-		// 							LdapServer: to.Ptr(""),
-		// 							RequireValidCertificate: to.Ptr(false),
-		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
-		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
-		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
-		// 						},
-		// 					},
-		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
-		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
-		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
-		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
-		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
-		// 							},
-		// 						},
-		// 					},
-		// 					Health: &armstoragecache.CacheHealth{
-		// 						Conditions: []*armstoragecache.Condition{
-		// 							{
-		// 								Message: to.Ptr("Cannot contact DNS server"),
-		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 							},
-		// 						},
-		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
-		// 						StatusDescription: to.Ptr("Cache is being created."),
-		// 					},
-		// 					MountAddresses: []*string{
-		// 						to.Ptr("192.168.1.1"),
-		// 						to.Ptr("192.168.1.2"),
-		// 					},
-		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
-		// 						DNSSearchDomain: to.Ptr("contoso.com"),
-		// 						DNSServers: []*string{
-		// 							to.Ptr("10.1.22.33"),
-		// 							to.Ptr("10.1.12.33"),
-		// 						},
-		// 						Mtu: to.Ptr[int32](1500),
-		// 						NtpServer: to.Ptr("time.contoso.com"),
-		// 					},
-		// 					PrimingJobs: []*armstoragecache.PrimingJob{
-		// 						{
-		// 							PrimingJobDetails: to.Ptr("Files: Cached=635, Failed=0, Excluded=80, Data=346030 bytes, Directories: Cached=1003, Failed=0, Excluded=0"),
-		// 							PrimingJobID: to.Ptr("00000000000_0000000000"),
-		// 							PrimingJobName: to.Ptr("contosoJob1"),
-		// 							PrimingJobPercentComplete: to.Ptr[float64](100),
-		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateComplete),
-		// 							PrimingJobStatus: to.Ptr("success"),
-		// 						},
-		// 						{
-		// 							PrimingJobDetails: to.Ptr(""),
-		// 							PrimingJobID: to.Ptr("11111111111_1111111111"),
-		// 							PrimingJobName: to.Ptr("contosoJob2"),
-		// 							PrimingJobPercentComplete: to.Ptr[float64](0),
-		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateQueued),
-		// 							PrimingJobStatus: to.Ptr(""),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeUpdating),
-		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
-		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
-		// 							{
-		// 								Name: to.Ptr("default"),
-		// 								AccessRules: []*armstoragecache.NfsAccessRule{
-		// 									{
-		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
-		// 										RootSquash: to.Ptr(false),
-		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
-		// 										SubmountAccess: to.Ptr(true),
-		// 										Suid: to.Ptr(false),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
-		// 					},
-		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2"),
-		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
-		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
-		// 						UpgradeScheduleEnabled: to.Ptr(true),
-		// 					},
-		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
-		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
-		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
-		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
-		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
-		// 					},
-		// 					Zones: []*string{
-		// 						to.Ptr("2"),
-		// 					},
-		// 				},
-		// 				SKU: &armstoragecache.CacheSKU{
-		// 					Name: to.Ptr("Standard_2G"),
-		// 				},
-		// 				SystemData: &armstoragecache.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
-		// 					CreatedBy: to.Ptr("user1"),
-		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user2"),
-		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Dept": to.Ptr("Contoso"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-08-01/PausePrimingJob.json
 func ExampleCachesClient_BeginPausePrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1965,5 +1235,735 @@ func ExampleCachesClient_BeginUpgradeFirmware() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-08-01/Caches_Get.json
+func ExampleCachesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCachesClient().Get(ctx, "scgroup", "sc1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragecache.CachesClientGetResponse{
+	// 	Cache: armstoragecache.Cache{
+	// 		Name: to.Ptr("sc1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/Cache"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armstoragecache.CacheProperties{
+	// 			CacheSizeGB: to.Ptr[int32](3072),
+	// 			DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
+	// 				ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
+	// 					CacheNetBiosName: to.Ptr("contosoSmb"),
+	// 					DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
+	// 					DomainName: to.Ptr("contosoAd.contoso.local"),
+	// 					DomainNetBiosName: to.Ptr("contosoAd"),
+	// 					PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
+	// 					SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
+	// 				},
+	// 				UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
+	// 					AutoDownloadCertificate: to.Ptr(false),
+	// 					CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+	// 					EncryptLdapConnection: to.Ptr(false),
+	// 					ExtendedGroups: to.Ptr(true),
+	// 					GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+	// 					LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
+	// 					LdapServer: to.Ptr("192.0.2.12"),
+	// 					RequireValidCertificate: to.Ptr(false),
+	// 					UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+	// 					UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
+	// 					UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
+	// 				},
+	// 			},
+	// 			EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
+	// 				KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
+	// 					KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
+	// 					SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
+	// 					},
+	// 				},
+	// 			},
+	// 			Health: &armstoragecache.CacheHealth{
+	// 				Conditions: []*armstoragecache.Condition{
+	// 					{
+	// 						Message: to.Ptr("Cannot contact DNS server"),
+	// 						Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 					},
+	// 				},
+	// 				State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
+	// 				StatusDescription: to.Ptr("Cache is being created."),
+	// 			},
+	// 			MountAddresses: []*string{
+	// 				to.Ptr("192.168.1.1"),
+	// 				to.Ptr("192.168.1.2"),
+	// 			},
+	// 			NetworkSettings: &armstoragecache.CacheNetworkSettings{
+	// 				DNSSearchDomain: to.Ptr("contoso.com"),
+	// 				DNSServers: []*string{
+	// 					to.Ptr("10.1.22.33"),
+	// 					to.Ptr("10.1.12.33"),
+	// 				},
+	// 				Mtu: to.Ptr[int32](1500),
+	// 				NtpServer: to.Ptr("time.contoso.com"),
+	// 			},
+	// 			PrimingJobs: []*armstoragecache.PrimingJob{
+	// 				{
+	// 					PrimingJobDetails: to.Ptr("Files: Cached=635, Failed=0, Excluded=80, Data=346030 bytes, Directories: Cached=1003, Failed=0, Excluded=0"),
+	// 					PrimingJobID: to.Ptr("00000000000_0000000000"),
+	// 					PrimingJobName: to.Ptr("contosoJob1"),
+	// 					PrimingJobPercentComplete: to.Ptr[float64](100),
+	// 					PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateComplete),
+	// 					PrimingJobStatus: to.Ptr("success"),
+	// 				},
+	// 				{
+	// 					PrimingJobDetails: to.Ptr(""),
+	// 					PrimingJobID: to.Ptr("11111111111_1111111111"),
+	// 					PrimingJobName: to.Ptr("contosoJob2"),
+	// 					PrimingJobPercentComplete: to.Ptr[float64](0),
+	// 					PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateQueued),
+	// 					PrimingJobStatus: to.Ptr(""),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
+	// 			SecuritySettings: &armstoragecache.CacheSecuritySettings{
+	// 				AccessPolicies: []*armstoragecache.NfsAccessPolicy{
+	// 					{
+	// 						Name: to.Ptr("default"),
+	// 						AccessRules: []*armstoragecache.NfsAccessRule{
+	// 							{
+	// 								Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+	// 								RootSquash: to.Ptr(false),
+	// 								Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+	// 								SubmountAccess: to.Ptr(true),
+	// 								Suid: to.Ptr(false),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
+	// 				{
+	// 					Name: to.Ptr("st1"),
+	// 					AllocationPercentage: to.Ptr[int32](25),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("st2"),
+	// 					AllocationPercentage: to.Ptr[int32](50),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("st3"),
+	// 					AllocationPercentage: to.Ptr[int32](25),
+	// 				},
+	// 			},
+	// 			Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
+	// 			UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
+	// 				ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
+	// 				UpgradeScheduleEnabled: to.Ptr(true),
+	// 			},
+	// 			UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
+	// 				CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+	// 				FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
+	// 				LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				PendingFirmwareVersion: to.Ptr("2022.08.1"),
+	// 			},
+	// 			Zones: []*string{
+	// 				to.Ptr("1"),
+	// 			},
+	// 		},
+	// 		SKU: &armstoragecache.CacheSKU{
+	// 			Name: to.Ptr("Standard_2G"),
+	// 		},
+	// 		SystemData: &armstoragecache.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2"),
+	// 			LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("Contoso"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01/Caches_ListByResourceGroup.json
+func ExampleCachesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCachesClient().NewListByResourceGroupPager("scgroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armstoragecache.CachesClientListByResourceGroupResponse{
+		// 	CachesListResult: armstoragecache.CachesListResult{
+		// 		Value: []*armstoragecache.Cache{
+		// 			{
+		// 				Name: to.Ptr("sc1"),
+		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armstoragecache.CacheProperties{
+		// 					CacheSizeGB: to.Ptr[int32](3072),
+		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
+		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
+		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
+		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
+		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
+		// 							DomainNetBiosName: to.Ptr("contosoAd"),
+		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
+		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
+		// 						},
+		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
+		// 							AutoDownloadCertificate: to.Ptr(false),
+		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 							EncryptLdapConnection: to.Ptr(false),
+		// 							ExtendedGroups: to.Ptr(true),
+		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 							LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
+		// 							LdapServer: to.Ptr("192.0.2.12"),
+		// 							RequireValidCertificate: to.Ptr(false),
+		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
+		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
+		// 						},
+		// 					},
+		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
+		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
+		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
+		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
+		// 							},
+		// 						},
+		// 					},
+		// 					Health: &armstoragecache.CacheHealth{
+		// 						Conditions: []*armstoragecache.Condition{
+		// 							{
+		// 								Message: to.Ptr("Cannot contact DNS server"),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 							},
+		// 						},
+		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
+		// 						StatusDescription: to.Ptr("Cache is being created."),
+		// 					},
+		// 					MountAddresses: []*string{
+		// 						to.Ptr("192.168.1.1"),
+		// 						to.Ptr("192.168.1.2"),
+		// 					},
+		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
+		// 						DNSSearchDomain: to.Ptr("contoso.com"),
+		// 						DNSServers: []*string{
+		// 							to.Ptr("10.1.22.33"),
+		// 							to.Ptr("10.1.12.33"),
+		// 						},
+		// 						Mtu: to.Ptr[int32](1500),
+		// 						NtpServer: to.Ptr("time.contoso.com"),
+		// 					},
+		// 					PrimingJobs: []*armstoragecache.PrimingJob{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
+		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
+		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
+		// 							{
+		// 								Name: to.Ptr("default"),
+		// 								AccessRules: []*armstoragecache.NfsAccessRule{
+		// 									{
+		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+		// 										RootSquash: to.Ptr(false),
+		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+		// 										SubmountAccess: to.Ptr(true),
+		// 										Suid: to.Ptr(false),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
+		// 						{
+		// 							Name: to.Ptr("st1"),
+		// 							AllocationPercentage: to.Ptr[int32](25),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("st2"),
+		// 							AllocationPercentage: to.Ptr[int32](50),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("st3"),
+		// 							AllocationPercentage: to.Ptr[int32](25),
+		// 						},
+		// 					},
+		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
+		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
+		// 						UpgradeScheduleEnabled: to.Ptr(true),
+		// 					},
+		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
+		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 					},
+		// 					Zones: []*string{
+		// 						to.Ptr("1"),
+		// 					},
+		// 				},
+		// 				SKU: &armstoragecache.CacheSKU{
+		// 					Name: to.Ptr("Standard_2G"),
+		// 				},
+		// 				SystemData: &armstoragecache.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user2"),
+		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Dept": to.Ptr("Contoso"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sc2"),
+		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armstoragecache.CacheProperties{
+		// 					CacheSizeGB: to.Ptr[int32](3072),
+		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
+		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
+		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
+		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
+		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
+		// 							DomainNetBiosName: to.Ptr("contosoAd"),
+		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
+		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
+		// 						},
+		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
+		// 							AutoDownloadCertificate: to.Ptr(false),
+		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 							EncryptLdapConnection: to.Ptr(false),
+		// 							ExtendedGroups: to.Ptr(true),
+		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 							LdapBaseDN: to.Ptr(""),
+		// 							LdapServer: to.Ptr(""),
+		// 							RequireValidCertificate: to.Ptr(false),
+		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
+		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
+		// 						},
+		// 					},
+		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
+		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
+		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
+		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
+		// 							},
+		// 						},
+		// 					},
+		// 					Health: &armstoragecache.CacheHealth{
+		// 						Conditions: []*armstoragecache.Condition{
+		// 							{
+		// 								Message: to.Ptr("Cannot contact DNS server"),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 							},
+		// 						},
+		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
+		// 						StatusDescription: to.Ptr("Cache is being created."),
+		// 					},
+		// 					MountAddresses: []*string{
+		// 						to.Ptr("192.168.1.1"),
+		// 						to.Ptr("192.168.1.2"),
+		// 					},
+		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
+		// 						DNSSearchDomain: to.Ptr("contoso.com"),
+		// 						DNSServers: []*string{
+		// 							to.Ptr("10.1.22.33"),
+		// 							to.Ptr("10.1.12.33"),
+		// 						},
+		// 						Mtu: to.Ptr[int32](1500),
+		// 						NtpServer: to.Ptr("time.contoso.com"),
+		// 					},
+		// 					PrimingJobs: []*armstoragecache.PrimingJob{
+		// 						{
+		// 							PrimingJobDetails: to.Ptr("Files: Cached=635, Failed=0, Excluded=80, Data=346030 bytes, Directories: Cached=1003, Failed=0, Excluded=0"),
+		// 							PrimingJobID: to.Ptr("00000000000_0000000000"),
+		// 							PrimingJobName: to.Ptr("contosoJob1"),
+		// 							PrimingJobPercentComplete: to.Ptr[float64](100),
+		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateComplete),
+		// 							PrimingJobStatus: to.Ptr("success"),
+		// 						},
+		// 						{
+		// 							PrimingJobDetails: to.Ptr(""),
+		// 							PrimingJobID: to.Ptr("11111111111_1111111111"),
+		// 							PrimingJobName: to.Ptr("contosoJob2"),
+		// 							PrimingJobPercentComplete: to.Ptr[float64](0),
+		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateQueued),
+		// 							PrimingJobStatus: to.Ptr(""),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeUpdating),
+		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
+		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
+		// 							{
+		// 								Name: to.Ptr("default"),
+		// 								AccessRules: []*armstoragecache.NfsAccessRule{
+		// 									{
+		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+		// 										RootSquash: to.Ptr(false),
+		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+		// 										SubmountAccess: to.Ptr(true),
+		// 										Suid: to.Ptr(false),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
+		// 					},
+		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2"),
+		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
+		// 						UpgradeScheduleEnabled: to.Ptr(true),
+		// 					},
+		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
+		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 					},
+		// 					Zones: []*string{
+		// 						to.Ptr("2"),
+		// 					},
+		// 				},
+		// 				SKU: &armstoragecache.CacheSKU{
+		// 					Name: to.Ptr("Standard_2G"),
+		// 				},
+		// 				SystemData: &armstoragecache.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user2"),
+		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Dept": to.Ptr("Contoso"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01/Caches_List.json
+func ExampleCachesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCachesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armstoragecache.CachesClientListResponse{
+		// 	CachesListResult: armstoragecache.CachesListResult{
+		// 		Value: []*armstoragecache.Cache{
+		// 			{
+		// 				Name: to.Ptr("sc1"),
+		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc1"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armstoragecache.CacheProperties{
+		// 					CacheSizeGB: to.Ptr[int32](3072),
+		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
+		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
+		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
+		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
+		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
+		// 							DomainNetBiosName: to.Ptr("contosoAd"),
+		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
+		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
+		// 						},
+		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
+		// 							AutoDownloadCertificate: to.Ptr(false),
+		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 							EncryptLdapConnection: to.Ptr(false),
+		// 							ExtendedGroups: to.Ptr(true),
+		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 							LdapBaseDN: to.Ptr("dc=contosoad,dc=contoso,dc=local"),
+		// 							LdapServer: to.Ptr("192.0.2.12"),
+		// 							RequireValidCertificate: to.Ptr(false),
+		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
+		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
+		// 						},
+		// 					},
+		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
+		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
+		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
+		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
+		// 							},
+		// 						},
+		// 					},
+		// 					Health: &armstoragecache.CacheHealth{
+		// 						Conditions: []*armstoragecache.Condition{
+		// 							{
+		// 								Message: to.Ptr("Cannot contact DNS server"),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 							},
+		// 						},
+		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
+		// 						StatusDescription: to.Ptr("Cache is being created."),
+		// 					},
+		// 					MountAddresses: []*string{
+		// 						to.Ptr("192.168.1.1"),
+		// 						to.Ptr("192.168.1.2"),
+		// 					},
+		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
+		// 						DNSSearchDomain: to.Ptr("contoso.com"),
+		// 						DNSServers: []*string{
+		// 							to.Ptr("10.1.22.33"),
+		// 							to.Ptr("10.1.12.33"),
+		// 						},
+		// 						Mtu: to.Ptr[int32](1500),
+		// 						NtpServer: to.Ptr("time.contoso.com"),
+		// 					},
+		// 					PrimingJobs: []*armstoragecache.PrimingJob{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeSucceeded),
+		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
+		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
+		// 							{
+		// 								Name: to.Ptr("default"),
+		// 								AccessRules: []*armstoragecache.NfsAccessRule{
+		// 									{
+		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+		// 										RootSquash: to.Ptr(false),
+		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+		// 										SubmountAccess: to.Ptr(true),
+		// 										Suid: to.Ptr(false),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
+		// 						{
+		// 							Name: to.Ptr("st1"),
+		// 							AllocationPercentage: to.Ptr[int32](25),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("st2"),
+		// 							AllocationPercentage: to.Ptr[int32](50),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("st3"),
+		// 							AllocationPercentage: to.Ptr[int32](25),
+		// 						},
+		// 					},
+		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
+		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
+		// 						UpgradeScheduleEnabled: to.Ptr(true),
+		// 					},
+		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
+		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 					},
+		// 				},
+		// 				SKU: &armstoragecache.CacheSKU{
+		// 					Name: to.Ptr("Standard_2G"),
+		// 				},
+		// 				SystemData: &armstoragecache.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user2"),
+		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Dept": to.Ptr("Contoso"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sc2"),
+		// 				Type: to.Ptr("Microsoft.StorageCache/Cache"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/caches/sc2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armstoragecache.CacheProperties{
+		// 					CacheSizeGB: to.Ptr[int32](3072),
+		// 					DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
+		// 						ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
+		// 							CacheNetBiosName: to.Ptr("contosoSmb"),
+		// 							DomainJoined: to.Ptr(armstoragecache.DomainJoinedTypeYes),
+		// 							DomainName: to.Ptr("contosoAd.contoso.local"),
+		// 							DomainNetBiosName: to.Ptr("contosoAd"),
+		// 							PrimaryDNSIPAddress: to.Ptr("192.0.2.10"),
+		// 							SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
+		// 						},
+		// 						UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
+		// 							AutoDownloadCertificate: to.Ptr(false),
+		// 							CaCertificateURI: to.Ptr("http://contoso.net/cacert.pem"),
+		// 							EncryptLdapConnection: to.Ptr(false),
+		// 							ExtendedGroups: to.Ptr(true),
+		// 							GroupFileURI: to.Ptr("http://contoso.net/group.file"),
+		// 							LdapBaseDN: to.Ptr(""),
+		// 							LdapServer: to.Ptr(""),
+		// 							RequireValidCertificate: to.Ptr(false),
+		// 							UserFileURI: to.Ptr("http://contoso.net/passwd.file"),
+		// 							UsernameDownloaded: to.Ptr(armstoragecache.UsernameDownloadedTypeYes),
+		// 							UsernameSource: to.Ptr(armstoragecache.UsernameSourceAD),
+		// 						},
+		// 					},
+		// 					EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
+		// 						KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
+		// 							KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2048/test"),
+		// 							SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
+		// 							},
+		// 						},
+		// 					},
+		// 					Health: &armstoragecache.CacheHealth{
+		// 						Conditions: []*armstoragecache.Condition{
+		// 							{
+		// 								Message: to.Ptr("Cannot contact DNS server"),
+		// 								Timestamp: to.Ptr(time.Date(2021, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 							},
+		// 						},
+		// 						State: to.Ptr(armstoragecache.HealthStateTypeTransitioning),
+		// 						StatusDescription: to.Ptr("Cache is being created."),
+		// 					},
+		// 					MountAddresses: []*string{
+		// 						to.Ptr("192.168.1.1"),
+		// 						to.Ptr("192.168.1.2"),
+		// 					},
+		// 					NetworkSettings: &armstoragecache.CacheNetworkSettings{
+		// 						DNSSearchDomain: to.Ptr("contoso.com"),
+		// 						DNSServers: []*string{
+		// 							to.Ptr("10.1.22.33"),
+		// 							to.Ptr("10.1.12.33"),
+		// 						},
+		// 						Mtu: to.Ptr[int32](1500),
+		// 						NtpServer: to.Ptr("time.contoso.com"),
+		// 					},
+		// 					PrimingJobs: []*armstoragecache.PrimingJob{
+		// 						{
+		// 							PrimingJobDetails: to.Ptr("Files: Cached=635, Failed=0, Excluded=80, Data=346030 bytes, Directories: Cached=1003, Failed=0, Excluded=0"),
+		// 							PrimingJobID: to.Ptr("00000000000_0000000000"),
+		// 							PrimingJobName: to.Ptr("contosoJob1"),
+		// 							PrimingJobPercentComplete: to.Ptr[float64](100),
+		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateComplete),
+		// 							PrimingJobStatus: to.Ptr("success"),
+		// 						},
+		// 						{
+		// 							PrimingJobDetails: to.Ptr(""),
+		// 							PrimingJobID: to.Ptr("11111111111_1111111111"),
+		// 							PrimingJobName: to.Ptr("contosoJob2"),
+		// 							PrimingJobPercentComplete: to.Ptr[float64](0),
+		// 							PrimingJobState: to.Ptr(armstoragecache.PrimingJobStateQueued),
+		// 							PrimingJobStatus: to.Ptr(""),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armstoragecache.ProvisioningStateTypeUpdating),
+		// 					SecuritySettings: &armstoragecache.CacheSecuritySettings{
+		// 						AccessPolicies: []*armstoragecache.NfsAccessPolicy{
+		// 							{
+		// 								Name: to.Ptr("default"),
+		// 								AccessRules: []*armstoragecache.NfsAccessRule{
+		// 									{
+		// 										Access: to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
+		// 										RootSquash: to.Ptr(false),
+		// 										Scope: to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
+		// 										SubmountAccess: to.Ptr(true),
+		// 										Suid: to.Ptr(false),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
+		// 					},
+		// 					Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub2"),
+		// 					UpgradeSettings: &armstoragecache.CacheUpgradeSettings{
+		// 						ScheduledTime: to.Ptr(time.Date(2022, time.April, 26, 18, 25, 43, 511000000, time.UTC)),
+		// 						UpgradeScheduleEnabled: to.Ptr(true),
+		// 					},
+		// 					UpgradeStatus: &armstoragecache.CacheUpgradeStatus{
+		// 						CurrentFirmwareVersion: to.Ptr("2022.08.1"),
+		// 						FirmwareUpdateDeadline: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						FirmwareUpdateStatus: to.Ptr(armstoragecache.FirmwareStatusTypeAvailable),
+		// 						LastFirmwareUpdate: to.Ptr(time.Date(2019, time.January, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						PendingFirmwareVersion: to.Ptr("2022.08.1"),
+		// 					},
+		// 					Zones: []*string{
+		// 						to.Ptr("1"),
+		// 					},
+		// 				},
+		// 				SKU: &armstoragecache.CacheSKU{
+		// 					Name: to.Ptr("Standard_2G"),
+		// 				},
+		// 				SystemData: &armstoragecache.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
+		// 					CreatedBy: to.Ptr("user1"),
+		// 					CreatedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user2"),
+		// 					LastModifiedByType: to.Ptr(armstoragecache.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Dept": to.Ptr("Contoso"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
 }

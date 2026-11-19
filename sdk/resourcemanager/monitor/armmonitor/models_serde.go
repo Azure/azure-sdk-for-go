@@ -1175,6 +1175,7 @@ func (a *AutoscaleSetting) UnmarshalJSON(data []byte) error {
 func (a AutoscaleSettingResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", a.ID)
+	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "location", a.Location)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "properties", a.Properties)
@@ -1195,6 +1196,9 @@ func (a *AutoscaleSettingResource) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "id":
 			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, "Identity", &a.Identity)
 			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, "Location", &a.Location)
@@ -1256,6 +1260,7 @@ func (a *AutoscaleSettingResourceCollection) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AutoscaleSettingResourcePatch.
 func (a AutoscaleSettingResourcePatch) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "tags", a.Tags)
 	return json.Marshal(objectMap)
@@ -1270,6 +1275,9 @@ func (a *AutoscaleSettingResourcePatch) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "identity":
+			err = unpopulate(val, "Identity", &a.Identity)
+			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, "Properties", &a.Properties)
 			delete(rawMsg, key)
@@ -1548,7 +1556,7 @@ func (c Condition) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "criterionType", c.CriterionType)
 	populate(objectMap, "dimensions", c.Dimensions)
 	populate(objectMap, "failingPeriods", c.FailingPeriods)
-	populateTime[datetime.RFC3339](objectMap, "ignoreDataBefore", c.IgnoreDataBefore)
+	populateTime[datetime.RFC3339](objectMap, "ignoreDataBefore", c.IgnoreDataBefore, true)
 	populate(objectMap, "metricMeasureColumn", c.MetricMeasureColumn)
 	populate(objectMap, "metricName", c.MetricName)
 	populate(objectMap, "minRecurrenceCount", c.MinRecurrenceCount)
@@ -3285,7 +3293,7 @@ func (d DynamicMetricCriteria) MarshalJSON() ([]byte, error) {
 	objectMap["criterionType"] = CriterionTypeDynamicThresholdCriterion
 	populate(objectMap, "dimensions", d.Dimensions)
 	populate(objectMap, "failingPeriods", d.FailingPeriods)
-	populateTime[datetime.RFC3339](objectMap, "ignoreDataBefore", d.IgnoreDataBefore)
+	populateTime[datetime.RFC3339](objectMap, "ignoreDataBefore", d.IgnoreDataBefore, true)
 	populate(objectMap, "metricName", d.MetricName)
 	populate(objectMap, "metricNamespace", d.MetricNamespace)
 	populate(objectMap, "name", d.Name)
@@ -3365,7 +3373,7 @@ func (d DynamicPromQLCriteria) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alertSensitivity", d.AlertSensitivity)
 	objectMap["criterionType"] = CriterionTypeDynamicThresholdCriterion
-	populateTime[datetime.RFC3339](objectMap, "ignoreDataBefore", d.IgnoreDataBefore)
+	populateTime[datetime.RFC3339](objectMap, "ignoreDataBefore", d.IgnoreDataBefore, true)
 	populate(objectMap, "name", d.Name)
 	populate(objectMap, "operator", d.Operator)
 	populate(objectMap, "query", d.Query)
@@ -3706,7 +3714,7 @@ func (e EventData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", e.Description)
 	populate(objectMap, "eventDataId", e.EventDataID)
 	populate(objectMap, "eventName", e.EventName)
-	populateTime[datetime.RFC3339](objectMap, "eventTimestamp", e.EventTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "eventTimestamp", e.EventTimestamp, true)
 	populate(objectMap, "httpRequest", e.HTTPRequest)
 	populate(objectMap, "id", e.ID)
 	populate(objectMap, "level", e.Level)
@@ -3719,7 +3727,7 @@ func (e EventData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceType", e.ResourceType)
 	populate(objectMap, "status", e.Status)
 	populate(objectMap, "subStatus", e.SubStatus)
-	populateTime[datetime.RFC3339](objectMap, "submissionTimestamp", e.SubmissionTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "submissionTimestamp", e.SubmissionTimestamp, true)
 	populate(objectMap, "subscriptionId", e.SubscriptionID)
 	populate(objectMap, "tenantId", e.TenantID)
 	return json.Marshal(objectMap)
@@ -4121,10 +4129,10 @@ func (i *IisLogsDataSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Incident.
 func (i Incident) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "activatedTime", i.ActivatedTime)
+	populateTime[datetime.RFC3339](objectMap, "activatedTime", i.ActivatedTime, true)
 	populate(objectMap, "isActive", i.IsActive)
 	populate(objectMap, "name", i.Name)
-	populateTime[datetime.RFC3339](objectMap, "resolvedTime", i.ResolvedTime)
+	populateTime[datetime.RFC3339](objectMap, "resolvedTime", i.ResolvedTime, true)
 	populate(objectMap, "ruleName", i.RuleName)
 	return json.Marshal(objectMap)
 }
@@ -5028,7 +5036,7 @@ func (m MetricAlertProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enabled", m.Enabled)
 	populate(objectMap, "evaluationFrequency", m.EvaluationFrequency)
 	populate(objectMap, "isMigrated", m.IsMigrated)
-	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTime", m.LastUpdatedTime)
+	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTime", m.LastUpdatedTime, true)
 	populate(objectMap, "resolveConfiguration", m.ResolveConfiguration)
 	populate(objectMap, "scopes", m.Scopes)
 	populate(objectMap, "severity", m.Severity)
@@ -5115,7 +5123,7 @@ func (m MetricAlertPropertiesPatch) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enabled", m.Enabled)
 	populate(objectMap, "evaluationFrequency", m.EvaluationFrequency)
 	populate(objectMap, "isMigrated", m.IsMigrated)
-	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTime", m.LastUpdatedTime)
+	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTime", m.LastUpdatedTime, true)
 	populate(objectMap, "resolveConfiguration", m.ResolveConfiguration)
 	populate(objectMap, "scopes", m.Scopes)
 	populate(objectMap, "severity", m.Severity)
@@ -5428,7 +5436,7 @@ func (m MetricAlertStatusProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dimensions", m.Dimensions)
 	populate(objectMap, "status", m.Status)
-	populateTime[datetime.RFC3339](objectMap, "timestamp", m.Timestamp)
+	populateTime[datetime.RFC3339](objectMap, "timestamp", m.Timestamp, true)
 	return json.Marshal(objectMap)
 }
 
@@ -6023,7 +6031,7 @@ func (m MetricValue) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "count", m.Count)
 	populate(objectMap, "maximum", m.Maximum)
 	populate(objectMap, "minimum", m.Minimum)
-	populateTime[datetime.RFC3339](objectMap, "timeStamp", m.TimeStamp)
+	populateTime[datetime.RFC3339](objectMap, "timeStamp", m.TimeStamp, true)
 	populate(objectMap, "total", m.Total)
 	return json.Marshal(objectMap)
 }
@@ -6515,11 +6523,11 @@ func (n *NotificationRequestBody) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OperationStatus.
 func (o OperationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endTime", o.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", o.EndTime, true)
 	populate(objectMap, "error", o.Error)
 	populate(objectMap, "id", o.ID)
 	populate(objectMap, "name", o.Name)
-	populateTime[datetime.RFC3339](objectMap, "startTime", o.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", o.StartTime, true)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
 }
@@ -7104,7 +7112,7 @@ func (p *PredictiveResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PredictiveValue.
 func (p PredictiveValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "timeStamp", p.TimeStamp)
+	populateTime[datetime.RFC3339](objectMap, "timeStamp", p.TimeStamp, true)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
@@ -7232,6 +7240,7 @@ func (p *PrivateEndpointConnectionListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProperties.
 func (p PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "groupIds", p.GroupIDs)
 	populate(objectMap, "privateEndpoint", p.PrivateEndpoint)
 	populate(objectMap, "privateLinkServiceConnectionState", p.PrivateLinkServiceConnectionState)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
@@ -7247,6 +7256,9 @@ func (p *PrivateEndpointConnectionProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "groupIds":
+			err = unpopulate(val, "GroupIDs", &p.GroupIDs)
+			delete(rawMsg, key)
 		case "privateEndpoint":
 			err = unpopulate(val, "PrivateEndpoint", &p.PrivateEndpoint)
 			delete(rawMsg, key)
@@ -9146,10 +9158,10 @@ func (s *SyslogDataSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -9621,7 +9633,10 @@ func (t TimeSeriesBaseline) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "metadataValues", t.MetadataValues)
 	aux := make([]*datetime.RFC3339, len(t.Timestamps), len(t.Timestamps))
 	for i := 0; i < len(t.Timestamps); i++ {
-		aux[i] = (*datetime.RFC3339)(t.Timestamps[i])
+		if t.Timestamps[i] != nil {
+			utcTime := t.Timestamps[i].UTC()
+			aux[i] = (*datetime.RFC3339)(&utcTime)
+		}
 	}
 	populate(objectMap, "timestamps", aux)
 	return json.Marshal(objectMap)
@@ -9697,8 +9712,8 @@ func (t *TimeSeriesElement) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TimeWindow.
 func (t TimeWindow) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "end", t.End)
-	populateTime[datetime.RFC3339](objectMap, "start", t.Start)
+	populateTime[datetime.RFC3339](objectMap, "end", t.End, true)
+	populateTime[datetime.RFC3339](objectMap, "start", t.Start, true)
 	populate(objectMap, "timeZone", t.TimeZone)
 	return json.Marshal(objectMap)
 }
@@ -10194,13 +10209,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -10220,7 +10239,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -10231,7 +10250,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

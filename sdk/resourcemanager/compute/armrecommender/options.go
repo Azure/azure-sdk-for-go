@@ -4,6 +4,16 @@
 
 package armrecommender
 
+// ComputePlacementScoresClientGetOptions contains the optional parameters for the ComputePlacementScoresClient.Get method.
+type ComputePlacementScoresClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComputePlacementScoresClientPostOptions contains the optional parameters for the ComputePlacementScoresClient.Post method.
+type ComputePlacementScoresClientPostOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

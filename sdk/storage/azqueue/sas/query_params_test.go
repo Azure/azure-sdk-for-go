@@ -35,6 +35,18 @@ func TestFormatTimesForSigning(t *testing.T) {
 			expectedEnd:      "2023-04-05T08:50:27Z",
 			expectedSnapshot: "2021-01-05T22:15:33.0012348Z",
 		},
+		{
+			inputStart:    time.Date(2026, 10, 15, 20, 0, 0, 0, time.FixedZone("UTC+09:00", 9*60*60)),
+			inputEnd:      time.Date(2026, 10, 15, 21, 0, 0, 0, time.FixedZone("UTC+09:00", 9*60*60)),
+			expectedStart: "2026-10-15T11:00:00Z",
+			expectedEnd:   "2026-10-15T12:00:00Z",
+		},
+		{
+			inputStart:    time.Date(2026, 10, 15, 6, 0, 0, 0, time.FixedZone("UTC-05:00", -5*60*60)),
+			inputEnd:      time.Date(2026, 10, 15, 7, 0, 0, 0, time.FixedZone("UTC-05:00", -5*60*60)),
+			expectedStart: "2026-10-15T11:00:00Z",
+			expectedEnd:   "2026-10-15T12:00:00Z",
+		},
 	}
 	for _, c := range testdata {
 		start, end := formatTimesForSigning(c.inputStart, c.inputEnd)

@@ -19,7 +19,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-07-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *Client) CheckFeatureSupport(ctx context.Context, location string, 
 	if err != nil {
 		return ClientCheckFeatureSupportResponse{}, err
 	}
-	return client.checkFeatureSupportHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkFeatureSupportHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkFeatureSupportCreateRequest creates the CheckFeatureSupport request.
@@ -84,7 +85,7 @@ func (client *Client) checkFeatureSupportCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

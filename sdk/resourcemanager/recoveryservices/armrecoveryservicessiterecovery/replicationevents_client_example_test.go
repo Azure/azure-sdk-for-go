@@ -7,11 +7,11 @@ package armrecoveryservicessiterecovery_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/ReplicationEvents_Get.json
+// Generated from example definition: 2026-11-01/ReplicationEvents_Get.json
 func ExampleReplicationEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleReplicationEventsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationEvents_List.json
+// Generated from example definition: 2026-11-01/ReplicationEvents_List.json
 func ExampleReplicationEventsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -14,12 +14,25 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
+
+// NewMockServer starts a mock server for the test and returns client options that send every request to it,
+// whatever the URL of the client is. Retries are disabled, so an error response is returned to the caller as is.
+func NewMockServer(t *testing.T) (*mock.Server, azcore.ClientOptions) {
+	srv, closeSrv := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	t.Cleanup(closeSrv)
+	return srv, azcore.ClientOptions{
+		Transport: srv,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+	}
+}
 
 const (
 	RecordingDirectory = "sdk/storage/azfile/testdata"

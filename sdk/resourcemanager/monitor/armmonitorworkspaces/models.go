@@ -8,6 +8,9 @@ import "time"
 
 // AzureMonitorWorkspace - Properties of an Azure Monitor Workspace
 type AzureMonitorWorkspace struct {
+	// Action configuration for the Azure Monitor Workspace.
+	Actions *AzureMonitorWorkspaceActions
+
 	// Properties related to the metrics container in the Azure Monitor Workspace
 	Metrics *AzureMonitorWorkspaceMetrics
 
@@ -20,11 +23,20 @@ type AzureMonitorWorkspace struct {
 	// READ-ONLY; The Data Collection Rule and Endpoint used for ingestion by default.
 	DefaultIngestionSettings *AzureMonitorWorkspaceDefaultIngestionSettings
 
+	// READ-ONLY; Query endpoints for the Azure Monitor Workspace.
+	Endpoints *AzureMonitorWorkspaceEndpoints
+
 	// READ-ONLY; List of private endpoint connections
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The provisioning state of the Azure Monitor Workspace. Set to Succeeded if everything is healthy.
 	ProvisioningState *ResourceProvisioningState
+}
+
+// AzureMonitorWorkspaceActions - Action configuration for an Azure Monitor Workspace.
+type AzureMonitorWorkspaceActions struct {
+	// The default action groups associated with the Azure Monitor Workspace.
+	DefaultActionGroups []*DefaultActionGroupResource
 }
 
 // AzureMonitorWorkspaceDefaultIngestionSettings - The Data Collection Rule and Endpoint used for ingestion by default.
@@ -40,6 +52,12 @@ type AzureMonitorWorkspaceDefaultIngestionSettings struct {
 
 	// READ-ONLY; The ingestion endpoints for this Azure Monitor Workspace.
 	IngestionEndpoints *IngestionEndpoints
+}
+
+// AzureMonitorWorkspaceEndpoints - Query endpoints for an Azure Monitor Workspace.
+type AzureMonitorWorkspaceEndpoints struct {
+	// READ-ONLY; The query endpoint for the Azure Monitor Workspace.
+	Query *string
 }
 
 // AzureMonitorWorkspaceMetrics - Properties related to the metrics container in the Azure Monitor Workspace
@@ -136,6 +154,12 @@ type BackgroundVisualization struct {
 
 	// READ-ONLY; The background visualization origin
 	Origin *Origin
+}
+
+// DefaultActionGroupResource - A reference to an Azure Monitor action group.
+type DefaultActionGroupResource struct {
+	// The resource ID of the action group.
+	ID *string
 }
 
 // FetchInvestigationResultParameters - Parameters provided to get the investigation result
@@ -307,8 +331,119 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
+// MetricAggregationConfiguration - An aggregation configuration for an aggregated metric.
+type MetricAggregationConfiguration struct {
+	// Aggregation functions enabled for this aggregation.
+	AggregationFunctions *MetricAggregationFunctions
+
+	// Dimensions included in this aggregation.
+	Dimensions []*string
+
+	// Whether aggregated metric data is stored.
+	StoreAggregatedData *bool
+}
+
+// MetricAggregationFunctions - Aggregation functions enabled for an aggregated metric.
+type MetricAggregationFunctions struct {
+	// REQUIRED; Whether minimum and maximum aggregations are enabled.
+	EnableMinMax *bool
+
+	// REQUIRED; Whether percentile aggregations are enabled.
+	EnablePercentiles *bool
+}
+
+// MetricConfigurationProperties - Properties of a metric configuration.
+type MetricConfigurationProperties struct {
+	// Aggregation configurations for an aggregated metric.
+	AggregationConfigurations []*MetricAggregationConfiguration
+
+	// The actual ingested metric name before route encoding.
+	MetricName *string
+
+	// The metric type.
+	MetricType *MetricConfigurationType
+
+	// The actual metric namespace before route encoding.
+	Namespace *string
+
+	// The resource ID of the source metric for an aggregated metric.
+	SourceMetricResourceID *string
+
+	// Whether raw metric data is stored.
+	StoreRawData *bool
+
+	// READ-ONLY; Dimensions emitted by the metric.
+	Dimensions []*string
+
+	// READ-ONLY; The provisioning state of the metric configuration.
+	ProvisioningState *ResourceProvisioningState
+}
+
+// MetricConfigurationResource - A metric configuration in an Azure Monitor Workspace metric namespace.
+type MetricConfigurationResource struct {
+	// The resource-specific properties for this resource.
+	Properties *MetricConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MetricConfigurationResourceListResult - The response of a MetricConfigurationResource list operation.
+type MetricConfigurationResourceListResult struct {
+	// REQUIRED; The MetricConfigurationResource items on this page
+	Value []*MetricConfigurationResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MetricNamespaceProperties - Properties of a metric namespace.
+type MetricNamespaceProperties struct {
+	// READ-ONLY; The provisioning state of the metric namespace.
+	ProvisioningState *ResourceProvisioningState
+}
+
+// MetricNamespaceResource - A metric namespace in an Azure Monitor Workspace metrics container.
+type MetricNamespaceResource struct {
+	// The resource-specific properties for this resource.
+	Properties *MetricNamespaceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MetricNamespaceResourceListResult - The response of a MetricNamespaceResource list operation.
+type MetricNamespaceResourceListResult struct {
+	// REQUIRED; The MetricNamespaceResource items on this page
+	Value []*MetricNamespaceResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // MetricsContainer - Properties of a metrics container.
 type MetricsContainer struct {
+	// Metrics limits.
+	Limits *MetricsLimits
+
 	// The version of Metrics Query Service that this AMW will use for all metric queries.
 	Version *string
 
@@ -341,6 +476,18 @@ type MetricsContainerResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// MetricsLimits - Definition of Metrics limits
+type MetricsLimits struct {
+	// Indicates whether automatic scaling of ingestion limits is enabled.
+	EnableAutoScale *bool
+
+	// Maximum number of active time series allowed on the metrics containers.
+	MaxActiveTimeSeries *int64
+
+	// Maximum rate (events per minute) that can be processed on the metrics containers.
+	MaxEventsPerMinute *int64
 }
 
 // Notifications - Issue notification settings
@@ -428,6 +575,15 @@ type Origin struct {
 
 	// REQUIRED; The source of the origin - Manual or Automatic
 	AddedByType *AddedByType
+}
+
+// PagedMetricConfigurationResource - Paged collection of MetricConfigurationResource items
+type PagedMetricConfigurationResource struct {
+	// REQUIRED; The MetricConfigurationResource items on this page
+	Value []*MetricConfigurationResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // PagedRelatedAlert - Paged collection of RelatedAlert items
@@ -584,6 +740,81 @@ func (t *TimeBasedUpdatesNotificationType) GetIssueNotificationType() *IssueNoti
 	return &IssueNotificationType{
 		UpdateType: t.UpdateType,
 	}
+}
+
+// TraceAssociation - Properties of a trace association.
+type TraceAssociation struct {
+	// REQUIRED; The resource ID of the Azure Monitor Workspace that receives traces from the target scope.
+	AzureMonitorWorkspaceResourceID *string
+}
+
+// TraceAssociationResource - An association between an Azure resource scope and an Azure Monitor Workspace.
+type TraceAssociationResource struct {
+	// The resource-specific properties for this resource.
+	Properties *TraceAssociation
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TraceAssociationResourceListResult - The response of a TraceAssociationResource list operation.
+type TraceAssociationResourceListResult struct {
+	// REQUIRED; The TraceAssociationResource items on this page
+	Value []*TraceAssociationResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// TraceContainer - Properties of a trace container.
+type TraceContainer struct {
+	// REQUIRED; The trace duration window in seconds.
+	TraceDurationWindowInSeconds *int32
+
+	// REQUIRED; Controls whether trace-derived metrics are emitted for this trace container.
+	TraceMetricsState *TraceMetricsState
+
+	// REQUIRED; The number of days for which the traces are retained. Value must be between 4 and 730 days.
+	TraceRetentionInDays *int32
+
+	// READ-ONLY; The provisioning state of the trace container.
+	ProvisioningState *ResourceProvisioningState
+}
+
+// TraceContainerResource - The trace container for an Azure Monitor Workspace.
+type TraceContainerResource struct {
+	// The resource-specific properties for this resource.
+	Properties *TraceContainer
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TraceContainerResourceListResult - The response of a TraceContainerResource list operation.
+type TraceContainerResourceListResult struct {
+	// REQUIRED; The TraceContainerResource items on this page
+	Value []*TraceContainerResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // UserAssignedIdentity - User assigned identity properties

@@ -1,4 +1,4 @@
-# Verify the template-only Go release completion handoff without executing a release.
+# Verify optional manual IDs and the existing Go automatic handoff without executing a release.
 # Pester shares BeforeAll variables with It blocks, which the analyzer cannot resolve.
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', '')]
 [CmdletBinding()]
@@ -21,9 +21,7 @@ BeforeAll {
   $releaseStage = @($release.stages | Where-Object { $_['stage'] -eq 'Release' })[0]
   $tagJob = @($releaseStage.jobs | Where-Object { $_['job'] -eq 'TagRepository' })[0]
   $completion = @($tagJob.steps | Where-Object { $_['template'] -eq '/eng/common/pipelines/templates/steps/mark-release-completion.yml' })[0]
-  $templateGuard = '${{ if eq(parameters.ServiceDirectory, ''template/aztemplate'') }}'
   $autoGuard = '${{ if and(eq(variables[''Build.Reason''], ''IndividualCI''), eq(variables[''Build.SourceBranch''], ''refs/heads/main'')) }}'
-  $bindingGuard = '${{ if and(eq(parameters.ServiceDirectory, ''template/aztemplate''), eq(variables[''Build.Reason''], ''IndividualCI''), eq(variables[''Build.SourceBranch''], ''refs/heads/main'')) }}'
 
   function Find-PipelineNode {
     param($Node, [string]$PropertyName, [string]$PropertyValue)
@@ -39,41 +37,47 @@ BeforeAll {
   $management = ConvertFrom-Yaml ([IO.File]::ReadAllText((Join-Path $root 'eng/pipelines/mgmt-auto-release.yml')))
 }
 
-Describe 'Go template release completion contract' {
+Describe 'Go manual release-plan ID forwarding' {
   It 'declares optional string IDs with a zero default at every relay' {
-    foreach ($document in @($entry, $client, $release)) {
+    foreach ($document in @($entry, $client)) {
       $ids = @($document.parameters | Where-Object { $_.name -eq 'ReleasePlanId' })
       $ids.Count | Should -Be 1
       $ids[0].type | Should -BeExactly 'string'
       $ids[0].default | Should -BeOfType [string]
       $ids[0].default | Should -BeExactly '0'
     }
+    $release.parameters.ReleasePlanId | Should -BeOfType [string]
+    $release.parameters.ReleasePlanId | Should -BeExactly '0'
     $entry.extends.parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
     $entry.extends.parameters.ServiceDirectory | Should -BeExactly 'template/aztemplate'
     $releaseCalls.Count | Should -Be 1
     $releaseCalls[0].parameters.ServiceDirectory | Should -BeExactly '${{ parameters.ServiceDirectory }}'
     $releaseCalls[0].parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
-    @($release.parameters | Where-Object name -eq 'DependsOn')[0].default | Should -BeExactly 'Build'
-    @($release.parameters | Where-Object name -eq 'TestPipeline')[0].default | Should -BeFalse
-    @($release.parameters | Where-Object name -eq 'ServiceDirectory')[0].default | Should -BeExactly ''
+    $release.parameters.DependsOn | Should -BeExactly 'Build'
+    $release.parameters.TestPipeline | Should -BeFalse
+    $release.parameters.ServiceDirectory | Should -BeExactly ''
   }
 
-  It 'keeps common completion inputs unchanged and scopes new arguments to the template' {
+  It 'forwards the optional manual ID and relies on the shared SDK PR fallback' {
     $completion.parameters.ConfigFileDir | Should -BeExactly '$(Pipeline.Workspace)/PackageInfo'
     $completion.parameters.PackageArtifactName | Should -BeExactly 'sdk/${{ parameters.ServiceDirectory }}'
     @($completion.parameters.Keys).Count | Should -Be 3
-    $pilot = $completion.parameters[$templateGuard]
-    @($pilot.Keys).Count | Should -Be 2
-    $pilot.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
-    $pilot[$autoGuard].SdkPullRequest | Should -BeExactly '$(AutoReleaseSdkPullRequestUrl)'
-    @($pilot[$autoGuard].Keys).Count | Should -Be 1
+    $completion.parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
+    $completion.parameters.ContainsKey('SdkPullRequest') | Should -BeFalse
+    $common = ConvertFrom-Yaml ([IO.File]::ReadAllText((Join-Path $root 'eng/common/pipelines/templates/steps/mark-release-completion.yml')))
+    $common.parameters.ContainsKey('ReleasePlanId') | Should -BeTrue
+    $common.parameters.ContainsKey('SdkPullRequest') | Should -BeTrue
   }
 
-  It 'binds the fixed producer output only with the actual direct stage dependency' {
-    $binding = @($releaseStage.variables | Where-Object { $_.ContainsKey($bindingGuard) })
+  It 'preserves the automatic SDK PR binding and direct stage dependency for all services' {
+    $binding = @($releaseStage.variables | Where-Object { $_.ContainsKey($autoGuard) })
     $binding.Count | Should -Be 1
-    $binding[0][$bindingGuard][0].name | Should -BeExactly 'AutoReleaseSdkPullRequestUrl'
-    $binding[0][$bindingGuard][0].value | Should -BeExactly '$[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs[''resolve.AutoReleaseSdkPullRequestUrl''] ]'
+    $binding[0][$autoGuard][0].name | Should -BeExactly 'AutoReleaseSdkPullRequestUrl'
+    $binding[0][$autoGuard][0].value | Should -BeExactly '$[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs[''resolve.AutoReleaseSdkPullRequestUrl''] ]'
+    $fallback = @($releaseStage.variables | Where-Object { $_.ContainsKey('${{ else }}') })
+    $fallback.Count | Should -Be 1
+    $fallback[0]['${{ else }}'][0].name | Should -BeExactly 'AutoReleaseSdkPullRequestUrl'
+    $fallback[0]['${{ else }}'][0].value | Should -BeExactly ''
     $releaseStage[$autoGuard].dependsOn | Should -Contain 'AutoReleasePrepare'
     $releaseStage[$autoGuard].dependsOn | Should -Contain 'CheckRelease'
     $releaseStage['${{ else }}'].dependsOn | Should -BeExactly 'CheckRelease'
@@ -86,31 +90,27 @@ Describe 'Go template release completion contract' {
   }
 
   # These cases validate the exact parsed guards above, not a general Azure template evaluator.
-  It 'selects the expected handoff for <Service>, <Reason>, <Branch>' -ForEach @(
-    @{ Service = 'template/aztemplate'; Reason = 'Manual'; Branch = 'refs/heads/main'; Id = $true; Url = $false }
-    @{ Service = 'template/aztemplate'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Id = $true; Url = $true }
-    @{ Service = 'template/aztemplate'; Reason = 'IndividualCI'; Branch = 'refs/heads/release/test'; Id = $true; Url = $false }
-    @{ Service = 'template/aztemplate'; Reason = 'BatchedCI'; Branch = 'refs/heads/main'; Id = $true; Url = $false }
-    @{ Service = 'template/aztemplate'; Reason = 'Schedule'; Branch = 'refs/heads/main'; Id = $true; Url = $false }
-    @{ Service = 'template/aztemplate'; Reason = 'PullRequest'; Branch = 'refs/pull/1/merge'; Id = $true; Url = $false }
-    @{ Service = 'azcore'; Reason = 'Manual'; Branch = 'refs/heads/main'; Id = $false; Url = $false }
-    @{ Service = 'azcore'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Id = $false; Url = $false }
-    @{ Service = 'resourcemanager/compute/armcompute'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Id = $false; Url = $false }
-    @{ Service = 'template/other'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Id = $false; Url = $false }
+  It 'keeps optional IDs and automatic binding separate for <Service>, <Reason>, <Branch>' -ForEach @(
+    @{ Service = 'template/aztemplate'; Reason = 'Manual'; Branch = 'refs/heads/main'; Bound = $false }
+    @{ Service = 'template/aztemplate'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Bound = $true }
+    @{ Service = 'template/aztemplate'; Reason = 'IndividualCI'; Branch = 'refs/heads/release/test'; Bound = $false }
+    @{ Service = 'template/aztemplate'; Reason = 'BatchedCI'; Branch = 'refs/heads/main'; Bound = $false }
+    @{ Service = 'template/aztemplate'; Reason = 'Schedule'; Branch = 'refs/heads/main'; Bound = $false }
+    @{ Service = 'template/aztemplate'; Reason = 'PullRequest'; Branch = 'refs/pull/1/merge'; Bound = $false }
+    @{ Service = 'azcore'; Reason = 'Manual'; Branch = 'refs/heads/main'; Bound = $false }
+    @{ Service = 'azcore'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Bound = $true }
+    @{ Service = 'resourcemanager/compute/armcompute'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Bound = $true }
+    @{ Service = 'template/other'; Reason = 'IndividualCI'; Branch = 'refs/heads/main'; Bound = $true }
   ) {
     $handoff = @{
       ConfigFileDir = $completion.parameters.ConfigFileDir
       PackageArtifactName = $completion.parameters.PackageArtifactName
+      ReleasePlanId = $completion.parameters.ReleasePlanId
     }
-    if ($Service -eq 'template/aztemplate') {
-      $handoff.ReleasePlanId = $completion.parameters[$templateGuard].ReleasePlanId
-      if ($Reason -eq 'IndividualCI' -and $Branch -eq 'refs/heads/main') {
-        $handoff.SdkPullRequest = $completion.parameters[$templateGuard][$autoGuard].SdkPullRequest
-      }
-    }
-    $handoff.ContainsKey('ReleasePlanId') | Should -Be $Id
-    $handoff.ContainsKey('SdkPullRequest') | Should -Be $Url
-    if (-not $Id) { @($handoff.Keys).Count | Should -Be 2 }
+    $handoff.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
+    $handoff.ContainsKey('SdkPullRequest') | Should -BeFalse
+    @($handoff.Keys).Count | Should -Be 3
+    ($Reason -eq 'IndividualCI' -and $Branch -eq 'refs/heads/main') | Should -Be $Bound
     # The client still excludes PR releases; this case does not assert a PR can release.
     $clientRaw | Should -Match "ne\(variables\['Build.Reason'\], 'PullRequest'\)"
   }
@@ -240,5 +240,18 @@ Describe 'Go template release completion contract' {
     $shell[0].inputs.scriptPath | Should -BeExactly 'eng/scripts/mgmt-auto-release.sh'
     $shell[0].inputs.cwd | Should -BeExactly '$(System.DefaultWorkingDirectory)'
     $shell[0].env.GH_TOKEN | Should -BeExactly '$(GH_TOKEN)'
+  }
+
+  It 'preserves raw ID <Id> for shared validation' -TestCases @(
+    @{ Id = '0' }, @{ Id = '35307' }, @{ Id = '2147483648' },
+    @{ Id = '9007199254740993' }, @{ Id = '1.5' }, @{ Id = '-1' }, @{ Id = ' 42 ' }
+  ) {
+    param([string]$Id)
+    $value = (ConvertFrom-Yaml "ReleasePlanId: '$Id'").ReleasePlanId
+    $entry.extends.parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
+    $releaseCalls[0].parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
+    $completion.parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
+    $value | Should -BeOfType ([string])
+    $value | Should -BeExactly $Id
   }
 }

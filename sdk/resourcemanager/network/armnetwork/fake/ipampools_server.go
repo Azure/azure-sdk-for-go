@@ -38,13 +38,13 @@ type IpamPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetPoolUsage func(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *armnetwork.IpamPoolsClientGetPoolUsageOptions) (resp azfake.Responder[armnetwork.IpamPoolsClientGetPoolUsageResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method IpamPoolsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, networkManagerName string, options *armnetwork.IpamPoolsClientListOptions) (resp azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse])
-
 	// NewListAssociatedResourcesPager is the fake for method IpamPoolsClient.NewListAssociatedResourcesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAssociatedResourcesPager func(resourceGroupName string, networkManagerName string, poolName string, options *armnetwork.IpamPoolsClientListAssociatedResourcesOptions) (resp azfake.PagerResponder[armnetwork.IpamPoolsClientListAssociatedResourcesResponse])
+
+	// NewListPager is the fake for method IpamPoolsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, networkManagerName string, options *armnetwork.IpamPoolsClientListOptions) (resp azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse])
 
 	// Update is the fake for method IpamPoolsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -59,8 +59,8 @@ func NewIpamPoolsServerTransport(srv *IpamPoolsServer) *IpamPoolsServerTransport
 		srv:                             srv,
 		beginCreate:                     newTracker[azfake.PollerResponder[armnetwork.IpamPoolsClientCreateResponse]](),
 		beginDelete:                     newTracker[azfake.PollerResponder[armnetwork.IpamPoolsClientDeleteResponse]](),
-		newListPager:                    newTracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]](),
 		newListAssociatedResourcesPager: newTracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListAssociatedResourcesResponse]](),
+		newListPager:                    newTracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]](),
 	}
 }
 
@@ -70,8 +70,8 @@ type IpamPoolsServerTransport struct {
 	srv                             *IpamPoolsServer
 	beginCreate                     *tracker[azfake.PollerResponder[armnetwork.IpamPoolsClientCreateResponse]]
 	beginDelete                     *tracker[azfake.PollerResponder[armnetwork.IpamPoolsClientDeleteResponse]]
-	newListPager                    *tracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]]
 	newListAssociatedResourcesPager *tracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListAssociatedResourcesResponse]]
+	newListPager                    *tracker[azfake.PagerResponder[armnetwork.IpamPoolsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for IpamPoolsServerTransport.
@@ -79,7 +79,7 @@ func (i *IpamPoolsServerTransport) Do(req *http.Request) (*http.Response, error)
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return i.dispatchToMethodFake(req, method)
@@ -103,10 +103,10 @@ func (i *IpamPoolsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = i.dispatchGet(req)
 			case "IpamPoolsClient.GetPoolUsage":
 				res.resp, res.err = i.dispatchGetPoolUsage(req)
-			case "IpamPoolsClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IpamPoolsClient.NewListAssociatedResourcesPager":
 				res.resp, res.err = i.dispatchNewListAssociatedResourcesPager(req)
+			case "IpamPoolsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IpamPoolsClient.Update":
 				res.resp, res.err = i.dispatchUpdate(req)
 			default:
@@ -313,81 +313,6 @@ func (i *IpamPoolsServerTransport) dispatchGetPoolUsage(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (i *IpamPoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := i.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("skipToken"))
-		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		sortKeyParam := getOptional(qp.Get("sortKey"))
-		sortValueParam := getOptional(qp.Get("sortValue"))
-		var options *armnetwork.IpamPoolsClientListOptions
-		if skipTokenParam != nil || skipParam != nil || topParam != nil || sortKeyParam != nil || sortValueParam != nil {
-			options = &armnetwork.IpamPoolsClientListOptions{
-				SkipToken: skipTokenParam,
-				Skip:      skipParam,
-				Top:       topParam,
-				SortKey:   sortKeyParam,
-				SortValue: sortValueParam,
-			}
-		}
-		resp := i.srv.NewListPager(resourceGroupNameParam, networkManagerNameParam, options)
-		newListPager = &resp
-		i.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.IpamPoolsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		i.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *IpamPoolsServerTransport) dispatchNewListAssociatedResourcesPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListAssociatedResourcesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAssociatedResourcesPager not implemented")}
@@ -429,6 +354,75 @@ func (i *IpamPoolsServerTransport) dispatchNewListAssociatedResourcesPager(req *
 	}
 	if !server.PagerResponderMore(newListAssociatedResourcesPager) {
 		i.newListAssociatedResourcesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (i *IpamPoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := i.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/networkManagers/(?P<networkManagerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ipamPools`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("skipToken"))
+		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		sortKeyParam := getOptional(qp.Get("sortKey"))
+		sortValueParam := getOptional(qp.Get("sortValue"))
+		var options *armnetwork.IpamPoolsClientListOptions
+		if skipTokenParam != nil || skipParam != nil || topParam != nil || sortKeyParam != nil || sortValueParam != nil {
+			options = &armnetwork.IpamPoolsClientListOptions{
+				SkipToken: skipTokenParam,
+				Skip:      skipParam,
+				Top:       topParam,
+				SortKey:   sortKeyParam,
+				SortValue: sortValueParam,
+			}
+		}
+		resp := i.srv.NewListPager(resourceGroupNameParam, networkManagerNameParam, options)
+		newListPager = &resp
+		i.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.IpamPoolsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		i.newListPager.remove(req)
 	}
 	return resp, nil
 }

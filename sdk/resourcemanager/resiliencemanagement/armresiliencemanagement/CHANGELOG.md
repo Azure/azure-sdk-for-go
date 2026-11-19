@@ -1,5 +1,60 @@
 # Release History
 
+## 1.0.0 (2026-10-07)
+### Breaking Changes
+
+- Type of `DrillResource.Properties` has been changed from `*DrillResourceProperties` to `DrillResourcePropertiesClassification`
+- `UsagePlanTypeBasic` from enum `UsagePlanType` has been removed
+- Enum `GoalAssignmentType` has been removed
+- Enum `GoalType` has been removed
+- Enum `IsoDuration` has been removed
+- Enum `MembershipType` has been removed
+- Enum `RequirementSelected` has been removed
+- Enum `ResilienceHealthStatus` has been removed
+- Enum `UnifiedResilienceItemRequirementSelected` has been removed
+- Function `*ClientFactory.NewGoalTemplatesClient` has been removed
+- Function `NewGoalTemplatesClient` has been removed
+- Function `*GoalTemplatesClient.BeginCreateOrUpdate` has been removed
+- Function `*GoalTemplatesClient.BeginDelete` has been removed
+- Function `*GoalTemplatesClient.Get` has been removed
+- Function `*GoalTemplatesClient.NewListPager` has been removed
+- Function `*GoalTemplatesClient.BeginUpdate` has been removed
+- Struct `GoalTemplate` has been removed
+- Struct `GoalTemplateListResult` has been removed
+- Struct `GoalTemplateProperties` has been removed
+- Struct `RecommendationsData` has been removed
+- Struct `RecommendationsHighAvailabilityData` has been removed
+- Struct `ServiceGroupMembership` has been removed
+- Field `ActivePhysicalZones`, `AdvisorHaRecommendationID`, `HaStatus`, `RecoveryPhysicalZones` of struct `DrillResourceProperties` has been removed
+- Field `GoalAssignmentType`, `GoalTemplateID` of struct `GoalAssignmentProperties` has been removed
+- Field `DisasterRecoveryAttestationStatus`, `DisasterRecoveryGoalParticipation`, `ExclusionReasonForDisasterRecoveryGoals`, `ExclusionReasonForHighAvailabilityGoals`, `HighAvailabilityAttestationStatus`, `HighAvailabilityGoalParticipation`, `ServiceGroupMemberships`, `UserConfirmationForHighAvailability` of struct `GoalResourceProperties` has been removed
+- Field `RegionalRecoveryPointEstimatedInMinutes`, `RegionalRecoveryPointObjectiveInMinutes`, `RegionalRecoveryPointObjectiveStatus`, `RegionalRecoveryTimeActualInMinutes`, `RegionalRecoveryTimeObjectiveInMinutes`, `RegionalRecoveryTimeObjectiveStatus`, `RequireDisasterRecovery`, `RequireHighAvailability`, `TemplateID` of struct `GoalsData` has been removed
+- Field `DiscoveryRuleID` of struct `HealthModelMonitoringProperties` has been removed
+- Field `ServiceLevelObjectiveResourceID` of struct `ServiceLevelResource` has been removed
+- Field `Recommendations` of struct `UnifiedResilienceItemProperties` has been removed
+
+### Features Added
+
+- New function `*DrillResourceProperties.GetDrillResourceProperties() *DrillResourceProperties`
+- New function `*RegionalDrillResourceProperties.GetDrillResourceProperties() *DrillResourceProperties`
+- New function `*ZonalDrillResourceProperties.GetDrillResourceProperties() *DrillResourceProperties`
+- New struct `GoalAssignmentPropertiesOfDrill`
+- New struct `RegionalDrillResourceProperties`
+- New struct `UnifiedResilienceItemBillingInfo`
+- New struct `UnifiedResilienceItemGoalRequirement`
+- New struct `UnifiedResilienceItemResiliencyPosture`
+- New struct `UnifiedResilienceItemZonalResiliencyPosture`
+- New struct `ZonalDrillResourceProperties`
+- New field `DrillRbacOnGoalAssignment`, `GoalAssignment`, `HealthModelAssociatedWithServiceGroup`, `RbacNeededForDrillOnGoalAssignment`, `RecoveryPlan` in struct `AttentionReason`
+- New field `GoalAssignmentProperties` in struct `DrillProperties`
+- New field `GoalAssignmentProperties` in struct `DrillUpdateProperties`
+- New field `ZonalResiliency` in struct `GoalsData`
+- New field `HealthModelID` in struct `HealthModelMonitoringProperties`
+- New field `GoalAssignmentProperties` in struct `RegionalDrillProperties`
+- New field `BillingInfo`, `ResiliencyPosture` in struct `UnifiedResilienceItemProperties`
+- New field `GoalAssignmentProperties` in struct `ZonalDrillProperties`
+
+
 ## 0.2.0 (2026-09-23)
 ### Breaking Changes
 

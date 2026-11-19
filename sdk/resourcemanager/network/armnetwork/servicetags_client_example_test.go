@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ServiceTagsList.json
+// Generated from example definition: 2026-03-01/ServiceTagsList.json
 func ExampleServiceTagsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

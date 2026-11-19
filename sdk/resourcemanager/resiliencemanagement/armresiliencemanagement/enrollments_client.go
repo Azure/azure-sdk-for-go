@@ -19,7 +19,7 @@ import (
 // EnrollmentsClient contains the methods for the Enrollments group.
 // Don't use this type directly, use NewEnrollmentsClient() instead.
 //
-// Generated from API version 2026-08-31-preview
+// Generated from API version 2026-10-01
 type EnrollmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *EnrollmentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create or update an Enrollment.
+// createOrUpdate - Create or update an Enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnrollmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, resource Enrollment, options *EnrollmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *EnrollmentsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EnrollmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, resource Enrollment, _ *EnrollmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}"
 	if client.subscriptionID == "" {
@@ -115,7 +116,7 @@ func (client *EnrollmentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -148,7 +149,7 @@ func (client *EnrollmentsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete an Enrollment.
+// deleteOperation - Delete an Enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnrollmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, options *EnrollmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *EnrollmentsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EnrollmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, usagePlanName string, enrollmentName string, _ *EnrollmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}"
 	if client.subscriptionID == "" {
@@ -194,7 +196,7 @@ func (client *EnrollmentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -219,7 +221,8 @@ func (client *EnrollmentsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return EnrollmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -246,7 +249,7 @@ func (client *EnrollmentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260831Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +324,7 @@ func (client *EnrollmentsClient) listCreateRequest(ctx context.Context, resource
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260831Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

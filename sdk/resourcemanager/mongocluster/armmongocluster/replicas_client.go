@@ -19,7 +19,7 @@ import (
 // ReplicasClient contains the methods for the Replicas group.
 // Don't use this type directly, use NewReplicasClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-09-01
 type ReplicasClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,9 +44,9 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// NewListByParentPager - List all the replicas for the mongo cluster.
+// NewListByParentPager - List all the replicas for the DocumentDB cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - ReplicasClientListByParentOptions contains the optional parameters for the ReplicasClient.NewListByParentPager
 //     method.
 func (client *ReplicasClient) NewListByParentPager(resourceGroupName string, mongoClusterName string, options *ReplicasClientListByParentOptions) *runtime.Pager[ReplicasClientListByParentResponse] {
@@ -102,7 +102,7 @@ func (client *ReplicasClient) listByParentCreateRequest(ctx context.Context, res
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

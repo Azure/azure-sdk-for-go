@@ -19,7 +19,7 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type ClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *ClustersClient) BeginConfigureRemoteSupport(ctx context.Context, r
 	}
 }
 
-// ConfigureRemoteSupport - Configure RemoteSupport on a cluster
+// configureRemoteSupport - Configure RemoteSupport on a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) configureRemoteSupport(ctx context.Context, resourceGroupName string, clusterName string, remoteSupportRequest RemoteSupportRequest, options *ClustersClientBeginConfigureRemoteSupportOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ClustersClient) configureRemoteSupport(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// configureRemoteSupportCreateRequest creates the ConfigureRemoteSupport request.
+// configureRemoteSupportCreateRequest creates the configureRemoteSupport request.
 func (client *ClustersClient) configureRemoteSupportCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, remoteSupportRequest RemoteSupportRequest, _ *ClustersClientBeginConfigureRemoteSupportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/configureRemoteSupport"
 	if client.subscriptionID == "" {
@@ -110,7 +111,7 @@ func (client *ClustersClient) configureRemoteSupportCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -118,71 +119,6 @@ func (client *ClustersClient) configureRemoteSupportCreateRequest(ctx context.Co
 		return nil, err
 	}
 	return req, nil
-}
-
-// Create - Create an HCI cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - cluster - Details of the HCI cluster.
-//   - options - ClustersClientCreateOptions contains the optional parameters for the ClustersClient.Create method.
-func (client *ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientCreateOptions) (ClustersClientCreateResponse, error) {
-	var err error
-	const operationName = "ClustersClient.Create"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterName, cluster, options)
-	if err != nil {
-		return ClustersClientCreateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClustersClientCreateResponse{}, err
-	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
-}
-
-// createCreateRequest creates the Create request.
-func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, _ *ClustersClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, cluster); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createHandleResponse handles the Create response.
-func (client *ClustersClient) createHandleResponse(resp *http.Response, successCodes ...int) (ClustersClientCreateResponse, error) {
-	result := ClustersClientCreateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
-		return ClustersClientCreateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginCreateIdentity - Create cluster identity.
@@ -209,7 +145,7 @@ func (client *ClustersClient) BeginCreateIdentity(ctx context.Context, resourceG
 	}
 }
 
-// CreateIdentity - Create cluster identity.
+// createIdentity - Create cluster identity.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) createIdentity(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginCreateIdentityOptions) (*http.Response, error) {
 	var err error
@@ -226,12 +162,13 @@ func (client *ClustersClient) createIdentity(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createIdentityCreateRequest creates the CreateIdentity request.
+// createIdentityCreateRequest creates the createIdentity request.
 func (client *ClustersClient) createIdentityCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ClustersClientBeginCreateIdentityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/createClusterIdentity"
 	if client.subscriptionID == "" {
@@ -251,7 +188,7 @@ func (client *ClustersClient) createIdentityCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +216,7 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete an HCI cluster.
+// deleteOperation - Delete an HCI cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -296,12 +233,13 @@ func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -321,7 +259,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -350,7 +288,7 @@ func (client *ClustersClient) BeginExtendSoftwareAssuranceBenefit(ctx context.Co
 	}
 }
 
-// ExtendSoftwareAssuranceBenefit - Extends Software Assurance Benefit to a cluster
+// extendSoftwareAssuranceBenefit - Extends Software Assurance Benefit to a cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) extendSoftwareAssuranceBenefit(ctx context.Context, resourceGroupName string, clusterName string, softwareAssuranceChangeRequest SoftwareAssuranceChangeRequest, options *ClustersClientBeginExtendSoftwareAssuranceBenefitOptions) (*http.Response, error) {
 	var err error
@@ -367,12 +305,13 @@ func (client *ClustersClient) extendSoftwareAssuranceBenefit(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// extendSoftwareAssuranceBenefitCreateRequest creates the ExtendSoftwareAssuranceBenefit request.
+// extendSoftwareAssuranceBenefitCreateRequest creates the extendSoftwareAssuranceBenefit request.
 func (client *ClustersClient) extendSoftwareAssuranceBenefitCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, softwareAssuranceChangeRequest SoftwareAssuranceChangeRequest, _ *ClustersClientBeginExtendSoftwareAssuranceBenefitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/extendSoftwareAssuranceBenefit"
 	if client.subscriptionID == "" {
@@ -392,7 +331,7 @@ func (client *ClustersClient) extendSoftwareAssuranceBenefitCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -400,6 +339,303 @@ func (client *ClustersClient) extendSoftwareAssuranceBenefitCreateRequest(ctx co
 		return nil, err
 	}
 	return req, nil
+}
+
+// BeginTriggerLogCollection - Trigger Log Collection on a cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - logCollectionRequest - Trigger Log Collection Request Payload
+//   - options - ClustersClientBeginTriggerLogCollectionOptions contains the optional parameters for the ClustersClient.BeginTriggerLogCollection
+//     method.
+func (client *ClustersClient) BeginTriggerLogCollection(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest LogCollectionRequest, options *ClustersClientBeginTriggerLogCollectionOptions) (*runtime.Poller[ClustersClientTriggerLogCollectionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.triggerLogCollection(ctx, resourceGroupName, clusterName, logCollectionRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientTriggerLogCollectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientTriggerLogCollectionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// triggerLogCollection - Trigger Log Collection on a cluster
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ClustersClient) triggerLogCollection(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest LogCollectionRequest, options *ClustersClientBeginTriggerLogCollectionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ClustersClient.BeginTriggerLogCollection"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.triggerLogCollectionCreateRequest(ctx, resourceGroupName, clusterName, logCollectionRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// triggerLogCollectionCreateRequest creates the triggerLogCollection request.
+func (client *ClustersClient) triggerLogCollectionCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest LogCollectionRequest, _ *ClustersClientBeginTriggerLogCollectionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/triggerLogCollection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, logCollectionRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateSecretsLocations - Update cluster secrets locations.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - body - The content of the action request
+//   - options - ClustersClientBeginUpdateSecretsLocationsOptions contains the optional parameters for the ClustersClient.BeginUpdateSecretsLocations
+//     method.
+func (client *ClustersClient) BeginUpdateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*runtime.Poller[ClustersClientUpdateSecretsLocationsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateSecretsLocations(ctx, resourceGroupName, clusterName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientUpdateSecretsLocationsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientUpdateSecretsLocationsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// updateSecretsLocations - Update cluster secrets locations.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ClustersClient) updateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ClustersClient.BeginUpdateSecretsLocations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateSecretsLocationsCreateRequest(ctx, resourceGroupName, clusterName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateSecretsLocationsCreateRequest creates the updateSecretsLocations request.
+func (client *ClustersClient) updateSecretsLocationsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, _ *ClustersClientBeginUpdateSecretsLocationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSecretsLocations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUploadCertificate - Upload certificate.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - uploadCertificateRequest - Upload certificate request.
+//   - options - ClustersClientBeginUploadCertificateOptions contains the optional parameters for the ClustersClient.BeginUploadCertificate
+//     method.
+func (client *ClustersClient) BeginUploadCertificate(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest UploadCertificateRequest, options *ClustersClientBeginUploadCertificateOptions) (*runtime.Poller[ClustersClientUploadCertificateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.uploadCertificate(ctx, resourceGroupName, clusterName, uploadCertificateRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientUploadCertificateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientUploadCertificateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// uploadCertificate - Upload certificate.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ClustersClient) uploadCertificate(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest UploadCertificateRequest, options *ClustersClientBeginUploadCertificateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ClustersClient.BeginUploadCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.uploadCertificateCreateRequest(ctx, resourceGroupName, clusterName, uploadCertificateRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// uploadCertificateCreateRequest creates the uploadCertificate request.
+func (client *ClustersClient) uploadCertificateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest UploadCertificateRequest, _ *ClustersClientBeginUploadCertificateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/uploadCertificate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, uploadCertificateRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// Create - Create an HCI cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - cluster - Details of the HCI cluster.
+//   - options - ClustersClientCreateOptions contains the optional parameters for the ClustersClient.Create method.
+func (client *ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientCreateOptions) (ClustersClientCreateResponse, error) {
+	var err error
+	const operationName = "ClustersClient.Create"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterName, cluster, options)
+	if err != nil {
+		return ClustersClientCreateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClustersClientCreateResponse{}, err
+	}
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// createCreateRequest creates the Create request.
+func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, _ *ClustersClientCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, cluster); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createHandleResponse handles the Create response.
+func (client *ClustersClient) createHandleResponse(resp *http.Response, successCodes ...int) (ClustersClientCreateResponse, error) {
+	result := ClustersClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Cluster); err != nil {
+		return ClustersClientCreateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Get HCI cluster.
@@ -421,7 +657,8 @@ func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ClustersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -444,7 +681,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -515,7 +752,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -582,7 +819,7 @@ func (client *ClustersClient) listBySubscriptionCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -599,82 +836,6 @@ func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Respon
 		return ClustersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginTriggerLogCollection - Trigger Log Collection on a cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - logCollectionRequest - Trigger Log Collection Request Payload
-//   - options - ClustersClientBeginTriggerLogCollectionOptions contains the optional parameters for the ClustersClient.BeginTriggerLogCollection
-//     method.
-func (client *ClustersClient) BeginTriggerLogCollection(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest LogCollectionRequest, options *ClustersClientBeginTriggerLogCollectionOptions) (*runtime.Poller[ClustersClientTriggerLogCollectionResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.triggerLogCollection(ctx, resourceGroupName, clusterName, logCollectionRequest, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientTriggerLogCollectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientTriggerLogCollectionResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// TriggerLogCollection - Trigger Log Collection on a cluster
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ClustersClient) triggerLogCollection(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest LogCollectionRequest, options *ClustersClientBeginTriggerLogCollectionOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ClustersClient.BeginTriggerLogCollection"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.triggerLogCollectionCreateRequest(ctx, resourceGroupName, clusterName, logCollectionRequest, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// triggerLogCollectionCreateRequest creates the TriggerLogCollection request.
-func (client *ClustersClient) triggerLogCollectionCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, logCollectionRequest LogCollectionRequest, _ *ClustersClientBeginTriggerLogCollectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/triggerLogCollection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, logCollectionRequest); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // Update - Update an HCI cluster.
@@ -697,7 +858,8 @@ func (client *ClustersClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ClustersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -720,7 +882,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -740,156 +902,4 @@ func (client *ClustersClient) updateHandleResponse(resp *http.Response, successC
 		return ClustersClientUpdateResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdateSecretsLocations - Update cluster secrets locations.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - body - The content of the action request
-//   - options - ClustersClientBeginUpdateSecretsLocationsOptions contains the optional parameters for the ClustersClient.BeginUpdateSecretsLocations
-//     method.
-func (client *ClustersClient) BeginUpdateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*runtime.Poller[ClustersClientUpdateSecretsLocationsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateSecretsLocations(ctx, resourceGroupName, clusterName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientUpdateSecretsLocationsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientUpdateSecretsLocationsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UpdateSecretsLocations - Update cluster secrets locations.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ClustersClient) updateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ClustersClient.BeginUpdateSecretsLocations"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateSecretsLocationsCreateRequest(ctx, resourceGroupName, clusterName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateSecretsLocationsCreateRequest creates the UpdateSecretsLocations request.
-func (client *ClustersClient) updateSecretsLocationsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, _ *ClustersClientBeginUpdateSecretsLocationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSecretsLocations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUploadCertificate - Upload certificate.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - uploadCertificateRequest - Upload certificate request.
-//   - options - ClustersClientBeginUploadCertificateOptions contains the optional parameters for the ClustersClient.BeginUploadCertificate
-//     method.
-func (client *ClustersClient) BeginUploadCertificate(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest UploadCertificateRequest, options *ClustersClientBeginUploadCertificateOptions) (*runtime.Poller[ClustersClientUploadCertificateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.uploadCertificate(ctx, resourceGroupName, clusterName, uploadCertificateRequest, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientUploadCertificateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClustersClientUploadCertificateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UploadCertificate - Upload certificate.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ClustersClient) uploadCertificate(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest UploadCertificateRequest, options *ClustersClientBeginUploadCertificateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ClustersClient.BeginUploadCertificate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.uploadCertificateCreateRequest(ctx, resourceGroupName, clusterName, uploadCertificateRequest, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// uploadCertificateCreateRequest creates the UploadCertificate request.
-func (client *ClustersClient) uploadCertificateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, uploadCertificateRequest UploadCertificateRequest, _ *ClustersClientBeginUploadCertificateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/uploadCertificate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, uploadCertificateRequest); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

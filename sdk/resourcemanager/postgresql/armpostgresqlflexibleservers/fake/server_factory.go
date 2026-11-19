@@ -42,9 +42,6 @@ type ServerFactory struct {
 	// DatabasesServer contains the fakes for client DatabasesClient
 	DatabasesServer DatabasesServer
 
-	// DbAgentsServer contains the fakes for client DbAgentsClient
-	DbAgentsServer DbAgentsServer
-
 	// FirewallRulesServer contains the fakes for client FirewallRulesClient
 	FirewallRulesServer FirewallRulesServer
 
@@ -117,7 +114,6 @@ type ServerFactoryTransport struct {
 	trCapturedLogsServer                     *CapturedLogsServerTransport
 	trConfigurationsServer                   *ConfigurationsServerTransport
 	trDatabasesServer                        *DatabasesServerTransport
-	trDbAgentsServer                         *DbAgentsServerTransport
 	trFirewallRulesServer                    *FirewallRulesServerTransport
 	trMaintenanceEventsServer                *MaintenanceEventsServerTransport
 	trMajorVersionUpgradePrecheckServer      *MajorVersionUpgradePrecheckServerTransport
@@ -141,7 +137,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	client := method[:strings.Index(method, ".")]
@@ -190,9 +186,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DatabasesClient":
 		initServer(&s.trMu, &s.trDatabasesServer, func() *DatabasesServerTransport { return NewDatabasesServerTransport(&s.srv.DatabasesServer) })
 		resp, err = s.trDatabasesServer.Do(req)
-	case "DbAgentsClient":
-		initServer(&s.trMu, &s.trDbAgentsServer, func() *DbAgentsServerTransport { return NewDbAgentsServerTransport(&s.srv.DbAgentsServer) })
-		resp, err = s.trDbAgentsServer.Do(req)
 	case "FirewallRulesClient":
 		initServer(&s.trMu, &s.trFirewallRulesServer, func() *FirewallRulesServerTransport {
 			return NewFirewallRulesServerTransport(&s.srv.FirewallRulesServer)

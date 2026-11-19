@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ChargesForBillingPeriodByDepartment.json
+// Generated from example definition: 2026-06-01/ChargesForBillingPeriodByDepartment.json
 func ExampleChargesClient_List_changesForBillingPeriodByDepartmentLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleChargesClient_List_changesForBillingPeriodByDepartmentLegacy() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesForBillingPeriodByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/ChargesForBillingPeriodByEnrollmentAccount.json
 func ExampleChargesClient_List_changesForBillingPeriodByEnrollmentAccountLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleChargesClient_List_changesForBillingPeriodByEnrollmentAccountLegacy(
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernBillingAccount.json
+// Generated from example definition: 2026-06-01/ChargesListByModernBillingAccount.json
 func ExampleChargesClient_List_chargesListByBillingAccountModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountModern() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernBillingAccountGroupByBillingProfileId.json
+// Generated from example definition: 2026-06-01/ChargesListByModernBillingAccountGroupByBillingProfileId.json
 func ExampleChargesClient_List_chargesListByBillingAccountGroupByBillingProfileIdModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByBillingProfileI
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernBillingAccountGroupByCustomerId.json
+// Generated from example definition: 2026-06-01/ChargesListByModernBillingAccountGroupByCustomerId.json
 func ExampleChargesClient_List_chargesListByBillingAccountGroupByCustomerIdModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByCustomerIdModer
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernBillingAccountGroupByInvoiceSectionId.json
+// Generated from example definition: 2026-06-01/ChargesListByModernBillingAccountGroupByInvoiceSectionId.json
 func ExampleChargesClient_List_chargesListByBillingAccountGroupByInvoiceSectionIdModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByInvoiceSectionI
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernBillingProfile.json
+// Generated from example definition: 2026-06-01/ChargesListByModernBillingProfile.json
 func ExampleChargesClient_List_chargesListByBillingProfileModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +447,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileModern() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernBillingProfileGroupByInvoiceSectionId.json
+// Generated from example definition: 2026-06-01/ChargesListByModernBillingProfileGroupByInvoiceSectionId.json
 func ExampleChargesClient_List_chargesListByBillingProfileGroupByInvoiceSectionIdModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -530,7 +530,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileGroupByInvoiceSectionI
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernBillingProfileInvoiceSection.json
+// Generated from example definition: 2026-06-01/ChargesListByModernBillingProfileInvoiceSection.json
 func ExampleChargesClient_List_chargesListByBillingProfileInvoiceSectionModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -612,7 +612,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileInvoiceSectionModern()
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernCustomer.json
+// Generated from example definition: 2026-06-01/ChargesListByModernCustomer.json
 func ExampleChargesClient_List_chargesListByCustomerModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -663,7 +663,7 @@ func ExampleChargesClient_List_chargesListByCustomerModern() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListByModernInvoiceSectionId.json
+// Generated from example definition: 2026-06-01/ChargesListByModernInvoiceSectionId.json
 func ExampleChargesClient_List_chargesListByInvoiceSectionIdModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -716,7 +716,7 @@ func ExampleChargesClient_List_chargesListByInvoiceSectionIdModern() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListForDepartmentFilterByStartEndDate.json
+// Generated from example definition: 2026-06-01/ChargesListForDepartmentFilterByStartEndDate.json
 func ExampleChargesClient_List_chargesListByDepartmentLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,7 +758,7 @@ func ExampleChargesClient_List_chargesListByDepartmentLegacy() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ChargesListForEnrollmentAccountFilterByStartEndDate.json
+// Generated from example definition: 2026-06-01/ChargesListForEnrollmentAccountFilterByStartEndDate.json
 func ExampleChargesClient_List_chargesListForEnrollmentAccountLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

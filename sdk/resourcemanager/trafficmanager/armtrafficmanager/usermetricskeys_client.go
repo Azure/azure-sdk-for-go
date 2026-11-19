@@ -62,7 +62,8 @@ func (client *UserMetricsKeysClient) CreateOrUpdate(ctx context.Context, options
 	if err != nil {
 		return UserMetricsKeysClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -112,7 +113,8 @@ func (client *UserMetricsKeysClient) Delete(ctx context.Context, options *UserMe
 	if err != nil {
 		return UserMetricsKeysClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -162,7 +164,8 @@ func (client *UserMetricsKeysClient) Get(ctx context.Context, options *UserMetri
 	if err != nil {
 		return UserMetricsKeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -72,6 +72,9 @@ If you encounter bugs or have suggestions, please
 
 # Contributing
 
+For local test setup, `.env` configuration, streamed recording and playback output,
+configurable parallelism, and scenario timeouts, see [Testing](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/edgeactions/armedgeactions/TESTING.md).
+
 This project welcomes contributions and suggestions. Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have
 the right to, and actually do, grant us the rights to use your contribution.

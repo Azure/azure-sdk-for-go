@@ -68,7 +68,7 @@ func (client *ManagedInstanceTdeCertificatesClient) BeginCreate(ctx context.Cont
 	}
 }
 
-// Create - Creates a TDE certificate for a given server.
+// create - Creates a TDE certificate for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceTdeCertificatesClient) create(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, options *ManagedInstanceTdeCertificatesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ManagedInstanceTdeCertificatesClient) create(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ManagedInstanceTdeCertificatesClient) createCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters TdeCertificate, _ *ManagedInstanceTdeCertificatesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/tdeCertificates"
 	if client.subscriptionID == "" {

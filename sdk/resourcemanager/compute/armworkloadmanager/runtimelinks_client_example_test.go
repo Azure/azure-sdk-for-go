@@ -125,6 +125,54 @@ func ExampleRuntimeLinksClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-11-01-preview/RuntimeLinks_Update.json
+func ExampleRuntimeLinksClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRuntimeLinksClient().BeginUpdate(ctx, "rg-workload", "managed-agents-prod", "default", armworkloadmanager.RuntimeLinkUpdate{
+		Properties: &armworkloadmanager.RuntimeLinkUpdateProperties{
+			CapacityProfile: &armworkloadmanager.CapacityProfileUpdate{
+				MinimumNodes: to.Ptr[int32](2),
+				MaximumNodes: to.Ptr[int32](150),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadmanager.RuntimeLinksClientUpdateResponse{
+	// 	RuntimeLink: armworkloadmanager.RuntimeLink{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-workload/providers/Microsoft.Compute/workloadSpaces/managed-agents-prod/runtimeLinks/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.Compute/workloadSpaces/runtimeLinks"),
+	// 		Location: to.Ptr("eastus2"),
+	// 		Properties: &armworkloadmanager.RuntimeLinkProperties{
+	// 			OrchestratorBindingResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-workload/providers/Microsoft.Compute/workloadSpaces/managed-agents-prod/runtimeBindings/kubernetes-default"),
+	// 			ExecutionBindingResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-workload/providers/Microsoft.Compute/workloadSpaces/managed-agents-prod/runtimeBindings/serverless-default"),
+	// 			CapacityProfile: &armworkloadmanager.CapacityProfile{
+	// 				MinimumNodes: to.Ptr[int32](2),
+	// 				MaximumNodes: to.Ptr[int32](150),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armworkloadmanager.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-11-01-preview/RuntimeLinks_Get.json
 func ExampleRuntimeLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -206,52 +254,4 @@ func ExampleRuntimeLinksClient_NewListByWorkloadSpacePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-11-01-preview/RuntimeLinks_Update.json
-func ExampleRuntimeLinksClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRuntimeLinksClient().BeginUpdate(ctx, "rg-workload", "managed-agents-prod", "default", armworkloadmanager.RuntimeLinkUpdate{
-		Properties: &armworkloadmanager.RuntimeLinkUpdateProperties{
-			CapacityProfile: &armworkloadmanager.CapacityProfileUpdate{
-				MinimumNodes: to.Ptr[int32](2),
-				MaximumNodes: to.Ptr[int32](150),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadmanager.RuntimeLinksClientUpdateResponse{
-	// 	RuntimeLink: armworkloadmanager.RuntimeLink{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-workload/providers/Microsoft.Compute/workloadSpaces/managed-agents-prod/runtimeLinks/default"),
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.Compute/workloadSpaces/runtimeLinks"),
-	// 		Location: to.Ptr("eastus2"),
-	// 		Properties: &armworkloadmanager.RuntimeLinkProperties{
-	// 			OrchestratorBindingResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-workload/providers/Microsoft.Compute/workloadSpaces/managed-agents-prod/runtimeBindings/kubernetes-default"),
-	// 			ExecutionBindingResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-workload/providers/Microsoft.Compute/workloadSpaces/managed-agents-prod/runtimeBindings/serverless-default"),
-	// 			CapacityProfile: &armworkloadmanager.CapacityProfile{
-	// 				MinimumNodes: to.Ptr[int32](2),
-	// 				MaximumNodes: to.Ptr[int32](150),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armworkloadmanager.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

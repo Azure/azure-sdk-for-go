@@ -30,14 +30,6 @@ type TaskAssignmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *armstorage.TaskAssignmentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armstorage.TaskAssignmentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method TaskAssignmentsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *armstorage.TaskAssignmentsClientGetOptions) (resp azfake.Responder[armstorage.TaskAssignmentsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method TaskAssignmentsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armstorage.TaskAssignmentsClientListOptions) (resp azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse])
-
 	// BeginStopAssignment is the fake for method TaskAssignmentsClient.BeginStopAssignment
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStopAssignment func(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *armstorage.TaskAssignmentsClientBeginStopAssignmentOptions) (resp azfake.PollerResponder[armstorage.TaskAssignmentsClientStopAssignmentResponse], errResp azfake.ErrorResponder)
@@ -45,6 +37,14 @@ type TaskAssignmentsServer struct {
 	// BeginUpdate is the fake for method TaskAssignmentsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, parameters armstorage.TaskAssignmentUpdateParameters, options *armstorage.TaskAssignmentsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method TaskAssignmentsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, storageTaskAssignmentName string, options *armstorage.TaskAssignmentsClientGetOptions) (resp azfake.Responder[armstorage.TaskAssignmentsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method TaskAssignmentsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, accountName string, options *armstorage.TaskAssignmentsClientListOptions) (resp azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse])
 }
 
 // NewTaskAssignmentsServerTransport creates a new instance of TaskAssignmentsServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewTaskAssignmentsServerTransport(srv *TaskAssignmentsServer) *TaskAssignme
 		srv:                 srv,
 		beginCreate:         newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientCreateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]](),
 		beginStopAssignment: newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientStopAssignmentResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type TaskAssignmentsServerTransport struct {
 	srv                 *TaskAssignmentsServer
 	beginCreate         *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientCreateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]]
 	beginStopAssignment *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientStopAssignmentResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armstorage.TaskAssignmentsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armstorage.TaskAssignmentsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TaskAssignmentsServerTransport.
@@ -77,7 +77,7 @@ func (t *TaskAssignmentsServerTransport) Do(req *http.Request) (*http.Response, 
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return t.dispatchToMethodFake(req, method)
@@ -97,14 +97,14 @@ func (t *TaskAssignmentsServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = t.dispatchBeginCreate(req)
 			case "TaskAssignmentsClient.BeginDelete":
 				res.resp, res.err = t.dispatchBeginDelete(req)
-			case "TaskAssignmentsClient.Get":
-				res.resp, res.err = t.dispatchGet(req)
-			case "TaskAssignmentsClient.NewListPager":
-				res.resp, res.err = t.dispatchNewListPager(req)
 			case "TaskAssignmentsClient.BeginStopAssignment":
 				res.resp, res.err = t.dispatchBeginStopAssignment(req)
 			case "TaskAssignmentsClient.BeginUpdate":
 				res.resp, res.err = t.dispatchBeginUpdate(req)
+			case "TaskAssignmentsClient.Get":
+				res.resp, res.err = t.dispatchGet(req)
+			case "TaskAssignmentsClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -127,7 +127,7 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginCreate(req *http.Request) 
 	}
 	beginCreate := t.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -179,7 +179,7 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := t.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -221,108 +221,13 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginDelete(req *http.Request) 
 	return resp, nil
 }
 
-func (t *TaskAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if t.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	storageTaskAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTaskAssignmentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, storageTaskAssignmentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TaskAssignment, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (t *TaskAssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := t.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTaskAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armstorage.TaskAssignmentsClientListOptions
-		if topParam != nil {
-			options = &armstorage.TaskAssignmentsClientListOptions{
-				Top: topParam,
-			}
-		}
-		resp := t.srv.NewListPager(resourceGroupNameParam, accountNameParam, options)
-		newListPager = &resp
-		t.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.TaskAssignmentsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		t.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (t *TaskAssignmentsServerTransport) dispatchBeginStopAssignment(req *http.Request) (*http.Response, error) {
 	if t.srv.BeginStopAssignment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStopAssignment not implemented")}
 	}
 	beginStopAssignment := t.beginStopAssignment.get(req)
 	if beginStopAssignment == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopAssignment`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopAssignment`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -370,7 +275,7 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginUpdate(req *http.Request) 
 	}
 	beginUpdate := t.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -413,6 +318,98 @@ func (t *TaskAssignmentsServerTransport) dispatchBeginUpdate(req *http.Request) 
 		t.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (t *TaskAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if t.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTaskAssignments/(?P<storageTaskAssignmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	storageTaskAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageTaskAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, storageTaskAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TaskAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TaskAssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Storage/storageAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/storageTaskAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armstorage.TaskAssignmentsClientListOptions
+		if topParam != nil {
+			options = &armstorage.TaskAssignmentsClientListOptions{
+				Top: topParam,
+			}
+		}
+		resp := t.srv.NewListPager(resourceGroupNameParam, accountNameParam, options)
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armstorage.TaskAssignmentsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

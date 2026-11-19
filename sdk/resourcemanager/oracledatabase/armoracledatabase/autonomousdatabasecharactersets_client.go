@@ -64,7 +64,8 @@ func (client *AutonomousDatabaseCharacterSetsClient) Get(ctx context.Context, lo
 	if err != nil {
 		return AutonomousDatabaseCharacterSetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

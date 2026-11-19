@@ -19,7 +19,7 @@ import (
 // JobCancellationsClient contains the methods for the JobCancellations group.
 // Don't use this type directly, use NewJobCancellationsClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-10-01
 type JobCancellationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *JobCancellationsClient) Trigger(ctx context.Context, vaultName str
 		return JobCancellationsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return JobCancellationsClientTriggerResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobCancellationsClientTriggerResponse{}, err
 	}
 	return JobCancellationsClientTriggerResponse{}, nil
 }
@@ -94,7 +95,7 @@ func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

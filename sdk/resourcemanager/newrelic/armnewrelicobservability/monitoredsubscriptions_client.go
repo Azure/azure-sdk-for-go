@@ -70,7 +70,7 @@ func (client *MonitoredSubscriptionsClient) BeginCreateorUpdate(ctx context.Cont
 	}
 }
 
-// CreateorUpdate - Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+// createorUpdate - Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
 //
 // Create a MonitoredSubscriptionProperties
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -89,12 +89,13 @@ func (client *MonitoredSubscriptionsClient) createorUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createorUpdateCreateRequest creates the CreateorUpdate request.
+// createorUpdateCreateRequest creates the createorUpdate request.
 func (client *MonitoredSubscriptionsClient) createorUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, body MonitoredSubscriptionProperties, _ *MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}"
 	if client.subscriptionID == "" {
@@ -155,8 +156,8 @@ func (client *MonitoredSubscriptionsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and monitoring
-// capabilities
+// deleteOperation - Delete subscriptions being monitored by the New Relic monitor resource, removing their observability
+// and monitoring capabilities
 //
 // Delete a MonitoredSubscriptionProperties
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -175,12 +176,13 @@ func (client *MonitoredSubscriptionsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, _ *MonitoredSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}"
 	if client.subscriptionID == "" {
@@ -209,6 +211,92 @@ func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
+// BeginUpdate - Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+// performance
+//
+// Update a MonitoredSubscriptionProperties
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Name of the Monitors resource
+//   - configurationName - The configuration name. Only 'default' value is supported.
+//   - options - MonitoredSubscriptionsClientBeginUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginUpdate
+//     method.
+func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, monitorName, configurationName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitoredSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and performance
+//
+// Update a MonitoredSubscriptionProperties
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MonitoredSubscriptionsClient) update(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MonitoredSubscriptionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, configurationName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *MonitoredSubscriptionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, body MonitoredSubscriptionProperties, _ *MonitoredSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if monitorName == "" {
+		return nil, errors.New("parameter monitorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+	if configurationName == "" {
+		return nil, errors.New("parameter configurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(string(configurationName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
 //
 // Get a MonitoredSubscriptionProperties
@@ -232,7 +320,8 @@ func (client *MonitoredSubscriptionsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return MonitoredSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -354,89 +443,4 @@ func (client *MonitoredSubscriptionsClient) listHandleResponse(resp *http.Respon
 		return MonitoredSubscriptionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
-// performance
-//
-// Update a MonitoredSubscriptionProperties
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - monitorName - Name of the Monitors resource
-//   - configurationName - The configuration name. Only 'default' value is supported.
-//   - options - MonitoredSubscriptionsClientBeginUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginUpdate
-//     method.
-func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, monitorName, configurationName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MonitoredSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MonitoredSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and performance
-//
-// Update a MonitoredSubscriptionProperties
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MonitoredSubscriptionsClient) update(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MonitoredSubscriptionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, monitorName, configurationName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *MonitoredSubscriptionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, configurationName ConfigurationName, body MonitoredSubscriptionProperties, _ *MonitoredSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	if configurationName == "" {
-		return nil, errors.New("parameter configurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(string(configurationName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

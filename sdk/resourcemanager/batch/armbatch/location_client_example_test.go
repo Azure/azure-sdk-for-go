@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/LocationCheckNameAvailability_AlreadyExists.json
+// Generated from example definition: 2026-10-01/LocationCheckNameAvailability_AlreadyExists.json
 func ExampleLocationClient_CheckNameAvailability_locationCheckNameAvailabilityAlreadyExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleLocationClient_CheckNameAvailability_locationCheckNameAvailabilityAl
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LocationCheckNameAvailability_Available.json
+// Generated from example definition: 2026-10-01/LocationCheckNameAvailability_Available.json
 func ExampleLocationClient_CheckNameAvailability_locationCheckNameAvailabilityAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleLocationClient_CheckNameAvailability_locationCheckNameAvailabilityAv
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LocationGetQuotas.json
+// Generated from example definition: 2026-10-01/LocationGetQuotas.json
 func ExampleLocationClient_GetQuotas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleLocationClient_GetQuotas() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/LocationListVirtualMachineSkus.json
+// Generated from example definition: 2026-10-01/LocationListVirtualMachineSkus.json
 func ExampleLocationClient_NewListSupportedVirtualMachineSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

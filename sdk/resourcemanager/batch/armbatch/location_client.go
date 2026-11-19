@@ -20,7 +20,7 @@ import (
 // LocationClient contains the methods for the Location group.
 // Don't use this type directly, use NewLocationClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type LocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -85,7 +85,7 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -145,7 +145,7 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -220,7 +220,7 @@ func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx c
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		if options != nil && options.Maxresults != nil {
 			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 		}

@@ -7,6 +7,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 **Status values**
 
 - **Open**: needs a fix or a decision.
+- **Fixed**: resolved; the entry records what changed.
 - **Won't fix**: deliberately not changing; the reason is recorded.
 - **By design**: the behavior is intended; documentation may still be needed.
 - **Deferred**: tracked elsewhere or after this change.
@@ -22,13 +23,14 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | ID | Area | Title | Priority | Status |
 |---|---|---|---|---|
 | [REL-1](#rel-1-module-manifests-arent-releasable) | all | Module manifests aren't releasable | P0 | Open |
-| [AZC-1](#azc-1-mtls-client-cache-is-keyed-by-certificate-pointer) | azcore | mTLS client cache is keyed by certificate pointer | P1 | Open |
+| [AZC-1](#azc-1-mtls-client-cache-is-keyed-by-certificate-pointer) | azcore | mTLS client cache is keyed by certificate pointer | P1 | Fixed |
 | [AZC-2](#azc-2-authorization-scheme-check-scans-the-whole-token) | azcore | Authorization scheme check scans the whole token | P1 | Open |
 | [AZC-3](#azc-3-arm-auxiliary-tenant-error-is-retriable) | azcore/arm | ARM auxiliary-tenant error is retriable | P2 | Open |
 | [AZC-4](#azc-4-response-classifier-contract-is-implicit) | azcore/internal | Response classifier contract is implicit | P2 | Open |
 | [AZC-5](#azc-5-bound-401-retries-reuse-the-cached-token) | azcore/keyvault | Bound 401 retries reuse the cached token | — | By design |
 | [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) | azcore | Bound connection pools aren't shared across clients | P2 | Won't fix |
 | [AZC-7](#azc-7-separate-bearer-and-pop-token-caches) | azcore | Separate bearer and PoP token caches | — | By design |
+| [AZC-8](#azc-8-mtlspolicy-acts-as-a-transport-selector) | azcore | mtlsPolicy acts as a transport selector | P2 | Deferred |
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
 | [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Open |
 | [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Open |
@@ -70,10 +72,9 @@ That workspace needs a `replace` for `azidentity@v1.15.1-beta.1`.
 
 ### AZC-1: mTLS client cache is keyed by certificate pointer
 
-**Priority:** P1 · **Status:** Open
+**Priority:** P1 · **Status:** Fixed
 
-`mtlsPolicy.clients` is a `map[*tls.Certificate]*http.Client`
-([policy_mtls.go](../azcore/runtime/policy_mtls.go#L27), [#L61](../azcore/runtime/policy_mtls.go#L61)).
+`mtlsPolicy.clients` was a `map[*tls.Certificate]*http.Client`.
 MSAL's `copyBindingCertificate` returns a new `*tls.Certificate` on every acquisition, including MSAL cache hits
 (`managedidentity.go:946`, `imdsv2_api.go:379` in MSAL v1.11.0-beta.1).
 
@@ -84,17 +85,33 @@ As a result, every time the bearer policy acquires a token again (refresh, 401 e
 - leaves the old pool idle until eviction at 8 entries;
 - keeps the old entry's `retainedSigner`, and so a reference to the binding key, until that eviction.
 
-**Resolution:** key the cache by certificate identity, for example the SHA-256 of `cert.Certificate[0]`.
-Keep the first `*tls.Certificate` for `GetClientCertificate`.
-A rotated certificate has a different hash and still gets a new pool, so the existing rotation guarantee holds.
-Add a test showing that two copies of one certificate share a client and that a different certificate doesn't.
+**Fix:** [policy_mtls.go](../azcore/runtime/policy_mtls.go) now keys `clients` by the leaf certificate's DER encoding (`string(cert.Certificate[0])`).
+Each cache hit stores the newly acquired `*tls.Certificate` in the entry's `atomic.Pointer`, and `GetClientCertificate` reads it.
+New handshakes therefore use the latest signer, for example a new OS key handle after the previous one was closed, while established connections stay pooled.
+MSAL's own cache key also includes the signer's pointer; azcore can't, because every acquisition returns a new `retainedSigner`.
+
+- An exact byte key needs no collision argument.
+- Go's `m[string(b)]` lookup doesn't allocate, so a bound request avoids a per-request SHA-256 and allocation.
+- The cache holds at most 8 leaf copies.
+
+A rotated certificate has different DER and still gets a new pool.
+The certificate validity check now runs before the cache lookup.
+
+**Tests** ([policy_mtls_test.go](../azcore/runtime/policy_mtls_test.go)):
+
+- New `TestMTLSPoPReacquiredCertificateReusesConnection` runs a pipeline whose credential returns a new `*tls.Certificate` on each of 3 acquisitions.
+  It asserts the server sees 1 connection; before the fix it saw 3.
+- `TestMTLSPoPTransport` now asserts that a copy shares the client and that `GetClientCertificate` then returns the copy.
+  Its rotation loop uses re-issued certificates with distinct serial numbers instead of pointer copies.
+- New `TestMTLSPoPReacquiredCertificateUsesLatestSigner`: the first acquisition's signer fails; the second returns the same certificate with a working signer, and the request must succeed.
+  Both this and the `TestMTLSPoPTransport` assertion fail when the policy keeps the first certificate.
 
 ### AZC-2: Authorization scheme check scans the whole token
 
 **Priority:** P1 · **Status:** Open
 
 `mtlsPolicy` is in every azcore pipeline. When a request has no binding certificate, it calls `strings.Fields` on every `Authorization` value
-([policy_mtls.go](../azcore/runtime/policy_mtls.go#L40)).
+([policy_mtls.go](../azcore/runtime/policy_mtls.go#L49)).
 That walks the whole token to find the scheme.
 
 Measured with a 1.5 KB bearer token:
@@ -178,6 +195,34 @@ Revisit if bound connection counts become a problem.
 **Reason:** `EnableMTLSPoP=false` means the caller can't accept a bound token.
 With a single cache, a handler that sets the flag per request could be given a cached bound token on a request that must stay bearer.
 The separation upholds the public contract. Its cost is covered in [KV-2](#kv-2-extra-bearer-acquisition-after-tenant-denial).
+
+### AZC-8: mtlsPolicy acts as a transport selector
+
+**Priority:** P2 · **Status:** Deferred (revisit later)
+
+When a request has a binding certificate, [policy_mtls.go](../azcore/runtime/policy_mtls.go) sends it with a certificate-specific `*http.Client` and skips the pipeline's `transportPolicy`.
+In practice it's a transport selector placed as the last policy.
+
+**Considered and rejected: moving it to azidentity.**
+The certificate-specific client replaces the *service client's* transport, such as `azsecrets.ClientOptions.Transport`, not the credential's.
+azidentity already handles its own connection, credential to IMDS/Entra, through MSAL's `NewMtlsClient`/`ConfigureClient`.
+Moving the service-side switch into credentials would require:
+
+- `AccessToken` to carry a transport, so every credential that returns a binding certificate builds a correct mTLS client;
+- credentials to know each service client's base transport, which they don't, especially when one credential is shared;
+- users to wire an azidentity transport into each service client, giving up automatic selection.
+
+C# also keeps this in core: `BearerTokenAuthenticationPolicy.UpdateTransportOptionsIfNeeded` raises `TransportOptionsChanged`, and `HttpClientTransport` rebuilds its handler with the binding certificate.
+
+**Possible cleanups within azcore, neither required for correctness:**
+
+- Rename it, for example to `boundTransportPolicy`, and document it as the pipeline's transport selector.
+- Fold the selection into `transportPolicy` in `azcore/internal/exported`, so one place chooses between the base transport and a certificate's client.
+  It's internal with no API impact, but `transportPolicy` would take on the mTLS client cache.
+
+It has to stay a policy, not a `policy.Transporter` wrapper: the certificate is a request operation value, and a `Transporter` only receives the `*http.Request`.
+
+**Decision:** leave the structure as is for now; revisit if the transport layer is refactored.
 
 ---
 

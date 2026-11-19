@@ -5,10 +5,12 @@ package runtime
 
 import (
 	"context"
+	"crypto"
 	"crypto/rand"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"io"
 	"math/big"
 	"net"
 	"net/http"
@@ -325,6 +327,88 @@ func TestMTLSPoPTokenRenewal(t *testing.T) {
 	assert.Equal(t, int32(4), calls.Load(), "three successful reads and one retried 503")
 }
 
+func TestMTLSPoPReacquiredCertificateReusesConnection(t *testing.T) {
+	var connections atomic.Int32
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Len(t, r.TLS.PeerCertificates, 1)
+	}))
+	server.Config.ConnState = func(_ net.Conn, state http.ConnState) {
+		if state == http.StateNew {
+			connections.Add(1)
+		}
+	}
+	server.TLS = &tls.Config{MinVersion: tls.VersionTLS12, ClientAuth: tls.RequireAnyClientCert}
+	server.StartTLS()
+	defer server.Close()
+	var acquisitions int
+	auth := NewBearerTokenPolicy(mockCredential{getTokenImpl: func(context.Context, policy.TokenRequestOptions) (exported.AccessToken, error) {
+		acquisitions++
+		// credentials such as MSAL return a new *tls.Certificate for the same certificate on each acquisition
+		cert := server.TLS.Certificates[0]
+		return exported.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour), BindingCertificate: &cert}, nil
+	}}, []string{scope}, &policy.BearerTokenOptions{
+		AuthorizationHandler: policy.AuthorizationHandler{OnRequest: requestMTLSPoP},
+	})
+	p := NewPipeline("test", "v1.0.0", PipelineOptions{PerRetry: []policy.Policy{auth}}, &policy.ClientOptions{Transport: server.Client()})
+	for range 3 {
+		auth.mtlsResource.Expire()
+		req, err := NewRequest(context.Background(), http.MethodGet, server.URL)
+		require.NoError(t, err)
+		resp, err := p.Do(req)
+		require.NoError(t, err)
+		require.NoError(t, resp.Body.Close())
+		assert.Equal(t, http.StatusOK, resp.StatusCode)
+	}
+	assert.Equal(t, 3, acquisitions)
+	assert.Equal(t, int32(1), connections.Load(), "reacquiring the same certificate must reuse its connection")
+}
+
+func TestMTLSPoPReacquiredCertificateUsesLatestSigner(t *testing.T) {
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		assert.Len(t, r.TLS.PeerCertificates, 1)
+	}))
+	server.TLS = &tls.Config{MinVersion: tls.VersionTLS12, ClientAuth: tls.RequireAnyClientCert}
+	server.StartTLS()
+	defer server.Close()
+	signer, ok := server.TLS.Certificates[0].PrivateKey.(crypto.Signer)
+	require.True(t, ok)
+	var acquisitions int
+	auth := NewBearerTokenPolicy(mockCredential{getTokenImpl: func(context.Context, policy.TokenRequestOptions) (exported.AccessToken, error) {
+		acquisitions++
+		cert := server.TLS.Certificates[0]
+		if acquisitions == 1 {
+			cert.PrivateKey = failingSigner{signer}
+		}
+		return exported.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour), BindingCertificate: &cert}, nil
+	}}, []string{scope}, &policy.BearerTokenOptions{
+		AuthorizationHandler: policy.AuthorizationHandler{OnRequest: requestMTLSPoP},
+	})
+	p := NewPipeline("test", "v1.0.0", PipelineOptions{PerRetry: []policy.Policy{auth}}, &policy.ClientOptions{
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+		Transport: server.Client(),
+	})
+	req, err := NewRequest(context.Background(), http.MethodGet, server.URL)
+	require.NoError(t, err)
+	_, err = p.Do(req)
+	require.ErrorContains(t, err, "key handle closed")
+
+	auth.mtlsResource.Expire()
+	req, err = NewRequest(context.Background(), http.MethodGet, server.URL)
+	require.NoError(t, err)
+	resp, err := p.Do(req)
+	require.NoError(t, err, "a new handshake must present the most recently acquired signer")
+	require.NoError(t, resp.Body.Close())
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	assert.Equal(t, 2, acquisitions)
+}
+
+// failingSigner simulates a key handle that can no longer sign
+type failingSigner struct{ crypto.Signer }
+
+func (failingSigner) Sign(io.Reader, []byte, crypto.SignerOpts) ([]byte, error) {
+	return nil, errors.New("key handle closed")
+}
+
 func TestMTLSPoPChallengeAuthentication(t *testing.T) {
 	for _, bound := range []bool{true, false} {
 		name := "bound token"
@@ -522,7 +606,7 @@ func TestMTLSPoPAdaptiveCustomTransport(t *testing.T) {
 				assert.True(t, opts.EnableMTLSPoP)
 				tk := exported.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour)}
 				if bound {
-					tk.BindingCertificate = &tls.Certificate{Certificate: [][]byte{{1}}, PrivateKey: struct{}{}}
+					tk.BindingCertificate = &tls.Certificate{Certificate: [][]byte{{1}}, PrivateKey: mtlsTestSigner{}}
 				}
 				return tk, nil
 			}}
@@ -582,9 +666,20 @@ func TestMTLSPoPTransport(t *testing.T) {
 	assert.Nil(t, tr.TLSClientConfig.ClientSessionCache, "session resumption must not cross certificate boundaries")
 	assert.Same(t, sessionCache, baseTransport.TLSClientConfig.ClientSessionCache)
 	assert.Error(t, client.CheckRedirect(nil, nil))
-	for range 10 {
-		copy := cert
-		rotated, err := p.client(&copy)
+	copied := cert
+	shared, err := p.client(&copied)
+	require.NoError(t, err)
+	assert.Same(t, client, shared, "a new copy of the same certificate must share its connection pool")
+	got, err = tr.TLSClientConfig.GetClientCertificate(&tls.CertificateRequestInfo{})
+	require.NoError(t, err)
+	assert.Same(t, &copied, got, "new handshakes must present the most recently acquired copy")
+	leaf, err := x509.ParseCertificate(cert.Certificate[0])
+	require.NoError(t, err)
+	for i := range 10 {
+		leaf.SerialNumber = big.NewInt(int64(i + 1))
+		der, err := x509.CreateCertificate(rand.Reader, leaf, leaf, leaf.PublicKey, cert.PrivateKey)
+		require.NoError(t, err)
+		rotated, err := p.client(&tls.Certificate{Certificate: [][]byte{der}, PrivateKey: cert.PrivateKey})
 		require.NoError(t, err)
 		t.Cleanup(rotated.CloseIdleConnections)
 		assert.NotSame(t, client, rotated, "rotation requires a separate connection pool")
@@ -593,7 +688,7 @@ func TestMTLSPoPTransport(t *testing.T) {
 }
 
 func TestMTLSPoPUnsupportedConfiguration(t *testing.T) {
-	cert := &tls.Certificate{Certificate: [][]byte{{1}}, PrivateKey: struct{}{}}
+	cert := &tls.Certificate{Certificate: [][]byte{{1}}, PrivateKey: mtlsTestSigner{}}
 	srv, close := mock.NewServer()
 	defer close()
 	for _, tc := range []struct {
@@ -622,7 +717,12 @@ func TestMTLSPoPUnsupportedConfiguration(t *testing.T) {
 	require.ErrorContains(t, err, "private key")
 	_, err = (&mtlsPolicy{}).client(nil)
 	require.ErrorContains(t, err, "private key")
+	_, err = (&mtlsPolicy{}).client(&tls.Certificate{Certificate: [][]byte{{1}}, PrivateKey: struct{}{}})
+	require.ErrorContains(t, err, "crypto.Signer")
 }
+
+// mtlsTestSigner satisfies crypto.Signer for tests that fail before a handshake would call it
+type mtlsTestSigner struct{ crypto.Signer }
 
 type mtlsRoundTripper struct{}
 

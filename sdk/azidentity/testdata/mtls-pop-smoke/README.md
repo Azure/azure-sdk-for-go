@@ -3,9 +3,11 @@
 This standalone, read-only app verifies the local `azidentity` and `azcore` changes
 against [MSAL's IMDSv2/mTLS PoP flow](https://github.com/AzureAD/microsoft-authentication-library-for-go/pull/662)
 using MSAL v1.11.0-beta.1, overridden by the local feature branch for reboot-recovery
-validation. The identity, core, SDK-internal, and Key Vault shared modules are replaced with this checkout;
-replacements in a dependency's `go.mod` aren't inherited by an application.
-The executable checks those four SDK replacements in its build metadata. The optional
+validation. The identity, core, SDK-internal, Key Vault shared, and Key Vault Secrets modules are
+replaced with this checkout; replacements in a dependency's `go.mod` aren't inherited by an application.
+The executable checks those five SDK replacements in its build metadata. Secrets must be local
+because the client enables PoP by installing the shared module's token binding policy; a released
+Secrets client stays bearer-only against the local shared module. The optional
 attestation integration is also replaced locally and blank-imported by the default
 build. A [separate negative-control build](#separate-activation-and-opt-out-checks)
 omits that import.
@@ -132,7 +134,7 @@ Alternatively select a user-assigned identity with `-object-id` or `-resource-id
 Only one identity selector is permitted. Attestation selection is automatic.
 The default overall timeout is five
 minutes; override with `-timeout 10m`. To build elsewhere and copy to the VM,
-preserve the five relative SDK module replacements and build with `GOOS=windows`
+preserve the six relative SDK module replacements and build with `GOOS=windows`
 and the VM's `GOARCH`. Also point the MSAL replacement at the feature checkout on
 the build machine. The VM doesn't need Go to run the executable.
 Copy the newly built executable to the VM and run it there from a clean

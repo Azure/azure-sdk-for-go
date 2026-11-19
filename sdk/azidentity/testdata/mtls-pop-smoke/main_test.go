@@ -521,6 +521,10 @@ func TestVerifyBuild(t *testing.T) {
 	info.Deps = append(info.Deps, &debug.Module{
 		Path: "github.com/Azure/azure-sdk-for-go/sdk/internal", Replace: &debug.Module{Path: "../../../internal"},
 	})
+	require.ErrorContains(t, verifyBuild(info), "security/keyvault/azsecrets")
+	info.Deps = append(info.Deps, &debug.Module{
+		Path: "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets", Replace: &debug.Module{Path: "../../../security/keyvault/azsecrets"},
+	})
 	require.ErrorContains(t, verifyBuild(info), "security/keyvault/internal")
 	info.Deps = append(info.Deps, &debug.Module{
 		Path: "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal", Replace: &debug.Module{Path: "../../../security/keyvault/internal"},

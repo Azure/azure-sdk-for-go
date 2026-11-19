@@ -210,6 +210,10 @@ Its Key Vault policy wraps that classifier, buffers the body explicitly, and rew
   Go selects one `keyvault/internal` version per build, so an already-released client can end up running this module's new challenge policy.
   Such a client stays bearer-only, rather than getting PoP with a challenge resend instead of a retry.
   `NewKeyVaultChallengePolicy`'s signature is unchanged; the module is released at v1.
+  The [mtls-pop-smoke](testdata/mtls-pop-smoke) app hit exactly this case.
+  It replaced keyvault/internal locally but built the released `azsecrets v1.5.0`, so the live run failed with "SDK didn't propagate EnableMTLSPoP to the credential".
+  Its go.mod now also replaces azsecrets, and `verifyBuild` requires that, so a mismatched build fails at startup with a clear message.
+  Its unit tests reproduce the failure without the replacement and pass with it.
 - **Clients:** azsecrets, azkeys, azcertificates, and azadmin's backup, ekm, rbac and settings each add `PerCall: []policy.Policy{internal.NewTokenBindingPolicy()}`, one line in each handwritten `custom_client.go`.
 - **[ResponseClassifier doc](../internal/exported/exported.go)** now states the contract:
   - set it before the retry policy;

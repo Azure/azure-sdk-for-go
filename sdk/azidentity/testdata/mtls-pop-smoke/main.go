@@ -254,7 +254,9 @@ func (c configuration) identity() azidentity.ManagedIDKind {
 }
 
 func verifyBuild(info *debug.BuildInfo) error {
-	for _, name := range []string{"azcore", "azidentity", "internal", "security/keyvault/internal"} {
+	// azsecrets enables PoP by installing keyvault/internal's token binding policy; a released
+	// version without it stays bearer-only against the local keyvault/internal
+	for _, name := range []string{"azcore", "azidentity", "internal", "security/keyvault/azsecrets", "security/keyvault/internal"} {
 		path := "github.com/Azure/azure-sdk-for-go/sdk/" + name
 		local := false
 		for _, dep := range info.Deps {

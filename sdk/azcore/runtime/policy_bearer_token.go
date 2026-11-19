@@ -119,7 +119,9 @@ func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(p
 			// retrying authentication, the credential would have done so already
 			return errorinfo.NonRetriableError(err)
 		}
-		req.SetOperationValue(mtlsRequest{certificate: tk.BindingCertificate})
+		// always set, even when nil: operation values persist across re-authorizations and retries,
+		// so a bearer token must clear a certificate recorded by an earlier bound authorization
+		req.SetOperationValue(exported.MTLSRequest{Certificate: tk.BindingCertificate})
 		if tk.BindingCertificate != nil {
 			req.Raw().Header.Set(shared.HeaderAuthorization, "mtls_pop "+tk.Token)
 		} else {

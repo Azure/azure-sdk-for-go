@@ -171,7 +171,7 @@ implemented as part of this design sign-off.
 **Status: complete; focused offline regression suites, build, and vet passed.**
 
 Update the [authentication policy](../azcore/runtime/policy_bearer_token.go),
-[mTLS transport](../azcore/runtime/policy_mtls.go), and
+[mTLS transport](../azcore/internal/exported/transport_mtls.go), and
 [pipeline integration](../azcore/runtime/pipeline.go):
 
 - Allow automatic mode to handle either a bearer or certificate-bound token.

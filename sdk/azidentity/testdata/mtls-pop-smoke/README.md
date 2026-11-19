@@ -335,7 +335,7 @@ against a local TLS server. It requires one certificate-free, unauthenticated
 challenge followed by two successful, certificate-authenticated secret reads,
 with the PoP flag reaching the credential and its token cached.
 
-The [mTLS transport](../../../azcore/runtime/policy_mtls.go) leaves unauthenticated
+The [mTLS transport](../../../azcore/internal/exported/transport_mtls.go) leaves unauthenticated
 challenges on the caller's original transport. With ordinary transport defaults,
 no client certificate is sent. An explicitly configured client certificate remains
 the caller's choice; no binding certificate is installed before token acquisition.

@@ -49,6 +49,7 @@ func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential,
 // your Azure resources through Elastic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
 //   - body - Elastic monitor resource model
 //   - options - MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
 func (client *MonitorsClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResource, options *MonitorsClientBeginCreateOptions) (*runtime.Poller[MonitorsClientCreateResponse], error) {
@@ -201,6 +202,7 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 // performance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
 //   - body - Elastic resource model update parameters.
 //   - options - MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.
 func (client *MonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResourceUpdateParameters, options *MonitorsClientBeginUpdateOptions) (*runtime.Poller[MonitorsClientUpdateResponse], error) {

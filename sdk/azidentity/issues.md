@@ -41,7 +41,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZI-6](#azi-6-attestation-module-doesnt-isolate-native-code) | azidentity | Attestation module doesn't isolate native code | — | Won't fix |
 | [KV-1](#kv-1-tenant-denial-detection-depends-on-error-text) | keyvault | Tenant-denial detection depends on error text | — | Won't fix |
 | [KV-2](#kv-2-extra-bearer-acquisition-after-tenant-denial) | keyvault | Extra bearer acquisition after tenant denial | — | Won't fix |
-| [KV-3](#kv-3-empty-tenant-id-shares-one-fallback-entry) | keyvault | Empty tenant ID shares one fallback entry | P2 | Open |
+| [KV-3](#kv-3-empty-tenant-id-shares-one-fallback-entry) | keyvault | Empty tenant ID shares one fallback entry | P2 | Not an issue |
 | [KV-4](#kv-4-go-accepts-wrappers-that-c-rejects) | keyvault | Go accepts wrappers that C# rejects | — | By design |
 | [TEST-1](#test-1-race-detector-not-run) | all | Race detector not run | P1 | Open |
 
@@ -502,15 +502,21 @@ Avoiding it would weaken the cache separation in [AZC-7](#azc-7-separate-bearer-
 
 ### KV-3: Empty tenant ID shares one fallback entry
 
-**Priority:** P2 · **Status:** Open
+**Priority:** P2 · **Status:** Not an issue
 
-The fallback memory is keyed by `strings.ToLower(tro.TenantID)`
-([tenant_token_binding_credential.go](../security/keyvault/internal/tenant_token_binding_credential.go#L28), [#L46](../security/keyvault/internal/tenant_token_binding_credential.go#L46)).
-If `parseTenant` returns `""`, every such tenant shares one entry.
-A denial for one would switch all of them to bearer.
+The fallback memory is keyed by `strings.ToLower(tro.TenantID)` in [tenant_token_binding_credential.go](../security/keyvault/internal/tenant_token_binding_credential.go).
+The concern was that if `parseTenant` returns `""`, every such tenant shares one entry, so a denial for one would switch all of them to bearer.
 
-**Resolution:** don't record or look up an empty tenant ID; treat it as "no memory".
-Alternatively, document why an empty tenant can't happen once a challenge has been parsed.
+**Finding:** one shared entry is correct.
+
+- **When it can happen:** only through `authorizeOnChallenge`, when Key Vault's challenge has no `authorization` parameter.
+  `authorize` never authenticates with an empty tenant; it sends the unauthenticated request to get a challenge instead.
+- **Why sharing is right:** an empty `TenantID` means "use the credential's own default tenant".
+  The memory belongs to one client and wraps one credential, so every request recorded under `""` goes to the same tenant.
+- **C# parity:** `TenantTokenBindingCredential.cs` keys both lookup and insert on `context.TenantId ?? string.Empty`.
+- **The proposed fix would be worse:** skipping memory for `""` would make that tenant request PoP, and be denied, on every token acquisition.
+
+No change was made.
 
 ### KV-4: Go accepts wrappers that C# rejects
 

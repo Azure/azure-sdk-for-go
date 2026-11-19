@@ -4,6 +4,7 @@
 package internal
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -15,9 +16,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/exported"
 )
 
 const challengeMatchError = `challenge resource "%s" doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information`
+const tokenBindingValidationFailure = "[MtlsCnfClaimRequestDataValidationFailed]"
 
 type KeyVaultChallengePolicyOptions struct {
 	// DisableChallengeResourceVerification controls whether the policy requires the
@@ -35,6 +38,8 @@ type keyVaultAuthorizer struct {
 	troLock sync.RWMutex
 
 	verifyChallengeResource bool
+	credential              *tenantTokenBindingCredential
+	bearer                  *runtime.BearerTokenPolicy
 }
 
 type reqBody struct {
@@ -49,12 +54,42 @@ func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, opts *KeyVaultChall
 	kv := keyVaultAuthorizer{
 		verifyChallengeResource: !opts.DisableChallengeResourceVerification,
 	}
-	return runtime.NewBearerTokenPolicy(cred, nil, &policy.BearerTokenOptions{
+	var wrapped azcore.TokenCredential
+	if cred != nil {
+		kv.credential = &tenantTokenBindingCredential{credential: cred}
+		wrapped = kv.credential
+	}
+	kv.bearer = runtime.NewBearerTokenPolicy(wrapped, nil, &policy.BearerTokenOptions{
 		AuthorizationHandler: policy.AuthorizationHandler{
 			OnRequest:   kv.authorize,
 			OnChallenge: kv.authorizeOnChallenge,
 		},
 	})
+	return &kv
+}
+
+func (k *keyVaultAuthorizer) Do(req *policy.Request) (*http.Response, error) {
+	req.SetOperationValue(exported.ResponseClassifier(func(res *http.Response) (bool, error) {
+		_, bound := req.Raw().Header[http.CanonicalHeaderKey("x-ms-tokenboundauth")]
+		if res.StatusCode != http.StatusUnauthorized || !bound {
+			return false, nil
+		}
+		body, err := runtime.Payload(res)
+		if err != nil {
+			return false, err
+		}
+		var document map[string]any
+		if json.Unmarshal(body, &document) != nil {
+			return false, nil
+		}
+		serviceError, ok := document["error"].(map[string]any)
+		if !ok {
+			return false, nil
+		}
+		message, _ := serviceError["message"].(string)
+		return strings.Contains(message, tokenBindingValidationFailure), nil
+	}))
+	return k.bearer.Do(req)
 }
 
 func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.TokenRequestOptions) error) error {
@@ -74,7 +109,7 @@ func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.T
 		return nil
 	}
 	// else we know the auth parameters and can authorize the request as normal
-	return authNZ(tro)
+	return authNZ(k.credential.effectiveRequestOptions(tro))
 }
 
 func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
@@ -91,7 +126,7 @@ func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http
 		}
 	}
 	// authenticate with the parameters supplied by Key Vault, authorize the request, send it again
-	return authNZ(k.getTokenRequestOptions())
+	return authNZ(k.credential.effectiveRequestOptions(k.getTokenRequestOptions()))
 }
 
 // parses Tenant ID from auth challenge
@@ -153,8 +188,9 @@ func (k *keyVaultAuthorizer) updateTokenRequestOptions(resp *http.Response, req 
 		scope += "/.default"
 	}
 	k.setTokenRequestOptions(policy.TokenRequestOptions{
-		TenantID: parseTenant(vals["authorization"]),
-		Scopes:   []string{scope},
+		TenantID:      parseTenant(vals["authorization"]),
+		Scopes:        []string{scope},
+		EnableMTLSPoP: true,
 	})
 	return nil
 }

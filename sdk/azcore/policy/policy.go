@@ -55,6 +55,10 @@ type ClientOptions struct {
 	TracingProvider tracing.Provider
 
 	// Transport sets the transport for HTTP requests.
+	// Bearer and unauthenticated requests use it unchanged. Certificate-bound requests require
+	// nil or an *http.Client with a nil Transport or a standard *http.Transport without custom
+	// TLS dialing. They use a derived transport with TLS 1.2 and client renegotiation, reject
+	// redirects, and fail explicitly for unsupported configurations rather than acquiring bearer tokens.
 	Transport Transporter
 
 	// PerCallPolicies contains custom policies to inject into the pipeline.
@@ -118,11 +122,13 @@ type RetryOptions struct {
 	//   http.StatusGatewayTimeout      504
 	// Specifying values will replace the default values.
 	// Specifying an empty slice will disable retries for HTTP status codes.
+	// Service-specific response classification may identify additional retryable
+	// responses. Use ShouldRetry to override that classification.
 	StatusCodes []int
 
 	// ShouldRetry evaluates if the retry policy should retry the request.
 	// When specified, the function overrides comparison against the list of
-	// HTTP status codes and error checking within the retry policy. Context
+	// HTTP status codes, service-specific response classification, and error checking within the retry policy. Context
 	// and NonRetriable errors remain evaluated before calling ShouldRetry.
 	// The *http.Response and error parameters are mutually exclusive, i.e.
 	// if one is nil, the other is not nil.

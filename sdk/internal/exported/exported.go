@@ -10,6 +10,11 @@ import (
 	"slices"
 )
 
+// ResponseClassifier is an operation value used by authentication and retry policies.
+// A true result defers the response to the outer retry policy instead of handling
+// an authentication challenge. Errors must preserve cancellation and body-read failures.
+type ResponseClassifier func(*http.Response) (bool, error)
+
 // HasStatusCode returns true if the Response's status code is one of the specified values.
 // Exported as runtime.HasStatusCode().
 func HasStatusCode(resp *http.Response, statusCodes ...int) bool {

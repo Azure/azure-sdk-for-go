@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -14,6 +15,13 @@ import (
 
 	"github.com/stretchr/testify/require"
 )
+
+func TestAuthenticationFailedErrorUnwrap(t *testing.T) {
+	for _, cause := range []error{context.Canceled, context.DeadlineExceeded, fmt.Errorf("wrapped: %w", context.Canceled)} {
+		err := newAuthenticationFailedErrorFromMSAL(credNameManagedIdentity, cause)
+		require.ErrorIs(t, err, cause)
+	}
+}
 
 // testing our custom Error interface for the authentication failed error type
 func TestAuthenticationFailedErrorInterface(t *testing.T) {

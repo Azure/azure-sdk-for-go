@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added SDK-internal authentication-error markers and a request-scoped response classifier
+  for shared authentication and retry handling, without service-to-identity runtime dependencies.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -5,6 +5,7 @@ package runtime
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"strings"
 
@@ -21,6 +22,33 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
+
+func TestBearerPolicy_MTLSPoPAuxiliaryTenants(t *testing.T) {
+	b := NewBearerTokenPolicy(mockCredential{}, &armpolicy.BearerTokenOptions{
+		AuxiliaryTenants: []string{"other-tenant"}, Scopes: []string{scope},
+	})
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	err = b.onRequest(req, func(azpolicy.TokenRequestOptions) error {
+		req.Raw().Header.Set(shared.HeaderAuthorization, "mtls_pop "+tokenValue)
+		return nil
+	})
+	require.ErrorContains(t, err, "auxiliary tenant")
+}
+
+func TestBearerPolicy_MTLSPoP(t *testing.T) {
+	cred := mockCredential{getTokenImpl: func(_ context.Context, opts azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
+		require.False(t, opts.EnableMTLSPoP, "ARM doesn't automatically request PoP")
+		return azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour), BindingCertificate: &tls.Certificate{}}, nil
+	}}
+	p, err := NewPipeline("test", "v1.0.0", cred, runtime.PipelineOptions{}, nil)
+	require.NoError(t, err)
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	_, err = p.Do(req)
+	// A returned bound token must be honored even when it wasn't requested.
+	require.ErrorContains(t, err, "private key")
+}
 
 const (
 	tokenValue                = "***"

@@ -13,7 +13,26 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/stretchr/testify/require"
 )
+
+func TestChainedTokenCredential_PreservesFailures(t *testing.T) {
+	unavailable := newCredentialUnavailableError("unavailable", "not configured")
+	terminal := newAuthenticationFailedErrorFromMSAL("terminal", context.Canceled)
+	first, last, fallback := NewFakeCredential(), NewFakeCredential(), NewFakeCredential()
+	first.SetResponse(azcore.AccessToken{}, unavailable)
+	last.SetResponse(azcore.AccessToken{}, terminal)
+	fallback.SetResponse(azcore.AccessToken{Token: tokenValue}, nil)
+	inner, err := NewChainedTokenCredential([]azcore.TokenCredential{first, last}, nil)
+	require.NoError(t, err)
+	outer, err := NewChainedTokenCredential([]azcore.TokenCredential{inner, fallback}, nil)
+	require.NoError(t, err)
+	_, err = outer.GetToken(context.Background(), testTRO)
+	require.ErrorIs(t, err, unavailable)
+	require.ErrorIs(t, err, terminal)
+	require.ErrorIs(t, err, context.Canceled)
+	require.Zero(t, fallback.getTokenCalls, "an inner unavailable failure must not hide a terminal chain failure")
+}
 
 type fakeCredentialResponse struct {
 	token azcore.AccessToken

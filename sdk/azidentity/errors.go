@@ -51,6 +51,8 @@ type AuthenticationFailedError struct {
 
 	credType, message string
 	omitResponse      bool
+	causes            []error
+	chained           bool
 }
 
 func newAuthenticationFailedError(credType, message string, resp *http.Response) error {
@@ -67,7 +69,17 @@ func newAuthenticationFailedErrorFromMSAL(credType string, err error) error {
 	if res == nil {
 		msg = err.Error()
 	}
-	return newAuthenticationFailedError(credType, msg, res)
+	return &AuthenticationFailedError{credType: credType, message: msg, RawResponse: res, causes: []error{err}}
+}
+
+// Is supports authentication-error classification by Azure SDK policies.
+func (e *AuthenticationFailedError) Is(target error) bool {
+	return target == errorinfo.ErrAuthenticationFailed || (e.chained && target == errorinfo.ErrCredentialChain)
+}
+
+// Unwrap returns the underlying authentication failures.
+func (e *AuthenticationFailedError) Unwrap() []error {
+	return e.causes
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
@@ -136,7 +148,7 @@ type AuthenticationRequiredError struct {
 func newAuthenticationRequiredError(credType string, tro policy.TokenRequestOptions) error {
 	return &AuthenticationRequiredError{
 		credentialUnavailableError: credentialUnavailableError{
-			credType + " can't acquire a token without user interaction. Call Authenticate to authenticate a user interactively",
+			message: credType + " can't acquire a token without user interaction. Call Authenticate to authenticate a user interactively",
 		},
 		TokenRequestOptions: tro,
 	}
@@ -154,19 +166,30 @@ type credentialUnavailable interface {
 
 type credentialUnavailableError struct {
 	message string
+	causes  []error
+	chained bool
 }
 
 // newCredentialUnavailableError is an internal helper that ensures consistent error message formatting
 func newCredentialUnavailableError(credType, message string) error {
 	msg := fmt.Sprintf("%s: %s", credType, message)
-	return &credentialUnavailableError{msg}
+	return &credentialUnavailableError{message: msg}
 }
 
 // NewCredentialUnavailableError constructs an error indicating a credential can't attempt authentication
 // because it lacks required data or state. When [ChainedTokenCredential] receives this error it will try
 // its next credential, if any.
 func NewCredentialUnavailableError(message string) error {
-	return &credentialUnavailableError{message}
+	return &credentialUnavailableError{message: message}
+}
+
+func (e *credentialUnavailableError) Is(target error) bool {
+	return target == errorinfo.ErrAuthenticationFailed || target == errorinfo.ErrCredentialUnavailable ||
+		(e.chained && target == errorinfo.ErrCredentialChain)
+}
+
+func (e *credentialUnavailableError) Unwrap() []error {
+	return e.causes
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.

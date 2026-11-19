@@ -5,6 +5,23 @@ package errorinfo
 
 import "errors"
 
+var (
+	// ErrAuthenticationFailed identifies an authentication error through its Is method.
+	ErrAuthenticationFailed = errors.New("authentication failed")
+	// ErrCredentialUnavailable identifies an unavailable credential through its Is method.
+	ErrCredentialUnavailable = errors.New("credential unavailable")
+	// ErrCredentialChain identifies a credential-chain error whose children must be classified individually.
+	ErrCredentialChain = errors.New("credential chain failed")
+)
+
+// AuthenticationError exposes structured authentication failures without depending on azidentity.
+// Call Is directly to classify this node, rather than matching one of its descendants.
+type AuthenticationError interface {
+	error
+	Is(error) bool
+	Unwrap() []error
+}
+
 // NonRetriable represents a non-transient error.  This works in
 // conjunction with the retry policy, indicating that the error condition
 // is idempotent, so no retries will be attempted.

@@ -4,6 +4,15 @@
 
 ### Features Added
 
+- Shared authentication automatically signals mTLS PoP support for Secrets, Keys, Certificates,
+  and Administration clients. Actual returned tokens determine bearer or bound authorization.
+- A specifically classified `AADSTS3921996` token-acquisition denial triggers fresh bearer
+  acquisition and case-insensitive, tenant-scoped memory for the client lifetime. Cancellation
+  and unrelated or mixed terminal failures don't permit fallback.
+- Bound HTTP 401 responses containing `[MtlsCnfClaimRequestDataValidationFailed]` in the JSON
+  error message use the configured outer retry policy rather than authentication resends
+  or bearer fallback. Response bodies and caller retry overrides are preserved.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -166,6 +166,17 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 				resp.Body = &contextCancelReadCloser{cf: tryCancel, body: resp.Body}
 			}
 		}
+		classifiedRetry := false
+		if err == nil {
+			var classify exported.ResponseClassifier
+			if clone.OperationValue(&classify) && classify != nil {
+				classifiedRetry, err = classify(resp)
+				if err != nil {
+					Drain(resp)
+					resp = nil
+				}
+			}
+		}
 		if err == nil {
 			log.Writef(log.EventRetryPolicy, "response %d", resp.StatusCode)
 		} else if log.Should(log.EventRetryPolicy) {
@@ -194,7 +205,7 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 				log.Write(log.EventRetryPolicy, "exit due to ShouldRetry")
 				return
 			}
-		} else if err == nil && !HasStatusCode(resp, options.StatusCodes...) {
+		} else if err == nil && !classifiedRetry && !HasStatusCode(resp, options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
 			log.Write(log.EventRetryPolicy, "exit due to non-retriable status code")
 			return

@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	internalexported "github.com/Azure/azure-sdk-for-go/sdk/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -33,6 +34,23 @@ const (
 
 type mockCredential struct {
 	getTokenImpl func(ctx context.Context, options policy.TokenRequestOptions) (exported.AccessToken, error)
+}
+
+func TestBearerTokenPolicy_ResponseClassifierError(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized),
+		mock.WithHeader("WWW-Authenticate", `Bearer error="insufficient_claims", claims="e30="`))
+	cause := errors.New("response body read failed")
+	req, err := NewRequest(context.Background(), http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	req.SetOperationValue(internalexported.ResponseClassifier(func(*http.Response) (bool, error) {
+		return false, errorinfo.NonRetriableError(cause)
+	}))
+	res, err := defaultTestPipeline(srv, scope).Do(req)
+	require.ErrorIs(t, err, cause)
+	require.Nil(t, res)
+	require.Equal(t, 1, srv.Requests(), "a classification failure must not trigger challenge handling")
 }
 
 func (mc mockCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (exported.AccessToken, error) {

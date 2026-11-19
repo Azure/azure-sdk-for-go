@@ -16,10 +16,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	internalexported "github.com/Azure/azure-sdk-for-go/sdk/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
-// BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
+// BearerTokenPolicy authorizes requests with bearer or certificate-bound tokens acquired from a TokenCredential.
 // It handles [Continuous Access Evaluation] (CAE) challenges. Clients needing to handle
 // additional authentication challenges, or needing more control over authorization, should
 // provide a [policy.AuthorizationHandler] in [policy.BearerTokenOptions].
@@ -28,6 +29,7 @@ import (
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
 	mainResource *temporal.Resource[exported.AccessToken, acquiringResourceState]
+	mtlsResource *temporal.Resource[exported.AccessToken, acquiringResourceState]
 	// the following fields are read-only
 	authzHandler policy.AuthorizationHandler
 	cred         exported.TokenCredential
@@ -48,11 +50,18 @@ func acquire(state acquiringResourceState) (newResource exported.AccessToken, ne
 	if err != nil {
 		return exported.AccessToken{}, time.Time{}, err
 	}
-	return tk, tk.ExpiresOn, nil
+	expiration := tk.ExpiresOn
+	if cert := tk.BindingCertificate; cert != nil && cert.Leaf != nil && cert.Leaf.NotAfter.Before(expiration) {
+		expiration = cert.Leaf.NotAfter
+	}
+	return tk, expiration, nil
 }
 
 // shouldRefresh determines whether the token should be refreshed. It's a variable so tests can replace it.
 var shouldRefresh = func(tk exported.AccessToken, _ acquiringResourceState) bool {
+	if cert := tk.BindingCertificate; cert != nil && cert.Leaf != nil && cert.Leaf.NotAfter.Add(-5*time.Minute).Before(time.Now()) {
+		return true
+	}
 	if tk.RefreshOn.IsZero() {
 		return tk.ExpiresOn.Add(-5 * time.Minute).Before(time.Now())
 	}
@@ -60,10 +69,12 @@ var shouldRefresh = func(tk exported.AccessToken, _ acquiringResourceState) bool
 	return tk.RefreshOn.Before(time.Now())
 }
 
-// NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
+// NewBearerTokenPolicy creates a policy object that authorizes requests with bearer or certificate-bound tokens.
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // scopes: the list of permission scopes required for the token.
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
+// PoP-aware services signal support with TokenRequestOptions.EnableMTLSPoP in their AuthorizationHandler.
+// Authorization and transport selection follow the returned token's BindingCertificate, not the request flag.
 func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
 	if opts == nil {
 		opts = &policy.BearerTokenOptions{}
@@ -86,7 +97,10 @@ func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *
 		cred:         cred,
 		scopes:       scopes,
 		mainResource: mr,
-		allowHTTP:    opts.InsecureAllowCredentialWithHTTP,
+		mtlsResource: temporal.NewResourceWithOptions(acquire, temporal.ResourceOptions[exported.AccessToken, acquiringResourceState]{
+			ShouldRefresh: shouldRefresh,
+		}),
+		allowHTTP: opts.InsecureAllowCredentialWithHTTP,
 	}
 }
 
@@ -95,13 +109,24 @@ func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(p
 	return func(tro policy.TokenRequestOptions) error {
 		tro.EnableCAE = true
 		as := acquiringResourceState{p: b, req: req, tro: tro}
-		tk, err := b.mainResource.Get(as)
+		resource := b.mainResource
+		if tro.EnableMTLSPoP {
+			resource = b.mtlsResource
+		}
+		tk, err := resource.Get(as)
 		if err != nil {
 			// consider this error non-retriable because if it could be resolved by
 			// retrying authentication, the credential would have done so already
 			return errorinfo.NonRetriableError(err)
 		}
-		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
+		req.SetOperationValue(mtlsRequest{certificate: tk.BindingCertificate})
+		if tk.BindingCertificate != nil {
+			req.Raw().Header.Set(shared.HeaderAuthorization, "mtls_pop "+tk.Token)
+			req.Raw().Header.Set("x-ms-tokenboundauth", "true")
+		} else {
+			req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
+			req.Raw().Header.Del("x-ms-tokenboundauth")
+		}
 		return nil
 	}
 }
@@ -140,7 +165,19 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 func (b *BearerTokenPolicy) handleChallenge(req *policy.Request, res *http.Response, recursed bool) (*http.Response, error) {
 	var err error
 	if res.StatusCode == http.StatusUnauthorized {
+		var classify internalexported.ResponseClassifier
+		if req.OperationValue(&classify) && classify != nil {
+			retry, err := classify(res)
+			if err != nil {
+				Drain(res)
+				return nil, err
+			}
+			if retry {
+				return res, nil
+			}
+		}
 		b.mainResource.Expire()
+		b.mtlsResource.Expire()
 		if res.Header.Get(shared.HeaderWWWAuthenticate) != "" {
 			caeChallenge, parseErr := parseCAEChallenge(res)
 			if parseErr != nil {

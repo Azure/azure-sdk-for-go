@@ -87,6 +87,12 @@ type ManagedIdentityCredentialOptions struct {
 	// and rejects redirects without modifying the caller's client.
 	azcore.ClientOptions
 
+	// DisableMTLSPoP prevents certificate-bound token acquisition, even when requested by the caller.
+	// By default, eligible requests use attested mTLS PoP when the application imports
+	// github.com/Azure/azure-sdk-for-go/sdk/azidentity/attestation and the host supports KeyGuard.
+	// Ordinary bearer requests are unchanged.
+	DisableMTLSPoP bool
+
 	// ID of a managed identity the credential should authenticate. Set this field to use a specific identity instead of
 	// the hosting environment's default. The value may be the identity's client, object, or resource ID.
 	// NewManagedIdentityCredential returns an error when the hosting environment doesn't support user-assigned managed
@@ -97,9 +103,8 @@ type ManagedIdentityCredentialOptions struct {
 
 	// dac indicates whether the credential is part of DefaultAzureCredential. When true, and the environment doesn't have
 	// configuration for a specific managed identity API, the credential tries to determine whether IMDS is available before
-	// sending its first token request. It does this by sending a malformed request with a short timeout. Any response to that
-	// request is taken to mean IMDS is available, in which case the credential will send ordinary token requests thereafter
-	// with no special timeout. The purpose of this behavior is to prevent a very long timeout when IMDS isn't available.
+	// sending its first token request. It delegates discovery to MSAL under a one-second timeout. After MSAL detects
+	// a source, token requests use the caller's context without the probe timeout.
 	dac bool
 }
 
@@ -125,6 +130,13 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 }
 
 // GetToken requests an access token from the hosting environment. This method is called automatically by Azure SDK clients.
+// When opts.EnableMTLSPoP is true, the optional azidentity/attestation integration is imported,
+// and the host supports KeyGuard, it requests an attested certificate-bound token.
+// Otherwise it requests an ordinary bearer token. DisableMTLSPoP opts out of bound tokens.
+// Attested acquisition requires Windows with Credential Guard, IMDSv2, and the native dependencies
+// documented by the attestation package. Once selected, attestation failures aren't downgraded.
+// Callers must inspect the returned BindingCertificate to determine the required authorization
+// scheme and transport. Azure SDK pipelines handle this automatically.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	var err error
 	ctx, endSpan := runtime.StartSpan(ctx, credNameManagedIdentity+"."+traceOpGetToken, c.mic.azClient.Tracer(), nil)

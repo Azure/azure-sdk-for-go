@@ -11,7 +11,7 @@ import (
 )
 
 // configurableClient is installed at the bottom of the managed identity pipeline as the transport
-// for sources that require MSAL to configure the client/transport (Service Fabric today, mTLS later).
+// for sources that require MSAL to configure the client/transport (Service Fabric or mTLS).
 type configurableClient struct {
 	client *http.Client
 }

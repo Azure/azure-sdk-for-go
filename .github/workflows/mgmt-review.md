@@ -189,8 +189,10 @@ Fetch the PR details. If the PR is in **draft** state, use the `update_pull_requ
 
 Fetch **check runs** for the PR head commit. Find the `go - pullrequest` parent check and its child jobs (`go - pullrequest (Build <job_name>)`). These are **Azure DevOps pipeline** results — do NOT call `get_job_logs` (returns 404).
 
-- If the `go - pullrequest` parent check is **not present**, or any checks still have a `status` of `queued` or `in_progress`, **do not wait**. Skip to Step 6 and post a comment telling the user that pipeline checks have not completed yet and to re-trigger this workflow (by re-applying the `mgmt-review-needed` label) after the pipelines finish.
-- If **all** pipeline checks have reached `completed` status, read success/failure from the `conclusion` field and extract the `target_url` for ADO log links. NEVER fabricate ADO URLs. Proceed to Step 3.
+- If any matching pipeline check has a `status` of `queued` or `in_progress`, **do not wait**. Skip to Step 6 and post a comment telling the user that pipeline checks have not completed yet and to re-trigger this workflow (by re-applying the `mgmt-review-needed` label) after the pipelines finish.
+- If the `go - pullrequest` parent check is not present and the current repository is `Azure/azure-sdk-for-go`, treat the required check as missing. Skip to Step 6 and report that the pipeline check was not found.
+- If no matching pipeline checks exist and the current repository is not `Azure/azure-sdk-for-go`, treat CI as unavailable in this fork, record that CI was not run, and continue to Step 3. Do not treat the missing check as a pass.
+- Otherwise, if all available matching pipeline checks have reached `completed` status, read success/failure from the `conclusion` field and extract the `target_url` for ADO log links. NEVER fabricate ADO URLs. Proceed to Step 3.
 
 ### Step 3 — Check for manual edits to auto-generated files
 
@@ -269,7 +271,15 @@ The `go - pullrequest` pipeline checks have not completed yet. Analysis cannot p
 **Action required:** Re-trigger this workflow by re-applying the `mgmt-review-needed` label after the pipeline checks have completed.
 ```
 
-**If all checks completed and nothing blocks** (no manual edits to generated files, unapproved breaking changes, or approval verification failures):
+If Step 2 found no pipeline checks in a fork, continue with the review and include this notice in the comment:
+
+```markdown
+## ⚠️ CI Not Available in Fork
+
+The `go - pullrequest` pipeline check was not found in this fork, so CI results could not be verified. This review does not indicate that the PR is ready to merge.
+```
+
+**If all available checks completed and nothing blocks** (no manual edits to generated files, unapproved breaking changes, or approval verification failures), and CI was not unavailable in a fork:
 
 - If this is **not** a first on-board service → post `## PR is ready to merge`.
 - If this **is** a first on-board service and **all three** onboarding requirements are satisfied for every new module (release pipelines created, namespace approval satisfied, **and README service name verified**) → post `## PR is ready to merge`.

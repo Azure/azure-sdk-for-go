@@ -24,13 +24,14 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 |---|---|---|---|---|
 | [REL-1](#rel-1-module-manifests-arent-releasable) | all | Module manifests aren't releasable | P0 | Open |
 | [AZC-1](#azc-1-mtls-client-cache-is-keyed-by-certificate-pointer) | azcore | mTLS client cache is keyed by certificate pointer | P1 | Fixed |
-| [AZC-2](#azc-2-authorization-scheme-check-scans-the-whole-token) | azcore | Authorization scheme check scans the whole token | P1 | Open |
+| [AZC-2](#azc-2-authorization-scheme-check-scans-the-whole-token) | azcore | Authorization scheme check scans the whole token | P1 | Fixed |
 | [AZC-3](#azc-3-arm-auxiliary-tenant-error-is-retriable) | azcore/arm | ARM auxiliary-tenant error is retriable | P2 | Open |
 | [AZC-4](#azc-4-response-classifier-contract-is-implicit) | azcore/internal | Response classifier contract is implicit | P2 | Open |
 | [AZC-5](#azc-5-bound-401-retries-reuse-the-cached-token) | azcore/keyvault | Bound 401 retries reuse the cached token | — | By design |
 | [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) | azcore | Bound connection pools aren't shared across clients | P2 | Won't fix |
 | [AZC-7](#azc-7-separate-bearer-and-pop-token-caches) | azcore | Separate bearer and PoP token caches | — | By design |
 | [AZC-8](#azc-8-mtlspolicy-acts-as-a-transport-selector) | azcore | mtlsPolicy acts as a transport selector | P2 | Deferred |
+| [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Open |
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
 | [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Open |
 | [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Open |
@@ -108,26 +109,39 @@ The certificate validity check now runs before the cache lookup.
 
 ### AZC-2: Authorization scheme check scans the whole token
 
-**Priority:** P1 · **Status:** Open
+**Priority:** P1 · **Status:** Fixed (scan removed)
 
-`mtlsPolicy` is in every azcore pipeline. When a request has no binding certificate, it calls `strings.Fields` on every `Authorization` value
-([policy_mtls.go](../azcore/runtime/policy_mtls.go#L49)).
-That walks the whole token to find the scheme.
+`mtlsPolicy` is in every azcore pipeline. When a request had no binding certificate, it scanned every header for `x-ms-tokenboundauth` and called `strings.Fields` on every `Authorization` value.
+If either named PoP, it rejected the request with a non-retriable error.
+`strings.Fields` walked the whole token to find the scheme.
 
 Measured with a 1.5 KB bearer token:
 
 | Case | Cost per request |
 |---|---|
-| `mtlsPolicy` with no certificate | ~1,600 ns, 4 allocations |
+| `mtlsPolicy` with no certificate, original | ~1,600 ns, 4 allocations |
+| scheme-only check (interim fix) | ~200 ns, 3 allocations |
 | no-op policy (baseline) | ~92 ns, 2 allocations |
-| `strings.Fields` alone | ~1,690 ns |
-| `TrimLeft` + `strings.Cut` + `EqualFold` | ~16 ns, 0 allocations |
 
-The scan also changes behavior. It rejects requests where a custom policy sets an `mtls_pop` header itself, such as an app doing its own PoP with a custom transport.
+**Interim fix, since superseded:** a `hasMTLSPoPScheme` helper checked only the scheme.
+It cut at the first `unicode.IsSpace` rune so that tab-separated values still matched.
 
-**Resolution:** replace `strings.Fields` with a `strings.Cut` check of the scheme.
-Separately, decide whether the scan is needed at all: azcore's bearer policy always records the certificate as an operation value.
-If the scan stays, document the rejection of custom `mtls_pop` headers.
+**Final fix:** the scan is removed. With no certificate recorded, [policy_mtls.go](../azcore/runtime/policy_mtls.go) now calls `req.Next()` directly.
+`hasMTLSPoPScheme`, `TestHasMTLSPoPScheme` and `TestMTLSPoPRejectsAuthenticationWithoutCertificate` are deleted.
+
+**Rationale:**
+
+- **The SDK's own requests can't trigger it.** `BearerTokenPolicy` records the certificate and sets the scheme and `x-ms-tokenboundauth` together on every try (bound: `mtls_pop` plus the header; bearer: `Bearer`, header deleted).
+  The scan could only catch headers from other code: `PerRetryPolicies`, `policy.WithHTTPHeader`, or pipelines with no bearer policy.
+- **It wasn't a security boundary.** A bound token sent without its certificate still goes only to the intended server over HTTPS, and it can't be used without the private key.
+  The real guarantee, that a bound token is never sent as a bearer token, comes from the bearer policy choosing the scheme from `BindingCertificate`.
+- **It blocked a legitimate setup:** an app doing its own PoP with a custom policy plus a transport configured with the client certificate.
+- **C# has no equivalent check.** Azure.Core's `HttpClientTransport` never inspects `Authorization`.
+  Key Vault's `UpdateTokenBoundAuthHeader` derives `x-ms-tokenboundauth` from the scheme rather than rejecting anything.
+
+**Trade-off accepted:** custom code that sets PoP headers without a certificate now gets a 401 from the service instead of an immediate client-side error.
+For Key Vault, a binding-validation 401 on such a request is classified as retriable, so it fails after the retry budget.
+Revisit if this causes confusion in practice.
 
 ### AZC-3: ARM auxiliary-tenant error is retriable
 
@@ -223,6 +237,19 @@ C# also keeps this in core: `BearerTokenAuthenticationPolicy.UpdateTransportOpti
 It has to stay a policy, not a `policy.Transporter` wrapper: the certificate is a request operation value, and a `Transporter` only receives the `*http.Request`.
 
 **Decision:** leave the structure as is for now; revisit if the transport layer is refactored.
+
+### AZC-9: x-ms-tokenboundauth is set in azcore rather than per service
+
+**Priority:** P2 · **Status:** Open
+
+Go's `BearerTokenPolicy` ([policy_bearer_token.go](../azcore/runtime/policy_bearer_token.go)) sets `x-ms-tokenboundauth: true` for every bound token, for any service.
+C# sets it only in Key Vault's `ChallengeBasedAuthenticationPolicy.UpdateTokenBoundAuthHeader`, which derives it from the `mtls_pop` scheme.
+Today the two behave the same, because only Key Vault requests PoP.
+
+If another service adopts PoP and doesn't expect this header, Go would send it anyway.
+
+**Resolution:** decide whether the header is a Key Vault protocol detail, which would move it to keyvault/internal like C#, or a general convention for bound tokens.
+Confirm with the Key Vault and identity teams.
 
 ---
 

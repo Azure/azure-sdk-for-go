@@ -8,7 +8,6 @@ import (
 	"crypto/tls"
 	"errors"
 	"net/http"
-	"strings"
 	"sync"
 	"sync/atomic"
 
@@ -40,18 +39,6 @@ func (p *mtlsPolicy) Do(req *policy.Request) (*http.Response, error) {
 	var mtls mtlsRequest
 	req.OperationValue(&mtls)
 	if mtls.certificate == nil {
-		for header, values := range req.Raw().Header {
-			if strings.EqualFold(header, "x-ms-tokenboundauth") {
-				return nil, errorinfo.NonRetriableError(errors.New("mTLS PoP requires a token with a binding certificate"))
-			}
-			if strings.EqualFold(header, "Authorization") {
-				for _, value := range values {
-					if fields := strings.Fields(value); len(fields) > 0 && strings.EqualFold(fields[0], "mtls_pop") {
-						return nil, errorinfo.NonRetriableError(errors.New("mTLS PoP requires a token with a binding certificate"))
-					}
-				}
-			}
-		}
 		return req.Next()
 	}
 	if req.Raw().URL.Scheme != "https" {

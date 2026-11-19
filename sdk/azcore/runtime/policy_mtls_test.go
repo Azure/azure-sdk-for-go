@@ -497,31 +497,6 @@ func TestMTLSPoPChallengeAuthentication(t *testing.T) {
 	}
 }
 
-func TestMTLSPoPRejectsAuthenticationWithoutCertificate(t *testing.T) {
-	var requests atomic.Int32
-	server := httptest.NewTLSServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {
-		requests.Add(1)
-	}))
-	defer server.Close()
-	for _, headers := range []http.Header{
-		{"Authorization": {"mtls_pop " + tokenValue}},
-		{"Authorization": {"", "mtls_pop " + tokenValue}},
-		{"authorization": {"MTLS_POP\t" + tokenValue}},
-		{"x-ms-tokenboundauth": {"true"}},
-	} {
-		p := NewPipeline("test", "v1.0.0", PipelineOptions{}, &policy.ClientOptions{
-			Transport: server.Client(),
-		})
-		req, err := NewRequest(context.Background(), http.MethodGet, server.URL)
-		require.NoError(t, err)
-		req.Raw().Header = headers
-		resp, err := p.Do(req)
-		require.ErrorContains(t, err, "binding certificate")
-		require.Nil(t, resp)
-	}
-	assert.Zero(t, requests.Load())
-}
-
 func TestMTLSPoPDoesNotFallbackOnCredentialFailure(t *testing.T) {
 	for _, expected := range []error{errors.New("attestation failed"), context.Canceled} {
 		t.Run(expected.Error(), func(t *testing.T) {

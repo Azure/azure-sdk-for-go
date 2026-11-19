@@ -31,7 +31,7 @@ type changeFeedContractService struct {
 	idleFirst     bool
 	headers       []http.Header
 	unexpected    []string
-	fail          bool
+	failureStatus int
 }
 
 func newChangeFeedContractService(t *testing.T, ranges int, idleFirst bool) *changeFeedContractService {
@@ -130,13 +130,17 @@ func (s *changeFeedContractService) serveHTTP(w http.ResponseWriter, r *http.Req
 	case strings.HasSuffix(r.URL.Path, "/docs"):
 		s.mu.Lock()
 		s.headers = append(s.headers, r.Header.Clone())
-		fail := s.fail
+		failureStatus := s.failureStatus
 		s.mu.Unlock()
-		if fail {
+		if failureStatus != 0 {
 			w.Header().Set("ETag", "failed-position")
 			w.Header().Set("x-ms-retry-after-ms", "25")
-			w.WriteHeader(http.StatusBadRequest)
-			_, _ = fmt.Fprint(w, `{"code":"BadRequest","message":"scripted change-feed failure"}`)
+			w.WriteHeader(failureStatus)
+			code := "BadRequest"
+			if failureStatus == http.StatusTooManyRequests {
+				code = "TooManyRequests"
+			}
+			_, _ = fmt.Fprintf(w, `{"code":%q,"message":"scripted change-feed failure"}`, code)
 			return
 		}
 		rangeID := r.Header.Get("x-ms-documentdb-partitionkeyrangeid")
@@ -324,6 +328,58 @@ func TestNativeChangeFeedCheckpointPreservesUntouchedRangeStart(t *testing.T) {
 	t.Fatal("resume did not request the untouched physical range")
 }
 
+func TestNativeChangeFeedCheckpointSurvivesThrottledPage(t *testing.T) {
+	service := newChangeFeedContractService(t, 1, false)
+	container := service.container(t, "items")
+	scope := NewFeedScopeForFullContainer()
+	start := NewChangeFeedStartFromBeginning()
+	pager := container.NewChangeFeedPager(scope, start, &ChangeFeedOptions{
+		Operation: OperationOptions{ThrottlingRetry: ThrottlingRetryOptions{MaxRetryCount: to(uint32(0))}},
+	})
+	t.Cleanup(func() { require.NoError(t, pager.Close()) })
+	first, err := pager.NextPage(t.Context())
+	require.NoError(t, err)
+	require.Len(t, first.Items, 1)
+	require.EqualValues(t, "position-1", first.ETag)
+	token, err := pager.ContinuationToken(t.Context())
+	require.NoError(t, err)
+	require.NotEmpty(t, token)
+
+	service.mu.Lock()
+	service.failureStatus = http.StatusTooManyRequests
+	service.mu.Unlock()
+	_, err = pager.NextPage(t.Context())
+	var throttled *Error
+	require.ErrorAs(t, err, &throttled)
+	require.Equal(t, http.StatusTooManyRequests, throttled.StatusCode)
+	require.EqualValues(t, "failed-position", throttled.ETag)
+	require.False(t, pager.More())
+	_, err = pager.ContinuationToken(t.Context())
+	require.Error(t, err, "a failed pager cannot produce a new checkpoint")
+	require.NoError(t, pager.Close())
+	require.NoError(t, container.database.client.Close())
+
+	service.mu.Lock()
+	service.failureStatus = 0
+	service.mu.Unlock()
+	resumed := service.container(t, "items").NewChangeFeedPager(scope, start,
+		&ChangeFeedOptions{Feed: FeedOptions{ContinuationToken: token}})
+	t.Cleanup(func() { require.NoError(t, resumed.Close()) })
+	page, err := resumed.NextPage(t.Context())
+	require.NoError(t, err)
+	require.Len(t, page.Items, 1)
+	change, err := DecodeChangeFeedItem[struct {
+		ID string `json:"id"`
+	}](page.Items[0])
+	require.NoError(t, err)
+	require.NotNil(t, change.Current)
+	require.Equal(t, "second", change.Current.ID)
+	idle, err := resumed.NextPage(t.Context())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusNotModified, idle.StatusCode)
+	require.Empty(t, idle.Items)
+}
+
 func TestNativeChangeFeedIdleRangeDoesNotEndContainer(t *testing.T) {
 	service := newChangeFeedContractService(t, 2, true)
 	pager := service.container(t, "items").NewChangeFeedPager(NewFeedScopeForFullContainer(),
@@ -435,7 +491,7 @@ func TestNativeChangeFeedAllVersionsStartRejectionComesFromService(t *testing.T)
 	} {
 		service := newChangeFeedContractService(t, 1, false)
 		service.mu.Lock()
-		service.fail = true
+		service.failureStatus = http.StatusBadRequest
 		service.mu.Unlock()
 		pager := service.container(t, "items").NewChangeFeedPager(NewFeedScopeForFullContainer(), start,
 			&ChangeFeedOptions{Mode: ChangeFeedModeAllVersionsAndDeletes})
@@ -542,7 +598,7 @@ func TestNativeChangeFeedWireErrorAndSetupCharge(t *testing.T) {
 	for _, full := range []bool{false, true} {
 		service := newChangeFeedContractService(t, 1, false)
 		service.mu.Lock()
-		service.fail = true
+		service.failureStatus = http.StatusBadRequest
 		service.mu.Unlock()
 		scope := NewFeedScopeForFullContainer()
 		if !full {

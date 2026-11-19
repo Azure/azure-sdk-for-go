@@ -69,7 +69,7 @@ func ExampleContainerClient_NewChangeFeedPager() {
 			// TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
 		}
-		log.Printf("received %d raw change envelopes, charge %.2f RU", len(page.Items), page.RequestCharge)
+		log.Printf("received %d change feed items, charge %.2f RU", len(page.Items), page.RequestCharge)
 		if page.StatusCode == http.StatusNotModified {
 			// An idle page is not EOF; the application chooses its polling cadence.
 			time.Sleep(time.Second)
@@ -112,11 +112,24 @@ func ExampleContainerClient_NewReadManyItemsPager() {
 	closeClient()
 }
 
+func ExampleDecodeChangeFeedItem() {
+	raw := []byte(`{"current":{"id":"item1","quantity":2},"metadata":{"operationType":"create"}}`)
+	change, err := azcosmos.DecodeChangeFeedItem[catalogItem](raw)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if change.Current != nil {
+		log.Printf("changed item %s", change.Current.ID)
+	}
+}
+
 func ExampleChangeFeedPager_ContinuationToken() {
 	container, closeClient := exampleContainer()
 	scope := azcosmos.NewFeedScopeForFullContainer()
 	mode := azcosmos.ChangeFeedModeLatestVersion
-	pager := container.NewChangeFeedPager(scope, azcosmos.NewChangeFeedStartFromBeginning(),
+	start := azcosmos.NewChangeFeedStartFromBeginning()
+	pager := container.NewChangeFeedPager(scope, start,
 		&azcosmos.ChangeFeedOptions{Mode: mode})
 	page, err := pager.NextPage(context.TODO())
 	if err != nil {
@@ -139,8 +152,8 @@ func ExampleChangeFeedPager_ContinuationToken() {
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	// Persist token according to the application's processing policy. It is not an acknowledgement.
-	resumed := container.NewChangeFeedPager(scope, azcosmos.NewChangeFeedStartFromNow(),
+	// Persist the token and original start after processing. A token is not an acknowledgement.
+	resumed := container.NewChangeFeedPager(scope, start,
 		&azcosmos.ChangeFeedOptions{Mode: mode, Feed: azcosmos.FeedOptions{ContinuationToken: token}})
 	page, err = resumed.NextPage(context.TODO())
 	if err != nil {

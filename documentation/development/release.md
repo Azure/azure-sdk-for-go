@@ -6,7 +6,7 @@ After going through a minimal architects board review and preparing your package
 
 - [] Verify there are no replace directives in the go.mod file
 - [] Verify the package has a LICENSE file
-- [] Verify documentation is present and accurate for all public methods and types. Reference the [content guidelines](https://review.docs.microsoft.com/help/contribute-ref/contribute-ref-how-to-document-sdk?branch=master#api-reference) for best practices. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
+- [] Verify documentation is present and accurate for all public methods and types. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
 - [] Verify there are no broken links
 - [] Verify all links are non-localized (no "en-us" in links)
 - [] Check the package manager link goes to the correct package

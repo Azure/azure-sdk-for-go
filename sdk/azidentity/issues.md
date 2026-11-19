@@ -8,6 +8,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 
 - **Open**: needs a fix or a decision.
 - **Fixed**: resolved; the entry records what changed.
+- **Not an issue**: investigation showed the concern doesn't apply; the entry records why.
 - **Won't fix**: deliberately not changing; the reason is recorded.
 - **By design**: the behavior is intended; documentation may still be needed.
 - **Deferred**: tracked elsewhere or after this change.
@@ -25,7 +26,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [REL-1](#rel-1-module-manifests-arent-releasable) | all | Module manifests aren't releasable | P0 | Open |
 | [AZC-1](#azc-1-mtls-client-cache-is-keyed-by-certificate-pointer) | azcore | mTLS client cache is keyed by certificate pointer | P1 | Fixed |
 | [AZC-2](#azc-2-authorization-scheme-check-scans-the-whole-token) | azcore | Authorization scheme check scans the whole token | P1 | Fixed |
-| [AZC-3](#azc-3-arm-auxiliary-tenant-error-is-retriable) | azcore/arm | ARM auxiliary-tenant error is retriable | P2 | Open |
+| [AZC-3](#azc-3-arm-auxiliary-tenant-error-is-retriable) | azcore/arm | ARM auxiliary-tenant error is retriable | P2 | Not an issue |
 | [AZC-4](#azc-4-response-classifier-contract-is-implicit) | azcore/internal | Response classifier contract is implicit | P2 | Open |
 | [AZC-5](#azc-5-bound-401-retries-reuse-the-cached-token) | azcore/keyvault | Bound 401 retries reuse the cached token | — | By design |
 | [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) | azcore | Bound connection pools aren't shared across clients | P2 | Won't fix |
@@ -145,15 +146,22 @@ Revisit if this causes confusion in practice.
 
 ### AZC-3: ARM auxiliary-tenant error is retriable
 
-**Priority:** P2 · **Status:** Open
+**Priority:** P2 · **Status:** Not an issue
 
-The new auxiliary-tenant check in
-[arm/runtime/policy_bearer_token.go](../azcore/arm/runtime/policy_bearer_token.go#L82)
-returns a plain `fmt.Errorf`, so the retry policy retries a deterministic failure.
-`mtlsPolicy` uses `errorinfo.NonRetriableError` for similar errors.
+The concern was that the new auxiliary-tenant check in
+[arm/runtime/policy_bearer_token.go](../azcore/arm/runtime/policy_bearer_token.go) returns a plain `fmt.Errorf`, so the retry policy would retry a deterministic failure.
 This path is defensive: ARM never requests PoP, so it only triggers if a credential returns a bound token nobody asked for.
 
-**Resolution:** wrap the error with `errorinfo.NonRetriableError`.
+**Finding:** the error is already non-retriable.
+ARM's `onRequest` is the `AuthorizationHandler.OnRequest` of azcore's `BearerTokenPolicy`, and [`BearerTokenPolicy.Do`](../azcore/runtime/policy_bearer_token.go) wraps every `OnRequest` error with `errorinfo.NonRetriableError`.
+
+This was verified with a temporary pipeline test, since deleted:
+
+- an ARM pipeline with an auxiliary tenant and `MaxRetries: 3`;
+- a credential returning an already-expired bound token, so any retry would have to acquire a new one.
+
+The credential was called once and the server received no requests.
+Wrapping the error locally would duplicate the central handling, so no change was made.
 
 ### AZC-4: Response classifier contract is implicit
 

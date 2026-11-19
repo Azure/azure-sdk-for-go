@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/Cluster_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Cluster_Delete_MaximumSet_Gen.json
 func ExampleClusterClient_BeginDelete_clusterDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleClusterClient_BeginDelete_clusterDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Cluster_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Cluster_Delete_MinimumSet_Gen.json
 func ExampleClusterClient_BeginDelete_clusterDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleClusterClient_BeginDelete_clusterDeleteMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleClusterClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

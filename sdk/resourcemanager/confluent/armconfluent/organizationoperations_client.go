@@ -17,7 +17,7 @@ import (
 // OrganizationOperationsClient contains the methods for the OrganizationOperations group.
 // Don't use this type directly, use NewOrganizationOperationsClient() instead.
 //
-// Generated from API version 2026-06-02-preview
+// Generated from API version 2026-10-21-preview
 type OrganizationOperationsClient struct {
 	internal *arm.Client
 }
@@ -80,7 +80,7 @@ func (client *OrganizationOperationsClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20261021Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

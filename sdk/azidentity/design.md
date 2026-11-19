@@ -328,10 +328,11 @@ The smoke app no longer sets the resource client's PoP enable flag.
 
 #### Internal bridges and Go adaptations
 
-- `sdk/internal/errorinfo` supplies authentication, unavailable, and credential-chain
-  markers. Identity errors implement standard `Is` and multi-cause `Unwrap` methods.
-  Existing error types and formatted messages are preserved. Nested chains explicitly
-  preserve terminal-failure precedence over unavailable causes.
+- `sdk/internal/errorinfo` supplies the `AuthenticationFailure` interface and its
+  `AuthenticationFailureInfo` (unavailable, credential-chain, and causes). Identity errors
+  implement it through an `AuthenticationFailure` method rather than `Is`/`Unwrap`, so causes
+  such as MSAL errors aren't exposed to `errors.Is` and `errors.As`. Existing error types,
+  formatted messages, and chain iteration are preserved.
 - Key Vault classifies individual credential-chain causes, never a flattened aggregate
   message. Ordinary single-error Go wrappers are supported; unclassified joins,
   cancellation, and unrelated terminal failures prevent fallback. Unlike C#'s exception

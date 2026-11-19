@@ -13,14 +13,17 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/stretchr/testify/require"
 )
 
-func TestAuthenticationFailedErrorUnwrap(t *testing.T) {
-	for _, cause := range []error{context.Canceled, context.DeadlineExceeded, fmt.Errorf("wrapped: %w", context.Canceled)} {
-		err := newAuthenticationFailedErrorFromMSAL(credNameManagedIdentity, cause)
-		require.ErrorIs(t, err, cause)
-	}
+func TestAuthenticationFailedErrorFromMSAL(t *testing.T) {
+	cause := fmt.Errorf("wrapped: %w", context.Canceled)
+	err := newAuthenticationFailedErrorFromMSAL(credNameManagedIdentity, cause)
+	var af errorinfo.AuthenticationFailure
+	require.ErrorAs(t, err, &af)
+	require.Equal(t, errorinfo.AuthenticationFailureInfo{Causes: []error{cause}}, af.AuthenticationFailure())
+	require.NotErrorIs(t, err, context.Canceled, "the MSAL error must not be exposed to errors.Is")
 }
 
 // testing our custom Error interface for the authentication failed error type

@@ -5,21 +5,25 @@ package errorinfo
 
 import "errors"
 
-var (
-	// ErrAuthenticationFailed identifies an authentication error through its Is method.
-	ErrAuthenticationFailed = errors.New("authentication failed")
-	// ErrCredentialUnavailable identifies an unavailable credential through its Is method.
-	ErrCredentialUnavailable = errors.New("credential unavailable")
-	// ErrCredentialChain identifies a credential-chain error whose children must be classified individually.
-	ErrCredentialChain = errors.New("credential chain failed")
-)
+// AuthenticationFailureInfo describes a credential error for classification by Azure SDK modules.
+// Fields may be added. Define each so that its zero value means "no" or "unknown", because
+// a credential module built against an earlier version won't set it.
+type AuthenticationFailureInfo struct {
+	// Unavailable is true when the credential couldn't attempt authentication.
+	Unavailable bool
+	// Chained is true when the error aggregates a credential chain's failures. Classify
+	// each of Causes individually rather than this error's message.
+	Chained bool
+	// Causes are the errors that caused this one, if any.
+	Causes []error
+}
 
-// AuthenticationError exposes structured authentication failures without depending on azidentity.
-// Call Is directly to classify this node, rather than matching one of its descendants.
-type AuthenticationError interface {
+// AuthenticationFailure is implemented by credential errors so that Azure SDK modules can classify
+// them without depending on the credential module. Unlike Unwrap, it doesn't expose causes to
+// errors.Is and errors.As. Use errors.As() to access this interface in the error chain.
+type AuthenticationFailure interface {
 	error
-	Is(error) bool
-	Unwrap() []error
+	AuthenticationFailure() AuthenticationFailureInfo
 }
 
 // NonRetriable represents a non-transient error.  This works in

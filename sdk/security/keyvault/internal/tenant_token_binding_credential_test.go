@@ -19,18 +19,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// authenticationTestError mimics azidentity's errors: it exposes causes only through
+// AuthenticationFailure, not to errors.Is and errors.As
 type authenticationTestError struct {
 	message              string
 	unavailable, chained bool
 	causes               []error
 }
 
-func (e *authenticationTestError) Error() string   { return e.message }
-func (e *authenticationTestError) Unwrap() []error { return e.causes }
-func (e *authenticationTestError) Is(target error) bool {
-	return target == errorinfo.ErrAuthenticationFailed ||
-		(e.unavailable && target == errorinfo.ErrCredentialUnavailable) ||
-		(e.chained && target == errorinfo.ErrCredentialChain)
+func (e *authenticationTestError) Error() string { return e.message }
+func (e *authenticationTestError) AuthenticationFailure() errorinfo.AuthenticationFailureInfo {
+	return errorinfo.AuthenticationFailureInfo{Unavailable: e.unavailable, Chained: e.chained, Causes: e.causes}
 }
 
 func TestTenantTokenBindingCredential(t *testing.T) {

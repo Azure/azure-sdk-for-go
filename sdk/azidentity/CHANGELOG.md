@@ -15,9 +15,6 @@
   ordinary bearer acquisition is preserved. Selected attestation failures aren't downgraded.
 - `ManagedIdentityCredentialOptions.DisableMTLSPoP` opts a managed identity credential out of
   bound-token acquisition.
-- Authentication errors support standard Go error unwrapping and SDK-internal classification.
-  Credential-chain errors retain individual failures, including cancellation, while nested
-  chains continue to stop on terminal authentication failures.
 
 ### Breaking Changes
 
@@ -29,6 +26,9 @@
 
 ### Other Changes
 
+- Added `AuthenticationFailure` methods to `AuthenticationFailedError` and `AuthenticationRequiredError`.
+  Other Azure SDK modules use them to classify credential errors. They aren't intended for
+  application use and aren't covered by this module's compatibility guarantees.
 - Removed the development-only local `azcore` replacement from this module's manifest.
   Source-only preview validation uses application replacements or a temporary workspace.
 ## 1.15.0 (2026-10-14)

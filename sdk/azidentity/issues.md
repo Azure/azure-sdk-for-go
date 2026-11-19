@@ -33,7 +33,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZC-8](#azc-8-mtlspolicy-acts-as-a-transport-selector) | azcore | mtlsPolicy acts as a transport selector | P2 | Deferred |
 | [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Open |
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
-| [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Open |
+| [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Fixed (unwrapping removed) |
 | [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Open |
 | [AZI-4](#azi-4-unreachable-and-redundant-checks-in-gettoken) | azidentity | Unreachable and redundant checks in GetToken | P2 | Open |
 | [AZI-5](#azi-5-designmd-ships-in-the-module) | azidentity | design.md ships in the module | P1 | Open |
@@ -280,20 +280,55 @@ If they add it, use it when attestation isn't registered.
 
 ### AZI-2: Error unwrapping is a new public behavior
 
-**Priority:** P1 · **Status:** Open
+**Priority:** P1 · **Status:** Fixed (unwrapping removed)
 
-Two azidentity error types now implement `Unwrap() []error`:
+The baseline gave azidentity's error types `Is` and `Unwrap() []error` methods for the first time.
+That let `errors.Is` and `errors.As` reach MSAL error types, `context` errors, and each credential's error inside a chain.
+Reachable errors are public API ([Working with Errors in Go 1.13](https://go.dev/blog/go1.13-errors), "Whether to Wrap").
 
-- `AuthenticationFailedError` ([errors.go](errors.go#L81)) returns the MSAL error.
-- `credentialUnavailableError` ([errors.go](errors.go#L191)) returns the chain's child errors when it comes from a chain
-  ([chained_token_credential.go](chained_token_credential.go#L136)).
+**Why it was added:** the only consumer was Key Vault's `classifyAuthenticationFailure`. It needed to:
 
-As a result, `errors.As` and `errors.Is` now reach MSAL error types and individual chain failures.
-For example, `errors.As(dacErr, &*AuthenticationRequiredError)` is now true when any child returned one.
-This is useful, but it becomes a de facto contract.
+- recognize azidentity errors without importing azidentity;
+- read the unavailable and chain flags;
+- walk causes to classify each chain child and find `AADSTS3921996` in MSAL's error.
 
-**Resolution:** add explicit changelog entries describing what callers can now match.
-Note that wrapped MSAL error types aren't covered by azidentity's compatibility guarantees.
+Applications never needed it.
+
+**Alternatives considered:**
+
+- **Keep `Unwrap` and document it:** rejected; it commits to MSAL types and chain structure.
+- **Wrap returned errors in an `errorinfo` type:** rejected. Every credential's concrete return type would change, breaking `err.(*AuthenticationFailedError)` type assertions at runtime.
+- **A classifier registered from `init`:** this would add no public method, but it needs global state.
+- **Match on the top-level message only:** this loses per-child classification of chain errors.
+
+**Fix:** a single `AuthenticationFailure` method, following the same pattern as the existing `NonRetriable` marker.
+
+- **[sdk/internal/errorinfo](../internal/errorinfo/errorinfo.go):**
+  - The `AuthenticationFailure` interface and the `AuthenticationFailureInfo{Unavailable, Chained, Causes}` struct replace the `AuthenticationError` interface and three sentinel errors.
+  - The struct allows fields to be added later. Each field's zero value means "no" or "unknown", so a mismatched module version is safe.
+  - Go's `internal` import rule (verified) keeps applications from naming the type or the interface.
+- **[errors.go](errors.go):**
+  - `AuthenticationFailedError` and `credentialUnavailableError` implement `AuthenticationFailure()`, documented as being for Azure SDK modules and not covered by compatibility guarantees.
+  - `Is` and `Unwrap` are removed, so `errors.Is` and `errors.As` behave exactly as in 1.15.0.
+  - `AuthenticationRequiredError` gets the method through embedding, as it does `NonRetriable`.
+- **[chained_token_credential.go](chained_token_credential.go):** the extra `errors.As(err, &authFailedErr)` stop condition is reverted. It only existed because of `Unwrap`.
+- **[tenant_token_binding_credential.go](../security/keyvault/internal/tenant_token_binding_credential.go):**
+  - The classifier type-asserts each node it visits to `errorinfo.AuthenticationFailure` and reads the info struct; the classification rules are unchanged.
+  - `errors.Is` can't see causes any more, so cancellation is checked on each node visited.
+- **Changelogs:**
+  - azidentity drops the unwrapping bullet and notes the SDK-only method under Other Changes.
+  - sdk/internal describes the new `errorinfo` types.
+  - [design.md](design.md) is updated to match.
+- **Tests:**
+  - `TestAuthenticationFailedErrorFromMSAL` and `TestChainedTokenCredential_AuthenticationFailure`, covering nested chains and all-unavailable chains, check the info returned and that causes are *not* reachable through `errors.Is`.
+  - They replace the three unwrapping tests.
+  - Key Vault's `authenticationTestError` now implements the new interface without `Unwrap`, matching azidentity, and the 23-case classification table passes unchanged.
+
+**Standard library precedent for exported-but-internal API:**
+
+- `testing.InternalTest`: "an internal type but exported because it is cross-package".
+- `testing.MainStart`: "not subject to the Go 1 compatibility document"; its signature uses the unexported `testDeps` type.
+- `net/http.NoBody`: an exported variable of an unexported type.
 
 ### AZI-3: Attestation activation is process-wide
 

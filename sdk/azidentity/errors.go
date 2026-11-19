@@ -72,14 +72,10 @@ func newAuthenticationFailedErrorFromMSAL(credType string, err error) error {
 	return &AuthenticationFailedError{credType: credType, message: msg, RawResponse: res, causes: []error{err}}
 }
 
-// Is supports authentication-error classification by Azure SDK policies.
-func (e *AuthenticationFailedError) Is(target error) bool {
-	return target == errorinfo.ErrAuthenticationFailed || (e.chained && target == errorinfo.ErrCredentialChain)
-}
-
-// Unwrap returns the underlying authentication failures.
-func (e *AuthenticationFailedError) Unwrap() []error {
-	return e.causes
+// AuthenticationFailure supports error classification by Azure SDK modules. It isn't intended for
+// application use and isn't covered by this module's compatibility guarantees.
+func (e *AuthenticationFailedError) AuthenticationFailure() errorinfo.AuthenticationFailureInfo {
+	return errorinfo.AuthenticationFailureInfo{Chained: e.chained, Causes: e.causes}
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
@@ -134,7 +130,10 @@ func (*AuthenticationFailedError) NonRetriable() {
 	// marker method
 }
 
-var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
+var (
+	_ errorinfo.AuthenticationFailure = (*AuthenticationFailedError)(nil)
+	_ errorinfo.NonRetriable          = (*AuthenticationFailedError)(nil)
+)
 
 // AuthenticationRequiredError indicates a credential's Authenticate method must be called to acquire a token
 // because the credential requires user interaction and is configured not to request it automatically.
@@ -183,13 +182,10 @@ func NewCredentialUnavailableError(message string) error {
 	return &credentialUnavailableError{message: message}
 }
 
-func (e *credentialUnavailableError) Is(target error) bool {
-	return target == errorinfo.ErrAuthenticationFailed || target == errorinfo.ErrCredentialUnavailable ||
-		(e.chained && target == errorinfo.ErrCredentialChain)
-}
-
-func (e *credentialUnavailableError) Unwrap() []error {
-	return e.causes
+// AuthenticationFailure supports error classification by Azure SDK modules. It isn't intended for
+// application use and isn't covered by this module's compatibility guarantees.
+func (e *credentialUnavailableError) AuthenticationFailure() errorinfo.AuthenticationFailureInfo {
+	return errorinfo.AuthenticationFailureInfo{Unavailable: true, Chained: e.chained, Causes: e.causes}
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
@@ -203,6 +199,7 @@ func (*credentialUnavailableError) NonRetriable() {}
 func (*credentialUnavailableError) credentialUnavailable() {}
 
 var (
-	_ credentialUnavailable  = (*credentialUnavailableError)(nil)
-	_ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+	_ credentialUnavailable           = (*credentialUnavailableError)(nil)
+	_ errorinfo.AuthenticationFailure = (*credentialUnavailableError)(nil)
+	_ errorinfo.NonRetriable          = (*credentialUnavailableError)(nil)
 )

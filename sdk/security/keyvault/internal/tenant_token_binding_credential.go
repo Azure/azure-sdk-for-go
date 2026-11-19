@@ -59,12 +59,12 @@ const (
 )
 
 func classifyAuthenticationFailure(err error) authenticationFailure {
-	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-		return failureOther
-	}
 	// Accept ordinary Go wrappers, but not unclassified aggregate messages.
 	for err != nil {
-		if auth, ok := err.(errorinfo.AuthenticationError); ok && auth.Is(errorinfo.ErrAuthenticationFailed) {
+		if isCancellation(err) {
+			return failureOther
+		}
+		if _, ok := err.(errorinfo.AuthenticationFailure); ok {
 			break
 		}
 		err = errors.Unwrap(err)
@@ -74,43 +74,48 @@ func classifyAuthenticationFailure(err error) authenticationFailure {
 	}
 	denied, onlyUnavailable := false, true
 	for err != nil {
-		if auth, ok := err.(errorinfo.AuthenticationError); ok && auth.Is(errorinfo.ErrAuthenticationFailed) {
-			causes := auth.Unwrap()
-			if auth.Is(errorinfo.ErrCredentialChain) {
-				chainDenied := false
-				for _, cause := range causes {
-					switch classifyAuthenticationFailure(cause) {
-					case failureTenantDenied:
-						chainDenied = true
-					case failureUnavailable:
-					default:
-						return failureOther
-					}
-				}
-				if chainDenied {
-					return failureTenantDenied
-				}
-				if onlyUnavailable && auth.Is(errorinfo.ErrCredentialUnavailable) {
-					return failureUnavailable
-				}
-				return failureOther
-			}
-			denied = denied || tenantDeniedPattern.MatchString(err.Error())
-			onlyUnavailable = onlyUnavailable && auth.Is(errorinfo.ErrCredentialUnavailable)
-			switch len(causes) {
-			case 0:
-				err = nil
-			case 1:
-				err = causes[0]
-			default:
-				return failureOther
-			}
-		} else {
+		// errors.Is can't see a credential error's causes, so check each one visited
+		if isCancellation(err) {
+			return failureOther
+		}
+		auth, ok := err.(errorinfo.AuthenticationFailure)
+		if !ok {
 			if _, aggregate := err.(interface{ Unwrap() []error }); aggregate {
 				return failureOther
 			}
 			denied = denied || tenantDeniedPattern.MatchString(err.Error())
 			err = errors.Unwrap(err)
+			continue
+		}
+		info := auth.AuthenticationFailure()
+		if info.Chained {
+			chainDenied := false
+			for _, cause := range info.Causes {
+				switch classifyAuthenticationFailure(cause) {
+				case failureTenantDenied:
+					chainDenied = true
+				case failureUnavailable:
+				default:
+					return failureOther
+				}
+			}
+			if chainDenied {
+				return failureTenantDenied
+			}
+			if onlyUnavailable && info.Unavailable {
+				return failureUnavailable
+			}
+			return failureOther
+		}
+		denied = denied || tenantDeniedPattern.MatchString(err.Error())
+		onlyUnavailable = onlyUnavailable && info.Unavailable
+		switch len(info.Causes) {
+		case 0:
+			err = nil
+		case 1:
+			err = info.Causes[0]
+		default:
+			return failureOther
 		}
 	}
 	if denied {
@@ -120,4 +125,8 @@ func classifyAuthenticationFailure(err error) authenticationFailure {
 		return failureUnavailable
 	}
 	return failureOther
+}
+
+func isCancellation(err error) bool {
+	return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
 }

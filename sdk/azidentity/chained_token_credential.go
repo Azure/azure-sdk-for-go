@@ -89,7 +89,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		errs                 []error
 		successfulCredential azcore.TokenCredential
 		token                azcore.AccessToken
-		authFailedErr        *AuthenticationFailedError
 		unavailableErr       credentialUnavailable
 	)
 	for _, cred := range c.sources {
@@ -101,7 +100,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 		}
 		errs = append(errs, err)
 		// continue to the next source iff this one returned credentialUnavailableError
-		if errors.As(err, &authFailedErr) || !errors.As(err, &unavailableErr) {
+		if !errors.As(err, &unavailableErr) {
 			break
 		}
 	}

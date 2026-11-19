@@ -4,8 +4,10 @@
 
 ### Features Added
 
-- Added SDK-internal authentication-error markers and a request-scoped response classifier
-  for shared authentication and retry handling, without service-to-identity runtime dependencies.
+- Added `errorinfo.AuthenticationFailure` and `errorinfo.AuthenticationFailureInfo`, which let SDK
+  modules classify credential errors without depending on azidentity, and
+  `exported.ResponseClassifier`, a request-scoped response classifier shared by the authentication
+  and retry policies.
 
 ### Breaking Changes
 

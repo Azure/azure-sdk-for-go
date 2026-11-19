@@ -12,10 +12,10 @@ import (
 // SettingFilter to select configuration setting entities.
 type SettingFilter struct {
 	// Key filter that will be used to select a set of configuration setting entities.
-	KeyFilter *string
+	KeyFilter *string `json:"key,omitempty"`
 
 	// Label filter that will be used to select a set of configuration setting entities.
-	LabelFilter *string
+	LabelFilter *string `json:"label,omitempty"`
 }
 
 // SettingSelector is a set of options that allows selecting a filtered set of configuration setting entities

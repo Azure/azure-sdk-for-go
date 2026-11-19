@@ -37,7 +37,7 @@ BeforeAll {
   $management = ConvertFrom-Yaml ([IO.File]::ReadAllText((Join-Path $root 'eng/pipelines/mgmt-auto-release.yml')))
 }
 
-Describe 'Go manual release-plan ID forwarding' {
+Describe 'Go manual release-plan ID forwarding' -Tag 'UnitTest' {
   It 'declares optional string IDs with a zero default at every relay' {
     foreach ($document in @($entry, $client)) {
       $ids = @($document.parameters | Where-Object { $_.name -eq 'ReleasePlanId' })
@@ -244,10 +244,11 @@ Describe 'Go manual release-plan ID forwarding' {
 
   It 'preserves raw ID <Id> for shared validation' -TestCases @(
     @{ Id = '0' }, @{ Id = '35307' }, @{ Id = '2147483648' },
-    @{ Id = '9007199254740993' }, @{ Id = '1.5' }, @{ Id = '-1' }, @{ Id = ' 42 ' }
+    @{ Id = '9007199254740993' }, @{ Id = '1.5' }, @{ Id = '-1' }, @{ Id = ' 42 ' },
+    @{ Id = "0'; Write-Output 'probe'; #" }, @{ Id = '$(Write-Output probe)' }
   ) {
     param([string]$Id)
-    $value = (ConvertFrom-Yaml "ReleasePlanId: '$Id'").ReleasePlanId
+    $value = (ConvertFrom-Yaml (ConvertTo-Yaml @{ ReleasePlanId = $Id })).ReleasePlanId
     $entry.extends.parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
     $releaseCalls[0].parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'
     $completion.parameters.ReleasePlanId | Should -BeExactly '${{ parameters.ReleasePlanId }}'

@@ -375,7 +375,7 @@ func TestAutomaticPipeline(t *testing.T) {
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		requests.Add(1)
 		assert.Equal(t, "mtls_pop "+token.Token, r.Header.Get("Authorization"))
-		assert.Equal(t, "true", r.Header.Get("x-ms-tokenboundauth"))
+		assert.Empty(t, r.Header.Get("x-ms-tokenboundauth"), "Key Vault's policy, not azcore, sets this service-specific header")
 		assert.Equal(t, uint16(tls.VersionTLS12), r.TLS.Version)
 		if assert.Len(t, r.TLS.PeerCertificates, 1) {
 			assert.Equal(t, token.BindingCertificate.Certificate[0], r.TLS.PeerCertificates[0].Raw)

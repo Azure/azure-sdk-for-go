@@ -122,10 +122,8 @@ func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(p
 		req.SetOperationValue(mtlsRequest{certificate: tk.BindingCertificate})
 		if tk.BindingCertificate != nil {
 			req.Raw().Header.Set(shared.HeaderAuthorization, "mtls_pop "+tk.Token)
-			req.Raw().Header.Set("x-ms-tokenboundauth", "true")
 		} else {
 			req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
-			req.Raw().Header.Del("x-ms-tokenboundauth")
 		}
 		return nil
 	}

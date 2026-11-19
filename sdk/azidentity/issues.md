@@ -32,7 +32,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) | azcore | Bound connection pools aren't shared across clients | P2 | Won't fix |
 | [AZC-7](#azc-7-separate-bearer-and-pop-token-caches) | azcore | Separate bearer and PoP token caches | — | By design |
 | [AZC-8](#azc-8-mtlspolicy-acts-as-a-transport-selector) | azcore | mtlsPolicy acts as a transport selector | P2 | Deferred |
-| [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Open |
+| [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Fixed |
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
 | [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Fixed (unwrapping removed) |
 | [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Open |
@@ -297,16 +297,33 @@ It has to stay a policy, not a `policy.Transporter` wrapper: the certificate is 
 
 ### AZC-9: x-ms-tokenboundauth is set in azcore rather than per service
 
-**Priority:** P2 · **Status:** Open
+**Priority:** P2 · **Status:** Fixed
 
-Go's `BearerTokenPolicy` ([policy_bearer_token.go](../azcore/runtime/policy_bearer_token.go)) sets `x-ms-tokenboundauth: true` for every bound token, for any service.
-C# sets it only in Key Vault's `ChallengeBasedAuthenticationPolicy.UpdateTokenBoundAuthHeader`, which derives it from the `mtls_pop` scheme.
-Today the two behave the same, because only Key Vault requests PoP.
+Go's `BearerTokenPolicy` set `x-ms-tokenboundauth: true` for every bound token, for any service, and deleted it for bearer tokens.
+C# sets it only in Key Vault's `ChallengeBasedAuthenticationPolicy.UpdateTokenBoundAuthHeader`, which derives it from the `mtls_pop` authorization prefix after each authorization.
+Azure.Core never touches it.
 
-If another service adopts PoP and doesn't expect this header, Go would send it anyway.
+The header isn't part of mTLS PoP itself; RFC 8705 uses the `mtls_pop` scheme plus the client certificate.
+Neither repo documents what the service does with it, so it's treated as a Key Vault protocol detail.
 
-**Resolution:** decide whether the header is a Key Vault protocol detail, which would move it to keyvault/internal like C#, or a general convention for bound tokens.
-Confirm with the Key Vault and identity teams.
+Before the fix, Go and C# behaved the same only because only Key Vault requests PoP.
+Go's ARM pipeline would have sent the header with a bound token nobody asked for, and Go would send it to any future PoP service.
+
+**Fix (C# parity):**
+
+- **[policy_bearer_token.go](../azcore/runtime/policy_bearer_token.go):** no longer sets or deletes the header. It chooses only the `mtls_pop`/`Bearer` scheme and records the certificate.
+- **[challenge_policy.go](../security/keyvault/internal/challenge_policy.go):**
+  - A new `authorizeWith` helper wraps `authNZ` in both `authorize` and `authorizeOnChallenge`. After a successful authorization it sets the header for `mtls_pop ` authorization and deletes it otherwise.
+  - This covers every authorization, including CAE: azcore's CAE path calls the handler's `OnRequest`.
+  - The header name is now a `tokenBoundAuthHeader` constant shared with `classifyTokenBindingFailure`.
+- **Tests:**
+  - [policy_mtls_test.go](../azcore/runtime/policy_mtls_test.go): the bound-path assertions are removed, and one now asserts azcore does *not* set the header. The stale-header setup is removed, since clearing is no longer azcore's job.
+  - `TestChallengePolicy_AutomaticMTLSPoP` starts each request with a stale header, and checks it's replaced with `true` for bound tokens and removed for bearer tokens. Disabling the delete makes this test fail.
+  - The azsecrets "tenant transition" test still covers clearing within one request (a bound attempt, then a bearer resend after a challenge).
+  - The smoke app's `TestAutomaticPipeline` builds a plain azcore pipeline, so it now asserts the header is absent. Its live checks run through azsecrets, or set the header manually in `resourceGET`, and are unaffected.
+- **Docs:** the [keyvault/internal README](../security/keyvault/internal/README.md) and [design.md](design.md).
+
+**Compatibility:** the new keyvault/internal already requires the new azcore. Released keyvault/internal versions never request PoP, so they behave the same with an azcore that no longer sets the header.
 
 ---
 

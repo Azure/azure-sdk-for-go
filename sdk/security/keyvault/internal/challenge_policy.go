@@ -22,6 +22,9 @@ import (
 const challengeMatchError = `challenge resource "%s" doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information`
 const tokenBindingValidationFailure = "[MtlsCnfClaimRequestDataValidationFailed]"
 
+// tokenBoundAuthHeader tells Key Vault a request carries a certificate-bound (mtls_pop) token
+const tokenBoundAuthHeader = "x-ms-tokenboundauth"
+
 type KeyVaultChallengePolicyOptions struct {
 	// DisableChallengeResourceVerification controls whether the policy requires the
 	// authentication challenge resource to match the Key Vault or Managed HSM domain
@@ -96,7 +99,7 @@ func classifyTokenBindingFailure(res *http.Response) (bool, error) {
 	if res.StatusCode != http.StatusUnauthorized || res.Request == nil {
 		return false, nil
 	}
-	if _, bound := res.Request.Header[http.CanonicalHeaderKey("x-ms-tokenboundauth")]; !bound {
+	if _, bound := res.Request.Header[http.CanonicalHeaderKey(tokenBoundAuthHeader)]; !bound {
 		return false, nil
 	}
 	body, err := runtime.Payload(res)
@@ -124,6 +127,24 @@ func (k *keyVaultAuthorizer) tokenRequestOptions(req *policy.Request, tro policy
 	return k.credential.effectiveRequestOptions(tro)
 }
 
+// authorizeWith authorizes req, then sets Key Vault's token-bound header to match the authorization
+// scheme azcore chose from the returned token. Every authorization, including responses to CAE
+// challenges, passes through authorize or authorizeOnChallenge, so the header can't go stale.
+func authorizeWith(req *policy.Request, authNZ func(policy.TokenRequestOptions) error, tro policy.TokenRequestOptions) error {
+	if err := authNZ(tro); err != nil {
+		return err
+	}
+	if strings.HasPrefix(req.Raw().Header.Get("Authorization"), "mtls_pop ") {
+		req.Raw().Header.Set(tokenBoundAuthHeader, "true")
+	} else {
+		// A challenge or CAE response re-authorizes the same request within a try, and the new token
+		// may be bearer where the previous one was bound (e.g. after a tenant denies PoP), so remove
+		// any header left by an earlier authorization
+		req.Raw().Header.Del(tokenBoundAuthHeader)
+	}
+	return nil
+}
+
 func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.TokenRequestOptions) error) error {
 	tro := k.getTokenRequestOptions()
 	if len(tro.Scopes) == 0 || tro.TenantID == "" {
@@ -141,7 +162,7 @@ func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.T
 		return nil
 	}
 	// else we know the auth parameters and can authorize the request as normal
-	return authNZ(k.tokenRequestOptions(req, tro))
+	return authorizeWith(req, authNZ, k.tokenRequestOptions(req, tro))
 }
 
 func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
@@ -158,7 +179,7 @@ func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http
 		}
 	}
 	// authenticate with the parameters supplied by Key Vault, authorize the request, send it again
-	return authNZ(k.tokenRequestOptions(req, k.getTokenRequestOptions()))
+	return authorizeWith(req, authNZ, k.tokenRequestOptions(req, k.getTokenRequestOptions()))
 }
 
 // parses Tenant ID from auth challenge

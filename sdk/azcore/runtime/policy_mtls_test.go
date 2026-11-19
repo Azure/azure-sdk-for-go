@@ -32,7 +32,7 @@ func TestMTLSPoPResourcePipeline(t *testing.T) {
 	var cert tls.Certificate
 	server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		assert.Equal(t, "mtls_pop "+tokenValue, r.Header.Get("Authorization"))
-		assert.Equal(t, "true", r.Header.Get("x-ms-tokenboundauth"))
+		assert.Empty(t, r.Header.Get("x-ms-tokenboundauth"), "service-specific binding headers belong to service policies")
 		assert.Equal(t, uint16(tls.VersionTLS12), r.TLS.Version)
 		assert.Len(t, r.TLS.PeerCertificates, 1)
 		if len(r.TLS.PeerCertificates) == 1 {
@@ -116,7 +116,6 @@ func TestMTLSPoPAdaptiveAuthentication(t *testing.T) {
 				assert.Equal(t, "preserved", r.Header.Get("X-Test-Middleware"))
 				if tc.bound {
 					assert.Equal(t, "mtls_pop "+tokenValue, r.Header.Get("Authorization"))
-					assert.Equal(t, "true", r.Header.Get("x-ms-tokenboundauth"))
 					assert.Equal(t, uint16(tls.VersionTLS12), r.TLS.Version)
 					if assert.Len(t, r.TLS.PeerCertificates, 1) {
 						assert.Equal(t, cert.Certificate[0], r.TLS.PeerCertificates[0].Raw)
@@ -167,7 +166,6 @@ func TestMTLSPoPAdaptiveAuthentication(t *testing.T) {
 			for range 2 {
 				req, err := NewRequest(context.Background(), http.MethodGet, server.URL)
 				require.NoError(t, err)
-				req.Raw().Header.Set("x-ms-tokenboundauth", "stale")
 				resp, err := p.Do(req)
 				require.NoError(t, err)
 				require.NoError(t, resp.Body.Close())
@@ -197,7 +195,6 @@ func TestMTLSPoPBoundToBearerChallenge(t *testing.T) {
 		call := requests.Add(1)
 		if call == 1 {
 			assert.Equal(t, "mtls_pop "+tokenValue, r.Header.Get("Authorization"))
-			assert.Equal(t, "true", r.Header.Get("x-ms-tokenboundauth"))
 			assert.Equal(t, uint16(tls.VersionTLS12), r.TLS.Version)
 			if assert.Len(t, r.TLS.PeerCertificates, 1) {
 				assert.Equal(t, cert.Certificate[0], r.TLS.PeerCertificates[0].Raw)
@@ -268,7 +265,6 @@ func TestMTLSPoPTokenRenewal(t *testing.T) {
 			index = 1
 		}
 		assert.Equal(t, "mtls_pop "+tokens[index], r.Header.Get("Authorization"))
-		assert.Equal(t, "true", r.Header.Get("x-ms-tokenboundauth"))
 		assert.Equal(t, uint16(tls.VersionTLS12), r.TLS.Version)
 		if assert.Len(t, r.TLS.PeerCertificates, 1) {
 			assert.Equal(t, certs[index].Certificate[0], r.TLS.PeerCertificates[0].Raw,
@@ -431,7 +427,6 @@ func TestMTLSPoPChallengeAuthentication(t *testing.T) {
 				if bound {
 					assert.Equal(t, uint16(tls.VersionTLS12), r.TLS.Version)
 					assert.Equal(t, "mtls_pop "+tokenValue, r.Header.Get("Authorization"))
-					assert.Equal(t, "true", r.Header.Get("x-ms-tokenboundauth"))
 				} else {
 					assert.Equal(t, uint16(tls.VersionTLS13), r.TLS.Version)
 					assert.Equal(t, "Bearer "+tokenValue, r.Header.Get("Authorization"))

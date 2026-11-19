@@ -197,7 +197,9 @@ bearer and bound paths, with no default service behavior change yet.
   existing client enable flag. The returned token determines authorization and
   transport: a bearer response is permitted, and a bound response is never
   relabeled as bearer.
-- Bearer authorization clears previous binding state and the token-bound header.
+- Bearer authorization clears previous binding state. Key Vault's authorization handlers,
+  not `azcore`, set or clear `x-ms-tokenboundauth` from the resulting authorization scheme,
+  matching C#.
   It uses the original configured transport, preserving caller TLS settings.
 - Request modes retain separate token caches. Bound connections retain the
   existing certificate-specific pools and certificate-expiration handling.

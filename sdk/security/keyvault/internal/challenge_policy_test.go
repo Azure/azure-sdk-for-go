@@ -471,6 +471,8 @@ func TestChallengePolicy_AutomaticMTLSPoP(t *testing.T) {
 				req, err := runtime.NewRequest(context.Background(), http.MethodPost, server.URL)
 				require.NoError(t, err)
 				require.NoError(t, req.SetBody(streaming.NopCloser(strings.NewReader("request body")), "text/plain"))
+				// authorization must replace any existing token-bound header to match the actual scheme
+				req.Raw().Header.Set(tokenBoundAuthHeader, "stale")
 				res, err := pl.Do(req)
 				require.NoError(t, err)
 				require.Equal(t, http.StatusOK, res.StatusCode)

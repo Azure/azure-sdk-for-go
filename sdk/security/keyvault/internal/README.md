@@ -14,7 +14,8 @@ Credentials returning ordinary bearer tokens continue to work without a special 
 Eligible managed identity requests use the optional
 [attestation integration](../../../azidentity/attestation/README.md).
 Customer code doesn't need a Key Vault PoP enable flag. Bound tokens use their binding
-certificates through the adaptive `azcore` transport.
+certificates through the adaptive `azcore` transport. After each authorization, the shared
+policy sets `x-ms-tokenboundauth: true` for `mtls_pop` authorization and removes it otherwise.
 
 Only a specifically classified token-acquisition denial containing the complete error code
 `AADSTS3921996` permits a fresh acquisition with PoP disabled. The policy remembers this

@@ -69,7 +69,7 @@ func (client *BrokerClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 	}
 }
 
-// CreateOrUpdate - Create a BrokerResource
+// createOrUpdate - Create a BrokerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, resource BrokerResource, options *BrokerClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *BrokerClient) createOrUpdate(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BrokerClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, resource BrokerResource, _ *BrokerClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *BrokerClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Delete - Delete a BrokerResource
+// deleteOperation - Delete a BrokerResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, options *BrokerClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *BrokerClient) deleteOperation(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BrokerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, _ *BrokerClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}"
 	if client.subscriptionID == "" {
@@ -219,7 +221,8 @@ func (client *BrokerClient) Get(ctx context.Context, resourceGroupName string, i
 	if err != nil {
 		return BrokerClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

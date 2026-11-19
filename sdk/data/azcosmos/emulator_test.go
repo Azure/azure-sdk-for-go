@@ -45,6 +45,12 @@ func newEmulatorTestsWithEndpoint(t *testing.T, e string) *emulatorTests {
 }
 
 func (e *emulatorTests) getClient(t *testing.T, tp tracing.Provider) *Client {
+	t.Helper()
+	return e.getClientWithOptions(t, tp, ClientOptions{})
+}
+
+func (e *emulatorTests) getClientWithOptions(t *testing.T, tp tracing.Provider, options ClientOptions) *Client {
+	t.Helper()
 	cred, _ := NewKeyCredential(e.key)
 
 	// Create a client with a custom transport that skips TLS verification
@@ -53,12 +59,10 @@ func (e *emulatorTests) getClient(t *testing.T, tp tracing.Provider) *Client {
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}}
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		TracingProvider: tp,
-		Transport:       transport,
-	}}
+	options.TracingProvider = tp
+	options.Transport = transport
 
-	client, err := NewClientWithKey(e.host, cred, options)
+	client, err := NewClientWithKey(e.host, cred, &options)
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}

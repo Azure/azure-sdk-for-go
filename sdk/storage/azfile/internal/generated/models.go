@@ -118,14 +118,12 @@ func (d *Directory) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error
 		return err
 	}
 	if aux.Name != nil {
-		if aux.Name.Encoded != nil && *aux.Name.Encoded {
-			name, err := url.QueryUnescape(*aux.Name.Content)
-			if err != nil {
-				return err
+		d.Name = aux.Name.Content
+		// A malformed encoding does not fail the page; the name is returned as sent by the service.
+		if aux.Name.Encoded != nil && *aux.Name.Encoded && aux.Name.Content != nil {
+			if name, err := url.QueryUnescape(*aux.Name.Content); err == nil {
+				d.Name = &name
 			}
-			d.Name = to.Ptr(string(name))
-		} else {
-			d.Name = aux.Name.Content
 		}
 	}
 	return nil
@@ -144,14 +142,39 @@ func (f *File) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
 		return err
 	}
 	if aux.Name != nil {
-		if aux.Name.Encoded != nil && *aux.Name.Encoded {
-			name, err := url.QueryUnescape(*aux.Name.Content)
+		f.Name = aux.Name.Content
+		// A malformed encoding does not fail the page; the name is returned as sent by the service.
+		if aux.Name.Encoded != nil && *aux.Name.Encoded && aux.Name.Content != nil {
+			if name, err := url.QueryUnescape(*aux.Name.Content); err == nil {
+				f.Name = &name
+			}
+		}
+	}
+	return nil
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type HardLink.
+// The service percent-encodes a FileName that cannot be represented in XML and marks it with Encoded="true".
+func (h *HardLink) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias HardLink
+	aux := &struct {
+		*alias
+		FileName *StringEncoded `xml:"FileName"`
+	}{
+		alias: (*alias)(h),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.FileName != nil {
+		if aux.FileName.Encoded != nil && *aux.FileName.Encoded && aux.FileName.Content != nil {
+			name, err := url.QueryUnescape(*aux.FileName.Content)
 			if err != nil {
 				return err
 			}
-			f.Name = to.Ptr(string(name))
+			h.FileName = to.Ptr(name)
 		} else {
-			f.Name = aux.Name.Content
+			h.FileName = aux.FileName.Content
 		}
 	}
 	return nil
@@ -170,14 +193,12 @@ func (l *ListFilesAndDirectoriesSegmentResponse) UnmarshalXML(dec *xml.Decoder, 
 		return err
 	}
 	if aux.Prefix != nil {
-		if aux.Prefix.Encoded != nil && *aux.Prefix.Encoded {
-			name, err := url.QueryUnescape(*aux.Prefix.Content)
-			if err != nil {
-				return err
+		l.Prefix = aux.Prefix.Content
+		// A malformed encoding does not fail the page; the prefix is returned as sent by the service.
+		if aux.Prefix.Encoded != nil && *aux.Prefix.Encoded && aux.Prefix.Content != nil {
+			if prefix, err := url.QueryUnescape(*aux.Prefix.Content); err == nil {
+				l.Prefix = &prefix
 			}
-			l.Prefix = to.Ptr(string(name))
-		} else {
-			l.Prefix = aux.Prefix.Content
 		}
 	}
 	return nil

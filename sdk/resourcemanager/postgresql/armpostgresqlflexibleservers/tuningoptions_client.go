@@ -64,7 +64,8 @@ func (client *TuningOptionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return TuningOptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

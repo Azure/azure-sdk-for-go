@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v12"
 	"log"
 )
 
-// Generated from example definition: 2026-08-15-preview/NetworkSiblingSet_Update.json
+// Generated from example definition: 2026-09-01/NetworkSiblingSet_Update.json
 func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
 	// }
 }
 
-// Generated from example definition: 2026-08-15-preview/CheckFilePathAvailability.json
+// Generated from example definition: 2026-09-01/CheckFilePathAvailability.json
 func ExampleResourceClient_CheckFilePathAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleResourceClient_CheckFilePathAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-08-15-preview/CheckNameAvailability.json
+// Generated from example definition: 2026-09-01/CheckNameAvailability.json
 func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleResourceClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-08-15-preview/CheckQuotaAvailability.json
+// Generated from example definition: 2026-09-01/CheckQuotaAvailability.json
 func ExampleResourceClient_CheckQuotaAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleResourceClient_CheckQuotaAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-08-15-preview/NetworkSiblingSet_Query.json
+// Generated from example definition: 2026-09-01/NetworkSiblingSet_Query.json
 func ExampleResourceClient_QueryNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleResourceClient_QueryNetworkSiblingSet() {
 	// }
 }
 
-// Generated from example definition: 2026-08-15-preview/RegionInfo.json
+// Generated from example definition: 2026-09-01/RegionInfo.json
 func ExampleResourceClient_QueryRegionInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

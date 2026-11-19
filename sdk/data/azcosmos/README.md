@@ -99,6 +99,24 @@ client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, nil)
 handle(err)
 ```
 
+### Resource name validation
+
+Set `ClientOptions.EnableResourceNameValidation` to `true` when creating a client
+to validate database, container, and item IDs locally before request construction.
+IDs must be valid UTF-8 and non-empty, cannot equal `.` or `..`, and cannot contain
+`/`, `\`, `?`, `#`, tab, line feed, or carriage return. This applies to item point
+operations, read-many operations, and top-level `id` properties in item Create,
+Upsert, and Replace bodies, including transactional batches. Other item properties,
+including nested `id` properties, are not subject to resource-name validation.
+Invalid batch operations are reported by `ExecuteTransactionalBatch` before any
+request is sent.
+
+Validation is disabled by default for compatibility with existing names; some
+service-accepted names cannot be safely addressed by point operations. Existing
+non-empty checks on database and container client constructors and read-many item
+identities still apply. Transactional batch IDs are always JSON-escaped, and
+malformed batch item bodies are always rejected, regardless of this option.
+
 ### Create Database
 
 Using the client created in previous example, you can create a database like this:

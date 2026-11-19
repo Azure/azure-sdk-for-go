@@ -4,6 +4,8 @@
 
 package armcognitiveservices
 
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
 // AccountCapabilityHostsClientCreateOrUpdateResponse contains the response from method AccountCapabilityHostsClient.BeginCreateOrUpdate.
 type AccountCapabilityHostsClientCreateOrUpdateResponse struct {
 	// Azure Resource Manager resource envelope.
@@ -53,6 +55,59 @@ type AccountConnectionsClientListResponse struct {
 type AccountConnectionsClientUpdateResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
+}
+
+// AccountCostControlsClientCheckExistenceResponse contains the response from method AccountCostControlsClient.CheckExistence.
+type AccountCostControlsClientCheckExistenceResponse struct {
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// AccountCostControlsClientCreateOrUpdateResponse contains the response from method AccountCostControlsClient.CreateOrUpdate.
+type AccountCostControlsClientCreateOrUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within an account.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	AccountCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// AccountCostControlsClientDeleteResponse contains the response from method AccountCostControlsClient.Delete.
+type AccountCostControlsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AccountCostControlsClientGetResponse contains the response from method AccountCostControlsClient.Get.
+type AccountCostControlsClientGetResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within an account.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	AccountCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// AccountCostControlsClientListResponse contains the response from method AccountCostControlsClient.NewListPager.
+type AccountCostControlsClientListResponse struct {
+	// A page of cost controls owned by an account.
+	CostControlListResult
+}
+
+// AccountCostControlsClientUpdateResponse contains the response from method AccountCostControlsClient.Update.
+type AccountCostControlsClientUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within an account.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	AccountCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
 }
 
 // AccountsClientCreateResponse contains the response from method AccountsClient.BeginCreate.
@@ -253,6 +308,30 @@ type ArcDeploymentsClientUpdateResponse struct {
 	ArcDeployment
 }
 
+// AttachedAKSClustersClientCreateOrUpdateResponse contains the response from method AttachedAKSClustersClient.CreateOrUpdate.
+type AttachedAKSClustersClientCreateOrUpdateResponse struct {
+	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
+	AttachedAksCluster
+}
+
+// AttachedAKSClustersClientDeleteResponse contains the response from method AttachedAKSClustersClient.Delete.
+type AttachedAKSClustersClientDeleteResponse struct {
+	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
+	AttachedAksCluster
+}
+
+// AttachedAKSClustersClientGetResponse contains the response from method AttachedAKSClustersClient.Get.
+type AttachedAKSClustersClientGetResponse struct {
+	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
+	AttachedAksCluster
+}
+
+// AttachedAKSClustersClientListResponse contains the response from method AttachedAKSClustersClient.NewListPager.
+type AttachedAKSClustersClientListResponse struct {
+	// A page of lightweight attachment summaries.
+	AttachedAksClusterListResult
+}
+
 // CommitmentPlansClientCreateOrUpdateAssociationResponse contains the response from method CommitmentPlansClient.BeginCreateOrUpdateAssociation.
 type CommitmentPlansClientCreateOrUpdateAssociationResponse struct {
 	// The commitment plan association.
@@ -384,44 +463,6 @@ type ComputesClientStartResponse struct {
 // ComputesClientStopResponse contains the response from method ComputesClient.BeginStop.
 type ComputesClientStopResponse struct {
 	// placeholder for future response values
-}
-
-// CostControlsClientCreateOrUpdateResponse contains the response from method CostControlsClient.CreateOrUpdate.
-type CostControlsClientCreateOrUpdateResponse struct {
-	// A cost control owned by a Cognitive Services account.
-	CostControl
-
-	// The current entity tag for the cost control.
-	Etag *string
-}
-
-// CostControlsClientDeleteResponse contains the response from method CostControlsClient.Delete.
-type CostControlsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// CostControlsClientGetResponse contains the response from method CostControlsClient.Get.
-type CostControlsClientGetResponse struct {
-	// A cost control owned by a Cognitive Services account.
-	CostControl
-
-	// The current entity tag for the cost control.
-	Etag *string
-}
-
-// CostControlsClientListResponse contains the response from method CostControlsClient.NewListPager.
-type CostControlsClientListResponse struct {
-	// A page of cost controls.
-	CostControlListResult
-}
-
-// CostControlsClientUpdateResponse contains the response from method CostControlsClient.Update.
-type CostControlsClientUpdateResponse struct {
-	// A cost control owned by a Cognitive Services account.
-	CostControl
-
-	// The current entity tag for the cost control.
-	Etag *string
 }
 
 // DefenderForAISettingsClientCreateOrUpdateResponse contains the response from method DefenderForAISettingsClient.CreateOrUpdate.
@@ -778,6 +819,62 @@ type ProjectConnectionsClientListResponse struct {
 type ProjectConnectionsClientUpdateResponse struct {
 	// Connection base resource schema.
 	ConnectionPropertiesV2BasicResource
+}
+
+// ProjectCostControlsClientCheckExistenceResponse contains the response from method ProjectCostControlsClient.CheckExistence.
+type ProjectCostControlsClientCheckExistenceResponse struct {
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// ProjectCostControlsClientCreateOrUpdateResponse contains the response from method ProjectCostControlsClient.CreateOrUpdate.
+type ProjectCostControlsClientCreateOrUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within its owning Foundry project.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	ProjectCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// ProjectCostControlsClientDeleteResponse contains the response from method ProjectCostControlsClient.Delete.
+type ProjectCostControlsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ProjectCostControlsClientGetResponse contains the response from method ProjectCostControlsClient.Get.
+type ProjectCostControlsClientGetResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within its owning Foundry project.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	ProjectCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// ProjectCostControlsClientListResponse contains the response from method ProjectCostControlsClient.NewListPager.
+type ProjectCostControlsClientListResponse struct {
+	// A page of cost controls owned by a Foundry project.
+	ProjectCostControlListResult
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// ProjectCostControlsClientUpdateResponse contains the response from method ProjectCostControlsClient.Update.
+type ProjectCostControlsClientUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within its owning Foundry project.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	ProjectCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
 }
 
 // ProjectsClientCreateResponse contains the response from method ProjectsClient.BeginCreate.

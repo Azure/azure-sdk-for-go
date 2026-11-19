@@ -30,14 +30,14 @@ const (
 	// ExpectContinueModeApplyOnThrottle indicates that Expect-Continue will not be applied
 	// until specific errors are encountered from the service, at which point it will be
 	// applied for a fixed window of time after the last triggering error. This is the default.
-	ExpectContinueModeApplyOnThrottle = exported.ExpectContinueModeApplyOnThrottle
+	ExpectContinueModeApplyOnThrottle ExpectContinueMode = exported.ExpectContinueModeApplyOnThrottle
 
 	// ExpectContinueModeOn indicates Expect-Continue will be applied regardless of recent
 	// error status. The ContentLengthThreshold option still applies.
-	ExpectContinueModeOn = exported.ExpectContinueModeOn
+	ExpectContinueModeOn ExpectContinueMode = exported.ExpectContinueModeOn
 
 	// ExpectContinueModeOff indicates Expect-Continue will never be applied.
-	ExpectContinueModeOff = exported.ExpectContinueModeOff
+	ExpectContinueModeOff ExpectContinueMode = exported.ExpectContinueModeOff
 )
 
 // ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"
@@ -229,16 +229,17 @@ func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
 type StorageResponseFormat = exported.StorageResponseFormat
 
 const (
-	// StorageResponseFormatAuto lets the SDK choose the response format.
-	// For the current release this resolves to XML; a future release will resolve to Arrow.
-	StorageResponseFormatAuto = exported.StorageResponseFormatAuto
+	// StorageResponseFormatAuto lets the SDK choose the response format. It currently resolves to
+	// StorageResponseFormatXML; Arrow is opt-in.
+	StorageResponseFormatAuto StorageResponseFormat = exported.StorageResponseFormatAuto
 
 	// StorageResponseFormatXML forces XML-only responses. Use when you need raw XML responses (e.g. debugging).
-	StorageResponseFormatXML = exported.StorageResponseFormatXML
+	StorageResponseFormatXML StorageResponseFormat = exported.StorageResponseFormatXML
 
 	// StorageResponseFormatArrow sends both Arrow and XML in the Accept header; the service returns Arrow
 	// when Photon is enabled, otherwise falls back to XML. The SDK handles both transparently.
-	StorageResponseFormatArrow = exported.StorageResponseFormatArrow
+	// An Arrow listing doesn't carry the service endpoint, so ServiceEndpoint is nil in its response.
+	StorageResponseFormatArrow StorageResponseFormat = exported.StorageResponseFormatArrow
 )
 
 // ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.
@@ -266,7 +267,7 @@ type ListBlobsFlatOptions struct {
 	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
 	// ResponseFormat specifies the format the service should use to return list results.
-	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML.
 	ResponseFormat StorageResponseFormat
 }
 
@@ -311,7 +312,7 @@ type ListBlobsHierarchyOptions struct {
 	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
 	// ResponseFormat specifies the format the service should use to return list results.
-	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML.
 	ResponseFormat StorageResponseFormat
 }
 

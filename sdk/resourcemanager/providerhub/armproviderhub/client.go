@@ -63,7 +63,8 @@ func (client *Client) CheckinManifest(ctx context.Context, providerNamespace str
 	if err != nil {
 		return ClientCheckinManifestResponse{}, err
 	}
-	return client.checkinManifestHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkinManifestHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkinManifestCreateRequest creates the CheckinManifest request.
@@ -122,7 +123,8 @@ func (client *Client) GenerateManifest(ctx context.Context, providerNamespace st
 	if err != nil {
 		return ClientGenerateManifestResponse{}, err
 	}
-	return client.generateManifestHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateManifestHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateManifestCreateRequest creates the GenerateManifest request.

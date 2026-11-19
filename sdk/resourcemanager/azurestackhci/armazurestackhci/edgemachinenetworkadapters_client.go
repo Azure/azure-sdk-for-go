@@ -65,7 +65,8 @@ func (client *EdgeMachineNetworkAdaptersClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return EdgeMachineNetworkAdaptersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

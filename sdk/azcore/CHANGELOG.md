@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed negative `policy.RetryOptions.RetryDelay` values using `MaxRetryDelay` instead of retrying without delay.
+
 ### Other Changes
 
 ## 1.24.0 (2026-11-02)

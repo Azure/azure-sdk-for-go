@@ -59,7 +59,8 @@ func (client *VerifiedPartnersClient) Get(ctx context.Context, verifiedPartnerNa
 	if err != nil {
 		return VerifiedPartnersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

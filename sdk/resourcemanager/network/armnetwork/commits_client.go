@@ -87,7 +87,8 @@ func (client *CommitsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *CommitsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //   - options - CommitsClientBeginDeleteOptions contains the optional parameters for the CommitsClient.BeginDelete method.
 func (client *CommitsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, options *CommitsClientBeginDeleteOptions) (*runtime.Poller[CommitsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, commitName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, commitName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +150,9 @@ func (client *CommitsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// delete - Deletes a commit.
+// deleteOperation - Deletes a commit.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CommitsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, options *CommitsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CommitsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, commitName string, options *CommitsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CommitsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *CommitsClient) delete(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -220,7 +222,8 @@ func (client *CommitsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return CommitsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

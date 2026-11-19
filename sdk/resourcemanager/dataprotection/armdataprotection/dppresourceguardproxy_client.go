@@ -66,7 +66,8 @@ func (client *DppResourceGuardProxyClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return DppResourceGuardProxyClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *DppResourceGuardProxyClient) Delete(ctx context.Context, resourceG
 		return DppResourceGuardProxyClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DppResourceGuardProxyClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DppResourceGuardProxyClientDeleteResponse{}, err
 	}
 	return DppResourceGuardProxyClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *DppResourceGuardProxyClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return DppResourceGuardProxyClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -336,7 +339,8 @@ func (client *DppResourceGuardProxyClient) UnlockDelete(ctx context.Context, res
 	if err != nil {
 		return DppResourceGuardProxyClientUnlockDeleteResponse{}, err
 	}
-	return client.unlockDeleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.unlockDeleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // unlockDeleteCreateRequest creates the UnlockDelete request.

@@ -63,7 +63,8 @@ func (client *MetricAlertsStatusClient) List(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MetricAlertsStatusClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -125,7 +126,8 @@ func (client *MetricAlertsStatusClient) ListByName(ctx context.Context, resource
 	if err != nil {
 		return MetricAlertsStatusClientListByNameResponse{}, err
 	}
-	return client.listByNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByNameCreateRequest creates the ListByName request.

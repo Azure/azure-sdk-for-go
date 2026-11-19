@@ -65,7 +65,8 @@ func (client *EntitiesClient) Expand(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return EntitiesClientExpandResponse{}, err
 	}
-	return client.expandHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.expandHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // expandCreateRequest creates the Expand request.
@@ -134,7 +135,8 @@ func (client *EntitiesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -200,7 +202,8 @@ func (client *EntitiesClient) GetInsights(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EntitiesClientGetInsightsResponse{}, err
 	}
-	return client.getInsightsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInsightsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInsightsCreateRequest creates the GetInsights request.
@@ -429,7 +432,8 @@ func (client *EntitiesClient) RunPlaybook(ctx context.Context, resourceGroupName
 		return EntitiesClientRunPlaybookResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return EntitiesClientRunPlaybookResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientRunPlaybookResponse{}, err
 	}
 	return EntitiesClientRunPlaybookResponse{}, nil
 }

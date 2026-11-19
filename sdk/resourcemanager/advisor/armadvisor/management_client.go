@@ -62,7 +62,8 @@ func (client *ManagementClient) Predict(ctx context.Context, predictionRequest P
 	if err != nil {
 		return ManagementClientPredictResponse{}, err
 	}
-	return client.predictHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.predictHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // predictCreateRequest creates the Predict request.

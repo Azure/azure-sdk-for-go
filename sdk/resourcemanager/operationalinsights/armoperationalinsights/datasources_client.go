@@ -66,7 +66,8 @@ func (client *DataSourcesClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return DataSourcesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *DataSourcesClient) Delete(ctx context.Context, resourceGroupName s
 		return DataSourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DataSourcesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataSourcesClientDeleteResponse{}, err
 	}
 	return DataSourcesClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *DataSourcesClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return DataSourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -56,7 +56,8 @@ func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourc
 	if err != nil {
 		return VMInsightsClientGetOnboardingStatusResponse{}, err
 	}
-	return client.getOnboardingStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOnboardingStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOnboardingStatusCreateRequest creates the GetOnboardingStatus request.

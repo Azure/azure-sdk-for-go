@@ -60,7 +60,8 @@ func (client *PrivateStoreCollectionOfferClient) ContextsView(ctx context.Contex
 	if err != nil {
 		return PrivateStoreCollectionOfferClientContextsViewResponse{}, err
 	}
-	return client.contextsViewHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.contextsViewHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // contextsViewCreateRequest creates the ContextsView request.
@@ -129,7 +130,8 @@ func (client *PrivateStoreCollectionOfferClient) CreateOrUpdate(ctx context.Cont
 	if err != nil {
 		return PrivateStoreCollectionOfferClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -196,7 +198,8 @@ func (client *PrivateStoreCollectionOfferClient) Delete(ctx context.Context, pri
 		return PrivateStoreCollectionOfferClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PrivateStoreCollectionOfferClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PrivateStoreCollectionOfferClientDeleteResponse{}, err
 	}
 	return PrivateStoreCollectionOfferClientDeleteResponse{}, nil
 }
@@ -247,7 +250,8 @@ func (client *PrivateStoreCollectionOfferClient) Get(ctx context.Context, privat
 	if err != nil {
 		return PrivateStoreCollectionOfferClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -284,79 +288,6 @@ func (client *PrivateStoreCollectionOfferClient) getHandleResponse(resp *http.Re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Offer); err != nil {
 		return PrivateStoreCollectionOfferClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Get a list of all private offers in the given private store and collection
-//   - privateStoreID - The store ID - must use the tenant ID
-//   - collectionID - The collection ID
-//   - options - PrivateStoreCollectionOfferClientListOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.NewListPager
-//     method.
-func (client *PrivateStoreCollectionOfferClient) NewListPager(privateStoreID string, collectionID string, options *PrivateStoreCollectionOfferClientListOptions) *runtime.Pager[PrivateStoreCollectionOfferClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateStoreCollectionOfferClientListResponse]{
-		More: func(page PrivateStoreCollectionOfferClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PrivateStoreCollectionOfferClientListResponse) (PrivateStoreCollectionOfferClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateStoreCollectionOfferClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, privateStoreID, collectionID, nextLink, options)
-			if err != nil {
-				return PrivateStoreCollectionOfferClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateStoreCollectionOfferClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *PrivateStoreCollectionOfferClient) listCreateRequest(ctx context.Context, privateStoreID string, collectionID string, nextLink string, _ *PrivateStoreCollectionOfferClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers"
-		if privateStoreID == "" {
-			return nil, errors.New("parameter privateStoreID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-		if collectionID == "" {
-			return nil, errors.New("parameter collectionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *PrivateStoreCollectionOfferClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateStoreCollectionOfferClientListResponse, error) {
-	result := PrivateStoreCollectionOfferClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OfferListResponse); err != nil {
-		return PrivateStoreCollectionOfferClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -441,6 +372,79 @@ func (client *PrivateStoreCollectionOfferClient) listByContextsHandleResponse(re
 	return result, nil
 }
 
+// NewListPager - Get a list of all private offers in the given private store and collection
+//   - privateStoreID - The store ID - must use the tenant ID
+//   - collectionID - The collection ID
+//   - options - PrivateStoreCollectionOfferClientListOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.NewListPager
+//     method.
+func (client *PrivateStoreCollectionOfferClient) NewListPager(privateStoreID string, collectionID string, options *PrivateStoreCollectionOfferClientListOptions) *runtime.Pager[PrivateStoreCollectionOfferClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateStoreCollectionOfferClientListResponse]{
+		More: func(page PrivateStoreCollectionOfferClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PrivateStoreCollectionOfferClientListResponse) (PrivateStoreCollectionOfferClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateStoreCollectionOfferClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, privateStoreID, collectionID, nextLink, options)
+			if err != nil {
+				return PrivateStoreCollectionOfferClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateStoreCollectionOfferClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *PrivateStoreCollectionOfferClient) listCreateRequest(ctx context.Context, privateStoreID string, collectionID string, nextLink string, _ *PrivateStoreCollectionOfferClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers"
+		if privateStoreID == "" {
+			return nil, errors.New("parameter privateStoreID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
+		if collectionID == "" {
+			return nil, errors.New("parameter collectionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *PrivateStoreCollectionOfferClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateStoreCollectionOfferClientListResponse, error) {
+	result := PrivateStoreCollectionOfferClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OfferListResponse); err != nil {
+		return PrivateStoreCollectionOfferClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // Post - Delete Private store offer. This is a workaround.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - privateStoreID - The store ID - must use the tenant ID
@@ -463,7 +467,8 @@ func (client *PrivateStoreCollectionOfferClient) Post(ctx context.Context, priva
 		return PrivateStoreCollectionOfferClientPostResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return PrivateStoreCollectionOfferClientPostResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PrivateStoreCollectionOfferClientPostResponse{}, err
 	}
 	return PrivateStoreCollectionOfferClientPostResponse{}, nil
 }
@@ -522,7 +527,8 @@ func (client *PrivateStoreCollectionOfferClient) UpsertOfferWithMultiContext(ctx
 	if err != nil {
 		return PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse{}, err
 	}
-	return client.upsertOfferWithMultiContextHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.upsertOfferWithMultiContextHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // upsertOfferWithMultiContextCreateRequest creates the UpsertOfferWithMultiContext request.

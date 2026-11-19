@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/PutWorkbench.json
+// Generated from example definition: 2026-11-15-preview/PutWorkbench.json
 func ExampleWorkbenchesClient_BeginCreateOrUpdate_putWorkbench() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleWorkbenchesClient_BeginCreateOrUpdate_putWorkbench() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/PutWorkbenchPending.json
+// Generated from example definition: 2026-11-15-preview/PutWorkbenchPending.json
 func ExampleWorkbenchesClient_BeginCreateOrUpdate_putWorkbenchPending() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleWorkbenchesClient_BeginCreateOrUpdate_putWorkbenchPending() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/DeleteWorkbench.json
+// Generated from example definition: 2026-11-15-preview/DeleteWorkbench.json
 func ExampleWorkbenchesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleWorkbenchesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/RestartWorkbench.json
+// Generated from example definition: 2026-11-15-preview/RestartWorkbench.json
 func ExampleWorkbenchesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleWorkbenchesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/StartWorkbench.json
+// Generated from example definition: 2026-11-15-preview/StartWorkbench.json
 func ExampleWorkbenchesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleWorkbenchesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/StopWorkbench.json
+// Generated from example definition: 2026-11-15-preview/StopWorkbench.json
 func ExampleWorkbenchesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleWorkbenchesClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/GetWorkbench.json
+// Generated from example definition: 2026-11-15-preview/GetWorkbench.json
 func ExampleWorkbenchesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleWorkbenchesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListWorkbenches.json
+// Generated from example definition: 2026-11-15-preview/ListWorkbenches.json
 func ExampleWorkbenchesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleWorkbenchesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateWorkbench.json
+// Generated from example definition: 2026-11-15-preview/UpdateWorkbench.json
 func ExampleWorkbenchesClient_Update_updateWorkbench() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +414,7 @@ func ExampleWorkbenchesClient_Update_updateWorkbench() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateWorkbenchComputeProperties.json
+// Generated from example definition: 2026-11-15-preview/UpdateWorkbenchComputeProperties.json
 func ExampleWorkbenchesClient_Update_updateWorkbenchComputeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -472,7 +472,7 @@ func ExampleWorkbenchesClient_Update_updateWorkbenchComputeProperties() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateWorkbenchResetComputeProperties.json
+// Generated from example definition: 2026-11-15-preview/UpdateWorkbenchResetComputeProperties.json
 func ExampleWorkbenchesClient_Update_updateWorkbenchResetComputeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

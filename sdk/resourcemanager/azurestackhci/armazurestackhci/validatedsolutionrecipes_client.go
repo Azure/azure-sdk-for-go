@@ -64,7 +64,8 @@ func (client *ValidatedSolutionRecipesClient) Get(ctx context.Context, location 
 	if err != nil {
 		return ValidatedSolutionRecipesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

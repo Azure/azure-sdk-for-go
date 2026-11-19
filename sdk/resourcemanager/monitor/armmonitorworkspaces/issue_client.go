@@ -66,7 +66,8 @@ func (client *IssueClient) AddInvestigationResult(ctx context.Context, resourceG
 	if err != nil {
 		return IssueClientAddInvestigationResultResponse{}, err
 	}
-	return client.addInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addInvestigationResultCreateRequest creates the AddInvestigationResult request.
@@ -136,7 +137,8 @@ func (client *IssueClient) AddOrUpdateAlerts(ctx context.Context, resourceGroupN
 	if err != nil {
 		return IssueClientAddOrUpdateAlertsResponse{}, err
 	}
-	return client.addOrUpdateAlertsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addOrUpdateAlertsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addOrUpdateAlertsCreateRequest creates the AddOrUpdateAlerts request.
@@ -207,7 +209,8 @@ func (client *IssueClient) AddOrUpdateResources(ctx context.Context, resourceGro
 	if err != nil {
 		return IssueClientAddOrUpdateResourcesResponse{}, err
 	}
-	return client.addOrUpdateResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addOrUpdateResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addOrUpdateResourcesCreateRequest creates the AddOrUpdateResources request.
@@ -277,7 +280,8 @@ func (client *IssueClient) Create(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return IssueClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -350,7 +354,8 @@ func (client *IssueClient) Delete(ctx context.Context, resourceGroupName string,
 		return IssueClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return IssueClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IssueClientDeleteResponse{}, err
 	}
 	return IssueClientDeleteResponse{}, nil
 }
@@ -405,7 +410,8 @@ func (client *IssueClient) FetchBackgroundVisualization(ctx context.Context, res
 	if err != nil {
 		return IssueClientFetchBackgroundVisualizationResponse{}, err
 	}
-	return client.fetchBackgroundVisualizationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchBackgroundVisualizationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchBackgroundVisualizationCreateRequest creates the FetchBackgroundVisualization request.
@@ -472,7 +478,8 @@ func (client *IssueClient) FetchInvestigationResult(ctx context.Context, resourc
 	if err != nil {
 		return IssueClientFetchInvestigationResultResponse{}, err
 	}
-	return client.fetchInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchInvestigationResultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchInvestigationResultCreateRequest creates the FetchInvestigationResult request.
@@ -541,7 +548,8 @@ func (client *IssueClient) Get(ctx context.Context, resourceGroupName string, az
 	if err != nil {
 		return IssueClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -607,7 +615,8 @@ func (client *IssueClient) ListAlerts(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return IssueClientListAlertsResponse{}, err
 	}
-	return client.listAlertsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAlertsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAlertsCreateRequest creates the ListAlerts request.
@@ -677,7 +686,8 @@ func (client *IssueClient) ListResources(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return IssueClientListResourcesResponse{}, err
 	}
-	return client.listResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listResourcesCreateRequest creates the ListResources request.
@@ -825,7 +835,8 @@ func (client *IssueClient) SetBackgroundVisualization(ctx context.Context, resou
 		return IssueClientSetBackgroundVisualizationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return IssueClientSetBackgroundVisualizationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IssueClientSetBackgroundVisualizationResponse{}, err
 	}
 	return IssueClientSetBackgroundVisualizationResponse{}, nil
 }
@@ -884,7 +895,8 @@ func (client *IssueClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return IssueClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

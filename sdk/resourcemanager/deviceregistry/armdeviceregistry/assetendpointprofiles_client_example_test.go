@@ -179,6 +179,66 @@ func ExampleAssetEndpointProfilesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-03-01-preview/Update_AssetEndpointProfile.json
+func ExampleAssetEndpointProfilesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAssetEndpointProfilesClient().BeginUpdate(ctx, "myResourceGroup", "my-assetendpointprofile", armdeviceregistry.AssetEndpointProfileUpdate{
+		Properties: &armdeviceregistry.AssetEndpointProfileUpdateProperties{
+			TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.AssetEndpointProfilesClientUpdateResponse{
+	// 	AssetEndpointProfile: armdeviceregistry.AssetEndpointProfile{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
+	// 		Name: to.Ptr("my-assetendpointprofile"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
+	// 		Location: to.Ptr("West Europe"),
+	// 		ExtendedLocation: &armdeviceregistry.ExtendedLocation{
+	// 			Type: to.Ptr("CustomLocation"),
+	// 			Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"site": to.Ptr("building-1"),
+	// 		},
+	// 		SystemData: &armdeviceregistry.SystemData{
+	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
+	// 		},
+	// 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
+	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
+	// 			TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
+	// 			EndpointProfileType: to.Ptr("myEndpointProfileType"),
+	// 			Authentication: &armdeviceregistry.Authentication{
+	// 				Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-01-preview/Get_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -553,64 +613,4 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-01-preview/Update_AssetEndpointProfile.json
-func ExampleAssetEndpointProfilesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAssetEndpointProfilesClient().BeginUpdate(ctx, "myResourceGroup", "my-assetendpointprofile", armdeviceregistry.AssetEndpointProfileUpdate{
-		Properties: &armdeviceregistry.AssetEndpointProfileUpdateProperties{
-			TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.AssetEndpointProfilesClientUpdateResponse{
-	// 	AssetEndpointProfile: armdeviceregistry.AssetEndpointProfile{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
-	// 		Name: to.Ptr("my-assetendpointprofile"),
-	// 		Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
-	// 		Location: to.Ptr("West Europe"),
-	// 		ExtendedLocation: &armdeviceregistry.ExtendedLocation{
-	// 			Type: to.Ptr("CustomLocation"),
-	// 			Name: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"site": to.Ptr("building-1"),
-	// 		},
-	// 		SystemData: &armdeviceregistry.SystemData{
-	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
-	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
-	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
-	// 		},
-	// 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
-	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 			TargetAddress: to.Ptr("https://www.example.com/myTargetAddress"),
-	// 			EndpointProfileType: to.Ptr("myEndpointProfileType"),
-	// 			Authentication: &armdeviceregistry.Authentication{
-	// 				Method: to.Ptr(armdeviceregistry.AuthenticationMethodAnonymous),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

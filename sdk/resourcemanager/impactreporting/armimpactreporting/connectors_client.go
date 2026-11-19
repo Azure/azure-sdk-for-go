@@ -67,7 +67,7 @@ func (client *ConnectorsClient) BeginCreateOrUpdate(ctx context.Context, connect
 	}
 }
 
-// CreateOrUpdate - Create a Connector
+// createOrUpdate - Create a Connector
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectorsClient) createOrUpdate(ctx context.Context, connectorName string, resource Connector, options *ConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *ConnectorsClient) createOrUpdate(ctx context.Context, connectorNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, connectorName string, resource Connector, _ *ConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
 	if client.subscriptionID == "" {
@@ -134,7 +135,8 @@ func (client *ConnectorsClient) Delete(ctx context.Context, connectorName string
 		return ConnectorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ConnectorsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ConnectorsClientDeleteResponse{}, err
 	}
 	return ConnectorsClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *ConnectorsClient) Get(ctx context.Context, connectorName string, o
 	if err != nil {
 		return ConnectorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -301,7 +304,8 @@ func (client *ConnectorsClient) Update(ctx context.Context, connectorName string
 	if err != nil {
 		return ConnectorsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

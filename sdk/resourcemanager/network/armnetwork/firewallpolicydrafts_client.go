@@ -65,7 +65,8 @@ func (client *FirewallPolicyDraftsClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return FirewallPolicyDraftsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *FirewallPolicyDraftsClient) Delete(ctx context.Context, resourceGr
 		return FirewallPolicyDraftsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FirewallPolicyDraftsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FirewallPolicyDraftsClientDeleteResponse{}, err
 	}
 	return FirewallPolicyDraftsClientDeleteResponse{}, nil
 }
@@ -181,7 +183,8 @@ func (client *FirewallPolicyDraftsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return FirewallPolicyDraftsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-02-preview/AgentFabricMemberships_CreateOrUpdate.json
+// Generated from example definition: 2026-09-02-preview/AgentFabricMemberships_CreateOrUpdate.json
 func ExampleAgentFabricMembershipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,8 +25,8 @@ func ExampleAgentFabricMembershipsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewAgentFabricMembershipsClient().BeginCreateOrUpdate(ctx, "rg1", "clustername1", "default", armcontainerservice.AgentFabricMembership{
 		ManagedBy: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.NetworkSecurity/agentFabrics/fabric1"),
-		Properties: &armcontainerservice.AgentFabricMembershipProperties{
-			SKU: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
+		SKU: &armcontainerservice.AgentFabricMembershipSKU{
+			Name: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
 		},
 	}, nil)
 	if err != nil {
@@ -45,15 +45,17 @@ func ExampleAgentFabricMembershipsClient_BeginCreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentFabricMemberships"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentFabricMemberships/default"),
 	// 		ManagedBy: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.NetworkSecurity/agentFabrics/fabric1"),
+	// 		SKU: &armcontainerservice.AgentFabricMembershipSKU{
+	// 			Name: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
+	// 		},
 	// 		Properties: &armcontainerservice.AgentFabricMembershipProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservice.AgentFabricMembershipProvisioningStateSucceeded),
-	// 			SKU: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentFabricMemberships_Delete.json
+// Generated from example definition: 2026-09-02-preview/AgentFabricMemberships_Delete.json
 func ExampleAgentFabricMembershipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +76,7 @@ func ExampleAgentFabricMembershipsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentFabricMemberships_Get.json
+// Generated from example definition: 2026-09-02-preview/AgentFabricMemberships_Get.json
 func ExampleAgentFabricMembershipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,15 +100,17 @@ func ExampleAgentFabricMembershipsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentFabricMemberships"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentFabricMemberships/default"),
 	// 		ManagedBy: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.NetworkSecurity/agentFabrics/fabric1"),
+	// 		SKU: &armcontainerservice.AgentFabricMembershipSKU{
+	// 			Name: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
+	// 		},
 	// 		Properties: &armcontainerservice.AgentFabricMembershipProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservice.AgentFabricMembershipProvisioningStateSucceeded),
-	// 			SKU: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentFabricMemberships_ListByManagedCluster.json
+// Generated from example definition: 2026-09-02-preview/AgentFabricMemberships_ListByManagedCluster.json
 func ExampleAgentFabricMembershipsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,9 +140,11 @@ func ExampleAgentFabricMembershipsClient_NewListByManagedClusterPager() {
 		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentFabricMemberships"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentFabricMemberships/default"),
 		// 				ManagedBy: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.NetworkSecurity/agentFabrics/fabric1"),
+		// 				SKU: &armcontainerservice.AgentFabricMembershipSKU{
+		// 					Name: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
+		// 				},
 		// 				Properties: &armcontainerservice.AgentFabricMembershipProperties{
 		// 					ProvisioningState: to.Ptr(armcontainerservice.AgentFabricMembershipProvisioningStateSucceeded),
-		// 					SKU: to.Ptr(armcontainerservice.AgentFabricMembershipSKUNameStandard),
 		// 				},
 		// 			},
 		// 		},

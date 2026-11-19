@@ -19,7 +19,7 @@ import (
 // ManagedNetworkProvisionsClient contains the methods for the ManagedNetworkProvisions group.
 // Don't use this type directly, use NewManagedNetworkProvisionsClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-15-preview
 type ManagedNetworkProvisionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +89,8 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetwork(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -118,7 +119,7 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

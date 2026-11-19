@@ -66,7 +66,8 @@ func (client *EntityRelationsClient) GetRelation(ctx context.Context, resourceGr
 	if err != nil {
 		return EntityRelationsClientGetRelationResponse{}, err
 	}
-	return client.getRelationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRelationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRelationCreateRequest creates the GetRelation request.

@@ -63,7 +63,8 @@ func (client *ResourceReferenceClient) GetByTargetResources(ctx context.Context,
 	if err != nil {
 		return ResourceReferenceClientGetByTargetResourcesResponse{}, err
 	}
-	return client.getByTargetResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByTargetResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByTargetResourcesCreateRequest creates the GetByTargetResources request.

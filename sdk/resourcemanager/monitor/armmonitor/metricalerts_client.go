@@ -65,7 +65,8 @@ func (client *MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return MetricAlertsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *MetricAlertsClient) Delete(ctx context.Context, resourceGroupName 
 		return MetricAlertsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return MetricAlertsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return MetricAlertsClientDeleteResponse{}, err
 	}
 	return MetricAlertsClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *MetricAlertsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return MetricAlertsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -379,7 +382,8 @@ func (client *MetricAlertsClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return MetricAlertsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

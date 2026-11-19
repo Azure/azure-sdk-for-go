@@ -20,7 +20,7 @@ type nonRetriableError struct {
 	error
 }
 
-func (nonRetriableError) NonRetriable() {
+func (*nonRetriableError) NonRetriable() {
 	// marker method
 }
 
@@ -29,14 +29,6 @@ func getOptional[T any](v T) *T {
 		return nil
 	}
 	return &v
-}
-
-func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
-	t, err := parse(v)
-	if err != nil {
-		return *new(T), err
-	}
-	return t, err
 }
 
 func newTracker[T any]() *tracker[T] {

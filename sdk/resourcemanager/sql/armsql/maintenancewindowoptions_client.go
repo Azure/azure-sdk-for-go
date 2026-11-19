@@ -66,7 +66,8 @@ func (client *MaintenanceWindowOptionsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return MaintenanceWindowOptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

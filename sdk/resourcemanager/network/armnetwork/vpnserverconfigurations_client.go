@@ -86,7 +86,8 @@ func (client *VPNServerConfigurationsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -130,7 +131,7 @@ func (client *VPNServerConfigurationsClient) createOrUpdateCreateRequest(ctx con
 //     method.
 func (client *VPNServerConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, options *VPNServerConfigurationsClientBeginDeleteOptions) (*runtime.Poller[VPNServerConfigurationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, vpnServerConfigurationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, vpnServerConfigurationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -145,9 +146,9 @@ func (client *VPNServerConfigurationsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// delete - Deletes a VpnServerConfiguration.
+// deleteOperation - Deletes a VpnServerConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VPNServerConfigurationsClient) delete(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, options *VPNServerConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VPNServerConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, options *VPNServerConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNServerConfigurationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -162,7 +163,8 @@ func (client *VPNServerConfigurationsClient) delete(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -213,7 +215,8 @@ func (client *VPNServerConfigurationsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return VPNServerConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -275,7 +278,8 @@ func (client *VPNServerConfigurationsClient) ListRadiusSecrets(ctx context.Conte
 	if err != nil {
 		return VPNServerConfigurationsClientListRadiusSecretsResponse{}, err
 	}
-	return client.listRadiusSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listRadiusSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listRadiusSecretsCreateRequest creates the ListRadiusSecrets request.
@@ -477,7 +481,8 @@ func (client *VPNServerConfigurationsClient) UpdateTags(ctx context.Context, res
 	if err != nil {
 		return VPNServerConfigurationsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

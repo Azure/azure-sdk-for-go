@@ -70,7 +70,8 @@ func (client *ReachabilityAnalysisIntentsClient) Create(ctx context.Context, res
 	if err != nil {
 		return ReachabilityAnalysisIntentsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -148,7 +149,8 @@ func (client *ReachabilityAnalysisIntentsClient) Delete(ctx context.Context, res
 		return ReachabilityAnalysisIntentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ReachabilityAnalysisIntentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ReachabilityAnalysisIntentsClientDeleteResponse{}, err
 	}
 	return ReachabilityAnalysisIntentsClientDeleteResponse{}, nil
 }
@@ -210,7 +212,8 @@ func (client *ReachabilityAnalysisIntentsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ReachabilityAnalysisIntentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

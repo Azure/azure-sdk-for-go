@@ -65,7 +65,8 @@ func (client *NodesClient) Get(ctx context.Context, resourceGroupName string, cl
 	if err != nil {
 		return NodesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

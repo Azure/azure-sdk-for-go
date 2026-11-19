@@ -64,7 +64,8 @@ func (client *ManagementClient) UsageBySubscriptionSKU(ctx context.Context, loca
 	if err != nil {
 		return ManagementClientUsageBySubscriptionSKUResponse{}, err
 	}
-	return client.usageBySubscriptionSKUHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.usageBySubscriptionSKUHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // usageBySubscriptionSKUCreateRequest creates the UsageBySubscriptionSKU request.

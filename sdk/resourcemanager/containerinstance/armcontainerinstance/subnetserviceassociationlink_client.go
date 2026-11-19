@@ -19,7 +19,7 @@ import (
 // SubnetServiceAssociationLinkClient contains the methods for the SubnetServiceAssociationLink group.
 // Don't use this type directly, use NewSubnetServiceAssociationLinkClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-07-01
 type SubnetServiceAssociationLinkClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *SubnetServiceAssociationLinkClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// Delete - Delete container group virtual network association links.
+// deleteOperation - Delete container group virtual network association links.
 //
 // Delete container group virtual network association links. The operation does not delete other resources provided by the
 // user.
@@ -91,12 +91,13 @@ func (client *SubnetServiceAssociationLinkClient) deleteOperation(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, _ *SubnetServiceAssociationLinkClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/providers/Microsoft.ContainerInstance/serviceAssociationLinks/default"
 	if client.subscriptionID == "" {
@@ -120,7 +121,7 @@ func (client *SubnetServiceAssociationLinkClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

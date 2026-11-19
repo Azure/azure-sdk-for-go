@@ -19,7 +19,7 @@ import (
 // RaiTopicsClient contains the methods for the RaiTopics group.
 // Don't use this type directly, use NewRaiTopicsClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-15-preview
 type RaiTopicsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -52,7 +52,7 @@ func NewRaiTopicsClient(subscriptionID string, credential azcore.TokenCredential
 //   - options - RaiTopicsClientBeginDeleteOptions contains the optional parameters for the RaiTopicsClient.BeginDelete method.
 func (client *RaiTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *RaiTopicsClientBeginDeleteOptions) (*runtime.Poller[RaiTopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiTopicName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiTopicName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -67,9 +67,9 @@ func (client *RaiTopicsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Deletes the specified custom topic associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified custom topic associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiTopicsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *RaiTopicsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *RaiTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiTopicsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -84,7 +84,8 @@ func (client *RaiTopicsClient) delete(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -113,7 +114,7 @@ func (client *RaiTopicsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -140,7 +141,8 @@ func (client *RaiTopicsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return RaiTopicsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -167,7 +169,7 @@ func (client *RaiTopicsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -209,7 +211,8 @@ func (client *RaiTopicsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return RaiTopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -236,7 +239,7 @@ func (client *RaiTopicsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -311,7 +314,7 @@ func (client *RaiTopicsClient) listCreateRequest(ctx context.Context, resourceGr
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

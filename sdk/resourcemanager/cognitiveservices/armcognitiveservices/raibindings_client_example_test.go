@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/PutRaiBinding.json
+// Generated from example definition: 2026-11-15-preview/PutRaiBinding.json
 func ExampleRaiBindingsClient_CreateOrUpdate_bindAnAzureOpenAiDeploymentToAnAcsPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleRaiBindingsClient_CreateOrUpdate_bindAnAzureOpenAiDeploymentToAnAcsP
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateRaiBinding.json
+// Generated from example definition: 2026-11-15-preview/UpdateRaiBinding.json
 func ExampleRaiBindingsClient_CreateOrUpdate_updateARaiBindingTargetConditionallyAcrossSubscriptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleRaiBindingsClient_CreateOrUpdate_updateARaiBindingTargetConditionall
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/DeleteRaiBinding.json
+// Generated from example definition: 2026-11-15-preview/DeleteRaiBinding.json
 func ExampleRaiBindingsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleRaiBindingsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetRaiBinding.json
+// Generated from example definition: 2026-11-15-preview/GetRaiBinding.json
 func ExampleRaiBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleRaiBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListRaiBindings.json
+// Generated from example definition: 2026-11-15-preview/ListRaiBindings.json
 func ExampleRaiBindingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleRaiBindingsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiBindings?api-version=2026-09-15-preview&%24top=50&%24skiptoken=Y2hhdC1ndWFyZA=="),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiBindings?api-version=2026-11-15-preview&%24top=50&%24skiptoken=Y2hhdC1ndWFyZA=="),
 		// 	},
 		// }
 	}

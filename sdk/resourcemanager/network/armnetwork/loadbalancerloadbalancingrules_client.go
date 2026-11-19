@@ -84,7 +84,8 @@ func (client *LoadBalancerLoadBalancingRulesClient) health(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -140,7 +141,8 @@ func (client *LoadBalancerLoadBalancingRulesClient) Get(ctx context.Context, res
 	if err != nil {
 		return LoadBalancerLoadBalancingRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

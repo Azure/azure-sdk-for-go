@@ -381,10 +381,12 @@ func (r RecordSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isAutoRegistered", r.IsAutoRegistered)
 	populate(objectMap, "metadata", r.Metadata)
 	populate(objectMap, "mxRecords", r.MxRecords)
+	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "ptrRecords", r.PtrRecords)
 	populate(objectMap, "soaRecord", r.SoaRecord)
 	populate(objectMap, "srvRecords", r.SrvRecords)
 	populate(objectMap, "ttl", r.TTL)
+	populate(objectMap, "trafficManagementProfile", r.TrafficManagementProfile)
 	populate(objectMap, "txtRecords", r.TxtRecords)
 	return json.Marshal(objectMap)
 }
@@ -419,6 +421,9 @@ func (r *RecordSetProperties) UnmarshalJSON(data []byte) error {
 		case "mxRecords":
 			err = unpopulate(val, "MxRecords", &r.MxRecords)
 			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &r.ProvisioningState)
+			delete(rawMsg, key)
 		case "ptrRecords":
 			err = unpopulate(val, "PtrRecords", &r.PtrRecords)
 			delete(rawMsg, key)
@@ -431,8 +436,150 @@ func (r *RecordSetProperties) UnmarshalJSON(data []byte) error {
 		case "ttl":
 			err = unpopulate(val, "TTL", &r.TTL)
 			delete(rawMsg, key)
+		case "trafficManagementProfile":
+			err = unpopulate(val, "TrafficManagementProfile", &r.TrafficManagementProfile)
+			delete(rawMsg, key)
 		case "txtRecords":
 			err = unpopulate(val, "TxtRecords", &r.TxtRecords)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceReference.
+func (r ResourceReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "privateDnsResources", r.PrivateDNSResources)
+	populate(objectMap, "targetResource", r.TargetResource)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceReference.
+func (r *ResourceReference) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "privateDnsResources":
+			err = unpopulate(val, "PrivateDNSResources", &r.PrivateDNSResources)
+			delete(rawMsg, key)
+		case "targetResource":
+			err = unpopulate(val, "TargetResource", &r.TargetResource)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceReferenceRequest.
+func (r ResourceReferenceRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", r.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceReferenceRequest.
+func (r *ResourceReferenceRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &r.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceReferenceRequestProperties.
+func (r ResourceReferenceRequestProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "targetResources", r.TargetResources)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceReferenceRequestProperties.
+func (r *ResourceReferenceRequestProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "targetResources":
+			err = unpopulate(val, "TargetResources", &r.TargetResources)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceReferenceResult.
+func (r ResourceReferenceResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", r.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceReferenceResult.
+func (r *ResourceReferenceResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &r.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceReferenceResultProperties.
+func (r ResourceReferenceResultProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "privateDnsResourceReferences", r.PrivateDNSResourceReferences)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceReferenceResultProperties.
+func (r *ResourceReferenceResultProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "privateDnsResourceReferences":
+			err = unpopulate(val, "PrivateDNSResourceReferences", &r.PrivateDNSResourceReferences)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -70,7 +70,7 @@ func (client *BrokerAuthenticationClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Create a BrokerAuthenticationResource
+// createOrUpdate - Create a BrokerAuthenticationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerAuthenticationClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, resource BrokerAuthenticationResource, options *BrokerAuthenticationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *BrokerAuthenticationClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BrokerAuthenticationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, resource BrokerAuthenticationResource, _ *BrokerAuthenticationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}"
 	if client.subscriptionID == "" {
@@ -155,7 +156,7 @@ func (client *BrokerAuthenticationClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Delete a BrokerAuthenticationResource
+// deleteOperation - Delete a BrokerAuthenticationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerAuthenticationClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, options *BrokerAuthenticationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,12 +173,13 @@ func (client *BrokerAuthenticationClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BrokerAuthenticationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, _ *BrokerAuthenticationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}"
 	if client.subscriptionID == "" {
@@ -232,7 +234,8 @@ func (client *BrokerAuthenticationClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return BrokerAuthenticationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

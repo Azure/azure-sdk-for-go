@@ -157,5 +157,15 @@ az keyvault role assignment create `
     --scope "/"
 if ($LASTEXITCODE) { exit $LASTEXITCODE }
 
+# EKM tests are optional, so don't fail deployment where EKM isn't available.
+az keyvault role assignment create `
+    --hsm-name "$hsmName" `
+    --role "Managed HSM EKM Administrator" `
+    --assignee-object-id "$TestApplicationOid" `
+    --scope "/"
+if ($LASTEXITCODE) {
+    Write-Warning "Failed to assign 'Managed HSM EKM Administrator'; EKM tests will fail with 403"
+    $global:LASTEXITCODE = 0
+}
 
 Log "Role assignments created for '$TestApplicationOid'"

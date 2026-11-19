@@ -55,7 +55,8 @@ func (client *CopilotSettingsClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return CopilotSettingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,7 +107,8 @@ func (client *CopilotSettingsClient) Delete(ctx context.Context, options *Copilo
 		return CopilotSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CopilotSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CopilotSettingsClientDeleteResponse{}, err
 	}
 	return CopilotSettingsClientDeleteResponse{}, nil
 }
@@ -141,7 +143,8 @@ func (client *CopilotSettingsClient) Get(ctx context.Context, options *CopilotSe
 	if err != nil {
 		return CopilotSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -188,7 +191,8 @@ func (client *CopilotSettingsClient) Update(ctx context.Context, properties Copi
 	if err != nil {
 		return CopilotSettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -65,7 +65,8 @@ func (client *LocationClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -124,7 +125,8 @@ func (client *LocationClient) GetQuotas(ctx context.Context, locationName string
 	if err != nil {
 		return LocationClientGetQuotasResponse{}, err
 	}
-	return client.getQuotasHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getQuotasHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getQuotasCreateRequest creates the GetQuotas request.

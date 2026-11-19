@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationStart.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationStart.json
 func ExampleMigrationsClient_BeginStart_redisEnterpriseMigrationStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleMigrationsClient_BeginStart_redisEnterpriseMigrationStart() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationStartWithDataMigration.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationStartWithDataMigration.json
 func ExampleMigrationsClient_BeginStart_redisEnterpriseMigrationStartWithDataMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleMigrationsClient_BeginStart_redisEnterpriseMigrationStartWithDataMig
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationUndo.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationUndo.json
 func ExampleMigrationsClient_BeginUndo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleMigrationsClient_BeginUndo() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationUnlinkMigratedEndpoint.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationUnlinkMigratedEndpoint.json
 func ExampleMigrationsClient_BeginUnlinkMigratedEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleMigrationsClient_BeginUnlinkMigratedEndpoint() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationGet.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationGet.json
 func ExampleMigrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleMigrationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationList.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationList.json
 func ExampleMigrationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleMigrationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationValidate.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationValidate.json
 func ExampleMigrationsClient_Validate_redisEnterpriseMigrationValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +294,7 @@ func ExampleMigrationsClient_Validate_redisEnterpriseMigrationValidate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseMigrationValidateWithDataMigration.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseMigrationValidateWithDataMigration.json
 func ExampleMigrationsClient_Validate_redisEnterpriseMigrationValidateWithDataMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

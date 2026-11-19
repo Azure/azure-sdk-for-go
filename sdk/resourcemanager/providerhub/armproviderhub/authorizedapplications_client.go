@@ -68,7 +68,7 @@ func (client *AuthorizedApplicationsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Creates or updates the authorized application.
+// createOrUpdate - Creates or updates the authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, providerNamespace string, applicationID string, properties AuthorizedApplication, options *AuthorizedApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, applicationID string, properties AuthorizedApplication, _ *AuthorizedApplicationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}"
 	if client.subscriptionID == "" {
@@ -141,7 +142,8 @@ func (client *AuthorizedApplicationsClient) Delete(ctx context.Context, provider
 		return AuthorizedApplicationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AuthorizedApplicationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AuthorizedApplicationsClientDeleteResponse{}, err
 	}
 	return AuthorizedApplicationsClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *AuthorizedApplicationsClient) Get(ctx context.Context, providerNam
 	if err != nil {
 		return AuthorizedApplicationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

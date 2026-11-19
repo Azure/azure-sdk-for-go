@@ -40,6 +40,9 @@ type ItemIdentity struct {
 }
 
 func newContainer(id string, database *DatabaseClient) (*ContainerClient, error) {
+	if err := database.client.validateResourceName("container", id); err != nil {
+		return nil, err
+	}
 	return &ContainerClient{
 		id:       id,
 		database: database,
@@ -114,6 +117,9 @@ func (c *ContainerClient) Replace(
 	ctx context.Context,
 	containerProperties ContainerProperties,
 	o *ReplaceContainerOptions) (ContainerResponse, error) {
+	if err := c.database.client.validateResourceName("container", containerProperties.ID); err != nil {
+		return ContainerResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForContainer(operationTypeReplace, resourceTypeCollection, c.id)
 	if err != nil {
@@ -262,6 +268,9 @@ func (c *ContainerClient) CreateItem(
 	partitionKey PartitionKey,
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
+	if err := c.database.client.validateItemBodyID(item); err != nil {
+		return ItemResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForItems(operationTypeCreate)
 	if err != nil {
@@ -317,6 +326,9 @@ func (c *ContainerClient) UpsertItem(
 	partitionKey PartitionKey,
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
+	if err := c.database.client.validateItemBodyID(item); err != nil {
+		return ItemResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForItems(operationTypeUpsert)
 	if err != nil {
@@ -378,6 +390,12 @@ func (c *ContainerClient) ReplaceItem(
 	itemId string,
 	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
+	if err := c.database.client.validateResourceName("item", itemId); err != nil {
+		return ItemResponse{}, err
+	}
+	if err := c.database.client.validateItemBodyID(item); err != nil {
+		return ItemResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForItems(operationTypeReplace)
 	if err != nil {
@@ -433,6 +451,9 @@ func (c *ContainerClient) ReadItem(
 	partitionKey PartitionKey,
 	itemId string,
 	o *ItemOptions) (ItemResponse, error) {
+	if err := c.database.client.validateResourceName("item", itemId); err != nil {
+		return ItemResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForItems(operationTypeRead)
 	if err != nil {
@@ -487,10 +508,12 @@ func (c *ContainerClient) ReadManyItems(
 		return ReadManyItemsResponse{}, nil
 	}
 
-	// Validate all item IDs are non-empty
 	for i := range itemIdentities {
 		if itemIdentities[i].ID == "" {
 			return ReadManyItemsResponse{}, errors.New("item identity at index " + fmt.Sprint(i) + " has an empty ID")
+		}
+		if err := c.database.client.validateResourceName("item", itemIdentities[i].ID); err != nil {
+			return ReadManyItemsResponse{}, fmt.Errorf("item identity at index %d: %w", i, err)
 		}
 	}
 
@@ -556,6 +579,9 @@ func (c *ContainerClient) DeleteItem(
 	partitionKey PartitionKey,
 	itemId string,
 	o *ItemOptions) (ItemResponse, error) {
+	if err := c.database.client.validateResourceName("item", itemId); err != nil {
+		return ItemResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForItems(operationTypeDelete)
 	if err != nil {
@@ -699,6 +725,9 @@ func (c *ContainerClient) PatchItem(
 	itemId string,
 	ops PatchOperations,
 	o *ItemOptions) (ItemResponse, error) {
+	if err := c.database.client.validateResourceName("item", itemId); err != nil {
+		return ItemResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForItems(operationTypePatch)
 	if err != nil {
@@ -753,6 +782,9 @@ func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) Trans
 // ExecuteTransactionalBatch executes a transactional batch.
 // Once executed, verify the Success property of the response to determine if the batch was committed
 func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b TransactionalBatch, o *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
+	if err := b.validateResourceNames(c.database.client); err != nil {
+		return TransactionalBatchResponse{}, err
+	}
 	var err error
 	spanName, err := c.getSpanForContainer(operationTypeBatch, resourceTypeCollection, c.id)
 	if err != nil {

@@ -85,6 +85,77 @@ func ExampleCredentialsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-03-01-preview/Credentials_Synchronize.json
+func ExampleCredentialsClient_BeginSynchronize() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCredentialsClient().BeginSynchronize(ctx, "rgdeviceregistry", "mynamespace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01-preview/Update_Credentials.json
+func ExampleCredentialsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("17C6B0DE-82CA-4A56-946C-5DD9701D30D3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCredentialsClient().BeginUpdate(ctx, "rgdeviceregistry", "mynamespace", armdeviceregistry.CredentialUpdate{
+		Tags: map[string]*string{
+			"key9580": to.Ptr("tpbwnljiiwtlyuiayalpkxyfwnrz"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.CredentialsClientUpdateResponse{
+	// 	Credential: armdeviceregistry.Credential{
+	// 		Properties: &armdeviceregistry.CredentialProperties{
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key9620": to.Ptr("ddprkxlfnqejng"),
+	// 		},
+	// 		Location: to.Ptr("East US 2"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-ns-gbk-01/credentials/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/credentials"),
+	// 		SystemData: &armdeviceregistry.SystemData{
+	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-01-preview/Get_Credentials.json
 func ExampleCredentialsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -176,75 +247,4 @@ func ExampleCredentialsClient_NewListByResourceGroupPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-01-preview/Credentials_Synchronize.json
-func ExampleCredentialsClient_BeginSynchronize() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCredentialsClient().BeginSynchronize(ctx, "rgdeviceregistry", "mynamespace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-03-01-preview/Update_Credentials.json
-func ExampleCredentialsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("17C6B0DE-82CA-4A56-946C-5DD9701D30D3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCredentialsClient().BeginUpdate(ctx, "rgdeviceregistry", "mynamespace", armdeviceregistry.CredentialUpdate{
-		Tags: map[string]*string{
-			"key9580": to.Ptr("tpbwnljiiwtlyuiayalpkxyfwnrz"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.CredentialsClientUpdateResponse{
-	// 	Credential: armdeviceregistry.Credential{
-	// 		Properties: &armdeviceregistry.CredentialProperties{
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key9620": to.Ptr("ddprkxlfnqejng"),
-	// 		},
-	// 		Location: to.Ptr("East US 2"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-ns-gbk-01/credentials/default"),
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/credentials"),
-	// 		SystemData: &armdeviceregistry.SystemData{
-	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

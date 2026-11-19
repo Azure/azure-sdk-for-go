@@ -63,7 +63,8 @@ func (client *AllTrafficFiltersClient) List(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AllTrafficFiltersClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

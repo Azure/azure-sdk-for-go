@@ -19,7 +19,7 @@ import (
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-15-preview
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *ManagementClient) CalculateModelCapacity(ctx context.Context, para
 	if err != nil {
 		return ManagementClientCalculateModelCapacityResponse{}, err
 	}
-	return client.calculateModelCapacityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.calculateModelCapacityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // calculateModelCapacityCreateRequest creates the CalculateModelCapacity request.
@@ -78,7 +79,7 @@ func (client *ManagementClient) calculateModelCapacityCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -119,7 +120,8 @@ func (client *ManagementClient) CheckDomainAvailability(ctx context.Context, par
 	if err != nil {
 		return ManagementClientCheckDomainAvailabilityResponse{}, err
 	}
-	return client.checkDomainAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkDomainAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkDomainAvailabilityCreateRequest creates the CheckDomainAvailability request.
@@ -134,7 +136,7 @@ func (client *ManagementClient) checkDomainAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -176,7 +178,8 @@ func (client *ManagementClient) CheckSKUAvailability(ctx context.Context, locati
 	if err != nil {
 		return ManagementClientCheckSKUAvailabilityResponse{}, err
 	}
-	return client.checkSKUAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkSKUAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkSKUAvailabilityCreateRequest creates the CheckSKUAvailability request.
@@ -195,7 +198,7 @@ func (client *ManagementClient) checkSKUAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -5,7 +5,7 @@
 package armcognitiveservices
 
 const (
-	version20260915Preview string = "2026-09-15-preview"
+	version20261115Preview string = "2026-11-15-preview"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -286,6 +286,138 @@ const (
 func PossibleArcDeploymentSKUNameValues() []ArcDeploymentSKUName {
 	return []ArcDeploymentSKUName{
 		ArcDeploymentSKUNameArc,
+	}
+}
+
+// AttachedAksClusterCapability - A capability supported by an AKS attachment.
+type AttachedAksClusterCapability string
+
+const (
+	// AttachedAksClusterCapabilityAiManager - AI Manager inference workloads.
+	AttachedAksClusterCapabilityAiManager AttachedAksClusterCapability = "aiManager"
+	// AttachedAksClusterCapabilityFoundryNative - Foundry-native training workloads.
+	AttachedAksClusterCapabilityFoundryNative AttachedAksClusterCapability = "foundryNative"
+	// AttachedAksClusterCapabilityKuberay - KubeRay workloads.
+	AttachedAksClusterCapabilityKuberay AttachedAksClusterCapability = "kuberay"
+)
+
+// PossibleAttachedAksClusterCapabilityValues returns the possible values for the AttachedAksClusterCapability const type.
+func PossibleAttachedAksClusterCapabilityValues() []AttachedAksClusterCapability {
+	return []AttachedAksClusterCapability{
+		AttachedAksClusterCapabilityAiManager,
+		AttachedAksClusterCapabilityFoundryNative,
+		AttachedAksClusterCapabilityKuberay,
+	}
+}
+
+// AttachedAksClusterExtensionInstallationMode - How the training extension is installed.
+type AttachedAksClusterExtensionInstallationMode string
+
+const (
+	// AttachedAksClusterExtensionInstallationModeManaged - The service manages installation of the extension.
+	AttachedAksClusterExtensionInstallationModeManaged AttachedAksClusterExtensionInstallationMode = "Managed"
+	// AttachedAksClusterExtensionInstallationModeManual - The extension is installed manually, when enabled by the service.
+	AttachedAksClusterExtensionInstallationModeManual AttachedAksClusterExtensionInstallationMode = "Manual"
+)
+
+// PossibleAttachedAksClusterExtensionInstallationModeValues returns the possible values for the AttachedAksClusterExtensionInstallationMode const type.
+func PossibleAttachedAksClusterExtensionInstallationModeValues() []AttachedAksClusterExtensionInstallationMode {
+	return []AttachedAksClusterExtensionInstallationMode{
+		AttachedAksClusterExtensionInstallationModeManaged,
+		AttachedAksClusterExtensionInstallationModeManual,
+	}
+}
+
+// AttachedAksClusterHealthState - Health state of an attachment or one of its components.
+type AttachedAksClusterHealthState string
+
+const (
+	// AttachedAksClusterHealthStateDegraded - The attachment or component is degraded.
+	AttachedAksClusterHealthStateDegraded AttachedAksClusterHealthState = "Degraded"
+	// AttachedAksClusterHealthStateHealthy - The attachment or component is healthy.
+	AttachedAksClusterHealthStateHealthy AttachedAksClusterHealthState = "Healthy"
+	// AttachedAksClusterHealthStateUnhealthy - The attachment or component is unhealthy.
+	AttachedAksClusterHealthStateUnhealthy AttachedAksClusterHealthState = "Unhealthy"
+	// AttachedAksClusterHealthStateUnknown - Health has not yet been established.
+	AttachedAksClusterHealthStateUnknown AttachedAksClusterHealthState = "Unknown"
+)
+
+// PossibleAttachedAksClusterHealthStateValues returns the possible values for the AttachedAksClusterHealthState const type.
+func PossibleAttachedAksClusterHealthStateValues() []AttachedAksClusterHealthState {
+	return []AttachedAksClusterHealthState{
+		AttachedAksClusterHealthStateDegraded,
+		AttachedAksClusterHealthStateHealthy,
+		AttachedAksClusterHealthStateUnhealthy,
+		AttachedAksClusterHealthStateUnknown,
+	}
+}
+
+// AttachedAksClusterProjectBindingStage - Provisioning stage of a project binding.
+type AttachedAksClusterProjectBindingStage string
+
+const (
+	// AttachedAksClusterProjectBindingStageBlocked - The binding is blocked.
+	AttachedAksClusterProjectBindingStageBlocked AttachedAksClusterProjectBindingStage = "Blocked"
+	// AttachedAksClusterProjectBindingStageDegraded - The binding is degraded.
+	AttachedAksClusterProjectBindingStageDegraded AttachedAksClusterProjectBindingStage = "Degraded"
+	// AttachedAksClusterProjectBindingStageReady - The binding is ready.
+	AttachedAksClusterProjectBindingStageReady AttachedAksClusterProjectBindingStage = "Ready"
+	// AttachedAksClusterProjectBindingStageReconciling - The binding is being reconciled.
+	AttachedAksClusterProjectBindingStageReconciling AttachedAksClusterProjectBindingStage = "Reconciling"
+)
+
+// PossibleAttachedAksClusterProjectBindingStageValues returns the possible values for the AttachedAksClusterProjectBindingStage const type.
+func PossibleAttachedAksClusterProjectBindingStageValues() []AttachedAksClusterProjectBindingStage {
+	return []AttachedAksClusterProjectBindingStage{
+		AttachedAksClusterProjectBindingStageBlocked,
+		AttachedAksClusterProjectBindingStageDegraded,
+		AttachedAksClusterProjectBindingStageReady,
+		AttachedAksClusterProjectBindingStageReconciling,
+	}
+}
+
+// AttachedAksClusterProvisioningStage - Provisioning stage reported by an attachment.
+type AttachedAksClusterProvisioningStage string
+
+const (
+	// AttachedAksClusterProvisioningStageAccepted - The attachment request was accepted.
+	AttachedAksClusterProvisioningStageAccepted AttachedAksClusterProvisioningStage = "Accepted"
+	// AttachedAksClusterProvisioningStageBlocked - The attachment is blocked.
+	AttachedAksClusterProvisioningStageBlocked AttachedAksClusterProvisioningStage = "Blocked"
+	// AttachedAksClusterProvisioningStageClusterReady - The cluster is ready.
+	AttachedAksClusterProvisioningStageClusterReady AttachedAksClusterProvisioningStage = "ClusterReady"
+	// AttachedAksClusterProvisioningStageDegraded - The attachment is degraded.
+	AttachedAksClusterProvisioningStageDegraded AttachedAksClusterProvisioningStage = "Degraded"
+	// AttachedAksClusterProvisioningStageDeleting - The attachment is being deleted.
+	AttachedAksClusterProvisioningStageDeleting AttachedAksClusterProvisioningStage = "Deleting"
+	// AttachedAksClusterProvisioningStageFailed - Attachment provisioning failed.
+	AttachedAksClusterProvisioningStageFailed AttachedAksClusterProvisioningStage = "Failed"
+	// AttachedAksClusterProvisioningStagePendingBootstrap - Cluster bootstrap is pending.
+	AttachedAksClusterProvisioningStagePendingBootstrap AttachedAksClusterProvisioningStage = "PendingBootstrap"
+	// AttachedAksClusterProvisioningStageProvisioningCluster - Cluster provisioning is in progress.
+	AttachedAksClusterProvisioningStageProvisioningCluster AttachedAksClusterProvisioningStage = "ProvisioningCluster"
+	// AttachedAksClusterProvisioningStageProvisioningIdentity - Identity provisioning is in progress.
+	AttachedAksClusterProvisioningStageProvisioningIdentity AttachedAksClusterProvisioningStage = "ProvisioningIdentity"
+	// AttachedAksClusterProvisioningStageReady - The attachment is ready.
+	AttachedAksClusterProvisioningStageReady AttachedAksClusterProvisioningStage = "Ready"
+	// AttachedAksClusterProvisioningStageValidating - The attachment is being validated.
+	AttachedAksClusterProvisioningStageValidating AttachedAksClusterProvisioningStage = "Validating"
+)
+
+// PossibleAttachedAksClusterProvisioningStageValues returns the possible values for the AttachedAksClusterProvisioningStage const type.
+func PossibleAttachedAksClusterProvisioningStageValues() []AttachedAksClusterProvisioningStage {
+	return []AttachedAksClusterProvisioningStage{
+		AttachedAksClusterProvisioningStageAccepted,
+		AttachedAksClusterProvisioningStageBlocked,
+		AttachedAksClusterProvisioningStageClusterReady,
+		AttachedAksClusterProvisioningStageDegraded,
+		AttachedAksClusterProvisioningStageDeleting,
+		AttachedAksClusterProvisioningStageFailed,
+		AttachedAksClusterProvisioningStagePendingBootstrap,
+		AttachedAksClusterProvisioningStageProvisioningCluster,
+		AttachedAksClusterProvisioningStageProvisioningIdentity,
+		AttachedAksClusterProvisioningStageReady,
+		AttachedAksClusterProvisioningStageValidating,
 	}
 }
 
@@ -828,96 +960,81 @@ func PossibleContentLevelValues() []ContentLevel {
 	}
 }
 
-// CostControlDimensionType - Cost control counter dimensions, including Custom retained for legacy read compatibility.
-type CostControlDimensionType string
+// CostControlCategory - The measurement used for the budget amount and absolute thresholds.
+type CostControlCategory string
 
 const (
-	// CostControlDimensionTypeAccount - Consumption is partitioned by the owning Cognitive Services account.
-	CostControlDimensionTypeAccount CostControlDimensionType = "Account"
-	// CostControlDimensionTypeAgent - Consumption is partitioned by the stable Foundry agent ID.
-	CostControlDimensionTypeAgent CostControlDimensionType = "Agent"
-	// CostControlDimensionTypeCustom - Legacy read-only dimension using `CostControlDimension.Attribute`.
-	// New Custom counter authoring is reserved for future support.
-	CostControlDimensionTypeCustom CostControlDimensionType = "Custom"
-	// CostControlDimensionTypeIdentity - Consumption is partitioned by the authenticated principal object ID.
-	CostControlDimensionTypeIdentity CostControlDimensionType = "Identity"
-	// CostControlDimensionTypeProject - Consumption is partitioned by the Foundry project resource ID.
-	CostControlDimensionTypeProject CostControlDimensionType = "Project"
-	// CostControlDimensionTypeSession - Consumption is partitioned by the Foundry session ID.
-	CostControlDimensionTypeSession CostControlDimensionType = "Session"
+	// CostControlCategoryCost - Estimated consumption cost in United States dollars.
+	CostControlCategoryCost CostControlCategory = "Cost"
+	// CostControlCategoryTokens - The number of consumed tokens, optionally selected by a tokenType filter.
+	CostControlCategoryTokens CostControlCategory = "Tokens"
 )
 
-// PossibleCostControlDimensionTypeValues returns the possible values for the CostControlDimensionType const type.
-func PossibleCostControlDimensionTypeValues() []CostControlDimensionType {
-	return []CostControlDimensionType{
-		CostControlDimensionTypeAccount,
-		CostControlDimensionTypeAgent,
-		CostControlDimensionTypeCustom,
-		CostControlDimensionTypeIdentity,
-		CostControlDimensionTypeProject,
-		CostControlDimensionTypeSession,
+// PossibleCostControlCategoryValues returns the possible values for the CostControlCategory const type.
+func PossibleCostControlCategoryValues() []CostControlCategory {
+	return []CostControlCategory{
+		CostControlCategoryCost,
+		CostControlCategoryTokens,
 	}
 }
 
-// CostControlPeriod - Calendar-aligned UTC renewal periods, including legacy values retained for read compatibility.
-type CostControlPeriod string
+// CostControlFilterName - Built-in request attributes supported for traffic filtering.
+type CostControlFilterName string
 
 const (
-	// CostControlPeriodDay - Renews daily at 00:00 UTC.
-	CostControlPeriodDay CostControlPeriod = "Day"
-	// CostControlPeriodHour - Legacy read-only period renewing at the start of the next UTC hour.
-	CostControlPeriodHour CostControlPeriod = "Hour"
-	// CostControlPeriodMinute - Legacy read-only period renewing at the start of the next UTC minute.
-	CostControlPeriodMinute CostControlPeriod = "Minute"
-	// CostControlPeriodMonth - Renews on the first day of each month at 00:00 UTC.
-	CostControlPeriodMonth CostControlPeriod = "Month"
-	// CostControlPeriodWeek - Renews Monday at 00:00 UTC.
-	CostControlPeriodWeek CostControlPeriod = "Week"
-	// CostControlPeriodYear - Legacy read-only period renewing January 1 at 00:00 UTC.
-	CostControlPeriodYear CostControlPeriod = "Year"
+	// CostControlFilterNameAgent - The Foundry agent name within the single explicitly selected Foundry project.
+	CostControlFilterNameAgent CostControlFilterName = "agent"
+	// CostControlFilterNameDeployment - The deployment name within the owning account.
+	CostControlFilterNameDeployment CostControlFilterName = "deployment"
+	// CostControlFilterNameProject - The Foundry project name within the owning account.
+	CostControlFilterNameProject CostControlFilterName = "project"
+	// CostControlFilterNameSessionID - The Foundry session ID.
+	CostControlFilterNameSessionID CostControlFilterName = "sessionId"
+	// CostControlFilterNameTokenType - The input or output token category.
+	CostControlFilterNameTokenType CostControlFilterName = "tokenType"
 )
 
-// PossibleCostControlPeriodValues returns the possible values for the CostControlPeriod const type.
-func PossibleCostControlPeriodValues() []CostControlPeriod {
-	return []CostControlPeriod{
-		CostControlPeriodDay,
-		CostControlPeriodHour,
-		CostControlPeriodMinute,
-		CostControlPeriodMonth,
-		CostControlPeriodWeek,
-		CostControlPeriodYear,
+// PossibleCostControlFilterNameValues returns the possible values for the CostControlFilterName const type.
+func PossibleCostControlFilterNameValues() []CostControlFilterName {
+	return []CostControlFilterName{
+		CostControlFilterNameAgent,
+		CostControlFilterNameDeployment,
+		CostControlFilterNameProject,
+		CostControlFilterNameSessionID,
+		CostControlFilterNameTokenType,
 	}
 }
 
-// CostControlThresholdAction - The supported actions when a threshold is reached.
-type CostControlThresholdAction string
+// CostControlGroupingName - Built-in attributes supported for additional budget partitioning.
+type CostControlGroupingName string
 
 const (
-	// CostControlThresholdActionAlert - Emits a customer-facing alert without blocking requests.
-	CostControlThresholdActionAlert CostControlThresholdAction = "Alert"
-	// CostControlThresholdActionAudit - Legacy read-only action retained to deserialize existing definitions without changing
-	// their semantics.
-	CostControlThresholdActionAudit CostControlThresholdAction = "Audit"
-	// CostControlThresholdActionBlock - Blocks the request without emitting a customer-facing alert.
-	CostControlThresholdActionBlock CostControlThresholdAction = "Block"
+	// CostControlGroupingNameAgent - Creates an independent counter for each Foundry agent, qualified by its Foundry project
+	// so identical agent names in different projects do not share counters.
+	CostControlGroupingNameAgent CostControlGroupingName = "agent"
+	// CostControlGroupingNameProject - Creates an independent counter for each Foundry project in the owning account.
+	CostControlGroupingNameProject CostControlGroupingName = "project"
+	// CostControlGroupingNameSessionID - Creates an independent counter for each Foundry session ID.
+	CostControlGroupingNameSessionID CostControlGroupingName = "sessionId"
 )
 
-// PossibleCostControlThresholdActionValues returns the possible values for the CostControlThresholdAction const type.
-func PossibleCostControlThresholdActionValues() []CostControlThresholdAction {
-	return []CostControlThresholdAction{
-		CostControlThresholdActionAlert,
-		CostControlThresholdActionAudit,
-		CostControlThresholdActionBlock,
+// PossibleCostControlGroupingNameValues returns the possible values for the CostControlGroupingName const type.
+func PossibleCostControlGroupingNameValues() []CostControlGroupingName {
+	return []CostControlGroupingName{
+		CostControlGroupingNameAgent,
+		CostControlGroupingNameProject,
+		CostControlGroupingNameSessionID,
 	}
 }
 
-// CostControlThresholdType - The supported threshold value interpretations.
+// CostControlThresholdType - The interpretation of a notification or blocking-action threshold.
 type CostControlThresholdType string
 
 const (
-	// CostControlThresholdTypeAbsolute - The value is expressed in the rule's unit.
+	// CostControlThresholdTypeAbsolute - The threshold is expressed in United States dollars or tokens, according to the budget
+	// category.
 	CostControlThresholdTypeAbsolute CostControlThresholdType = "Absolute"
-	// CostControlThresholdTypePercentage - The value is a percentage of the configured rule amount.
+	// CostControlThresholdTypePercentage - The threshold is a percentage of the configured budget amount.
 	CostControlThresholdTypePercentage CostControlThresholdType = "Percentage"
 )
 
@@ -929,18 +1046,24 @@ func PossibleCostControlThresholdTypeValues() []CostControlThresholdType {
 	}
 }
 
-// CostControlUnit - The supported unit for cost control amounts and thresholds.
-type CostControlUnit string
+// CostControlTimeGrain - Calendar-aligned UTC renewal intervals.
+type CostControlTimeGrain string
 
 const (
-	// CostControlUnitUsd - Estimated cost in United States dollars.
-	CostControlUnitUsd CostControlUnit = "Usd"
+	// CostControlTimeGrainDaily - Renews each day at 00:00 UTC.
+	CostControlTimeGrainDaily CostControlTimeGrain = "Daily"
+	// CostControlTimeGrainMonthly - Renews on the first day of each month at 00:00 UTC.
+	CostControlTimeGrainMonthly CostControlTimeGrain = "Monthly"
+	// CostControlTimeGrainWeekly - Renews each Monday at 00:00 UTC.
+	CostControlTimeGrainWeekly CostControlTimeGrain = "Weekly"
 )
 
-// PossibleCostControlUnitValues returns the possible values for the CostControlUnit const type.
-func PossibleCostControlUnitValues() []CostControlUnit {
-	return []CostControlUnit{
-		CostControlUnitUsd,
+// PossibleCostControlTimeGrainValues returns the possible values for the CostControlTimeGrain const type.
+func PossibleCostControlTimeGrainValues() []CostControlTimeGrain {
+	return []CostControlTimeGrain{
+		CostControlTimeGrainDaily,
+		CostControlTimeGrainMonthly,
+		CostControlTimeGrainWeekly,
 	}
 }
 
@@ -1638,6 +1761,27 @@ func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	}
 }
 
+// RaiAcsAnnotatorType - Extensible kinds of Agent Control Specification annotator dispatchers.
+type RaiAcsAnnotatorType string
+
+const (
+	// RaiAcsAnnotatorTypeClassifier - Obtains annotations from a classifier dispatcher.
+	RaiAcsAnnotatorTypeClassifier RaiAcsAnnotatorType = "classifier"
+	// RaiAcsAnnotatorTypeEndpoint - Obtains annotations from an external endpoint dispatcher.
+	RaiAcsAnnotatorTypeEndpoint RaiAcsAnnotatorType = "endpoint"
+	// RaiAcsAnnotatorTypeLlm - Obtains annotations from a language-model dispatcher.
+	RaiAcsAnnotatorTypeLlm RaiAcsAnnotatorType = "llm"
+)
+
+// PossibleRaiAcsAnnotatorTypeValues returns the possible values for the RaiAcsAnnotatorType const type.
+func PossibleRaiAcsAnnotatorTypeValues() []RaiAcsAnnotatorType {
+	return []RaiAcsAnnotatorType{
+		RaiAcsAnnotatorTypeClassifier,
+		RaiAcsAnnotatorTypeEndpoint,
+		RaiAcsAnnotatorTypeLlm,
+	}
+}
+
 // RaiAcsHarmCategory - Harm categories supported by the Unified Moderate text profile.
 type RaiAcsHarmCategory string
 
@@ -1708,8 +1852,16 @@ func PossibleRaiAcsPolicyDefinitionTypeValues() []RaiAcsPolicyDefinitionType {
 type RaiAcsPolicyTarget string
 
 const (
+	// RaiAcsPolicyTargetAgentInitialization - Selects the agent initialization payload.
+	RaiAcsPolicyTargetAgentInitialization RaiAcsPolicyTarget = "$snap.agent_init"
+	// RaiAcsPolicyTargetAgentSummary - Selects the final agent execution summary.
+	RaiAcsPolicyTargetAgentSummary RaiAcsPolicyTarget = "$snap.summary"
 	// RaiAcsPolicyTargetInput - Selects the incoming user input.
 	RaiAcsPolicyTargetInput RaiAcsPolicyTarget = "$snap.input"
+	// RaiAcsPolicyTargetModelMessages - Selects the model messages proposed for dispatch.
+	RaiAcsPolicyTargetModelMessages RaiAcsPolicyTarget = "$snap.messages"
+	// RaiAcsPolicyTargetModelResponse - Selects the completed model response.
+	RaiAcsPolicyTargetModelResponse RaiAcsPolicyTarget = "$snap.response"
 	// RaiAcsPolicyTargetOutput - Selects the assistant output.
 	RaiAcsPolicyTargetOutput RaiAcsPolicyTarget = "$snap.output"
 	// RaiAcsPolicyTargetToolArguments - Selects tool-call arguments.
@@ -1721,7 +1873,11 @@ const (
 // PossibleRaiAcsPolicyTargetValues returns the possible values for the RaiAcsPolicyTarget const type.
 func PossibleRaiAcsPolicyTargetValues() []RaiAcsPolicyTarget {
 	return []RaiAcsPolicyTarget{
+		RaiAcsPolicyTargetAgentInitialization,
+		RaiAcsPolicyTargetAgentSummary,
 		RaiAcsPolicyTargetInput,
+		RaiAcsPolicyTargetModelMessages,
+		RaiAcsPolicyTargetModelResponse,
 		RaiAcsPolicyTargetOutput,
 		RaiAcsPolicyTargetToolArguments,
 		RaiAcsPolicyTargetToolResult,
@@ -1732,8 +1888,16 @@ func PossibleRaiAcsPolicyTargetValues() []RaiAcsPolicyTarget {
 type RaiAcsPolicyTargetKind string
 
 const (
+	// RaiAcsPolicyTargetKindAgentInitialization - The target contains agent initialization state.
+	RaiAcsPolicyTargetKindAgentInitialization RaiAcsPolicyTargetKind = "agent_init"
+	// RaiAcsPolicyTargetKindAgentSummary - The target contains the final agent execution summary.
+	RaiAcsPolicyTargetKindAgentSummary RaiAcsPolicyTargetKind = "agent_summary"
 	// RaiAcsPolicyTargetKindAssistantOutput - The target contains assistant output.
 	RaiAcsPolicyTargetKindAssistantOutput RaiAcsPolicyTargetKind = "assistant_output"
+	// RaiAcsPolicyTargetKindModelMessages - The target contains model messages.
+	RaiAcsPolicyTargetKindModelMessages RaiAcsPolicyTargetKind = "messages"
+	// RaiAcsPolicyTargetKindModelResponse - The target contains a completed model response.
+	RaiAcsPolicyTargetKindModelResponse RaiAcsPolicyTargetKind = "model_response"
 	// RaiAcsPolicyTargetKindToolArguments - The target contains tool-call arguments.
 	RaiAcsPolicyTargetKindToolArguments RaiAcsPolicyTargetKind = "tool_args"
 	// RaiAcsPolicyTargetKindToolResult - The target contains a tool result.
@@ -1745,7 +1909,11 @@ const (
 // PossibleRaiAcsPolicyTargetKindValues returns the possible values for the RaiAcsPolicyTargetKind const type.
 func PossibleRaiAcsPolicyTargetKindValues() []RaiAcsPolicyTargetKind {
 	return []RaiAcsPolicyTargetKind{
+		RaiAcsPolicyTargetKindAgentInitialization,
+		RaiAcsPolicyTargetKindAgentSummary,
 		RaiAcsPolicyTargetKindAssistantOutput,
+		RaiAcsPolicyTargetKindModelMessages,
+		RaiAcsPolicyTargetKindModelResponse,
 		RaiAcsPolicyTargetKindToolArguments,
 		RaiAcsPolicyTargetKindToolResult,
 		RaiAcsPolicyTargetKindUserInput,
@@ -1917,9 +2085,17 @@ func PossibleRaiEgressSchemeValues() []RaiEgressScheme {
 type RaiPolicyContentSource string
 
 const (
+	// RaiPolicyContentSourceAgentShutdown - Content evaluated when an agent execution session shuts down.
+	RaiPolicyContentSourceAgentShutdown RaiPolicyContentSource = "AgentShutdown"
+	// RaiPolicyContentSourceAgentStartup - Content evaluated when an agent execution session starts.
+	RaiPolicyContentSourceAgentStartup RaiPolicyContentSource = "AgentStartup"
 	RaiPolicyContentSourceCompletion   RaiPolicyContentSource = "Completion"
-	RaiPolicyContentSourcePostRun      RaiPolicyContentSource = "PostRun"
-	RaiPolicyContentSourcePostToolCall RaiPolicyContentSource = "PostToolCall"
+	// RaiPolicyContentSourcePostModelCall - Content evaluated after a model call returns.
+	RaiPolicyContentSourcePostModelCall RaiPolicyContentSource = "PostModelCall"
+	RaiPolicyContentSourcePostRun       RaiPolicyContentSource = "PostRun"
+	RaiPolicyContentSourcePostToolCall  RaiPolicyContentSource = "PostToolCall"
+	// RaiPolicyContentSourcePreModelCall - Content evaluated before a model call is made.
+	RaiPolicyContentSourcePreModelCall RaiPolicyContentSource = "PreModelCall"
 	RaiPolicyContentSourcePreRun       RaiPolicyContentSource = "PreRun"
 	RaiPolicyContentSourcePreToolCall  RaiPolicyContentSource = "PreToolCall"
 	RaiPolicyContentSourcePrompt       RaiPolicyContentSource = "Prompt"
@@ -1928,9 +2104,13 @@ const (
 // PossibleRaiPolicyContentSourceValues returns the possible values for the RaiPolicyContentSource const type.
 func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
 	return []RaiPolicyContentSource{
+		RaiPolicyContentSourceAgentShutdown,
+		RaiPolicyContentSourceAgentStartup,
 		RaiPolicyContentSourceCompletion,
+		RaiPolicyContentSourcePostModelCall,
 		RaiPolicyContentSourcePostRun,
 		RaiPolicyContentSourcePostToolCall,
+		RaiPolicyContentSourcePreModelCall,
 		RaiPolicyContentSourcePreRun,
 		RaiPolicyContentSourcePreToolCall,
 		RaiPolicyContentSourcePrompt,
@@ -2255,6 +2435,120 @@ func PossibleTierUpgradePolicyValues() []TierUpgradePolicy {
 	}
 }
 
+// ToolControlType - The canonical tool type supported by Foundry agents. Additional tool types may be specified as strings.
+type ToolControlType string
+
+const (
+	// ToolControlTypeA2A - Agent-to-agent tool.
+	ToolControlTypeA2A ToolControlType = "a2a"
+	// ToolControlTypeA2APreview - Agent-to-agent preview tool.
+	ToolControlTypeA2APreview ToolControlType = "a2a_preview"
+	// ToolControlTypeApplyPatch - Apply patch tool.
+	ToolControlTypeApplyPatch ToolControlType = "apply_patch"
+	// ToolControlTypeAzureAiSearch - Azure AI Search tool.
+	ToolControlTypeAzureAiSearch ToolControlType = "azure_ai_search"
+	// ToolControlTypeAzureFunction - Azure Function tool.
+	ToolControlTypeAzureFunction ToolControlType = "azure_function"
+	// ToolControlTypeBingCustomSearchPreview - Grounding with Bing Custom Search preview tool.
+	ToolControlTypeBingCustomSearchPreview ToolControlType = "bing_custom_search_preview"
+	// ToolControlTypeBingGrounding - Grounding with Bing Search tool.
+	ToolControlTypeBingGrounding ToolControlType = "bing_grounding"
+	// ToolControlTypeBrowserAutomation - Browser automation tool.
+	ToolControlTypeBrowserAutomation ToolControlType = "browser_automation"
+	// ToolControlTypeBrowserAutomationPreview - Browser automation preview tool.
+	ToolControlTypeBrowserAutomationPreview ToolControlType = "browser_automation_preview"
+	// ToolControlTypeCaptureStructuredOutputs - Capture structured outputs tool.
+	ToolControlTypeCaptureStructuredOutputs ToolControlType = "capture_structured_outputs"
+	// ToolControlTypeCodeInterpreter - Code interpreter tool.
+	ToolControlTypeCodeInterpreter ToolControlType = "code_interpreter"
+	// ToolControlTypeComputerUsePreview - Computer use tool.
+	ToolControlTypeComputerUsePreview ToolControlType = "computer_use_preview"
+	// ToolControlTypeCustom - Custom tool.
+	ToolControlTypeCustom ToolControlType = "custom"
+	// ToolControlTypeFabricDataagentPreview - Fabric data agent preview tool.
+	ToolControlTypeFabricDataagentPreview ToolControlType = "fabric_dataagent_preview"
+	// ToolControlTypeFabricIqPreview - Fabric IQ preview tool.
+	ToolControlTypeFabricIqPreview ToolControlType = "fabric_iq_preview"
+	// ToolControlTypeFileSearch - File search tool.
+	ToolControlTypeFileSearch ToolControlType = "file_search"
+	// ToolControlTypeFunction - Function tool.
+	ToolControlTypeFunction ToolControlType = "function"
+	// ToolControlTypeImageGeneration - Image generation tool.
+	ToolControlTypeImageGeneration ToolControlType = "image_generation"
+	// ToolControlTypeLocalShell - Local shell tool.
+	ToolControlTypeLocalShell ToolControlType = "local_shell"
+	// ToolControlTypeMcp - Model Context Protocol (MCP) tool.
+	ToolControlTypeMcp ToolControlType = "mcp"
+	// ToolControlTypeMemorySearchPreview - Memory search preview tool.
+	ToolControlTypeMemorySearchPreview ToolControlType = "memory_search_preview"
+	// ToolControlTypeOpenapi - OpenAPI tool.
+	ToolControlTypeOpenapi ToolControlType = "openapi"
+	// ToolControlTypeSharepointGroundingPreview - SharePoint grounding preview tool.
+	ToolControlTypeSharepointGroundingPreview ToolControlType = "sharepoint_grounding_preview"
+	// ToolControlTypeShell - Shell tool.
+	ToolControlTypeShell ToolControlType = "shell"
+	// ToolControlTypeToolboxSearchPreview - Toolbox search preview tool.
+	ToolControlTypeToolboxSearchPreview ToolControlType = "toolbox_search_preview"
+	// ToolControlTypeWebIqPreview - Web IQ preview tool.
+	ToolControlTypeWebIqPreview ToolControlType = "web_iq_preview"
+	// ToolControlTypeWebSearch - Web search tool.
+	ToolControlTypeWebSearch ToolControlType = "web_search"
+	// ToolControlTypeWebSearchPreview - Web search preview tool.
+	ToolControlTypeWebSearchPreview ToolControlType = "web_search_preview"
+	// ToolControlTypeWorkIqPreview - Work IQ preview tool.
+	ToolControlTypeWorkIqPreview ToolControlType = "work_iq_preview"
+)
+
+// PossibleToolControlTypeValues returns the possible values for the ToolControlType const type.
+func PossibleToolControlTypeValues() []ToolControlType {
+	return []ToolControlType{
+		ToolControlTypeA2A,
+		ToolControlTypeA2APreview,
+		ToolControlTypeApplyPatch,
+		ToolControlTypeAzureAiSearch,
+		ToolControlTypeAzureFunction,
+		ToolControlTypeBingCustomSearchPreview,
+		ToolControlTypeBingGrounding,
+		ToolControlTypeBrowserAutomation,
+		ToolControlTypeBrowserAutomationPreview,
+		ToolControlTypeCaptureStructuredOutputs,
+		ToolControlTypeCodeInterpreter,
+		ToolControlTypeComputerUsePreview,
+		ToolControlTypeCustom,
+		ToolControlTypeFabricDataagentPreview,
+		ToolControlTypeFabricIqPreview,
+		ToolControlTypeFileSearch,
+		ToolControlTypeFunction,
+		ToolControlTypeImageGeneration,
+		ToolControlTypeLocalShell,
+		ToolControlTypeMcp,
+		ToolControlTypeMemorySearchPreview,
+		ToolControlTypeOpenapi,
+		ToolControlTypeSharepointGroundingPreview,
+		ToolControlTypeShell,
+		ToolControlTypeToolboxSearchPreview,
+		ToolControlTypeWebIqPreview,
+		ToolControlTypeWebSearch,
+		ToolControlTypeWebSearchPreview,
+		ToolControlTypeWorkIqPreview,
+	}
+}
+
+// ToolControlsDefaultAction - Specifies the default action for a tool that is not listed explicitly.
+type ToolControlsDefaultAction string
+
+const (
+	// ToolControlsDefaultActionDeny - Tools that are not listed explicitly are denied.
+	ToolControlsDefaultActionDeny ToolControlsDefaultAction = "Deny"
+)
+
+// PossibleToolControlsDefaultActionValues returns the possible values for the ToolControlsDefaultAction const type.
+func PossibleToolControlsDefaultActionValues() []ToolControlsDefaultAction {
+	return []ToolControlsDefaultAction{
+		ToolControlsDefaultActionDeny,
+	}
+}
+
 // TrafficRoutingProtocol - Traffic routing protocol, used to distribute an application's inbound traffic to its deployments.
 type TrafficRoutingProtocol string
 
@@ -2267,6 +2561,21 @@ const (
 func PossibleTrafficRoutingProtocolValues() []TrafficRoutingProtocol {
 	return []TrafficRoutingProtocol{
 		TrafficRoutingProtocolFixedRatio,
+	}
+}
+
+// TrustedCertificateSourceType - Type of Azure resource containing trusted CA certificate bundles.
+type TrustedCertificateSourceType string
+
+const (
+	// TrustedCertificateSourceTypeAzureKeyVault - Azure Key Vault secrets containing CA certificates or certificate bundles.
+	TrustedCertificateSourceTypeAzureKeyVault TrustedCertificateSourceType = "AzureKeyVault"
+)
+
+// PossibleTrustedCertificateSourceTypeValues returns the possible values for the TrustedCertificateSourceType const type.
+func PossibleTrustedCertificateSourceTypeValues() []TrustedCertificateSourceType {
+	return []TrustedCertificateSourceType{
+		TrustedCertificateSourceTypeAzureKeyVault,
 	}
 }
 

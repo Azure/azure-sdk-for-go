@@ -64,7 +64,8 @@ func (client *BackupsClient) Trigger(ctx context.Context, vaultName string, reso
 		return BackupsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return BackupsClientTriggerResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BackupsClientTriggerResponse{}, err
 	}
 	return BackupsClientTriggerResponse{}, nil
 }

@@ -68,7 +68,8 @@ func (client *QueueClient) Create(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return QueueClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -141,7 +142,8 @@ func (client *QueueClient) Delete(ctx context.Context, resourceGroupName string,
 		return QueueClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return QueueClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return QueueClientDeleteResponse{}, err
 	}
 	return QueueClientDeleteResponse{}, nil
 }
@@ -198,7 +200,8 @@ func (client *QueueClient) Get(ctx context.Context, resourceGroupName string, ac
 	if err != nil {
 		return QueueClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -350,7 +353,8 @@ func (client *QueueClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return QueueClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

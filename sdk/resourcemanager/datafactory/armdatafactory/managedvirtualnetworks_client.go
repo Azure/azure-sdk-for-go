@@ -66,7 +66,8 @@ func (client *ManagedVirtualNetworksClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return ManagedVirtualNetworksClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *ManagedVirtualNetworksClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedVirtualNetworksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

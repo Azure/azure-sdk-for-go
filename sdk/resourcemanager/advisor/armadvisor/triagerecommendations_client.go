@@ -68,7 +68,8 @@ func (client *TriageRecommendationsClient) ApproveTriageRecommendation(ctx conte
 		return TriageRecommendationsClientApproveTriageRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TriageRecommendationsClientApproveTriageRecommendationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TriageRecommendationsClientApproveTriageRecommendationResponse{}, err
 	}
 	return TriageRecommendationsClientApproveTriageRecommendationResponse{}, nil
 }
@@ -120,7 +121,8 @@ func (client *TriageRecommendationsClient) Get(ctx context.Context, reviewID str
 	if err != nil {
 		return TriageRecommendationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -265,7 +267,8 @@ func (client *TriageRecommendationsClient) RejectTriageRecommendation(ctx contex
 		return TriageRecommendationsClientRejectTriageRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TriageRecommendationsClientRejectTriageRecommendationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TriageRecommendationsClientRejectTriageRecommendationResponse{}, err
 	}
 	return TriageRecommendationsClientRejectTriageRecommendationResponse{}, nil
 }
@@ -322,7 +325,8 @@ func (client *TriageRecommendationsClient) ResetTriageRecommendation(ctx context
 		return TriageRecommendationsClientResetTriageRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TriageRecommendationsClientResetTriageRecommendationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TriageRecommendationsClientResetTriageRecommendationResponse{}, err
 	}
 	return TriageRecommendationsClientResetTriageRecommendationResponse{}, nil
 }

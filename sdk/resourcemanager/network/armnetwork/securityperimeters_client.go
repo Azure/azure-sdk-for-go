@@ -53,7 +53,7 @@ func NewSecurityPerimetersClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *SecurityPerimetersClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimetersClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimetersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +68,9 @@ func (client *SecurityPerimetersClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes a network security perimeter.
+// deleteOperation - Deletes a network security perimeter.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimetersClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimetersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimetersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, options *SecurityPerimetersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimetersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -85,7 +85,8 @@ func (client *SecurityPerimetersClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -139,7 +140,8 @@ func (client *SecurityPerimetersClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return SecurityPerimetersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -203,7 +205,8 @@ func (client *SecurityPerimetersClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return SecurityPerimetersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -416,7 +419,8 @@ func (client *SecurityPerimetersClient) Patch(ctx context.Context, resourceGroup
 	if err != nil {
 		return SecurityPerimetersClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.

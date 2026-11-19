@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-09-30/ProtectedItems_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/ProtectedItems_Get_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleProtectedItemsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/ProtectedItems_GetRestorePoints_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/ProtectedItems_GetRestorePoints_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_GetRestorePoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleProtectedItemsClient_GetRestorePoints() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/ProtectedItems_ListByProtectionGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/ProtectedItems_ListByProtectionGroup_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_NewListByProtectionGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleProtectedItemsClient_NewListByProtectionGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-30/ProtectedItems_Restore_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/ProtectedItems_Restore_MaximumSet_Gen.json
 func ExampleProtectedItemsClient_Restore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

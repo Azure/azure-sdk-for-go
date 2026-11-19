@@ -65,7 +65,8 @@ func (client *EventClient) Get(ctx context.Context, resourceGroupName string, va
 	if err != nil {
 		return EventClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

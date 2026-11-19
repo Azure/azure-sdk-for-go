@@ -19,7 +19,7 @@ import (
 // CertificatesClient contains the methods for the Certificates group.
 // Don't use this type directly, use NewCertificatesClient() instead.
 //
-// Generated from API version 2026-10-01-preview
+// Generated from API version 2026-11-01
 type CertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,8 @@ func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -95,7 +96,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -144,7 +145,8 @@ func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName 
 		return CertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CertificatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CertificatesClientDeleteResponse{}, err
 	}
 	return CertificatesClientDeleteResponse{}, nil
 }
@@ -173,7 +175,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["If-Match"] = []string{ifMatch}
 	return req, nil
@@ -203,7 +205,8 @@ func (client *CertificatesClient) GenerateVerificationCode(ctx context.Context, 
 	if err != nil {
 		return CertificatesClientGenerateVerificationCodeResponse{}, err
 	}
-	return client.generateVerificationCodeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateVerificationCodeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateVerificationCodeCreateRequest creates the GenerateVerificationCode request.
@@ -230,7 +233,7 @@ func (client *CertificatesClient) generateVerificationCodeCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -271,7 +274,8 @@ func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -298,7 +302,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,7 +342,8 @@ func (client *CertificatesClient) ListByIotHub(ctx context.Context, resourceGrou
 	if err != nil {
 		return CertificatesClientListByIotHubResponse{}, err
 	}
-	return client.listByIotHubHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByIotHubHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByIotHubCreateRequest creates the ListByIotHub request.
@@ -361,7 +366,7 @@ func (client *CertificatesClient) listByIotHubCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -403,7 +408,8 @@ func (client *CertificatesClient) Verify(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return CertificatesClientVerifyResponse{}, err
 	}
-	return client.verifyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.verifyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // verifyCreateRequest creates the Verify request.
@@ -430,7 +436,7 @@ func (client *CertificatesClient) verifyCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}

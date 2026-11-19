@@ -85,7 +85,8 @@ func (client *AccountsClient) abortHierarchicalNamespaceMigration(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *AccountsClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -245,7 +247,8 @@ func (client *AccountsClient) customerInitiatedMigration(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -333,7 +336,8 @@ func (client *AccountsClient) failover(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -410,7 +414,8 @@ func (client *AccountsClient) hierarchicalNamespaceMigration(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -483,7 +488,8 @@ func (client *AccountsClient) restoreBlobRanges(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -537,7 +543,8 @@ func (client *AccountsClient) CheckNameAvailability(ctx context.Context, account
 	if err != nil {
 		return AccountsClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -595,7 +602,8 @@ func (client *AccountsClient) Delete(ctx context.Context, resourceGroupName stri
 		return AccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AccountsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AccountsClientDeleteResponse{}, err
 	}
 	return AccountsClientDeleteResponse{}, nil
 }
@@ -647,7 +655,8 @@ func (client *AccountsClient) GetCustomerInitiatedMigration(ctx context.Context,
 	if err != nil {
 		return AccountsClientGetCustomerInitiatedMigrationResponse{}, err
 	}
-	return client.getCustomerInitiatedMigrationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCustomerInitiatedMigrationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCustomerInitiatedMigrationCreateRequest creates the GetCustomerInitiatedMigration request.
@@ -713,7 +722,8 @@ func (client *AccountsClient) GetProperties(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccountsClientGetPropertiesResponse{}, err
 	}
-	return client.getPropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
@@ -778,7 +788,8 @@ func (client *AccountsClient) ListAccountSAS(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AccountsClientListAccountSASResponse{}, err
 	}
-	return client.listAccountSASHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAccountSASHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAccountSASCreateRequest creates the ListAccountSAS request.
@@ -843,7 +854,8 @@ func (client *AccountsClient) ListKeys(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AccountsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -908,7 +920,8 @@ func (client *AccountsClient) ListServiceSAS(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AccountsClientListServiceSASResponse{}, err
 	}
-	return client.listServiceSASHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listServiceSASHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listServiceSASCreateRequest creates the ListServiceSAS request.
@@ -1114,7 +1127,8 @@ func (client *AccountsClient) RegenerateKey(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccountsClientRegenerateKeyResponse{}, err
 	}
-	return client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
@@ -1181,7 +1195,8 @@ func (client *AccountsClient) RevokeUserDelegationKeys(ctx context.Context, reso
 		return AccountsClientRevokeUserDelegationKeysResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AccountsClientRevokeUserDelegationKeysResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AccountsClientRevokeUserDelegationKeysResponse{}, err
 	}
 	return AccountsClientRevokeUserDelegationKeysResponse{}, nil
 }
@@ -1237,7 +1252,8 @@ func (client *AccountsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return AccountsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

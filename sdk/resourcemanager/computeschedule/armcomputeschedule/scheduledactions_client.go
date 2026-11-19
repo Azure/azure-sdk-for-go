@@ -65,7 +65,8 @@ func (client *ScheduledActionsClient) AttachResources(ctx context.Context, resou
 	if err != nil {
 		return ScheduledActionsClientAttachResourcesResponse{}, err
 	}
-	return client.attachResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.attachResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // attachResourcesCreateRequest creates the AttachResources request.
@@ -110,72 +111,6 @@ func (client *ScheduledActionsClient) attachResourcesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// CancelNextOccurrence - A synchronous resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - body - The content of the action request
-//   - options - ScheduledActionsClientCancelNextOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.CancelNextOccurrence
-//     method.
-func (client *ScheduledActionsClient) CancelNextOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, options *ScheduledActionsClientCancelNextOccurrenceOptions) (ScheduledActionsClientCancelNextOccurrenceResponse, error) {
-	var err error
-	const operationName = "ScheduledActionsClient.CancelNextOccurrence"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.cancelNextOccurrenceCreateRequest(ctx, resourceGroupName, scheduledActionName, body, options)
-	if err != nil {
-		return ScheduledActionsClientCancelNextOccurrenceResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ScheduledActionsClientCancelNextOccurrenceResponse{}, err
-	}
-	return client.cancelNextOccurrenceHandleResponse(httpResp, http.StatusOK)
-}
-
-// cancelNextOccurrenceCreateRequest creates the CancelNextOccurrence request.
-func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, _ *ScheduledActionsClientCancelNextOccurrenceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/cancelNextOccurrence"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// cancelNextOccurrenceHandleResponse handles the CancelNextOccurrence response.
-func (client *ScheduledActionsClient) cancelNextOccurrenceHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionsClientCancelNextOccurrenceResponse, error) {
-	result := ScheduledActionsClientCancelNextOccurrenceResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RecurringActionsResourceOperationResult); err != nil {
-		return ScheduledActionsClientCancelNextOccurrenceResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginCreateOrUpdate - Create a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -200,7 +135,7 @@ func (client *ScheduledActionsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a ScheduledAction
+// createOrUpdate - Create a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -217,12 +152,13 @@ func (client *ScheduledActionsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, _ *ScheduledActionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}"
 	if client.subscriptionID == "" {
@@ -275,7 +211,7 @@ func (client *ScheduledActionsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a ScheduledAction
+// deleteOperation - Delete a ScheduledAction
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -292,12 +228,13 @@ func (client *ScheduledActionsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *ScheduledActionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}"
 	if client.subscriptionID == "" {
@@ -322,6 +259,73 @@ func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
+// CancelNextOccurrence - A synchronous resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scheduledActionName - The name of the ScheduledAction
+//   - body - The content of the action request
+//   - options - ScheduledActionsClientCancelNextOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.CancelNextOccurrence
+//     method.
+func (client *ScheduledActionsClient) CancelNextOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, options *ScheduledActionsClientCancelNextOccurrenceOptions) (ScheduledActionsClientCancelNextOccurrenceResponse, error) {
+	var err error
+	const operationName = "ScheduledActionsClient.CancelNextOccurrence"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelNextOccurrenceCreateRequest(ctx, resourceGroupName, scheduledActionName, body, options)
+	if err != nil {
+		return ScheduledActionsClientCancelNextOccurrenceResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ScheduledActionsClientCancelNextOccurrenceResponse{}, err
+	}
+	resp, err := client.cancelNextOccurrenceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// cancelNextOccurrenceCreateRequest creates the CancelNextOccurrence request.
+func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, _ *ScheduledActionsClientCancelNextOccurrenceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/cancelNextOccurrence"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if scheduledActionName == "" {
+		return nil, errors.New("parameter scheduledActionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260415Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// cancelNextOccurrenceHandleResponse handles the CancelNextOccurrence response.
+func (client *ScheduledActionsClient) cancelNextOccurrenceHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionsClientCancelNextOccurrenceResponse, error) {
+	result := ScheduledActionsClientCancelNextOccurrenceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecurringActionsResourceOperationResult); err != nil {
+		return ScheduledActionsClientCancelNextOccurrenceResponse{}, err
+	}
+	return result, nil
+}
+
 // DetachResources - A synchronous resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -343,7 +347,8 @@ func (client *ScheduledActionsClient) DetachResources(ctx context.Context, resou
 	if err != nil {
 		return ScheduledActionsClientDetachResourcesResponse{}, err
 	}
-	return client.detachResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.detachResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // detachResourcesCreateRequest creates the DetachResources request.
@@ -409,7 +414,8 @@ func (client *ScheduledActionsClient) Disable(ctx context.Context, resourceGroup
 		return ScheduledActionsClientDisableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ScheduledActionsClientDisableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientDisableResponse{}, err
 	}
 	return ScheduledActionsClientDisableResponse{}, nil
 }
@@ -459,7 +465,8 @@ func (client *ScheduledActionsClient) Enable(ctx context.Context, resourceGroupN
 		return ScheduledActionsClientEnableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ScheduledActionsClientEnableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientEnableResponse{}, err
 	}
 	return ScheduledActionsClientEnableResponse{}, nil
 }
@@ -508,7 +515,8 @@ func (client *ScheduledActionsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ScheduledActionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -786,7 +794,8 @@ func (client *ScheduledActionsClient) PatchResources(ctx context.Context, resour
 	if err != nil {
 		return ScheduledActionsClientPatchResourcesResponse{}, err
 	}
-	return client.patchResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchResourcesCreateRequest creates the PatchResources request.
@@ -851,7 +860,8 @@ func (client *ScheduledActionsClient) TriggerManualOccurrence(ctx context.Contex
 	if err != nil {
 		return ScheduledActionsClientTriggerManualOccurrenceResponse{}, err
 	}
-	return client.triggerManualOccurrenceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.triggerManualOccurrenceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // triggerManualOccurrenceCreateRequest creates the TriggerManualOccurrence request.
@@ -912,7 +922,8 @@ func (client *ScheduledActionsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ScheduledActionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -978,7 +989,8 @@ func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx contex
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesCancelOperationsResponse{}, err
 	}
-	return client.virtualMachinesCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesCancelOperationsCreateRequest creates the VirtualMachinesCancelOperations request.
@@ -1040,7 +1052,8 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.C
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesExecuteCreateResponse{}, err
 	}
-	return client.virtualMachinesExecuteCreateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteCreateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteCreateCreateRequest creates the VirtualMachinesExecuteCreate request.
@@ -1102,7 +1115,8 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteCreateFlex(ctx conte
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{}, err
 	}
-	return client.virtualMachinesExecuteCreateFlexHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteCreateFlexHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteCreateFlexCreateRequest creates the VirtualMachinesExecuteCreateFlex request.
@@ -1164,7 +1178,8 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx conte
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse{}, err
 	}
-	return client.virtualMachinesExecuteDeallocateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteDeallocateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteDeallocateCreateRequest creates the VirtualMachinesExecuteDeallocate request.
@@ -1226,7 +1241,8 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.C
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesExecuteDeleteResponse{}, err
 	}
-	return client.virtualMachinesExecuteDeleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteDeleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteDeleteCreateRequest creates the VirtualMachinesExecuteDelete request.
@@ -1288,7 +1304,8 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx contex
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesExecuteHibernateResponse{}, err
 	}
-	return client.virtualMachinesExecuteHibernateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteHibernateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteHibernateCreateRequest creates the VirtualMachinesExecuteHibernate request.
@@ -1350,7 +1367,8 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Co
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesExecuteStartResponse{}, err
 	}
-	return client.virtualMachinesExecuteStartHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteStartHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteStartCreateRequest creates the VirtualMachinesExecuteStart request.
@@ -1412,7 +1430,8 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx cont
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse{}, err
 	}
-	return client.virtualMachinesGetOperationErrorsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesGetOperationErrorsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesGetOperationErrorsCreateRequest creates the VirtualMachinesGetOperationErrors request.
@@ -1474,7 +1493,8 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx cont
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesGetOperationStatusResponse{}, err
 	}
-	return client.virtualMachinesGetOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesGetOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
@@ -1536,7 +1556,8 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx contex
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse{}, err
 	}
-	return client.virtualMachinesSubmitDeallocateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesSubmitDeallocateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesSubmitDeallocateCreateRequest creates the VirtualMachinesSubmitDeallocate request.
@@ -1598,7 +1619,8 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesSubmitHibernateResponse{}, err
 	}
-	return client.virtualMachinesSubmitHibernateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesSubmitHibernateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesSubmitHibernateCreateRequest creates the VirtualMachinesSubmitHibernate request.
@@ -1660,7 +1682,8 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Con
 	if err != nil {
 		return ScheduledActionsClientVirtualMachinesSubmitStartResponse{}, err
 	}
-	return client.virtualMachinesSubmitStartHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesSubmitStartHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesSubmitStartCreateRequest creates the VirtualMachinesSubmitStart request.

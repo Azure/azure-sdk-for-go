@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsAbortOperation.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsAbortOperation.json
 func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleAgentPoolsClient_BeginAbortLatestOperation() {
 	}
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCompleteUpgrade.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCompleteUpgrade.json
 func ExampleAgentPoolsClient_BeginCompleteUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleAgentPoolsClient_BeginCompleteUpgrade() {
 	}
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsAssociate_CRG.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsAssociate_CRG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_associateAgentPoolWithCapacityR
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_CustomNodeConfig.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_CustomNodeConfig.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfigAndLinuxOSConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKubeletConfi
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_DedicatedHostGroup.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_DedicatedHostGroup.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHostGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithDedicatedHos
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_EnableEncryptionAtHost.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_EnableEncryptionAtHost.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAtHostEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,7 +337,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEncryptionAt
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_EnableFIPS.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_EnableFIPS.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithFipsEnabledO
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_EnableUltraSSD.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_EnableUltraSSD.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +435,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUltraSsdEnab
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_Ephemeral.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_Ephemeral.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -486,7 +486,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithEphemeralOSD
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_FlexNode.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_FlexNode.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createFlexNodeAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,7 +529,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createFlexNodeAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_GPUMIG.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_GPUMIG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -626,7 +626,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithGpumig() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_MessageOfTheDay.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_MessageOfTheDay.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfTheDay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -679,7 +679,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMessageOfThe
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_MixedMIG.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_MixedMIG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMixedMigProfiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -750,7 +750,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithMixedMigProf
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_OSSKU.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_OSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -847,7 +847,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithOssku() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_PPG.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_PPG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -896,7 +896,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPpg() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_PerNICPublicIP.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_PerNICPublicIP.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPerNicPublicIPConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -997,7 +997,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithPerNicPublic
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_SingleMIG.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_SingleMIG.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithSingleMigProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1062,7 +1062,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithSingleMigPro
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_Snapshot.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_Snapshot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPoolSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1117,7 +1117,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolUsingAnAgentPool
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_Spot.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_Spot.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1187,7 +1187,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createSpotAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_TypeVirtualMachines.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_TypeVirtualMachines.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1289,7 +1289,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_TypeVirtualMachines_Autoscale.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachinesPoolTypeWithAutoscalingEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1381,7 +1381,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithVirtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_Update.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1452,7 +1452,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createUpdateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_UpgradeGate.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_UpgradeGate.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUpgradeGateEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1511,7 +1511,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithUpgradeGateE
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_WasmWasi.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_WasmWasi.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndTheWasiRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1564,7 +1564,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithKrustletAndT
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_WindowsDisableOutboundNAT.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_WindowsDisableOutboundNAT.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisablingOutboundNat() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1619,7 +1619,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createWindowsAgentPoolWithDisab
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsCreate_WindowsOSSKU.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsCreate_WindowsOSSKU.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1668,7 +1668,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_createAgentPoolWithWindowsOssku
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPools_Start.json
+// Generated from example definition: 2026-09-02-preview/AgentPools_Start.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1715,7 +1715,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_startAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPools_Stop.json
+// Generated from example definition: 2026-09-02-preview/AgentPools_Stop.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1760,7 +1760,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_stopAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPools_Update.json
+// Generated from example definition: 2026-09-02-preview/AgentPools_Update.json
 func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1823,7 +1823,7 @@ func ExampleAgentPoolsClient_BeginCreateOrUpdate_updateAgentPool() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsDelete.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsDelete.json
 func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1844,7 +1844,7 @@ func ExampleAgentPoolsClient_BeginDelete_deleteAgentPool() {
 	}
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsDelete_IgnorePodDisruptionBudget.json
 func ExampleAgentPoolsClient_BeginDelete_deleteAgentPoolByIgnoringPodDisruptionBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1866,7 +1866,7 @@ func ExampleAgentPoolsClient_BeginDelete_deleteAgentPoolByIgnoringPodDisruptionB
 	}
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsDeleteMachines.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsDeleteMachines.json
 func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1892,7 +1892,7 @@ func ExampleAgentPoolsClient_BeginDeleteMachines() {
 	}
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsUpdate_Scale.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsUpdate_Scale.json
 func ExampleAgentPoolsClient_BeginUpdate_updateAgentPoolScaleVmss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1941,7 +1941,7 @@ func ExampleAgentPoolsClient_BeginUpdate_updateAgentPoolScaleVmss() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsUpdate_ScaleVMs.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsUpdate_ScaleVMs.json
 func ExampleAgentPoolsClient_BeginUpdate_updateAgentPoolScaleVirtualMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2023,7 +2023,7 @@ func ExampleAgentPoolsClient_BeginUpdate_updateAgentPoolScaleVirtualMachines() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsUpgradeNodeImageVersion.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsUpgradeNodeImageVersion.json
 func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2049,7 +2049,7 @@ func ExampleAgentPoolsClient_BeginUpgradeNodeImageVersion() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsGet.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsGet.json
 func ExampleAgentPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2089,7 +2089,7 @@ func ExampleAgentPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsGetAgentPoolAvailableVersions.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsGetAgentPoolAvailableVersions.json
 func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2131,7 +2131,7 @@ func ExampleAgentPoolsClient_GetAvailableAgentPoolVersions() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsGetUpgradeProfile.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsGetUpgradeProfile.json
 func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2168,7 +2168,7 @@ func ExampleAgentPoolsClient_GetUpgradeProfile() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsListBootstrapData.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsListBootstrapData.json
 func ExampleAgentPoolsClient_ListBootstrapData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2179,7 +2179,7 @@ func ExampleAgentPoolsClient_ListBootstrapData() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAgentPoolsClient().ListBootstrapData(ctx, "rg1", "clustername1", "flexnode1", armcontainerservice.ListBootstrapDataRequest{}, nil)
+	res, err := clientFactory.NewAgentPoolsClient().ListBootstrapData(ctx, "rg1", "clustername1", "flexnode1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2224,7 +2224,7 @@ func ExampleAgentPoolsClient_ListBootstrapData() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/AgentPoolsList.json
+// Generated from example definition: 2026-09-02-preview/AgentPoolsList.json
 func ExampleAgentPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

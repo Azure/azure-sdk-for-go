@@ -64,7 +64,8 @@ func (client *VMIngestionClient) Details(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return VMIngestionClientDetailsResponse{}, err
 	}
-	return client.detailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.detailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // detailsCreateRequest creates the Details request.

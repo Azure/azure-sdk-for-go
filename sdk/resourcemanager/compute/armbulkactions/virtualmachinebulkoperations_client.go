@@ -66,7 +66,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkAcknowledgeOperationErrors
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
 	}
-	return client.bulkAcknowledgeOperationErrorsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkAcknowledgeOperationErrorsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkAcknowledgeOperationErrorsCreateRequest creates the BulkAcknowledgeOperationErrors request.
@@ -133,7 +134,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkCancelOperations(ctx conte
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkCancelOperationsResponse{}, err
 	}
-	return client.bulkCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkCancelOperationsCreateRequest creates the BulkCancelOperations request.
@@ -200,7 +202,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeallocateOperation(ctx co
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{}, err
 	}
-	return client.bulkDeallocateOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkDeallocateOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkDeallocateOperationCreateRequest creates the BulkDeallocateOperation request.
@@ -268,7 +271,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeleteOperation(ctx contex
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{}, err
 	}
-	return client.bulkDeleteOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkDeleteOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkDeleteOperationCreateRequest creates the BulkDeleteOperation request.
@@ -334,7 +338,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkGetOperationsStatus(ctx co
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse{}, err
 	}
-	return client.bulkGetOperationsStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkGetOperationsStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkGetOperationsStatusCreateRequest creates the BulkGetOperationsStatus request.
@@ -402,7 +407,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkHibernateOperation(ctx con
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{}, err
 	}
-	return client.bulkHibernateOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkHibernateOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkHibernateOperationCreateRequest creates the BulkHibernateOperation request.
@@ -471,7 +477,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkReimageOperation(ctx conte
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
 	}
-	return client.bulkReimageOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkReimageOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkReimageOperationCreateRequest creates the BulkReimageOperation request.
@@ -538,7 +545,8 @@ func (client *VirtualMachineBulkOperationsClient) BulkStartOperation(ctx context
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
 	}
-	return client.bulkStartOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bulkStartOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bulkStartOperationCreateRequest creates the BulkStartOperation request.

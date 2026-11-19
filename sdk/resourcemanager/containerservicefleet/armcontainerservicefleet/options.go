@@ -308,6 +308,50 @@ type GatesClientListByFleetOptions struct {
 	Top *int32
 }
 
+// IdentityBindingProfilesClientBeginApplyOptions contains the optional parameters for the IdentityBindingProfilesClient.BeginApply
+// method.
+type IdentityBindingProfilesClientBeginApplyOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityBindingProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the IdentityBindingProfilesClient.BeginCreateOrUpdate
+// method.
+type IdentityBindingProfilesClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityBindingProfilesClientBeginDeleteOptions contains the optional parameters for the IdentityBindingProfilesClient.BeginDelete
+// method.
+type IdentityBindingProfilesClientBeginDeleteOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IdentityBindingProfilesClientGetOptions contains the optional parameters for the IdentityBindingProfilesClient.Get method.
+type IdentityBindingProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// IdentityBindingProfilesClientListByFleetOptions contains the optional parameters for the IdentityBindingProfilesClient.NewListByFleetPager
+// method.
+type IdentityBindingProfilesClientListByFleetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

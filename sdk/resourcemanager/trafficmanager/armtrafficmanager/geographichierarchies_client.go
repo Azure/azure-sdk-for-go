@@ -54,7 +54,8 @@ func (client *GeographicHierarchiesClient) GetDefault(ctx context.Context, optio
 	if err != nil {
 		return GeographicHierarchiesClientGetDefaultResponse{}, err
 	}
-	return client.getDefaultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultCreateRequest creates the GetDefault request.

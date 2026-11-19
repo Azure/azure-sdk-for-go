@@ -85,7 +85,8 @@ func (client *FirstPartyServiceTagsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *FirstPartyServiceTagsClient) createOrUpdateCreateRequest(ctx conte
 //     method.
 func (client *FirstPartyServiceTagsClient) BeginDelete(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *FirstPartyServiceTagsClientBeginDeleteOptions) (*runtime.Poller[FirstPartyServiceTagsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, firstPartyServiceTagName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, firstPartyServiceTagName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *FirstPartyServiceTagsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// delete - Deletes the specified first party service tag.
+// deleteOperation - Deletes the specified first party service tag.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FirstPartyServiceTagsClient) delete(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *FirstPartyServiceTagsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FirstPartyServiceTagsClient) deleteOperation(ctx context.Context, resourceGroupName string, firstPartyServiceTagName string, options *FirstPartyServiceTagsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirstPartyServiceTagsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *FirstPartyServiceTagsClient) delete(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -231,7 +233,8 @@ func (client *FirstPartyServiceTagsClient) updateTags(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -286,7 +289,8 @@ func (client *FirstPartyServiceTagsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return FirstPartyServiceTagsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

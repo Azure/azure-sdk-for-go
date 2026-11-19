@@ -1,5 +1,15 @@
 # Release History
 
+## 4.1.0-beta.1 (2026-11-09)
+### Features Added
+
+- New struct `AccessPolicyAssignmentProvisioningError`
+- New struct `FirewallRule`
+- New field `AccessString`, `ProvisioningError` in struct `AccessPolicyAssignmentProperties`
+- New field `FirewallRules` in struct `ClusterCreateProperties`
+- New field `FirewallRules` in struct `ClusterUpdateProperties`
+
+
 ## 4.0.0 (2026-10-13)
 ### Breaking Changes
 

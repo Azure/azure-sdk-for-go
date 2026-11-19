@@ -63,7 +63,8 @@ func (client *AdminKeysClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AdminKeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -127,7 +128,8 @@ func (client *AdminKeysClient) Regenerate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AdminKeysClientRegenerateResponse{}, err
 	}
-	return client.regenerateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateCreateRequest creates the Regenerate request.

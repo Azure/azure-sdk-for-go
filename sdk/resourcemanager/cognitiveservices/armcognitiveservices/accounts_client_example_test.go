@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/CreateAccount.json
+// Generated from example definition: 2026-11-15-preview/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/CreateAccountMin.json
+// Generated from example definition: 2026-11-15-preview/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/CreateAccountWithAgentHostingConfiguration.json
+// Generated from example definition: 2026-11-15-preview/CreateAccountWithAgentHostingConfiguration.json
 func ExampleAccountsClient_BeginCreate_createAFoundryAccountWithCustomerOwnedAksHosting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,92 @@ func ExampleAccountsClient_BeginCreate_createAFoundryAccountWithCustomerOwnedAks
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/DeleteAccount.json
+// Generated from example definition: 2026-11-15-preview/CreateAccountWithTrustedCertificateSources.json
+func ExampleAccountsClient_BeginCreate_createAnAccountWithPrivateCaTrust() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginCreate(ctx, "myResourceGroup", "myAccount", armcognitiveservices.Account{
+		Kind:     to.Ptr("AIServices"),
+		Location: to.Ptr("eastus"),
+		SKU: &armcognitiveservices.SKU{
+			Name: to.Ptr("S0"),
+		},
+		Identity: &armcognitiveservices.Identity{
+			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeSystemAssigned),
+		},
+		Properties: &armcognitiveservices.AccountProperties{
+			AllowProjectManagement: to.Ptr(true),
+			CustomSubDomainName:    to.Ptr("myAccount"),
+			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{
+				{
+					Type:       to.Ptr(armcognitiveservices.TrustedCertificateSourceTypeAzureKeyVault),
+					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myKeyVault"),
+					CertificateBundleReferences: []*armcognitiveservices.CertificateBundleReference{
+						{
+							SecretName:    to.Ptr("corporate-ca-bundle"),
+							SecretVersion: to.Ptr("11111111111111111111111111111111"),
+						},
+						{
+							SecretName:    to.Ptr("partner-ca-bundle"),
+							SecretVersion: to.Ptr("22222222222222222222222222222222"),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientCreateResponse{
+	// 	Account: armcognitiveservices.Account{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
+	// 		Name: to.Ptr("myAccount"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 		Kind: to.Ptr("AIServices"),
+	// 		Location: to.Ptr("eastus"),
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("S0"),
+	// 		},
+	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			AllowProjectManagement: to.Ptr(true),
+	// 			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{
+	// 				{
+	// 					Type: to.Ptr(armcognitiveservices.TrustedCertificateSourceTypeAzureKeyVault),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myKeyVault"),
+	// 					CertificateBundleReferences: []*armcognitiveservices.CertificateBundleReference{
+	// 						{
+	// 							SecretName: to.Ptr("corporate-ca-bundle"),
+	// 							SecretVersion: to.Ptr("11111111111111111111111111111111"),
+	// 						},
+	// 						{
+	// 							SecretName: to.Ptr("partner-ca-bundle"),
+	// 							SecretVersion: to.Ptr("22222222222222222222222222222222"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,8 +357,8 @@ func ExampleAccountsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateAccount.json
-func ExampleAccountsClient_BeginUpdate() {
+// Generated from example definition: 2026-11-15-preview/UpdateAccount.json
+func ExampleAccountsClient_BeginUpdate_updateAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -288,7 +373,6 @@ func ExampleAccountsClient_BeginUpdate() {
 		Properties: &armcognitiveservices.AccountProperties{
 			CostControlConnections: &armcognitiveservices.CostControlConnections{
 				AppInsightsConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myAppInsightsConnection"),
-				EventGridConnectionID:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myEventGridConnection"),
 			},
 		},
 		SKU: &armcognitiveservices.SKU{
@@ -316,7 +400,6 @@ func ExampleAccountsClient_BeginUpdate() {
 	// 		Properties: &armcognitiveservices.AccountProperties{
 	// 			CostControlConnections: &armcognitiveservices.CostControlConnections{
 	// 				AppInsightsConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myAppInsightsConnection"),
-	// 				EventGridConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myEventGridConnection"),
 	// 			},
 	// 			Endpoint: to.Ptr("https://api.cognitive.microsoft.com/bing/v5.0"),
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
@@ -328,7 +411,194 @@ func ExampleAccountsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/EvaluateDeploymentPolicies.json
+// Generated from example definition: 2026-11-15-preview/UpdateAccountClearTrustedCertificateSources.json
+func ExampleAccountsClient_BeginUpdate_clearAccountPrivateCaTrustUsingAnEmptyArray() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "myResourceGroup", "myAccount", armcognitiveservices.Account{
+		Properties: &armcognitiveservices.AccountProperties{
+			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientUpdateResponse{
+	// 	Account: armcognitiveservices.Account{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
+	// 		Name: to.Ptr("myAccount"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 		Kind: to.Ptr("AIServices"),
+	// 		Location: to.Ptr("eastus"),
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("S0"),
+	// 		},
+	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			AllowProjectManagement: to.Ptr(true),
+	// 			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/UpdateAccountPreserveTrustedCertificateSources.json
+func ExampleAccountsClient_BeginUpdate_updateAccountTagsWhilePreservingPrivateCaTrustWithNull() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "myResourceGroup", "myAccount", armcognitiveservices.Account{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+		Properties: &armcognitiveservices.AccountProperties{
+			TrustedCertificateSources: nil,
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientUpdateResponse{
+	// 	Account: armcognitiveservices.Account{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
+	// 		Name: to.Ptr("myAccount"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 		Kind: to.Ptr("AIServices"),
+	// 		Location: to.Ptr("eastus"),
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("S0"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			AllowProjectManagement: to.Ptr(true),
+	// 			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{
+	// 				{
+	// 					Type: to.Ptr(armcognitiveservices.TrustedCertificateSourceTypeAzureKeyVault),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myKeyVault"),
+	// 					CertificateBundleReferences: []*armcognitiveservices.CertificateBundleReference{
+	// 						{
+	// 							SecretName: to.Ptr("corporate-ca-bundle"),
+	// 							SecretVersion: to.Ptr("11111111111111111111111111111111"),
+	// 						},
+	// 						{
+	// 							SecretName: to.Ptr("partner-ca-bundle"),
+	// 							SecretVersion: to.Ptr("22222222222222222222222222222222"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/UpdateAccountRotateTrustedCertificateSources.json
+func ExampleAccountsClient_BeginUpdate_rotateAPinnedCaBundleWhileRetainingOtherReferences() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "myResourceGroup", "myAccount", armcognitiveservices.Account{
+		Properties: &armcognitiveservices.AccountProperties{
+			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{
+				{
+					Type:       to.Ptr(armcognitiveservices.TrustedCertificateSourceTypeAzureKeyVault),
+					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myKeyVault"),
+					CertificateBundleReferences: []*armcognitiveservices.CertificateBundleReference{
+						{
+							SecretName:    to.Ptr("corporate-ca-bundle"),
+							SecretVersion: to.Ptr("33333333333333333333333333333333"),
+						},
+						{
+							SecretName:    to.Ptr("partner-ca-bundle"),
+							SecretVersion: to.Ptr("22222222222222222222222222222222"),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientUpdateResponse{
+	// 	Account: armcognitiveservices.Account{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
+	// 		Name: to.Ptr("myAccount"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 		Kind: to.Ptr("AIServices"),
+	// 		Location: to.Ptr("eastus"),
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("S0"),
+	// 		},
+	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			AllowProjectManagement: to.Ptr(true),
+	// 			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{
+	// 				{
+	// 					Type: to.Ptr(armcognitiveservices.TrustedCertificateSourceTypeAzureKeyVault),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myKeyVault"),
+	// 					CertificateBundleReferences: []*armcognitiveservices.CertificateBundleReference{
+	// 						{
+	// 							SecretName: to.Ptr("corporate-ca-bundle"),
+	// 							SecretVersion: to.Ptr("33333333333333333333333333333333"),
+	// 						},
+	// 						{
+	// 							SecretName: to.Ptr("partner-ca-bundle"),
+	// 							SecretVersion: to.Ptr("22222222222222222222222222222222"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/EvaluateDeploymentPolicies.json
 func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,8 +675,8 @@ func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetAccount.json
-func ExampleAccountsClient_Get() {
+// Generated from example definition: 2026-11-15-preview/GetAccount.json
+func ExampleAccountsClient_Get_getAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -434,7 +704,6 @@ func ExampleAccountsClient_Get() {
 	// 		Properties: &armcognitiveservices.AccountProperties{
 	// 			CostControlConnections: &armcognitiveservices.CostControlConnections{
 	// 				AppInsightsConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount/connections/myAppInsightsConnection"),
-	// 				EventGridConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount/connections/myEventGridConnection"),
 	// 			},
 	// 			Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/emotion/v1.0"),
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
@@ -450,7 +719,64 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListKeys.json
+// Generated from example definition: 2026-11-15-preview/GetAccountWithTrustedCertificateSources.json
+func ExampleAccountsClient_Get_getAnAccountWithPrivateCaTrust() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().Get(ctx, "myResourceGroup", "myAccount", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientGetResponse{
+	// 	Account: armcognitiveservices.Account{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount"),
+	// 		Name: to.Ptr("myAccount"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 		Kind: to.Ptr("AIServices"),
+	// 		Location: to.Ptr("eastus"),
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("S0"),
+	// 		},
+	// 		Identity: &armcognitiveservices.Identity{
+	// 			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("11111111-2222-3333-4444-555555555555"),
+	// 			TenantID: to.Ptr("22222222-3333-4444-5555-666666666666"),
+	// 		},
+	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			AllowProjectManagement: to.Ptr(true),
+	// 			TrustedCertificateSources: []*armcognitiveservices.TrustedCertificateSource{
+	// 				{
+	// 					Type: to.Ptr(armcognitiveservices.TrustedCertificateSourceTypeAzureKeyVault),
+	// 					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/myKeyVault"),
+	// 					CertificateBundleReferences: []*armcognitiveservices.CertificateBundleReference{
+	// 						{
+	// 							SecretName: to.Ptr("corporate-ca-bundle"),
+	// 							SecretVersion: to.Ptr("11111111111111111111111111111111"),
+	// 						},
+	// 						{
+	// 							SecretName: to.Ptr("partner-ca-bundle"),
+	// 							SecretVersion: to.Ptr("22222222222222222222222222222222"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,7 +802,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListSkus.json
+// Generated from example definition: 2026-11-15-preview/ListSkus.json
 func ExampleAccountsClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +842,7 @@ func ExampleAccountsClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetUsages.json
+// Generated from example definition: 2026-11-15-preview/GetUsages.json
 func ExampleAccountsClient_ListUsages_getUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -556,7 +882,7 @@ func ExampleAccountsClient_ListUsages_getUsages() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetUsagesClassicScope.json
+// Generated from example definition: 2026-11-15-preview/GetUsagesClassicScope.json
 func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +921,7 @@ func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetUsagesDataZoneScope.json
+// Generated from example definition: 2026-11-15-preview/GetUsagesDataZoneScope.json
 func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -635,7 +961,7 @@ func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetUsagesGlobalScope.json
+// Generated from example definition: 2026-11-15-preview/GetUsagesGlobalScope.json
 func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -675,7 +1001,7 @@ func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListAccountsByResourceGroup.json
+// Generated from example definition: 2026-11-15-preview/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -742,7 +1068,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/ListAccountModels.json
+// Generated from example definition: 2026-11-15-preview/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -943,7 +1269,7 @@ func ExampleAccountsClient_NewListModelsPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/ListAccountsBySubscription.json
+// Generated from example definition: 2026-11-15-preview/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1037,7 +1363,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/RegenerateKey.json
+// Generated from example definition: 2026-11-15-preview/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

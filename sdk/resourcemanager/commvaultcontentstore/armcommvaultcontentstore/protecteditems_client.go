@@ -19,7 +19,7 @@ import (
 // ProtectedItemsClient contains the methods for the ProtectedItems group.
 // Don't use this type directly, use NewProtectedItemsClient() instead.
 //
-// Generated from API version 2026-09-30
+// Generated from API version 2026-11-03
 type ProtectedItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,8 @@ func (client *ProtectedItemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ProtectedItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -98,7 +99,7 @@ func (client *ProtectedItemsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -140,7 +141,8 @@ func (client *ProtectedItemsClient) GetRestorePoints(ctx context.Context, resour
 	if err != nil {
 		return ProtectedItemsClientGetRestorePointsResponse{}, err
 	}
-	return client.getRestorePointsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRestorePointsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRestorePointsCreateRequest creates the GetRestorePoints request.
@@ -171,7 +173,7 @@ func (client *ProtectedItemsClient) getRestorePointsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -252,7 +254,7 @@ func (client *ProtectedItemsClient) listByProtectionGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260930)
+		reqQP.Set("api-version", version20261103)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -295,7 +297,8 @@ func (client *ProtectedItemsClient) Restore(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ProtectedItemsClientRestoreResponse{}, err
 	}
-	return client.restoreHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restoreHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restoreCreateRequest creates the Restore request.
@@ -326,7 +329,7 @@ func (client *ProtectedItemsClient) restoreCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260930)
+	reqQP.Set("api-version", version20261103)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -65,7 +65,8 @@ func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ServicesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *ServicesClient) Delete(ctx context.Context, resourceGroupName stri
 		return ServicesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ServicesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ServicesClientDeleteResponse{}, err
 	}
 	return ServicesClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ServicesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -239,7 +242,8 @@ func (client *ServicesClient) InitializeConnectionMonitor(ctx context.Context, o
 		return ServicesClientInitializeConnectionMonitorResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ServicesClientInitializeConnectionMonitorResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ServicesClientInitializeConnectionMonitorResponse{}, err
 	}
 	return ServicesClientInitializeConnectionMonitorResponse{}, nil
 }
@@ -420,7 +424,8 @@ func (client *ServicesClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ServicesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

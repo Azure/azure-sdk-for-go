@@ -68,7 +68,7 @@ func (client *WhatIfResultsAtSubscriptionClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Deployment stack at the specified scope.
+// createOrUpdate - Creates or updates a Deployment stack at the specified scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WhatIfResultsAtSubscriptionClient) createOrUpdate(ctx context.Context, deploymentStacksWhatIfResultName string, resource WhatIfResult, options *WhatIfResultsAtSubscriptionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *WhatIfResultsAtSubscriptionClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WhatIfResultsAtSubscriptionClient) createOrUpdateCreateRequest(ctx context.Context, deploymentStacksWhatIfResultName string, resource WhatIfResult, _ *WhatIfResultsAtSubscriptionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
 	if client.subscriptionID == "" {
@@ -116,6 +117,73 @@ func (client *WhatIfResultsAtSubscriptionClient) createOrUpdateCreateRequest(ctx
 	return req, nil
 }
 
+// BeginWhatIf - Returns property-level changes that will be made by the deployment if executed.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
+//   - options - WhatIfResultsAtSubscriptionClientBeginWhatIfOptions contains the optional parameters for the WhatIfResultsAtSubscriptionClient.BeginWhatIf
+//     method.
+func (client *WhatIfResultsAtSubscriptionClient) BeginWhatIf(ctx context.Context, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (*runtime.Poller[WhatIfResultsAtSubscriptionClientWhatIfResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.whatIf(ctx, deploymentStacksWhatIfResultName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WhatIfResultsAtSubscriptionClientWhatIfResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WhatIfResultsAtSubscriptionClientWhatIfResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// whatIf - Returns property-level changes that will be made by the deployment if executed.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WhatIfResultsAtSubscriptionClient) whatIf(ctx context.Context, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WhatIfResultsAtSubscriptionClient.BeginWhatIf"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.whatIfCreateRequest(ctx, deploymentStacksWhatIfResultName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// whatIfCreateRequest creates the whatIf request.
+func (client *WhatIfResultsAtSubscriptionClient) whatIfCreateRequest(ctx context.Context, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}/whatIf"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if deploymentStacksWhatIfResultName == "" {
+		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{deploymentStacksWhatIfResultName}", url.PathEscape(deploymentStacksWhatIfResultName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Delete - Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
 // without content.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -137,7 +205,8 @@ func (client *WhatIfResultsAtSubscriptionClient) Delete(ctx context.Context, dep
 		return WhatIfResultsAtSubscriptionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WhatIfResultsAtSubscriptionClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WhatIfResultsAtSubscriptionClientDeleteResponse{}, err
 	}
 	return WhatIfResultsAtSubscriptionClientDeleteResponse{}, nil
 }
@@ -197,7 +266,8 @@ func (client *WhatIfResultsAtSubscriptionClient) Get(ctx context.Context, deploy
 	if err != nil {
 		return WhatIfResultsAtSubscriptionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -299,70 +369,4 @@ func (client *WhatIfResultsAtSubscriptionClient) listHandleResponse(resp *http.R
 		return WhatIfResultsAtSubscriptionClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginWhatIf - Returns property-level changes that will be made by the deployment if executed.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
-//   - options - WhatIfResultsAtSubscriptionClientBeginWhatIfOptions contains the optional parameters for the WhatIfResultsAtSubscriptionClient.BeginWhatIf
-//     method.
-func (client *WhatIfResultsAtSubscriptionClient) BeginWhatIf(ctx context.Context, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (*runtime.Poller[WhatIfResultsAtSubscriptionClientWhatIfResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.whatIf(ctx, deploymentStacksWhatIfResultName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WhatIfResultsAtSubscriptionClientWhatIfResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WhatIfResultsAtSubscriptionClientWhatIfResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// WhatIf - Returns property-level changes that will be made by the deployment if executed.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WhatIfResultsAtSubscriptionClient) whatIf(ctx context.Context, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WhatIfResultsAtSubscriptionClient.BeginWhatIf"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.whatIfCreateRequest(ctx, deploymentStacksWhatIfResultName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// whatIfCreateRequest creates the WhatIf request.
-func (client *WhatIfResultsAtSubscriptionClient) whatIfCreateRequest(ctx context.Context, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}/whatIf"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if deploymentStacksWhatIfResultName == "" {
-		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentStacksWhatIfResultName}", url.PathEscape(deploymentStacksWhatIfResultName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

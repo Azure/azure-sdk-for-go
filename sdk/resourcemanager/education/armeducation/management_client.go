@@ -56,7 +56,8 @@ func (client *ManagementClient) RedeemInvitationCode(ctx context.Context, parame
 		return ManagementClientRedeemInvitationCodeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagementClientRedeemInvitationCodeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientRedeemInvitationCodeResponse{}, err
 	}
 	return ManagementClientRedeemInvitationCodeResponse{}, nil
 }

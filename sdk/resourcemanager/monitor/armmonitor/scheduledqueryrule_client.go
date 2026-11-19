@@ -85,7 +85,8 @@ func (client *ScheduledQueryRuleClient) reconcileNSP(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -140,7 +141,8 @@ func (client *ScheduledQueryRuleClient) GetNSP(ctx context.Context, resourceGrou
 	if err != nil {
 		return ScheduledQueryRuleClientGetNSPResponse{}, err
 	}
-	return client.getNSPHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNSPHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNSPCreateRequest creates the GetNSP request.

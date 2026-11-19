@@ -155,6 +155,123 @@ func ExampleCloudServicesNetworksClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/CloudServicesNetworks_Patch.json
+func ExampleCloudServicesNetworksClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCloudServicesNetworksClient().BeginUpdate(ctx, "resourceGroupName", "cloudServicesNetworkName", armnetworkcloud.CloudServicesNetworkPatchParameters{
+		Properties: &armnetworkcloud.CloudServicesNetworkPatchProperties{
+			AdditionalEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+				{
+					Category: to.Ptr("azure-resource-management"),
+					Endpoints: []*armnetworkcloud.EndpointDependency{
+						{
+							DomainName: to.Ptr("storageaccountex.blob.core.windows.net"),
+							Port:       to.Ptr[int64](443),
+						},
+					},
+				},
+			},
+			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptionsPatch{
+				Mode:               to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+				SizeMiB:            to.Ptr[int64](1048576),
+				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+			},
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("myvalue1"),
+			"key2": to.Ptr("myvalue2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.CloudServicesNetworksClientUpdateResponse{
+	// 	CloudServicesNetwork: armnetworkcloud.CloudServicesNetwork{
+	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("cloudServicesNetworkName"),
+	// 		Properties: &armnetworkcloud.CloudServicesNetworkProperties{
+	// 			AdditionalEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+	// 				{
+	// 					Category: to.Ptr("azure-resource-management"),
+	// 					Endpoints: []*armnetworkcloud.EndpointDependency{
+	// 						{
+	// 							DomainName: to.Ptr("storageaccountex.blob.core.windows.net"),
+	// 							Port: to.Ptr[int64](443),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			AssociatedResourceIDs: []*string{
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
+	// 			},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Cloud services network is up"),
+	// 			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+	// 			EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
+	// 				{
+	// 					Category: to.Ptr("azure-resource-management"),
+	// 					Endpoints: []*armnetworkcloud.EndpointDependency{
+	// 						{
+	// 							DomainName: to.Ptr("storageaccountex.blob.core.windows.net"),
+	// 							Port: to.Ptr[int64](443),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			InterfaceName: to.Ptr("eth0"),
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
+	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 			},
+	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
+	// 				StatusMessage: to.Ptr("Storage is available"),
+	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
+	// 			},
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/cloudServicesNetworks"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/CloudServicesNetworks_Get.json
 func ExampleCloudServicesNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -440,121 +557,4 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/CloudServicesNetworks_Patch.json
-func ExampleCloudServicesNetworksClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCloudServicesNetworksClient().BeginUpdate(ctx, "resourceGroupName", "cloudServicesNetworkName", armnetworkcloud.CloudServicesNetworkPatchParameters{
-		Properties: &armnetworkcloud.CloudServicesNetworkPatchProperties{
-			AdditionalEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-				{
-					Category: to.Ptr("azure-resource-management"),
-					Endpoints: []*armnetworkcloud.EndpointDependency{
-						{
-							DomainName: to.Ptr("storageaccountex.blob.core.windows.net"),
-							Port:       to.Ptr[int64](443),
-						},
-					},
-				},
-			},
-			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
-			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptionsPatch{
-				Mode:               to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
-				SizeMiB:            to.Ptr[int64](1048576),
-				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-			},
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("myvalue1"),
-			"key2": to.Ptr("myvalue2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.CloudServicesNetworksClientUpdateResponse{
-	// 	CloudServicesNetwork: armnetworkcloud.CloudServicesNetwork{
-	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("cloudServicesNetworkName"),
-	// 		Properties: &armnetworkcloud.CloudServicesNetworkProperties{
-	// 			AdditionalEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-	// 				{
-	// 					Category: to.Ptr("azure-resource-management"),
-	// 					Endpoints: []*armnetworkcloud.EndpointDependency{
-	// 						{
-	// 							DomainName: to.Ptr("storageaccountex.blob.core.windows.net"),
-	// 							Port: to.Ptr[int64](443),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			AssociatedResourceIDs: []*string{
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName"),
-	// 			},
-	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.CloudServicesNetworkDetailedStatusAvailable),
-	// 			DetailedStatusMessage: to.Ptr("Cloud services network is up"),
-	// 			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
-	// 			EnabledEgressEndpoints: []*armnetworkcloud.EgressEndpoint{
-	// 				{
-	// 					Category: to.Ptr("azure-resource-management"),
-	// 					Endpoints: []*armnetworkcloud.EndpointDependency{
-	// 						{
-	// 							DomainName: to.Ptr("storageaccountex.blob.core.windows.net"),
-	// 							Port: to.Ptr[int64](443),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			InterfaceName: to.Ptr("eth0"),
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
-	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
-	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
-	// 				SizeMiB: to.Ptr[int64](1048576),
-	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-	// 			},
-	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
-	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
-	// 				SizeMiB: to.Ptr[int64](1048576),
-	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
-	// 				StatusMessage: to.Ptr("Storage is available"),
-	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName"),
-	// 			},
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/cloudServicesNetworks"),
-	// 	},
-	// }
 }

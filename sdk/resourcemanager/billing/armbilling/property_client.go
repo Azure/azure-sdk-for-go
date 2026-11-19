@@ -62,7 +62,8 @@ func (client *PropertyClient) Get(ctx context.Context, options *PropertyClientGe
 	if err != nil {
 		return PropertyClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -121,7 +122,8 @@ func (client *PropertyClient) Update(ctx context.Context, parameters Property, o
 	if err != nil {
 		return PropertyClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

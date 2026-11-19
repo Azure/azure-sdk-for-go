@@ -66,7 +66,8 @@ func (client *SentinelOnboardingStatesClient) Create(ctx context.Context, resour
 	if err != nil {
 		return SentinelOnboardingStatesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -137,7 +138,8 @@ func (client *SentinelOnboardingStatesClient) Delete(ctx context.Context, resour
 		return SentinelOnboardingStatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SentinelOnboardingStatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SentinelOnboardingStatesClientDeleteResponse{}, err
 	}
 	return SentinelOnboardingStatesClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *SentinelOnboardingStatesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return SentinelOnboardingStatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -257,7 +260,8 @@ func (client *SentinelOnboardingStatesClient) List(ctx context.Context, resource
 	if err != nil {
 		return SentinelOnboardingStatesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

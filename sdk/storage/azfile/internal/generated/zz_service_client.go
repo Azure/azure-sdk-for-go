@@ -19,7 +19,7 @@ import (
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-10-06
+// Generated from API version 2027-03-07
 type ServiceClient struct {
 	internal *azcore.Client
 	url      string
@@ -39,12 +39,7 @@ func (client *ServiceClient) GetProperties(ctx context.Context, options *Service
 	if err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientGetPropertiesResponse{}, err
-	}
-	resp, err := client.getPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
@@ -66,14 +61,17 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (ServiceClientGetPropertiesResponse, error) {
+func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientGetPropertiesResponse, error) {
 	result := ServiceClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -83,10 +81,10 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.StorageServiceProperties); err != nil {
@@ -111,12 +109,7 @@ func (client *ServiceClient) GetUserDelegationKey(ctx context.Context, keyInfo K
 	if err != nil {
 		return ServiceClientGetUserDelegationKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientGetUserDelegationKeyResponse{}, err
-	}
-	resp, err := client.getUserDelegationKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getUserDelegationKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getUserDelegationKeyCreateRequest creates the GetUserDelegationKey request.
@@ -135,7 +128,7 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
 		return nil, err
@@ -144,9 +137,12 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 }
 
 // getUserDelegationKeyHandleResponse handles the GetUserDelegationKey response.
-func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Response) (ServiceClientGetUserDelegationKeyResponse, error) {
+func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientGetUserDelegationKeyResponse, error) {
 	result := ServiceClientGetUserDelegationKeyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -156,10 +152,10 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.UserDelegationKey); err != nil {
@@ -193,10 +189,7 @@ func (client *ServiceClient) NewListSharesSegmentPager(options *ServiceClientLis
 			if err != nil {
 				return ServiceClientListSharesSegmentResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListSharesSegmentResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listSharesSegmentHandleResponse(resp)
+			return client.listSharesSegmentHandleResponse(resp, http.StatusOK)
 		},
 	})
 }
@@ -232,14 +225,17 @@ func (client *ServiceClient) listSharesSegmentCreateRequest(ctx context.Context,
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
 // listSharesSegmentHandleResponse handles the ListSharesSegment response.
-func (client *ServiceClient) listSharesSegmentHandleResponse(resp *http.Response) (ServiceClientListSharesSegmentResponse, error) {
+func (client *ServiceClient) listSharesSegmentHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientListSharesSegmentResponse, error) {
 	result := ServiceClientListSharesSegmentResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -249,10 +245,10 @@ func (client *ServiceClient) listSharesSegmentHandleResponse(resp *http.Response
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListSharesResponse); err != nil {
@@ -276,12 +272,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, storageServicePr
 	if err != nil {
 		return ServiceClientSetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientSetPropertiesResponse{}, err
-	}
-	resp, err := client.setPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setPropertiesHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
@@ -302,7 +293,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261006}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
 		return nil, err
@@ -311,9 +302,12 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (ServiceClientSetPropertiesResponse, error) {
+func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientSetPropertiesResponse, error) {
 	result := ServiceClientSetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -323,10 +317,10 @@ func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (S
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

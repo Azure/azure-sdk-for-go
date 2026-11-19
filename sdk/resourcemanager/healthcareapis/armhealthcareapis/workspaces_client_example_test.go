@@ -76,6 +76,48 @@ func ExampleWorkspacesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-04-01-preview/workspaces/Workspaces_Patch.json
+func ExampleWorkspacesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "testRG", "workspace1", armhealthcareapis.WorkspacePatchResource{
+		Tags: map[string]*string{
+			"tagKey": to.Ptr("tagValue"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhealthcareapis.WorkspacesClientUpdateResponse{
+	// 	Workspace: armhealthcareapis.Workspace{
+	// 		Name: to.Ptr("workspace1"),
+	// 		Type: to.Ptr("Microsoft.HealthcareApis/workspaces"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armhealthcareapis.WorkspaceProperties{
+	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tagKey": to.Ptr("tagValue"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-04-01-preview/workspaces/Workspaces_Get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -187,46 +229,4 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-04-01-preview/workspaces/Workspaces_Patch.json
-func ExampleWorkspacesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "testRG", "workspace1", armhealthcareapis.WorkspacePatchResource{
-		Tags: map[string]*string{
-			"tagKey": to.Ptr("tagValue"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhealthcareapis.WorkspacesClientUpdateResponse{
-	// 	Workspace: armhealthcareapis.Workspace{
-	// 		Name: to.Ptr("workspace1"),
-	// 		Type: to.Ptr("Microsoft.HealthcareApis/workspaces"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armhealthcareapis.WorkspaceProperties{
-	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tagKey": to.Ptr("tagValue"),
-	// 		},
-	// 	},
-	// }
 }

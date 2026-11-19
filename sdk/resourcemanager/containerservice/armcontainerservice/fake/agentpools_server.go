@@ -64,7 +64,7 @@ type AgentPoolsServer struct {
 
 	// ListBootstrapData is the fake for method AgentPoolsClient.ListBootstrapData
 	// HTTP status codes to indicate success: http.StatusOK
-	ListBootstrapData func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body armcontainerservice.ListBootstrapDataRequest, options *armcontainerservice.AgentPoolsClientListBootstrapDataOptions) (resp azfake.Responder[armcontainerservice.AgentPoolsClientListBootstrapDataResponse], errResp azfake.ErrorResponder)
+	ListBootstrapData func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.AgentPoolsClientListBootstrapDataOptions) (resp azfake.Responder[armcontainerservice.AgentPoolsClientListBootstrapDataResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method AgentPoolsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -107,7 +107,7 @@ func (a *AgentPoolsServerTransport) Do(req *http.Request) (*http.Response, error
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -657,10 +657,6 @@ func (a *AgentPoolsServerTransport) dispatchListBootstrapData(req *http.Request)
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerservice.ListBootstrapDataRequest](req)
-	if err != nil {
-		return nil, err
-	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -673,7 +669,7 @@ func (a *AgentPoolsServerTransport) dispatchListBootstrapData(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := a.srv.ListBootstrapData(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, nil)
+	respr, errRespr := a.srv.ListBootstrapData(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

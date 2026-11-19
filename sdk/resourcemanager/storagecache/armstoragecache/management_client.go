@@ -63,7 +63,8 @@ func (client *ManagementClient) CheckAmlFSSubnets(ctx context.Context, options *
 		return ManagementClientCheckAmlFSSubnetsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagementClientCheckAmlFSSubnetsResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientCheckAmlFSSubnetsResponse{}, err
 	}
 	return ManagementClientCheckAmlFSSubnetsResponse{}, nil
 }
@@ -110,7 +111,8 @@ func (client *ManagementClient) GetRequiredAmlFSSubnetsSize(ctx context.Context,
 	if err != nil {
 		return ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}, err
 	}
-	return client.getRequiredAmlFSSubnetsSizeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRequiredAmlFSSubnetsSizeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRequiredAmlFSSubnetsSizeCreateRequest creates the GetRequiredAmlFSSubnetsSize request.

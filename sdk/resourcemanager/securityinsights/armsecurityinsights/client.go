@@ -65,7 +65,8 @@ func (client *Client) ListGeodataByIP(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ClientListGeodataByIPResponse{}, err
 	}
-	return client.listGeodataByIPHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listGeodataByIPHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listGeodataByIPCreateRequest creates the ListGeodataByIP request.
@@ -135,7 +136,8 @@ func (client *Client) ListWhoisByDomain(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ClientListWhoisByDomainResponse{}, err
 	}
-	return client.listWhoisByDomainHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listWhoisByDomainHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listWhoisByDomainCreateRequest creates the ListWhoisByDomain request.

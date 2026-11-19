@@ -68,7 +68,8 @@ func (client *ConfigurationAssignmentsClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -151,7 +152,8 @@ func (client *ConfigurationAssignmentsClient) CreateOrUpdateParent(ctx context.C
 	if err != nil {
 		return ConfigurationAssignmentsClientCreateOrUpdateParentResponse{}, err
 	}
-	return client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateParentCreateRequest creates the CreateOrUpdateParent request.
@@ -239,7 +241,8 @@ func (client *ConfigurationAssignmentsClient) Delete(ctx context.Context, resour
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -317,7 +320,8 @@ func (client *ConfigurationAssignmentsClient) DeleteParent(ctx context.Context, 
 	if err != nil {
 		return ConfigurationAssignmentsClientDeleteParentResponse{}, err
 	}
-	return client.deleteParentHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteParentHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteParentCreateRequest creates the DeleteParent request.
@@ -401,7 +405,8 @@ func (client *ConfigurationAssignmentsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return ConfigurationAssignmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -479,7 +484,8 @@ func (client *ConfigurationAssignmentsClient) GetParent(ctx context.Context, res
 	if err != nil {
 		return ConfigurationAssignmentsClientGetParentResponse{}, err
 	}
-	return client.getParentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getParentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getParentCreateRequest creates the GetParent request.

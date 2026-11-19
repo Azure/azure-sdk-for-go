@@ -55,7 +55,7 @@ func NewConnectivityConfigurationsClient(subscriptionID string, credential azcor
 //     method.
 func (client *ConnectivityConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientBeginDeleteOptions) (*runtime.Poller[ConnectivityConfigurationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -70,10 +70,10 @@ func (client *ConnectivityConfigurationsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// delete - Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
-// connectivity configuration name
+// deleteOperation - Deletes a network manager connectivity configuration, specified by the resource group, network manager
+// name, and connectivity configuration name
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectivityConfigurationsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ConnectivityConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *ConnectivityConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectivityConfigurationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -88,7 +88,8 @@ func (client *ConnectivityConfigurationsClient) delete(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -147,7 +148,8 @@ func (client *ConnectivityConfigurationsClient) CreateOrUpdate(ctx context.Conte
 	if err != nil {
 		return ConnectivityConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -218,7 +220,8 @@ func (client *ConnectivityConfigurationsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return ConnectivityConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -63,7 +63,8 @@ func (client *BackupResourceEncryptionConfigsClient) Get(ctx context.Context, va
 	if err != nil {
 		return BackupResourceEncryptionConfigsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -124,7 +125,8 @@ func (client *BackupResourceEncryptionConfigsClient) Update(ctx context.Context,
 		return BackupResourceEncryptionConfigsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return BackupResourceEncryptionConfigsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BackupResourceEncryptionConfigsClientUpdateResponse{}, err
 	}
 	return BackupResourceEncryptionConfigsClientUpdateResponse{}, nil
 }

@@ -68,7 +68,7 @@ func (client *AIManagersClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a AIManager
+// createOrUpdate - Create a AIManager
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AIManagersClient) createOrUpdate(ctx context.Context, resourceGroupName string, aiManagerName string, resource AIManager, options *AIManagersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *AIManagersClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AIManagersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, resource AIManager, options *AIManagersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *AIManagersClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a AIManager
+// deleteOperation - Delete a AIManager
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AIManagersClient) deleteOperation(ctx context.Context, resourceGroupName string, aiManagerName string, options *AIManagersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *AIManagersClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AIManagersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, options *AIManagersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}"
 	if client.subscriptionID == "" {
@@ -217,7 +219,8 @@ func (client *AIManagersClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return AIManagersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -254,6 +257,68 @@ func (client *AIManagersClient) getHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManager); err != nil {
 		return AIManagersClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCredential - Lists the credentials of an AI Manager.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - aiManagerName - The name of the AI Manager resource.
+//   - options - AIManagersClientListCredentialOptions contains the optional parameters for the AIManagersClient.ListCredential
+//     method.
+func (client *AIManagersClient) ListCredential(ctx context.Context, resourceGroupName string, aiManagerName string, options *AIManagersClientListCredentialOptions) (AIManagersClientListCredentialResponse, error) {
+	var err error
+	const operationName = "AIManagersClient.ListCredential"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCredentialCreateRequest(ctx, resourceGroupName, aiManagerName, options)
+	if err != nil {
+		return AIManagersClientListCredentialResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AIManagersClientListCredentialResponse{}, err
+	}
+	resp, err := client.listCredentialHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listCredentialCreateRequest creates the ListCredential request.
+func (client *AIManagersClient) listCredentialCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, _ *AIManagersClientListCredentialOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/listCredential"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if aiManagerName == "" {
+		return nil, errors.New("parameter aiManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260902Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCredentialHandleResponse handles the ListCredential response.
+func (client *AIManagersClient) listCredentialHandleResponse(resp *http.Response, successCodes ...int) (AIManagersClientListCredentialResponse, error) {
+	result := AIManagersClientListCredentialResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
+		return AIManagersClientListCredentialResponse{}, err
 	}
 	return result, nil
 }
@@ -397,67 +462,6 @@ func (client *AIManagersClient) listBySubscriptionHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListCredential - Lists the credentials of an AI Manager.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - aiManagerName - The name of the AI Manager resource.
-//   - options - AIManagersClientListCredentialOptions contains the optional parameters for the AIManagersClient.ListCredential
-//     method.
-func (client *AIManagersClient) ListCredential(ctx context.Context, resourceGroupName string, aiManagerName string, options *AIManagersClientListCredentialOptions) (AIManagersClientListCredentialResponse, error) {
-	var err error
-	const operationName = "AIManagersClient.ListCredential"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCredentialCreateRequest(ctx, resourceGroupName, aiManagerName, options)
-	if err != nil {
-		return AIManagersClientListCredentialResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AIManagersClientListCredentialResponse{}, err
-	}
-	return client.listCredentialHandleResponse(httpResp, http.StatusOK)
-}
-
-// listCredentialCreateRequest creates the ListCredential request.
-func (client *AIManagersClient) listCredentialCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, _ *AIManagersClientListCredentialOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/listCredential"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if aiManagerName == "" {
-		return nil, errors.New("parameter aiManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260902Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCredentialHandleResponse handles the ListCredential response.
-func (client *AIManagersClient) listCredentialHandleResponse(resp *http.Response, successCodes ...int) (AIManagersClientListCredentialResponse, error) {
-	result := AIManagersClientListCredentialResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
-		return AIManagersClientListCredentialResponse{}, err
-	}
-	return result, nil
-}
-
 // Update - Update a AIManager
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -478,7 +482,8 @@ func (client *AIManagersClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AIManagersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

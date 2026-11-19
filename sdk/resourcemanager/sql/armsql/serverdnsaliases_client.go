@@ -68,7 +68,7 @@ func (client *ServerDNSAliasesClient) BeginAcquire(ctx context.Context, resource
 	}
 }
 
-// Acquire - Acquires server DNS alias from another server.
+// acquire - Acquires server DNS alias from another server.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesClientBeginAcquireOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ServerDNSAliasesClient) acquire(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// acquireCreateRequest creates the Acquire request.
+// acquireCreateRequest creates the acquire request.
 func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, _ *ServerDNSAliasesClientBeginAcquireOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}/acquire"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *ServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates a server DNS alias.
+// createOrUpdate - Creates a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *ServerDNSAliasesClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, _ *ServerDNSAliasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}"
 	if client.subscriptionID == "" {
@@ -224,7 +226,7 @@ func (client *ServerDNSAliasesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes the server DNS alias with the given name.
+// deleteOperation - Deletes the server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -241,12 +243,13 @@ func (client *ServerDNSAliasesClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, _ *ServerDNSAliasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/dnsAliases/{dnsAliasName}"
 	if client.subscriptionID == "" {
@@ -295,7 +298,8 @@ func (client *ServerDNSAliasesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ServerDNSAliasesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

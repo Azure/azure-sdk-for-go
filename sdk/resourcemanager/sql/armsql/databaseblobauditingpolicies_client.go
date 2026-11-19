@@ -66,7 +66,8 @@ func (client *DatabaseBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *DatabaseBlobAuditingPoliciesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

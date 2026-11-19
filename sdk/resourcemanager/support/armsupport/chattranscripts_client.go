@@ -63,7 +63,8 @@ func (client *ChatTranscriptsClient) Get(ctx context.Context, supportTicketName 
 	if err != nil {
 		return ChatTranscriptsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

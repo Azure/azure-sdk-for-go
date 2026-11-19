@@ -1,6 +1,6 @@
 # Release History
 
-## 9.8.0-beta.1 (2026-10-21)
+## 9.9.0-beta.1 (2026-11-16)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
@@ -60,7 +60,7 @@
 - New function `*AgentPoolGenerateUpgradeInsightsContent.GetGenerateUpgradeInsightsContent() *GenerateUpgradeInsightsContent`
 - New function `*AgentPoolUpgradeInsightProperties.GetUpgradeInsightProperties() *UpgradeInsightProperties`
 - New function `*AgentPoolsClient.BeginCompleteUpgrade(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginCompleteUpgradeOptions) (*runtime.Poller[AgentPoolsClientCompleteUpgradeResponse], error)`
-- New function `*AgentPoolsClient.ListBootstrapData(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, options *AgentPoolsClientListBootstrapDataOptions) (AgentPoolsClientListBootstrapDataResponse, error)`
+- New function `*AgentPoolsClient.ListBootstrapData(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientListBootstrapDataOptions) (AgentPoolsClientListBootstrapDataResponse, error)`
 - New function `*AgentPoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPoolUpdate, options *AgentPoolsClientBeginUpdateOptions) (*runtime.Poller[AgentPoolsClientUpdateResponse], error)`
 - New function `NewAlertConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertConfigurationsClient, error)`
 - New function `*AlertConfigurationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, options *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AlertConfigurationsClientCreateOrUpdateResponse], error)`
@@ -139,6 +139,7 @@
 - New function `*NodeImageUpgradeInsightProperties.GetUpgradeInsightProperties() *UpgradeInsightProperties`
 - New struct `AgentFabricMembership`
 - New struct `AgentFabricMembershipProperties`
+- New struct `AgentFabricMembershipSKU`
 - New struct `AgentFabricMembershipsListResult`
 - New struct `AgentPoolBlueGreenUpgradeSettings`
 - New struct `AgentPoolGenerateUpgradeInsightsContent`
@@ -194,7 +195,6 @@
 - New struct `KubernetesImpactedResource`
 - New struct `LabelSelector`
 - New struct `LabelSelectorRequirement`
-- New struct `ListBootstrapDataRequest`
 - New struct `LoadBalancer`
 - New struct `LoadBalancerListResult`
 - New struct `LoadBalancerProperties`
@@ -288,6 +288,13 @@
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
 - New field `ClusterAPIConnectivityProfile`, `KubeProxyConfig`, `NatGatewayID`, `PodLinkLocalAccess` in struct `NetworkProfile`
 - New field `DriverMode`, `MigProfiles`, `MigStrategy` in struct `NvidiaGPUProfile`
+
+
+## 9.8.0 (2026-11-11)
+### Features Added
+
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `NextLink` in struct `PrivateLinkResourcesListResult`
 
 
 ## 9.7.0 (2026-10-19)

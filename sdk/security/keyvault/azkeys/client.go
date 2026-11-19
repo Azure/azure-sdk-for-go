@@ -18,7 +18,7 @@ import (
 // Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-04-01
 type Client struct {
 	internal     *azcore.Client
 	vaultBaseUrl string
@@ -51,11 +51,7 @@ func (client *Client) BackupKey(ctx context.Context, name string, options *Backu
 	if err != nil {
 		return BackupKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupKeyResponse{}, err
-	}
-	resp, err := client.backupKeyHandleResponse(httpResp)
+	resp, err := client.backupKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -71,15 +67,18 @@ func (client *Client) backupKeyCreateRequest(ctx context.Context, name string, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // backupKeyHandleResponse handles the BackupKey response.
-func (client *Client) backupKeyHandleResponse(resp *http.Response) (BackupKeyResponse, error) {
+func (client *Client) backupKeyHandleResponse(resp *http.Response, successCodes ...int) (BackupKeyResponse, error) {
 	result := BackupKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupKeyResult); err != nil {
 		return BackupKeyResponse{}, err
 	}
@@ -110,11 +109,7 @@ func (client *Client) CreateKey(ctx context.Context, name string, parameters Cre
 	if err != nil {
 		return CreateKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreateKeyResponse{}, err
-	}
-	resp, err := client.createKeyHandleResponse(httpResp)
+	resp, err := client.createKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -130,7 +125,7 @@ func (client *Client) createKeyCreateRequest(ctx context.Context, name string, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,8 +136,11 @@ func (client *Client) createKeyCreateRequest(ctx context.Context, name string, p
 }
 
 // createKeyHandleResponse handles the CreateKey response.
-func (client *Client) createKeyHandleResponse(resp *http.Response) (CreateKeyResponse, error) {
+func (client *Client) createKeyHandleResponse(resp *http.Response, successCodes ...int) (CreateKeyResponse, error) {
 	result := CreateKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return CreateKeyResponse{}, err
 	}
@@ -176,11 +174,7 @@ func (client *Client) Decrypt(ctx context.Context, name string, version string, 
 	if err != nil {
 		return DecryptResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DecryptResponse{}, err
-	}
-	resp, err := client.decryptHandleResponse(httpResp)
+	resp, err := client.decryptHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -197,7 +191,7 @@ func (client *Client) decryptCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -208,8 +202,11 @@ func (client *Client) decryptCreateRequest(ctx context.Context, name string, ver
 }
 
 // decryptHandleResponse handles the Decrypt response.
-func (client *Client) decryptHandleResponse(resp *http.Response) (DecryptResponse, error) {
+func (client *Client) decryptHandleResponse(resp *http.Response, successCodes ...int) (DecryptResponse, error) {
 	result := DecryptResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return DecryptResponse{}, err
 	}
@@ -238,11 +235,7 @@ func (client *Client) DeleteKey(ctx context.Context, name string, options *Delet
 	if err != nil {
 		return DeleteKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeleteKeyResponse{}, err
-	}
-	resp, err := client.deleteKeyHandleResponse(httpResp)
+	resp, err := client.deleteKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -258,15 +251,18 @@ func (client *Client) deleteKeyCreateRequest(ctx context.Context, name string, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // deleteKeyHandleResponse handles the DeleteKey response.
-func (client *Client) deleteKeyHandleResponse(resp *http.Response) (DeleteKeyResponse, error) {
+func (client *Client) deleteKeyHandleResponse(resp *http.Response, successCodes ...int) (DeleteKeyResponse, error) {
 	result := DeleteKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKey); err != nil {
 		return DeleteKeyResponse{}, err
 	}
@@ -300,11 +296,7 @@ func (client *Client) Encrypt(ctx context.Context, name string, version string, 
 	if err != nil {
 		return EncryptResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EncryptResponse{}, err
-	}
-	resp, err := client.encryptHandleResponse(httpResp)
+	resp, err := client.encryptHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -321,7 +313,7 @@ func (client *Client) encryptCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -332,8 +324,11 @@ func (client *Client) encryptCreateRequest(ctx context.Context, name string, ver
 }
 
 // encryptHandleResponse handles the Encrypt response.
-func (client *Client) encryptHandleResponse(resp *http.Response) (EncryptResponse, error) {
+func (client *Client) encryptHandleResponse(resp *http.Response, successCodes ...int) (EncryptResponse, error) {
 	result := EncryptResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return EncryptResponse{}, err
 	}
@@ -361,11 +356,7 @@ func (client *Client) GetDeletedKey(ctx context.Context, name string, options *G
 	if err != nil {
 		return GetDeletedKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetDeletedKeyResponse{}, err
-	}
-	resp, err := client.getDeletedKeyHandleResponse(httpResp)
+	resp, err := client.getDeletedKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -381,15 +372,18 @@ func (client *Client) getDeletedKeyCreateRequest(ctx context.Context, name strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getDeletedKeyHandleResponse handles the GetDeletedKey response.
-func (client *Client) getDeletedKeyHandleResponse(resp *http.Response) (GetDeletedKeyResponse, error) {
+func (client *Client) getDeletedKeyHandleResponse(resp *http.Response, successCodes ...int) (GetDeletedKeyResponse, error) {
 	result := GetDeletedKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKey); err != nil {
 		return GetDeletedKeyResponse{}, err
 	}
@@ -419,11 +413,7 @@ func (client *Client) GetKey(ctx context.Context, name string, version string, o
 	if err != nil {
 		return GetKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetKeyResponse{}, err
-	}
-	resp, err := client.getKeyHandleResponse(httpResp)
+	resp, err := client.getKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -440,15 +430,18 @@ func (client *Client) getKeyCreateRequest(ctx context.Context, name string, vers
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getKeyHandleResponse handles the GetKey response.
-func (client *Client) getKeyHandleResponse(resp *http.Response) (GetKeyResponse, error) {
+func (client *Client) getKeyHandleResponse(resp *http.Response, successCodes ...int) (GetKeyResponse, error) {
 	result := GetKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return GetKeyResponse{}, err
 	}
@@ -478,11 +471,7 @@ func (client *Client) GetKeyAttestation(ctx context.Context, name string, versio
 	if err != nil {
 		return GetKeyAttestationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetKeyAttestationResponse{}, err
-	}
-	resp, err := client.getKeyAttestationHandleResponse(httpResp)
+	resp, err := client.getKeyAttestationHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -499,15 +488,18 @@ func (client *Client) getKeyAttestationCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getKeyAttestationHandleResponse handles the GetKeyAttestation response.
-func (client *Client) getKeyAttestationHandleResponse(resp *http.Response) (GetKeyAttestationResponse, error) {
+func (client *Client) getKeyAttestationHandleResponse(resp *http.Response, successCodes ...int) (GetKeyAttestationResponse, error) {
 	result := GetKeyAttestationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return GetKeyAttestationResponse{}, err
 	}
@@ -535,11 +527,7 @@ func (client *Client) GetKeyRotationPolicy(ctx context.Context, name string, opt
 	if err != nil {
 		return GetKeyRotationPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetKeyRotationPolicyResponse{}, err
-	}
-	resp, err := client.getKeyRotationPolicyHandleResponse(httpResp)
+	resp, err := client.getKeyRotationPolicyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -555,15 +543,18 @@ func (client *Client) getKeyRotationPolicyCreateRequest(ctx context.Context, nam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getKeyRotationPolicyHandleResponse handles the GetKeyRotationPolicy response.
-func (client *Client) getKeyRotationPolicyHandleResponse(resp *http.Response) (GetKeyRotationPolicyResponse, error) {
+func (client *Client) getKeyRotationPolicyHandleResponse(resp *http.Response, successCodes ...int) (GetKeyRotationPolicyResponse, error) {
 	result := GetKeyRotationPolicyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
 		return GetKeyRotationPolicyResponse{}, err
 	}
@@ -590,11 +581,7 @@ func (client *Client) GetRandomBytes(ctx context.Context, parameters GetRandomBy
 	if err != nil {
 		return GetRandomBytesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetRandomBytesResponse{}, err
-	}
-	resp, err := client.getRandomBytesHandleResponse(httpResp)
+	resp, err := client.getRandomBytesHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -606,7 +593,7 @@ func (client *Client) getRandomBytesCreateRequest(ctx context.Context, parameter
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -617,8 +604,11 @@ func (client *Client) getRandomBytesCreateRequest(ctx context.Context, parameter
 }
 
 // getRandomBytesHandleResponse handles the GetRandomBytes response.
-func (client *Client) getRandomBytesHandleResponse(resp *http.Response) (GetRandomBytesResponse, error) {
+func (client *Client) getRandomBytesHandleResponse(resp *http.Response, successCodes ...int) (GetRandomBytesResponse, error) {
 	result := GetRandomBytesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RandomBytes); err != nil {
 		return GetRandomBytesResponse{}, err
 	}
@@ -648,11 +638,7 @@ func (client *Client) ImportKey(ctx context.Context, name string, parameters Imp
 	if err != nil {
 		return ImportKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImportKeyResponse{}, err
-	}
-	resp, err := client.importKeyHandleResponse(httpResp)
+	resp, err := client.importKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -668,7 +654,7 @@ func (client *Client) importKeyCreateRequest(ctx context.Context, name string, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -679,8 +665,11 @@ func (client *Client) importKeyCreateRequest(ctx context.Context, name string, p
 }
 
 // importKeyHandleResponse handles the ImportKey response.
-func (client *Client) importKeyHandleResponse(resp *http.Response) (ImportKeyResponse, error) {
+func (client *Client) importKeyHandleResponse(resp *http.Response, successCodes ...int) (ImportKeyResponse, error) {
 	result := ImportKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return ImportKeyResponse{}, err
 	}
@@ -706,35 +695,49 @@ func (client *Client) NewListDeletedKeyPropertiesPager(options *ListDeletedKeyPr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDeletedKeyPropertiesCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listDeletedKeyPropertiesCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ListDeletedKeyPropertiesResponse{}, err
 			}
-			return client.listDeletedKeyPropertiesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListDeletedKeyPropertiesResponse{}, err
+			}
+			return client.listDeletedKeyPropertiesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDeletedKeyPropertiesCreateRequest creates the ListDeletedKeyProperties request.
-func (client *Client) listDeletedKeyPropertiesCreateRequest(ctx context.Context, _ *ListDeletedKeyPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/deletedkeys"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+func (client *Client) listDeletedKeyPropertiesCreateRequest(ctx context.Context, nextLink string, _ *ListDeletedKeyPropertiesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/deletedkeys"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDeletedKeyPropertiesHandleResponse handles the ListDeletedKeyProperties response.
-func (client *Client) listDeletedKeyPropertiesHandleResponse(resp *http.Response) (ListDeletedKeyPropertiesResponse, error) {
+func (client *Client) listDeletedKeyPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ListDeletedKeyPropertiesResponse, error) {
 	result := ListDeletedKeyPropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKeyPropertiesListResult); err != nil {
 		return ListDeletedKeyPropertiesResponse{}, err
 	}
@@ -758,35 +761,49 @@ func (client *Client) NewListKeyPropertiesPager(options *ListKeyPropertiesOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listKeyPropertiesCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listKeyPropertiesCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ListKeyPropertiesResponse{}, err
 			}
-			return client.listKeyPropertiesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListKeyPropertiesResponse{}, err
+			}
+			return client.listKeyPropertiesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listKeyPropertiesCreateRequest creates the ListKeyProperties request.
-func (client *Client) listKeyPropertiesCreateRequest(ctx context.Context, _ *ListKeyPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/keys"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+func (client *Client) listKeyPropertiesCreateRequest(ctx context.Context, nextLink string, _ *ListKeyPropertiesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/keys"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listKeyPropertiesHandleResponse handles the ListKeyProperties response.
-func (client *Client) listKeyPropertiesHandleResponse(resp *http.Response) (ListKeyPropertiesResponse, error) {
+func (client *Client) listKeyPropertiesHandleResponse(resp *http.Response, successCodes ...int) (ListKeyPropertiesResponse, error) {
 	result := ListKeyPropertiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyPropertiesListResult); err != nil {
 		return ListKeyPropertiesResponse{}, err
 	}
@@ -810,39 +827,53 @@ func (client *Client) NewListKeyPropertiesVersionsPager(name string, options *Li
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listKeyPropertiesVersionsCreateRequest(ctx, name, options)
-			}, nil)
+			req, err := client.listKeyPropertiesVersionsCreateRequest(ctx, name, nextLink, options)
 			if err != nil {
 				return ListKeyPropertiesVersionsResponse{}, err
 			}
-			return client.listKeyPropertiesVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ListKeyPropertiesVersionsResponse{}, err
+			}
+			return client.listKeyPropertiesVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listKeyPropertiesVersionsCreateRequest creates the ListKeyPropertiesVersions request.
-func (client *Client) listKeyPropertiesVersionsCreateRequest(ctx context.Context, name string, _ *ListKeyPropertiesVersionsOptions) (*policy.Request, error) {
-	urlPath := "/keys/{key-name}/versions"
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
+func (client *Client) listKeyPropertiesVersionsCreateRequest(ctx context.Context, name string, nextLink string, _ *ListKeyPropertiesVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/keys/{key-name}/versions"
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.vaultBaseUrl, nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.vaultBaseUrl, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listKeyPropertiesVersionsHandleResponse handles the ListKeyPropertiesVersions response.
-func (client *Client) listKeyPropertiesVersionsHandleResponse(resp *http.Response) (ListKeyPropertiesVersionsResponse, error) {
+func (client *Client) listKeyPropertiesVersionsHandleResponse(resp *http.Response, successCodes ...int) (ListKeyPropertiesVersionsResponse, error) {
 	result := ListKeyPropertiesVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyPropertiesListResult); err != nil {
 		return ListKeyPropertiesVersionsResponse{}, err
 	}
@@ -889,7 +920,7 @@ func (client *Client) purgeDeletedKeyCreateRequest(ctx context.Context, name str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -916,11 +947,7 @@ func (client *Client) RecoverDeletedKey(ctx context.Context, name string, option
 	if err != nil {
 		return RecoverDeletedKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecoverDeletedKeyResponse{}, err
-	}
-	resp, err := client.recoverDeletedKeyHandleResponse(httpResp)
+	resp, err := client.recoverDeletedKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -936,15 +963,18 @@ func (client *Client) recoverDeletedKeyCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // recoverDeletedKeyHandleResponse handles the RecoverDeletedKey response.
-func (client *Client) recoverDeletedKeyHandleResponse(resp *http.Response) (RecoverDeletedKeyResponse, error) {
+func (client *Client) recoverDeletedKeyHandleResponse(resp *http.Response, successCodes ...int) (RecoverDeletedKeyResponse, error) {
 	result := RecoverDeletedKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return RecoverDeletedKeyResponse{}, err
 	}
@@ -974,11 +1004,7 @@ func (client *Client) Release(ctx context.Context, name string, version string, 
 	if err != nil {
 		return ReleaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReleaseResponse{}, err
-	}
-	resp, err := client.releaseHandleResponse(httpResp)
+	resp, err := client.releaseHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -995,7 +1021,7 @@ func (client *Client) releaseCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1006,8 +1032,11 @@ func (client *Client) releaseCreateRequest(ctx context.Context, name string, ver
 }
 
 // releaseHandleResponse handles the Release response.
-func (client *Client) releaseHandleResponse(resp *http.Response) (ReleaseResponse, error) {
+func (client *Client) releaseHandleResponse(resp *http.Response, successCodes ...int) (ReleaseResponse, error) {
 	result := ReleaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyReleaseResult); err != nil {
 		return ReleaseResponse{}, err
 	}
@@ -1041,11 +1070,7 @@ func (client *Client) RestoreKey(ctx context.Context, parameters RestoreKeyParam
 	if err != nil {
 		return RestoreKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RestoreKeyResponse{}, err
-	}
-	resp, err := client.restoreKeyHandleResponse(httpResp)
+	resp, err := client.restoreKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1057,7 +1082,7 @@ func (client *Client) restoreKeyCreateRequest(ctx context.Context, parameters Re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1068,8 +1093,11 @@ func (client *Client) restoreKeyCreateRequest(ctx context.Context, parameters Re
 }
 
 // restoreKeyHandleResponse handles the RestoreKey response.
-func (client *Client) restoreKeyHandleResponse(resp *http.Response) (RestoreKeyResponse, error) {
+func (client *Client) restoreKeyHandleResponse(resp *http.Response, successCodes ...int) (RestoreKeyResponse, error) {
 	result := RestoreKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return RestoreKeyResponse{}, err
 	}
@@ -1096,11 +1124,7 @@ func (client *Client) RotateKey(ctx context.Context, name string, options *Rotat
 	if err != nil {
 		return RotateKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RotateKeyResponse{}, err
-	}
-	resp, err := client.rotateKeyHandleResponse(httpResp)
+	resp, err := client.rotateKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1116,15 +1140,18 @@ func (client *Client) rotateKeyCreateRequest(ctx context.Context, name string, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // rotateKeyHandleResponse handles the RotateKey response.
-func (client *Client) rotateKeyHandleResponse(resp *http.Response) (RotateKeyResponse, error) {
+func (client *Client) rotateKeyHandleResponse(resp *http.Response, successCodes ...int) (RotateKeyResponse, error) {
 	result := RotateKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return RotateKeyResponse{}, err
 	}
@@ -1158,11 +1185,7 @@ func (client *Client) SecureUnwrapKey(ctx context.Context, name string, version 
 	if err != nil {
 		return SecureUnwrapKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecureUnwrapKeyResponse{}, err
-	}
-	resp, err := client.secureUnwrapKeyHandleResponse(httpResp)
+	resp, err := client.secureUnwrapKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1179,7 +1202,7 @@ func (client *Client) secureUnwrapKeyCreateRequest(ctx context.Context, name str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1190,8 +1213,11 @@ func (client *Client) secureUnwrapKeyCreateRequest(ctx context.Context, name str
 }
 
 // secureUnwrapKeyHandleResponse handles the SecureUnwrapKey response.
-func (client *Client) secureUnwrapKeyHandleResponse(resp *http.Response) (SecureUnwrapKeyResponse, error) {
+func (client *Client) secureUnwrapKeyHandleResponse(resp *http.Response, successCodes ...int) (SecureUnwrapKeyResponse, error) {
 	result := SecureUnwrapKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureKeyOperationResult); err != nil {
 		return SecureUnwrapKeyResponse{}, err
 	}
@@ -1225,11 +1251,7 @@ func (client *Client) SecureWrapKey(ctx context.Context, name string, version st
 	if err != nil {
 		return SecureWrapKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecureWrapKeyResponse{}, err
-	}
-	resp, err := client.secureWrapKeyHandleResponse(httpResp)
+	resp, err := client.secureWrapKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1246,7 +1268,7 @@ func (client *Client) secureWrapKeyCreateRequest(ctx context.Context, name strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1257,8 +1279,11 @@ func (client *Client) secureWrapKeyCreateRequest(ctx context.Context, name strin
 }
 
 // secureWrapKeyHandleResponse handles the SecureWrapKey response.
-func (client *Client) secureWrapKeyHandleResponse(resp *http.Response) (SecureWrapKeyResponse, error) {
+func (client *Client) secureWrapKeyHandleResponse(resp *http.Response, successCodes ...int) (SecureWrapKeyResponse, error) {
 	result := SecureWrapKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecureKeyOperationResult); err != nil {
 		return SecureWrapKeyResponse{}, err
 	}
@@ -1288,11 +1313,7 @@ func (client *Client) Sign(ctx context.Context, name string, version string, par
 	if err != nil {
 		return SignResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SignResponse{}, err
-	}
-	resp, err := client.signHandleResponse(httpResp)
+	resp, err := client.signHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1309,7 +1330,7 @@ func (client *Client) signCreateRequest(ctx context.Context, name string, versio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1320,8 +1341,11 @@ func (client *Client) signCreateRequest(ctx context.Context, name string, versio
 }
 
 // signHandleResponse handles the Sign response.
-func (client *Client) signHandleResponse(resp *http.Response) (SignResponse, error) {
+func (client *Client) signHandleResponse(resp *http.Response, successCodes ...int) (SignResponse, error) {
 	result := SignResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return SignResponse{}, err
 	}
@@ -1352,11 +1376,7 @@ func (client *Client) UnwrapKey(ctx context.Context, name string, version string
 	if err != nil {
 		return UnwrapKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UnwrapKeyResponse{}, err
-	}
-	resp, err := client.unwrapKeyHandleResponse(httpResp)
+	resp, err := client.unwrapKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1373,7 +1393,7 @@ func (client *Client) unwrapKeyCreateRequest(ctx context.Context, name string, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1384,8 +1404,11 @@ func (client *Client) unwrapKeyCreateRequest(ctx context.Context, name string, v
 }
 
 // unwrapKeyHandleResponse handles the UnwrapKey response.
-func (client *Client) unwrapKeyHandleResponse(resp *http.Response) (UnwrapKeyResponse, error) {
+func (client *Client) unwrapKeyHandleResponse(resp *http.Response, successCodes ...int) (UnwrapKeyResponse, error) {
 	result := UnwrapKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return UnwrapKeyResponse{}, err
 	}
@@ -1416,11 +1439,7 @@ func (client *Client) UpdateKey(ctx context.Context, name string, version string
 	if err != nil {
 		return UpdateKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateKeyResponse{}, err
-	}
-	resp, err := client.updateKeyHandleResponse(httpResp)
+	resp, err := client.updateKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1437,7 +1456,7 @@ func (client *Client) updateKeyCreateRequest(ctx context.Context, name string, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1448,8 +1467,11 @@ func (client *Client) updateKeyCreateRequest(ctx context.Context, name string, v
 }
 
 // updateKeyHandleResponse handles the UpdateKey response.
-func (client *Client) updateKeyHandleResponse(resp *http.Response) (UpdateKeyResponse, error) {
+func (client *Client) updateKeyHandleResponse(resp *http.Response, successCodes ...int) (UpdateKeyResponse, error) {
 	result := UpdateKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return UpdateKeyResponse{}, err
 	}
@@ -1477,11 +1499,7 @@ func (client *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, 
 	if err != nil {
 		return UpdateKeyRotationPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateKeyRotationPolicyResponse{}, err
-	}
-	resp, err := client.updateKeyRotationPolicyHandleResponse(httpResp)
+	resp, err := client.updateKeyRotationPolicyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1497,7 +1515,7 @@ func (client *Client) updateKeyRotationPolicyCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1508,8 +1526,11 @@ func (client *Client) updateKeyRotationPolicyCreateRequest(ctx context.Context, 
 }
 
 // updateKeyRotationPolicyHandleResponse handles the UpdateKeyRotationPolicy response.
-func (client *Client) updateKeyRotationPolicyHandleResponse(resp *http.Response) (UpdateKeyRotationPolicyResponse, error) {
+func (client *Client) updateKeyRotationPolicyHandleResponse(resp *http.Response, successCodes ...int) (UpdateKeyRotationPolicyResponse, error) {
 	result := UpdateKeyRotationPolicyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
 		return UpdateKeyRotationPolicyResponse{}, err
 	}
@@ -1541,11 +1562,7 @@ func (client *Client) Verify(ctx context.Context, name string, version string, p
 	if err != nil {
 		return VerifyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VerifyResponse{}, err
-	}
-	resp, err := client.verifyHandleResponse(httpResp)
+	resp, err := client.verifyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1562,7 +1579,7 @@ func (client *Client) verifyCreateRequest(ctx context.Context, name string, vers
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1573,8 +1590,11 @@ func (client *Client) verifyCreateRequest(ctx context.Context, name string, vers
 }
 
 // verifyHandleResponse handles the Verify response.
-func (client *Client) verifyHandleResponse(resp *http.Response) (VerifyResponse, error) {
+func (client *Client) verifyHandleResponse(resp *http.Response, successCodes ...int) (VerifyResponse, error) {
 	result := VerifyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyVerifyResult); err != nil {
 		return VerifyResponse{}, err
 	}
@@ -1607,11 +1627,7 @@ func (client *Client) WrapKey(ctx context.Context, name string, version string, 
 	if err != nil {
 		return WrapKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WrapKeyResponse{}, err
-	}
-	resp, err := client.wrapKeyHandleResponse(httpResp)
+	resp, err := client.wrapKeyHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -1628,7 +1644,7 @@ func (client *Client) wrapKeyCreateRequest(ctx context.Context, name string, ver
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1639,8 +1655,11 @@ func (client *Client) wrapKeyCreateRequest(ctx context.Context, name string, ver
 }
 
 // wrapKeyHandleResponse handles the WrapKey response.
-func (client *Client) wrapKeyHandleResponse(resp *http.Response) (WrapKeyResponse, error) {
+func (client *Client) wrapKeyHandleResponse(resp *http.Response, successCodes ...int) (WrapKeyResponse, error) {
 	result := WrapKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyOperationResult); err != nil {
 		return WrapKeyResponse{}, err
 	}

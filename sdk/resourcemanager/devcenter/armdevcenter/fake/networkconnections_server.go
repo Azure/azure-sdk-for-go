@@ -30,6 +30,14 @@ type NetworkConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginRunHealthChecks is the fake for method NetworkConnectionsClient.BeginRunHealthChecks
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRunHealthChecks func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginRunHealthChecksOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method NetworkConnectionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkConnectionName string, body armdevcenter.NetworkConnectionUpdate, options *armdevcenter.NetworkConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientGetOptions) (resp azfake.Responder[armdevcenter.NetworkConnectionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -53,14 +61,6 @@ type NetworkConnectionsServer struct {
 	// NewListOutboundNetworkDependenciesEndpointsPager is the fake for method NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOutboundNetworkDependenciesEndpointsPager func(resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions) (resp azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse])
-
-	// BeginRunHealthChecks is the fake for method NetworkConnectionsClient.BeginRunHealthChecks
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRunHealthChecks func(ctx context.Context, resourceGroupName string, networkConnectionName string, options *armdevcenter.NetworkConnectionsClientBeginRunHealthChecksOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method NetworkConnectionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkConnectionName string, body armdevcenter.NetworkConnectionUpdate, options *armdevcenter.NetworkConnectionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkConnectionsServerTransport creates a new instance of NetworkConnectionsServerTransport with the provided implementation.
@@ -71,12 +71,12 @@ func NewNetworkConnectionsServerTransport(srv *NetworkConnectionsServer) *Networ
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse]](),
+		beginRunHealthChecks:        newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListBySubscriptionResponse]](),
 		newListHealthDetailsPager:   newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListHealthDetailsResponse]](),
 		newListOutboundNetworkDependenciesEndpointsPager: newTracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse]](),
-		beginRunHealthChecks:                             newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]](),
-		beginUpdate:                                      newTracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]](),
 	}
 }
 
@@ -86,12 +86,12 @@ type NetworkConnectionsServerTransport struct {
 	srv                                              *NetworkConnectionsServer
 	beginCreateOrUpdate                              *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientCreateOrUpdateResponse]]
 	beginDelete                                      *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientDeleteResponse]]
+	beginRunHealthChecks                             *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]]
+	beginUpdate                                      *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]]
 	newListByResourceGroupPager                      *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager                       *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListBySubscriptionResponse]]
 	newListHealthDetailsPager                        *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListHealthDetailsResponse]]
 	newListOutboundNetworkDependenciesEndpointsPager *tracker[azfake.PagerResponder[armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse]]
-	beginRunHealthChecks                             *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientRunHealthChecksResponse]]
-	beginUpdate                                      *tracker[azfake.PollerResponder[armdevcenter.NetworkConnectionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkConnectionsServerTransport.
@@ -99,7 +99,7 @@ func (n *NetworkConnectionsServerTransport) Do(req *http.Request) (*http.Respons
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return n.dispatchToMethodFake(req, method)
@@ -119,6 +119,10 @@ func (n *NetworkConnectionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NetworkConnectionsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkConnectionsClient.BeginRunHealthChecks":
+				res.resp, res.err = n.dispatchBeginRunHealthChecks(req)
+			case "NetworkConnectionsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkConnectionsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkConnectionsClient.GetHealthDetails":
@@ -131,10 +135,6 @@ func (n *NetworkConnectionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = n.dispatchNewListHealthDetailsPager(req)
 			case "NetworkConnectionsClient.NewListOutboundNetworkDependenciesEndpointsPager":
 				res.resp, res.err = n.dispatchNewListOutboundNetworkDependenciesEndpointsPager(req)
-			case "NetworkConnectionsClient.BeginRunHealthChecks":
-				res.resp, res.err = n.dispatchBeginRunHealthChecks(req)
-			case "NetworkConnectionsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -243,292 +243,6 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
-func (n *NetworkConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkConnection, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkConnectionsServerTransport) dispatchGetHealthDetails(req *http.Request) (*http.Response, error) {
-	if n.srv.GetHealthDetails == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetHealthDetails not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/healthChecks/latest`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.GetHealthDetails(req.Context(), resourceGroupNameParam, networkConnectionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HealthCheckStatusDetails, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkConnectionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdevcenter.NetworkConnectionsClientListByResourceGroupOptions
-		if topParam != nil {
-			options = &armdevcenter.NetworkConnectionsClientListByResourceGroupOptions{
-				Top: topParam,
-			}
-		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdevcenter.NetworkConnectionsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NetworkConnectionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdevcenter.NetworkConnectionsClientListBySubscriptionOptions
-		if topParam != nil {
-			options = &armdevcenter.NetworkConnectionsClientListBySubscriptionOptions{
-				Top: topParam,
-			}
-		}
-		resp := n.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdevcenter.NetworkConnectionsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		n.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NetworkConnectionsServerTransport) dispatchNewListHealthDetailsPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListHealthDetailsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListHealthDetailsPager not implemented")}
-	}
-	newListHealthDetailsPager := n.newListHealthDetailsPager.get(req)
-	if newListHealthDetailsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/healthChecks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdevcenter.NetworkConnectionsClientListHealthDetailsOptions
-		if topParam != nil {
-			options = &armdevcenter.NetworkConnectionsClientListHealthDetailsOptions{
-				Top: topParam,
-			}
-		}
-		resp := n.srv.NewListHealthDetailsPager(resourceGroupNameParam, networkConnectionNameParam, options)
-		newListHealthDetailsPager = &resp
-		n.newListHealthDetailsPager.add(req, newListHealthDetailsPager)
-		server.PagerResponderInjectNextLinks(newListHealthDetailsPager, req, func(page *armdevcenter.NetworkConnectionsClientListHealthDetailsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListHealthDetailsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListHealthDetailsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListHealthDetailsPager) {
-		n.newListHealthDetailsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NetworkConnectionsServerTransport) dispatchNewListOutboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListOutboundNetworkDependenciesEndpointsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesEndpointsPager not implemented")}
-	}
-	newListOutboundNetworkDependenciesEndpointsPager := n.newListOutboundNetworkDependenciesEndpointsPager.get(req)
-	if newListOutboundNetworkDependenciesEndpointsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions
-		if topParam != nil {
-			options = &armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions{
-				Top: topParam,
-			}
-		}
-		resp := n.srv.NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, networkConnectionNameParam, options)
-		newListOutboundNetworkDependenciesEndpointsPager = &resp
-		n.newListOutboundNetworkDependenciesEndpointsPager.add(req, newListOutboundNetworkDependenciesEndpointsPager)
-		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesEndpointsPager, req, func(page *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesEndpointsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
-		n.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (n *NetworkConnectionsServerTransport) dispatchBeginRunHealthChecks(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginRunHealthChecks == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRunHealthChecks not implemented")}
@@ -618,6 +332,280 @@ func (n *NetworkConnectionsServerTransport) dispatchBeginUpdate(req *http.Reques
 		n.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkConnection, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchGetHealthDetails(req *http.Request) (*http.Response, error) {
+	if n.srv.GetHealthDetails == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetHealthDetails not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/healthChecks/latest`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.GetHealthDetails(req.Context(), resourceGroupNameParam, networkConnectionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HealthCheckStatusDetails, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdevcenter.NetworkConnectionsClientListByResourceGroupOptions
+		if topParam != nil {
+			options = &armdevcenter.NetworkConnectionsClientListByResourceGroupOptions{
+				Top: topParam,
+			}
+		}
+		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdevcenter.NetworkConnectionsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		n.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdevcenter.NetworkConnectionsClientListBySubscriptionOptions
+		if topParam != nil {
+			options = &armdevcenter.NetworkConnectionsClientListBySubscriptionOptions{
+				Top: topParam,
+			}
+		}
+		resp := n.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		n.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdevcenter.NetworkConnectionsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		n.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchNewListHealthDetailsPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListHealthDetailsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListHealthDetailsPager not implemented")}
+	}
+	newListHealthDetailsPager := n.newListHealthDetailsPager.get(req)
+	if newListHealthDetailsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/healthChecks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdevcenter.NetworkConnectionsClientListHealthDetailsOptions
+		if topParam != nil {
+			options = &armdevcenter.NetworkConnectionsClientListHealthDetailsOptions{
+				Top: topParam,
+			}
+		}
+		resp := n.srv.NewListHealthDetailsPager(resourceGroupNameParam, networkConnectionNameParam, options)
+		newListHealthDetailsPager = &resp
+		n.newListHealthDetailsPager.add(req, newListHealthDetailsPager)
+		server.PagerResponderInjectNextLinks(newListHealthDetailsPager, req, func(page *armdevcenter.NetworkConnectionsClientListHealthDetailsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListHealthDetailsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListHealthDetailsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListHealthDetailsPager) {
+		n.newListHealthDetailsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NetworkConnectionsServerTransport) dispatchNewListOutboundNetworkDependenciesEndpointsPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListOutboundNetworkDependenciesEndpointsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListOutboundNetworkDependenciesEndpointsPager not implemented")}
+	}
+	newListOutboundNetworkDependenciesEndpointsPager := n.newListOutboundNetworkDependenciesEndpointsPager.get(req)
+	if newListOutboundNetworkDependenciesEndpointsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/networkConnections/(?P<networkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/outboundNetworkDependenciesEndpoints`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkConnectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkConnectionName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions
+		if topParam != nil {
+			options = &armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsOptions{
+				Top: topParam,
+			}
+		}
+		resp := n.srv.NewListOutboundNetworkDependenciesEndpointsPager(resourceGroupNameParam, networkConnectionNameParam, options)
+		newListOutboundNetworkDependenciesEndpointsPager = &resp
+		n.newListOutboundNetworkDependenciesEndpointsPager.add(req, newListOutboundNetworkDependenciesEndpointsPager)
+		server.PagerResponderInjectNextLinks(newListOutboundNetworkDependenciesEndpointsPager, req, func(page *armdevcenter.NetworkConnectionsClientListOutboundNetworkDependenciesEndpointsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListOutboundNetworkDependenciesEndpointsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListOutboundNetworkDependenciesEndpointsPager) {
+		n.newListOutboundNetworkDependenciesEndpointsPager.remove(req)
+	}
 	return resp, nil
 }
 

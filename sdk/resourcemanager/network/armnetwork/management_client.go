@@ -86,7 +86,8 @@ func (client *ManagementClient) deleteBastionShareableLink(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -161,7 +162,8 @@ func (client *ManagementClient) deleteBastionShareableLinkByToken(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -238,7 +240,8 @@ func (client *ManagementClient) generatevirtualwanvpnserverconfigurationvpnprofi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -331,7 +334,8 @@ func (client *ManagementClient) getActiveSessions(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -442,7 +446,8 @@ func (client *ManagementClient) putBastionShareableLink(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -518,7 +523,8 @@ func (client *ManagementClient) CheckDNSNameAvailability(ctx context.Context, lo
 	if err != nil {
 		return ManagementClientCheckDNSNameAvailabilityResponse{}, err
 	}
-	return client.checkDNSNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkDNSNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkDNSNameAvailabilityCreateRequest creates the CheckDNSNameAvailability request.
@@ -575,7 +581,8 @@ func (client *ManagementClient) ExpressRouteProviderPort(ctx context.Context, pr
 	if err != nil {
 		return ManagementClientExpressRouteProviderPortResponse{}, err
 	}
-	return client.expressRouteProviderPortHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.expressRouteProviderPortHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // expressRouteProviderPortCreateRequest creates the ExpressRouteProviderPort request.
@@ -633,7 +640,8 @@ func (client *ManagementClient) ListActiveConnectivityConfigurations(ctx context
 	if err != nil {
 		return ManagementClientListActiveConnectivityConfigurationsResponse{}, err
 	}
-	return client.listActiveConnectivityConfigurationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listActiveConnectivityConfigurationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listActiveConnectivityConfigurationsCreateRequest creates the ListActiveConnectivityConfigurations request.
@@ -702,7 +710,8 @@ func (client *ManagementClient) ListActiveSecurityAdminRules(ctx context.Context
 	if err != nil {
 		return ManagementClientListActiveSecurityAdminRulesResponse{}, err
 	}
-	return client.listActiveSecurityAdminRulesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listActiveSecurityAdminRulesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listActiveSecurityAdminRulesCreateRequest creates the ListActiveSecurityAdminRules request.
@@ -772,7 +781,8 @@ func (client *ManagementClient) ListNetworkManagerEffectiveConnectivityConfigura
 	if err != nil {
 		return ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse{}, err
 	}
-	return client.listNetworkManagerEffectiveConnectivityConfigurationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listNetworkManagerEffectiveConnectivityConfigurationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listNetworkManagerEffectiveConnectivityConfigurationsCreateRequest creates the ListNetworkManagerEffectiveConnectivityConfigurations request.
@@ -841,7 +851,8 @@ func (client *ManagementClient) ListNetworkManagerEffectiveSecurityAdminRules(ct
 	if err != nil {
 		return ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse{}, err
 	}
-	return client.listNetworkManagerEffectiveSecurityAdminRulesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listNetworkManagerEffectiveSecurityAdminRulesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listNetworkManagerEffectiveSecurityAdminRulesCreateRequest creates the ListNetworkManagerEffectiveSecurityAdminRules request.
@@ -1073,7 +1084,8 @@ func (client *ManagementClient) SupportedSecurityProviders(ctx context.Context, 
 	if err != nil {
 		return ManagementClientSupportedSecurityProvidersResponse{}, err
 	}
-	return client.supportedSecurityProvidersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.supportedSecurityProvidersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // supportedSecurityProvidersCreateRequest creates the SupportedSecurityProviders request.

@@ -64,7 +64,8 @@ func (client *VirtualMachineExtensionImagesClient) Get(ctx context.Context, loca
 	if err != nil {
 		return VirtualMachineExtensionImagesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -132,7 +133,8 @@ func (client *VirtualMachineExtensionImagesClient) ListTypes(ctx context.Context
 	if err != nil {
 		return VirtualMachineExtensionImagesClientListTypesResponse{}, err
 	}
-	return client.listTypesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listTypesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listTypesCreateRequest creates the ListTypes request.
@@ -192,7 +194,8 @@ func (client *VirtualMachineExtensionImagesClient) ListVersions(ctx context.Cont
 	if err != nil {
 		return VirtualMachineExtensionImagesClientListVersionsResponse{}, err
 	}
-	return client.listVersionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listVersionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listVersionsCreateRequest creates the ListVersions request.

@@ -49,7 +49,7 @@ func ExampleFirewallRulesClient_BeginCreateOrReplace() {
 	// 			StartIPAddress: to.Ptr("10.0.0.1"),
 	// 			EndIPAddress: to.Ptr("10.0.0.254"),
 	// 			Description: to.Ptr("Allow access from the corporate network"),
-	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateUpdating),
 	// 		},
 	// 	},
 	// }

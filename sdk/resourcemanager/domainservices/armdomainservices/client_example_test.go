@@ -140,335 +140,6 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01-preview/GetDomainService.json
-func ExampleClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().Get(ctx, "TestResourceGroup", "TestDomainService.com", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdomainservices.ClientGetResponse{
-	// 	DomainService: armdomainservices.DomainService{
-	// 		Name: to.Ptr("TestDomainService.com"),
-	// 		Type: to.Ptr("Microsoft.AAD/DomainServices"),
-	// 		ID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestResourceGroup/providers/Microsoft.AAD/DomainServices/TestDomainService.com"),
-	// 		Properties: &armdomainservices.DomainServiceProperties{
-	// 			DeploymentID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-	// 			DomainName: to.Ptr("TestDomainService.com"),
-	// 			DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
-	// 				NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
-	// 				SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
-	// 				SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameEnabled),
-	// 				TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
-	// 			},
-	// 			FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
-	// 			LdapsSettings: &armdomainservices.LdapsSettings{
-	// 				CertificateNotAfter: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
-	// 				CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
-	// 				ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
-	// 				Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
-	// 				PublicCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
-	// 			},
-	// 			NotificationSettings: &armdomainservices.NotificationSettings{
-	// 				AdditionalRecipients: []*string{
-	// 					to.Ptr("jicha@microsoft.com"),
-	// 					to.Ptr("caalmont@microsoft.com"),
-	// 				},
-	// 				NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
-	// 				NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			ReplicaSets: []*armdomainservices.ReplicaSet{
-	// 				{
-	// 					DomainControllerIPAddress: []*string{
-	// 						to.Ptr("10.0.0.1"),
-	// 						to.Ptr("10.0.0.2"),
-	// 					},
-	// 					ExternalAccessIPAddress: to.Ptr("13.64.148.151"),
-	// 					HealthAlerts: []*armdomainservices.HealthAlert{
-	// 						{
-	// 							Name: to.Ptr("The managed domain is experiencing a network error"),
-	// 							ID: to.Ptr("AADDS104"),
-	// 							Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
-	// 							LastDetected: to.Ptr(time.Date(2018, time.September, 18, 17, 46, 39, 269788800, time.UTC)),
-	// 							Raised: to.Ptr(time.Date(2018, time.September, 18, 1, 55, 40, 783428900, time.UTC)),
-	// 							ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
-	// 							Severity: to.Ptr("2"),
-	// 						},
-	// 					},
-	// 					HealthLastEvaluated: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
-	// 					HealthMonitors: []*armdomainservices.HealthMonitor{
-	// 						{
-	// 							Name: to.Ptr("Backup"),
-	// 							ID: to.Ptr("AADDS501"),
-	// 							Details: to.Ptr("Last backed up on Tue, 18 Sep 2018 03:37:04 GMT"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("Synchronization with Azure AD"),
-	// 							ID: to.Ptr("AADDS500"),
-	// 							Details: to.Ptr("Synchronized on Tue, 18 Sep 2018 16:47:57 GMT."),
-	// 						},
-	// 					},
-	// 					Location: to.Ptr("West US"),
-	// 					ReplicaSetID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-	// 					SelfUnsuspendCounter: to.Ptr[int32](1),
-	// 					ServiceStatus: to.Ptr("Running"),
-	// 					SubnetID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/TestVnetWUS/subnets/TestSubnetWUS"),
-	// 					VnetSiteID: to.Ptr("99083198-a39c-469f-972d-59017e7f078c"),
-	// 				},
-	// 			},
-	// 			SyncOwner: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-	// 			TenantID: to.Ptr("3f8cd22c-7b32-48aa-a01c-f533133b1def"),
-	// 			Version: to.Ptr[int32](2),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-01-preview/ListDomainServicesBySubscription.json
-func ExampleClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdomainservices.ClientListResponse{
-		// 	DomainServiceListResult: armdomainservices.DomainServiceListResult{
-		// 		Value: []*armdomainservices.DomainService{
-		// 			{
-		// 				Name: to.Ptr("TestDomainService.com"),
-		// 				Type: to.Ptr("Microsoft.AAD/DomainServices"),
-		// 				ID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestResourceGroup/providers/Microsoft.AAD/DomainServices/TestDomainService.com"),
-		// 				Properties: &armdomainservices.DomainServiceProperties{
-		// 					DeploymentID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-		// 					DomainName: to.Ptr("TestDomainService.com"),
-		// 					DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
-		// 						NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
-		// 						SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
-		// 						SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameEnabled),
-		// 						TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
-		// 					},
-		// 					FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
-		// 					LdapsSettings: &armdomainservices.LdapsSettings{
-		// 						CertificateNotAfter: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
-		// 						CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
-		// 						ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
-		// 						Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
-		// 						PublicCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
-		// 					},
-		// 					NotificationSettings: &armdomainservices.NotificationSettings{
-		// 						AdditionalRecipients: []*string{
-		// 							to.Ptr("jicha@microsoft.com"),
-		// 							to.Ptr("caalmont@microsoft.com"),
-		// 						},
-		// 						NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
-		// 						NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
-		// 					},
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ReplicaSets: []*armdomainservices.ReplicaSet{
-		// 						{
-		// 							DomainControllerIPAddress: []*string{
-		// 								to.Ptr("10.0.0.1"),
-		// 								to.Ptr("10.0.0.2"),
-		// 							},
-		// 							ExternalAccessIPAddress: to.Ptr("13.64.148.151"),
-		// 							HealthAlerts: []*armdomainservices.HealthAlert{
-		// 								{
-		// 									Name: to.Ptr("The managed domain is experiencing a network error"),
-		// 									ID: to.Ptr("AADDS104"),
-		// 									Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
-		// 									LastDetected: to.Ptr(time.Date(2018, time.September, 18, 17, 46, 39, 269788800, time.UTC)),
-		// 									Raised: to.Ptr(time.Date(2018, time.September, 18, 1, 55, 40, 783428900, time.UTC)),
-		// 									ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
-		// 									Severity: to.Ptr("2"),
-		// 								},
-		// 							},
-		// 							HealthLastEvaluated: to.Ptr(time.Date(2018, time.February, 15, 21, 37, 4, 0, time.UTC)),
-		// 							HealthMonitors: []*armdomainservices.HealthMonitor{
-		// 								{
-		// 									Name: to.Ptr("Backup"),
-		// 									ID: to.Ptr("AADDS501"),
-		// 									Details: to.Ptr("Last backed up on Tue, 18 Sep 2018 03:37:04 GMT"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("Synchronization with Azure AD"),
-		// 									ID: to.Ptr("AADDS500"),
-		// 									Details: to.Ptr("Synchronized on Tue, 18 Sep 2018 16:47:57 GMT."),
-		// 								},
-		// 							},
-		// 							Location: to.Ptr("West US"),
-		// 							ReplicaSetID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-		// 							ServiceStatus: to.Ptr("Running"),
-		// 							SubnetID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/TestVnetWUS/subnets/TestSubnetWUS"),
-		// 							VnetSiteID: to.Ptr("99083198-a39c-469f-972d-59017e7f078c"),
-		// 						},
-		// 					},
-		// 					SyncOwner: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-		// 					TenantID: to.Ptr("3f8cd22c-7b32-48aa-a01c-f533133b1def"),
-		// 					Version: to.Ptr[int32](2),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-10-01-preview/ListDomainServicesByResourceGroup.json
-func ExampleClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClient().NewListByResourceGroupPager("TestResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdomainservices.ClientListByResourceGroupResponse{
-		// 	DomainServiceListResult: armdomainservices.DomainServiceListResult{
-		// 		Value: []*armdomainservices.DomainService{
-		// 			{
-		// 				Name: to.Ptr("TestDomainService.com"),
-		// 				Type: to.Ptr("Microsoft.AAD/DomainServices"),
-		// 				ID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestResourceGroup/providers/Microsoft.AAD/DomainServices/TestDomainService.com"),
-		// 				Properties: &armdomainservices.DomainServiceProperties{
-		// 					DeploymentID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-		// 					DomainName: to.Ptr("TestDomainService.com"),
-		// 					DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
-		// 						NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
-		// 						SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
-		// 						SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameEnabled),
-		// 						TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
-		// 					},
-		// 					FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
-		// 					LdapsSettings: &armdomainservices.LdapsSettings{
-		// 						CertificateNotAfter: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
-		// 						CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
-		// 						ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
-		// 						Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
-		// 						PublicCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
-		// 					},
-		// 					NotificationSettings: &armdomainservices.NotificationSettings{
-		// 						AdditionalRecipients: []*string{
-		// 							to.Ptr("jicha@microsoft.com"),
-		// 							to.Ptr("caalmont@microsoft.com"),
-		// 						},
-		// 						NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
-		// 						NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
-		// 					},
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ReplicaSets: []*armdomainservices.ReplicaSet{
-		// 						{
-		// 							DomainControllerIPAddress: []*string{
-		// 								to.Ptr("10.0.0.1"),
-		// 								to.Ptr("10.0.0.2"),
-		// 							},
-		// 							ExternalAccessIPAddress: to.Ptr("13.64.148.151"),
-		// 							HealthAlerts: []*armdomainservices.HealthAlert{
-		// 								{
-		// 									Name: to.Ptr("The managed domain is experiencing a network error"),
-		// 									ID: to.Ptr("AADDS104"),
-		// 									Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
-		// 									LastDetected: to.Ptr(time.Date(2018, time.September, 18, 17, 46, 39, 269788800, time.UTC)),
-		// 									Raised: to.Ptr(time.Date(2018, time.September, 18, 1, 55, 40, 783428900, time.UTC)),
-		// 									ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
-		// 									Severity: to.Ptr("2"),
-		// 								},
-		// 							},
-		// 							HealthLastEvaluated: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 4, 0, time.UTC)),
-		// 							HealthMonitors: []*armdomainservices.HealthMonitor{
-		// 								{
-		// 									Name: to.Ptr("Backup"),
-		// 									ID: to.Ptr("AADDS501"),
-		// 									Details: to.Ptr("Last backed up on Tue, 18 Sep 2018 03:37:04 GMT"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("Synchronization with Azure AD"),
-		// 									ID: to.Ptr("AADDS500"),
-		// 									Details: to.Ptr("Synchronized on Tue, 18 Sep 2018 16:47:57 GMT."),
-		// 								},
-		// 							},
-		// 							Location: to.Ptr("West US"),
-		// 							ReplicaSetID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-		// 							ServiceStatus: to.Ptr("Running"),
-		// 							SubnetID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/TestVnetWUS/subnets/TestSubnetWUS"),
-		// 							VnetSiteID: to.Ptr("99083198-a39c-469f-972d-59017e7f078c"),
-		// 						},
-		// 					},
-		// 					SyncOwner: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
-		// 					TenantID: to.Ptr("3f8cd22c-7b32-48aa-a01c-f533133b1def"),
-		// 					Version: to.Ptr[int32](2),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-10-01-preview/UnsuspendDomainService.json
-func ExampleClient_Unsuspend() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().Unsuspend(ctx, "example-rg", "example-domainservice", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdomainservices.ClientUnsuspendResponse{
-	// 	UnsuspendDomainServiceResponse: armdomainservices.UnsuspendDomainServiceResponse{
-	// 		Message: to.Ptr("Domain service unsuspended successfully."),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-10-01-preview/UpdateDomainService.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -601,6 +272,335 @@ func ExampleClient_BeginUpdate() {
 	// 			TenantID: to.Ptr("3f8cd22c-7b32-48aa-a01c-f533133b1def"),
 	// 			Version: to.Ptr[int32](2),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-10-01-preview/GetDomainService.json
+func ExampleClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().Get(ctx, "TestResourceGroup", "TestDomainService.com", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdomainservices.ClientGetResponse{
+	// 	DomainService: armdomainservices.DomainService{
+	// 		Name: to.Ptr("TestDomainService.com"),
+	// 		Type: to.Ptr("Microsoft.AAD/DomainServices"),
+	// 		ID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestResourceGroup/providers/Microsoft.AAD/DomainServices/TestDomainService.com"),
+	// 		Properties: &armdomainservices.DomainServiceProperties{
+	// 			DeploymentID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+	// 			DomainName: to.Ptr("TestDomainService.com"),
+	// 			DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
+	// 				NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
+	// 				SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
+	// 				SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameEnabled),
+	// 				TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
+	// 			},
+	// 			FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
+	// 			LdapsSettings: &armdomainservices.LdapsSettings{
+	// 				CertificateNotAfter: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
+	// 				CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
+	// 				ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
+	// 				Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
+	// 				PublicCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
+	// 			},
+	// 			NotificationSettings: &armdomainservices.NotificationSettings{
+	// 				AdditionalRecipients: []*string{
+	// 					to.Ptr("jicha@microsoft.com"),
+	// 					to.Ptr("caalmont@microsoft.com"),
+	// 				},
+	// 				NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
+	// 				NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			ReplicaSets: []*armdomainservices.ReplicaSet{
+	// 				{
+	// 					DomainControllerIPAddress: []*string{
+	// 						to.Ptr("10.0.0.1"),
+	// 						to.Ptr("10.0.0.2"),
+	// 					},
+	// 					ExternalAccessIPAddress: to.Ptr("13.64.148.151"),
+	// 					HealthAlerts: []*armdomainservices.HealthAlert{
+	// 						{
+	// 							Name: to.Ptr("The managed domain is experiencing a network error"),
+	// 							ID: to.Ptr("AADDS104"),
+	// 							Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
+	// 							LastDetected: to.Ptr(time.Date(2018, time.September, 18, 17, 46, 39, 269788800, time.UTC)),
+	// 							Raised: to.Ptr(time.Date(2018, time.September, 18, 1, 55, 40, 783428900, time.UTC)),
+	// 							ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
+	// 							Severity: to.Ptr("2"),
+	// 						},
+	// 					},
+	// 					HealthLastEvaluated: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
+	// 					HealthMonitors: []*armdomainservices.HealthMonitor{
+	// 						{
+	// 							Name: to.Ptr("Backup"),
+	// 							ID: to.Ptr("AADDS501"),
+	// 							Details: to.Ptr("Last backed up on Tue, 18 Sep 2018 03:37:04 GMT"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("Synchronization with Azure AD"),
+	// 							ID: to.Ptr("AADDS500"),
+	// 							Details: to.Ptr("Synchronized on Tue, 18 Sep 2018 16:47:57 GMT."),
+	// 						},
+	// 					},
+	// 					Location: to.Ptr("West US"),
+	// 					ReplicaSetID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+	// 					SelfUnsuspendCounter: to.Ptr[int32](1),
+	// 					ServiceStatus: to.Ptr("Running"),
+	// 					SubnetID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/TestVnetWUS/subnets/TestSubnetWUS"),
+	// 					VnetSiteID: to.Ptr("99083198-a39c-469f-972d-59017e7f078c"),
+	// 				},
+	// 			},
+	// 			SyncOwner: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+	// 			TenantID: to.Ptr("3f8cd22c-7b32-48aa-a01c-f533133b1def"),
+	// 			Version: to.Ptr[int32](2),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-10-01-preview/ListDomainServicesByResourceGroup.json
+func ExampleClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClient().NewListByResourceGroupPager("TestResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdomainservices.ClientListByResourceGroupResponse{
+		// 	DomainServiceListResult: armdomainservices.DomainServiceListResult{
+		// 		Value: []*armdomainservices.DomainService{
+		// 			{
+		// 				Name: to.Ptr("TestDomainService.com"),
+		// 				Type: to.Ptr("Microsoft.AAD/DomainServices"),
+		// 				ID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestResourceGroup/providers/Microsoft.AAD/DomainServices/TestDomainService.com"),
+		// 				Properties: &armdomainservices.DomainServiceProperties{
+		// 					DeploymentID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+		// 					DomainName: to.Ptr("TestDomainService.com"),
+		// 					DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
+		// 						NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
+		// 						SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
+		// 						SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameEnabled),
+		// 						TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
+		// 					},
+		// 					FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
+		// 					LdapsSettings: &armdomainservices.LdapsSettings{
+		// 						CertificateNotAfter: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
+		// 						CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
+		// 						ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
+		// 						Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
+		// 						PublicCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
+		// 					},
+		// 					NotificationSettings: &armdomainservices.NotificationSettings{
+		// 						AdditionalRecipients: []*string{
+		// 							to.Ptr("jicha@microsoft.com"),
+		// 							to.Ptr("caalmont@microsoft.com"),
+		// 						},
+		// 						NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
+		// 						NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ReplicaSets: []*armdomainservices.ReplicaSet{
+		// 						{
+		// 							DomainControllerIPAddress: []*string{
+		// 								to.Ptr("10.0.0.1"),
+		// 								to.Ptr("10.0.0.2"),
+		// 							},
+		// 							ExternalAccessIPAddress: to.Ptr("13.64.148.151"),
+		// 							HealthAlerts: []*armdomainservices.HealthAlert{
+		// 								{
+		// 									Name: to.Ptr("The managed domain is experiencing a network error"),
+		// 									ID: to.Ptr("AADDS104"),
+		// 									Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
+		// 									LastDetected: to.Ptr(time.Date(2018, time.September, 18, 17, 46, 39, 269788800, time.UTC)),
+		// 									Raised: to.Ptr(time.Date(2018, time.September, 18, 1, 55, 40, 783428900, time.UTC)),
+		// 									ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
+		// 									Severity: to.Ptr("2"),
+		// 								},
+		// 							},
+		// 							HealthLastEvaluated: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 4, 0, time.UTC)),
+		// 							HealthMonitors: []*armdomainservices.HealthMonitor{
+		// 								{
+		// 									Name: to.Ptr("Backup"),
+		// 									ID: to.Ptr("AADDS501"),
+		// 									Details: to.Ptr("Last backed up on Tue, 18 Sep 2018 03:37:04 GMT"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("Synchronization with Azure AD"),
+		// 									ID: to.Ptr("AADDS500"),
+		// 									Details: to.Ptr("Synchronized on Tue, 18 Sep 2018 16:47:57 GMT."),
+		// 								},
+		// 							},
+		// 							Location: to.Ptr("West US"),
+		// 							ReplicaSetID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+		// 							ServiceStatus: to.Ptr("Running"),
+		// 							SubnetID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/TestVnetWUS/subnets/TestSubnetWUS"),
+		// 							VnetSiteID: to.Ptr("99083198-a39c-469f-972d-59017e7f078c"),
+		// 						},
+		// 					},
+		// 					SyncOwner: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+		// 					TenantID: to.Ptr("3f8cd22c-7b32-48aa-a01c-f533133b1def"),
+		// 					Version: to.Ptr[int32](2),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-10-01-preview/ListDomainServicesBySubscription.json
+func ExampleClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdomainservices.ClientListResponse{
+		// 	DomainServiceListResult: armdomainservices.DomainServiceListResult{
+		// 		Value: []*armdomainservices.DomainService{
+		// 			{
+		// 				Name: to.Ptr("TestDomainService.com"),
+		// 				Type: to.Ptr("Microsoft.AAD/DomainServices"),
+		// 				ID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestResourceGroup/providers/Microsoft.AAD/DomainServices/TestDomainService.com"),
+		// 				Properties: &armdomainservices.DomainServiceProperties{
+		// 					DeploymentID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+		// 					DomainName: to.Ptr("TestDomainService.com"),
+		// 					DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
+		// 						NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
+		// 						SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
+		// 						SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameEnabled),
+		// 						TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
+		// 					},
+		// 					FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
+		// 					LdapsSettings: &armdomainservices.LdapsSettings{
+		// 						CertificateNotAfter: to.Ptr(time.Date(2018, time.February, 15, 21, 43, 21, 0, time.UTC)),
+		// 						CertificateThumbprint: to.Ptr("9154A390F0C387D679E0DD040701745CDFED67F3"),
+		// 						ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
+		// 						Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
+		// 						PublicCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
+		// 					},
+		// 					NotificationSettings: &armdomainservices.NotificationSettings{
+		// 						AdditionalRecipients: []*string{
+		// 							to.Ptr("jicha@microsoft.com"),
+		// 							to.Ptr("caalmont@microsoft.com"),
+		// 						},
+		// 						NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
+		// 						NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ReplicaSets: []*armdomainservices.ReplicaSet{
+		// 						{
+		// 							DomainControllerIPAddress: []*string{
+		// 								to.Ptr("10.0.0.1"),
+		// 								to.Ptr("10.0.0.2"),
+		// 							},
+		// 							ExternalAccessIPAddress: to.Ptr("13.64.148.151"),
+		// 							HealthAlerts: []*armdomainservices.HealthAlert{
+		// 								{
+		// 									Name: to.Ptr("The managed domain is experiencing a network error"),
+		// 									ID: to.Ptr("AADDS104"),
+		// 									Issue: to.Ptr("Microsoft is unable to reach the domain controllers for this managed domain. This may happen if a network security group (NSG) configured on your virtual network blocks access to the managed domain. Another possible reason is if there is a user defined route that blocks incoming traffic from the internet."),
+		// 									LastDetected: to.Ptr(time.Date(2018, time.September, 18, 17, 46, 39, 269788800, time.UTC)),
+		// 									Raised: to.Ptr(time.Date(2018, time.September, 18, 1, 55, 40, 783428900, time.UTC)),
+		// 									ResolutionURI: to.Ptr("https://aka.ms/aadds-neterr"),
+		// 									Severity: to.Ptr("2"),
+		// 								},
+		// 							},
+		// 							HealthLastEvaluated: to.Ptr(time.Date(2018, time.February, 15, 21, 37, 4, 0, time.UTC)),
+		// 							HealthMonitors: []*armdomainservices.HealthMonitor{
+		// 								{
+		// 									Name: to.Ptr("Backup"),
+		// 									ID: to.Ptr("AADDS501"),
+		// 									Details: to.Ptr("Last backed up on Tue, 18 Sep 2018 03:37:04 GMT"),
+		// 								},
+		// 								{
+		// 									Name: to.Ptr("Synchronization with Azure AD"),
+		// 									ID: to.Ptr("AADDS500"),
+		// 									Details: to.Ptr("Synchronized on Tue, 18 Sep 2018 16:47:57 GMT."),
+		// 								},
+		// 							},
+		// 							Location: to.Ptr("West US"),
+		// 							ReplicaSetID: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+		// 							ServiceStatus: to.Ptr("Running"),
+		// 							SubnetID: to.Ptr("/subscriptions/1639790a-76a2-4ac4-98d9-8562f5dfcb4d/resourceGroups/TestNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/TestVnetWUS/subnets/TestSubnetWUS"),
+		// 							VnetSiteID: to.Ptr("99083198-a39c-469f-972d-59017e7f078c"),
+		// 						},
+		// 					},
+		// 					SyncOwner: to.Ptr("4a619871-0150-41c4-aeb4-0b10deb7940a"),
+		// 					TenantID: to.Ptr("3f8cd22c-7b32-48aa-a01c-f533133b1def"),
+		// 					Version: to.Ptr[int32](2),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-10-01-preview/UnsuspendDomainService.json
+func ExampleClient_Unsuspend() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdomainservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().Unsuspend(ctx, "example-rg", "example-domainservice", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdomainservices.ClientUnsuspendResponse{
+	// 	UnsuspendDomainServiceResponse: armdomainservices.UnsuspendDomainServiceResponse{
+	// 		Message: to.Ptr("Domain service unsuspended successfully."),
 	// 	},
 	// }
 }

@@ -64,7 +64,8 @@ func (client *Client) CreateOrUpdate(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *Client) Delete(ctx context.Context, resourceGroupName string, aler
 	if err != nil {
 		return ClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -190,7 +192,8 @@ func (client *Client) GetByName(ctx context.Context, resourceGroupName string, a
 	if err != nil {
 		return ClientGetByNameResponse{}, err
 	}
-	return client.getByNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByNameCreateRequest creates the GetByName request.
@@ -398,7 +401,8 @@ func (client *Client) Update(ctx context.Context, resourceGroupName string, aler
 	if err != nil {
 		return ClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

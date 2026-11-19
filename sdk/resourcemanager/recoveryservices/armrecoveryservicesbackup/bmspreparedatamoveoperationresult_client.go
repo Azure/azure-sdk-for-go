@@ -63,7 +63,8 @@ func (client *BMSPrepareDataMoveOperationResultClient) Get(ctx context.Context, 
 	if err != nil {
 		return BMSPrepareDataMoveOperationResultClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

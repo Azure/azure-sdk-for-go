@@ -64,7 +64,8 @@ func (client *WorkflowsClient) Abort(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return WorkflowsClientAbortResponse{}, err
 	}
-	return client.abortHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.abortHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // abortCreateRequest creates the Abort request.
@@ -131,7 +132,8 @@ func (client *WorkflowsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return WorkflowsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

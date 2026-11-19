@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/CreateOrUpdateArcDeployment.json
+// Generated from example definition: 2026-11-15-preview/CreateOrUpdateArcDeployment.json
 func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,12 +26,9 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 	poller, err := clientFactory.NewArcDeploymentsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "phi-3-arc", armcognitiveservices.ArcDeployment{
 		Properties: &armcognitiveservices.ArcDeploymentProperties{
 			Model: &armcognitiveservices.ArcDeploymentModel{
-				Format: to.Ptr("OpenAI"),
-				Name:   to.Ptr("phi-3-mini"),
+				AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-generic-cpu/versions/3"),
 			},
 			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
-			Runtime:     to.Ptr(armcognitiveservices.ArcDeploymentRuntimeOnnx),
-			Compute:     to.Ptr(armcognitiveservices.ArcDeploymentComputeTypeCPU),
 			Replicas:    to.Ptr[int32](2),
 			Resources: &armcognitiveservices.ArcDeploymentKubernetesResources{
 				Requests: &armcognitiveservices.ArcDeploymentCPUMemoryResourceRequirements{
@@ -69,7 +66,9 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 	// 		Properties: &armcognitiveservices.ArcDeploymentProperties{
 	// 			Model: &armcognitiveservices.ArcDeploymentModel{
 	// 				Format: to.Ptr("OpenAI"),
-	// 				Name: to.Ptr("phi-3-mini"),
+	// 				Name: to.Ptr("Phi-3-mini-128k-instruct-generic-cpu"),
+	// 				Version: to.Ptr("3"),
+	// 				AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-generic-cpu/versions/3"),
 	// 			},
 	// 			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
 	// 			Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeOnnx),
@@ -99,8 +98,8 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/CreateOrUpdateArcDeploymentWithTemplate.json
-func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeploymentWithTemplate() {
+// Generated from example definition: 2026-11-15-preview/CreateOrUpdateArcDeploymentWithGpu.json
+func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeploymentWithGpu() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -110,15 +109,12 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewArcDeploymentsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "qwen-template-arc", armcognitiveservices.ArcDeployment{
+	poller, err := clientFactory.NewArcDeploymentsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "phi-3-gpu-arc", armcognitiveservices.ArcDeployment{
 		Properties: &armcognitiveservices.ArcDeploymentProperties{
 			Model: &armcognitiveservices.ArcDeploymentModel{
-				Format: to.Ptr("OpenAI"),
-				Name:   to.Ptr("qwen3"),
+				AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-cuda-gpu/versions/2"),
 			},
 			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
-			Runtime:     to.Ptr(armcognitiveservices.ArcDeploymentRuntimeVllm),
-			Compute:     to.Ptr(armcognitiveservices.ArcDeploymentComputeTypeGpu),
 			Replicas:    to.Ptr[int32](2),
 			Resources: &armcognitiveservices.ArcDeploymentKubernetesResources{
 				Limits: &armcognitiveservices.ArcDeploymentResourceRequirements{
@@ -128,7 +124,6 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 			NodeSelector: map[string]*string{
 				"agentpool": to.Ptr("a100"),
 			},
-			DeploymentTemplate: to.Ptr("azureml://registries/azureml-openai-oss/deploymenttemplates/vllm-qwen--qwen3-5-0-8b/versions/1"),
 		},
 		SKU: &armcognitiveservices.ArcDeploymentSKU{
 			Name: to.Ptr(armcognitiveservices.ArcDeploymentSKUNameArc),
@@ -146,13 +141,91 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ArcDeploymentsClientCreateOrUpdateResponse{
 	// 	ArcDeployment: armcognitiveservices.ArcDeployment{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments/qwen-template-arc"),
-	// 		Name: to.Ptr("qwen-template-arc"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments/phi-3-gpu-arc"),
+	// 		Name: to.Ptr("phi-3-gpu-arc"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/arcDeployments"),
 	// 		Properties: &armcognitiveservices.ArcDeploymentProperties{
 	// 			Model: &armcognitiveservices.ArcDeploymentModel{
 	// 				Format: to.Ptr("OpenAI"),
-	// 				Name: to.Ptr("qwen3"),
+	// 				Name: to.Ptr("Phi-3-mini-128k-instruct-cuda-gpu"),
+	// 				Version: to.Ptr("2"),
+	// 				AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-cuda-gpu/versions/2"),
+	// 			},
+	// 			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
+	// 			Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeOnnx),
+	// 			Compute: to.Ptr(armcognitiveservices.ArcDeploymentComputeTypeGpu),
+	// 			Replicas: to.Ptr[int32](2),
+	// 			Resources: &armcognitiveservices.ArcDeploymentKubernetesResources{
+	// 				Limits: &armcognitiveservices.ArcDeploymentResourceRequirements{
+	// 					Gpu: to.Ptr[int32](5),
+	// 				},
+	// 			},
+	// 			NodeSelector: map[string]*string{
+	// 				"agentpool": to.Ptr("a100"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			DeploymentState: to.Ptr(armcognitiveservices.DeploymentStateRunning),
+	// 			RaiPolicyName: to.Ptr("Microsoft.DefaultV2"),
+	// 		},
+	// 		SKU: &armcognitiveservices.ArcDeploymentSKU{
+	// 			Name: to.Ptr(armcognitiveservices.ArcDeploymentSKUNameArc),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/CreateOrUpdateArcDeploymentWithVllm.json
+func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeploymentWithVllm() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewArcDeploymentsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "gpt-oss-vllm-arc", armcognitiveservices.ArcDeployment{
+		Properties: &armcognitiveservices.ArcDeploymentProperties{
+			Model: &armcognitiveservices.ArcDeploymentModel{
+				AssetID: to.Ptr("azureml://registries/azure-foundrylocalonazurelocal/models/openai-gpt-oss-20b/versions/1"),
+			},
+			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
+			Replicas:    to.Ptr[int32](2),
+			Resources: &armcognitiveservices.ArcDeploymentKubernetesResources{
+				Limits: &armcognitiveservices.ArcDeploymentResourceRequirements{
+					Gpu: to.Ptr[int32](5),
+				},
+			},
+			NodeSelector: map[string]*string{
+				"agentpool": to.Ptr("a100"),
+			},
+		},
+		SKU: &armcognitiveservices.ArcDeploymentSKU{
+			Name: to.Ptr(armcognitiveservices.ArcDeploymentSKUNameArc),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.ArcDeploymentsClientCreateOrUpdateResponse{
+	// 	ArcDeployment: armcognitiveservices.ArcDeployment{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments/gpt-oss-vllm-arc"),
+	// 		Name: to.Ptr("gpt-oss-vllm-arc"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/arcDeployments"),
+	// 		Properties: &armcognitiveservices.ArcDeploymentProperties{
+	// 			Model: &armcognitiveservices.ArcDeploymentModel{
+	// 				Format: to.Ptr("OpenAI"),
+	// 				Name: to.Ptr("openai-gpt-oss-20b"),
+	// 				Version: to.Ptr("1"),
+	// 				AssetID: to.Ptr("azureml://registries/azure-foundrylocalonazurelocal/models/openai-gpt-oss-20b/versions/1"),
 	// 			},
 	// 			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
 	// 			Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeVllm),
@@ -166,7 +239,6 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 	// 			NodeSelector: map[string]*string{
 	// 				"agentpool": to.Ptr("a100"),
 	// 			},
-	// 			DeploymentTemplate: to.Ptr("azureml://registries/azureml-openai-oss/deploymenttemplates/vllm-qwen--qwen3-5-0-8b/versions/1"),
 	// 			VllmParameters: &armcognitiveservices.ArcDeploymentVllmParameters{
 	// 				TensorParallelSize: to.Ptr[int32](2),
 	// 				MaxModelLen: to.Ptr[int32](8192),
@@ -184,8 +256,8 @@ func ExampleArcDeploymentsClient_BeginCreateOrUpdate_createOrUpdateArcDeployment
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/DeleteArcDeployment.json
-func ExampleArcDeploymentsClient_BeginDelete() {
+// Generated from example definition: 2026-11-15-preview/DeleteArcDeployment.json
+func ExampleArcDeploymentsClient_BeginDelete_deleteArcDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -205,7 +277,29 @@ func ExampleArcDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateArcDeployment.json
+// Generated from example definition: 2026-11-15-preview/DeleteArcDeploymentWithForce.json
+func ExampleArcDeploymentsClient_BeginDelete_deleteArcDeploymentWithForce() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewArcDeploymentsClient().BeginDelete(ctx, "resourceGroupName", "accountName", "phi-3-arc", &armcognitiveservices.ArcDeploymentsClientBeginDeleteOptions{
+		Force: to.Ptr(true)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-11-15-preview/UpdateArcDeployment.json
 func ExampleArcDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +347,9 @@ func ExampleArcDeploymentsClient_BeginUpdate() {
 	// 		Properties: &armcognitiveservices.ArcDeploymentProperties{
 	// 			Model: &armcognitiveservices.ArcDeploymentModel{
 	// 				Format: to.Ptr("OpenAI"),
-	// 				Name: to.Ptr("phi-3-mini"),
+	// 				Name: to.Ptr("Phi-3-mini-128k-instruct-generic-cpu"),
+	// 				Version: to.Ptr("3"),
+	// 				AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-generic-cpu/versions/3"),
 	// 			},
 	// 			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
 	// 			Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeOnnx),
@@ -286,7 +382,7 @@ func ExampleArcDeploymentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetArcDeployment.json
+// Generated from example definition: 2026-11-15-preview/GetArcDeployment.json
 func ExampleArcDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +393,7 @@ func ExampleArcDeploymentsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewArcDeploymentsClient().Get(ctx, "resourceGroupName", "accountName", "qwen-template-arc", nil)
+	res, err := clientFactory.NewArcDeploymentsClient().Get(ctx, "resourceGroupName", "accountName", "phi-3-gpu-arc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -306,17 +402,19 @@ func ExampleArcDeploymentsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.ArcDeploymentsClientGetResponse{
 	// 	ArcDeployment: armcognitiveservices.ArcDeployment{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments/qwen-template-arc"),
-	// 		Name: to.Ptr("qwen-template-arc"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments/phi-3-gpu-arc"),
+	// 		Name: to.Ptr("phi-3-gpu-arc"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/arcDeployments"),
 	// 		Etag: to.Ptr("\"0x8D...\""),
 	// 		Properties: &armcognitiveservices.ArcDeploymentProperties{
 	// 			Model: &armcognitiveservices.ArcDeploymentModel{
 	// 				Format: to.Ptr("OpenAI"),
-	// 				Name: to.Ptr("qwen3"),
+	// 				Name: to.Ptr("Phi-3-mini-128k-instruct-cuda-gpu"),
+	// 				Version: to.Ptr("2"),
+	// 				AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-cuda-gpu/versions/2"),
 	// 			},
 	// 			ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
-	// 			Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeVllm),
+	// 			Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeOnnx),
 	// 			Compute: to.Ptr(armcognitiveservices.ArcDeploymentComputeTypeGpu),
 	// 			Replicas: to.Ptr[int32](2),
 	// 			Resources: &armcognitiveservices.ArcDeploymentKubernetesResources{
@@ -326,13 +424,6 @@ func ExampleArcDeploymentsClient_Get() {
 	// 			},
 	// 			NodeSelector: map[string]*string{
 	// 				"agentpool": to.Ptr("a100"),
-	// 			},
-	// 			DeploymentTemplate: to.Ptr("azureml://registries/azureml-openai-oss/deploymenttemplates/vllm-qwen--qwen3-5-0-8b/versions/1"),
-	// 			VllmParameters: &armcognitiveservices.ArcDeploymentVllmParameters{
-	// 				TensorParallelSize: to.Ptr[int32](2),
-	// 				MaxModelLen: to.Ptr[int32](8192),
-	// 				GpuMemoryUtilization: to.Ptr[float32](0.9),
-	// 				EnforceEager: to.Ptr(false),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ArcDeploymentProvisioningDetails{
@@ -351,7 +442,7 @@ func ExampleArcDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListArcDeployments.json
+// Generated from example definition: 2026-11-15-preview/ListArcDeployments.json
 func ExampleArcDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +474,9 @@ func ExampleArcDeploymentsClient_NewListPager() {
 		// 				Properties: &armcognitiveservices.ArcDeploymentProperties{
 		// 					Model: &armcognitiveservices.ArcDeploymentModel{
 		// 						Format: to.Ptr("OpenAI"),
-		// 						Name: to.Ptr("phi-3-mini"),
+		// 						Name: to.Ptr("Phi-3-mini-128k-instruct-generic-cpu"),
+		// 						Version: to.Ptr("3"),
+		// 						AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-generic-cpu/versions/3"),
 		// 					},
 		// 					ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
 		// 					Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeOnnx),
@@ -414,16 +507,18 @@ func ExampleArcDeploymentsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments/qwen-template-arc"),
-		// 				Name: to.Ptr("qwen-template-arc"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments/phi-3-gpu-arc"),
+		// 				Name: to.Ptr("phi-3-gpu-arc"),
 		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts/arcDeployments"),
 		// 				Properties: &armcognitiveservices.ArcDeploymentProperties{
 		// 					Model: &armcognitiveservices.ArcDeploymentModel{
 		// 						Format: to.Ptr("OpenAI"),
-		// 						Name: to.Ptr("qwen3"),
+		// 						Name: to.Ptr("Phi-3-mini-128k-instruct-cuda-gpu"),
+		// 						Version: to.Ptr("2"),
+		// 						AssetID: to.Ptr("azureml://registries/azureml/models/Phi-3-mini-128k-instruct-cuda-gpu/versions/2"),
 		// 					},
 		// 					ExtensionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/edge-cluster/providers/Microsoft.KubernetesConfiguration/extensions/inference-operator"),
-		// 					Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeVllm),
+		// 					Runtime: to.Ptr(armcognitiveservices.ArcDeploymentRuntimeOnnx),
 		// 					Compute: to.Ptr(armcognitiveservices.ArcDeploymentComputeTypeGpu),
 		// 					Replicas: to.Ptr[int32](2),
 		// 					Resources: &armcognitiveservices.ArcDeploymentKubernetesResources{
@@ -433,13 +528,6 @@ func ExampleArcDeploymentsClient_NewListPager() {
 		// 					},
 		// 					NodeSelector: map[string]*string{
 		// 						"agentpool": to.Ptr("a100"),
-		// 					},
-		// 					DeploymentTemplate: to.Ptr("azureml://registries/azureml-openai-oss/deploymenttemplates/vllm-qwen--qwen3-5-0-8b/versions/1"),
-		// 					VllmParameters: &armcognitiveservices.ArcDeploymentVllmParameters{
-		// 						TensorParallelSize: to.Ptr[int32](2),
-		// 						MaxModelLen: to.Ptr[int32](8192),
-		// 						GpuMemoryUtilization: to.Ptr[float32](0.9),
-		// 						EnforceEager: to.Ptr(false),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 		// 					DeploymentState: to.Ptr(armcognitiveservices.DeploymentStateRunning),
@@ -453,7 +541,7 @@ func ExampleArcDeploymentsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments?api-version=2026-09-15-preview&$skipToken=next"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/arcDeployments?api-version=2026-11-15-preview&$skipToken=next"),
 		// 	},
 		// }
 	}

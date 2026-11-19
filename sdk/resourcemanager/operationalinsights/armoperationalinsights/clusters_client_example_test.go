@@ -97,192 +97,6 @@ func ExampleClustersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ClustersGet.json
-func ExampleClustersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoperationalinsights.NewClientFactory("53bc36c5-91e1-4d09-92c9-63b89e571926", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().Get(ctx, "oiautorest6685", "oiautorest6685", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armoperationalinsights.ClustersClientGetResponse{
-	// 	Cluster: armoperationalinsights.Cluster{
-	// 		Name: to.Ptr("TestResourceLock"),
-	// 		Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
-	// 		ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/oiautorest6685"),
-	// 		Identity: &armoperationalinsights.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
-	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armoperationalinsights.ClusterProperties{
-	// 			AssociatedWorkspaces: []*armoperationalinsights.AssociatedWorkspace{
-	// 				{
-	// 					AssociateDate: to.Ptr(time.Date(2020, time.January, 13, 23, 40, 33, 0, time.UTC)),
-	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
-	// 					WorkspaceID: to.Ptr("942bdefd-e6c9-411c-ac69-70ffad564363"),
-	// 					WorkspaceName: to.Ptr("testWs1"),
-	// 				},
-	// 				{
-	// 					AssociateDate: to.Ptr(time.Date(2020, time.January, 13, 23, 40, 33, 0, time.UTC)),
-	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
-	// 					WorkspaceID: to.Ptr("c7edb8f8-67f7-41f2-bddb-aecf22507e3f"),
-	// 					WorkspaceName: to.Ptr("testWs2"),
-	// 				},
-	// 			},
-	// 			BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
-	// 			CapacityReservationProperties: &armoperationalinsights.CapacityReservationProperties{
-	// 				LastSKUUpdate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
-	// 				MinCapacity: to.Ptr[int64](100),
-	// 			},
-	// 			ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
-	// 			CreatedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
-	// 			IsAvailabilityZonesEnabled: to.Ptr(true),
-	// 			IsDoubleEncryptionEnabled: to.Ptr(true),
-	// 			KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
-	// 				KeyName: to.Ptr("aztest2170cert"),
-	// 				KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
-	// 				KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
-	// 			},
-	// 			LastModifiedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
-	// 			Replication: &armoperationalinsights.ClusterReplicationProperties{
-	// 				CreatedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
-	// 				Enabled: to.Ptr(true),
-	// 				LastModifiedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
-	// 				Location: to.Ptr("westus3"),
-	// 				ProvisioningState: to.Ptr(armoperationalinsights.ClusterReplicationStateSucceeded),
-	// 			},
-	// 		},
-	// 		SKU: &armoperationalinsights.ClusterSKU{
-	// 			Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-	// 			Capacity: to.Ptr[int64](1000),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-01/ClustersSubscriptionList.json
-func ExampleClustersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoperationalinsights.NewClientFactory("53bc36c5-91e1-4d09-92c9-63b89e571926", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoperationalinsights.ClustersClientListResponse{
-		// 	ClusterListResult: armoperationalinsights.ClusterListResult{
-		// 		Value: []*armoperationalinsights.Cluster{
-		// 			{
-		// 				Name: to.Ptr("mycluster"),
-		// 				Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
-		// 				ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/mycluster"),
-		// 				Identity: &armoperationalinsights.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
-		// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armoperationalinsights.ClusterProperties{
-		// 					ClusterID: to.Ptr("5b02755b-5bf4-430c-9487-45502a2a7e62"),
-		// 					KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
-		// 						KeyName: to.Ptr("aztest2170cert"),
-		// 						KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
-		// 						KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
-		// 				},
-		// 				SKU: &armoperationalinsights.ClusterSKU{
-		// 					Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-		// 					Capacity: to.Ptr[int64](1000),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-07-01/ClustersListByResourceGroup.json
-func ExampleClustersClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoperationalinsights.NewClientFactory("53bc36c5-91e1-4d09-92c9-63b89e571926", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("oiautorest6685", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoperationalinsights.ClustersClientListByResourceGroupResponse{
-		// 	ClusterListResult: armoperationalinsights.ClusterListResult{
-		// 		Value: []*armoperationalinsights.Cluster{
-		// 			{
-		// 				Name: to.Ptr("mycluster"),
-		// 				Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
-		// 				ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/mycluster"),
-		// 				Identity: &armoperationalinsights.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
-		// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armoperationalinsights.ClusterProperties{
-		// 					ClusterID: to.Ptr("5b02755b-5bf4-430c-9487-45502a2a7e62"),
-		// 					KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
-		// 						KeyName: to.Ptr("aztest2170cert"),
-		// 						KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
-		// 						KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
-		// 				},
-		// 				SKU: &armoperationalinsights.ClusterSKU{
-		// 					Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-		// 					Capacity: to.Ptr[int64](1000),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-07-01/ClustersUpdate.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -382,4 +196,190 @@ func ExampleClustersClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-07-01/ClustersGet.json
+func ExampleClustersClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("53bc36c5-91e1-4d09-92c9-63b89e571926", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Get(ctx, "oiautorest6685", "oiautorest6685", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoperationalinsights.ClustersClientGetResponse{
+	// 	Cluster: armoperationalinsights.Cluster{
+	// 		Name: to.Ptr("TestResourceLock"),
+	// 		Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
+	// 		ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/oiautorest6685"),
+	// 		Identity: &armoperationalinsights.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armoperationalinsights.ClusterProperties{
+	// 			AssociatedWorkspaces: []*armoperationalinsights.AssociatedWorkspace{
+	// 				{
+	// 					AssociateDate: to.Ptr(time.Date(2020, time.January, 13, 23, 40, 33, 0, time.UTC)),
+	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
+	// 					WorkspaceID: to.Ptr("942bdefd-e6c9-411c-ac69-70ffad564363"),
+	// 					WorkspaceName: to.Ptr("testWs1"),
+	// 				},
+	// 				{
+	// 					AssociateDate: to.Ptr(time.Date(2020, time.January, 13, 23, 40, 33, 0, time.UTC)),
+	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
+	// 					WorkspaceID: to.Ptr("c7edb8f8-67f7-41f2-bddb-aecf22507e3f"),
+	// 					WorkspaceName: to.Ptr("testWs2"),
+	// 				},
+	// 			},
+	// 			BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
+	// 			CapacityReservationProperties: &armoperationalinsights.CapacityReservationProperties{
+	// 				LastSKUUpdate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
+	// 				MinCapacity: to.Ptr[int64](100),
+	// 			},
+	// 			ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
+	// 			CreatedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
+	// 			IsAvailabilityZonesEnabled: to.Ptr(true),
+	// 			IsDoubleEncryptionEnabled: to.Ptr(true),
+	// 			KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
+	// 				KeyName: to.Ptr("aztest2170cert"),
+	// 				KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
+	// 				KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
+	// 			},
+	// 			LastModifiedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
+	// 			Replication: &armoperationalinsights.ClusterReplicationProperties{
+	// 				CreatedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
+	// 				Enabled: to.Ptr(true),
+	// 				LastModifiedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
+	// 				Location: to.Ptr("westus3"),
+	// 				ProvisioningState: to.Ptr(armoperationalinsights.ClusterReplicationStateSucceeded),
+	// 			},
+	// 		},
+	// 		SKU: &armoperationalinsights.ClusterSKU{
+	// 			Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
+	// 			Capacity: to.Ptr[int64](1000),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-01/ClustersListByResourceGroup.json
+func ExampleClustersClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("53bc36c5-91e1-4d09-92c9-63b89e571926", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("oiautorest6685", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoperationalinsights.ClustersClientListByResourceGroupResponse{
+		// 	ClusterListResult: armoperationalinsights.ClusterListResult{
+		// 		Value: []*armoperationalinsights.Cluster{
+		// 			{
+		// 				Name: to.Ptr("mycluster"),
+		// 				Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
+		// 				ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/mycluster"),
+		// 				Identity: &armoperationalinsights.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+		// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armoperationalinsights.ClusterProperties{
+		// 					ClusterID: to.Ptr("5b02755b-5bf4-430c-9487-45502a2a7e62"),
+		// 					KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
+		// 						KeyName: to.Ptr("aztest2170cert"),
+		// 						KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
+		// 						KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
+		// 				},
+		// 				SKU: &armoperationalinsights.ClusterSKU{
+		// 					Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
+		// 					Capacity: to.Ptr[int64](1000),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-07-01/ClustersSubscriptionList.json
+func ExampleClustersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("53bc36c5-91e1-4d09-92c9-63b89e571926", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoperationalinsights.ClustersClientListResponse{
+		// 	ClusterListResult: armoperationalinsights.ClusterListResult{
+		// 		Value: []*armoperationalinsights.Cluster{
+		// 			{
+		// 				Name: to.Ptr("mycluster"),
+		// 				Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
+		// 				ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/mycluster"),
+		// 				Identity: &armoperationalinsights.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
+		// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armoperationalinsights.ClusterProperties{
+		// 					ClusterID: to.Ptr("5b02755b-5bf4-430c-9487-45502a2a7e62"),
+		// 					KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
+		// 						KeyName: to.Ptr("aztest2170cert"),
+		// 						KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
+		// 						KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
+		// 				},
+		// 				SKU: &armoperationalinsights.ClusterSKU{
+		// 					Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
+		// 					Capacity: to.Ptr[int64](1000),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

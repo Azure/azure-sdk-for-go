@@ -168,6 +168,10 @@ type RecordSetProperties struct {
 	// The TTL (time-to-live) of the records in the record set.
 	TTL *int64
 
+	// A reference to an azure private traffic manager profile resource from where the record set value is taken. Cannot be combined
+	// with aRecords, aaaaRecords, or cnameRecord.
+	TrafficManagementProfile *SubResource
+
 	// The list of TXT records in the record set.
 	TxtRecords []*TxtRecord
 
@@ -176,6 +180,46 @@ type RecordSetProperties struct {
 
 	// READ-ONLY; Is the record set auto-registered in the Private DNS zone through a virtual network link?
 	IsAutoRegistered *bool
+
+	// READ-ONLY; The provisioning state of the record set. This is a read-only property and any attempt to set this value will
+	// be ignored.
+	ProvisioningState *ProvisioningState
+}
+
+// ResourceReference - Represents a single Azure resource and its referencing private DNS record sets.
+type ResourceReference struct {
+	// A list of private DNS record sets that reference the target resource.
+	PrivateDNSResources []*SubResource
+
+	// A reference to an azure resource from where the private DNS resource value is taken.
+	TargetResource *SubResource
+}
+
+// ResourceReferenceRequest - Represents the properties of the private DNS Resource Reference Request.
+type ResourceReferenceRequest struct {
+	// The properties of the Resource Reference Request.
+	Properties *ResourceReferenceRequestProperties
+}
+
+// ResourceReferenceRequestProperties - Represents the properties of the private DNS Resource Reference Request.
+type ResourceReferenceRequestProperties struct {
+	// A list of references to azure resources for which referencing private DNS records need to be queried.
+	TargetResources []*SubResource
+}
+
+// ResourceReferenceResult - Represents the properties of the private DNS Resource Reference Result.
+type ResourceReferenceResult struct {
+	// The result of private dns resource reference request. Returns a list of private dns resource references for each of the
+	// azure resource in the request.
+	Properties *ResourceReferenceResultProperties
+}
+
+// ResourceReferenceResultProperties - The result of private dns resource reference request. Returns a list of private dns
+// resource references for each of the azure resource in the request.
+type ResourceReferenceResultProperties struct {
+	// The result of private dns resource reference request. A list of private dns resource references for each of the azure resource
+	// in the request
+	PrivateDNSResourceReferences []*ResourceReference
 }
 
 // SoaRecord - An SOA record.

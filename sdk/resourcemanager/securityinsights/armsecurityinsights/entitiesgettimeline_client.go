@@ -66,7 +66,8 @@ func (client *EntitiesGetTimelineClient) List(ctx context.Context, resourceGroup
 	if err != nil {
 		return EntitiesGetTimelineClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

@@ -19,7 +19,7 @@ import (
 // SubscriptionRaiPolicyClient contains the methods for the SubscriptionRaiPolicy group.
 // Don't use this type directly, use NewSubscriptionRaiPolicyClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-15-preview
 type SubscriptionRaiPolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -51,7 +51,7 @@ func NewSubscriptionRaiPolicyClient(subscriptionID string, credential azcore.Tok
 //     method.
 func (client *SubscriptionRaiPolicyClient) BeginDelete(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*runtime.Poller[SubscriptionRaiPolicyClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, raiPolicyName, options)
+		resp, err := client.deleteOperation(ctx, raiPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,9 +66,9 @@ func (client *SubscriptionRaiPolicyClient) BeginDelete(ctx context.Context, raiP
 	}
 }
 
-// delete - Deletes the specified Content Filters associated with the subscription.
+// deleteOperation - Deletes the specified Content Filters associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SubscriptionRaiPolicyClient) delete(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SubscriptionRaiPolicyClient) deleteOperation(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SubscriptionRaiPolicyClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -83,7 +83,8 @@ func (client *SubscriptionRaiPolicyClient) delete(ctx context.Context, raiPolicy
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -104,7 +105,7 @@ func (client *SubscriptionRaiPolicyClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -129,7 +130,8 @@ func (client *SubscriptionRaiPolicyClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return SubscriptionRaiPolicyClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -148,7 +150,7 @@ func (client *SubscriptionRaiPolicyClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -189,7 +191,8 @@ func (client *SubscriptionRaiPolicyClient) Get(ctx context.Context, raiPolicyNam
 	if err != nil {
 		return SubscriptionRaiPolicyClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -208,7 +211,7 @@ func (client *SubscriptionRaiPolicyClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

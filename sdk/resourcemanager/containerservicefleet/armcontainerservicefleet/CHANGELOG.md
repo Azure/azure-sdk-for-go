@@ -1,6 +1,35 @@
 # Release History
 
-## 3.1.0-beta.1 (2026-09-03)
+## 3.2.0-beta.1 (2026-11-17)
+### Features Added
+
+- New enum type `IdentityBindingLabelSelectorOperator` with values `IdentityBindingLabelSelectorOperatorDoesNotExist`, `IdentityBindingLabelSelectorOperatorExists`, `IdentityBindingLabelSelectorOperatorIn`, `IdentityBindingLabelSelectorOperatorNotIn`
+- New enum type `IdentityBindingProfileProvisioningState` with values `IdentityBindingProfileProvisioningStateApplying`, `IdentityBindingProfileProvisioningStateCanceled`, `IdentityBindingProfileProvisioningStateFailed`, `IdentityBindingProfileProvisioningStateSucceeded`
+- New function `*ClientFactory.NewIdentityBindingProfilesClient() *IdentityBindingProfilesClient`
+- New function `NewIdentityBindingProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IdentityBindingProfilesClient, error)`
+- New function `*IdentityBindingProfilesClient.BeginApply(ctx context.Context, resourceGroupName string, fleetName string, identityBindingProfileName string, options *IdentityBindingProfilesClientBeginApplyOptions) (*runtime.Poller[IdentityBindingProfilesClientApplyResponse], error)`
+- New function `*IdentityBindingProfilesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, identityBindingProfileName string, resource IdentityBindingProfile, options *IdentityBindingProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[IdentityBindingProfilesClientCreateOrUpdateResponse], error)`
+- New function `*IdentityBindingProfilesClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, identityBindingProfileName string, options *IdentityBindingProfilesClientBeginDeleteOptions) (*runtime.Poller[IdentityBindingProfilesClientDeleteResponse], error)`
+- New function `*IdentityBindingProfilesClient.Get(ctx context.Context, resourceGroupName string, fleetName string, identityBindingProfileName string, options *IdentityBindingProfilesClientGetOptions) (IdentityBindingProfilesClientGetResponse, error)`
+- New function `*IdentityBindingProfilesClient.NewListByFleetPager(resourceGroupName string, fleetName string, options *IdentityBindingProfilesClientListByFleetOptions) *runtime.Pager[IdentityBindingProfilesClientListByFleetResponse]`
+- New struct `AllowedSubject`
+- New struct `IdentityBindingLabelSelector`
+- New struct `IdentityBindingLabelSelectorRequirement`
+- New struct `IdentityBindingManagedIdentityProfile`
+- New struct `IdentityBindingOIDCIssuerProfile`
+- New struct `IdentityBindingProfile`
+- New struct `IdentityBindingProfileListResult`
+- New struct `IdentityBindingProfileProperties`
+- New struct `IdentityBindingProfileStatus`
+- New struct `IdentityBindingProperties`
+- New field `MaxAllowedFailures` in struct `UpdateGroup`
+- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateGroupStatus`
+- New field `FailureCount` in struct `UpdateRunStatus`
+- New field `MaxAllowedFailures` in struct `UpdateStage`
+- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateStageStatus`
+
+
+## 3.1.0 (2026-11-11)
 ### Features Added
 
 - New value `GateTypeScheduledStart` added to enum type `GateType`
@@ -48,11 +77,8 @@
 - New field `MeshProperties` in struct `FleetMemberProperties`
 - New field `ScheduledStartConfiguration` in struct `GateConfiguration`
 - New field `ScheduledStartProperties` in struct `GateProperties`
-- New field `MaxAllowedFailures`, `MemberSelector` in struct `UpdateGroup`
-- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateGroupStatus`
-- New field `FailureCount` in struct `UpdateRunStatus`
-- New field `MaxAllowedFailures`, `MemberSelector` in struct `UpdateStage`
-- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateStageStatus`
+- New field `MemberSelector` in struct `UpdateGroup`
+- New field `MemberSelector` in struct `UpdateStage`
 
 
 ## 3.0.0 (2026-08-03)

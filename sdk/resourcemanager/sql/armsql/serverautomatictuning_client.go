@@ -64,7 +64,8 @@ func (client *ServerAutomaticTuningClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return ServerAutomaticTuningClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -126,7 +127,8 @@ func (client *ServerAutomaticTuningClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return ServerAutomaticTuningClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

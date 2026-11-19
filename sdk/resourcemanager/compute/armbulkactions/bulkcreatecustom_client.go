@@ -86,7 +86,8 @@ func (client *BulkCreateCustomClient) cancel(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -242,7 +244,8 @@ func (client *BulkCreateCustomClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -299,7 +302,8 @@ func (client *BulkCreateCustomClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return BulkCreateCustomClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -364,7 +368,8 @@ func (client *BulkCreateCustomClient) GetAsyncOperationStatus(ctx context.Contex
 	if err != nil {
 		return BulkCreateCustomClientGetAsyncOperationStatusResponse{}, err
 	}
-	return client.getAsyncOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAsyncOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAsyncOperationStatusCreateRequest creates the GetAsyncOperationStatus request.

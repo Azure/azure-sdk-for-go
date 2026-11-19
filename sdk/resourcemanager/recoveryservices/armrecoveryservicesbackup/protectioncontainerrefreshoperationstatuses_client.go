@@ -70,7 +70,8 @@ func (client *ProtectionContainerRefreshOperationStatusesClient) Get(ctx context
 	if err != nil {
 		return ProtectionContainerRefreshOperationStatusesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

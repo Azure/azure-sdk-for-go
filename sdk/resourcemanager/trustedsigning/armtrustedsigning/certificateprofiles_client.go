@@ -70,7 +70,7 @@ func (client *CertificateProfilesClient) BeginCreate(ctx context.Context, resour
 	}
 }
 
-// Create - Create a certificate profile.
+// create - Create a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateProfilesClient) create(ctx context.Context, resourceGroupName string, accountName string, profileName string, resource CertificateProfile, options *CertificateProfilesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *CertificateProfilesClient) create(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *CertificateProfilesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, profileName string, resource CertificateProfile, _ *CertificateProfilesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *CertificateProfilesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a certificate profile.
+// deleteOperation - Delete a certificate profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateProfilesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, profileName string, options *CertificateProfilesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *CertificateProfilesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CertificateProfilesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, profileName string, _ *CertificateProfilesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles/{profileName}"
 	if client.subscriptionID == "" {
@@ -221,7 +223,8 @@ func (client *CertificateProfilesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return CertificateProfilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -366,7 +369,8 @@ func (client *CertificateProfilesClient) RevokeCertificate(ctx context.Context, 
 		return CertificateProfilesClientRevokeCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return CertificateProfilesClientRevokeCertificateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CertificateProfilesClientRevokeCertificateResponse{}, err
 	}
 	return CertificateProfilesClientRevokeCertificateResponse{}, nil
 }

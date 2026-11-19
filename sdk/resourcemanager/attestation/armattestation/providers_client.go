@@ -64,7 +64,8 @@ func (client *ProvidersClient) Create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ProvidersClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -129,7 +130,8 @@ func (client *ProvidersClient) Delete(ctx context.Context, resourceGroupName str
 		return ProvidersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return ProvidersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProvidersClientDeleteResponse{}, err
 	}
 	return ProvidersClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return ProvidersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -238,7 +241,8 @@ func (client *ProvidersClient) GetDefaultByLocation(ctx context.Context, locatio
 	if err != nil {
 		return ProvidersClientGetDefaultByLocationResponse{}, err
 	}
-	return client.getDefaultByLocationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultByLocationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultByLocationCreateRequest creates the GetDefaultByLocation request.
@@ -292,7 +296,8 @@ func (client *ProvidersClient) List(ctx context.Context, options *ProvidersClien
 	if err != nil {
 		return ProvidersClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -344,7 +349,8 @@ func (client *ProvidersClient) ListByResourceGroup(ctx context.Context, resource
 	if err != nil {
 		return ProvidersClientListByResourceGroupResponse{}, err
 	}
-	return client.listByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -398,7 +404,8 @@ func (client *ProvidersClient) ListDefault(ctx context.Context, options *Provide
 	if err != nil {
 		return ProvidersClientListDefaultResponse{}, err
 	}
-	return client.listDefaultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listDefaultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listDefaultCreateRequest creates the ListDefault request.
@@ -451,7 +458,8 @@ func (client *ProvidersClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ProvidersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

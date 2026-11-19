@@ -63,7 +63,8 @@ func (client *LocationsClient) CheckQuotaAvailability(ctx context.Context, locat
 	if err != nil {
 		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
-	return client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
@@ -119,7 +120,8 @@ func (client *LocationsClient) CheckTrialAvailability(ctx context.Context, locat
 	if err != nil {
 		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}
-	return client.checkTrialAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkTrialAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkTrialAvailabilityCreateRequest creates the CheckTrialAvailability request.

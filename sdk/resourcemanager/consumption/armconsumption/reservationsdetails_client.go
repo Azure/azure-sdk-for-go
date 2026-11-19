@@ -38,6 +38,161 @@ func NewReservationsDetailsClient(credential azcore.TokenCredential, options *ar
 	return client, nil
 }
 
+// NewListByReservationOrderAndReservationPager - Lists the reservations details for provided date range. Note: ARM has a
+// payload size limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. If the data size
+// is too large, customers may also get 504 as the API timed out preparing the data. In such cases, API call should be made
+// with smaller date ranges or a call to Generate Reservation Details Report API should be made as it is asynchronous and
+// will not run into response size time outs.
+//   - reservationOrderID - Order Id of the reservation
+//   - reservationID - Id of the reservation
+//   - filter - Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports
+//     'le' and 'ge'
+//   - options - ReservationsDetailsClientListByReservationOrderAndReservationOptions contains the optional parameters for the
+//     ReservationsDetailsClient.NewListByReservationOrderAndReservationPager method.
+func (client *ReservationsDetailsClient) NewListByReservationOrderAndReservationPager(reservationOrderID string, reservationID string, filter string, options *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderAndReservationResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsDetailsClientListByReservationOrderAndReservationResponse]{
+		More: func(page ReservationsDetailsClientListByReservationOrderAndReservationResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ReservationsDetailsClientListByReservationOrderAndReservationResponse) (ReservationsDetailsClientListByReservationOrderAndReservationResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsDetailsClient.NewListByReservationOrderAndReservationPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, filter, nextLink, options)
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
+			}
+			return client.listByReservationOrderAndReservationHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByReservationOrderAndReservationCreateRequest creates the ListByReservationOrderAndReservation request.
+func (client *ReservationsDetailsClient) listByReservationOrderAndReservationCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, filter string, nextLink string, _ *ReservationsDetailsClientListByReservationOrderAndReservationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}/providers/Microsoft.Consumption/reservationDetails"
+		if reservationOrderID == "" {
+			return nil, errors.New("parameter reservationOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+		if reservationID == "" {
+			return nil, errors.New("parameter reservationID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("$filter", filter)
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByReservationOrderAndReservationHandleResponse handles the ListByReservationOrderAndReservation response.
+func (client *ReservationsDetailsClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response, successCodes ...int) (ReservationsDetailsClientListByReservationOrderAndReservationResponse, error) {
+	result := ReservationsDetailsClientListByReservationOrderAndReservationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
+		return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByReservationOrderPager - Lists the reservations details for provided date range. Note: ARM has a payload size limit
+// of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers
+// may also get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
+// or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into response
+// size time outs.
+//   - reservationOrderID - Order Id of the reservation
+//   - filter - Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports
+//     'le' and 'ge'
+//   - options - ReservationsDetailsClientListByReservationOrderOptions contains the optional parameters for the ReservationsDetailsClient.NewListByReservationOrderPager
+//     method.
+func (client *ReservationsDetailsClient) NewListByReservationOrderPager(reservationOrderID string, filter string, options *ReservationsDetailsClientListByReservationOrderOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationsDetailsClientListByReservationOrderResponse]{
+		More: func(page ReservationsDetailsClientListByReservationOrderResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ReservationsDetailsClientListByReservationOrderResponse) (ReservationsDetailsClientListByReservationOrderResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsDetailsClient.NewListByReservationOrderPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByReservationOrderCreateRequest(ctx, reservationOrderID, filter, nextLink, options)
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsDetailsClientListByReservationOrderResponse{}, err
+			}
+			return client.listByReservationOrderHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByReservationOrderCreateRequest creates the ListByReservationOrder request.
+func (client *ReservationsDetailsClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, filter string, nextLink string, _ *ReservationsDetailsClientListByReservationOrderOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationDetails"
+		if reservationOrderID == "" {
+			return nil, errors.New("parameter reservationOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("$filter", filter)
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByReservationOrderHandleResponse handles the ListByReservationOrder response.
+func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(resp *http.Response, successCodes ...int) (ReservationsDetailsClientListByReservationOrderResponse, error) {
+	result := ReservationsDetailsClientListByReservationOrderResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
+		return ReservationsDetailsClientListByReservationOrderResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
 // callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers may also get 504
 // as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges or a call to Generate
@@ -120,161 +275,6 @@ func (client *ReservationsDetailsClient) listHandleResponse(resp *http.Response,
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
 		return ReservationsDetailsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByReservationOrderPager - Lists the reservations details for provided date range. Note: ARM has a payload size limit
-// of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. If the data size is too large, customers
-// may also get 504 as the API timed out preparing the data. In such cases, API call should be made with smaller date ranges
-// or a call to Generate Reservation Details Report API should be made as it is asynchronous and will not run into response
-// size time outs.
-//   - reservationOrderID - Order Id of the reservation
-//   - filter - Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports
-//     'le' and 'ge'
-//   - options - ReservationsDetailsClientListByReservationOrderOptions contains the optional parameters for the ReservationsDetailsClient.NewListByReservationOrderPager
-//     method.
-func (client *ReservationsDetailsClient) NewListByReservationOrderPager(reservationOrderID string, filter string, options *ReservationsDetailsClientListByReservationOrderOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReservationsDetailsClientListByReservationOrderResponse]{
-		More: func(page ReservationsDetailsClientListByReservationOrderResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ReservationsDetailsClientListByReservationOrderResponse) (ReservationsDetailsClientListByReservationOrderResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsDetailsClient.NewListByReservationOrderPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByReservationOrderCreateRequest(ctx, reservationOrderID, filter, nextLink, options)
-			if err != nil {
-				return ReservationsDetailsClientListByReservationOrderResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReservationsDetailsClientListByReservationOrderResponse{}, err
-			}
-			return client.listByReservationOrderHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByReservationOrderCreateRequest creates the ListByReservationOrder request.
-func (client *ReservationsDetailsClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, filter string, nextLink string, _ *ReservationsDetailsClientListByReservationOrderOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationDetails"
-		if reservationOrderID == "" {
-			return nil, errors.New("parameter reservationOrderID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByReservationOrderHandleResponse handles the ListByReservationOrder response.
-func (client *ReservationsDetailsClient) listByReservationOrderHandleResponse(resp *http.Response, successCodes ...int) (ReservationsDetailsClientListByReservationOrderResponse, error) {
-	result := ReservationsDetailsClientListByReservationOrderResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
-		return ReservationsDetailsClientListByReservationOrderResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByReservationOrderAndReservationPager - Lists the reservations details for provided date range. Note: ARM has a
-// payload size limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. If the data size
-// is too large, customers may also get 504 as the API timed out preparing the data. In such cases, API call should be made
-// with smaller date ranges or a call to Generate Reservation Details Report API should be made as it is asynchronous and
-// will not run into response size time outs.
-//   - reservationOrderID - Order Id of the reservation
-//   - reservationID - Id of the reservation
-//   - filter - Filter reservation details by date range. The properties/UsageDate for start date and end date. The filter supports
-//     'le' and 'ge'
-//   - options - ReservationsDetailsClientListByReservationOrderAndReservationOptions contains the optional parameters for the
-//     ReservationsDetailsClient.NewListByReservationOrderAndReservationPager method.
-func (client *ReservationsDetailsClient) NewListByReservationOrderAndReservationPager(reservationOrderID string, reservationID string, filter string, options *ReservationsDetailsClientListByReservationOrderAndReservationOptions) *runtime.Pager[ReservationsDetailsClientListByReservationOrderAndReservationResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReservationsDetailsClientListByReservationOrderAndReservationResponse]{
-		More: func(page ReservationsDetailsClientListByReservationOrderAndReservationResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ReservationsDetailsClientListByReservationOrderAndReservationResponse) (ReservationsDetailsClientListByReservationOrderAndReservationResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationsDetailsClient.NewListByReservationOrderAndReservationPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, filter, nextLink, options)
-			if err != nil {
-				return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
-			}
-			return client.listByReservationOrderAndReservationHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByReservationOrderAndReservationCreateRequest creates the ListByReservationOrderAndReservation request.
-func (client *ReservationsDetailsClient) listByReservationOrderAndReservationCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, filter string, nextLink string, _ *ReservationsDetailsClientListByReservationOrderAndReservationOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}/providers/Microsoft.Consumption/reservationDetails"
-		if reservationOrderID == "" {
-			return nil, errors.New("parameter reservationOrderID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-		if reservationID == "" {
-			return nil, errors.New("parameter reservationID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByReservationOrderAndReservationHandleResponse handles the ListByReservationOrderAndReservation response.
-func (client *ReservationsDetailsClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response, successCodes ...int) (ReservationsDetailsClientListByReservationOrderAndReservationResponse, error) {
-	result := ReservationsDetailsClientListByReservationOrderAndReservationResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationDetailsListResult); err != nil {
-		return ReservationsDetailsClientListByReservationOrderAndReservationResponse{}, err
 	}
 	return result, nil
 }

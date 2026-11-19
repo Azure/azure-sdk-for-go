@@ -558,6 +558,178 @@ func ExampleManagedDatabasesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/ManagedDatabaseReevaluateInaccessibleDatabaseState.json
+func ExampleManagedDatabasesClient_BeginReevaluateInaccessibleDatabaseState() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedDatabasesClient().BeginReevaluateInaccessibleDatabaseState(ctx, "Test1", "managedInstance", "managedDatabase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedDatabasesClientReevaluateInaccessibleDatabaseStateResponse{
+	// 	ManagedDatabase: armsql.ManagedDatabase{
+	// 		Name: to.Ptr("testdb1"),
+	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/databases"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/databases/testdb1"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Properties: &armsql.ManagedDatabaseProperties{
+	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 4, 15, 0, 17, 730000000, time.UTC)),
+	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			IsLedgerOn: to.Ptr(false),
+	// 			Status: to.Ptr(armsql.ManagedDatabaseStatusOnline),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedDatabaseStartMoveMax.json
+func ExampleManagedDatabasesClient_BeginStartMove_startsAManagedDatabaseMoveWithAllOptionalParametersSpecified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedDatabasesClient().BeginStartMove(ctx, "group1", "testInstanceSrc", "testDatabase", armsql.ManagedDatabaseStartMoveDefinition{
+		DestinationManagedDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
+		OperationMode:                to.Ptr(armsql.MoveOperationModeCopy),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedDatabasesClientStartMoveResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedDatabaseStartMoveMin.json
+func ExampleManagedDatabasesClient_BeginStartMove_startsAManagedDatabaseMoveWithNoOptionalParametersSpecified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedDatabasesClient().BeginStartMove(ctx, "group1", "testInstanceSrc", "testDatabase", armsql.ManagedDatabaseStartMoveDefinition{
+		DestinationManagedDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedDatabasesClientStartMoveResponse{
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedDatabaseUpdateMax.json
+func ExampleManagedDatabasesClient_BeginUpdate_updatesAManagedDatabaseWithMaximalProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedDatabasesClient().BeginUpdate(ctx, "Default-SQL-SouthEastAsia", "managedInstance", "testdb", armsql.ManagedDatabaseUpdate{
+		Tags: map[string]*string{
+			"tagKey1": to.Ptr("TagValue1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedDatabasesClientUpdateResponse{
+	// 	ManagedDatabase: armsql.ManagedDatabase{
+	// 		Name: to.Ptr("testdb"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Tags: map[string]*string{
+	// 			"tagKey1": to.Ptr("TagValue1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ManagedDatabaseUpdateMin.json
+func ExampleManagedDatabasesClient_BeginUpdate_updatesAManagedDatabaseWithMinimalProperties() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedDatabasesClient().BeginUpdate(ctx, "Default-SQL-SouthEastAsia", "managedInstance", "testdb", armsql.ManagedDatabaseUpdate{
+		Tags: map[string]*string{
+			"tagKey1": to.Ptr("TagValue1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ManagedDatabasesClientUpdateResponse{
+	// 	ManagedDatabase: armsql.ManagedDatabase{
+	// 		Name: to.Ptr("testdb"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+	// 		Location: to.Ptr("southeastasia"),
+	// 		Tags: map[string]*string{
+	// 			"tagKey1": to.Ptr("TagValue1"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/ManagedDatabaseGet.json
 func ExampleManagedDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -732,176 +904,4 @@ func ExampleManagedDatabasesClient_NewListInaccessibleByInstancePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedDatabaseReevaluateInaccessibleDatabaseState.json
-func ExampleManagedDatabasesClient_BeginReevaluateInaccessibleDatabaseState() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedDatabasesClient().BeginReevaluateInaccessibleDatabaseState(ctx, "Test1", "managedInstance", "managedDatabase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedDatabasesClientReevaluateInaccessibleDatabaseStateResponse{
-	// 	ManagedDatabase: armsql.ManagedDatabase{
-	// 		Name: to.Ptr("testdb1"),
-	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/testcl/databases/testdb1"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Properties: &armsql.ManagedDatabaseProperties{
-	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 4, 15, 0, 17, 730000000, time.UTC)),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
-	// 			IsLedgerOn: to.Ptr(false),
-	// 			Status: to.Ptr(armsql.ManagedDatabaseStatusOnline),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedDatabaseStartMoveMax.json
-func ExampleManagedDatabasesClient_BeginStartMove_startsAManagedDatabaseMoveWithAllOptionalParametersSpecified() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedDatabasesClient().BeginStartMove(ctx, "group1", "testInstanceSrc", "testDatabase", armsql.ManagedDatabaseStartMoveDefinition{
-		DestinationManagedDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
-		OperationMode:                to.Ptr(armsql.MoveOperationModeCopy),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedDatabasesClientStartMoveResponse{
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedDatabaseStartMoveMin.json
-func ExampleManagedDatabasesClient_BeginStartMove_startsAManagedDatabaseMoveWithNoOptionalParametersSpecified() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedDatabasesClient().BeginStartMove(ctx, "group1", "testInstanceSrc", "testDatabase", armsql.ManagedDatabaseStartMoveDefinition{
-		DestinationManagedDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.Sql/managedInstances/testInstanceTgt/databases/testDatabase"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedDatabasesClientStartMoveResponse{
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedDatabaseUpdateMax.json
-func ExampleManagedDatabasesClient_BeginUpdate_updatesAManagedDatabaseWithMaximalProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedDatabasesClient().BeginUpdate(ctx, "Default-SQL-SouthEastAsia", "managedInstance", "testdb", armsql.ManagedDatabaseUpdate{
-		Tags: map[string]*string{
-			"tagKey1": to.Ptr("TagValue1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedDatabasesClientUpdateResponse{
-	// 	ManagedDatabase: armsql.ManagedDatabase{
-	// 		Name: to.Ptr("testdb"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Tags: map[string]*string{
-	// 			"tagKey1": to.Ptr("TagValue1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/ManagedDatabaseUpdateMin.json
-func ExampleManagedDatabasesClient_BeginUpdate_updatesAManagedDatabaseWithMinimalProperties() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedDatabasesClient().BeginUpdate(ctx, "Default-SQL-SouthEastAsia", "managedInstance", "testdb", armsql.ManagedDatabaseUpdate{
-		Tags: map[string]*string{
-			"tagKey1": to.Ptr("TagValue1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ManagedDatabasesClientUpdateResponse{
-	// 	ManagedDatabase: armsql.ManagedDatabase{
-	// 		Name: to.Ptr("testdb"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-	// 		Location: to.Ptr("southeastasia"),
-	// 		Tags: map[string]*string{
-	// 			"tagKey1": to.Ptr("TagValue1"),
-	// 		},
-	// 	},
-	// }
 }

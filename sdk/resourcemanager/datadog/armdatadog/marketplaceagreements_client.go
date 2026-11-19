@@ -65,7 +65,8 @@ func (client *MarketplaceAgreementsClient) CreateOrUpdate(ctx context.Context, b
 	if err != nil {
 		return MarketplaceAgreementsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.

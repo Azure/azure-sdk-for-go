@@ -85,7 +85,8 @@ func (client *PublicCloudConnectorsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -160,7 +161,8 @@ func (client *PublicCloudConnectorsClient) testPermissions(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -212,7 +214,8 @@ func (client *PublicCloudConnectorsClient) Delete(ctx context.Context, resourceG
 		return PublicCloudConnectorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PublicCloudConnectorsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PublicCloudConnectorsClientDeleteResponse{}, err
 	}
 	return PublicCloudConnectorsClientDeleteResponse{}, nil
 }
@@ -262,7 +265,8 @@ func (client *PublicCloudConnectorsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return PublicCloudConnectorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -463,7 +467,8 @@ func (client *PublicCloudConnectorsClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return PublicCloudConnectorsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

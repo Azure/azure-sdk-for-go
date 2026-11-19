@@ -67,7 +67,8 @@ func (client *ConnectionMonitorTestsClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return ConnectionMonitorTestsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *ConnectionMonitorTestsClient) Delete(ctx context.Context, resource
 		return ConnectionMonitorTestsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ConnectionMonitorTestsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ConnectionMonitorTestsClientDeleteResponse{}, err
 	}
 	return ConnectionMonitorTestsClientDeleteResponse{}, nil
 }
@@ -195,7 +197,8 @@ func (client *ConnectionMonitorTestsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ConnectionMonitorTestsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

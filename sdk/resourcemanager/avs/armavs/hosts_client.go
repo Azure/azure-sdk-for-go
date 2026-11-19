@@ -65,7 +65,8 @@ func (client *HostsClient) Get(ctx context.Context, resourceGroupName string, pr
 	if err != nil {
 		return HostsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -217,7 +218,8 @@ func (client *HostsClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return HostsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

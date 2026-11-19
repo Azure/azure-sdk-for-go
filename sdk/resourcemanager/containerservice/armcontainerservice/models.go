@@ -88,6 +88,9 @@ type AgentFabricMembership struct {
 	// the membership and silently detaching the cluster.
 	ManagedBy *string
 
+	// REQUIRED; The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed to the cluster.
+	SKU *AgentFabricMembershipSKU
+
 	// The resource-specific properties for this resource.
 	Properties *AgentFabricMembershipProperties
 
@@ -106,11 +109,14 @@ type AgentFabricMembership struct {
 
 // AgentFabricMembershipProperties - Properties of the AgentFabric membership of a managed cluster.
 type AgentFabricMembershipProperties struct {
-	// REQUIRED; The SKU of the AgentFabric membership. Determines which AgentFabric components are deployed to the cluster.
-	SKU *AgentFabricMembershipSKUName
-
 	// READ-ONLY; The current provisioning state of the AgentFabric membership.
 	ProvisioningState *AgentFabricMembershipProvisioningState
+}
+
+// AgentFabricMembershipSKU - The SKU of the AgentFabric membership.
+type AgentFabricMembershipSKU struct {
+	// REQUIRED; The SKU name that determines which AgentFabric components are deployed to the cluster.
+	Name *AgentFabricMembershipSKUName
 }
 
 // AgentFabricMembershipsListResult - The result of a request to list the AgentFabric memberships of a managed cluster.
@@ -1785,10 +1791,6 @@ type LinuxProfile struct {
 
 	// REQUIRED; The SSH configuration for Linux-based VMs running on Azure.
 	SSH *SSHConfiguration
-}
-
-// ListBootstrapDataRequest - Empty request body for listing FlexNode bootstrap data.
-type ListBootstrapDataRequest struct {
 }
 
 // LoadBalancer - The configurations regarding multiple standard load balancers. If not supplied, single load balancer mode
@@ -4806,6 +4808,9 @@ type PrivateEndpointConnection struct {
 
 // PrivateEndpointConnectionListResult - A list of private endpoint connections
 type PrivateEndpointConnectionListResult struct {
+	// The link to the next page, if any. Omitted when all results are returned in a single response.
+	NextLink *string
+
 	// The collection value.
 	Value []*PrivateEndpointConnection
 }
@@ -4845,6 +4850,9 @@ type PrivateLinkResource struct {
 
 // PrivateLinkResourcesListResult - A list of private link resources
 type PrivateLinkResourcesListResult struct {
+	// The link to the next page, if any. Omitted when all results are returned in a single response.
+	NextLink *string
+
 	// The collection value.
 	Value []*PrivateLinkResource
 }

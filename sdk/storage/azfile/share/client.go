@@ -5,6 +5,7 @@ package share
 
 import (
 	"context"
+	"errors"
 	"net/url"
 	"strings"
 	"time"
@@ -13,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -144,6 +146,52 @@ func (s *Client) NewDirectoryClient(directoryName string) *directory.Client {
 func (s *Client) NewRootDirectoryClient() *directory.Client {
 	rootDirURL := s.URL()
 	return (*directory.Client)(base.NewDirectoryClient(rootDirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
+}
+
+// NewFileClientByFileID creates a new file.Client that addresses a file by its file ID rather than by its path,
+// e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new file.Client uses the same request
+// policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
+//   - fileID - the file ID of the file, e.g. the ID returned by file.Client.GetProperties or a change feed event.
+//     An empty fileID returns an error, as the file.Client would otherwise address the share rather than a file.
+//
+// The file.Client only supports GetProperties and GetFileLinks. All other operations return an error wrapping
+// fileerror.FileIDNotSupported without sending a request.
+func (s *Client) NewFileClientByFileID(fileID string) (*file.Client, error) {
+	fileURL, err := s.fileIDURL(fileID)
+	if err != nil {
+		return nil, err
+	}
+	return (*file.Client)(base.NewFileClient(fileURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions())), nil
+}
+
+// NewDirectoryClientByFileID creates a new directory.Client that addresses a directory by its file ID rather than by
+// its path, e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new directory.Client uses the
+// same request policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
+//   - fileID - the file ID of the directory, e.g. the ID returned by directory.Client.GetProperties.
+//     An empty fileID returns an error, as the directory.Client would otherwise address the root directory of the share.
+//
+// The directory.Client only supports GetProperties. All other operations return an error wrapping
+// fileerror.FileIDNotSupported without sending a request.
+func (s *Client) NewDirectoryClientByFileID(fileID string) (*directory.Client, error) {
+	dirURL, err := s.fileIDURL(fileID)
+	if err != nil {
+		return nil, err
+	}
+	return (*directory.Client)(base.NewDirectoryClient(dirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions())), nil
+}
+
+// fileIDURL returns the URL that addresses fileID in the share, keeping the share snapshot and SAS of the Client.
+func (s *Client) fileIDURL(fileID string) (string, error) {
+	if fileID == "" {
+		return "", errors.New("fileID must not be empty")
+	}
+	p, err := sas.ParseURL(s.URL())
+	if err != nil {
+		return "", err
+	}
+	p.DirectoryOrFilePath = ""
+	p.FileID = fileID
+	return p.String(), nil
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.

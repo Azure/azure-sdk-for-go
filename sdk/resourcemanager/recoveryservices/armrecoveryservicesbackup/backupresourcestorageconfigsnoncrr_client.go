@@ -63,7 +63,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) Get(ctx context.Context,
 	if err != nil {
 		return BackupResourceStorageConfigsNonCRRClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -124,7 +125,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) Patch(ctx context.Contex
 		return BackupResourceStorageConfigsNonCRRClientPatchResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return BackupResourceStorageConfigsNonCRRClientPatchResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BackupResourceStorageConfigsNonCRRClientPatchResponse{}, err
 	}
 	return BackupResourceStorageConfigsNonCRRClientPatchResponse{}, nil
 }
@@ -177,7 +179,8 @@ func (client *BackupResourceStorageConfigsNonCRRClient) Update(ctx context.Conte
 	if err != nil {
 		return BackupResourceStorageConfigsNonCRRClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/CreateOrUpdateManagedComputeDeployment.json
+// Generated from example definition: 2026-11-15-preview/CreateOrUpdateManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateMa
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
+// Generated from example definition: 2026-11-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVM
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/DeleteManagedComputeDeployment.json
+// Generated from example definition: 2026-11-15-preview/DeleteManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleManagedComputeDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateManagedComputeDeployment.json
+// Generated from example definition: 2026-11-15-preview/UpdateManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDepl
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateVmManagedComputeDeployment.json
+// Generated from example definition: 2026-11-15-preview/UpdateVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -310,7 +310,7 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateVMManagedComputeDe
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetManagedComputeDeployment.json
+// Generated from example definition: 2026-11-15-preview/GetManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetVmManagedComputeDeployment.json
+// Generated from example definition: 2026-11-15-preview/GetVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +419,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() 
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListManagedComputeDeployments.json
+// Generated from example definition: 2026-11-15-preview/ListManagedComputeDeployments.json
 func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -527,7 +527,7 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeplo
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/ListVmManagedComputeDeployments.json
+// Generated from example definition: 2026-11-15-preview/ListVmManagedComputeDeployments.json
 func ExampleManagedComputeDeploymentsClient_NewListPager_listVMManagedComputeDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

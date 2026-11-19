@@ -66,7 +66,8 @@ func (client *SKUsClient) Get(ctx context.Context, resourceGroupName string, clu
 	if err != nil {
 		return SKUsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseUnlinkMigratedEndpoint.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseUnlinkMigratedEndpoint.json
 func ExampleClustersClient_BeginUnlinkMigratedEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,5 +1,16 @@
 # Release History
 
+## 0.4.0 (2026-11-09)
+### Breaking Changes
+
+- Field `Tags` of struct `Pool` has been removed
+- Field `Tags` of struct `PoolForPatchUpdate` has been removed
+
+### Features Added
+
+- New value `ProvisioningStateUpdating` added to enum type `ProvisioningState`
+
+
 ## 0.3.0 (2026-10-15)
 ### Breaking Changes
 

@@ -40,6 +40,11 @@ Activation is process-wide, including when imported transitively. Adding a requi
 it doesn't load native libraries, contact endpoints, or create keys. Credentials constructed
 during package initialization also consult availability lazily when requesting tokens.
 
+Importing this package is an application-level decision. Libraries shouldn't import it,
+because doing so activates attestation for every application that depends on them. To keep
+an individual credential on bearer authentication in an application that imports the
+package, set `ManagedIdentityCredentialOptions.DisableMTLSPoP`.
+
 ## Request selection
 
 Attested acquisition requires all of the following:

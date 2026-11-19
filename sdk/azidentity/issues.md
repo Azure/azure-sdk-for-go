@@ -35,7 +35,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Fixed |
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
 | [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Fixed (unwrapping removed) |
-| [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Open |
+| [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Fixed (documented) |
 | [AZI-4](#azi-4-unreachable-and-redundant-checks-in-gettoken) | azidentity | Unreachable and redundant checks in GetToken | P2 | Fixed |
 | [AZI-5](#azi-5-designmd-ships-in-the-module) | azidentity | design.md ships in the module | P1 | Open |
 | [AZI-6](#azi-6-attestation-module-doesnt-isolate-native-code) | azidentity | Attestation module doesn't isolate native code | — | Won't fix |
@@ -406,16 +406,24 @@ Applications never needed it.
 
 ### AZI-3: Attestation activation is process-wide
 
-**Priority:** P2 · **Status:** Open
+**Priority:** P2 · **Status:** Fixed (documented)
 
 Importing `azidentity/attestation` anywhere in the build turns on attested PoP for every managed identity credential in the process, even when the import is indirect.
 `ManagedIdentityCredentialOptions.DisableMTLSPoP` is the only way to opt out, and it's per credential.
 A library that imports attestation forces the behavior on every app that depends on it.
 
-**Resolution:** choose one:
+**Decision:** accept the design and add guidance.
+A stray activation only affects requests that meet all of these:
 
-- Add guidance to the attestation README and package doc that only applications, not libraries, should import the package.
-- Accept the current behavior as documented.
+- the request comes from a managed identity credential that hasn't opted out;
+- a service policy signals PoP for it (today only updated Key Vault clients);
+- the host reports KeyGuard binding.
+
+Everything else stays bearer.
+A requirement in `go.mod` alone doesn't activate the integration; the package must be imported.
+
+**Fix:** the [package doc](attestation/attestation.go) and [README](attestation/README.md) now say that importing the package is an application-level decision and that libraries shouldn't import it.
+The README also points to `DisableMTLSPoP` for keeping an individual credential on bearer authentication.
 
 ### AZI-4: Unreachable and redundant checks in GetToken
 

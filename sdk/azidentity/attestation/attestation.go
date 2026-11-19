@@ -6,7 +6,9 @@
 //
 //	import _ "github.com/Azure/azure-sdk-for-go/sdk/azidentity/attestation"
 //
-// Activation is process-wide, including when imported transitively. Initialization
+// Activation is process-wide, including when imported transitively. Only applications
+// should import this package; a library that imports it activates attestation for every
+// application that depends on it. Initialization
 // only registers availability; it doesn't load native libraries, contact endpoints,
 // or create keys. Unsupported hosts continue to use ordinary authentication.
 // Once attested acquisition is selected, failures are returned without downgrading.

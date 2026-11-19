@@ -36,7 +36,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
 | [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Fixed (unwrapping removed) |
 | [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Open |
-| [AZI-4](#azi-4-unreachable-and-redundant-checks-in-gettoken) | azidentity | Unreachable and redundant checks in GetToken | P2 | Open |
+| [AZI-4](#azi-4-unreachable-and-redundant-checks-in-gettoken) | azidentity | Unreachable and redundant checks in GetToken | P2 | Fixed |
 | [AZI-5](#azi-5-designmd-ships-in-the-module) | azidentity | design.md ships in the module | P1 | Open |
 | [AZI-6](#azi-6-attestation-module-doesnt-isolate-native-code) | azidentity | Attestation module doesn't isolate native code | — | Won't fix |
 | [KV-1](#kv-1-tenant-denial-detection-depends-on-error-text) | keyvault | Tenant-denial detection depends on error text | — | Won't fix |
@@ -419,17 +419,23 @@ A library that imports attestation forces the behavior on every app that depends
 
 ### AZI-4: Unreachable and redundant checks in GetToken
 
-**Priority:** P2 · **Status:** Open
+**Priority:** P2 · **Status:** Fixed
 
 In the PoP path of `managedIdentityClient.GetToken`:
 
-- `Capabilities()` returns an error only when the context is cancelled.
-  The branches for other errors after [managed_identity_client.go](managed_identity_client.go#L265) can't run.
-- `capabilities.IsMtlsPoPSupportedByHost()` ([#L283](managed_identity_client.go#L283)) is redundant.
-  It's true whenever binding strength is above `None`, so the `>= MtlsBindingStrengthKeyGuard` check that follows already implies it.
+- `Capabilities()` returns an error only when the context is cancelled, so the branches for other errors can't currently run.
+- `capabilities.IsMtlsPoPSupportedByHost()` was redundant.
+  It's true whenever binding strength is above `None`, so the `>= MtlsBindingStrengthKeyGuard` check that followed already implied it.
 
-**Resolution:** remove the redundant call.
-Either keep the error branches as defensive code with a comment, or simplify them to handle only cancellation.
+**Fix ([managed_identity_client.go](managed_identity_client.go)):**
+
+- **Redundant call removed.** Selection is now just `MaxSupportedBindingStrength >= MtlsBindingStrengthKeyGuard`.
+  A comment explains why the code doesn't use `IsMtlsPoPSupportedByHost`: it's also true for software keys, and MSAL binds only KeyGuard keys.
+  The existing table test covers `None` ("unsupported host"), `Software` and `KeyGuard`.
+- **Error branches kept as defensive code, with a comment.** `Capabilities` is a beta MSAL API.
+  Simplifying to handle only cancellation would, if MSAL ever reported another failure, return a raw MSAL error, and `DefaultAzureCredential` would stop instead of moving on.
+  The branches keep the usual managed identity behavior: `credentialUnavailableError` when chained, `AuthenticationFailedError` otherwise.
+  `TestManagedIdentityCredential_CapabilityFailure` already exercises them through a fake.
 
 ### AZI-5: design.md ships in the module
 

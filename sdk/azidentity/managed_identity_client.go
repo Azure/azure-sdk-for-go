@@ -267,6 +267,8 @@ func (c *managedIdentityClient) GetToken(ctx context.Context, tro policy.TokenRe
 				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 					return azcore.AccessToken{}, err
 				}
+				// MSAL documents that Capabilities fails only when ctx is done. If a later version reports
+				// other failures, keep the usual managed identity semantics so credential chains continue.
 				if c.chained {
 					return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, err.Error())
 				}
@@ -280,8 +282,9 @@ func (c *managedIdentityClient) GetToken(ctx context.Context, tro policy.TokenRe
 				return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, msg, nil)
 			}
 		}
-		mtls = capabilities.IsMtlsPoPSupportedByHost() &&
-			capabilities.MaxSupportedBindingStrength >= managedidentity.MtlsBindingStrengthKeyGuard
+		// compare strength directly rather than calling IsMtlsPoPSupportedByHost, which is also true for
+		// software keys; MSAL binds only KeyGuard keys
+		mtls = capabilities.MaxSupportedBindingStrength >= managedidentity.MtlsBindingStrengthKeyGuard
 		if mtls {
 			opts = append(opts, managedidentity.WithMtlsProofOfPossession(), managedidentity.WithAttestationSupport(),
 				managedidentity.WithMtlsPoPMinStrength(managedidentity.MtlsBindingStrengthKeyGuard))

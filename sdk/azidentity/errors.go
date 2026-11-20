@@ -25,6 +25,7 @@ var tsgAnchors = map[string]string{
 	credNameAzurePipelines:    "apc",
 	credNameAzurePowerShell:   "azure-pwsh",
 	credNameCert:              "client-cert",
+	credNameGitHubActions:     "github-actions",
 	credNameManagedIdentity:   "managed-id",
 	credNameSecret:            "client-secret",
 	credNameWorkloadIdentity:  "workload",

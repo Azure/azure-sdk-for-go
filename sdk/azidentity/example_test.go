@@ -6,10 +6,30 @@ package azidentity_test
 import (
 	"context"
 	"errors"
+	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
+
+// This example runs in a GitHub Actions workflow with permissions: id-token: write.
+// Set AZURE_TENANT_ID and AZURE_CLIENT_ID for an identity federated with the workflow.
+func ExampleNewGitHubActionsCredential() {
+	cred, err := azidentity.NewGitHubActionsCredential(nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	client, err := newServiceClient(cred)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err = client.Method(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+}
 
 // Credentials that require user interaction such as [InteractiveBrowserCredential] and [DeviceCodeCredential]
 // can optionally return this error instead of automatically prompting for user interaction. This allows applications

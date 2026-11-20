@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/SubscriptionRequests/SubscriptionRequests_Get.json
+// Generated from example definition: 2026-09-01-preview/SubscriptionRequests/SubscriptionRequests_Get.json
 func ExampleGroupQuotaSubscriptionRequestsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,20 +30,20 @@ func ExampleGroupQuotaSubscriptionRequestsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaSubscriptionRequestsClientGetResponse{
-	// 	GroupQuotaSubscriptionRequestStatus: &armquota.GroupQuotaSubscriptionRequestStatus{
+	// 	GroupQuotaSubscriptionRequestStatus: armquota.GroupQuotaSubscriptionRequestStatus{
 	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/SubscriptionRequest"),
 	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111"),
 	// 		Properties: &armquota.GroupQuotaSubscriptionRequestStatusProperties{
 	// 			ProvisioningState: to.Ptr(armquota.RequestStateAccepted),
-	// 			RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-17T00:56:45.009Z"); return t}()),
+	// 			RequestSubmitTime: to.Ptr(time.Date(2023, time.November, 17, 0, 56, 45, 9000000, time.UTC)),
 	// 			SubscriptionID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01/SubscriptionRequests/SubscriptionRequests_List.json
+// Generated from example definition: 2026-09-01-preview/SubscriptionRequests/SubscriptionRequests_List.json
 func ExampleGroupQuotaSubscriptionRequestsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleGroupQuotaSubscriptionRequestsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111"),
 		// 				Properties: &armquota.GroupQuotaSubscriptionRequestStatusProperties{
 		// 					ProvisioningState: to.Ptr(armquota.RequestStateAccepted),
-		// 					RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-17T00:56:45.009Z"); return t}()),
+		// 					RequestSubmitTime: to.Ptr(time.Date(2023, time.November, 17, 0, 56, 45, 9000000, time.UTC)),
 		// 					SubscriptionID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 				},
 		// 			},

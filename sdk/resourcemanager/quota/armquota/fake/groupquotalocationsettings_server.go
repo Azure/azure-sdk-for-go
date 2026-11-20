@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // GroupQuotaLocationSettingsServer is a fake server for instances of the armquota.GroupQuotaLocationSettingsClient type.
@@ -23,13 +24,13 @@ type GroupQuotaLocationSettingsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings armquota.GroupQuotasEnforcementStatus, options *armquota.GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armquota.GroupQuotaLocationSettingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method GroupQuotaLocationSettingsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *armquota.GroupQuotaLocationSettingsClientGetOptions) (resp azfake.Responder[armquota.GroupQuotaLocationSettingsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdate is the fake for method GroupQuotaLocationSettingsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings armquota.GroupQuotasEnforcementStatus, options *armquota.GroupQuotaLocationSettingsClientBeginUpdateOptions) (resp azfake.PollerResponder[armquota.GroupQuotaLocationSettingsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method GroupQuotaLocationSettingsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, options *armquota.GroupQuotaLocationSettingsClientGetOptions) (resp azfake.Responder[armquota.GroupQuotaLocationSettingsClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGroupQuotaLocationSettingsServerTransport creates a new instance of GroupQuotaLocationSettingsServerTransport with the provided implementation.
@@ -56,16 +57,14 @@ func (g *GroupQuotaLocationSettingsServerTransport) Do(req *http.Request) (*http
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)
 }
 
 func (g *GroupQuotaLocationSettingsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -76,19 +75,16 @@ func (g *GroupQuotaLocationSettingsServerTransport) dispatchToMethodFake(req *ht
 			switch method {
 			case "GroupQuotaLocationSettingsClient.BeginCreateOrUpdate":
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
-			case "GroupQuotaLocationSettingsClient.Get":
-				res.resp, res.err = g.dispatchGet(req)
 			case "GroupQuotaLocationSettingsClient.BeginUpdate":
 				res.resp, res.err = g.dispatchBeginUpdate(req)
+			case "GroupQuotaLocationSettingsClient.Get":
+				res.resp, res.err = g.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -105,7 +101,7 @@ func (g *GroupQuotaLocationSettingsServerTransport) dispatchBeginCreateOrUpdate(
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceProviders/(?P<resourceProviderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locationSettings/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceProviders/(?P<resourceProviderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locationSettings/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -144,7 +140,7 @@ func (g *GroupQuotaLocationSettingsServerTransport) dispatchBeginCreateOrUpdate(
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		g.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -155,54 +151,13 @@ func (g *GroupQuotaLocationSettingsServerTransport) dispatchBeginCreateOrUpdate(
 	return resp, nil
 }
 
-func (g *GroupQuotaLocationSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceProviders/(?P<resourceProviderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locationSettings/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
-	if err != nil {
-		return nil, err
-	}
-	groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceProviderNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderName")])
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.Get(req.Context(), managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, locationParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GroupQuotasEnforcementStatus, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (g *GroupQuotaLocationSettingsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceProviders/(?P<resourceProviderName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locationSettings/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceProviders/(?P<resourceProviderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locationSettings/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -241,7 +196,7 @@ func (g *GroupQuotaLocationSettingsServerTransport) dispatchBeginUpdate(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		g.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -249,6 +204,47 @@ func (g *GroupQuotaLocationSettingsServerTransport) dispatchBeginUpdate(req *htt
 		g.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (g *GroupQuotaLocationSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if g.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceProviders/(?P<resourceProviderName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locationSettings/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	if err != nil {
+		return nil, err
+	}
+	groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceProviderNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderName")])
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.Get(req.Context(), managementGroupIDParam, groupQuotaNameParam, resourceProviderNameParam, locationParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GroupQuotasEnforcementStatus, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

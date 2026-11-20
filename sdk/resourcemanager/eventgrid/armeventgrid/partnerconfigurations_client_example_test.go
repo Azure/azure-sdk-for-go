@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_AuthorizePartner.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_AuthorizePartner.json
 func ExamplePartnerConfigurationsClient_AuthorizePartner() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExamplePartnerConfigurationsClient_AuthorizePartner() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_CreateOrUpdate.json
 func ExamplePartnerConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExamplePartnerConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_Delete.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_Delete.json
 func ExamplePartnerConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExamplePartnerConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_Update.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_Update.json
 func ExamplePartnerConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExamplePartnerConfigurationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_Get.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_Get.json
 func ExamplePartnerConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExamplePartnerConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_ListByResourceGroup.json
 func ExamplePartnerConfigurationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +331,7 @@ func ExamplePartnerConfigurationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_ListBySubscription.json
 func ExamplePartnerConfigurationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExamplePartnerConfigurationsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerConfigurations_UnauthorizePartner.json
+// Generated from example definition: 2026-06-15-preview/PartnerConfigurations_UnauthorizePartner.json
 func ExamplePartnerConfigurationsClient_UnauthorizePartner() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

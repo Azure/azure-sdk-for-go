@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_Activate.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_Activate.json
 func ExamplePartnerTopicsClient_Activate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExamplePartnerTopicsClient_Activate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_Delete.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_Delete.json
 func ExamplePartnerTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExamplePartnerTopicsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_CreateOrUpdate.json
 func ExamplePartnerTopicsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExamplePartnerTopicsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_Deactivate.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_Deactivate.json
 func ExamplePartnerTopicsClient_Deactivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExamplePartnerTopicsClient_Deactivate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_Get.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_Get.json
 func ExamplePartnerTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExamplePartnerTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_ListByResourceGroup.json
 func ExamplePartnerTopicsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExamplePartnerTopicsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_ListBySubscription.json
 func ExamplePartnerTopicsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExamplePartnerTopicsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerTopics_Update.json
+// Generated from example definition: 2026-06-15-preview/PartnerTopics_Update.json
 func ExamplePartnerTopicsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

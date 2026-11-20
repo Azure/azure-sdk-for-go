@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_CreateOrUpdate.json
 func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExamplePartnerNamespacesClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_Delete.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_Delete.json
 func ExamplePartnerNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExamplePartnerNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_Update.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_Update.json
 func ExamplePartnerNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExamplePartnerNamespacesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_Get.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_Get.json
 func ExamplePartnerNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExamplePartnerNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_ListSharedAccessKeys.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_ListSharedAccessKeys.json
 func ExamplePartnerNamespacesClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExamplePartnerNamespacesClient_ListSharedAccessKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_ListByResourceGroup.json
 func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +209,7 @@ func ExamplePartnerNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_ListBySubscription.json
 func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExamplePartnerNamespacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerNamespaces_RegenerateKey.json
+// Generated from example definition: 2026-06-15-preview/PartnerNamespaces_RegenerateKey.json
 func ExamplePartnerNamespacesClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -62,6 +62,13 @@ new versions of existing certificates, update certificate metadata, and delete c
 can also manage certificate issuers, contacts, and management policies of certificates. This is
 illustrated in the [examples](#examples) below.
 
+### Platform-managed certificates
+
+`CertificatePolicy.PlatformManaged` is experimental and intended for first-party
+Microsoft Azure Key Vault internal use only. Calls using this property will fail
+for external customers, and external use is not recommended. Its metadata schema
+is intentionally unspecified and may change.
+
 ## Examples
 
 Get started with our [examples][certificates_samples].

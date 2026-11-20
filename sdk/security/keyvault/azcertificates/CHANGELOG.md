@@ -7,6 +7,10 @@
 
 * Added support for service API version `2026-04-01`, which is now the default, and for explicitly selecting it via `serviceVersion`.
 
+### Breaking Changes
+
+* Removed `NewPlatformManaged`, which was introduced in `1.5.1-beta.1`. Use a `PlatformManaged` struct literal instead.
+
 ## 1.5.1-beta.1 (2026-06-04)
 
 ### Features Added

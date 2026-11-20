@@ -38,7 +38,7 @@ func Example_package() {
 					LogicalUnitNumber: to.Ptr(int32(1)),
 				},
 			},
-			ImageReference: &azbatch.ImageReference{
+			ImageReference: &azbatch.VMImageReference{
 				Offer:     to.Ptr("0001-com-ubuntu-server-jammy"),
 				Publisher: to.Ptr("canonical"),
 				SKU:       to.Ptr("22_04-lts"),

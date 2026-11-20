@@ -6,18 +6,71 @@ package azbatch_test
 import (
 	"context"
 	"encoding/json"
+	"io"
+	"net/http"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/batch/azbatch"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 var ctx = context.Background()
+
+func TestNewClient(t *testing.T) {
+	t.Parallel()
+	for _, options := range []*azbatch.ClientOptions{nil, {}} {
+		client, err := azbatch.NewClient("https://batch.local", &fake.TokenCredential{}, options)
+		require.NoError(t, err)
+		require.NotNil(t, client)
+	}
+}
+
+func TestCreateJobRequest(t *testing.T) {
+	t.Parallel()
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	date := time.Date(2026, time.November, 18, 0, 0, 0, 0, time.UTC)
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusCreated),
+		mock.WithHeader("ETag", `"etag"`),
+		mock.WithPredicate(func(req *http.Request) bool {
+			assert.Equal(t, http.MethodPost, req.Method)
+			assert.Equal(t, "/jobs", req.URL.Path)
+			assert.Equal(t, "2026-10-01", req.URL.Query().Get("api-version"))
+			assert.Equal(t, "42", req.URL.Query().Get("timeOut"))
+			assert.Equal(t, "request-id", req.Header.Get("client-request-id"))
+			assert.Equal(t, date.Format(http.TimeFormat), req.Header.Get("ocp-date"))
+			body, err := io.ReadAll(req.Body)
+			assert.NoError(t, err)
+			assert.JSONEq(t, `{"id":"job","poolInfo":{"poolId":"pool"}}`, string(body))
+			return true
+		}),
+	)
+	// A matching predicate also consumes the following queued response.
+	srv.AppendResponse()
+	client, err := azbatch.NewClient("https://batch.local", &fake.TokenCredential{}, &azbatch.ClientOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
+	})
+	require.NoError(t, err)
+	response, err := client.CreateJob(ctx, azbatch.CreateJobContent{
+		ID:       to.Ptr("job"),
+		PoolInfo: &azbatch.PoolInfo{PoolID: to.Ptr("pool")},
+	}, &azbatch.CreateJobOptions{
+		ClientRequestID: to.Ptr("request-id"),
+		OCPDate:         &date,
+		Timeout:         to.Ptr(int32(42)),
+	})
+	require.NoError(t, err)
+	require.Equal(t, to.Ptr(azcore.ETag(`"etag"`)), response.ETag)
+}
 
 func TestApplications(t *testing.T) {
 	client := record(t)
@@ -33,40 +86,6 @@ func TestApplications(t *testing.T) {
 			require.NotNil(t, ga)
 		}
 	}
-}
-
-func TestCertificates(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/24713")
-	}
-	client := record(t)
-	cc, err := client.CreateCertificate(ctx, azbatch.Certificate{
-		Format: to.Ptr(azbatch.CertificateFormatCER),
-		// no secret here, only an expired, self-signed cert, private key not included
-		Data:                to.Ptr("MIIDazCCAlOgAwIBAgIUF2VIP4+AnEtb52KTCHbo4+fESfswDQYJKoZIhvcNAQELBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0xOTEwMzAyMjQ2MjBaFw0yMjA4MTkyMjQ2MjBaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDL1hG+JYCfIPp3tlZ05J4pYIJ3Ckfs432bE3rYuWlR2w9KqdjWkKxuAxpjJ+T+uoqVaT3BFMfi4ZRYOCI69s4+lP3DwR8uBCp9xyVkF8thXfS3iui0liGDviVBoBJJWvjDFU8a/Hseg+QfoxAb6tx0kEc7V3ozBLWoIDJjfwJ3NdsLZGVtAC34qCWeEIvS97CDA4g3Kc6hYJIrAa7pxHzo/Nd0U3e7z+DlBcJV7dY6TZUyjBVTpzppWe+XQEOfKsjkDNykHEC1C1bClG0u7unS7QOBMd6bOGkeL+Bc+n22slTzs5amsbDLNuobSaUsFt9vgD5jRD6FwhpXwj/Ek0F7AgMBAAGjUzBRMB0GA1UdDgQWBBT6Mf9uXFB67bY2PeW3GCTKfkO7vDAfBgNVHSMEGDAWgBT6Mf9uXFB67bY2PeW3GCTKfkO7vDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCZ1+kTISX85v9/ag7glavaPFUYsOSOOofl8gSzov7L01YL+srq7tXdvZmWrjQ/dnOYh18rp9rb24vwIYxNioNG/M2cW1jBJwEGsDPOwdPV1VPcRmmUJW9kY130gRHBCd/NqB7dIkcQnpNsxPIIWI+sRQp73U0ijhOByDnCNHLHon6vbfFTwkO1XggmV5BdZ3uQJNJyckILyNzlhmf6zhonMp4lVzkgxWsAm2vgdawd6dmBa+7Avb2QK9s+IdUSutFhDgW2L12Obgh12Y4sf1iKQXA0RbZ2k+XQIz8EKZa7vJQY0ciYXSgB/BV3a96xX3cxLIPL8Vam8Ytkopi3gsGA"),
-		Thumbprint:          to.Ptr("8CA6895C58FD5C9AEED13121F784629BE0261977"),
-		ThumbprintAlgorithm: to.Ptr("sha1"),
-	}, nil)
-	require.NoError(t, err)
-	require.NotNil(t, cc)
-
-	n := 0
-	for certs := client.NewListCertificatesPager(nil); certs.More(); {
-		page, err := certs.NextPage(ctx)
-		require.NoError(t, err)
-		require.NotNil(t, page)
-		for _, c := range page.Value {
-			require.NotNil(t, c)
-			gc, err := client.GetCertificate(ctx, *c.ThumbprintAlgorithm, *c.Thumbprint, nil)
-			require.NoError(t, err)
-			require.NotNil(t, gc)
-			dc, err := client.DeleteCertificate(ctx, *c.ThumbprintAlgorithm, *c.Thumbprint, nil)
-			require.NoError(t, err)
-			require.NotNil(t, dc)
-			n++
-		}
-	}
-	require.Greater(t, n, 0, "no certificates found")
 }
 
 func TestDeallocateNode(t *testing.T) {
@@ -183,11 +202,11 @@ func TestJob(t *testing.T) {
 		Constraints: &azbatch.JobConstraints{
 			MaxWallClockTime: to.Ptr("PT1H"),
 		},
-		ID:                 to.Ptr(jid),
-		JobPreparationTask: &azbatch.JobPreparationTask{CommandLine: to.Ptr("/bin/sh -c 'echo preparing'")},
-		JobReleaseTask:     &azbatch.JobReleaseTask{CommandLine: to.Ptr("/bin/sh -c 'echo release'")},
-		OnAllTasksComplete: to.Ptr(azbatch.OnAllTasksCompleteNoAction),
-		PoolInfo:           &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
+		ID:                   to.Ptr(jid),
+		JobPreparationTask:   &azbatch.JobPreparationTask{CommandLine: to.Ptr("/bin/sh -c 'echo preparing'")},
+		JobReleaseTask:       &azbatch.JobReleaseTask{CommandLine: to.Ptr("/bin/sh -c 'echo release'")},
+		AllTasksCompleteMode: to.Ptr(azbatch.AllTasksCompleteModeNoAction),
+		PoolInfo:             &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
 	}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, cj)
@@ -372,7 +391,7 @@ func TestNode(t *testing.T) {
 	require.NotNil(t, df)
 
 	rm, err := client.RemoveNodes(ctx, poolID, azbatch.RemoveNodeContent{
-		NodeList: []string{*node.ID},
+		NodeIDs: []string{*node.ID},
 	}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, rm)
@@ -427,7 +446,7 @@ func TestPool(t *testing.T) {
 
 	_, err = poll(
 		func() azbatch.Pool {
-			gp, err := client.GetPool(ctx, *pool.ID, &azbatch.GetPoolOptions{SelectParam: []string{"allocationState"}})
+			gp, err := client.GetPool(ctx, *pool.ID, &azbatch.GetPoolOptions{Select: []string{"allocationState"}})
 			require.NoError(t, err)
 			return gp.Pool
 		},
@@ -492,12 +511,11 @@ func TestSerDe(t *testing.T) {
 		json.Unmarshaler
 	}{
 		&azbatch.AccountListSupportedImagesResult{},
-		&azbatch.AddTaskCollectionResult{},
+		&azbatch.CreateTaskCollectionResult{},
 		&azbatch.AffinityInfo{},
 		&azbatch.Application{},
 		&azbatch.ApplicationListResult{},
 		&azbatch.ApplicationPackageReference{},
-		&azbatch.AuthenticationTokenSettings{},
 		&azbatch.AutoPoolSpecification{},
 		&azbatch.AutoScaleRun{},
 		&azbatch.AutoScaleRunError{},
@@ -505,9 +523,6 @@ func TestSerDe(t *testing.T) {
 		&azbatch.AutomaticOSUpgradePolicy{},
 		&azbatch.AzureBlobFileSystemConfiguration{},
 		&azbatch.AzureFileShareConfiguration{},
-		&azbatch.Certificate{},
-		&azbatch.CertificateListResult{},
-		&azbatch.CertificateReference{},
 		&azbatch.CIFSMountConfiguration{},
 		&azbatch.ContainerConfiguration{},
 		&azbatch.ContainerHostBindMountEntry{},
@@ -519,7 +534,6 @@ func TestSerDe(t *testing.T) {
 		&azbatch.CreateTaskContent{},
 		&azbatch.DataDisk{},
 		&azbatch.DeallocateNodeContent{},
-		&azbatch.DeleteCertificateError{},
 		&azbatch.DiffDiskSettings{},
 		&azbatch.DisableJobContent{},
 		&azbatch.DisableNodeSchedulingContent{},
@@ -535,8 +549,8 @@ func TestSerDe(t *testing.T) {
 		&azbatch.ExitConditions{},
 		&azbatch.ExitOptions{},
 		&azbatch.FileProperties{},
-		&azbatch.HTTPHeader{},
-		&azbatch.ImageReference{},
+		&azbatch.OutputFileUploadHeader{},
+		&azbatch.VMImageReference{},
 		&azbatch.InboundEndpoint{},
 		&azbatch.InboundNATPool{},
 		&azbatch.InstanceViewStatus{},
@@ -561,7 +575,6 @@ func TestSerDe(t *testing.T) {
 		&azbatch.JobSpecification{},
 		&azbatch.JobStatistics{},
 		&azbatch.LinuxUserConfiguration{},
-		&azbatch.ListCertificatesResponse{},
 		&azbatch.ListPoolNodeCountsResult{},
 		&azbatch.ManagedDisk{},
 		&azbatch.MetadataItem{},
@@ -585,7 +598,7 @@ func TestSerDe(t *testing.T) {
 		&azbatch.NodeRemoteLoginSettings{},
 		&azbatch.NodeVMExtension{},
 		&azbatch.NodeVMExtensionListResult{},
-		&azbatch.OSDisk{},
+		&azbatch.OsDisk{},
 		&azbatch.OutputFile{},
 		&azbatch.OutputFileBlobContainerDestination{},
 		&azbatch.OutputFileDestination{},
@@ -599,7 +612,6 @@ func TestSerDe(t *testing.T) {
 		&azbatch.PoolResourceStatistics{},
 		&azbatch.PoolSpecification{},
 		&azbatch.PoolStatistics{},
-		&azbatch.PoolUsageStatistics{},
 		&azbatch.PublicIPAddressConfiguration{},
 		&azbatch.RebootNodeContent{},
 		&azbatch.RecentJob{},
@@ -617,7 +629,7 @@ func TestSerDe(t *testing.T) {
 		&azbatch.Subtask{},
 		&azbatch.SupportedImage{},
 		&azbatch.Task{},
-		&azbatch.TaskAddResult{},
+		&azbatch.TaskCreateResult{},
 		&azbatch.TaskConstraints{},
 		&azbatch.TaskContainerExecutionInfo{},
 		&azbatch.TaskContainerSettings{},
@@ -681,9 +693,9 @@ func TestTask(t *testing.T) {
 	client, poolID := createDefaultPool(t)
 	jid := randomString(t)
 	cj, err := client.CreateJob(ctx, azbatch.CreateJobContent{
-		ID:                 to.Ptr(jid),
-		OnAllTasksComplete: to.Ptr(azbatch.OnAllTasksCompleteTerminateJob),
-		PoolInfo:           &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
+		ID:                   to.Ptr(jid),
+		AllTasksCompleteMode: to.Ptr(azbatch.AllTasksCompleteModeTerminateJob),
+		PoolInfo:             &azbatch.PoolInfo{PoolID: to.Ptr(poolID)},
 	}, nil)
 	require.NoError(t, err)
 	require.NotNil(t, cj)
@@ -730,7 +742,7 @@ func TestTask(t *testing.T) {
 
 	tid := randomString(t)
 	ctc, err := client.CreateTaskCollection(ctx, jid, azbatch.TaskGroup{
-		Value: []azbatch.CreateTaskContent{
+		Values: []azbatch.CreateTaskContent{
 			{
 				CommandLine: to.Ptr("/bin/sh -c 'echo done > $AZ_BATCH_TASK_DIR/task.txt'"),
 				ID:          to.Ptr(tid),

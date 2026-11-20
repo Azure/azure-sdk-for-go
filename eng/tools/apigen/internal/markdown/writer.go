@@ -12,6 +12,7 @@ import (
 	"go/printer"
 	"go/scanner"
 	"go/token"
+	"go/types"
 	"io"
 	"path"
 	"strconv"
@@ -186,7 +187,23 @@ func (w *packageWriter) typeDeclaration(typ report.Type) error {
 	if err := w.functions(typ.Functions); err != nil {
 		return err
 	}
-	return w.functions(typ.Methods)
+	if err := w.functions(typ.Methods); err != nil {
+		return err
+	}
+	for _, field := range typ.PromotedFields {
+		fmt.Fprintf(&w.source, "// Promoted field: %s\n", field)
+	}
+	for _, method := range typ.PromotedMethods {
+		receiver := typ.Name
+		if method.PointerOnly {
+			receiver = "*" + receiver
+		}
+		fmt.Fprintf(&w.source, "// Promoted method on %s: %s\n", receiver, method.Signature)
+	}
+	if len(typ.PromotedFields)+len(typ.PromotedMethods) > 0 {
+		w.source.WriteByte('\n')
+	}
+	return nil
 }
 
 func (w *packageWriter) node(node ast.Node, comments []*ast.CommentGroup) (string, error) {
@@ -260,7 +277,7 @@ func (w *packageWriter) constants(constants []report.Constant) error {
 			}
 			entry += " " + text
 		}
-		value, err := constantExpression(item.Value)
+		value, err := constantExpression(item.Value, item.Type)
 		if err != nil {
 			return fmt.Errorf("constant %q: %w", item.Name, err)
 		}
@@ -280,6 +297,12 @@ func (w *packageWriter) variables(variables []report.Variable) error {
 		entry, ok := strings.CutPrefix(text, "var ")
 		if !ok {
 			return fmt.Errorf("expected a var declaration, got %q", text)
+		}
+		if variable.Inferred {
+			for _, object := range variable.Objects {
+				typeName := types.TypeString(object.Type(), types.RelativeTo(object.Pkg()))
+				entries = append(entries, fmt.Sprintf("// Inferred type of %s: %s", object.Name(), typeName))
+			}
 		}
 		entries = append(entries, entry)
 	}

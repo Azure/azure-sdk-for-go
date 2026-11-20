@@ -82,7 +82,12 @@ func TestGenerateAllAPIReports(t *testing.T) {
 		_, err = os.Stat(filepath.Join(root, "d-bad", "api.md"))
 		assert.ErrorIs(t, err, os.ErrNotExist)
 	})
-	t.Run("reports success and includes nested modules", func(t *testing.T) {
+	t.Run("uses the default executable and includes nested modules", func(t *testing.T) {
+		scriptData, err := os.ReadFile(script)
+		require.NoError(t, err)
+		localScript := filepath.Join(filepath.Dir(binary), filepath.Base(script))
+		require.NoError(t, os.WriteFile(localScript, scriptData, 0o644))
+
 		root := t.TempDir()
 		require.NoError(t, os.Mkdir(filepath.Join(root, ".git"), 0o755))
 		require.NoError(t, os.CopyFS(root, fstest.MapFS{
@@ -93,8 +98,8 @@ func TestGenerateAllAPIReports(t *testing.T) {
 			"nested/inner.go":   {Data: []byte("package inner\n\ntype Value string\n")},
 			"nested/version.go": {Data: []byte("package inner\n\nconst version = \"v2.3.4\"\n")},
 		}))
-		command := exec.CommandContext(t.Context(), powershell, "-NoLogo", "-NoProfile", "-File", script,
-			"-SdkRoot", root, "-ApigenPath", binary)
+		command := exec.CommandContext(t.Context(), powershell, "-NoLogo", "-NoProfile", "-File", localScript,
+			"-SdkRoot", root)
 		output, err := command.CombinedOutput()
 		require.NoError(t, err, string(output))
 		assert.Contains(t, string(output), "Successfully generated API review bundles for all 2 modules.")

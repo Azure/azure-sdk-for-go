@@ -13,7 +13,7 @@ go run . ..\..\..\sdk\azcore --output ..\..\..\sdk\azcore
 
 Generation always writes `api.md` and `api.metadata.yml` to the current working directory by default. Use `--output` or `-o` to choose another output directory. Relative paths are resolved from the current working directory, and the output directory must already exist. The filenames are fixed. Stdout report output (`--output -`) is not supported.
 
-File output also writes `api.metadata.yml` beside the Markdown file. Both files are generated and staged in temporary files before either destination is replaced. Each replacement occurs only after successful write and close; the two replacements are not a single filesystem transaction. Existing regular-file permissions are preserved; symlinks and other non-regular destinations are rejected. Errors go to stderr with a nonzero exit status. Ctrl+C cancels module loading.
+File output also writes `api.metadata.yml` beside the Markdown file. Both files are generated and staged in temporary files before either destination is replaced. Each replacement occurs only after successful write and close; the two replacements are not a single filesystem transaction. New files on Unix-like systems are created with owner-only permissions (`0600` or more restrictive, depending on the process umask). Existing regular-file permissions are preserved; symlinks and other non-regular destinations are rejected. Errors go to stderr with a nonzero exit status. Ctrl+C cancels module loading.
 
 The tool uses the current Go environment and build constraints. Use `go run . --help` for command-line help.
 
@@ -55,7 +55,7 @@ go build .
 
 The script finds every `go.mod` under the repository's `sdk` directory, including nested modules, and generates or replaces `api.md` and `api.metadata.yml` in each module directory. It continues after generation failures and prints each failed module's absolute directory path in a final summary. Modules without a valid version constant (including non-shipping test modules) fail bundle generation. Exit code 1 means modules failed; exit code 0 includes an all-modules-successful message. Version, path, rendering, and staging failures leave existing reports unchanged.
 
-Use `-SdkRoot <directory>` to scan a smaller tree and `-ApigenPath <executable>` to select a different built generator. PowerShell 7 is required.
+By default, the script runs the executable beside it: `apigen.exe` on Windows and `apigen` on Linux and macOS. Use `-SdkRoot <directory>` to scan a smaller tree and `-ApigenPath <executable>` to select a different built generator. PowerShell 7 is required.
 
 `-Concurrency <N>` limits the number of simultaneous module-generation tasks and defaults to `1` (sequential). Each task uses a separate apigen process and module output directory; Go supports concurrent use of its build and module caches. Failures do not stop other modules, diagnostics identify their module, and the final failure list is sorted by path. Each process can consume substantial CPU and memory, so increase concurrency conservatively.
 
@@ -67,11 +67,11 @@ Run `go test ./...` from this directory. The batch-script tests require PowerShe
 
 - Each package has a Go code block containing its exported declarations. Its import block includes only packages referenced by public variable declarations, constant types, field types, parameters, results, embedded types, alias targets, and generic constraints, including those in expanded internal aliases. Implementation-only imports are omitted. Referenced types from other public packages are not expanded.
 - Each package has five fixed declaration groups: constants and enums, variables, standalone functions, interfaces, and all other types. Each group is sorted alphabetically. Interface aliases belong to the interface group. Enum declarations appear with their constants and values helpers in the first group; other aliases share the final group with structs and other defined types. Associated functions and methods follow their type, sorted within each group.
-- In structs, anonymous embedded fields appear first, followed by named fields; each group is sorted alphabetically. Interface members are sorted alphabetically. Fields retain their types, tags, and embedding; embedded types are shown by name rather than expanding their promoted members. Multi-name struct fields are displayed individually. Source field order is intentionally omitted, so the report does not capture struct layout or positional-literal ordering.
+- In structs, anonymous embedded fields appear first, followed by named fields; each group is sorted alphabetically. Interface members are sorted alphabetically. Fields retain their types, tags, and embedding. Exported embedded fields are shown by name rather than expanding their promoted members. For exported struct types, public members promoted through omitted private embeddings appear in comments after the declaration and its methods. Shadowed and ambiguous selectors are omitted. Each promoted method names the receiving type, as in `// Promoted method on Foo: Read() int` for a method in both method sets or `// Promoted method on *Foo: Reset()` for a pointer-only method. Multi-name struct fields are displayed individually. Source field order is intentionally omitted, so the report does not capture struct layout or positional-literal ordering.
 - Constants retain their types and evaluated values, so `iota` and references to unexported constants do not depend on omitted declarations or source ordering.
 - Signatures retain type parameters, constraints, and parameter and result names. Method receivers retain their types, including pointer or value distinctions, but omit receiver variable names to avoid diff noise.
-- Variables retain any explicit type annotations and initializers, as displayed by pkg.go.dev. Independently initialized names are listed separately. Shared multi-result initializers retain their binding order, with unexported names replaced by `_`.
-- Aliases to internal types are expanded under their public names, including exported fields and methods. An `Alias of` comment records the target's full package path and type name; the expanded declaration is review notation, not a new defined type.
+- Variables retain any explicit type annotations and initializers, as displayed by pkg.go.dev, except that direct function-literal initializers are omitted and only the variable's explicit type or inferred function signature is shown. For other declarations with no explicit type, a `// Inferred type of Name: Type` comment records the compiler's type for each exported binding. Types from other packages use full import paths in these comments. Independently initialized names are listed separately. Shared multi-result initializers retain their binding order, with unexported names replaced by `_`.
+- Aliases to internal types or unexported types in the same package are expanded under their public names, including exported fields and methods. An `Alias of` comment records the target's full package path and type name; the expanded declaration is review notation, not a new defined type.
 - References to internal types in expanded declarations use public aliases when available: names in this package are unqualified, and names in other packages are qualified. When no public alias exists, the actual internal type reference is retained. Aliases to public types retain their `type Name = package.Type` declarations.
 - Implementation bodies, unexported declarations, and descriptive comments are omitted. Whenever unexported struct fields are omitted, Go's `contains filtered or unexported fields` comment appears at the end of the struct body, after any exported fields. Empty structs and structs with only exported fields have no marker.
 - The module section groups the module path, Go version, and a filtered `require` block using `go.mod` syntax. Requirements are deduplicated and sorted by module path, with their selected versions.
@@ -83,11 +83,12 @@ When multiple public aliases identify the same internal type, references prefer 
 
 Embedded struct types retain their field names and embedding. Public-alias selection for an embedded type therefore considers only aliases with the original field name; if none exists, the qualified source type is preserved instead of renaming the field.
 
-Generic internal aliases and instantiated internal targets currently produce an explicit error. Unaliased internal types referenced by expanded declarations are preserved, including generic type references.
+Generic aliases and instantiated targets currently produce an explicit error when they require expansion. Unaliased internal types referenced by expanded declarations are preserved, including generic type references.
 
 ## Import collection
 
 Imports are collected from displayed declarations, including variable initializers and evaluated constant types. Source aliases and dot imports are preserved; imports used only in omitted declarations, fields, function bodies, or constant expressions are excluded.
+Imports used only in array length expressions are also excluded.
 
 When separate source files use the same qualifier for different packages, collection currently returns an explicit error rather than emitting a conflicting import block.
 
@@ -108,6 +109,8 @@ The renderer writes module metadata followed by package sections. The root secti
 Constants and enum groups, variables, and standalone functions precede interfaces and other types. Enum declarations are emitted only in their constant groups, not repeated in the final type group. Each type is followed by its associated functions and methods. Nonempty constant and variable groups always use parenthesized blocks, including single declarations; empty groups are omitted.
 
 Go declarations use fixed spacing rather than column alignment, so longer names do not realign neighboring declarations or fields. Nonempty structs and interfaces use multiline bodies. Blank lines inherited from omitted source comments or fields are removed. Multiline literal contents are preserved. Numeric constants use exact Go expressions rather than approximate display values.
+Untyped rune constants retain their rune kind, even when their evaluated value cannot be written as a single rune literal.
+Array lengths in declaration types are rendered as evaluated decimal integers, so changes to a private constant affect the report only if they change the array length.
 
 An absent Go directive or empty dependency list is omitted from the module block. A dependency without a selected version is an error. The complete document is rendered before output begins, so rendering failures do not leave partial reports; output errors are returned to the caller.
 

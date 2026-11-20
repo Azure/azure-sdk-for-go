@@ -99,16 +99,20 @@ func (e *aliasExpander) expansion(pkg *packages.Package, spec *ast.TypeSpec, obj
 		return nil, nil
 	}
 	target := referencedTypeName(pkg, spec.Type)
-	if target == nil || target.Pkg() == nil || !internalPackagePath(target.Pkg().Path()) {
+	if target == nil || target.Pkg() == nil {
+		return nil, nil
+	}
+	localUnexported := target.Pkg() == pkg.Types && !target.Exported()
+	if !localUnexported && !internalPackagePath(target.Pkg().Path()) {
 		return nil, nil
 	}
 	if genericType(object.Type()) {
-		return nil, fmt.Errorf("internal alias %q uses a generic alias or instantiated target, which is not supported", object.Name())
+		return nil, fmt.Errorf("alias %q uses a generic alias or instantiated target, which is not supported for expansion", object.Name())
 	}
 
 	source, ok := e.types[target]
 	if !ok {
-		return nil, fmt.Errorf("source for internal alias target %s.%s is unavailable", target.Pkg().Path(), target.Name())
+		return nil, fmt.Errorf("source for alias target %s.%s is unavailable", target.Pkg().Path(), target.Name())
 	}
 	for source.spec.Assign.IsValid() {
 		next := referencedTypeName(source.pkg, source.spec.Type)
@@ -145,15 +149,16 @@ func (e *aliasExpander) aliasMethods(expansion *aliasExpansion, pkg *packages.Pa
 		}
 		source, ok := e.methods[method]
 		if !ok {
-			return nil, fmt.Errorf("source for method %q on internal alias %q is unavailable", method.Name(), expansion.object.Name())
+			return nil, fmt.Errorf("source for method %q on expanded alias %q is unavailable", method.Name(), expansion.object.Name())
 		}
 		normalizer := declarationNormalizer{
 			comments: []*ast.CommentGroup{},
+			typeInfo: source.pkg.TypesInfo,
 			resolve:  e.resolver(source.pkg, pkg, expansion, refs),
 		}
 		function, err := normalizeFunction(source.decl, method, expansion.object.Name(), &normalizer)
 		if err != nil {
-			return nil, fmt.Errorf("method %q on internal alias %q: %w", method.Name(), expansion.object.Name(), err)
+			return nil, fmt.Errorf("method %q on expanded alias %q: %w", method.Name(), expansion.object.Name(), err)
 		}
 		result = append(result, function)
 	}

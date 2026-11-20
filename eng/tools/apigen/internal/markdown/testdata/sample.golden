@@ -18,6 +18,7 @@ import (
 )
 
 const (
+	Separator = 'a'
 	Version = 1
 )
 
@@ -41,7 +42,9 @@ func PossibleETagValues() []ETag
 func (ETag) String() string
 
 var (
+	// Inferred type of Alternate: Config
 	Alternate = Config{Value: nil}
+	// Inferred type of Default: Config
 	Default = Config{}
 )
 

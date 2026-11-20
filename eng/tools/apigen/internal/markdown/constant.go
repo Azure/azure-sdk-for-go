@@ -11,11 +11,24 @@ import (
 	"go/format"
 	"go/parser"
 	"go/token"
+	"go/types"
+	"strconv"
+	"unicode/utf8"
 )
 
-func constantExpression(value constant.Value) (string, error) {
+func constantExpression(value constant.Value, typ types.Type) (string, error) {
 	switch value.Kind() {
-	case constant.Bool, constant.String, constant.Int:
+	case constant.Int:
+		if typ == types.Typ[types.UntypedRune] {
+			codePoint, ok := constant.Int64Val(value)
+			if ok && codePoint >= 0 && codePoint <= utf8.MaxRune && utf8.ValidRune(rune(codePoint)) {
+				return strconv.QuoteRuneToASCII(rune(codePoint)), nil
+			}
+			// Untyped rune arithmetic can produce values outside the range of rune literals.
+			return `'\x00' + (` + value.ExactString() + `)`, nil
+		}
+		return value.ExactString(), nil
+	case constant.Bool, constant.String:
 		return value.ExactString(), nil
 	case constant.Float:
 		expr, err := parser.ParseExpr(value.ExactString())
@@ -35,11 +48,11 @@ func constantExpression(value constant.Value) (string, error) {
 		}
 		return output.String(), nil
 	case constant.Complex:
-		real, err := constantExpression(constant.Real(value))
+		real, err := constantExpression(constant.Real(value), nil)
 		if err != nil {
 			return "", err
 		}
-		imaginary, err := constantExpression(constant.Imag(value))
+		imaginary, err := constantExpression(constant.Imag(value), nil)
 		if err != nil {
 			return "", err
 		}

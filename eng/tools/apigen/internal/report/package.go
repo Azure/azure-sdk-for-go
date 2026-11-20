@@ -159,7 +159,7 @@ func extractFunctions(pkg *packages.Package) ([]Function, error) {
 				return nil, fmt.Errorf("function %q has no function type information", decl.Name.Name)
 			}
 
-			normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}}
+			normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}, typeInfo: pkg.TypesInfo}
 			function, err := normalizeFunction(decl, object, receiver, &normalizer)
 			if err != nil {
 				return nil, fmt.Errorf("function %q: %w", decl.Name.Name, err)

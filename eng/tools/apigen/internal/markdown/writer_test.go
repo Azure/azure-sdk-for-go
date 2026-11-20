@@ -63,6 +63,7 @@ const (
 type Code int
 const CodeZulu Code = 2
 const CodeAlpha Code = 1
+const Separator = '\x61'
 const Version = 1
 
 type Config struct {
@@ -264,8 +265,8 @@ func NewBeta() Widget { return Widget{} }
 			{"func NewZulu()", "func NewBeta() Widget\nfunc NewZulu()"},
 			{"\tZuluConst = 2", "\tBetaConstWithALongerName = 2\n\tZuluConst = 2"},
 			{"\tZuluMode Mode = \"z\"", "\tBetaMode Mode = \"z\"\n\tZuluMode Mode = \"z\""},
-			{"\tZuluResult,", "\tBetaWidgetWithALongerName = Widget{}\n\tZuluResult,"},
-			{"\tZuluValue = 2", "\tZuluTyped = 2\n\tZuluValue = 2"},
+			{"\t// Inferred type of ZuluResult: int", "\t// Inferred type of BetaWidgetWithALongerName: Widget\n\tBetaWidgetWithALongerName = Widget{}\n\t// Inferred type of ZuluResult: int"},
+			{"\t// Inferred type of ZuluValue: int", "\t// Inferred type of ZuluTyped: int\n\tZuluTyped = 2\n\t// Inferred type of ZuluValue: int"},
 			{"\tZed int", "\tLongerThanExistingFieldName string\n\tZed int"},
 		} {
 			require.Contains(t, expected, addition.before)
@@ -313,7 +314,7 @@ const KindFirst Kind = "first"
 		}
 		before := render(t, files, false)
 		assert.Contains(t, before, "const (\n\tFirst = 1\n)")
-		assert.Contains(t, before, "var (\n\tInitial = \"first\"\n)")
+		assert.Contains(t, before, "var (\n\t// Inferred type of Initial: string\n\tInitial = \"first\"\n)")
 		assert.Contains(t, before, "type Kind string\n\nconst (\n\tKindFirst Kind = \"first\"\n)")
 		file := files["sample.go"]
 		source := string(file.Data)
@@ -323,12 +324,261 @@ const KindFirst Kind = "first"
 		source = strings.Replace(source, "Read()", "Read(); Write(value string) error", 1)
 		file.Data = []byte(source)
 		expected := strings.Replace(before, "\tFirst = 1\n", "\tFirst = 1\n\tSecondWithALongerName = 2\n", 1)
-		expected = strings.Replace(expected, "\tInitial = \"first\"\n", "\tInitial = \"first\"\n\tLaterWithALongerName = \"later\"\n", 1)
+		expected = strings.Replace(expected, "\tInitial = \"first\"\n", "\tInitial = \"first\"\n\t// Inferred type of LaterWithALongerName: string\n\tLaterWithALongerName = \"later\"\n", 1)
 		expected = strings.Replace(expected, "\tKindFirst Kind = \"first\"\n", "\tKindFirst Kind = \"first\"\n\tKindSecondWithALongerName Kind = \"second\"\n", 1)
 		expected = strings.Replace(expected, "\tField int\n", "\tField int\n\tLongerField string\n", 1)
 		expected = strings.Replace(expected, "\tRead()\n", "\tRead()\n\tWrite(value string) error\n", 1)
 		assert.Equal(t, expected, render(t, files, false))
 	})
+	t.Run("inferred variable types", func(t *testing.T) {
+		files := fstest.MapFS{
+			"go.mod": {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(`package sample
+
+import "example.com/sample/internal/value"
+
+var Value = makeValue()
+var Label, hidden, Count = makeResults()
+var Explicit bool = true
+
+func makeValue() int { return 1 }
+func makeResults() (string, bool, *value.Count) { return "", false, nil }
+`)},
+			"internal/value/value.go": {Data: []byte("package value\n\ntype Count int\n")},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, `var (
+	Explicit bool = true
+	// Inferred type of Label: string
+	// Inferred type of Count: *example.com/sample/internal/value.Count
+	Label, _, Count = makeResults()
+	// Inferred type of Value: int
+	Value = makeValue()
+)`)
+		assert.NotContains(t, before, `import (`)
+		file := files["sample.go"]
+		source := string(file.Data)
+		file.Data = []byte(strings.Replace(source, "makeValue() int { return 1 }", `makeValue() string { return "one" }`, 1))
+		assert.Equal(t, strings.Replace(before, "Inferred type of Value: int", "Inferred type of Value: string", 1),
+			render(t, files, false))
+		file.Data = []byte(strings.Replace(source, "(string, bool, *value.Count)", "(string, bool, []value.Count)", 1))
+		assert.Equal(t, strings.Replace(before, "*example.com/sample/internal/value.Count", "[]example.com/sample/internal/value.Count", 1),
+			render(t, files, false))
+	})
+	t.Run("function literal initializers", func(t *testing.T) {
+		source := `package sample
+
+import (
+	"context"
+	"strings"
+)
+
+type Callback func(string) string
+
+var Explicit Callback = func(s string) string { return strings.TrimSpace(s) }
+var Handler, Other = (func(ctx context.Context) error { return ctx.Err() }), 42
+`
+		files := fstest.MapFS{
+			"go.mod":    {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(source)},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, `var (
+	Explicit Callback
+	Handler func(ctx context.Context) error
+	// Inferred type of Other: int
+	Other = 42
+)`)
+		assert.Contains(t, before, `"context"`)
+		assert.NotContains(t, before, `"strings"`)
+
+		bodyChange := strings.Replace(source, `return strings.TrimSpace(s)`, `return strings.ToUpper(s)`, 1)
+		bodyChange = strings.Replace(bodyChange, `return ctx.Err()`, `return nil`, 1)
+		files["sample.go"].Data = []byte(bodyChange)
+		assert.Equal(t, before, render(t, files, false))
+
+		files["sample.go"].Data = []byte(strings.Replace(bodyChange, "context.Context) error", "context.Context) *error", 1))
+		assert.Equal(t, strings.Replace(before, "context.Context) error", "context.Context) *error", 1),
+			render(t, files, false))
+	})
+}
+
+func TestWriteExpandsAliasToLocalUnexportedType(t *testing.T) {
+	t.Setenv("GOWORK", "off")
+	render := func(t *testing.T, target string) string {
+		t.Helper()
+		dir := t.TempDir()
+		require.NoError(t, os.CopyFS(dir, fstest.MapFS{
+			"go.mod":   {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"alias.go": {Data: []byte("package sample\n\ntype Public = private\ntype Forward = intermediate\n")},
+			"types.go": {Data: []byte("package sample\n\ntype intermediate = private\n\n" + target)},
+		}))
+		loaded, err := loader.Load(t.Context(), dir)
+		require.NoError(t, err)
+		packages, err := report.ExtractPackages(loaded)
+		require.NoError(t, err)
+		var output bytes.Buffer
+		require.NoError(t, markdown.Write(&output, report.ExtractModule(loaded), packages))
+		return output.String()
+	}
+	source := `type private struct {
+	Size int
+	Next *private
+	hidden bool
+}
+
+func (*private) Reset() *private { return nil }
+func (*private) hide() {}
+`
+	before := render(t, source)
+	require.Contains(t, before, `// Alias of example.com/sample.private.
+type Public struct {
+	Next *Public
+	Size int
+	// contains filtered or unexported fields
+}
+
+func (*Public) Reset() *Public`)
+	require.Contains(t, before, `// Alias of example.com/sample.intermediate.
+type Forward struct {
+	Next *Forward
+	Size int
+	// contains filtered or unexported fields
+}
+
+func (*Forward) Reset() *Forward`)
+	assert.NotContains(t, before, "func (*private)")
+	assert.NotContains(t, before, "hide()")
+
+	t.Run("exported field change", func(t *testing.T) {
+		assert.Equal(t, strings.ReplaceAll(before, "Size int", "Size int64"),
+			render(t, strings.Replace(source, "Size int", "Size int64", 1)))
+	})
+	t.Run("exported method change", func(t *testing.T) {
+		assert.Equal(t, strings.ReplaceAll(before, "Reset()", "Reset(force bool)"),
+			render(t, strings.Replace(source, "Reset()", "Reset(force bool)", 1)))
+	})
+	t.Run("unexported field change", func(t *testing.T) {
+		assert.Equal(t, before, render(t, strings.Replace(source, "hidden bool", "hidden string", 1)))
+	})
+}
+
+func TestWriteEvaluatesArrayLengths(t *testing.T) {
+	t.Setenv("GOWORK", "off")
+	render := func(t *testing.T, width, lengthExpr, aliasSize string) string {
+		t.Helper()
+		dir := t.TempDir()
+		require.NoError(t, os.CopyFS(dir, fstest.MapFS{
+			"go.mod": {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(`package sample
+
+import (
+	"example.com/sample/internal/bounds"
+	"example.com/sample/internal/model"
+)
+
+const size = bounds.Width
+type Buffer [` + lengthExpr + `]byte
+type Block = model.Block
+var Cache [bounds.Width]byte
+func Read(p *[size]byte) [0x0][]byte { return [0][]byte{} }
+`)},
+			"internal/bounds/bounds.go": {Data: []byte("package bounds\n\nconst Width = " + width + "\n")},
+			"internal/model/model.go": {Data: []byte(`package model
+
+const size = ` + aliasSize + `
+type Block struct{ Data [size]byte }
+func (*Block) DataCopy() [size]byte { return [size]byte{} }
+`)},
+		}))
+		loaded, err := loader.Load(t.Context(), dir)
+		require.NoError(t, err)
+		packages, err := report.ExtractPackages(loaded)
+		require.NoError(t, err)
+		require.Len(t, packages, 1)
+		assert.Empty(t, packages[0].Imports, "imports used only to compute array lengths should not appear")
+		var output bytes.Buffer
+		require.NoError(t, markdown.Write(&output, report.ExtractModule(loaded), packages))
+		return output.String()
+	}
+
+	before := render(t, "16", "size", "4")
+	assert.Contains(t, before, "type Buffer [16]byte")
+	assert.Contains(t, before, "Cache [16]byte")
+	assert.Contains(t, before, "func Read(p *[16]byte) [0][]byte")
+	assert.Contains(t, before, "Data [4]byte")
+	assert.Contains(t, before, "func (*Block) DataCopy() [4]byte")
+	assert.Equal(t, before, render(t, "0x10", "size + 0", "2 * 2"))
+	assert.Equal(t, strings.ReplaceAll(before, "[16]", "[32]"), render(t, "32", "size", "4"))
+	assert.Equal(t, strings.ReplaceAll(before, "[4]", "[8]"), render(t, "16", "size", "8"))
+}
+
+func TestWriteIncludesMembersPromotedThroughPrivateEmbeddings(t *testing.T) {
+	t.Setenv("GOWORK", "off")
+	render := func(t *testing.T, source string) string {
+		t.Helper()
+		dir := t.TempDir()
+		require.NoError(t, os.CopyFS(dir, fstest.MapFS{
+			"go.mod":    {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(source)},
+		}))
+		loaded, err := loader.Load(t.Context(), dir)
+		require.NoError(t, err)
+		packages, err := report.ExtractPackages(loaded)
+		require.NoError(t, err)
+		var output bytes.Buffer
+		require.NoError(t, markdown.Write(&output, report.ExtractModule(loaded), packages))
+		return output.String()
+	}
+	source := `package sample
+
+type base[T any] struct {
+	Count T
+	Local bool
+	Shared int
+}
+func (base[T]) Read() T { var zero T; return zero }
+func (*base[T]) Reset() {}
+func (base[T]) Clash() {}
+func (base[T]) Covered() {}
+
+type hidden struct{ base[int] }
+type second struct{ secondBase }
+type secondBase struct{ Shared string }
+func (secondBase) Clash() {}
+type Exported struct{ Documented string }
+
+type Public struct {
+	Exported
+	hidden
+	second
+	Local int
+}
+func (Public) Covered() {}
+`
+	before := render(t, source)
+	require.Contains(t, before, `type Public struct {
+	Exported
+	Local int
+	// contains filtered or unexported fields
+}
+
+func (Public) Covered()
+
+// Promoted field: Count int
+// Promoted method on Public: Read() int
+// Promoted method on *Public: Reset()`)
+	for _, ignored := range []string{
+		"Promoted field: Local", "Promoted field: Shared", "Promoted field: Documented",
+		": Clash()", ": Covered()",
+	} {
+		assert.NotContains(t, before, ignored)
+	}
+	expected := strings.Replace(before, "Promoted field: Count int", "Promoted field: Count string", 1)
+	expected = strings.Replace(expected, "Promoted method on Public: Read() int", "Promoted method on Public: Read() string", 1)
+	assert.Equal(t, expected, render(t, strings.Replace(source, "base[int]", "base[string]", 1)))
+	assert.Equal(t, strings.Replace(before, "on *Public: Reset()", "on Public: Reset()", 1),
+		render(t, strings.Replace(source, "\n\thidden\n", "\n\t*hidden\n", 1)))
 }
 
 func TestWritePreservesMultilineInitializers(t *testing.T) {

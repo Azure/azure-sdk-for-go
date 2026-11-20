@@ -43,8 +43,12 @@ type Variable struct {
 	// their compiler-provided types.
 	Objects []*types.Var
 
-	// Decl preserves explicit type annotations and initializers. Unexported names
-	// in shared initializers are replaced by blank identifiers.
+	// Inferred reports whether Decl needs an inferred-type annotation.
+	Inferred bool
+
+	// Decl preserves explicit types and initializers, except that direct function
+	// literals are represented by type only. Unexported names in shared
+	// initializers are replaced by blank identifiers.
 	// It shares expression nodes with loaded source and must be treated as read-only.
 	Decl *ast.GenDecl
 
@@ -137,14 +141,14 @@ func extractVariables(pkg *packages.Package, spec *ast.ValueSpec) ([]Variable, e
 		if len(spec.Values) > 0 {
 			copy.Values = []ast.Expr{spec.Values[i]}
 		}
-		variable, err := variableDeclaration(copy, object)
+		variable, err := variableDeclaration(pkg.TypesInfo, copy, object)
 		if err != nil {
 			return nil, fmt.Errorf("variable %q: %w", name.Name, err)
 		}
 		result = append(result, variable)
 	}
 	if shared && len(objects) > 0 {
-		variable, err := variableDeclaration(group, objects...)
+		variable, err := variableDeclaration(pkg.TypesInfo, group, objects...)
 		if err != nil {
 			return nil, fmt.Errorf("variables starting with %q: %w", objects[0].Name(), err)
 		}
@@ -153,10 +157,18 @@ func extractVariables(pkg *packages.Package, spec *ast.ValueSpec) ([]Variable, e
 	return result, nil
 }
 
-func variableDeclaration(spec ast.ValueSpec, objects ...*types.Var) (Variable, error) {
+func variableDeclaration(typeInfo *types.Info, spec ast.ValueSpec, objects ...*types.Var) (Variable, error) {
 	spec.Doc = nil
 	spec.Comment = nil
-	normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}}
+	if len(spec.Values) == 1 {
+		if literal, ok := ast.Unparen(spec.Values[0]).(*ast.FuncLit); ok {
+			if spec.Type == nil {
+				spec.Type = literal.Type
+			}
+			spec.Values = nil
+		}
+	}
+	normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}, typeInfo: typeInfo}
 	if spec.Type != nil {
 		var err error
 		spec.Type, err = normalizer.typeExpr(spec.Type)
@@ -165,7 +177,8 @@ func variableDeclaration(spec ast.ValueSpec, objects ...*types.Var) (Variable, e
 		}
 	}
 	return Variable{
-		Objects: objects,
+		Objects:  objects,
+		Inferred: spec.Type == nil,
 		Decl: &ast.GenDecl{
 			TokPos: spec.Pos(),
 			Tok:    token.VAR,

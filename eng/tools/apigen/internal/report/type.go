@@ -10,7 +10,9 @@ import (
 	"go/format"
 	"go/token"
 	"go/types"
+	"maps"
 	"slices"
+	"strconv"
 	"strings"
 
 	"golang.org/x/tools/go/packages"
@@ -27,12 +29,12 @@ type Type struct {
 	// IsInterface indicates an interface or an alias to an interface.
 	IsInterface bool
 
-	// AliasOf identifies an expanded internal alias target by package path and
+	// AliasOf identifies an expanded alias target by package path and
 	// type name, or is empty for declarations that were not expanded.
 	AliasOf string
 
 	// Decl contains a standalone type declaration with unexported struct fields
-	// and descriptive comments removed. Public aliases retain their source targets.
+	// and descriptive comments removed. Unexpanded aliases retain their source targets.
 	// It shares type-expression nodes with loaded source and must be treated as read-only.
 	Decl *ast.GenDecl
 
@@ -50,6 +52,18 @@ type Type struct {
 
 	// Methods contains exported methods on this public receiver, sorted by name.
 	Methods []Function
+
+	// PromotedFields and PromotedMethods describe exported members reached
+	// through omitted private embeddings, sorted by name.
+	PromotedFields  []string
+	PromotedMethods []PromotedMethod
+}
+
+// PromotedMethod describes a method promoted to the pointer method set and,
+// unless PointerOnly is true, the value method set.
+type PromotedMethod struct {
+	Signature   string
+	PointerOnly bool
 }
 
 func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.Ident]*types.Package) ([]Type, []Function, error) {
@@ -78,10 +92,11 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 					return nil, nil, err
 				}
 				source := spec
-				normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}}
+				normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}, typeInfo: pkg.TypesInfo}
 				aliasOf := ""
 				if expansion != nil {
 					source = expansion.source.spec
+					normalizer.typeInfo = expansion.source.pkg.TypesInfo
 					normalizer.resolve = aliases.resolver(expansion.source.pkg, pkg, expansion, refs)
 					aliasOf = expansion.origin
 					functions, err := aliases.aliasMethods(expansion, pkg, refs)
@@ -106,6 +121,12 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 					return nil, nil, fmt.Errorf("type %q: %w", spec.Name.Name, err)
 				}
 				_, isInterface := object.Type().Underlying().(*types.Interface)
+				var promotedFields []string
+				var promotedMethods []PromotedMethod
+				// Unexpanded aliases to named types already show the target name.
+				if _, isStruct := ast.Unparen(source.Type).(*ast.StructType); !copy.Assign.IsValid() || isStruct {
+					promotedFields, promotedMethods = promotedMembers(object.Type(), pkg.Types)
+				}
 				result = append(result, Type{
 					Name:        spec.Name.Name,
 					Object:      object,
@@ -116,7 +137,9 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 						Tok:    token.TYPE,
 						Specs:  []ast.Spec{&copy},
 					},
-					Comments: normalizer.comments,
+					Comments:        normalizer.comments,
+					PromotedFields:  promotedFields,
+					PromotedMethods: promotedMethods,
 				})
 			}
 		}
@@ -133,8 +156,77 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 	return result, methods, nil
 }
 
+func promotedMembers(receiver types.Type, pkg *types.Package) (fields []string, methods []PromotedMethod) {
+	structure, ok := receiver.Underlying().(*types.Struct)
+	if !ok {
+		return nil, nil
+	}
+	privateEmbeddings := make(map[int]bool)
+	fieldNames := make(map[string]bool)
+	seen := make(map[*types.Struct]bool)
+	var collectFieldNames func(types.Type)
+	collectFieldNames = func(t types.Type) {
+		if pointer, ok := types.Unalias(t).(*types.Pointer); ok {
+			t = pointer.Elem()
+		}
+		embedded, ok := t.Underlying().(*types.Struct)
+		if !ok || seen[embedded] {
+			return
+		}
+		seen[embedded] = true
+		for field := range embedded.Fields() {
+			if field.Exported() {
+				fieldNames[field.Name()] = true
+			}
+			if field.Embedded() {
+				collectFieldNames(field.Type())
+			}
+		}
+	}
+	for i := range structure.NumFields() {
+		field := structure.Field(i)
+		if field.Embedded() && !field.Exported() {
+			privateEmbeddings[i] = true
+			collectFieldNames(field.Type())
+		}
+	}
+	if len(privateEmbeddings) == 0 {
+		return nil, nil
+	}
+	throughPrivateEmbedding := func(index []int) bool {
+		return len(index) > 1 && privateEmbeddings[index[0]]
+	}
+	// Paths in report comments avoid ambiguous qualifiers and do not need imports.
+	qualify := func(other *types.Package) string {
+		if other == pkg {
+			return ""
+		}
+		return other.Path()
+	}
+	for _, name := range slices.Sorted(maps.Keys(fieldNames)) {
+		object, index, _ := types.LookupFieldOrMethod(receiver, true, nil, name)
+		if field, ok := object.(*types.Var); ok && throughPrivateEmbedding(index) {
+			fields = append(fields, name+" "+types.TypeString(field.Type(), qualify))
+		}
+	}
+	valueMethods := types.NewMethodSet(receiver)
+	for method := range types.NewMethodSet(types.NewPointer(receiver)).Methods() {
+		if !method.Obj().Exported() || !throughPrivateEmbedding(method.Index()) {
+			continue
+		}
+		name := method.Obj().Name()
+		signature := name + strings.TrimPrefix(types.TypeString(method.Type(), qualify), "func")
+		methods = append(methods, PromotedMethod{
+			Signature:   signature,
+			PointerOnly: valueMethods.Lookup(nil, name) == nil,
+		})
+	}
+	return fields, methods
+}
+
 type declarationNormalizer struct {
 	comments []*ast.CommentGroup
+	typeInfo *types.Info
 	resolve  func(ast.Expr, string) (ast.Expr, error)
 }
 
@@ -185,6 +277,20 @@ func (n *declarationNormalizer) typeExprWithName(expr ast.Expr, requiredName str
 		return n.signature(source)
 	case *ast.ArrayType:
 		copy := *source
+		if source.Len != nil {
+			if n.typeInfo == nil {
+				return nil, fmt.Errorf("array length has no type information")
+			}
+			array, ok := n.typeInfo.TypeOf(source).(*types.Array)
+			if !ok {
+				return nil, fmt.Errorf("array length has no array type information")
+			}
+			copy.Len = &ast.BasicLit{
+				ValuePos: source.Len.Pos(),
+				Kind:     token.INT,
+				Value:    strconv.FormatInt(array.Len(), 10),
+			}
+		}
 		var err error
 		copy.Elt, err = n.typeExpr(source.Elt)
 		return &copy, err

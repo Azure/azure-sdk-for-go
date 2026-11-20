@@ -54,13 +54,11 @@ func writeBundleFiles(directory string, document, metadata []byte) (result error
 }
 
 func prepareOutputFile(path string, content []byte) (temporary string, result error) {
-	mode := os.FileMode(0o644)
 	info, err := os.Lstat(path)
 	if err == nil {
 		if !info.Mode().IsRegular() {
 			return "", fmt.Errorf("output path %q is not a regular file", path)
 		}
-		mode = info.Mode().Perm()
 	} else if !errors.Is(err, os.ErrNotExist) {
 		return "", fmt.Errorf("inspect output path %q: %w", path, err)
 	}
@@ -88,8 +86,10 @@ func prepareOutputFile(path string, content []byte) (temporary string, result er
 	if _, err := file.Write(content); err != nil {
 		return "", fmt.Errorf("write temporary output for %q: %w", path, err)
 	}
-	if err := file.Chmod(mode); err != nil {
-		return "", fmt.Errorf("set output permissions: %w", err)
+	if info != nil {
+		if err := file.Chmod(info.Mode().Perm()); err != nil {
+			return "", fmt.Errorf("set output permissions: %w", err)
+		}
 	}
 	if err := file.Sync(); err != nil {
 		return "", fmt.Errorf("sync temporary output: %w", err)

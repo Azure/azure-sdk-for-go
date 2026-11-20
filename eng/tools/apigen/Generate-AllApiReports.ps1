@@ -6,7 +6,7 @@
 [CmdletBinding()]
 param(
     [string] $SdkRoot = (Join-Path $PSScriptRoot '..\..\..\sdk'),
-    [string] $ApigenPath = (Join-Path $PSScriptRoot 'apigen.exe'),
+    [string] $ApigenPath = (Join-Path $PSScriptRoot $(if ($IsWindows) { 'apigen.exe' } else { 'apigen' })),
     [ValidateRange(1, [int]::MaxValue)]
     [int] $Concurrency = 1
 )

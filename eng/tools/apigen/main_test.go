@@ -128,6 +128,33 @@ func TestCommandErrors(t *testing.T) {
 	}
 }
 
+func TestBundleFilePermissions(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("POSIX permission bits are not available on Windows")
+	}
+	dir := t.TempDir()
+	require.NoError(t, writeBundleFiles(dir, []byte("report"), []byte("metadata")))
+	for _, name := range []string{"api.md", "api.metadata.yml"} {
+		path := filepath.Join(dir, name)
+		info, err := os.Stat(path)
+		require.NoError(t, err)
+		assert.Zero(t, info.Mode().Perm()&^0o600, "%s has mode %04o", name, info.Mode().Perm())
+	}
+
+	report := filepath.Join(dir, "api.md")
+	metadata := filepath.Join(dir, "api.metadata.yml")
+	require.NoError(t, os.Chmod(report, 0o640))
+	require.NoError(t, os.Chmod(metadata, 0o400))
+	require.NoError(t, writeBundleFiles(dir, []byte("updated report"), []byte("updated metadata")))
+
+	reportInfo, err := os.Stat(report)
+	require.NoError(t, err)
+	assert.Equal(t, os.FileMode(0o640), reportInfo.Mode().Perm())
+	metadataInfo, err := os.Stat(metadata)
+	require.NoError(t, err)
+	assert.Equal(t, os.FileMode(0o400), metadataInfo.Mode().Perm())
+}
+
 func TestBundlePreparationFailurePreservesDestination(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "api.md")

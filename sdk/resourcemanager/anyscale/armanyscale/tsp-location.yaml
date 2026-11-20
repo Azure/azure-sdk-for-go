@@ -1,0 +1,4 @@
+directory: specification/anyscale/resource-manager/Anyscale.Platform/platform
+commit: 949e9d707294351364a3a03ea0e5e8edf575c448
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

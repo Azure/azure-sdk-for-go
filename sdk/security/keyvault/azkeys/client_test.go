@@ -808,7 +808,7 @@ func TestSecureWrapUnwrap(t *testing.T) {
 	require.NotNil(t, wrapResp.Algorithm)
 	testSerde(t, &wrapResp.SecureKeyOperationResult)
 
-	unwrapParams := azkeys.SecureKeyUnWrapOperationParameters{
+	unwrapParams := azkeys.SecureKeyUnwrapOperationParameters{
 		Algorithm:              wrapParams.Algorithm,
 		TargetAttestationToken: tR.Token,
 		Value:                  wrapResp.Value,
@@ -883,7 +883,7 @@ func TestSecureKeyModelsSerde(t *testing.T) {
 	}
 	testSerde(t, &wrapParams)
 
-	unwrapParams := azkeys.SecureKeyUnWrapOperationParameters{
+	unwrapParams := azkeys.SecureKeyUnwrapOperationParameters{
 		Algorithm:              to.Ptr(azkeys.JSONWebKeyWrapAlgorithmA256KW),
 		TargetAttestationToken: to.Ptr("attestation-token"),
 		Value:                  []byte("wrapped-key-material"),
@@ -892,7 +892,7 @@ func TestSecureKeyModelsSerde(t *testing.T) {
 
 	result := azkeys.SecureKeyOperationResult{
 		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
-		Kid:       to.Ptr("https://fake.vault.azure.net/keys/name/version"),
+		KID:       to.Ptr(azkeys.ID("https://fake.vault.azure.net/keys/name/version")),
 		Value:     []byte("operation-result"),
 	}
 	testSerde(t, &result)

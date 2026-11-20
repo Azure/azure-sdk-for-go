@@ -1,6 +1,6 @@
 BeforeAll {
   $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot .. .. ..)).Path
-  $approvalScript = Join-Path $repoRoot 'eng/common/scripts/Get-PackageApprovalStatus.ps1'
+  $approvalScript = Join-Path $repoRoot 'eng/scripts/Get-GoPackageApprovalStatus.ps1'
 
   function global:azsdk {
     param([Parameter(ValueFromRemainingArguments = $true)] [object[]] $Arguments)
@@ -14,8 +14,8 @@ BeforeAll {
 }
 
 AfterAll {
-  Remove-Item Function:\azsdk
-  Remove-Variable AzSdkArguments, AzSdkResponse, LanguageShort -Scope Global
+  Remove-Item Function:\azsdk -ErrorAction SilentlyContinue
+  Remove-Variable AzSdkArguments, AzSdkResponse, LanguageShort -Scope Global -ErrorAction SilentlyContinue
 }
 
 Describe 'Go release approval' {
@@ -55,6 +55,40 @@ Describe 'Go release approval' {
       Should -Throw '*not approved for release*'
     $global:AzSdkArguments | Should -Not -Contain '--api-hash'
   }
+
+  It 'allows a prerelease with an approved package name while API approval is pending' {
+    $packageInfo = Get-Content $packageInfoFile -Raw | ConvertFrom-Json
+    $packageInfo.Version = '1.2.3-beta.1'
+    $packageInfo | ConvertTo-Json | Set-Content -Path $packageInfoFile
+    $global:AzSdkResponse = @{
+      operation_status = 'Succeeded'
+      result = @{
+        isApproved = $false
+        finalSource = 'reviewHub'
+        reason = 'packageNameApproved'
+        apiView = @{ isApproved = $false; packageNameApproved = $true; reason = 'packageNameApproved' }
+      }
+    } | ConvertTo-Json -Compress
+
+    & $approvalScript -PackageInfoFiles @($packageInfoFile) -AzSdkExePath 'azsdk'
+
+    $global:AzSdkArguments | Should -Not -Contain '--api-hash'
+  }
+
+  It 'does not allow a stable version with only package-name approval' {
+    $global:AzSdkResponse = @{
+      operation_status = 'Succeeded'
+      result = @{
+        isApproved = $false
+        finalSource = 'reviewHub'
+        reason = 'packageNameApproved'
+        apiView = @{ isApproved = $false; packageNameApproved = $true; reason = 'packageNameApproved' }
+      }
+    } | ConvertTo-Json -Compress
+
+    { & $approvalScript -PackageInfoFiles @($packageInfoFile) -AzSdkExePath 'azsdk' } |
+      Should -Throw '*not approved for release*'
+  }
 }
 
 Describe 'Go release pipeline' {
@@ -62,7 +96,7 @@ Describe 'Go release pipeline' {
     $template = Get-Content (Join-Path $repoRoot 'eng/pipelines/templates/jobs/archetype-go-release.yml') -Raw
     $tagJob = $template.IndexOf('- job: TagRepository')
     $tagJob | Should -BeGreaterThan -1
-    $approval = $template.IndexOf('/steps/get-package-approval-status.yml', $tagJob)
+    $approval = $template.IndexOf('displayName: Check Package Approval Status', $tagJob)
     $otherTriggers = $template.IndexOf('displayName: Check Package Approval Status for other release triggers', $tagJob)
     $tag = $template.IndexOf('/steps/create-tags-and-git-release.yml', $tagJob)
 

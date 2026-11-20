@@ -181,11 +181,35 @@ stages:
                     )
                   )
                 )
-          - template: /eng/common/pipelines/templates/steps/get-package-approval-status.yml
-            parameters:
-              PackageInfoFiles:
-                - $(GoReleasePackageInfoFile)
-              SourceRootPath: $(Build.SourcesDirectory)
+          - task: AzureCLI@2
+            displayName: Check Package Approval Status
+            condition: >-
+              and(
+                succeeded(),
+                eq(variables['System.TeamProject'], 'internal'),
+                or(
+                  in(variables['Build.Reason'], 'Manual', ''),
+                  and(
+                    eq(variables['Build.Reason'], 'IndividualCI'),
+                    eq(variables['Build.SourceBranch'], 'refs/heads/main')
+                  )
+                ),
+                not(
+                  and(
+                    eq(variables['Skip.CheckPackageApproval'], 'true'),
+                    eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
+                  )
+                )
+              )
+            inputs:
+              azureSubscription: 'ADO to ARH Service Connection'
+              scriptType: pscore
+              scriptLocation: scriptPath
+              scriptPath: $(Build.SourcesDirectory)/eng/scripts/Get-GoPackageApprovalStatus.ps1
+              arguments: >
+                -PackageInfoFiles @('$(GoReleasePackageInfoFile)')
+                -AzSdkExePath '$(AZSDK)'
+              workingDirectory: $(Pipeline.Workspace)
           # The shared template skips non-main CI and other release triggers; those must also be gated.
           - task: AzureCLI@2
             displayName: Check Package Approval Status for other release triggers
@@ -213,7 +237,7 @@ stages:
               azureSubscription: 'ADO to ARH Service Connection'
               scriptType: pscore
               scriptLocation: scriptPath
-              scriptPath: $(Build.SourcesDirectory)/eng/common/scripts/Get-PackageApprovalStatus.ps1
+              scriptPath: $(Build.SourcesDirectory)/eng/scripts/Get-GoPackageApprovalStatus.ps1
               arguments: >
                 -PackageInfoFiles @('$(GoReleasePackageInfoFile)')
                 -AzSdkExePath '$(AZSDK)'

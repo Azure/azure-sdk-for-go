@@ -1175,7 +1175,7 @@ func (r *RestoreKeyParameters) UnmarshalJSON(data []byte) error {
 func (s SecureKeyOperationResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alg", s.Algorithm)
-	populate(objectMap, "kid", s.Kid)
+	populate(objectMap, "kid", s.KID)
 	populateByteArray(objectMap, "value", s.Value, func() any {
 		return runtime.EncodeByteArray(s.Value, runtime.Base64URLFormat)
 	})
@@ -1195,7 +1195,7 @@ func (s *SecureKeyOperationResult) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Algorithm", &s.Algorithm)
 			delete(rawMsg, key)
 		case "kid":
-			err = unpopulate(val, "Kid", &s.Kid)
+			err = unpopulate(val, "KID", &s.KID)
 			delete(rawMsg, key)
 		case "value":
 			if val != nil && string(val) != "null" {
@@ -1210,8 +1210,8 @@ func (s *SecureKeyOperationResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SecureKeyUnWrapOperationParameters.
-func (s SecureKeyUnWrapOperationParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SecureKeyUnwrapOperationParameters.
+func (s SecureKeyUnwrapOperationParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alg", s.Algorithm)
 	populate(objectMap, "target", s.TargetAttestationToken)
@@ -1221,8 +1221,8 @@ func (s SecureKeyUnWrapOperationParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecureKeyUnWrapOperationParameters.
-func (s *SecureKeyUnWrapOperationParameters) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecureKeyUnwrapOperationParameters.
+func (s *SecureKeyUnwrapOperationParameters) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())

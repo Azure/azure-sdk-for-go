@@ -1,5 +1,66 @@
 # Release History
 
+## 4.3.0-beta.2 (2026-11-10)
+### Features Added
+
+- New enum type `VaultMappingState` with values `VaultMappingStateActive`, `VaultMappingStateInactive`
+- New function `NewBackupInstanceFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstanceFromDPPCrossTenantVaultClient, error)`
+- New function `*BackupInstanceFromDPPCrossTenantVaultClient.Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *BackupInstanceFromDPPCrossTenantVaultClientGetOptions) (BackupInstanceFromDPPCrossTenantVaultClientGetResponse, error)`
+- New function `NewBackupInstanceOperationResultFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstanceOperationResultFromDPPCrossTenantVaultClient, error)`
+- New function `*BackupInstanceOperationResultFromDPPCrossTenantVaultClient.Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, operationID string, options *BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetOptions) (BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetResponse, error)`
+- New function `NewBackupInstanceOperationStatusFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstanceOperationStatusFromDPPCrossTenantVaultClient, error)`
+- New function `*BackupInstanceOperationStatusFromDPPCrossTenantVaultClient.Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, operationID string, options *BackupInstanceOperationStatusFromDPPCrossTenantVaultClientGetOptions) (BackupInstanceOperationStatusFromDPPCrossTenantVaultClientGetResponse, error)`
+- New function `NewBackupInstancesFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesFromDPPCrossTenantVaultClient, error)`
+- New function `*BackupInstancesFromDPPCrossTenantVaultClient.NewListPager(resourceGroupName string, vaultName string, mappingName string, options *BackupInstancesFromDPPCrossTenantVaultClientListOptions) *runtime.Pager[BackupInstancesFromDPPCrossTenantVaultClientListResponse]`
+- New function `NewBackupJobsFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupJobsFromDPPCrossTenantVaultClient, error)`
+- New function `*BackupJobsFromDPPCrossTenantVaultClient.NewListPager(resourceGroupName string, vaultName string, mappingName string, options *BackupJobsFromDPPCrossTenantVaultClientListOptions) *runtime.Pager[BackupJobsFromDPPCrossTenantVaultClientListResponse]`
+- New function `*ClientFactory.NewBackupInstanceFromDPPCrossTenantVaultClient() *BackupInstanceFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewBackupInstanceOperationResultFromDPPCrossTenantVaultClient() *BackupInstanceOperationResultFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewBackupInstanceOperationStatusFromDPPCrossTenantVaultClient() *BackupInstanceOperationStatusFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewBackupInstancesFromDPPCrossTenantVaultClient() *BackupInstancesFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewBackupJobsFromDPPCrossTenantVaultClient() *BackupJobsFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewDPPCrossTenantVaultMappingStatusClient() *DPPCrossTenantVaultMappingStatusClient`
+- New function `*ClientFactory.NewDPPCrossTenantVaultMappingsClient() *DPPCrossTenantVaultMappingsClient`
+- New function `*ClientFactory.NewJobFromDPPCrossTenantVaultClient() *JobFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewRecoveryPointFromDPPCrossTenantVaultClient() *RecoveryPointFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewRecoveryPointsFromDPPCrossTenantVaultClient() *RecoveryPointsFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewRestorableTimeRangesFromDPPCrossTenantVaultClient() *RestorableTimeRangesFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewRestoresFromDPPCrossTenantVaultClient() *RestoresFromDPPCrossTenantVaultClient`
+- New function `*ClientFactory.NewValidateRestoreFromDPPCrossTenantVaultClient() *ValidateRestoreFromDPPCrossTenantVaultClient`
+- New function `*CrossTenantAuthCredentials.GetCrossTenantAuthCredentials() *CrossTenantAuthCredentials`
+- New function `*CrossTenantSecretStoreBasedAuthCredentials.GetCrossTenantAuthCredentials() *CrossTenantAuthCredentials`
+- New function `NewDPPCrossTenantVaultMappingStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DPPCrossTenantVaultMappingStatusClient, error)`
+- New function `*DPPCrossTenantVaultMappingStatusClient.Check(ctx context.Context, resourceGroupName string, vaultName string, options *DPPCrossTenantVaultMappingStatusClientCheckOptions) (DPPCrossTenantVaultMappingStatusClientCheckResponse, error)`
+- New function `NewDPPCrossTenantVaultMappingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DPPCrossTenantVaultMappingsClient, error)`
+- New function `*DPPCrossTenantVaultMappingsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, resource CrossTenantVaultMapping, options *DPPCrossTenantVaultMappingsClientCreateOrUpdateOptions) (DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse, error)`
+- New function `*DPPCrossTenantVaultMappingsClient.Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DPPCrossTenantVaultMappingsClientGetOptions) (DPPCrossTenantVaultMappingsClientGetResponse, error)`
+- New function `*DPPCrossTenantVaultMappingsClient.NewListPager(resourceGroupName string, vaultName string, options *DPPCrossTenantVaultMappingsClientListOptions) *runtime.Pager[DPPCrossTenantVaultMappingsClientListResponse]`
+- New function `*DPPCrossTenantVaultMappingsClient.Remove(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DPPCrossTenantVaultMappingsClientRemoveOptions) (DPPCrossTenantVaultMappingsClientRemoveResponse, error)`
+- New function `NewJobFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobFromDPPCrossTenantVaultClient, error)`
+- New function `*JobFromDPPCrossTenantVaultClient.Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, jobID string, options *JobFromDPPCrossTenantVaultClientGetOptions) (JobFromDPPCrossTenantVaultClientGetResponse, error)`
+- New function `NewRecoveryPointFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointFromDPPCrossTenantVaultClient, error)`
+- New function `*RecoveryPointFromDPPCrossTenantVaultClient.Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, recoveryPointID string, options *RecoveryPointFromDPPCrossTenantVaultClientGetOptions) (RecoveryPointFromDPPCrossTenantVaultClientGetResponse, error)`
+- New function `NewRecoveryPointsFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsFromDPPCrossTenantVaultClient, error)`
+- New function `*RecoveryPointsFromDPPCrossTenantVaultClient.NewListPager(resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *RecoveryPointsFromDPPCrossTenantVaultClientListOptions) *runtime.Pager[RecoveryPointsFromDPPCrossTenantVaultClientListResponse]`
+- New function `NewRestorableTimeRangesFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTimeRangesFromDPPCrossTenantVaultClient, error)`
+- New function `*RestorableTimeRangesFromDPPCrossTenantVaultClient.Find(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesFromDPPCrossTenantVaultClientFindOptions) (RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse, error)`
+- New function `NewRestoresFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestoresFromDPPCrossTenantVaultClient, error)`
+- New function `*RestoresFromDPPCrossTenantVaultClient.BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupRestoreRequestClassification, options *RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions) (*runtime.Poller[RestoresFromDPPCrossTenantVaultClientTriggerResponse], error)`
+- New function `NewValidateRestoreFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidateRestoreFromDPPCrossTenantVaultClient, error)`
+- New function `*ValidateRestoreFromDPPCrossTenantVaultClient.BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body ValidateRestoreRequestObject, options *ValidateRestoreFromDPPCrossTenantVaultClientBeginTriggerOptions) (*runtime.Poller[ValidateRestoreFromDPPCrossTenantVaultClientTriggerResponse], error)`
+- New struct `CrossTenantBackupInstance`
+- New struct `CrossTenantBackupInstanceResource`
+- New struct `CrossTenantBackupInstanceResourceList`
+- New struct `CrossTenantSecretStoreBasedAuthCredentials`
+- New struct `CrossTenantSecretStoreResource`
+- New struct `CrossTenantVaultMapping`
+- New struct `CrossTenantVaultMappingList`
+- New struct `CrossTenantVaultMappingProperties`
+- New struct `CrossTenantVaultMappingRemoveRequest`
+- New struct `CrossTenantVaultMappingRemoveRequestProperties`
+- New struct `CrossTenantVaultMappingStatusResponse`
+
+
 ## 4.3.0-beta.1 (2026-09-28)
 ### Features Added
 

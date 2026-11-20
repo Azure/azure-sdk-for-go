@@ -126,6 +126,15 @@ type CopyOptionClassification interface {
 	GetCopyOption() *CopyOption
 }
 
+// CrossTenantAuthCredentialsClassification provides polymorphic access to related types.
+// Call the interface's GetCrossTenantAuthCredentials() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CrossTenantAuthCredentials, *CrossTenantSecretStoreBasedAuthCredentials
+type CrossTenantAuthCredentialsClassification interface {
+	// GetCrossTenantAuthCredentials returns the CrossTenantAuthCredentials content of the underlying type.
+	GetCrossTenantAuthCredentials() *CrossTenantAuthCredentials
+}
+
 // DataStoreParametersClassification provides polymorphic access to related types.
 // Call the interface's GetDataStoreParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

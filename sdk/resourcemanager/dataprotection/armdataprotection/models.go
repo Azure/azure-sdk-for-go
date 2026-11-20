@@ -1112,6 +1112,189 @@ type CrossSubscriptionRestoreSettings struct {
 	State *CrossSubscriptionRestoreState
 }
 
+// CrossTenantAuthCredentials - Cross-tenant projection of the authentication-credentials discriminated base,
+// forked so its secret-store subtype references the value-less
+// CrossTenantSecretStoreResource. Mirror any new AuthCredentials subtype here.
+type CrossTenantAuthCredentials struct {
+	// REQUIRED; Type of the specific object - used for deserializing.
+	ObjectType *string
+}
+
+// GetCrossTenantAuthCredentials implements the CrossTenantAuthCredentialsClassification interface for type CrossTenantAuthCredentials.
+func (c *CrossTenantAuthCredentials) GetCrossTenantAuthCredentials() *CrossTenantAuthCredentials {
+	return c
+}
+
+// CrossTenantBackupInstance - Cross-tenant read projection of BackupInstance. Spreads the shared model so new
+// fields flow through automatically; only datasourceAuthCredentials is re-typed to
+// the value-less CrossTenantAuthCredentials chain.
+type CrossTenantBackupInstance struct {
+	// REQUIRED; Gets or sets the data source information.
+	DataSourceInfo *Datasource
+
+	// REQUIRED
+	ObjectType *string
+
+	// REQUIRED; Gets or sets the policy information.
+	PolicyInfo *PolicyInfo
+
+	// Gets or sets the data source set information.
+	DataSourceSetInfo *DatasourceSet
+
+	// Credentials to use to authenticate with data source provider.
+	DatasourceAuthCredentials CrossTenantAuthCredentialsClassification
+
+	// Gets or sets the Backup Instance friendly name.
+	FriendlyName *string
+
+	// Contains information of the Identity Details for the BI.
+	// If it is null, default will be considered as System Assigned.
+	IdentityDetails *IdentityDetails
+
+	// ResourceGuardOperationRequests on which LAC check will be performed
+	ResourceGuardOperationRequests []*string
+
+	// Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run again.
+	ValidationType *ValidationType
+
+	// READ-ONLY; Specifies the current protection state of the resource
+	CurrentProtectionState *CurrentProtectionState
+
+	// READ-ONLY; Specifies the protection error of the resource
+	ProtectionErrorDetails *UserFacingError
+
+	// READ-ONLY; Specifies the protection status of the resource
+	ProtectionStatus *ProtectionStatusDetails
+
+	// READ-ONLY; Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
+	ProvisioningState *string
+}
+
+// CrossTenantBackupInstanceResource - BackupInstance resource as returned by the cross-tenant read surface; its
+// properties exclude SecretStoreResource.value.
+type CrossTenantBackupInstanceResource struct {
+	// The resource-specific properties for this resource.
+	Properties *CrossTenantBackupInstance
+
+	// Proxy Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CrossTenantBackupInstanceResourceList - Cross-tenant BackupInstance resource list response.
+type CrossTenantBackupInstanceResourceList struct {
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string
+
+	// List of resources.
+	Value []*CrossTenantBackupInstanceResource
+}
+
+// CrossTenantSecretStoreBasedAuthCredentials - Cross-tenant projection of SecretStoreBasedAuthCredentials whose secret store
+// omits `value`.
+type CrossTenantSecretStoreBasedAuthCredentials struct {
+	// REQUIRED; Type of the specific object - used for deserializing.
+	ObjectType *string
+
+	// Secret store resource (cross-tenant read projection, without `value`).
+	SecretStoreResource *CrossTenantSecretStoreResource
+}
+
+// GetCrossTenantAuthCredentials implements the CrossTenantAuthCredentialsClassification interface for type CrossTenantSecretStoreBasedAuthCredentials.
+func (c *CrossTenantSecretStoreBasedAuthCredentials) GetCrossTenantAuthCredentials() *CrossTenantAuthCredentials {
+	return &CrossTenantAuthCredentials{
+		ObjectType: c.ObjectType,
+	}
+}
+
+// CrossTenantSecretStoreResource - Cross-tenant projection of SecretStoreResource used only by the cross-tenant
+// backup-instance read surface: the shared model minus `value` (a write-time
+// credential the service never returns). Spread keeps uri/secretStoreType in sync.
+type CrossTenantSecretStoreResource struct {
+	// REQUIRED; Gets or sets the type of secret store
+	SecretStoreType *SecretStoreType
+
+	// Uri to get to the resource
+	URI *string
+}
+
+// CrossTenantVaultMapping - Cross-tenant vault mapping resource for cross-tenant restore.
+type CrossTenantVaultMapping struct {
+	// CrossTenantVaultMapping properties.
+	Properties *CrossTenantVaultMappingProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// CrossTenantVaultMappingList - List of cross-tenant vault mapping resources.
+type CrossTenantVaultMappingList struct {
+	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
+	NextLink *string
+
+	// List of resources.
+	Value []*CrossTenantVaultMapping
+}
+
+// CrossTenantVaultMappingProperties - Cross-tenant vault mapping properties for cross-tenant restore.
+type CrossTenantVaultMappingProperties struct {
+	// REQUIRED; ARM resource ID of the source backup vault whose data can be restored across tenants.
+	SourceVaultID *string
+
+	// ResourceGuardOperationRequests on which the MUA (LAC) check will be performed.
+	ResourceGuardOperationRequests []*string
+
+	// READ-ONLY; Provisioning state of the cross-tenant vault mapping.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Tenant ID of the source vault in the cross-tenant vault mapping.
+	SourceTenantID *string
+}
+
+// CrossTenantVaultMappingRemoveRequest - Request body for the remove cross-tenant vault mapping action. Carries the Resource
+// Guard
+// operation requests used for the MUA (multi-user authorization) check on the remove.
+type CrossTenantVaultMappingRemoveRequest struct {
+	// Properties of the remove cross-tenant vault mapping request.
+	Properties *CrossTenantVaultMappingRemoveRequestProperties
+}
+
+// CrossTenantVaultMappingRemoveRequestProperties - Properties of the remove cross-tenant vault mapping request.
+type CrossTenantVaultMappingRemoveRequestProperties struct {
+	// ResourceGuardOperationRequests on which the MUA (LAC) check will be performed for the remove.
+	ResourceGuardOperationRequests []*string
+}
+
+// CrossTenantVaultMappingStatusResponse - Response for the cross-tenant vault mapping status check, from the source vault
+// side.
+type CrossTenantVaultMappingStatusResponse struct {
+	// Name of the cross-tenant vault mapping, if the source vault is mapped.
+	MappingName *string
+
+	// Current state of the cross-tenant vault mapping.
+	MappingState *VaultMappingState
+}
+
 // CustomCopyOption - Duration based custom options to copy
 type CustomCopyOption struct {
 	// CONSTANT; Type of the specific object - used for deserializing

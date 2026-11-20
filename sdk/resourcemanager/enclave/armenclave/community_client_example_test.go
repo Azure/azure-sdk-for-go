@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/Community_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/Community_CreateOrUpdate.json
 func ExampleCommunityClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,7 +541,7 @@ func ExampleCommunityClient_BeginCreateOrUpdate() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity"),
 	// 		Name: to.Ptr("TestMyCommunity"),
 	// 		Type: to.Ptr("Microsoft.Mission/communities"),
 	// 		SystemData: &armenclave.SystemData{
@@ -556,7 +556,7 @@ func ExampleCommunityClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Community_Delete.json
+// Generated from example definition: 2026-10-01-preview/Community_Delete.json
 func ExampleCommunityClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +577,7 @@ func ExampleCommunityClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/Community_Update.json
+// Generated from example definition: 2026-10-01-preview/Community_Update.json
 func ExampleCommunityClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -728,15 +728,20 @@ func ExampleCommunityClient_BeginUpdate() {
 					MinimumApproversRequired: to.Ptr[int32](1),
 				},
 				EnclaveCreation: &armenclave.ApprovalSettingConfiguration{
-					ApprovalPolicy:           to.Ptr(armenclave.ApprovalPolicyRequired),
-					MinimumApproversRequired: to.Ptr[int32](1),
+					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyNotRequired),
 				},
 				ConnectionCreation: &armenclave.ApprovalSettingConfiguration{
 					ApprovalPolicy:           to.Ptr(armenclave.ApprovalPolicyRequired),
 					MinimumApproversRequired: to.Ptr[int32](1),
+					MandatoryApprovers: []*armenclave.MandatoryApprover{
+						{
+							ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+						},
+					},
 				},
 				ConnectionUpdate: &armenclave.ApprovalSettingConfiguration{
-					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyNotRequired),
+					ApprovalPolicy:           to.Ptr(armenclave.ApprovalPolicyRequired),
+					MinimumApproversRequired: to.Ptr[int32](1),
 				},
 				CommunityMaintenanceMode: &armenclave.ApprovalSettingConfiguration{
 					ApprovalPolicy:           to.Ptr(armenclave.ApprovalPolicyRequired),
@@ -753,6 +758,10 @@ func ExampleCommunityClient_BeginUpdate() {
 				EnclaveMaintenanceMode: &armenclave.ApprovalSettingConfiguration{
 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyNotRequired),
 				},
+			},
+			AddressSpaces: []*string{
+				to.Ptr("10.0.0.0/16"),
+				to.Ptr("10.1.0.0/16"),
 			},
 		},
 	}, nil)
@@ -780,7 +789,7 @@ func ExampleCommunityClient_BeginUpdate() {
 	// 			},
 	// 		},
 	// 		Properties: &armenclave.CommunityProperties{
-	// 			AddressSpace: to.Ptr("10.0.0.0/24"),
+	// 			AddressSpace: to.Ptr(""),
 	// 			DNSServers: []*string{
 	// 				to.Ptr("azure.net"),
 	// 			},
@@ -1001,15 +1010,20 @@ func ExampleCommunityClient_BeginUpdate() {
 	// 					MinimumApproversRequired: to.Ptr[int32](1),
 	// 				},
 	// 				EnclaveCreation: &armenclave.ApprovalSettingConfiguration{
-	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyRequired),
-	// 					MinimumApproversRequired: to.Ptr[int32](1),
+	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyNotRequired),
 	// 				},
 	// 				ConnectionCreation: &armenclave.ApprovalSettingConfiguration{
 	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyRequired),
 	// 					MinimumApproversRequired: to.Ptr[int32](1),
+	// 					MandatoryApprovers: []*armenclave.MandatoryApprover{
+	// 						{
+	// 							ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 						},
+	// 					},
 	// 				},
 	// 				ConnectionUpdate: &armenclave.ApprovalSettingConfiguration{
-	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyNotRequired),
+	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyRequired),
+	// 					MinimumApproversRequired: to.Ptr[int32](1),
 	// 				},
 	// 				CommunityMaintenanceMode: &armenclave.ApprovalSettingConfiguration{
 	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyRequired),
@@ -1027,12 +1041,16 @@ func ExampleCommunityClient_BeginUpdate() {
 	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyNotRequired),
 	// 				},
 	// 			},
+	// 			AddressSpaces: []*string{
+	// 				to.Ptr("10.0.0.0/16"),
+	// 				to.Ptr("10.1.0.0/16"),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity"),
 	// 		Name: to.Ptr("TestMyCommunity"),
 	// 		Type: to.Ptr("Microsoft.Mission/communities"),
 	// 		SystemData: &armenclave.SystemData{
@@ -1047,7 +1065,7 @@ func ExampleCommunityClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Community_PostCheckAddressSpaceAvailability.json
+// Generated from example definition: 2026-10-01-preview/Community_PostCheckAddressSpaceAvailability.json
 func ExampleCommunityClient_CheckAddressSpaceAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1060,17 +1078,7 @@ func ExampleCommunityClient_CheckAddressSpaceAvailability() {
 	}
 	res, err := clientFactory.NewCommunityClient().CheckAddressSpaceAvailability(ctx, "rgopenapi", "TestMyCommunity", armenclave.CheckAddressSpaceAvailabilityRequest{
 		CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity"),
-		EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-			NetworkSize:     to.Ptr("small"),
-			CustomCidrRange: to.Ptr("10.0.0.0/24"),
-			SubnetConfigurations: []*armenclave.SubnetConfiguration{
-				{
-					SubnetName:        to.Ptr("test"),
-					NetworkPrefixSize: to.Ptr[int32](26),
-				},
-			},
-			AllowSubnetCommunication: to.Ptr(true),
-		},
+		PrefixLength:        to.Ptr[int32](23),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1085,7 +1093,7 @@ func ExampleCommunityClient_CheckAddressSpaceAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Community_Get.json
+// Generated from example definition: 2026-10-01-preview/Community_Get.json
 func ExampleCommunityClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1376,7 +1384,7 @@ func ExampleCommunityClient_Get() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity"),
 	// 		Name: to.Ptr("TestMyCommunity"),
 	// 		Type: to.Ptr("Microsoft.Mission/communities"),
 	// 		SystemData: &armenclave.SystemData{
@@ -1391,7 +1399,7 @@ func ExampleCommunityClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Community_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/Community_ListByResourceGroup.json
 func ExampleCommunityClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1674,7 +1682,7 @@ func ExampleCommunityClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/Community_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/Community_ListBySubscription.json
 func ExampleCommunityClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

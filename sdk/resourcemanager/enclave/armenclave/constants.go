@@ -5,7 +5,7 @@
 package armenclave
 
 const (
-	version20260401 string = "2026-04-01"
+	version20261001Preview string = "2026-10-01-preview"
 )
 
 // ActionPerformed - Specifies the action performed by the approver
@@ -41,10 +41,31 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+// AddressSpaceOwnership - Indicates who manages the address space lifecycle.
+type AddressSpaceOwnership string
+
+const (
+	// AddressSpaceOwnershipCustomerManaged - Customer-provided address space. Customer specifies prefixLength, RP allocates CIDR.
+	AddressSpaceOwnershipCustomerManaged AddressSpaceOwnership = "CustomerManaged"
+	// AddressSpaceOwnershipProductManaged - Product-managed address space. RP-injected for internal platform use (e.g., hub connectivity).
+	AddressSpaceOwnershipProductManaged AddressSpaceOwnership = "ProductManaged"
+)
+
+// PossibleAddressSpaceOwnershipValues returns the possible values for the AddressSpaceOwnership const type.
+func PossibleAddressSpaceOwnershipValues() []AddressSpaceOwnership {
+	return []AddressSpaceOwnership{
+		AddressSpaceOwnershipCustomerManaged,
+		AddressSpaceOwnershipProductManaged,
+	}
+}
+
+// ApprovalActionRequestApprovalStatus - The approval status for an approval action request.
 type ApprovalActionRequestApprovalStatus string
 
 const (
+	// ApprovalActionRequestApprovalStatusApproved - The request is approved.
 	ApprovalActionRequestApprovalStatusApproved ApprovalActionRequestApprovalStatus = "Approved"
+	// ApprovalActionRequestApprovalStatusRejected - The request is rejected.
 	ApprovalActionRequestApprovalStatusRejected ApprovalActionRequestApprovalStatus = "Rejected"
 )
 
@@ -56,10 +77,13 @@ func PossibleApprovalActionRequestApprovalStatusValues() []ApprovalActionRequest
 	}
 }
 
+// ApprovalCallbackRequestApprovalStatus - The approval status for an approval callback request.
 type ApprovalCallbackRequestApprovalStatus string
 
 const (
+	// ApprovalCallbackRequestApprovalStatusApproved - The request is approved.
 	ApprovalCallbackRequestApprovalStatusApproved ApprovalCallbackRequestApprovalStatus = "Approved"
+	// ApprovalCallbackRequestApprovalStatusRejected - The request is rejected.
 	ApprovalCallbackRequestApprovalStatusRejected ApprovalCallbackRequestApprovalStatus = "Rejected"
 )
 
@@ -71,12 +95,17 @@ func PossibleApprovalCallbackRequestApprovalStatusValues() []ApprovalCallbackReq
 	}
 }
 
+// ApprovalCallbackRequestResourceRequestAction - The resource action for an approval callback.
 type ApprovalCallbackRequestResourceRequestAction string
 
 const (
+	// ApprovalCallbackRequestResourceRequestActionCreate - Create the resource.
 	ApprovalCallbackRequestResourceRequestActionCreate ApprovalCallbackRequestResourceRequestAction = "Create"
+	// ApprovalCallbackRequestResourceRequestActionDelete - Delete the resource.
 	ApprovalCallbackRequestResourceRequestActionDelete ApprovalCallbackRequestResourceRequestAction = "Delete"
-	ApprovalCallbackRequestResourceRequestActionReset  ApprovalCallbackRequestResourceRequestAction = "Reset"
+	// ApprovalCallbackRequestResourceRequestActionReset - Reset the resource.
+	ApprovalCallbackRequestResourceRequestActionReset ApprovalCallbackRequestResourceRequestAction = "Reset"
+	// ApprovalCallbackRequestResourceRequestActionUpdate - Update the resource.
 	ApprovalCallbackRequestResourceRequestActionUpdate ApprovalCallbackRequestResourceRequestAction = "Update"
 )
 
@@ -90,11 +119,15 @@ func PossibleApprovalCallbackRequestResourceRequestActionValues() []ApprovalCall
 	}
 }
 
+// ApprovalDeletionCallbackRequestResourceRequestAction - The resource action for an approval deletion callback.
 type ApprovalDeletionCallbackRequestResourceRequestAction string
 
 const (
+	// ApprovalDeletionCallbackRequestResourceRequestActionCreate - Create the resource.
 	ApprovalDeletionCallbackRequestResourceRequestActionCreate ApprovalDeletionCallbackRequestResourceRequestAction = "Create"
+	// ApprovalDeletionCallbackRequestResourceRequestActionDelete - Delete the resource.
 	ApprovalDeletionCallbackRequestResourceRequestActionDelete ApprovalDeletionCallbackRequestResourceRequestAction = "Delete"
+	// ApprovalDeletionCallbackRequestResourceRequestActionUpdate - Update the resource.
 	ApprovalDeletionCallbackRequestResourceRequestActionUpdate ApprovalDeletionCallbackRequestResourceRequestAction = "Update"
 )
 
@@ -188,11 +221,14 @@ func PossibleCommunityEndpointProtocolValues() []CommunityEndpointProtocol {
 	}
 }
 
+// CommunityPropertiesPolicyOverride - The policy override setting for a community.
 type CommunityPropertiesPolicyOverride string
 
 const (
+	// CommunityPropertiesPolicyOverrideEnclave - Apply enclave-specific policies.
 	CommunityPropertiesPolicyOverrideEnclave CommunityPropertiesPolicyOverride = "Enclave"
-	CommunityPropertiesPolicyOverrideNone    CommunityPropertiesPolicyOverride = "None"
+	// CommunityPropertiesPolicyOverrideNone - Do not apply a policy override.
+	CommunityPropertiesPolicyOverrideNone CommunityPropertiesPolicyOverride = "None"
 )
 
 // PossibleCommunityPropertiesPolicyOverrideValues returns the possible values for the CommunityPropertiesPolicyOverride const type.
@@ -213,6 +249,8 @@ const (
 	ConnectionStateApproved ConnectionState = "Approved"
 	// ConnectionStateConnected - EnclaveConnectionState Type Connected
 	ConnectionStateConnected ConnectionState = "Connected"
+	// ConnectionStateDegraded - Sticky health state after at least 3 consecutive non-full-success reconciliations.
+	ConnectionStateDegraded ConnectionState = "Degraded"
 	// ConnectionStateDisconnected - EnclaveConnectionState Type Disconnected
 	ConnectionStateDisconnected ConnectionState = "Disconnected"
 	// ConnectionStateFailed - EnclaveConnectionState Type Failed
@@ -221,6 +259,8 @@ const (
 	ConnectionStatePendingApproval ConnectionState = "PendingApproval"
 	// ConnectionStatePendingUpdate - EnclaveConnectionState Type Pending Update
 	ConnectionStatePendingUpdate ConnectionState = "PendingUpdate"
+	// ConnectionStateReconciling - A topology reconciliation is applying NSG rule changes for this connection.
+	ConnectionStateReconciling ConnectionState = "Reconciling"
 )
 
 // PossibleConnectionStateValues returns the possible values for the ConnectionState const type.
@@ -229,10 +269,12 @@ func PossibleConnectionStateValues() []ConnectionState {
 		ConnectionStateActive,
 		ConnectionStateApproved,
 		ConnectionStateConnected,
+		ConnectionStateDegraded,
 		ConnectionStateDisconnected,
 		ConnectionStateFailed,
 		ConnectionStatePendingApproval,
 		ConnectionStatePendingUpdate,
+		ConnectionStateReconciling,
 	}
 }
 
@@ -315,6 +357,8 @@ const (
 	DiagnosticDestinationCommunityOnly DiagnosticDestination = "CommunityOnly"
 	// DiagnosticDestinationEnclaveOnly - DiagnosticDestination Type EnclaveOnly
 	DiagnosticDestinationEnclaveOnly DiagnosticDestination = "EnclaveOnly"
+	// DiagnosticDestinationUnspecified - DiagnosticDestination Type Unspecified
+	DiagnosticDestinationUnspecified DiagnosticDestination = "Unspecified"
 )
 
 // PossibleDiagnosticDestinationValues returns the possible values for the DiagnosticDestination const type.
@@ -323,6 +367,7 @@ func PossibleDiagnosticDestinationValues() []DiagnosticDestination {
 		DiagnosticDestinationBoth,
 		DiagnosticDestinationCommunityOnly,
 		DiagnosticDestinationEnclaveOnly,
+		DiagnosticDestinationUnspecified,
 	}
 }
 
@@ -377,11 +422,14 @@ func PossibleFirewallSKUValues() []FirewallSKU {
 	}
 }
 
+// GovernedServiceItemEnforcement - The enforcement state for a governed service.
 type GovernedServiceItemEnforcement string
 
 const (
+	// GovernedServiceItemEnforcementDisabled - Enforcement is disabled.
 	GovernedServiceItemEnforcementDisabled GovernedServiceItemEnforcement = "Disabled"
-	GovernedServiceItemEnforcementEnabled  GovernedServiceItemEnforcement = "Enabled"
+	// GovernedServiceItemEnforcementEnabled - Enforcement is enabled.
+	GovernedServiceItemEnforcementEnabled GovernedServiceItemEnforcement = "Enabled"
 )
 
 // PossibleGovernedServiceItemEnforcementValues returns the possible values for the GovernedServiceItemEnforcement const type.
@@ -392,12 +440,17 @@ func PossibleGovernedServiceItemEnforcementValues() []GovernedServiceItemEnforce
 	}
 }
 
+// GovernedServiceItemOption - The governance option for a governed service.
 type GovernedServiceItemOption string
 
 const (
-	GovernedServiceItemOptionAllow         GovernedServiceItemOption = "Allow"
-	GovernedServiceItemOptionDeny          GovernedServiceItemOption = "Deny"
+	// GovernedServiceItemOptionAllow - Allow the governed service.
+	GovernedServiceItemOptionAllow GovernedServiceItemOption = "Allow"
+	// GovernedServiceItemOptionDeny - Deny the governed service.
+	GovernedServiceItemOptionDeny GovernedServiceItemOption = "Deny"
+	// GovernedServiceItemOptionExceptionOnly - Allow only configured exceptions for the governed service.
 	GovernedServiceItemOptionExceptionOnly GovernedServiceItemOption = "ExceptionOnly"
+	// GovernedServiceItemOptionNotApplicable - The governance option does not apply to the governed service.
 	GovernedServiceItemOptionNotApplicable GovernedServiceItemOption = "NotApplicable"
 )
 
@@ -411,12 +464,16 @@ func PossibleGovernedServiceItemOptionValues() []GovernedServiceItemOption {
 	}
 }
 
+// GovernedServiceItemPolicyAction - The policy action for a governed service.
 type GovernedServiceItemPolicyAction string
 
 const (
+	// GovernedServiceItemPolicyActionAuditOnly - Audit policy violations without enforcing the policy.
 	GovernedServiceItemPolicyActionAuditOnly GovernedServiceItemPolicyAction = "AuditOnly"
-	GovernedServiceItemPolicyActionEnforce   GovernedServiceItemPolicyAction = "Enforce"
-	GovernedServiceItemPolicyActionNone      GovernedServiceItemPolicyAction = "None"
+	// GovernedServiceItemPolicyActionEnforce - Enforce the policy.
+	GovernedServiceItemPolicyActionEnforce GovernedServiceItemPolicyAction = "Enforce"
+	// GovernedServiceItemPolicyActionNone - Do not apply a policy action.
+	GovernedServiceItemPolicyActionNone GovernedServiceItemPolicyAction = "None"
 )
 
 // PossibleGovernedServiceItemPolicyActionValues returns the possible values for the GovernedServiceItemPolicyAction const type.
@@ -428,12 +485,17 @@ func PossibleGovernedServiceItemPolicyActionValues() []GovernedServiceItemPolicy
 	}
 }
 
+// MaintenanceModeConfigurationModelJustification - The justification for entering or exiting virtual enclave maintenance
+// mode.
 type MaintenanceModeConfigurationModelJustification string
 
 const (
+	// MaintenanceModeConfigurationModelJustificationGovernance - Maintenance mode is required for governance changes.
 	MaintenanceModeConfigurationModelJustificationGovernance MaintenanceModeConfigurationModelJustification = "Governance"
+	// MaintenanceModeConfigurationModelJustificationNetworking - Maintenance mode is required for networking changes.
 	MaintenanceModeConfigurationModelJustificationNetworking MaintenanceModeConfigurationModelJustification = "Networking"
-	MaintenanceModeConfigurationModelJustificationOff        MaintenanceModeConfigurationModelJustification = "Off"
+	// MaintenanceModeConfigurationModelJustificationOff - No maintenance mode justification applies.
+	MaintenanceModeConfigurationModelJustificationOff MaintenanceModeConfigurationModelJustification = "Off"
 )
 
 // PossibleMaintenanceModeConfigurationModelJustificationValues returns the possible values for the MaintenanceModeConfigurationModelJustification const type.
@@ -445,14 +507,20 @@ func PossibleMaintenanceModeConfigurationModelJustificationValues() []Maintenanc
 	}
 }
 
+// MaintenanceModeConfigurationModelMode - The maintenance mode for a virtual enclave.
 type MaintenanceModeConfigurationModelMode string
 
 const (
-	MaintenanceModeConfigurationModelModeAdvanced     MaintenanceModeConfigurationModelMode = "Advanced"
+	// MaintenanceModeConfigurationModelModeAdvanced - Advanced maintenance mode is active.
+	MaintenanceModeConfigurationModelModeAdvanced MaintenanceModeConfigurationModelMode = "Advanced"
+	// MaintenanceModeConfigurationModelModeCanNotDelete - Resources cannot be deleted while maintenance mode is active.
 	MaintenanceModeConfigurationModelModeCanNotDelete MaintenanceModeConfigurationModelMode = "CanNotDelete"
-	MaintenanceModeConfigurationModelModeGeneral      MaintenanceModeConfigurationModelMode = "General"
-	MaintenanceModeConfigurationModelModeOff          MaintenanceModeConfigurationModelMode = "Off"
-	MaintenanceModeConfigurationModelModeOn           MaintenanceModeConfigurationModelMode = "On"
+	// MaintenanceModeConfigurationModelModeGeneral - General maintenance mode is active.
+	MaintenanceModeConfigurationModelModeGeneral MaintenanceModeConfigurationModelMode = "General"
+	// MaintenanceModeConfigurationModelModeOff - Maintenance mode is off.
+	MaintenanceModeConfigurationModelModeOff MaintenanceModeConfigurationModelMode = "Off"
+	// MaintenanceModeConfigurationModelModeOn - Maintenance mode is on.
+	MaintenanceModeConfigurationModelModeOn MaintenanceModeConfigurationModelMode = "On"
 )
 
 // PossibleMaintenanceModeConfigurationModelModeValues returns the possible values for the MaintenanceModeConfigurationModelMode const type.
@@ -533,12 +601,16 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PrincipalType - The type of a virtual enclave principal.
 type PrincipalType string
 
 const (
-	PrincipalTypeGroup            PrincipalType = "Group"
+	// PrincipalTypeGroup - A group principal.
+	PrincipalTypeGroup PrincipalType = "Group"
+	// PrincipalTypeServicePrincipal - A service principal.
 	PrincipalTypeServicePrincipal PrincipalType = "ServicePrincipal"
-	PrincipalTypeUser             PrincipalType = "User"
+	// PrincipalTypeUser - A user principal.
+	PrincipalTypeUser PrincipalType = "User"
 )
 
 // PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
@@ -625,6 +697,24 @@ func PossibleResourceVisibilityModeValues() []ResourceVisibilityMode {
 	}
 }
 
+// RuleDirection - The direction of traffic for a Community Endpoint rule.
+type RuleDirection string
+
+const (
+	// RuleDirectionInbound - Inbound traffic from the server to the client enclave.
+	RuleDirectionInbound RuleDirection = "Inbound"
+	// RuleDirectionOutbound - Outbound traffic from the client enclave to the server destination (default).
+	RuleDirectionOutbound RuleDirection = "Outbound"
+)
+
+// PossibleRuleDirectionValues returns the possible values for the RuleDirection const type.
+func PossibleRuleDirectionValues() []RuleDirection {
+	return []RuleDirection{
+		RuleDirectionInbound,
+		RuleDirectionOutbound,
+	}
+}
+
 // SecurityProvider - Specifies the security provider for the transit hub.
 type SecurityProvider string
 
@@ -653,6 +743,8 @@ const (
 	ServiceIdentifierAppService ServiceIdentifier = "AppService"
 	// ServiceIdentifierAzureFirewalls - Service identifier for Azure Firewalls
 	ServiceIdentifierAzureFirewalls ServiceIdentifier = "AzureFirewalls"
+	// ServiceIdentifierAzureLocal - Service identifier for Azure Local
+	ServiceIdentifierAzureLocal ServiceIdentifier = "AzureLocal"
 	// ServiceIdentifierContainerRegistry - Service identifier for Container Registry
 	ServiceIdentifierContainerRegistry ServiceIdentifier = "ContainerRegistry"
 	// ServiceIdentifierCosmosDB - Service identifier for CosmosDB
@@ -685,6 +777,7 @@ func PossibleServiceIdentifierValues() []ServiceIdentifier {
 		ServiceIdentifierAKS,
 		ServiceIdentifierAppService,
 		ServiceIdentifierAzureFirewalls,
+		ServiceIdentifierAzureLocal,
 		ServiceIdentifierContainerRegistry,
 		ServiceIdentifierCosmosDB,
 		ServiceIdentifierDataConnectors,
@@ -697,6 +790,75 @@ func PossibleServiceIdentifierValues() []ServiceIdentifier {
 		ServiceIdentifierPrivateDNSZones,
 		ServiceIdentifierServiceBus,
 		ServiceIdentifierStorage,
+	}
+}
+
+// SubnetJoinPolicyMode - Desired enforcement mode for the subnet join deny policy.
+type SubnetJoinPolicyMode string
+
+const (
+	// SubnetJoinPolicyModeAudit - Log non-compliant joins without blocking. Use during rollout review or when deny cannot yet
+	// be enabled.
+	SubnetJoinPolicyModeAudit SubnetJoinPolicyMode = "Audit"
+	// SubnetJoinPolicyModeDeny - Deny all subnet joins from resource groups not in the approved workload set. Secure-by-default
+	// on new API versions.
+	SubnetJoinPolicyModeDeny SubnetJoinPolicyMode = "Deny"
+)
+
+// PossibleSubnetJoinPolicyModeValues returns the possible values for the SubnetJoinPolicyMode const type.
+func PossibleSubnetJoinPolicyModeValues() []SubnetJoinPolicyMode {
+	return []SubnetJoinPolicyMode{
+		SubnetJoinPolicyModeAudit,
+		SubnetJoinPolicyModeDeny,
+	}
+}
+
+// SubnetPurpose - The purpose of the subnet, used to determine automatic configuration behavior.
+type SubnetPurpose string
+
+const (
+	// SubnetPurposeAKS - Subnet configured for Azure Kubernetes Service (AKS) workloads.
+	SubnetPurposeAKS SubnetPurpose = "AKS"
+	// SubnetPurposeAKSAPIServer - Subnet configured for the Azure Kubernetes Service (AKS) API server.
+	SubnetPurposeAKSAPIServer SubnetPurpose = "AKSApiServer"
+	// SubnetPurposeGeneral - General purpose subnet with no specialized configuration (default).
+	SubnetPurposeGeneral SubnetPurpose = "General"
+)
+
+// PossibleSubnetPurposeValues returns the possible values for the SubnetPurpose const type.
+func PossibleSubnetPurposeValues() []SubnetPurpose {
+	return []SubnetPurpose{
+		SubnetPurposeAKS,
+		SubnetPurposeAKSAPIServer,
+		SubnetPurposeGeneral,
+	}
+}
+
+// SyncStatus - The synchronization status of a Community Endpoint.
+type SyncStatus string
+
+const (
+	// SyncStatusFailed - Synchronization failed on all destinations.
+	SyncStatusFailed SyncStatus = "Failed"
+	// SyncStatusInProgress - Synchronization is currently in progress.
+	SyncStatusInProgress SyncStatus = "InProgress"
+	// SyncStatusNotConfigured - Synchronization is not configured for this endpoint.
+	SyncStatusNotConfigured SyncStatus = "NotConfigured"
+	// SyncStatusPartiallySucceeded - Synchronization succeeded on some destinations but failed on others. Check syncDestinationStatuses
+	// for per-destination details.
+	SyncStatusPartiallySucceeded SyncStatus = "PartiallySucceeded"
+	// SyncStatusSucceeded - Synchronization completed successfully on all destinations.
+	SyncStatusSucceeded SyncStatus = "Succeeded"
+)
+
+// PossibleSyncStatusValues returns the possible values for the SyncStatus const type.
+func PossibleSyncStatusValues() []SyncStatus {
+	return []SyncStatus{
+		SyncStatusFailed,
+		SyncStatusInProgress,
+		SyncStatusNotConfigured,
+		SyncStatusPartiallySucceeded,
+		SyncStatusSucceeded,
 	}
 }
 

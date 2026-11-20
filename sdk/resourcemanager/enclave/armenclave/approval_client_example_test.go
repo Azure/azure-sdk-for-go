@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2026-04-01/Approvals_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/Approvals_CreateOrUpdate.json
 func ExampleApprovalClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleApprovalClient_BeginCreateOrUpdate() {
 	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/approvals/TestApprovals"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection/providers/Microsoft.Mission/approvals/TestApprovals"),
 	// 		Name: to.Ptr("TestApprovals"),
 	// 		Type: to.Ptr("Microsoft.Mission/approvals"),
 	// 		SystemData: &armenclave.SystemData{
@@ -111,7 +111,7 @@ func ExampleApprovalClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Approvals_Delete.json
+// Generated from example definition: 2026-10-01-preview/Approvals_Delete.json
 func ExampleApprovalClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleApprovalClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/Approvals_NotifyInitiator.json
+// Generated from example definition: 2026-10-01-preview/Approvals_NotifyInitiator.json
 func ExampleApprovalClient_BeginNotifyInitiator() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleApprovalClient_BeginNotifyInitiator() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Approvals_Update.json
+// Generated from example definition: 2026-10-01-preview/Approvals_Update.json
 func ExampleApprovalClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleApprovalClient_BeginUpdate() {
 	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/approvals/TestApprovals"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection/providers/Microsoft.Mission/approvals/TestApprovals"),
 	// 		Name: to.Ptr("TestApprovals"),
 	// 		Type: to.Ptr("Microsoft.Mission/approvals"),
 	// 		SystemData: &armenclave.SystemData{
@@ -261,7 +261,7 @@ func ExampleApprovalClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Approvals_Get.json
+// Generated from example definition: 2026-10-01-preview/Approvals_Get.json
 func ExampleApprovalClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleApprovalClient_Get() {
 	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/approvals/TestApprovals"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection/providers/Microsoft.Mission/approvals/TestApprovals"),
 	// 		Name: to.Ptr("TestApprovals"),
 	// 		Type: to.Ptr("Microsoft.Mission/approvals"),
 	// 		SystemData: &armenclave.SystemData{
@@ -335,7 +335,7 @@ func ExampleApprovalClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Approvals_ListByParent.json
+// Generated from example definition: 2026-10-01-preview/Approvals_ListByParent.json
 func ExampleApprovalClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

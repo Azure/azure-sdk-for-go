@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_Create_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleStoragePoolsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_Delete_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleStoragePoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginDisableAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleStoragePoolsClient_BeginDisableAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginEnableAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleStoragePoolsClient_BeginEnableAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginFinalizeAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleStoragePoolsClient_BeginFinalizeAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginRepairAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleStoragePoolsClient_BeginRepairAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_Update_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +306,7 @@ func ExampleStoragePoolsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_ConfigurePlatformConsoleAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,7 +338,7 @@ func ExampleStoragePoolsClient_ConfigurePlatformConsoleAuth() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_Get_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExampleStoragePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_GetAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_GetAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_GetAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +435,7 @@ func ExampleStoragePoolsClient_GetAvsConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_GetAvsStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_GetAvsStatus_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_GetAvsStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleStoragePoolsClient_GetAvsStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_GetHealthStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_GetHealthStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,7 +513,7 @@ func ExampleStoragePoolsClient_GetHealthStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_ListPlatformConsoleActivationCode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleStoragePoolsClient_ListPlatformConsoleActivationCode() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -617,7 +617,7 @@ func ExampleStoragePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_ListBySubscription_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

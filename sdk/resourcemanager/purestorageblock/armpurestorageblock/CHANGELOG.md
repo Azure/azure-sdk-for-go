@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (2026-08-21)
+## 1.1.0 (2026-11-10)
 ### Features Added
 
 - New enum type `PlatformConsoleAuthType` with values `PlatformConsoleAuthTypeSSH`
@@ -10,6 +10,8 @@
 - New function `*ClientFactory.NewRecoverableVolumeGroupsClient() *RecoverableVolumeGroupsClient`
 - New function `*ClientFactory.NewSaaSOperationGroupClient() *SaaSOperationGroupClient`
 - New function `*ClientFactory.NewVolumeGroupSnapshotsClient() *VolumeGroupSnapshotsClient`
+- New function `*ClientFactory.NewVolumeGroupsClient() *VolumeGroupsClient`
+- New function `*ClientFactory.NewVolumesClient() *VolumesClient`
 - New function `*PlatformConsoleAuthConfig.GetPlatformConsoleAuthConfig() *PlatformConsoleAuthConfig`
 - New function `*PlatformConsoleAuthResult.GetPlatformConsoleAuthResult() *PlatformConsoleAuthResult`
 - New function `NewRecoverableVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoverableVolumeGroupsClient, error)`
@@ -30,43 +32,6 @@
 - New function `*VolumeGroupSnapshotsClient.Get(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, snapshotName string, options *VolumeGroupSnapshotsClientGetOptions) (VolumeGroupSnapshotsClientGetResponse, error)`
 - New function `*VolumeGroupSnapshotsClient.NewListByVolumeGroupPager(resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumeGroupSnapshotsClientListByVolumeGroupOptions) *runtime.Pager[VolumeGroupSnapshotsClientListByVolumeGroupResponse]`
 - New function `*VolumeGroupSnapshotsClient.ListSnapshots(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupSnapshotListRequest, options *VolumeGroupSnapshotsClientListSnapshotsOptions) (VolumeGroupSnapshotsClientListSnapshotsResponse, error)`
-- New function `*VolumeGroupsClient.BeginOverwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, options *VolumeGroupsClientBeginOverwriteOptions) (*runtime.Poller[VolumeGroupsClientOverwriteResponse], error)`
-- New function `*VolumesClient.BeginOverwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, body VolumeOverwriteRequest, options *VolumesClientBeginOverwriteOptions) (*runtime.Poller[VolumesClientOverwriteResponse], error)`
-- New struct `ActivateSaaSRequest`
-- New struct `DestroyedStateProperties`
-- New struct `LatestLinkedSaaSResponse`
-- New struct `LinkSaaSRequest`
-- New struct `PlatformConsoleAccessSettings`
-- New struct `PlatformConsoleActivationCode`
-- New struct `PlatformConsoleSettings`
-- New struct `PlatformConsoleSubnet`
-- New struct `RecoverableVolumeGroup`
-- New struct `RecoverableVolumeGroupListResult`
-- New struct `RecoverableVolumeGroupProperties`
-- New struct `SSHPlatformConsoleAuthConfig`
-- New struct `SSHPlatformConsoleAuthResult`
-- New struct `SaaSResourceDetailsResponse`
-- New struct `VolumeGroupOverwriteRequest`
-- New struct `VolumeGroupSnapshot`
-- New struct `VolumeGroupSnapshotListRequest`
-- New struct `VolumeGroupSnapshotListResult`
-- New struct `VolumeGroupSnapshotPostListResult`
-- New struct `VolumeGroupSnapshotProperties`
-- New struct `VolumeOverwriteRequest`
-- New struct `VolumeSnapshotInfo`
-- New struct `VolumeSnapshotSource`
-- New field `SoftDeletion`, `SourceRecoverableVolumeResourceID`, `SourceSerialNumber`, `SourceType`, `SourceVolumeSnapshot` in struct `AzureVolumeProperties`
-- New field `SaaSResourceID` in struct `MarketplaceDetails`
-- New field `PlatformConsoleSettings` in struct `StoragePoolProperties`
-- New field `PlatformConsoleSettings` in struct `StoragePoolUpdateProperties`
-- New field `SourceRecoverableVolumeGroupResourceID`, `SourceSnapshotResourceID`, `SourceType` in struct `VolumeGroupProperties`
-
-
-## 1.1.0-beta.1 (2026-05-14)
-### Features Added
-
-- New function `*ClientFactory.NewVolumeGroupsClient() *VolumeGroupsClient`
-- New function `*ClientFactory.NewVolumesClient() *VolumesClient`
 - New function `NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumeGroupsClient, error)`
 - New function `*VolumeGroupsClient.BeginCreate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, resource VolumeGroup, options *VolumeGroupsClientBeginCreateOptions) (*runtime.Poller[VolumeGroupsClientCreateResponse], error)`
 - New function `*VolumeGroupsClient.BeginDelete(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*runtime.Poller[VolumeGroupsClientDeleteResponse], error)`
@@ -74,29 +39,57 @@
 - New function `*VolumeGroupsClient.GetStatus(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumeGroupsClientGetStatusOptions) (VolumeGroupsClientGetStatusResponse, error)`
 - New function `*VolumeGroupsClient.NewListByStoragePoolPager(resourceGroupName string, storagePoolName string, options *VolumeGroupsClientListByStoragePoolOptions) *runtime.Pager[VolumeGroupsClientListByStoragePoolResponse]`
 - New function `*VolumeGroupsClient.ListConnectionParameters(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumeGroupsClientListConnectionParametersOptions) (VolumeGroupsClientListConnectionParametersResponse, error)`
+- New function `*VolumeGroupsClient.BeginOverwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, body VolumeGroupOverwriteRequest, options *VolumeGroupsClientBeginOverwriteOptions) (*runtime.Poller[VolumeGroupsClientOverwriteResponse], error)`
 - New function `*VolumeGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupUpdate, options *VolumeGroupsClientBeginUpdateOptions) (*runtime.Poller[VolumeGroupsClientUpdateResponse], error)`
 - New function `NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumesClient, error)`
 - New function `*VolumesClient.BeginCreate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, resource Volume, options *VolumesClientBeginCreateOptions) (*runtime.Poller[VolumesClientCreateResponse], error)`
 - New function `*VolumesClient.BeginDelete(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*runtime.Poller[VolumesClientDeleteResponse], error)`
 - New function `*VolumesClient.Get(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, options *VolumesClientGetOptions) (VolumesClientGetResponse, error)`
 - New function `*VolumesClient.NewListByVolumeGroupPager(resourceGroupName string, storagePoolName string, volumeGroupName string, options *VolumesClientListByVolumeGroupOptions) *runtime.Pager[VolumesClientListByVolumeGroupResponse]`
+- New function `*VolumesClient.BeginOverwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, body VolumeOverwriteRequest, options *VolumesClientBeginOverwriteOptions) (*runtime.Poller[VolumesClientOverwriteResponse], error)`
 - New function `*VolumesClient.BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, properties VolumeUpdate, options *VolumesClientBeginUpdateOptions) (*runtime.Poller[VolumesClientUpdateResponse], error)`
+- New struct `ActivateSaaSRequest`
 - New struct `AzureVolumeProperties`
 - New struct `ConnectionParametersResponse`
+- New struct `DestroyedStateProperties`
 - New struct `IscsiConnectionParameters`
 - New struct `IscsiEndpoint`
+- New struct `LatestLinkedSaaSResponse`
+- New struct `LinkSaaSRequest`
 - New struct `PerformanceParameters`
+- New struct `PlatformConsoleAccessSettings`
+- New struct `PlatformConsoleActivationCode`
+- New struct `PlatformConsoleSettings`
+- New struct `PlatformConsoleSubnet`
 - New struct `ProtectionParameters`
+- New struct `RecoverableVolumeGroup`
+- New struct `RecoverableVolumeGroupListResult`
+- New struct `RecoverableVolumeGroupProperties`
+- New struct `SSHPlatformConsoleAuthConfig`
+- New struct `SSHPlatformConsoleAuthResult`
+- New struct `SaaSResourceDetailsResponse`
 - New struct `Volume`
 - New struct `VolumeGroup`
 - New struct `VolumeGroupListResult`
+- New struct `VolumeGroupOverwriteRequest`
 - New struct `VolumeGroupProperties`
+- New struct `VolumeGroupSnapshot`
+- New struct `VolumeGroupSnapshotListRequest`
+- New struct `VolumeGroupSnapshotListResult`
+- New struct `VolumeGroupSnapshotPostListResult`
+- New struct `VolumeGroupSnapshotProperties`
 - New struct `VolumeGroupStatus`
 - New struct `VolumeGroupUpdate`
 - New struct `VolumeGroupUpdateProperties`
 - New struct `VolumeListResult`
+- New struct `VolumeOverwriteRequest`
+- New struct `VolumeSnapshotInfo`
+- New struct `VolumeSnapshotSource`
 - New struct `VolumeUpdate`
 - New struct `VolumeUpdateProperties`
+- New field `SaaSResourceID` in struct `MarketplaceDetails`
+- New field `PlatformConsoleSettings` in struct `StoragePoolProperties`
+- New field `PlatformConsoleSettings` in struct `StoragePoolUpdateProperties`
 
 
 ## 1.0.0 (2025-07-01)

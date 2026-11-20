@@ -20,7 +20,7 @@ import (
 // VolumeGroupSnapshotsClient contains the methods for the VolumeGroupSnapshots group.
 // Don't use this type directly, use NewVolumeGroupSnapshotsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-10-01
 type VolumeGroupSnapshotsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -122,7 +122,7 @@ func (client *VolumeGroupSnapshotsClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -208,7 +208,7 @@ func (client *VolumeGroupSnapshotsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -267,7 +267,7 @@ func (client *VolumeGroupSnapshotsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -335,7 +335,7 @@ func (client *VolumeGroupSnapshotsClient) listSnapshotsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -432,7 +432,7 @@ func (client *VolumeGroupSnapshotsClient) listByVolumeGroupCreateRequest(ctx con
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

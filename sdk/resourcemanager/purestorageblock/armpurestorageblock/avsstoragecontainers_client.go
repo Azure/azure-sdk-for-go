@@ -19,7 +19,7 @@ import (
 // AvsStorageContainersClient contains the methods for the AvsStorageContainers group.
 // Don't use this type directly, use NewAvsStorageContainersClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-10-01
 type AvsStorageContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *AvsStorageContainersClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -169,7 +169,7 @@ func (client *AvsStorageContainersClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *AvsStorageContainersClient) listByStoragePoolCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

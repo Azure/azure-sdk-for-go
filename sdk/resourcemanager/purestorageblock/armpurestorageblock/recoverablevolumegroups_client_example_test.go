@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/RecoverableVolumeGroups_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/RecoverableVolumeGroups_Delete_MaximumSet_Gen.json
 func ExampleRecoverableVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleRecoverableVolumeGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/RecoverableVolumeGroups_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/RecoverableVolumeGroups_Get_MaximumSet_Gen.json
 func ExampleRecoverableVolumeGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleRecoverableVolumeGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/RecoverableVolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/RecoverableVolumeGroups_ListByStoragePool_MaximumSet_Gen.json
 func ExampleRecoverableVolumeGroupsClient_NewListByStoragePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

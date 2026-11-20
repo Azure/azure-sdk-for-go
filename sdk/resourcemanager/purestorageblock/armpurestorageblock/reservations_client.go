@@ -19,7 +19,7 @@ import (
 // ReservationsClient contains the methods for the Reservations group.
 // Don't use this type directly, use NewReservationsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-10-01
 type ReservationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -111,7 +111,7 @@ func (client *ReservationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -187,7 +187,7 @@ func (client *ReservationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -264,7 +264,7 @@ func (client *ReservationsClient) linkSaaSCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -341,7 +341,7 @@ func (client *ReservationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -394,7 +394,7 @@ func (client *ReservationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -456,7 +456,7 @@ func (client *ReservationsClient) getBillingReportCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -518,7 +518,7 @@ func (client *ReservationsClient) getBillingStatusCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -580,7 +580,7 @@ func (client *ReservationsClient) getResourceLimitsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -642,7 +642,7 @@ func (client *ReservationsClient) latestLinkedSaaSCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -713,7 +713,7 @@ func (client *ReservationsClient) listByResourceGroupCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -780,7 +780,7 @@ func (client *ReservationsClient) listBySubscriptionCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

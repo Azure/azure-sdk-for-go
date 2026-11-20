@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/StorageInsightsCreateOrUpdate.json
+// Generated from example definition: 2026-03-01/StorageInsightsCreateOrUpdate.json
 func ExampleStorageInsightConfigsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleStorageInsightConfigsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageInsightsDelete.json
+// Generated from example definition: 2026-03-01/StorageInsightsDelete.json
 func ExampleStorageInsightConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleStorageInsightConfigsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageInsightsGet.json
+// Generated from example definition: 2026-03-01/StorageInsightsGet.json
 func ExampleStorageInsightConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleStorageInsightConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageInsightsListByWorkspace.json
+// Generated from example definition: 2026-03-01/StorageInsightsListByWorkspace.json
 func ExampleStorageInsightConfigsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

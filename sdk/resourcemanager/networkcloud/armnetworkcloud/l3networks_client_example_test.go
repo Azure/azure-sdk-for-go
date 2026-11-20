@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/L3Networks_Create.json
+// Generated from example definition: 2026-08-01-preview/L3Networks_Create.json
 func ExampleL3NetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleL3NetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/L3Networks_Delete.json
+// Generated from example definition: 2026-08-01-preview/L3Networks_Delete.json
 func ExampleL3NetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleL3NetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/L3Networks_Get.json
+// Generated from example definition: 2026-08-01-preview/L3Networks_Get.json
 func ExampleL3NetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleL3NetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/L3Networks_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/L3Networks_ListByResourceGroup.json
 func ExampleL3NetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleL3NetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/L3Networks_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/L3Networks_ListBySubscription.json
 func ExampleL3NetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleL3NetworksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/L3Networks_Patch.json
+// Generated from example definition: 2026-08-01-preview/L3Networks_Patch.json
 func ExampleL3NetworksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

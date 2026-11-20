@@ -73,14 +73,39 @@ foreach ($packageInfoFile in $packageInfoPaths) {
         try {
             $commandResult = Invoke-AzSdkCliCommand $AzSdkExePath $arguments
             $response = $commandResult.Output | ConvertFrom-Json -ErrorAction Stop
-            if ($commandResult.ExitCode -ne 0) {
-                throw "azsdk exited with code $($commandResult.ExitCode)."
-            }
             if (-not $response.PSObject.Properties["result"] -or
                 $null -eq $response.result -or
                 -not $response.result.PSObject.Properties["isApproved"] -or
                 $response.result.isApproved -isnot [bool]) {
                 throw "Package approval check returned an invalid response."
+            }
+            $operationStatus = if ($response.PSObject.Properties["operation_status"]) {
+                [string] $response.operation_status
+            } else {
+                ""
+            }
+            $responseError = if ($response.PSObject.Properties["response_error"]) {
+                [string] $response.response_error
+            } else {
+                ""
+            }
+            if ([string]::IsNullOrWhiteSpace($responseError) -and
+                $response.PSObject.Properties["response_errors"]) {
+                $responseError = @($response.response_errors | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }) -join "; "
+            }
+            $expectedDenial = $commandResult.ExitCode -eq 1 -and
+                $operationStatus -eq "Succeeded" -and
+                -not $response.result.isApproved -and
+                [string]::IsNullOrWhiteSpace($responseError)
+
+            if ($operationStatus -ne "Succeeded" -or
+                ($commandResult.ExitCode -ne 0 -and -not $expectedDenial)) {
+                $failureMessage = if (-not [string]::IsNullOrWhiteSpace($responseError)) {
+                    $responseError
+                } else {
+                    "azsdk exited with code $($commandResult.ExitCode)."
+                }
+                throw "Package approval check failed: $failureMessage"
             }
         }
         catch {
@@ -96,12 +121,30 @@ foreach ($packageInfoFile in $packageInfoPaths) {
             continue
         }
 
-        $nameApproved = $response.result.PSObject.Properties["apiView"] -and
+        if ($releaseStatus -eq "Unreleased") {
+            Write-Host "$packageName $packageVersion is not marked for release. Ignoring approval check failure."
+            continue
+        }
+
+        $requiresApiReview = $packageInfo.SdkType -eq "client" -and
+            $packageInfo.PSObject.Properties["IsNewSdk"] -and
+            [bool] $packageInfo.IsNewSdk
+        if (-not $requiresApiReview) {
+            Write-Host "API review is not required for $packageName $packageVersion."
+            continue
+        }
+
+        $apiViewNameApproved = $response.result.PSObject.Properties["apiView"] -and
             $null -ne $response.result.apiView -and
             $response.result.apiView.PSObject.Properties["packageNameApproved"] -and
             $response.result.apiView.packageNameApproved -is [bool] -and
             $response.result.apiView.packageNameApproved
-        if ($version.IsPrerelease -and $nameApproved) {
+        $reviewHubNameApproved = $response.result.PSObject.Properties["reviewHub"] -and
+            $null -ne $response.result.reviewHub -and
+            $response.result.reviewHub.PSObject.Properties["isPackageNameApproved"] -and
+            $response.result.reviewHub.isPackageNameApproved -is [bool] -and
+            $response.result.reviewHub.isPackageNameApproved
+        if ($version.IsPrerelease -and ($apiViewNameApproved -or $reviewHubNameApproved)) {
             Write-Host "Package $packageName $packageVersion has an approved package name. API approval is not required for prerelease versions."
             continue
         }

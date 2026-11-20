@@ -17,22 +17,13 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
-	"strconv"
 )
 
 // BulkCreateServer is a fake server for instances of the armbulkactions.BulkCreateClient type.
 type BulkCreateServer struct {
-	// BeginCancel is the fake for method BulkCreateClient.BeginCancel
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginCancel func(ctx context.Context, resourceGroupName string, location string, name string, options *armbulkactions.BulkCreateClientBeginCancelOptions) (resp azfake.PollerResponder[armbulkactions.BulkCreateClientCancelResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdate is the fake for method BulkCreateClient.BeginCreateOrUpdate
+	// BeginCreate is the fake for method BulkCreateClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, location string, name string, resource armbulkactions.LocationBasedBulkCreate, options *armbulkactions.BulkCreateClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armbulkactions.BulkCreateClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginDelete is the fake for method BulkCreateClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, location string, name string, options *armbulkactions.BulkCreateClientBeginDeleteOptions) (resp azfake.PollerResponder[armbulkactions.BulkCreateClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, location string, name string, resource armbulkactions.LocationBasedBulkCreate, options *armbulkactions.BulkCreateClientBeginCreateOptions) (resp azfake.PollerResponder[armbulkactions.BulkCreateClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method BulkCreateClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -61,9 +52,7 @@ type BulkCreateServer struct {
 func NewBulkCreateServerTransport(srv *BulkCreateServer) *BulkCreateServerTransport {
 	return &BulkCreateServerTransport{
 		srv:                         srv,
-		beginCancel:                 newTracker[azfake.PollerResponder[armbulkactions.BulkCreateClientCancelResponse]](),
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armbulkactions.BulkCreateClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armbulkactions.BulkCreateClientDeleteResponse]](),
+		beginCreate:                 newTracker[azfake.PollerResponder[armbulkactions.BulkCreateClientCreateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armbulkactions.BulkCreateClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armbulkactions.BulkCreateClientListBySubscriptionResponse]](),
 		newVirtualMachinesGetOperationStatusPager: newTracker[azfake.PagerResponder[armbulkactions.BulkCreateClientVirtualMachinesGetOperationStatusResponse]](),
@@ -74,9 +63,7 @@ func NewBulkCreateServerTransport(srv *BulkCreateServer) *BulkCreateServerTransp
 // Don't use this type directly, use NewBulkCreateServerTransport instead.
 type BulkCreateServerTransport struct {
 	srv                                       *BulkCreateServer
-	beginCancel                               *tracker[azfake.PollerResponder[armbulkactions.BulkCreateClientCancelResponse]]
-	beginCreateOrUpdate                       *tracker[azfake.PollerResponder[armbulkactions.BulkCreateClientCreateOrUpdateResponse]]
-	beginDelete                               *tracker[azfake.PollerResponder[armbulkactions.BulkCreateClientDeleteResponse]]
+	beginCreate                               *tracker[azfake.PollerResponder[armbulkactions.BulkCreateClientCreateResponse]]
 	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armbulkactions.BulkCreateClientListByResourceGroupResponse]]
 	newListBySubscriptionPager                *tracker[azfake.PagerResponder[armbulkactions.BulkCreateClientListBySubscriptionResponse]]
 	newVirtualMachinesGetOperationStatusPager *tracker[azfake.PagerResponder[armbulkactions.BulkCreateClientVirtualMachinesGetOperationStatusResponse]]
@@ -103,12 +90,8 @@ func (b *BulkCreateServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "BulkCreateClient.BeginCancel":
-				res.resp, res.err = b.dispatchBeginCancel(req)
-			case "BulkCreateClient.BeginCreateOrUpdate":
-				res.resp, res.err = b.dispatchBeginCreateOrUpdate(req)
-			case "BulkCreateClient.BeginDelete":
-				res.resp, res.err = b.dispatchBeginDelete(req)
+			case "BulkCreateClient.BeginCreate":
+				res.resp, res.err = b.dispatchBeginCreate(req)
 			case "BulkCreateClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			case "BulkCreateClient.GetAsyncOperationStatus":
@@ -135,60 +118,12 @@ func (b *BulkCreateServerTransport) dispatchToMethodFake(req *http.Request, meth
 	}
 }
 
-func (b *BulkCreateServerTransport) dispatchBeginCancel(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginCancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCancel not implemented")}
+func (b *BulkCreateServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+	if b.srv.BeginCreate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	beginCancel := b.beginCancel.get(req)
-	if beginCancel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreate/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := b.srv.BeginCancel(req.Context(), resourceGroupNameParam, locationParam, nameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCancel = &respr
-		b.beginCancel.add(req, beginCancel)
-	}
-
-	resp, err := server.PollerResponderNext(beginCancel, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		b.beginCancel.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCancel) {
-		b.beginCancel.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (b *BulkCreateServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
-	}
-	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
-	if beginCreateOrUpdate == nil {
+	beginCreate := b.beginCreate.get(req)
+	if beginCreate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreate/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
@@ -211,84 +146,25 @@ func (b *BulkCreateServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := b.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, locationParam, nameParam, body, nil)
+		respr, errRespr := b.srv.BeginCreate(req.Context(), resourceGroupNameParam, locationParam, nameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginCreateOrUpdate = &respr
-		b.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+		beginCreate = &respr
+		b.beginCreate.add(req, beginCreate)
 	}
 
-	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		b.beginCreateOrUpdate.remove(req)
+		b.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		b.beginCreateOrUpdate.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (b *BulkCreateServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if b.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
-	}
-	beginDelete := b.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/bulkCreate/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		deleteInstancesParam, err := parseOptional(qp.Get("deleteInstances"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armbulkactions.BulkCreateClientBeginDeleteOptions
-		if deleteInstancesParam != nil {
-			options = &armbulkactions.BulkCreateClientBeginDeleteOptions{
-				DeleteInstances: deleteInstancesParam,
-			}
-		}
-		respr, errRespr := b.srv.BeginDelete(req.Context(), resourceGroupNameParam, locationParam, nameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		b.beginDelete.add(req, beginDelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		b.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDelete) {
-		b.beginDelete.remove(req)
+	if !server.PollerResponderMore(beginCreate) {
+		b.beginCreate.remove(req)
 	}
 
 	return resp, nil

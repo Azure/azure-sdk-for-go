@@ -6,5 +6,5 @@ package armbulkactions
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armbulkactions"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v1.0.0"
 )

@@ -12,118 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_BasicSuccess.json
-func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_oneAcknowledgeMultipleOperationErrors() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkAcknowledgeOperationErrors(ctx, "example-rg", "eastus", armbulkactions.AcknowledgeBulkOperationErrorsRequest{
-		OperationIDs: []*string{
-			to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-			to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{
-	// 	AcknowledgeBulkOperationErrorsResponse: armbulkactions.AcknowledgeBulkOperationErrorsResponse{
-	// 		Acknowledged: []*string{
-	// 			to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-	// 			to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-	// 		},
-	// 		NotFound: []*string{
-	// 		},
-	// 		Skipped: []*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MixedResults.json
-func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_twoAcknowledgeOperationErrorsWithMixedResults() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkAcknowledgeOperationErrors(ctx, "example-rg", "eastus", armbulkactions.AcknowledgeBulkOperationErrorsRequest{
-		OperationIDs: []*string{
-			to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-			to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-			to.Ptr("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{
-	// 	AcknowledgeBulkOperationErrorsResponse: armbulkactions.AcknowledgeBulkOperationErrorsResponse{
-	// 		Acknowledged: []*string{
-	// 			to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-	// 		},
-	// 		NotFound: []*string{
-	// 			to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-	// 		},
-	// 		Skipped: []*string{
-	// 			to.Ptr("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_OperationNotFoundError.json
-func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_threeAcknowledgeOperationErrorsWithAnUnknownOperationIdResultingInNotFound() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkAcknowledgeOperationErrors(ctx, "example-rg", "eastus", armbulkactions.AcknowledgeBulkOperationErrorsRequest{
-		OperationIDs: []*string{
-			to.Ptr("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{
-	// 	AcknowledgeBulkOperationErrorsResponse: armbulkactions.AcknowledgeBulkOperationErrorsResponse{
-	// 		Acknowledged: []*string{
-	// 		},
-	// 		NotFound: []*string{
-	// 			to.Ptr("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-	// 		},
-	// 		Skipped: []*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkCancel_BasicSuccess.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkCancel_BasicSuccess.json
 func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_oneCancelMultipleOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +71,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_oneCancelMul
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkCancel_OperationNotFoundError.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkCancel_OperationNotFoundError.json
 func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_threeResponseWithAnUnknownOperationErrorDuringCancellation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +108,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_threeRespons
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkCancel_PartialSuccess.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkCancel_PartialSuccess.json
 func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_twoResponseWithPartiallySuccessfulResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +160,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_twoResponseW
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDeallocate_BasicSuccess.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkDeallocate_BasicSuccess.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_oneDeallocateMultipleVirtualMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +225,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_oneDeallo
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDeallocate_VmNotFoundError.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkDeallocate_VmNotFoundError.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_twoResponseWhenAVirtualMachineDoesNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +275,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_twoRespon
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDelete_BasicSuccess.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkDelete_BasicSuccess.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_oneDeleteMultipleVirtualMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,7 +330,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_oneDeleteMult
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDelete_ForceDeleteSuccess.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkDelete_ForceDeleteSuccess.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_twoForceDeleteMultipleVirtualMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -497,7 +386,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_twoForceDelet
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDelete_VmNotFoundError.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkDelete_VmNotFoundError.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_threeResponseWhenAVirtualMachineDoesNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -547,7 +436,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_threeResponse
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_BasicSuccess.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_BasicSuccess.json
 func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_oneGetTheStatusOfSuccessfullyCompletedOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -596,7 +485,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_oneGetThe
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackAfterHibernateFail.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackAfterHibernateFail.json
 func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_fourResponseWithSuccessfulDeallocationFallbackAfterHibernationFails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,7 +541,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_fourRespo
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackFailedAfterHibernateFail.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackFailedAfterHibernateFail.json
 func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_fiveResponseWithFailedDeallocationFallbackAfterHibernationFails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -712,7 +601,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_fiveRespo
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_FailedOperation.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_FailedOperation.json
 func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_twoGetTheStatusOfAFailedOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -756,7 +645,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_twoGetThe
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_OperationNotFoundError.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_OperationNotFoundError.json
 func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_threeResponseWithAnOperationNotFoundError() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -803,7 +692,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_threeResp
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkHibernate_Basic.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkHibernate_Basic.json
 func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_oneHibernateMultipleVirtualMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,7 +747,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_oneHiberna
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkHibernate_VmNotFoundError.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkHibernate_VmNotFoundError.json
 func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_threeResponseWhenAVirtualMachineDoesNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -908,7 +797,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_threeRespo
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkHibernate_WithFallback.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkHibernate_WithFallback.json
 func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_twoHibernateVirtualMachinesAndFallbackToDeallocationIfHibernateIsNotSuccessful() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -966,271 +855,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_twoHiberna
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_BasicSuccess.json
-func ExampleVirtualMachineBulkOperationsClient_BulkReimageOperation_oneReimageMultipleVirtualMachines() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkReimageOperation(ctx, "example-rg", "eastus", armbulkactions.ExecuteReimageRequest{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkReimageOperationResponse{
-	// 	ReimageResourceOperationResponse: armbulkactions.ReimageResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachines"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Description: to.Ptr("Reimage Resource request"),
-	// 		Results: []*armbulkactions.ResourceOperation{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
-	// 					State: to.Ptr(armbulkactions.OperationState("PendingScheduling")),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"),
-	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
-	// 					State: to.Ptr(armbulkactions.OperationState("PendingScheduling")),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_ComprehensiveSuccess.json
-func ExampleVirtualMachineBulkOperationsClient_BulkReimageOperation_twoReimageVirtualMachinesWithSharedSettingsAndAPerVMOverride() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkReimageOperation(ctx, "example-rg", "eastus", armbulkactions.ExecuteReimageRequest{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{
-			RetryPolicy: &armbulkactions.RetryPolicy{
-				RetryWindowInMinutes: to.Ptr[int32](30),
-			},
-		},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"),
-			},
-		},
-		ReimageParameters: &armbulkactions.ReimagePayload{
-			BaseProfile: &armbulkactions.VirtualMachineReimageParameters{
-				TempDisk:     to.Ptr(false),
-				ExactVersion: to.Ptr("1.0.0"),
-				OSProfile: &armbulkactions.OSProfileProvisioningData{
-					CustomData: to.Ptr("I2Nsb3VkLWNvbmZpZwpwYWNrYWdlX3VwZ3JhZGU6IHRydWUK"),
-				},
-			},
-			ResourceOverrides: []*armbulkactions.ReimageResourceOverride{
-				{
-					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"),
-					Profile: &armbulkactions.VirtualMachineReimageParameters{
-						TempDisk:     to.Ptr(false),
-						ExactVersion: to.Ptr("1.1.0"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkReimageOperationResponse{
-	// 	ReimageResourceOperationResponse: armbulkactions.ReimageResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachines"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Description: to.Ptr("Reimage Resource request"),
-	// 		Results: []*armbulkactions.ResourceOperation{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
-	// 					SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					Deadline: to.Ptr(time.Date(2026, time.September, 15, 18, 0, 0, 0, time.UTC)),
-	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationState("PendingScheduling")),
-	// 					Timezone: to.Ptr("UTC"),
-	// 					RetryPolicy: &armbulkactions.RetryPolicy{
-	// 						RetryWindowInMinutes: to.Ptr[int32](30),
-	// 					},
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"),
-	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
-	// 					SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					Deadline: to.Ptr(time.Date(2026, time.September, 15, 18, 0, 0, 0, time.UTC)),
-	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationState("PendingScheduling")),
-	// 					Timezone: to.Ptr("UTC"),
-	// 					RetryPolicy: &armbulkactions.RetryPolicy{
-	// 						RetryWindowInMinutes: to.Ptr[int32](30),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_VmNotFoundError.json
-func ExampleVirtualMachineBulkOperationsClient_BulkReimageOperation_fourResponseWhenAVirtualMachineDoesNotExist() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkReimageOperation(ctx, "example-rg", "eastus", armbulkactions.ExecuteReimageRequest{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/missing-vm"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkReimageOperationResponse{
-	// 	ReimageResourceOperationResponse: armbulkactions.ReimageResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachines"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Description: to.Ptr("Reimage Resource request"),
-	// 		Results: []*armbulkactions.ResourceOperation{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
-	// 					State: to.Ptr(armbulkactions.OperationState("PendingScheduling")),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/missing-vm"),
-	// 				ErrorCode: to.Ptr("VmNotFound"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_WithReimagePayload.json
-func ExampleVirtualMachineBulkOperationsClient_BulkReimageOperation_threeReimageVirtualMachinesWithPerVMTemporaryDiskSettings() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkReimageOperation(ctx, "example-rg", "eastus", armbulkactions.ExecuteReimageRequest{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-01"),
-				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-02"),
-			},
-		},
-		ReimageParameters: &armbulkactions.ReimagePayload{
-			BaseProfile: &armbulkactions.VirtualMachineReimageParameters{
-				TempDisk: to.Ptr(true),
-			},
-			ResourceOverrides: []*armbulkactions.ReimageResourceOverride{
-				{
-					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-02"),
-					Profile: &armbulkactions.VirtualMachineReimageParameters{
-						TempDisk: to.Ptr(false),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkReimageOperationResponse{
-	// 	ReimageResourceOperationResponse: armbulkactions.ReimageResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachines"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Description: to.Ptr("Reimage Resource request"),
-	// 		Results: []*armbulkactions.ResourceOperation{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-01"),
-	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("589be017-3996-450c-bdc7-6041c726d703"),
-	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-01"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
-	// 					State: to.Ptr(armbulkactions.OperationState("PendingScheduling")),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-02"),
-	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("88b90cde-28db-42c3-b356-9c601c1799e4"),
-	// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-02"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
-	// 					State: to.Ptr(armbulkactions.OperationState("PendingScheduling")),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_BasicSuccess.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkStart_BasicSuccess.json
 func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_oneStartMultipleVirtualMachines() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1285,7 +910,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_oneStartMultip
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_VmNotFoundError.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkStart_VmNotFoundError.json
 func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_fourResponseWhenAVirtualMachineDoesNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1335,7 +960,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_fourResponseWh
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_WithCapacityRecommendations.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkStart_WithCapacityRecommendations.json
 func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_threeStartVirtualMachinesWithCapacityRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1457,7 +1082,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_threeStartVirt
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkStart_WithVmAgentHealthVerification.json
+// Generated from example definition: 2026-10-16/VirtualMachineBulkOperations_BulkStart_WithVmAgentHealthVerification.json
 func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_twoStartVirtualMachinesWithVMAgentHealthVerification() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1531,167 +1156,4 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_twoStartVirtua
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_BasicSuccess.json
-func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_oneListRecentFailedOperationErrors() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineBulkOperationsClient().NewBulkListOperationErrorsPager("example-rg", "eastus", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{
-		// 	ListBulkOperationErrorsResponse: armbulkactions.ListBulkOperationErrorsResponse{
-		// 		Value: []*armbulkactions.ResourceOperation{
-		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-1"),
-		// 				ErrorCode: to.Ptr("AllocationFailed"),
-		// 				ErrorDetails: to.Ptr("Allocation failed because sufficient capacity was not available for the requested virtual machine size in eastus."),
-		// 				Operation: &armbulkactions.ResourceOperationDetails{
-		// 					OperationID: to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-1"),
-		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
-		// 					SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					State: to.Ptr(armbulkactions.OperationStateFailed),
-		// 					CompletedAt: to.Ptr(time.Date(2026, time.August, 31, 18, 18, 0, 0, time.UTC)),
-		// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
-		// 						ErrorCode: to.Ptr("AllocationFailed"),
-		// 						ErrorDetails: to.Ptr("Allocation failed because sufficient capacity was not available for the requested virtual machine size in eastus."),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-0"),
-		// 				ErrorCode: to.Ptr("OperationNotAllowed"),
-		// 				ErrorDetails: to.Ptr("The virtual machine is not configured to support hibernation."),
-		// 				Operation: &armbulkactions.ResourceOperationDetails{
-		// 					OperationID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
-		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-0"),
-		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeHibernate),
-		// 					SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					State: to.Ptr(armbulkactions.OperationStateFailed),
-		// 					CompletedAt: to.Ptr(time.Date(2026, time.August, 31, 18, 12, 0, 0, time.UTC)),
-		// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
-		// 						ErrorCode: to.Ptr("OperationNotAllowed"),
-		// 						ErrorDetails: to.Ptr("The virtual machine is not configured to support hibernation."),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_InvalidLookbackWindowError.json
-func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_threeResponseWithAnInvalidLookbackWindowError() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineBulkOperationsClient().NewBulkListOperationErrorsPager("example-rg", "eastus", &armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions{
-		LookbackInMinutes: to.Ptr[int32](0)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{
-		// 	ListBulkOperationErrorsResponse: armbulkactions.ListBulkOperationErrorsResponse{
-		// 		Value: []*armbulkactions.ResourceOperation{
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-10-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_PaginatedSuccess.json
-func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_twoListFailedOperationErrorsWithPaginatedResponse() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineBulkOperationsClient().NewBulkListOperationErrorsPager("example-rg", "eastus", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{
-		// 	ListBulkOperationErrorsResponse: armbulkactions.ListBulkOperationErrorsResponse{
-		// 		Value: []*armbulkactions.ResourceOperation{
-		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-1"),
-		// 				ErrorCode: to.Ptr("AllocationFailed"),
-		// 				ErrorDetails: to.Ptr("Allocation failed because sufficient capacity was not available for the requested virtual machine size in eastus."),
-		// 				Operation: &armbulkactions.ResourceOperationDetails{
-		// 					OperationID: to.Ptr("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-1"),
-		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
-		// 					SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					State: to.Ptr(armbulkactions.OperationStateFailed),
-		// 					CompletedAt: to.Ptr(time.Date(2026, time.August, 31, 18, 18, 0, 0, time.UTC)),
-		// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
-		// 						ErrorCode: to.Ptr("AllocationFailed"),
-		// 						ErrorDetails: to.Ptr("Allocation failed because sufficient capacity was not available for the requested virtual machine size in eastus."),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-0"),
-		// 				ErrorCode: to.Ptr("OperationNotAllowed"),
-		// 				ErrorDetails: to.Ptr("The virtual machine is not configured to support hibernation."),
-		// 				Operation: &armbulkactions.ResourceOperationDetails{
-		// 					OperationID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
-		// 					ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-0"),
-		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeHibernate),
-		// 					SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					State: to.Ptr(armbulkactions.OperationStateFailed),
-		// 					CompletedAt: to.Ptr(time.Date(2026, time.August, 31, 18, 12, 0, 0, time.UTC)),
-		// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
-		// 						ErrorCode: to.Ptr("OperationNotAllowed"),
-		// 						ErrorDetails: to.Ptr("The virtual machine is not configured to support hibernation."),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/locations/eastus/listBulkOperationErrors?api-version=2026-10-06-preview&$skiptoken=page-2"),
-		// 	},
-		// }
-	}
 }

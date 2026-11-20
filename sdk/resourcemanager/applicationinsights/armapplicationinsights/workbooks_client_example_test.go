@@ -59,7 +59,7 @@ func ExampleWorkbooksClient_CreateOrUpdate_workbookAdd() {
 	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 	// 			SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
 	// 			StorageURI: nil,
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T06:56:31.6301521Z"); return t}()),
+	// 			TimeModified: to.Ptr(time.Date(2021, time.August, 24, 6, 56, 31, 630152100, time.UTC)),
 	// 			UserID: to.Ptr("userId"),
 	// 			Version: to.Ptr("Notebook/1.0"),
 	// 		},
@@ -131,7 +131,7 @@ func ExampleWorkbooksClient_CreateOrUpdate_workbookManagedAdd() {
 	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/my-resource-group/providers/Microsoft.OperationalInsights/workspaces/test-ws\"]}"),
 	// 			SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
 	// 			StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.4229554Z"); return t}()),
+	// 			TimeModified: to.Ptr(time.Date(2020, time.October, 20, 22, 0, 26, 422955400, time.UTC)),
 	// 			UserID: to.Ptr("70d90f65-8a70-4e42-b8d5-86gv25e0a90f"),
 	// 			Version: to.Ptr("Notebook/1.0"),
 	// 		},
@@ -193,7 +193,7 @@ func ExampleWorkbooksClient_Get_workbookGet() {
 	// 			Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
 	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 	// 			StorageURI: nil,
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T06:56:31.6301521Z"); return t}()),
+	// 			TimeModified: to.Ptr(time.Date(2021, time.August, 24, 6, 56, 31, 630152100, time.UTC)),
 	// 			UserID: to.Ptr("userId"),
 	// 			Version: to.Ptr("Notebook/1.0"),
 	// 		},
@@ -235,7 +235,7 @@ func ExampleWorkbooksClient_Get_workbookGet1() {
 	// 			DisplayName: to.Ptr("Sample workbook"),
 	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 	// 			StorageURI: nil,
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-24T06:56:31.6301521Z"); return t}()),
+	// 			TimeModified: to.Ptr(time.Date(2021, time.August, 24, 6, 56, 31, 630152100, time.UTC)),
 	// 			UserID: to.Ptr("userId"),
 	// 			Version: to.Ptr("Notebook/1.0"),
 	// 		},
@@ -289,7 +289,7 @@ func ExampleWorkbooksClient_Get_workbookManagedGet() {
 	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"testing1\"},\"showPin\":false,\"name\":\"text - 0\"}],\"isLocked\":true,\"fallbackResourceIds\":[\"Azure Monitor\"]}"),
 	// 			SourceID: to.Ptr("azure monitor"),
 	// 			StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735638Z"); return t}()),
+	// 			TimeModified: to.Ptr(time.Date(2020, time.September, 4, 9, 7, 17, 735638000, time.UTC)),
 	// 			UserID: to.Ptr("51d1409c-d725-4550-ac03-98c0bef9ef07"),
 	// 			Version: to.Ptr("Notebook/1.0"),
 	// 		},
@@ -337,7 +337,7 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksList() {
 		// 					SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 		// 					SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		// 					StorageURI: nil,
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735638Z"); return t}()),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.September, 4, 9, 7, 17, 735638000, time.UTC)),
 		// 					UserID: to.Ptr("userId"),
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 				},
@@ -358,7 +358,7 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksList() {
 		// 					SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 		// 					SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		// 					StorageURI: nil,
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-04T09:07:17.735638Z"); return t}()),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.August, 4, 9, 7, 17, 735638000, time.UTC)),
 		// 					UserID: to.Ptr("userId"),
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 				},
@@ -380,12 +380,12 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksManagedList() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("6b643656-33eb-422f-aee8-3ac119r124af", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkbooksClient().NewListByResourceGroupPager("my-resource-group", armapplicationinsights.CategoryTypeWorkbook, &armapplicationinsights.WorkbooksClientListByResourceGroupOptions{
-		SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp")})
+		SourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -420,9 +420,9 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksManagedList() {
 		// 					DisplayName: to.Ptr("My Workbook 1"),
 		// 					Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
 		// 					SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
-		// 					SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
-		// 					StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.4229554Z"); return t}()),
+		// 					SourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 					StorageURI: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.October, 20, 22, 0, 26, 422955400, time.UTC)),
 		// 					UserID: to.Ptr("userId"),
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 				},
@@ -441,9 +441,9 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager_workbooksManagedList() {
 		// 					DisplayName: to.Ptr("My Workbook 2"),
 		// 					Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bc"),
 		// 					SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
-		// 					SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac119r124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
+		// 					SourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		// 					StorageURI: nil,
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T21:00:26.4229555Z"); return t}()),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.October, 20, 21, 0, 26, 422955500, time.UTC)),
 		// 					UserID: to.Ptr("userId"),
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 				},
@@ -528,7 +528,7 @@ func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksListSub() {
 		// 					SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 		// 					SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		// 					StorageURI: nil,
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.4229554Z"); return t}()),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.October, 20, 22, 0, 26, 422955400, time.UTC)),
 		// 					UserID: to.Ptr("userId"),
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 				},
@@ -549,7 +549,7 @@ func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksListSub() {
 		// 					SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 		// 					SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 		// 					StorageURI: nil,
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.4229554Z"); return t}()),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.October, 20, 22, 0, 26, 422955400, time.UTC)),
 		// 					UserID: to.Ptr("userId"),
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 				},
@@ -562,50 +562,6 @@ func ExampleWorkbooksClient_NewListBySubscriptionPager_workbooksListSub() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2023-06-01/WorkbookRevisionGet.json
-func ExampleWorkbooksClient_RevisionGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkbooksClient().RevisionGet(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", "1e2f8435b98248febee70c64ac22e1ab", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armapplicationinsights.WorkbooksClientRevisionGetResponse{
-	// 	Workbook: armapplicationinsights.Workbook{
-	// 		Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
-	// 		Type: to.Ptr("Microsoft.Insights/workbooks"),
-	// 		ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
-	// 		Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armapplicationinsights.WorkbookProperties{
-	// 			Description: to.Ptr("Sample workbook"),
-	// 			Category: to.Ptr("workbook"),
-	// 			DisplayName: to.Ptr("My New Workbook"),
-	// 			Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1ab"),
-	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
-	// 			StorageURI: nil,
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735638Z"); return t}()),
-	// 			UserID: to.Ptr("userId"),
-	// 			Version: to.Ptr("Notebook/1.0"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"TagSample01": to.Ptr("sample01"),
-	// 			"TagSample02": to.Ptr("sample02"),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2023-06-01/WorkbookRevisionsList.json
@@ -648,7 +604,7 @@ func ExampleWorkbooksClient_NewRevisionsListPager() {
 		// 					SerializedData: nil,
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 					Category: to.Ptr("workbook"),
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-09-04T09:07:17.735638Z"); return t}()),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.September, 4, 9, 7, 17, 735638000, time.UTC)),
 		// 					StorageURI: nil,
 		// 					Description: to.Ptr("Sample workbook"),
 		// 					Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1ab"),
@@ -671,7 +627,7 @@ func ExampleWorkbooksClient_NewRevisionsListPager() {
 		// 					SerializedData: nil,
 		// 					Version: to.Ptr("Notebook/1.0"),
 		// 					Category: to.Ptr("workbook"),
-		// 					TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-04T09:07:17.735638Z"); return t}()),
+		// 					TimeModified: to.Ptr(time.Date(2020, time.August, 4, 9, 7, 17, 735638000, time.UTC)),
 		// 					StorageURI: nil,
 		// 					Description: to.Ptr("Sample workbook"),
 		// 					Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1bb"),
@@ -681,6 +637,50 @@ func ExampleWorkbooksClient_NewRevisionsListPager() {
 		// 	},
 		// }
 	}
+}
+
+// Generated from example definition: 2023-06-01/WorkbookRevisionGet.json
+func ExampleWorkbooksClient_RevisionGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armapplicationinsights.NewClientFactory("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkbooksClient().RevisionGet(ctx, "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", "1e2f8435b98248febee70c64ac22e1ab", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armapplicationinsights.WorkbooksClientRevisionGetResponse{
+	// 	Workbook: armapplicationinsights.Workbook{
+	// 		Name: to.Ptr("deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 		Type: to.Ptr("Microsoft.Insights/workbooks"),
+	// 		ID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group/providers/Microsoft.Insights/workbooks/deadb33f-5e0d-4064-8ebb-1a4ed0313eb2"),
+	// 		Kind: to.Ptr(armapplicationinsights.WorkbookSharedTypeKindShared),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armapplicationinsights.WorkbookProperties{
+	// 			Description: to.Ptr("Sample workbook"),
+	// 			Category: to.Ptr("workbook"),
+	// 			DisplayName: to.Ptr("My New Workbook"),
+	// 			Revision: to.Ptr("1e2f8435b98248febee70c64ac22e1ab"),
+	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+	// 			StorageURI: nil,
+	// 			TimeModified: to.Ptr(time.Date(2020, time.September, 4, 9, 7, 17, 735638000, time.UTC)),
+	// 			UserID: to.Ptr("userId"),
+	// 			Version: to.Ptr("Notebook/1.0"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"TagSample01": to.Ptr("sample01"),
+	// 			"TagSample02": to.Ptr("sample02"),
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2023-06-01/WorkbookManagedUpdate.json
@@ -726,7 +726,7 @@ func ExampleWorkbooksClient_Update_workbookManagedUpdate() {
 	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"test\"},\"name\":\"text - 0\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/8980832b-9589-4ac2-b322-a6ae6a97f02b/resourceGroups/my-resource-group\"]}"),
 	// 			SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourcegroups/my-resource-group"),
 	// 			StorageURI: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/mystorage/blobServices/default/containers/mycontainer"),
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:15:08.1875458Z"); return t}()),
+	// 			TimeModified: to.Ptr(time.Date(2020, time.October, 20, 22, 15, 8, 187545800, time.UTC)),
 	// 			UserID: to.Ptr("70d90f65-8a70-4e42-b8d5-863725e0a90f"),
 	// 			Version: to.Ptr("Notebook/1.0"),
 	// 		},
@@ -773,7 +773,7 @@ func ExampleWorkbooksClient_Update_workbookUpdate() {
 	// 			SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
 	// 			SourceID: to.Ptr("/subscriptions/6b643656-33eb-422f-aee8-3ac145d124af/resourceGroups/my-resource-group/providers/Microsoft.Web/sites/MyApp"),
 	// 			StorageURI: nil,
-	// 			TimeModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-20T22:00:26.4229554Z"); return t}()),
+	// 			TimeModified: to.Ptr(time.Date(2020, time.October, 20, 22, 0, 26, 422955400, time.UTC)),
 	// 			UserID: to.Ptr("userId"),
 	// 			Version: to.Ptr("Notebook/1.0"),
 	// 		},

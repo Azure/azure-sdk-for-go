@@ -30,6 +30,9 @@ type ComponentAvailableFeaturesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewComponentAvailableFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComponentAvailableFeaturesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *ComponentAvailableFeaturesClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return ComponentAvailableFeaturesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentAvailableFeaturesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *ComponentAvailableFeaturesClient) Get(ctx context.Context, resourc
 func (client *ComponentAvailableFeaturesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ComponentAvailableFeaturesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/getavailablebillingfeatures"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +95,11 @@ func (client *ComponentAvailableFeaturesClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentAvailableFeaturesClient) getHandleResponse(resp *http.Response) (ComponentAvailableFeaturesClientGetResponse, error) {
+func (client *ComponentAvailableFeaturesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ComponentAvailableFeaturesClientGetResponse, error) {
 	result := ComponentAvailableFeaturesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentAvailableFeatures); err != nil {
 		return ComponentAvailableFeaturesClientGetResponse{}, err
 	}

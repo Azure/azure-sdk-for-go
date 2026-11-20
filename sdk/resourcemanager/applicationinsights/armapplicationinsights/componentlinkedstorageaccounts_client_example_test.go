@@ -38,7 +38,7 @@ func ExampleComponentLinkedStorageAccountsClient_CreateAndUpdate() {
 	// 	ComponentLinkedStorageAccounts: armapplicationinsights.ComponentLinkedStorageAccounts{
 	// 		Name: to.Ptr("serviceprofile"),
 	// 		Type: to.Ptr("microsoft.insights/components/linkedStorageAccounts"),
-	// 		ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupNameproviders/microsoft.insights/components/myComponent/linkedStorageAccounts/serviceprofiler"),
+	// 		ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/microsoft.insights/components/myComponent/linkedStorageAccounts/serviceprofiler"),
 	// 		Properties: &armapplicationinsights.LinkedStorageAccountsProperties{
 	// 			LinkedStorageAccount: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname"),
 	// 		},

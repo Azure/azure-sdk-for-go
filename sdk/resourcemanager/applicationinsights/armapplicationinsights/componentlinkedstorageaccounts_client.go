@@ -30,6 +30,9 @@ type ComponentLinkedStorageAccountsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewComponentLinkedStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComponentLinkedStorageAccountsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,11 +67,7 @@ func (client *ComponentLinkedStorageAccountsClient) CreateAndUpdate(ctx context.
 	if err != nil {
 		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, err
-	}
-	resp, err := client.createAndUpdateHandleResponse(httpResp)
+	resp, err := client.createAndUpdateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -76,7 +75,7 @@ func (client *ComponentLinkedStorageAccountsClient) CreateAndUpdate(ctx context.
 func (client *ComponentLinkedStorageAccountsClient) createAndUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccounts, _ *ComponentLinkedStorageAccountsClientCreateAndUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,8 +106,11 @@ func (client *ComponentLinkedStorageAccountsClient) createAndUpdateCreateRequest
 }
 
 // createAndUpdateHandleResponse handles the CreateAndUpdate response.
-func (client *ComponentLinkedStorageAccountsClient) createAndUpdateHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsClientCreateAndUpdateResponse, error) {
+func (client *ComponentLinkedStorageAccountsClient) createAndUpdateHandleResponse(resp *http.Response, successCodes ...int) (ComponentLinkedStorageAccountsClientCreateAndUpdateResponse, error) {
 	result := ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentLinkedStorageAccounts); err != nil {
 		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, err
 	}
@@ -147,7 +149,7 @@ func (client *ComponentLinkedStorageAccountsClient) Delete(ctx context.Context, 
 func (client *ComponentLinkedStorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, _ *ComponentLinkedStorageAccountsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -193,11 +195,7 @@ func (client *ComponentLinkedStorageAccountsClient) Get(ctx context.Context, res
 	if err != nil {
 		return ComponentLinkedStorageAccountsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentLinkedStorageAccountsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -205,7 +203,7 @@ func (client *ComponentLinkedStorageAccountsClient) Get(ctx context.Context, res
 func (client *ComponentLinkedStorageAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, _ *ComponentLinkedStorageAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -232,8 +230,11 @@ func (client *ComponentLinkedStorageAccountsClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ComponentLinkedStorageAccountsClient) getHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsClientGetResponse, error) {
+func (client *ComponentLinkedStorageAccountsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ComponentLinkedStorageAccountsClientGetResponse, error) {
 	result := ComponentLinkedStorageAccountsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentLinkedStorageAccounts); err != nil {
 		return ComponentLinkedStorageAccountsClientGetResponse{}, err
 	}
@@ -263,11 +264,7 @@ func (client *ComponentLinkedStorageAccountsClient) Update(ctx context.Context, 
 	if err != nil {
 		return ComponentLinkedStorageAccountsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ComponentLinkedStorageAccountsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -275,7 +272,7 @@ func (client *ComponentLinkedStorageAccountsClient) Update(ctx context.Context, 
 func (client *ComponentLinkedStorageAccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, storageType StorageType, linkedStorageAccountsProperties ComponentLinkedStorageAccountsPatch, _ *ComponentLinkedStorageAccountsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/linkedStorageAccounts/{storageType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -306,8 +303,11 @@ func (client *ComponentLinkedStorageAccountsClient) updateCreateRequest(ctx cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ComponentLinkedStorageAccountsClient) updateHandleResponse(resp *http.Response) (ComponentLinkedStorageAccountsClientUpdateResponse, error) {
+func (client *ComponentLinkedStorageAccountsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ComponentLinkedStorageAccountsClientUpdateResponse, error) {
 	result := ComponentLinkedStorageAccountsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentLinkedStorageAccounts); err != nil {
 		return ComponentLinkedStorageAccountsClientUpdateResponse{}, err
 	}

@@ -19,7 +19,7 @@ func ExampleAPIKeysClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -63,7 +63,7 @@ func ExampleAPIKeysClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -100,7 +100,7 @@ func ExampleAPIKeysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -137,7 +137,7 @@ func ExampleAPIKeysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

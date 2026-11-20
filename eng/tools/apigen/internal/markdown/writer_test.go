@@ -283,6 +283,146 @@ func NewBeta() Widget { return Widget{} }
 		expected := strings.Replace(baseline, before, "type Duration = time.Duration\n\n"+before, 1)
 		assert.Equal(t, expected, render(t, files, false))
 	})
+	t.Run("private receiver alias", func(t *testing.T) {
+		source := `package sample
+
+type Client struct{}
+type hidden = Client
+type pointer = *hidden
+type private struct{}
+
+func (*hidden) Read() int { return 1 }
+func (hidden) Ready() bool { return true }
+func (private) NotPublic() {}
+`
+		files := fstest.MapFS{
+			"go.mod":    {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(source)},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, "type Client struct{}\n\nfunc (*Client) Read() int\nfunc (Client) Ready() bool")
+		assert.NotContains(t, before, "NotPublic")
+
+		files["sample.go"].Data = []byte(strings.NewReplacer("(*hidden) Read", "(*Client) Read", "(hidden) Ready", "(Client) Ready").Replace(source))
+		assert.Equal(t, before, render(t, files, false))
+
+		files["sample.go"].Data = []byte(strings.Replace(source, "(*hidden) Read", "(pointer) Read", 1))
+		assert.Equal(t, before, render(t, files, false))
+	})
+	t.Run("public alias receiver methods appear once per alias", func(t *testing.T) {
+		const source = `package sample
+
+type hidden struct{}
+type Public = hidden
+type Other = hidden
+
+func (*Public) Read() *hidden { return nil }
+`
+		files := fstest.MapFS{
+			"go.mod":    {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(source)},
+		}
+		before := render(t, files, false)
+		assert.Equal(t, 1, strings.Count(before, "func (*Public) Read("))
+		assert.Contains(t, before, "func (*Public) Read() *Public\n")
+		assert.Equal(t, 1, strings.Count(before, "func (*Other) Read("))
+		assert.Contains(t, before, "func (*Other) Read() *Other\n")
+
+		files["sample.go"].Data = []byte(strings.Replace(source, "(*Public) Read", "(*hidden) Read", 1))
+		assert.Equal(t, before, render(t, files, false))
+	})
+	t.Run("private interface embeddings", func(t *testing.T) {
+		source := `package sample
+
+type Visible interface{ Shared() }
+type reader[T any] interface {
+	Read() T
+	Shared()
+	Reset()
+	sealed()
+}
+type hidden = reader[string]
+type transitive interface{ hidden }
+type unrelated interface{ Unrelated() }
+
+type Contract interface {
+	Visible
+	interface{ transitive }
+	Reset()
+}
+type Plain interface{ hidden }
+`
+		files := fstest.MapFS{
+			"go.mod":    {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(source)},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, "// Embedded method on Contract: Read() string")
+		assert.Contains(t, before, "type Plain interface {\n\thidden\n}\n\n// Embedded method on Plain: Read() string")
+		assert.NotContains(t, before, "// Embedded method on Contract: Shared()")
+		assert.NotContains(t, before, "// Embedded method on Contract: Reset()")
+		assert.NotContains(t, before, "sealed()")
+		assert.NotContains(t, before, "Unrelated")
+		files["sample.go"].Data = []byte(strings.Replace(source, "Read() T", "Read() []T", 1))
+		assert.Equal(t, strings.ReplaceAll(before, "Read() string", "Read() []string"), render(t, files, false))
+	})
+	t.Run("exported internal-package embeddings", func(t *testing.T) {
+		source := `package sample
+
+import "example.com/sample/internal/generated"
+
+type RenameResponse struct {
+	generated.Response
+	generated.Details
+	Explicit string
+}
+type PointerResponse struct{ *generated.Response }
+type PublicResponse = generated.Response
+type PublicWrapper struct{ PublicResponse }
+`
+		embedded := `package generated
+
+type Response struct {
+	ETag *string
+	Date *string
+}
+type Details struct{ ID *string }
+func (*Response) Reset() {}
+`
+		files := fstest.MapFS{
+			"go.mod":                         {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go":                      {Data: []byte(source)},
+			"internal/generated/response.go": {Data: []byte(embedded)},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, `type RenameResponse struct {
+	generated.Details
+	// Promoted fields:
+	//   ID *string
+	generated.Response
+	// Promoted fields:
+	//   Date *string
+	//   ETag *string
+	Explicit string
+}
+
+// Promoted method on *RenameResponse: Reset()`)
+		assert.Contains(t, before, `type PointerResponse struct {
+	*generated.Response
+	// Promoted fields:
+	//   Date *string
+	//   ETag *string
+}
+
+// Promoted method on PointerResponse: Reset()`)
+		assert.Equal(t, 2, strings.Count(before, "//   ETag *string"))
+		assert.NotContains(t, before, "// Promoted field: ETag")
+		assert.NotContains(t, before, "// Promoted method on PublicWrapper:")
+		assert.NotContains(t, before, "// Promoted method on *PublicWrapper:")
+
+		files["internal/generated/response.go"].Data = []byte(strings.Replace(embedded, "ETag *string", "ETag string", 1))
+		assert.Equal(t, strings.ReplaceAll(before, "ETag *string", "ETag string"), render(t, files, false))
+	})
 	t.Run("enum group addition", func(t *testing.T) {
 		files := fixture(false)
 		files["enum.go"] = &fstest.MapFile{Data: []byte(`package sample
@@ -328,6 +468,40 @@ const KindFirst Kind = "first"
 		expected = strings.Replace(expected, "\tKindFirst Kind = \"first\"\n", "\tKindFirst Kind = \"first\"\n\tKindSecondWithALongerName Kind = \"second\"\n", 1)
 		expected = strings.Replace(expected, "\tField int\n", "\tField int\n\tLongerField string\n", 1)
 		expected = strings.Replace(expected, "\tRead()\n", "\tRead()\n\tWrite(value string) error\n", 1)
+		assert.Equal(t, expected, render(t, files, false))
+	})
+	t.Run("expanded alias target identity", func(t *testing.T) {
+		const models = `package model
+
+type A struct{ Name string }
+type B struct{ Name string }
+type Forward = A
+type Alternate = A
+type Number = int
+type List = []int
+`
+		files := fstest.MapFS{
+			"go.mod": {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(`package sample
+
+import "example.com/sample/internal/model"
+
+type Public = model.Forward
+type Number = model.Number
+type List = model.List
+`)},
+			"internal/model/model.go": {Data: []byte(models)},
+		}
+		before := render(t, files, false)
+		require.Contains(t, before, "// Alias of example.com/sample/internal/model.A.\ntype Public struct")
+		assert.Contains(t, before, "// Alias of int.\ntype Number int")
+		assert.Contains(t, before, "// Alias of an unnamed type.\ntype List []int")
+
+		files["internal/model/model.go"].Data = []byte(strings.Replace(models, "Forward = A", "Forward = Alternate", 1))
+		assert.Equal(t, before, render(t, files, false))
+
+		files["internal/model/model.go"].Data = []byte(strings.Replace(models, "Forward = A", "Forward = B", 1))
+		expected := strings.Replace(before, "/model.A.", "/model.B.", 1)
 		assert.Equal(t, expected, render(t, files, false))
 	})
 	t.Run("inferred variable types", func(t *testing.T) {
@@ -401,6 +575,120 @@ var Handler, Other = (func(ctx context.Context) error { return ctx.Err() }), 42
 		assert.Equal(t, strings.Replace(before, "context.Context) error", "context.Context) *error", 1),
 			render(t, files, false))
 	})
+	t.Run("nested function literal initializers", func(t *testing.T) {
+		source := `package sample
+
+import (
+	"strconv"
+	"strings"
+	clock "time"
+
+	probe "example.com/sample/probe"
+)
+
+var Called = (func() int { return strconv.IntSize })()
+var Callback = use(func() string { return strings.TrimSpace(" text ") })
+var Composite = []func() int{func() int { return 7 }}
+var Explicit any = func() string { return strings.ToUpper("text") }()
+var Moment, hidden, Flag = func() (clock.Time, string, bool) {
+	return clock.Time{}, strings.ToLower("TEXT"), false
+}()
+var Ordinary = use(named)
+var Resource = func() probe.Token { return 0 }()
+
+func Now() clock.Time { return clock.Now() }
+func use(cb func() string) string { return cb() }
+func named() string { return "name" }
+`
+		files := fstest.MapFS{
+			"go.mod":         {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go":      {Data: []byte(source)},
+			"probe/probe.go": {Data: []byte("package clock\n\ntype Token int\n")},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, `var (
+	Callback string
+	Called int
+	Composite []func() int
+	Explicit any
+	Flag bool
+	Moment clock.Time
+	// Inferred type of Ordinary: string
+	Ordinary = use(named)
+	Resource clock2.Token
+)`)
+		assert.Contains(t, before, `clock "time"`)
+		assert.Contains(t, before, `clock2 "example.com/sample/probe"`)
+		assert.NotContains(t, before, `"strconv"`)
+		assert.NotContains(t, before, `"strings"`)
+
+		changed := strings.Replace(source, `return strconv.IntSize`, `return strconv.IntSize + 1`, 1)
+		changed = strings.Replace(changed, `" text "`, `" revised text "`, 1)
+		files["sample.go"].Data = []byte(changed)
+		assert.Equal(t, before, render(t, files, false))
+
+		changed = strings.Replace(changed, "clock.Time, string, bool", "clock.Time, string, int", 1)
+		changed = strings.Replace(changed, `"TEXT"), false`, `"TEXT"), 0`, 1)
+		files["sample.go"].Data = []byte(changed)
+		assert.Equal(t, strings.Replace(before, "Flag bool", "Flag int", 1), render(t, files, false))
+	})
+}
+
+func TestWriteExpandsDefinedTypesWithHiddenBases(t *testing.T) {
+	t.Setenv("GOWORK", "off")
+	render := func(t *testing.T, audienceType string) string {
+		t.Helper()
+		dir := t.TempDir()
+		require.NoError(t, os.CopyFS(dir, fstest.MapFS{
+			"go.mod": {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(`package sample
+
+import "example.com/sample/internal/base"
+
+type Options base.Options
+func (Options) Own() {}
+type Public[T any] base.Box[T]
+type hidden struct{ Size [8]byte }
+type Local hidden
+`)},
+			"internal/base/options.go": {Data: []byte(`package base
+
+import "time"
+
+type Options struct {
+	Audience ` + audienceType + `
+	Next *Options
+	When time.Time
+	hidden bool
+}
+func (Options) BaseOnly() {}
+
+type Box[T any] struct{ Value T }
+`)},
+		}))
+		loaded, err := loader.Load(t.Context(), dir)
+		require.NoError(t, err)
+		packages, err := report.ExtractPackages(loaded)
+		require.NoError(t, err)
+		var output bytes.Buffer
+		require.NoError(t, markdown.Write(&output, report.ExtractModule(loaded), packages))
+		return output.String()
+	}
+
+	before := render(t, "string")
+	assert.Contains(t, before, `type Options struct {
+	Audience string
+	Next *base.Options
+	When time.Time
+	// contains filtered or unexported fields
+}
+
+func (Options) Own()`)
+	assert.Contains(t, before, "type Public[T any] struct {\n\tValue T\n}")
+	assert.Contains(t, before, "type Local struct {\n\tSize [8]byte\n}")
+	assert.NotContains(t, before, "BaseOnly")
+	assert.NotContains(t, before, "// Alias of")
+	assert.Equal(t, strings.Replace(before, "Audience string", "Audience []byte", 1), render(t, "[]byte"))
 }
 
 func TestWriteExpandsAliasToLocalUnexportedType(t *testing.T) {
@@ -439,7 +727,7 @@ type Public struct {
 }
 
 func (*Public) Reset() *Public`)
-	require.Contains(t, before, `// Alias of example.com/sample.intermediate.
+	require.Contains(t, before, `// Alias of example.com/sample.private.
 type Forward struct {
 	Next *Forward
 	Size int
@@ -623,6 +911,57 @@ func TestWritePreservesMultilineInitializers(t *testing.T) {
 		"Beta":   "last\n\ntail",
 		"Quoted": "keep  two\tspaces",
 	}, values)
+}
+
+func TestWriteOmitsStructTags(t *testing.T) {
+	t.Setenv("GOWORK", "off")
+	const source = `package sample
+
+import "time"
+
+type hidden struct {
+	Nested struct{ When time.Time "json:\"tag-before\"" } "json:\"tag-before\""
+}
+
+func (hidden) Read() struct{ Value string "json:\"tag-before\"" } { panic("not implemented") }
+
+type Visible struct {
+	hidden
+	Field string "json:\"tag-before\""
+}
+
+type private interface {
+	Read() struct{ Value string "json:\"tag-before\"" }
+}
+type Contract interface{ private }
+
+var Inline = struct{ Value string "json:\"tag-before\"" }{Value: "json:\"keep me\""}
+`
+	render := func(t *testing.T, source string) string {
+		t.Helper()
+		dir := t.TempDir()
+		require.NoError(t, os.CopyFS(dir, fstest.MapFS{
+			"go.mod":    {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(source)},
+		}))
+		loaded, err := loader.Load(t.Context(), dir)
+		require.NoError(t, err)
+		packages, err := report.ExtractPackages(loaded)
+		require.NoError(t, err)
+		var output bytes.Buffer
+		require.NoError(t, markdown.Write(&output, report.ExtractModule(loaded), packages))
+		return output.String()
+	}
+
+	got := render(t, source)
+	assert.NotContains(t, got, "tag-before")
+	assert.Contains(t, got, `Value: "json:\"keep me\""`)
+	assert.Contains(t, got, "// Inferred type of Inline: struct{Value string}")
+	assert.Contains(t, got, "// Promoted field: Nested struct{When time.Time}")
+	assert.Contains(t, got, "// Promoted method on Visible: Read() struct{Value string}")
+	assert.Contains(t, got, "// Embedded method on Contract: Read() struct{Value string}")
+	assert.Equal(t, got, render(t, strings.ReplaceAll(source, "tag-before", "tag-after")))
+	assert.Equal(t, got, render(t, strings.ReplaceAll(source, ` "json:\"tag-before\""`, "")))
 }
 
 func TestWriteModuleAndErrors(t *testing.T) {

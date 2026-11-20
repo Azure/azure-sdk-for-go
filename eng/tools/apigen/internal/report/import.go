@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/parser"
+	"go/token"
 	"go/types"
 	"slices"
 	"strconv"
@@ -64,6 +65,14 @@ func (c *importCollector) collect(pkg *Package) ([]Import, error) {
 			if err := c.node(value.TypeExpr); err != nil {
 				return nil, err
 			}
+		}
+	}
+	// Synthesize missing variable types only after collecting the qualifiers
+	// already used by the displayed source declarations.
+	for i := range pkg.Variables {
+		variable := &pkg.Variables[i]
+		if err := c.completeVariableType(variable); err != nil {
+			return nil, fmt.Errorf("variable %q type: %w", variable.Objects[0].Name(), err)
 		}
 	}
 	var result []Import
@@ -148,26 +157,58 @@ func (c *importCollector) preferredQualifier(pkg *types.Package) string {
 	return pkg.Name()
 }
 
+func (c *importCollector) completeVariableType(variable *Variable) error {
+	spec := variable.Decl.Specs[0].(*ast.ValueSpec)
+	if spec.Type != nil || len(spec.Values) != 0 {
+		return nil
+	}
+	object := variable.Objects[0]
+	expr, qualified, err := parseCompilerType(c.source, "variable-"+object.Name()+".api.go", object.Type())
+	if err != nil {
+		return err
+	}
+	normalizer := declarationNormalizer{
+		comments: []*ast.CommentGroup{},
+		resolve: func(expr ast.Expr, _ string) (ast.Expr, error) {
+			selected, ok := expr.(*ast.SelectorExpr)
+			if !ok {
+				return expr, nil
+			}
+			qualifier, ok := selected.X.(*ast.Ident)
+			if !ok || qualified[qualifier.Name] == nil {
+				return nil, fmt.Errorf("unknown variable type qualifier in %T", expr)
+			}
+			pkg := qualified[qualifier.Name]
+			base := c.preferredQualifier(pkg)
+			name := base
+			for suffix := 2; c.qualifiers[name] != "" && c.qualifiers[name] != pkg.Path(); suffix++ {
+				name = base + strconv.Itoa(suffix)
+			}
+			if err := c.add(pkg, name); err != nil {
+				return nil, err
+			}
+			qualifier.Name = name
+			return selected, nil
+		},
+	}
+	spec.Type, err = normalizer.typeExpr(expr)
+	if err != nil {
+		return err
+	}
+	// The type came from a synthetic file, so don't associate its positions
+	// with the source position of the binding when printing the declaration.
+	variable.Decl.TokPos = token.NoPos
+	spec.Names[0] = ast.NewIdent(object.Name())
+	variable.Comments = normalizer.comments
+	return nil
+}
+
 func (c *importCollector) constantType(value *Constant) (ast.Expr, []*ast.CommentGroup, error) {
 	normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}}
 	if basic, ok := value.Type.(*types.Basic); ok && basic.Info()&types.IsUntyped != 0 {
 		return nil, normalizer.comments, nil
 	}
-	qualifiers := make(map[*types.Package]string)
-	qualified := make(map[string]*types.Package)
-	text := types.TypeString(value.Type, func(pkg *types.Package) string {
-		if pkg == c.source.Types {
-			return ""
-		}
-		name, ok := qualifiers[pkg]
-		if !ok {
-			name = "__apigen_pkg_" + strconv.Itoa(len(qualifiers))
-			qualifiers[pkg] = name
-			qualified[name] = pkg
-		}
-		return name
-	})
-	expr, err := parser.ParseExprFrom(c.source.Fset, "constant-"+value.Name+".api.go", text, 0)
+	expr, qualified, err := parseCompilerType(c.source, "constant-"+value.Name+".api.go", value.Type)
 	if err != nil {
 		return nil, nil, fmt.Errorf("parse constant type: %w", err)
 	}
@@ -202,4 +243,25 @@ func (c *importCollector) constantType(value *Constant) (ast.Expr, []*ast.Commen
 	}
 	expr, err = normalizer.typeExpr(expr)
 	return expr, normalizer.comments, err
+}
+
+// parseCompilerType uses distinct placeholders so packages with the same name
+// remain distinguishable until type references are normalized.
+func parseCompilerType(source *packages.Package, filename string, typ types.Type) (ast.Expr, map[string]*types.Package, error) {
+	qualifiers := make(map[*types.Package]string)
+	qualified := make(map[string]*types.Package)
+	text := types.TypeString(typ, func(pkg *types.Package) string {
+		if pkg == source.Types {
+			return ""
+		}
+		name, ok := qualifiers[pkg]
+		if !ok {
+			name = "__apigen_pkg_" + strconv.Itoa(len(qualifiers))
+			qualifiers[pkg] = name
+			qualified[name] = pkg
+		}
+		return name
+	})
+	expr, err := parser.ParseExprFrom(source.Fset, filename, text, 0)
+	return expr, qualified, err
 }

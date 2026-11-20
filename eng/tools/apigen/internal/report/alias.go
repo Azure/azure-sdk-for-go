@@ -99,11 +99,7 @@ func (e *aliasExpander) expansion(pkg *packages.Package, spec *ast.TypeSpec, obj
 		return nil, nil
 	}
 	target := referencedTypeName(pkg, spec.Type)
-	if target == nil || target.Pkg() == nil {
-		return nil, nil
-	}
-	localUnexported := target.Pkg() == pkg.Types && !target.Exported()
-	if !localUnexported && !internalPackagePath(target.Pkg().Path()) {
+	if !hiddenTypeTarget(pkg.Types, target) {
 		return nil, nil
 	}
 	if genericType(object.Type()) {
@@ -125,12 +121,23 @@ func (e *aliasExpander) expansion(pkg *packages.Package, spec *ast.TypeSpec, obj
 		}
 		source = nextSource
 	}
+	unaliased := types.Unalias(object.Type())
+	origin := "an unnamed type"
+	switch unaliased.(type) {
+	case *types.Named, *types.Basic:
+		origin = types.TypeString(unaliased, nil)
+	}
 	return &aliasExpansion{
 		source: source,
 		object: object,
-		target: types.Unalias(object.Type()),
-		origin: target.Pkg().Path() + "." + target.Name(),
+		target: unaliased,
+		origin: origin,
 	}, nil
+}
+
+func hiddenTypeTarget(current *types.Package, target *types.TypeName) bool {
+	return target != nil && target.Pkg() != nil &&
+		((target.Pkg() == current && !target.Exported()) || internalPackagePath(target.Pkg().Path()))
 }
 
 func (e *aliasExpander) aliasMethods(expansion *aliasExpansion, pkg *packages.Package, refs map[*ast.Ident]*types.Package) ([]Function, error) {

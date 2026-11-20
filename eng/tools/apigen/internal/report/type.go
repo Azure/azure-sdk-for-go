@@ -11,6 +11,7 @@ import (
 	"go/token"
 	"go/types"
 	"maps"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -29,8 +30,8 @@ type Type struct {
 	// IsInterface indicates an interface or an alias to an interface.
 	IsInterface bool
 
-	// AliasOf identifies an expanded alias target by package path and
-	// type name, or is empty for declarations that were not expanded.
+	// AliasOf describes the final target of an expanded alias, or is empty
+	// for declarations that were not expanded.
 	AliasOf string
 
 	// Decl contains a standalone type declaration with unexported struct fields
@@ -54,9 +55,19 @@ type Type struct {
 	Methods []Function
 
 	// PromotedFields and PromotedMethods describe exported members reached
-	// through omitted private embeddings, sorted by name.
-	PromotedFields  []string
+	// through private or internal-package embeddings, sorted by name.
+	PromotedFields  []PromotedField
 	PromotedMethods []PromotedMethod
+
+	// EmbeddedMethods lists exported methods contributed only by private
+	// interface embeddings, sorted by name.
+	EmbeddedMethods []string
+}
+
+// PromotedField describes a public field and its first embedding.
+type PromotedField struct {
+	Embedding string
+	Signature string
 }
 
 // PromotedMethod describes a method promoted to the pointer method set and,
@@ -116,12 +127,20 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 				if err != nil {
 					return nil, nil, fmt.Errorf("type %q parameters: %w", spec.Name.Name, err)
 				}
-				copy.Type, err = normalizer.typeExpr(source.Type)
+				if !spec.Assign.IsValid() && hiddenTypeTarget(pkg.Types, referencedTypeName(pkg, spec.Type)) {
+					copy.Type, err = definedUnderlyingType(pkg, object, aliases, refs)
+				} else {
+					copy.Type, err = normalizer.typeExpr(source.Type)
+				}
 				if err != nil {
 					return nil, nil, fmt.Errorf("type %q: %w", spec.Name.Name, err)
 				}
-				_, isInterface := object.Type().Underlying().(*types.Interface)
-				var promotedFields []string
+				iface, isInterface := object.Type().Underlying().(*types.Interface)
+				var embeddedMethods []string
+				if _, inline := ast.Unparen(copy.Type).(*ast.InterfaceType); isInterface && inline {
+					embeddedMethods = privatelyEmbeddedMethods(iface, pkg.Types)
+				}
+				var promotedFields []PromotedField
 				var promotedMethods []PromotedMethod
 				// Unexpanded aliases to named types already show the target name.
 				if _, isStruct := ast.Unparen(source.Type).(*ast.StructType); !copy.Assign.IsValid() || isStruct {
@@ -140,6 +159,7 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 					Comments:        normalizer.comments,
 					PromotedFields:  promotedFields,
 					PromotedMethods: promotedMethods,
+					EmbeddedMethods: embeddedMethods,
 				})
 			}
 		}
@@ -156,12 +176,80 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 	return result, methods, nil
 }
 
-func promotedMembers(receiver types.Type, pkg *types.Package) (fields []string, methods []PromotedMethod) {
+func privatelyEmbeddedMethods(iface *types.Interface, pkg *types.Package) []string {
+	shown := make(map[string]bool)
+	hidden := make(map[string]string)
+	qualify := types.RelativeTo(pkg)
+	var collect func(*types.Interface)
+	collect = func(iface *types.Interface) {
+		for method := range iface.ExplicitMethods() {
+			shown[method.Name()] = true
+		}
+		for embedded := range iface.EmbeddedTypes() {
+			embeddedInterface, ok := embedded.Underlying().(*types.Interface)
+			if !ok {
+				continue
+			}
+			named, ok := embedded.(interface{ Obj() *types.TypeName })
+			if !ok {
+				collect(embeddedInterface)
+				continue
+			}
+			for method := range embeddedInterface.Methods() {
+				name := method.Name()
+				if named.Obj().Exported() {
+					shown[name] = true
+				} else if method.Exported() {
+					signature := name + strings.TrimPrefix(TypeStringWithoutTags(method.Type(), qualify), "func")
+					// Identical methods can use different parameter names.
+					if previous, ok := hidden[name]; !ok || signature < previous {
+						hidden[name] = signature
+					}
+				}
+			}
+		}
+	}
+	collect(iface)
+	var methods []string
+	for _, name := range slices.Sorted(maps.Keys(hidden)) {
+		if !shown[name] {
+			methods = append(methods, hidden[name])
+		}
+	}
+	return methods
+}
+
+func definedUnderlyingType(pkg *packages.Package, object *types.TypeName, aliases *aliasExpander, refs map[*ast.Ident]*types.Package) (ast.Expr, error) {
+	expr, qualified, err := parseCompilerType(pkg, "underlying-"+object.Name()+".api.go", object.Type().Underlying())
+	if err != nil {
+		return nil, fmt.Errorf("parse underlying type: %w", err)
+	}
+	normalizer := declarationNormalizer{
+		resolve: func(expr ast.Expr, requiredName string) (ast.Expr, error) {
+			selected, ok := expr.(*ast.SelectorExpr)
+			if !ok {
+				return expr, nil
+			}
+			qualifier, ok := selected.X.(*ast.Ident)
+			if !ok || qualified[qualifier.Name] == nil {
+				return nil, fmt.Errorf("unknown underlying type qualifier in %T", expr)
+			}
+			target, ok := qualified[qualifier.Name].Scope().Lookup(selected.Sel.Name).(*types.TypeName)
+			if !ok {
+				return nil, fmt.Errorf("underlying type information for %s is unavailable", selected.Sel.Name)
+			}
+			return aliases.typeReference(target, pkg.Types, nil, requiredName, expr.Pos(), refs), nil
+		},
+	}
+	return normalizer.typeExpr(expr)
+}
+
+func promotedMembers(receiver types.Type, pkg *types.Package) (fields []PromotedField, methods []PromotedMethod) {
 	structure, ok := receiver.Underlying().(*types.Struct)
 	if !ok {
 		return nil, nil
 	}
-	privateEmbeddings := make(map[int]bool)
+	hiddenEmbeddings := make(map[int]bool)
 	fieldNames := make(map[string]bool)
 	seen := make(map[*types.Struct]bool)
 	var collectFieldNames func(types.Type)
@@ -185,16 +273,16 @@ func promotedMembers(receiver types.Type, pkg *types.Package) (fields []string, 
 	}
 	for i := range structure.NumFields() {
 		field := structure.Field(i)
-		if field.Embedded() && !field.Exported() {
-			privateEmbeddings[i] = true
+		if field.Embedded() && hiddenEmbedding(field, pkg) {
+			hiddenEmbeddings[i] = true
 			collectFieldNames(field.Type())
 		}
 	}
-	if len(privateEmbeddings) == 0 {
+	if len(hiddenEmbeddings) == 0 {
 		return nil, nil
 	}
-	throughPrivateEmbedding := func(index []int) bool {
-		return len(index) > 1 && privateEmbeddings[index[0]]
+	throughHiddenEmbedding := func(index []int) bool {
+		return len(index) > 1 && hiddenEmbeddings[index[0]]
 	}
 	// Paths in report comments avoid ambiguous qualifiers and do not need imports.
 	qualify := func(other *types.Package) string {
@@ -205,23 +293,57 @@ func promotedMembers(receiver types.Type, pkg *types.Package) (fields []string, 
 	}
 	for _, name := range slices.Sorted(maps.Keys(fieldNames)) {
 		object, index, _ := types.LookupFieldOrMethod(receiver, true, nil, name)
-		if field, ok := object.(*types.Var); ok && throughPrivateEmbedding(index) {
-			fields = append(fields, name+" "+types.TypeString(field.Type(), qualify))
+		if field, ok := object.(*types.Var); ok && throughHiddenEmbedding(index) {
+			fields = append(fields, PromotedField{
+				Embedding: structure.Field(index[0]).Name(),
+				Signature: name + " " + TypeStringWithoutTags(field.Type(), qualify),
+			})
 		}
 	}
 	valueMethods := types.NewMethodSet(receiver)
 	for method := range types.NewMethodSet(types.NewPointer(receiver)).Methods() {
-		if !method.Obj().Exported() || !throughPrivateEmbedding(method.Index()) {
+		if !method.Obj().Exported() || !throughHiddenEmbedding(method.Index()) {
 			continue
 		}
 		name := method.Obj().Name()
-		signature := name + strings.TrimPrefix(types.TypeString(method.Type(), qualify), "func")
+		signature := name + strings.TrimPrefix(TypeStringWithoutTags(method.Type(), qualify), "func")
 		methods = append(methods, PromotedMethod{
 			Signature:   signature,
 			PointerOnly: valueMethods.Lookup(nil, name) == nil,
 		})
 	}
 	return fields, methods
+}
+
+// go/types prints tags with strconv.Quote. No other part of its type strings
+// contains quoted literals: even array lengths are printed as numbers.
+var quotedStructTag = regexp.MustCompile(` "(?:[^"\\]|\\.)*"`)
+
+// TypeStringWithoutTags formats a compiler type for use in a report comment.
+func TypeStringWithoutTags(typ types.Type, qualify types.Qualifier) string {
+	return quotedStructTag.ReplaceAllString(types.TypeString(typ, qualify), "")
+}
+
+// EmbeddedFieldName returns the name of an embedded field, or an empty name
+// for a field with explicit names.
+func EmbeddedFieldName(field *ast.Field) (string, error) {
+	if len(field.Names) != 0 {
+		return "", nil
+	}
+	return baseTypeName(field.Type)
+}
+
+func hiddenEmbedding(field *types.Var, pkg *types.Package) bool {
+	if !field.Exported() {
+		return true
+	}
+	t := field.Type()
+	if pointer, ok := t.(*types.Pointer); ok {
+		t = pointer.Elem()
+	}
+	// Keep alias identity: a public alias already documents the embedded type.
+	named, ok := t.(interface{ Obj() *types.TypeName })
+	return ok && hiddenTypeTarget(pkg, named.Obj())
 }
 
 type declarationNormalizer struct {
@@ -277,10 +399,8 @@ func (n *declarationNormalizer) typeExprWithName(expr ast.Expr, requiredName str
 		return n.signature(source)
 	case *ast.ArrayType:
 		copy := *source
-		if source.Len != nil {
-			if n.typeInfo == nil {
-				return nil, fmt.Errorf("array length has no type information")
-			}
+		// Types parsed from compiler output already have evaluated lengths.
+		if source.Len != nil && n.typeInfo != nil {
 			array, ok := n.typeInfo.TypeOf(source).(*types.Array)
 			if !ok {
 				return nil, fmt.Errorf("array length has no array type information")

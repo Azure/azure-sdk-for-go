@@ -74,7 +74,7 @@ func (*Client) Send(ctx context.Context, value string) error
 
 type Config struct {
 	Enabled bool
-	Value *string `json:"value,omitempty"`
+	Value *string
 	// contains filtered or unexported fields
 }
 

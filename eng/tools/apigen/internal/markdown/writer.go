@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"go/ast"
 	"go/format"
+	"go/parser"
 	"go/printer"
 	"go/scanner"
 	"go/token"
@@ -118,11 +119,28 @@ func packageSource(pkg report.Package) ([]byte, error) {
 			}
 		}
 	}
-	source, err := format.Source(writer.source.Bytes())
+	fset := token.NewFileSet()
+	source, err := parser.ParseFile(fset, "api.go", writer.source.Bytes(), parser.ParseComments|parser.SkipObjectResolution)
 	if err != nil {
 		return nil, fmt.Errorf("format Go declarations: %w", err)
 	}
-	return fixedSpacing(source)
+	for node := range ast.Preorder(source) {
+		switch node := node.(type) {
+		case *ast.Field:
+			node.Tag = nil
+		case *ast.StructType:
+			if len(node.Fields.List) == 1 {
+				// gofmt can expand a single-field struct just because it has a tag.
+				// Keep it multiline whether or not a tag was present.
+				node.Fields.Opening = token.NoPos
+			}
+		}
+	}
+	var formatted bytes.Buffer
+	if err := format.Node(&formatted, fset, source); err != nil {
+		return nil, fmt.Errorf("format Go declarations: %w", err)
+	}
+	return fixedSpacing(formatted.Bytes())
 }
 
 func fixedSpacing(source []byte) ([]byte, error) {
@@ -179,6 +197,10 @@ func (w *packageWriter) typeDeclaration(typ report.Type) error {
 	if err != nil {
 		return fmt.Errorf("type %q: %w", typ.Name, err)
 	}
+	text, unattached, err := annotatePromotedFields(text, typ.PromotedFields)
+	if err != nil {
+		return fmt.Errorf("type %q: %w", typ.Name, err)
+	}
 	w.source.WriteString(text)
 	w.source.WriteString("\n\n")
 	if err := w.constants(typ.Constants); err != nil {
@@ -190,8 +212,8 @@ func (w *packageWriter) typeDeclaration(typ report.Type) error {
 	if err := w.functions(typ.Methods); err != nil {
 		return err
 	}
-	for _, field := range typ.PromotedFields {
-		fmt.Fprintf(&w.source, "// Promoted field: %s\n", field)
+	for _, field := range unattached {
+		fmt.Fprintf(&w.source, "// Promoted field: %s\n", field.Signature)
 	}
 	for _, method := range typ.PromotedMethods {
 		receiver := typ.Name
@@ -200,10 +222,75 @@ func (w *packageWriter) typeDeclaration(typ report.Type) error {
 		}
 		fmt.Fprintf(&w.source, "// Promoted method on %s: %s\n", receiver, method.Signature)
 	}
-	if len(typ.PromotedFields)+len(typ.PromotedMethods) > 0 {
+	for _, method := range typ.EmbeddedMethods {
+		fmt.Fprintf(&w.source, "// Embedded method on %s: %s\n", typ.Name, method)
+	}
+	if len(unattached)+len(typ.PromotedMethods)+len(typ.EmbeddedMethods) > 0 {
 		w.source.WriteByte('\n')
 	}
 	return nil
+}
+
+func annotatePromotedFields(text string, fields []report.PromotedField) (string, []report.PromotedField, error) {
+	byEmbedding := make(map[string][]string)
+	for _, field := range fields {
+		if token.IsExported(field.Embedding) {
+			byEmbedding[field.Embedding] = append(byEmbedding[field.Embedding], field.Signature)
+		}
+	}
+	if len(byEmbedding) == 0 {
+		return text, fields, nil
+	}
+
+	// Use the formatted declaration's positions: normalization can reorder fields
+	// and can copy them from another package.
+	const prefix = "package report\n"
+	fset := token.NewFileSet()
+	parsed, err := parser.ParseFile(fset, "type.go", prefix+text, parser.SkipObjectResolution)
+	if err != nil {
+		return "", nil, fmt.Errorf("parse declaration for promoted field placement: %w", err)
+	}
+	var structure *ast.StructType
+	ast.Inspect(parsed, func(node ast.Node) bool {
+		if spec, ok := node.(*ast.TypeSpec); ok {
+			structure, _ = ast.Unparen(spec.Type).(*ast.StructType)
+			return false
+		}
+		return true
+	})
+	if structure == nil {
+		return text, fields, nil
+	}
+
+	var annotated strings.Builder
+	start := 0
+	placed := make(map[string]bool)
+	for _, field := range structure.Fields.List {
+		name, err := report.EmbeddedFieldName(field)
+		if err != nil {
+			return "", nil, err
+		}
+		signatures := byEmbedding[name]
+		if len(signatures) == 0 {
+			continue
+		}
+		end := fset.Position(field.End()).Offset - len(prefix)
+		annotated.WriteString(text[start:end])
+		annotated.WriteString("\n\t// Promoted fields:")
+		for _, signature := range signatures {
+			fmt.Fprint(&annotated, "\n\t//   ", signature)
+		}
+		placed[name] = true
+		start = end
+	}
+	annotated.WriteString(text[start:])
+	var unattached []report.PromotedField
+	for _, field := range fields {
+		if !placed[field.Embedding] {
+			unattached = append(unattached, field)
+		}
+	}
+	return annotated.String(), unattached, nil
 }
 
 func (w *packageWriter) node(node ast.Node, comments []*ast.CommentGroup) (string, error) {
@@ -300,7 +387,7 @@ func (w *packageWriter) variables(variables []report.Variable) error {
 		}
 		if variable.Inferred {
 			for _, object := range variable.Objects {
-				typeName := types.TypeString(object.Type(), types.RelativeTo(object.Pkg()))
+				typeName := report.TypeStringWithoutTags(object.Type(), types.RelativeTo(object.Pkg()))
 				entries = append(entries, fmt.Sprintf("// Inferred type of %s: %s", object.Name(), typeName))
 			}
 		}

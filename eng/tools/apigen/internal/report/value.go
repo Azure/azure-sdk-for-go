@@ -37,7 +37,7 @@ type Constant struct {
 }
 
 // Variable describes a variable declaration and its exported bindings.
-// Multiple bindings are kept together when they share a multi-result initializer.
+// Multiple bindings are kept together when their multi-result initializer is shown.
 type Variable struct {
 	// Objects contains the exported bindings in declaration order, retaining
 	// their compiler-provided types.
@@ -46,9 +46,9 @@ type Variable struct {
 	// Inferred reports whether Decl needs an inferred-type annotation.
 	Inferred bool
 
-	// Decl preserves explicit types and initializers, except that direct function
-	// literals are represented by type only. Unexported names in shared
-	// initializers are replaced by blank identifiers.
+	// Decl preserves explicit types and initializers, except that initializers
+	// containing function literals are represented by type only. Unexported
+	// names in displayed shared initializers are replaced by blank identifiers.
 	// It shares expression nodes with loaded source and must be treated as read-only.
 	Decl *ast.GenDecl
 
@@ -106,9 +106,14 @@ func extractValues(pkg *packages.Package) ([]Constant, []Variable, error) {
 }
 
 func extractVariables(pkg *packages.Package, spec *ast.ValueSpec) ([]Variable, error) {
-	shared := len(spec.Names) > 1 && len(spec.Values) == 1
-	if !shared && len(spec.Values) != 0 && len(spec.Values) != len(spec.Names) {
-		return nil, fmt.Errorf("variable declaration has %d names and %d initializers", len(spec.Names), len(spec.Values))
+	values := spec.Values
+	shared := len(spec.Names) > 1 && len(values) == 1
+	if !shared && len(values) != 0 && len(values) != len(spec.Names) {
+		return nil, fmt.Errorf("variable declaration has %d names and %d initializers", len(spec.Names), len(values))
+	}
+	if shared && containsFunctionLiteral(values[0]) {
+		shared = false
+		values = nil
 	}
 
 	group := *spec
@@ -138,8 +143,8 @@ func extractVariables(pkg *packages.Package, spec *ast.ValueSpec) ([]Variable, e
 		copy := *spec
 		copy.Names = []*ast.Ident{name}
 		copy.Values = nil
-		if len(spec.Values) > 0 {
-			copy.Values = []ast.Expr{spec.Values[i]}
+		if len(values) > 0 {
+			copy.Values = values[i : i+1]
 		}
 		variable, err := variableDeclaration(pkg.TypesInfo, copy, object)
 		if err != nil {
@@ -166,6 +171,8 @@ func variableDeclaration(typeInfo *types.Info, spec ast.ValueSpec, objects ...*t
 				spec.Type = literal.Type
 			}
 			spec.Values = nil
+		} else if containsFunctionLiteral(spec.Values[0]) {
+			spec.Values = nil
 		}
 	}
 	normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}, typeInfo: typeInfo}
@@ -178,7 +185,7 @@ func variableDeclaration(typeInfo *types.Info, spec ast.ValueSpec, objects ...*t
 	}
 	return Variable{
 		Objects:  objects,
-		Inferred: spec.Type == nil,
+		Inferred: spec.Type == nil && len(spec.Values) != 0,
 		Decl: &ast.GenDecl{
 			TokPos: spec.Pos(),
 			Tok:    token.VAR,
@@ -186,4 +193,13 @@ func variableDeclaration(typeInfo *types.Info, spec ast.ValueSpec, objects ...*t
 		},
 		Comments: normalizer.comments,
 	}, nil
+}
+
+func containsFunctionLiteral(expr ast.Expr) bool {
+	for node := range ast.Preorder(expr) {
+		if _, ok := node.(*ast.FuncLit); ok {
+			return true
+		}
+	}
+	return false
 }

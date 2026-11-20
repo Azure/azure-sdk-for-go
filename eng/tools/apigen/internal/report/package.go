@@ -69,8 +69,7 @@ type Function struct {
 }
 
 // ExtractPackages extracts public package metadata and exported declarations.
-// It excludes main packages, internal packages, and methods declared on
-// unexported receiver types.
+// It excludes main and internal packages, and reports methods on public receivers.
 // loaded must be a successful result from loader.Load.
 func ExtractPackages(loaded *loader.Result) ([]Package, error) {
 	aliases, err := newAliasExpander(loaded)
@@ -96,11 +95,11 @@ func ExtractPackages(loaded *loader.Result) ([]Package, error) {
 		if err != nil {
 			return nil, fmt.Errorf("extract functions from package %q: %w", pkg.PkgPath, err)
 		}
-		types, methods, err := extractTypes(pkg, aliases, refs)
+		typeDecls, aliasMethods, err := extractTypes(pkg, aliases, refs)
 		if err != nil {
 			return nil, fmt.Errorf("extract types from package %q: %w", pkg.PkgPath, err)
 		}
-		functions = append(functions, methods...)
+		functions = mergeAliasMethods(functions, aliasMethods)
 		slices.SortFunc(functions, func(a, b Function) int {
 			if order := strings.Compare(a.Receiver, b.Receiver); order != 0 {
 				return order
@@ -116,7 +115,7 @@ func ExtractPackages(loaded *loader.Result) ([]Package, error) {
 			Name:      pkg.Name,
 			FileSet:   pkg.Fset,
 			Functions: functions,
-			Types:     types,
+			Types:     typeDecls,
 			Constants: constants,
 			Variables: variables,
 		}
@@ -139,6 +138,25 @@ func ExtractPackages(loaded *loader.Result) ([]Package, error) {
 	return result, nil
 }
 
+func mergeAliasMethods(functions, expanded []Function) []Function {
+	if len(expanded) == 0 {
+		return functions
+	}
+	type methodKey struct {
+		receiver string
+		object   *types.Func
+	}
+	expandedMethods := make(map[methodKey]bool, len(expanded))
+	for _, method := range expanded {
+		expandedMethods[methodKey{method.Receiver, method.Object}] = true
+	}
+	// Prefer the expanded signature, which rewrites references to hidden types.
+	functions = slices.DeleteFunc(functions, func(function Function) bool {
+		return expandedMethods[methodKey{function.Receiver, function.Object}]
+	})
+	return append(functions, expanded...)
+}
+
 func extractFunctions(pkg *packages.Package) ([]Function, error) {
 	var functions []Function
 	for _, file := range pkg.Syntax {
@@ -151,18 +169,39 @@ func extractFunctions(pkg *packages.Package) ([]Function, error) {
 			if err != nil {
 				return nil, fmt.Errorf("method %q: %w", decl.Name.Name, err)
 			}
-			if receiver != "" && !token.IsExported(receiver) {
-				continue
-			}
 			object, ok := pkg.TypesInfo.Defs[decl.Name].(*types.Func)
 			if !ok {
 				return nil, fmt.Errorf("function %q has no function type information", decl.Name.Name)
 			}
 
+			var publicReceiver ast.Expr
+			if receiver != "" && !token.IsExported(receiver) {
+				receiverType := types.Unalias(object.Signature().Recv().Type())
+				pointer, isPointer := receiverType.(*types.Pointer)
+				if isPointer {
+					receiverType = types.Unalias(pointer.Elem())
+				}
+				named, ok := receiverType.(*types.Named)
+				if !ok {
+					return nil, fmt.Errorf("method %q has no named receiver type", decl.Name.Name)
+				}
+				if !named.Obj().Exported() {
+					continue
+				}
+				receiver = named.Obj().Name()
+				pos := decl.Recv.List[0].Type.Pos()
+				publicReceiver = &ast.Ident{NamePos: pos, Name: receiver}
+				if isPointer {
+					publicReceiver = &ast.StarExpr{Star: pos, X: publicReceiver}
+				}
+			}
 			normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}, typeInfo: pkg.TypesInfo}
 			function, err := normalizeFunction(decl, object, receiver, &normalizer)
 			if err != nil {
 				return nil, fmt.Errorf("function %q: %w", decl.Name.Name, err)
+			}
+			if publicReceiver != nil {
+				function.Decl.Recv.List[0].Type = publicReceiver
 			}
 			functions = append(functions, function)
 		}

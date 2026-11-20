@@ -115,7 +115,7 @@ type Forward = Wrapped
 		assert.Equal(t, root.Path, typ.Object.Pkg().Path())
 	}
 	assert.Equal(t, "example.com/sdk/internal/model.Record", declarations["PublicRecord"].AliasOf)
-	assert.Equal(t, "example.com/sdk/internal/model.Forward", declarations["Forward"].AliasOf)
+	assert.Equal(t, "example.com/sdk/internal/model.Wrapped", declarations["Forward"].AliasOf)
 	assert.Empty(t, declarations["ClientOptions"].AliasOf)
 	assert.Equal(t, "type ClientOptions = opt.Config", rendered["ClientOptions"])
 	assert.Equal(t, "type Event string", rendered["Event"])

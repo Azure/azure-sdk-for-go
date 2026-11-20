@@ -353,10 +353,14 @@ type ApplicationPackageProperties struct {
 	// READ-ONLY; The current state of the application package.
 	State *PackageState
 
-	// READ-ONLY; The URL for the application package in Azure Storage.
+	// READ-ONLY; The URL for the application package in Azure Storage. This property is only returned for the PUT application
+	// package (create or update) operation. For the GET application package and POST activate application package operations,
+	// this property is not populated.
 	StorageURL *string
 
-	// READ-ONLY; The UTC time at which the Azure Storage URL will expire.
+	// READ-ONLY; The UTC time at which the Azure Storage URL will expire. This property is only returned for the PUT application
+	// package (create or update) operation. For the GET application package and POST activate application package operations,
+	// this property is not populated.
 	StorageURLExpiry *time.Time
 }
 
@@ -745,6 +749,14 @@ type DeploymentConfiguration struct {
 	VirtualMachineConfiguration *VirtualMachineConfiguration
 }
 
+// DeploymentConfigurationPatch - Deployment settings with partial updates for the new zone policies.
+type DeploymentConfigurationPatch struct {
+	// The virtual machine configuration for the pool.
+	//
+	// The configuration for compute nodes in a pool based on the Azure Virtual Machines infrastructure.
+	VirtualMachineConfiguration *VirtualMachineConfigurationPatch
+}
+
 // DetectorListResult - Paged collection of DetectorResponse items
 type DetectorListResult struct {
 	// REQUIRED; The DetectorResponse items on this page
@@ -896,7 +908,7 @@ type FixedScaleSettings struct {
 	// Determines what to do with a node and its running task(s) after it has been selected for deallocation.
 	//
 	// If omitted, the default value is Requeue.
-	NodeDeallocationOption *ComputeNodeDeallocationOption
+	NodeDeallocationOption *RequestedComputeNodeDeallocationOption
 
 	// The timeout for allocation of compute nodes to the pool.
 	//
@@ -914,6 +926,12 @@ type FixedScaleSettings struct {
 	//
 	// At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
 	TargetLowPriorityNodes *int32
+}
+
+// HardwareProfile - Specifies the hardware settings for the compute nodes.
+type HardwareProfile struct {
+	// Specifies the properties for customizing the size of the virtual machine.
+	VMSizeProperties *VMSizeProperties
 }
 
 // HostEndpointSettings - Specifies particular host endpoint settings.
@@ -1156,6 +1174,25 @@ type ManagedDisk struct {
 	StorageAccountType *StorageAccountType
 }
 
+// MaxInstancePercentPerZonePolicy - The policy that limits the percentage of pool instances that may be allocated in a single
+// availability zone.
+type MaxInstancePercentPerZonePolicy struct {
+	// REQUIRED; The maximum percentage of pool instances that may be allocated in a single availability zone.
+	Value *int32
+
+	// Whether the maximum instance percentage policy is enabled.
+	Enabled *bool
+}
+
+// MaxInstancePercentPerZonePolicyPatch - Per-zone instance percentage fields to update, leaving omitted fields unchanged.
+type MaxInstancePercentPerZonePolicyPatch struct {
+	// Whether the maximum instance percentage policy is enabled.
+	Enabled *bool
+
+	// The maximum percentage of pool instances that may be allocated in a single availability zone.
+	Value *int32
+}
+
 // MetadataItem - A name-value pair associated with a Batch service resource.
 //
 // The Batch service does not assign any meaning to this metadata; it is solely for the use of user code.
@@ -1326,13 +1363,13 @@ type NetworkSecurityPerimeterConfiguration struct {
 	Type *string
 }
 
-// NetworkSecurityPerimeterConfigurationListResult - Result of a list NSP (network security perimeter) configurations request.
+// NetworkSecurityPerimeterConfigurationListResult - The response of a NetworkSecurityPerimeterConfiguration list operation.
 type NetworkSecurityPerimeterConfigurationListResult struct {
-	// The link used to get the next page of results.
-	NextLink *string
-
-	// Array of network security perimeter results.
+	// REQUIRED; The NetworkSecurityPerimeterConfiguration items on this page
 	Value []*NetworkSecurityPerimeterConfiguration
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.
@@ -1497,6 +1534,18 @@ type OutboundEnvironmentEndpointCollection struct {
 	NextLink *string
 }
 
+// Placement - The placement policy for compute nodes in a pool.
+type Placement struct {
+	// REQUIRED; Auto delegates zone selection and balancing to the virtual machine scale set.
+	ZonePlacementPolicy *ZonePlacementPolicyType
+}
+
+// PlacementPatch - Availability zone placement fields to update, leaving omitted fields unchanged.
+type PlacementPatch struct {
+	// Auto delegates zone selection and balancing to the virtual machine scale set.
+	ZonePlacementPolicy *ZonePlacementPolicyType
+}
+
 // Pool - Contains information about a pool.
 type Pool struct {
 	// The type of identity used for the Batch Pool.
@@ -1543,6 +1592,164 @@ type PoolIdentity struct {
 
 	// The list of user identities associated with the Batch pool.
 	UserAssignedIdentities map[string]*UserAssignedIdentities
+}
+
+// PoolPatch - Properties supplied when updating a pool.
+type PoolPatch struct {
+	// The type of identity used for the Batch Pool.
+	Identity *PoolIdentity
+
+	// The pool properties to update.
+	Properties *PoolPatchProperties
+
+	// The tags of the resource.
+	Tags map[string]*string
+
+	// READ-ONLY; The ETag of the resource, used for concurrency statements.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+}
+
+// PoolPatchProperties - Pool settings with partial updates for the new zone policies.
+type PoolPatchProperties struct {
+	// The list of application packages to be installed on each compute node in the pool.
+	//
+	// Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes
+	// that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references
+	// on any given pool.
+	ApplicationPackages []*ApplicationPackageReference
+
+	// This property describes the virtual machines that the pool nodes will be deployed on.
+	//
+	// Deployment configuration properties.
+	DeploymentConfiguration *DeploymentConfigurationPatch
+
+	// The display name for the pool.
+	//
+	// The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
+	DisplayName *string
+
+	// Whether the pool permits direct communication between nodes.
+	//
+	// This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of the
+	// requested number of nodes to be allocated in the pool. If not specified, this value defaults to 'Disabled'.
+	InterNodeCommunication *InterNodeCommunicationState
+
+	// A list of name-value pairs associated with the pool as metadata.
+	//
+	// The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+	Metadata []*MetadataItem
+
+	// A list of file systems to mount on each node in the pool.
+	//
+	// This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
+	MountConfiguration []*MountConfiguration
+
+	// The network configuration for the pool.
+	//
+	// The network configuration for a pool.
+	NetworkConfiguration *NetworkConfiguration
+
+	// Settings which configure the number of nodes in the pool.
+	//
+	// Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is specified,
+	// or 'autoScale' which defines a formula which is periodically reevaluated. If this property is not specified, the pool will
+	// have a fixed scale with 0 targetDedicatedNodes.
+	ScaleSettings *ScaleSettings
+
+	// A task specified to run on each compute node as it joins the pool.
+	//
+	// In an PATCH (update) operation, this property can be set to an empty object to remove the start task from the pool.
+	StartTask *StartTask
+
+	// How tasks are distributed across compute nodes in a pool.
+	//
+	// If not specified, the default is spread.
+	TaskSchedulingPolicy *TaskSchedulingPolicy
+
+	// The number of task slots that can be used to run concurrent tasks on a single compute node in the pool.
+	//
+	// When omitted, the existing value is preserved. The maximum value is the smaller of 4 times the number of cores of the vmSize
+	// of the pool or 256.
+	TaskSlotsPerNode *int32
+
+	// The upgrade policy for the pool.
+	//
+	// Describes an upgrade policy - automatic, manual, or rolling.
+	UpgradePolicy *UpgradePolicy
+
+	// The list of user accounts to be created on each node in the pool.
+	//
+	// The list of user accounts to be created on each node in the pool.
+	UserAccounts []*UserAccount
+
+	// Specifies the profile of VM sizes and the allocation strategy used to allocate compute nodes for an Instance Mix pool.
+	// When specified, vmSize must be "Mix". This property can only be changed while the pool has no compute nodes.
+	VMSKUProfile *VirtualMachineSKUProfile
+
+	// The size of virtual machines in the pool. All VMs in a pool are the same size.
+	//
+	// For information about available VM sizes, see Sizes for Virtual Machines in Azure (https://learn.microsoft.com/azure/virtual-machines/sizes/overview).
+	// Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
+	// series).
+	VMSize *string
+
+	// Whether the pool is resizing.
+	//
+	// READ-ONLY; Whether the pool is resizing.
+	AllocationState *AllocationState
+
+	// The time at which the pool entered its current allocation state.
+	//
+	// READ-ONLY; The time at which the pool entered its current allocation state.
+	AllocationStateTransitionTime *time.Time
+
+	// The results and errors from the last execution of the autoscale formula.
+	//
+	// READ-ONLY; This property is set only if the pool automatically scales, i.e. autoScaleSettings are used.
+	AutoScaleRun *AutoScaleRun
+
+	// The creation time of the pool.
+	//
+	// READ-ONLY; The creation time of the pool.
+	CreationTime *time.Time
+
+	// The number of dedicated compute nodes currently in the pool.
+	//
+	// READ-ONLY; The number of dedicated compute nodes currently in the pool.
+	CurrentDedicatedNodes *int32
+
+	// The number of Spot/low-priority compute nodes currently in the pool.
+	//
+	// READ-ONLY; The number of Spot/low-priority compute nodes currently in the pool.
+	CurrentLowPriorityNodes *int32
+
+	// The last modified time of the pool.
+	//
+	// READ-ONLY; This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings, changed.
+	// It does not factor in node-level changes such as a compute node changing state.
+	LastModified *time.Time
+
+	// The current state of the pool.
+	//
+	// READ-ONLY; The current state of the pool.
+	ProvisioningState *PoolProvisioningState
+
+	// The time at which the pool entered its current state.
+	//
+	// READ-ONLY; The time at which the pool entered its current state.
+	ProvisioningStateTransitionTime *time.Time
+
+	// Contains details about the current or last completed resize operation.
+	//
+	// READ-ONLY; Describes either the current operation (if the pool AllocationState is Resizing) or the previously completed
+	// operation (if the AllocationState is Steady).
+	ResizeOperationStatus *ResizeOperationStatus
 }
 
 // PoolProperties - Pool properties.
@@ -1616,6 +1823,10 @@ type PoolProperties struct {
 	//
 	// The list of user accounts to be created on each node in the pool.
 	UserAccounts []*UserAccount
+
+	// Specifies the profile of VM sizes and the allocation strategy used to allocate compute nodes for an Instance Mix pool.
+	// When specified, vmSize must be "Mix". This property can only be changed while the pool has no compute nodes.
+	VMSKUProfile *VirtualMachineSKUProfile
 
 	// The size of virtual machines in the pool. All VMs in a pool are the same size.
 	//
@@ -1861,6 +2072,18 @@ type PublicIPAddressConfiguration struct {
 	Provision *IPAddressProvisioningType
 }
 
+// ResiliencyPolicy - The resiliency policy for compute nodes in a pool.
+type ResiliencyPolicy struct {
+	// REQUIRED; The policy that controls allocation across availability zones.
+	ZoneAllocationPolicy *ZoneAllocationPolicy
+}
+
+// ResiliencyPolicyPatch - Resiliency policy fields to update, leaving omitted fields unchanged.
+type ResiliencyPolicyPatch struct {
+	// The zone allocation policy fields to update.
+	ZoneAllocationPolicy *ZoneAllocationPolicyPatch
+}
+
 // ResizeError - An error that occurred when resizing a pool.
 //
 // An error that occurred when resizing a pool.
@@ -1959,9 +2182,8 @@ type ResourceFile struct {
 	// The URL of the file to download.
 	//
 	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be
-	// specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. There are three ways to get
-	// such a URL for a blob in Azure storage: include a Shared Access Signature (SAS) granting read permissions on the blob,
-	// use a managed identity with read permission, or set the ACL for the blob or its container to allow public access.
+	// specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. Do not embed credentials in
+	// the URL. For Azure Blob Storage, use a managed identity with read permission on the blob and specify it using identityReference.
 	HTTPURL *string
 
 	// The reference to the user assigned identity to use to access Azure Blob Storage specified by storageContainerUrl or httpUrl
@@ -1972,9 +2194,8 @@ type ResourceFile struct {
 	// The URL of the blob container within Azure Blob Storage.
 	//
 	// The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them must be
-	// specified. This URL must be readable and listable from compute nodes. There are three ways to get such a URL for a container
-	// in Azure storage: include a Shared Access Signature (SAS) granting read and list permissions on the container, use a managed
-	// identity with read and list permissions, or set the ACL for the container to allow public access.
+	// specified. This URL must be readable and listable from compute nodes. Do not embed credentials in the URL. For Azure Blob
+	// Storage, use a managed identity with read and list permissions on the container and specify it using identityReference.
 	StorageContainerURL *string
 }
 
@@ -1983,7 +2204,7 @@ type RollingUpgradePolicy struct {
 	// Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain and maxBatchInstancePercent
 	// to determine the batch size. If this field is not set, Azure Azure Batch will not set its default value. The value of enableCrossZoneUpgrade
 	// on the created VirtualMachineScaleSet will be decided by the default configurations on VirtualMachineScaleSet. This field
-	// is able to be set to true or false only when using NodePlacementConfiguration as Zonal.
+	// can be set to true or false only when nodePlacementConfiguration.policy is Zonal or placement.zonePlacementPolicy is Auto.
 	EnableCrossZoneUpgrade *bool
 
 	// The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one
@@ -2375,6 +2596,17 @@ type VMExtension struct {
 	TypeHandlerVersion *string
 }
 
+// VMSizeProperties - Specifies the properties for customizing the size of the virtual machine.
+type VMSizeProperties struct {
+	// Specifies the number of vCPUs available for the VM. When this property is not specified in the request body the default
+	// behavior is to set it to the value of vCPUs available for that VM size.
+	VCPUsAvailable *int32
+
+	// Specifies the vCPU to physical core ratio. When this property is not specified in the request body the default behavior
+	// is set to the value of vCPUsPerCore for the VM Size. **Setting this property to 1 also means that hyper-threading is disabled.**
+	VCPUsPerCore *int32
+}
+
 // VirtualMachineConfiguration - The configuration for compute nodes in a pool based on the Azure Virtual Machines infrastructure.
 //
 // The configuration for compute nodes in a pool based on the Azure Virtual Machines infrastructure.
@@ -2414,6 +2646,9 @@ type VirtualMachineConfiguration struct {
 	// If specified, the extensions mentioned in this configuration will be installed on each node.
 	Extensions []*VMExtension
 
+	// Specifies the hardware settings for the compute nodes.
+	HardwareProfile *HardwareProfile
+
 	// The type of on-premises license to be used when deploying the operating system.
 	//
 	// This only applies to images that contain the Windows operating system, and should only be used when you hold valid on-premises
@@ -2431,6 +2666,107 @@ type VirtualMachineConfiguration struct {
 	//
 	// Contains configuration for ephemeral OSDisk settings.
 	OSDisk *OSDisk
+
+	// The availability zone placement policy for compute nodes in the pool.
+	//
+	// The availability zone placement policy for compute nodes in the pool. Set zonePlacementPolicy to Auto to delegate availability
+	// zone selection and balancing to the virtual machine scale set.
+	// On pool creation, if placement is omitted, Batch uses nodePlacementConfiguration when it is specified; otherwise, the pool
+	// uses Regional placement, which provides no availability zone distribution guarantee. This property cannot be combined with
+	// nodePlacementConfiguration.
+	// On PATCH, omitting placement preserves the existing placement policy, including when virtualMachineConfiguration is supplied.
+	// On PUT, the supplied virtual machine configuration replaces the existing policies; omitting placement clears the placement
+	// policy.
+	Placement *Placement
+
+	// The resiliency policy for compute nodes in the pool.
+	//
+	// The resiliency policy for compute nodes in the pool. This property requires placement.zonePlacementPolicy to be Auto.
+	// On PATCH, omitting resiliencyPolicy preserves the existing resiliency policy independently of whether placement is supplied.
+	// On PUT, the supplied virtual machine configuration replaces the existing policies; omitting resiliencyPolicy clears the
+	// resiliency policy.
+	ResiliencyPolicy *ResiliencyPolicy
+
+	// Specifies the security profile settings for the virtual machine or virtual machine scale set.
+	//
+	// Specifies the security profile settings for the virtual machine or virtual machine scale set.
+	SecurityProfile *SecurityProfile
+
+	// Specifies the service artifact reference id used to set same image version for all virtual machines in the scale set when
+	// using 'latest' image version.
+	//
+	// The service artifact reference id in the form of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+	ServiceArtifactReference *ServiceArtifactReference
+
+	// Windows operating system settings on the virtual machine.
+	//
+	// This property must not be specified if the imageReference specifies a Linux OS image.
+	WindowsConfiguration *WindowsConfiguration
+}
+
+// VirtualMachineConfigurationPatch - Virtual machine settings retaining legacy requirements when updating zone policies.
+type VirtualMachineConfigurationPatch struct {
+	// A reference to the Azure Virtual Machines Marketplace Image or the custom Virtual Machine Image to use.
+	//
+	// REQUIRED; A reference to an Azure Virtual Machines Marketplace image or the Azure Image resource of a custom Virtual Machine.
+	// To get the list of all imageReferences verified by Azure Batch, see the 'List supported node agent SKUs' operation.
+	ImageReference *ImageReference
+
+	// The SKU of the Batch node agent to be provisioned on compute nodes in the pool.
+	//
+	// REQUIRED; The Batch node agent is a program that runs on each node in the pool, and provides the command-and-control interface
+	// between the node and the Batch service. There are different implementations of the node agent, known as SKUs, for different
+	// operating systems. You must specify a node agent SKU which matches the selected image reference. To get the list of supported
+	// node agent SKUs along with their list of verified image references, see the 'List supported node agent SKUs' operation.
+	NodeAgentSKUID *string
+
+	// The container configuration for the pool.
+	//
+	// If specified, setup is performed on each node in the pool to allow tasks to run in containers. All regular tasks and job
+	// manager tasks run on this pool must specify the containerSettings property, and all other tasks may specify it.
+	ContainerConfiguration *ContainerConfiguration
+
+	// The configuration for data disks attached to the compute nodes in the pool.
+	//
+	// This property must be specified if the compute nodes in the pool need to have empty data disks attached to them.
+	DataDisks []*DataDisk
+
+	// The disk encryption configuration for the pool.
+	//
+	// If specified, encryption is performed on each node in the pool during node provisioning.
+	DiskEncryptionConfiguration *DiskEncryptionConfiguration
+
+	// The virtual machine extension for the pool.
+	//
+	// If specified, the extensions mentioned in this configuration will be installed on each node.
+	Extensions []*VMExtension
+
+	// Specifies the hardware settings for the compute nodes.
+	HardwareProfile *HardwareProfile
+
+	// The type of on-premises license to be used when deploying the operating system.
+	//
+	// This only applies to images that contain the Windows operating system, and should only be used when you hold valid on-premises
+	// licenses for the nodes which will be deployed. If omitted, no on-premises licensing discount is applied. Values are:
+	// Windows_Server - The on-premises license is for Windows Server.
+	// Windows_Client - The on-premises license is for Windows Client.
+	LicenseType *string
+
+	// The node placement configuration for the pool.
+	//
+	// This configuration will specify rules on how nodes in the pool will be physically allocated.
+	NodePlacementConfiguration *NodePlacementConfiguration
+
+	// Settings for the operating system disk of the Virtual Machine.
+	//
+	// Contains configuration for ephemeral OSDisk settings.
+	OSDisk *OSDisk
+
+	// The availability zone placement policy to update. Omitted fields retain their existing values.
+	Placement *PlacementPatch
+
+	// The resiliency policy to update. Omitted fields retain their existing values.
+	ResiliencyPolicy *ResiliencyPolicyPatch
 
 	// Specifies the security profile settings for the virtual machine or virtual machine scale set.
 	//
@@ -2458,6 +2794,28 @@ type VirtualMachineFamilyCoreQuota struct {
 	Name *string
 }
 
+// VirtualMachineSKUProfile - Specifies the set of VM sizes and the allocation strategy used to allocate compute nodes for
+// an Instance Mix pool.
+type VirtualMachineSKUProfile struct {
+	// The allocation strategy used to select VM sizes from vmSizes. Defaults to LowestPrice when not specified.
+	AllocationStrategy *VirtualMachineSKUAllocationStrategy
+
+	// The list of VM sizes (up to 5) that may be allocated for the Pool. VM sizes may span the supported A, B, D, E, and F VM
+	// families, but must have the same vCPU count and CPU architecture and compatible VM capabilities. This must be specified
+	// when the vmSkuProfile is provided during Pool creation.
+	VMSizes []*VirtualMachineSKUProfileVMSize
+}
+
+// VirtualMachineSKUProfileVMSize - Specifies a single VM size that may be allocated for an Instance Mix pool.
+type VirtualMachineSKUProfileVMSize struct {
+	// REQUIRED; The name of the VM size (for example, "Standard_D8s_v5").
+	Name *string
+
+	// The 0-based rank (a.k.a. priority) associated with this VM size. Lower values indicate higher priority. Rank is required
+	// only when the allocation strategy is 'Prioritized' and must be omitted otherwise.
+	Rank *int32
+}
+
 // WindowsConfiguration - Windows operating system settings to apply to the virtual machine.
 //
 // Windows operating system settings to apply to the virtual machine.
@@ -2476,4 +2834,24 @@ type WindowsUserConfiguration struct {
 	//
 	// Specifies login mode for the user. The default value is Interactive.
 	LoginMode *LoginMode
+}
+
+// ZoneAllocationPolicy - The policy that controls allocation across availability zones.
+type ZoneAllocationPolicy struct {
+	// The policy that limits the percentage of pool instances that may be allocated in a single availability zone.
+	MaxInstancePercentPerZonePolicy *MaxInstancePercentPerZonePolicy
+
+	// The maximum number of availability zones that may be used. The value cannot exceed the number of zones supported by the
+	// region.
+	MaxZoneCount *int32
+}
+
+// ZoneAllocationPolicyPatch - Zone allocation policy fields to update, leaving omitted fields unchanged.
+type ZoneAllocationPolicyPatch struct {
+	// The per-zone instance percentage policy fields to update.
+	MaxInstancePercentPerZonePolicy *MaxInstancePercentPerZonePolicyPatch
+
+	// The maximum number of availability zones that may be used. The value cannot exceed the number of zones supported by the
+	// region.
+	MaxZoneCount *int32
 }

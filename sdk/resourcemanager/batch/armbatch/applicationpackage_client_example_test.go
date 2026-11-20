@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/ApplicationPackageActivate.json
+// Generated from example definition: 2026-10-01/ApplicationPackageActivate.json
 func ExampleApplicationPackageClient_Activate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleApplicationPackageClient_Activate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ApplicationPackageCreate.json
+// Generated from example definition: 2026-10-01/ApplicationPackageCreate.json
 func ExampleApplicationPackageClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleApplicationPackageClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ApplicationPackageDelete.json
+// Generated from example definition: 2026-10-01/ApplicationPackageDelete.json
 func ExampleApplicationPackageClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleApplicationPackageClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ApplicationPackageGet.json
+// Generated from example definition: 2026-10-01/ApplicationPackageGet.json
 func ExampleApplicationPackageClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleApplicationPackageClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ApplicationPackageList.json
+// Generated from example definition: 2026-10-01/ApplicationPackageList.json
 func ExampleApplicationPackageClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

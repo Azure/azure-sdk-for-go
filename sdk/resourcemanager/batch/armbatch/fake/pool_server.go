@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -48,7 +48,7 @@ type PoolServer struct {
 
 	// Update is the fake for method PoolClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters armbatch.Pool, options *armbatch.PoolClientUpdateOptions) (resp azfake.Responder[armbatch.PoolClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters armbatch.PoolPatch, options *armbatch.PoolClientUpdateOptions) (resp azfake.Responder[armbatch.PoolClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPoolServerTransport creates a new instance of PoolServerTransport with the provided implementation.
@@ -216,7 +216,7 @@ func (p *PoolServerTransport) dispatchCreate(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
@@ -256,7 +256,7 @@ func (p *PoolServerTransport) dispatchDisableAutoScale(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
@@ -296,7 +296,7 @@ func (p *PoolServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
@@ -395,7 +395,7 @@ func (p *PoolServerTransport) dispatchStopResize(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
@@ -411,7 +411,7 @@ func (p *PoolServerTransport) dispatchUpdate(req *http.Request) (*http.Response,
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armbatch.Pool](req)
+	body, err := server.UnmarshalRequestAsJSON[armbatch.PoolPatch](req)
 	if err != nil {
 		return nil, err
 	}
@@ -446,7 +446,7 @@ func (p *PoolServerTransport) dispatchUpdate(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).Etag; val != nil {
+	if val := server.GetResponse(respr).ETag; val != nil {
 		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil

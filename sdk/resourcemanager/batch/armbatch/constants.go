@@ -5,7 +5,7 @@
 package armbatch
 
 const (
-	version20250601 string = "2025-06-01"
+	version20261001 string = "2026-10-01"
 )
 
 // AccessRuleDirection - Direction of Access Rule
@@ -76,8 +76,6 @@ const (
 	AuthenticationModeAAD AuthenticationMode = "AAD"
 	// AuthenticationModeSharedKey - The authentication mode using shared keys.
 	AuthenticationModeSharedKey AuthenticationMode = "SharedKey"
-	// AuthenticationModeTaskAuthenticationToken - The authentication mode using task authentication tokens.
-	AuthenticationModeTaskAuthenticationToken AuthenticationMode = "TaskAuthenticationToken"
 )
 
 // PossibleAuthenticationModeValues returns the possible values for the AuthenticationMode const type.
@@ -85,7 +83,6 @@ func PossibleAuthenticationModeValues() []AuthenticationMode {
 	return []AuthenticationMode{
 		AuthenticationModeAAD,
 		AuthenticationModeSharedKey,
-		AuthenticationModeTaskAuthenticationToken,
 	}
 }
 
@@ -825,6 +822,32 @@ func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
 	}
 }
 
+// RequestedComputeNodeDeallocationOption - Determines what to do with a node and its running task(s) after it has been selected
+// for deallocation. This is the set of values that can be requested; `RetainedData` is no longer accepted as of the 2026-10-01
+// API version.
+type RequestedComputeNodeDeallocationOption string
+
+const (
+	// RequestedComputeNodeDeallocationOptionRequeue - Terminate running task processes and requeue the tasks. The tasks will
+	// run again when a node is available. Remove nodes as soon as tasks have been terminated.
+	RequestedComputeNodeDeallocationOptionRequeue RequestedComputeNodeDeallocationOption = "Requeue"
+	// RequestedComputeNodeDeallocationOptionTaskCompletion - Allow currently running tasks to complete. Schedule no new tasks
+	// while waiting. Remove nodes when all tasks have completed.
+	RequestedComputeNodeDeallocationOptionTaskCompletion RequestedComputeNodeDeallocationOption = "TaskCompletion"
+	// RequestedComputeNodeDeallocationOptionTerminate - Terminate running tasks. The tasks will be completed with failureInfo
+	// indicating that they were terminated, and will not run again. Remove nodes as soon as tasks have been terminated.
+	RequestedComputeNodeDeallocationOptionTerminate RequestedComputeNodeDeallocationOption = "Terminate"
+)
+
+// PossibleRequestedComputeNodeDeallocationOptionValues returns the possible values for the RequestedComputeNodeDeallocationOption const type.
+func PossibleRequestedComputeNodeDeallocationOptionValues() []RequestedComputeNodeDeallocationOption {
+	return []RequestedComputeNodeDeallocationOption{
+		RequestedComputeNodeDeallocationOptionRequeue,
+		RequestedComputeNodeDeallocationOptionTaskCompletion,
+		RequestedComputeNodeDeallocationOptionTerminate,
+	}
+}
+
 // ResourceAssociationAccessMode - Access mode of the resource association
 type ResourceAssociationAccessMode string
 
@@ -981,5 +1004,44 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 		UpgradeModeAutomatic,
 		UpgradeModeManual,
 		UpgradeModeRolling,
+	}
+}
+
+// VirtualMachineSKUAllocationStrategy - Specifies the allocation strategy that the Fungible Compute Platform uses to select
+// VM sizes from the vmSkuProfile when allocating nodes for an Instance Mix pool.
+type VirtualMachineSKUAllocationStrategy string
+
+const (
+	// VirtualMachineSKUAllocationStrategyCapacityOptimized - Select the SKU with the most regional physical capacity.
+	VirtualMachineSKUAllocationStrategyCapacityOptimized VirtualMachineSKUAllocationStrategy = "CapacityOptimized"
+	// VirtualMachineSKUAllocationStrategyLowestPrice - Select the cheapest available SKU in the region. This is the default strategy.
+	VirtualMachineSKUAllocationStrategyLowestPrice VirtualMachineSKUAllocationStrategy = "LowestPrice"
+	// VirtualMachineSKUAllocationStrategyPrioritized - Follow the customer-defined ranking via the 0-based rank, falling back
+	// to the next rank when a preferred SKU is unavailable.
+	VirtualMachineSKUAllocationStrategyPrioritized VirtualMachineSKUAllocationStrategy = "Prioritized"
+)
+
+// PossibleVirtualMachineSKUAllocationStrategyValues returns the possible values for the VirtualMachineSKUAllocationStrategy const type.
+func PossibleVirtualMachineSKUAllocationStrategyValues() []VirtualMachineSKUAllocationStrategy {
+	return []VirtualMachineSKUAllocationStrategy{
+		VirtualMachineSKUAllocationStrategyCapacityOptimized,
+		VirtualMachineSKUAllocationStrategyLowestPrice,
+		VirtualMachineSKUAllocationStrategyPrioritized,
+	}
+}
+
+// ZonePlacementPolicyType - The zone placement policy for compute nodes in a pool.
+type ZonePlacementPolicyType string
+
+const (
+	// ZonePlacementPolicyTypeAuto - The Virtual Machine Scale Set automatically selects availability zones and balances instances
+	// across them.
+	ZonePlacementPolicyTypeAuto ZonePlacementPolicyType = "Auto"
+)
+
+// PossibleZonePlacementPolicyTypeValues returns the possible values for the ZonePlacementPolicyType const type.
+func PossibleZonePlacementPolicyTypeValues() []ZonePlacementPolicyType {
+	return []ZonePlacementPolicyType{
+		ZonePlacementPolicyTypeAuto,
 	}
 }

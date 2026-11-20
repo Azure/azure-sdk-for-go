@@ -20,7 +20,7 @@ import (
 // PoolClient contains the methods for the Pool group.
 // Don't use this type directly, use NewPoolClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type PoolClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -117,7 +117,7 @@ func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -173,7 +173,7 @@ func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -196,7 +196,7 @@ func (client *PoolClient) createHandleResponse(resp *http.Response, successCodes
 		return result, runtime.NewResponseError(resp)
 	}
 	if val := resp.Header.Get("Etag"); val != "" {
-		result.Etag = &val
+		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientCreateResponse{}, err
@@ -254,7 +254,7 @@ func (client *PoolClient) disableAutoScaleCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,7 +267,7 @@ func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response, su
 		return result, runtime.NewResponseError(resp)
 	}
 	if val := resp.Header.Get("Etag"); val != "" {
-		result.Etag = &val
+		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientDisableAutoScaleResponse{}, err
@@ -325,7 +325,7 @@ func (client *PoolClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,7 +338,7 @@ func (client *PoolClient) getHandleResponse(resp *http.Response, successCodes ..
 		return result, runtime.NewResponseError(resp)
 	}
 	if val := resp.Header.Get("Etag"); val != "" {
-		result.Etag = &val
+		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientGetResponse{}, err
@@ -412,7 +412,7 @@ func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, r
 		if options != nil && options.Select != nil {
 			reqQP.Set("$select", *options.Select)
 		}
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		if options != nil && options.Maxresults != nil {
 			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 		}
@@ -490,7 +490,7 @@ func (client *PoolClient) stopResizeCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -503,7 +503,7 @@ func (client *PoolClient) stopResizeHandleResponse(resp *http.Response, successC
 		return result, runtime.NewResponseError(resp)
 	}
 	if val := resp.Header.Get("Etag"); val != "" {
-		result.Etag = &val
+		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientStopResizeResponse{}, err
@@ -521,7 +521,7 @@ func (client *PoolClient) stopResizeHandleResponse(resp *http.Response, successC
 //   - parameters - Pool properties that should be updated. Properties that are supplied will be updated, any property not supplied
 //     will be unchanged.
 //   - options - PoolClientUpdateOptions contains the optional parameters for the PoolClient.Update method.
-func (client *PoolClient) Update(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolClientUpdateOptions) (PoolClientUpdateResponse, error) {
+func (client *PoolClient) Update(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters PoolPatch, options *PoolClientUpdateOptions) (PoolClientUpdateResponse, error) {
 	var err error
 	const operationName = "PoolClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -540,7 +540,7 @@ func (client *PoolClient) Update(ctx context.Context, resourceGroupName string, 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolClientUpdateOptions) (*policy.Request, error) {
+func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters PoolPatch, options *PoolClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools/{poolName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -563,7 +563,7 @@ func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -583,7 +583,7 @@ func (client *PoolClient) updateHandleResponse(resp *http.Response, successCodes
 		return result, runtime.NewResponseError(resp)
 	}
 	if val := resp.Header.Get("Etag"); val != "" {
-		result.Etag = &val
+		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientUpdateResponse{}, err

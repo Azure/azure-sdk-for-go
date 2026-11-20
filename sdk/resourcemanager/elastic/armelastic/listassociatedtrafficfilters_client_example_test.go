@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/AssociatedFiltersForDeployment_list.json
+// Generated from example definition: 2026-03-15-preview/AssociatedFiltersForDeployment_list.json
 func ExampleListAssociatedTrafficFiltersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -93,7 +93,8 @@ type QueueRuntimeProperties struct {
 	// UpdatedAt is when the entity was last updated.
 	UpdatedAt time.Time
 
-	// AccessedAt is when the entity was last updated.
+	// AccessedAt is the last time a message was sent to the queue or
+	// there was a receive request on the queue.
 	AccessedAt time.Time
 
 	// TotalMessageCount is the number of messages in the queue.

@@ -72,6 +72,10 @@ func (r ItemResponse) IntoModel[T any]() (T, error) {
 // DatabaseResponse is the response from an operation on a database.
 type DatabaseResponse struct {
 	Response
+	// ETag is the service response entity tag.
+	ETag azcore.ETag
+	// SessionToken is the session token returned by the service, when present.
+	SessionToken SessionToken
 
 	// DatabaseProperties is the database the operation addressed. It is the zero value for a
 	// delete, which returns no body.
@@ -81,6 +85,10 @@ type DatabaseResponse struct {
 // ContainerResponse is the response from an operation on a container.
 type ContainerResponse struct {
 	Response
+	// ETag is the service response entity tag.
+	ETag azcore.ETag
+	// SessionToken is the session token returned by the service, when present.
+	SessionToken SessionToken
 
 	// ContainerProperties is the container the operation addressed. It is the zero value for a
 	// delete, which returns no body.

@@ -59,15 +59,16 @@ import (
 // completionResult carries an exclusively owned native record until the waiting caller prepares
 // its Go-owned response. Prepared results contain no borrowed native data.
 type completionResult struct {
-	native           *ownedCompletion
-	response         ItemResponse
-	body             []byte
-	err              error
-	cancelled        bool
-	httpStatus       int
-	retryAfter       time.Duration
-	fromWire         bool
-	nextContinuation string
+	native              *ownedCompletion
+	response            ItemResponse
+	body                []byte
+	err                 error
+	cancelled           bool
+	httpStatus          int
+	retryAfter          time.Duration
+	fromWire            bool
+	nextContinuation    string
+	offerReplacePending bool
 
 	// driver and container are detached from the completion rather than copied, because they are
 	// handles and not data. A get_or_create completion carries the first and a resolve_container
@@ -186,12 +187,13 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 	switch completion.outcome {
 	case C.COSMOS_COMPLETION_OUTCOME_OK:
 		return completionResult{
-			response:         response,
-			body:             copyCompletionBody(completion),
-			httpStatus:       int(completion.http_status_code),
-			retryAfter:       headers.retryAfter,
-			fromWire:         completion.is_from_wire == 1,
-			nextContinuation: C.GoString(completion.next_continuation),
+			response:            response,
+			body:                copyCompletionBody(completion),
+			httpStatus:          int(completion.http_status_code),
+			retryAfter:          headers.retryAfter,
+			fromWire:            completion.is_from_wire == 1,
+			nextContinuation:    C.GoString(completion.next_continuation),
+			offerReplacePending: managementOfferReplacePending(completion),
 		}
 
 	case C.COSMOS_COMPLETION_OUTCOME_CANCELLED:

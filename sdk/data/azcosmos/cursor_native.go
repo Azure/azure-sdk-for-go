@@ -36,12 +36,14 @@ import (
 // Cursors share a client-owned, format-isolated completion reactor.
 // Client shutdown owns idle cursors; canceled waits retain resources until delivery.
 type nativeQueryCursor struct {
-	mu         sync.Mutex
-	owner      *nativeDriver
-	queue      *C.cosmos_completion_queue_t
-	reactor    *cursorReactor
-	handle     *C.cosmos_cursor_t
-	changeFeed bool
+	mu                     sync.Mutex
+	owner                  *nativeDriver
+	queue                  *C.cosmos_completion_queue_t
+	reactor                *cursorReactor
+	handle                 *C.cosmos_cursor_t
+	changeFeed             bool
+	managementEnvelope     string
+	managementContinuation string
 
 	// beforeCompletionWait controls delivery timing in boundary tests.
 	beforeCompletionWait func(chan cursorDelivery)
@@ -115,7 +117,12 @@ func (q *nativeQueryCursor) next(ctx context.Context) (queryPage, bool, error) {
 	var end bool
 	err := q.advance(ctx, func(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) error {
 		var err error
-		page, end, err = decodeCursorPage(completion, verbosity)
+		if q.managementEnvelope != "" {
+			q.managementContinuation = managementContinuationToken(&completion.common)
+			page, end, err = decodeManagementCursorPage(completion, verbosity, q.managementEnvelope)
+		} else {
+			page, end, err = decodeCursorPage(completion, verbosity)
+		}
 		return err
 	})
 	return page, end, err
@@ -151,6 +158,9 @@ func (q *nativeQueryCursor) checkpoint(ctx context.Context) (string, error) {
 	}
 	if q.handle == nil {
 		return "", invalidCursorCompletion("cursor is closed")
+	}
+	if q.managementEnvelope != "" {
+		return q.managementContinuation, nil
 	}
 	completion, err := q.submit(ctx, func(cookie C.intptr_t, status *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
 		return C.cosmos_cursor_checkpoint_submit(q.handle, cookie, status)

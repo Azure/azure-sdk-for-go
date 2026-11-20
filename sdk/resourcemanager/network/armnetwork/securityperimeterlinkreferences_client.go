@@ -20,7 +20,7 @@ import (
 // SecurityPerimeterLinkReferencesClient contains the methods for the SecurityPerimeterLinkReferences group.
 // Don't use this type directly, use NewSecurityPerimeterLinkReferencesClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type SecurityPerimeterLinkReferencesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -116,7 +116,7 @@ func (client *SecurityPerimeterLinkReferencesClient) deleteCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -170,7 +170,7 @@ func (client *SecurityPerimeterLinkReferencesClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -252,7 +252,7 @@ func (client *SecurityPerimeterLinkReferencesClient) listCreateRequest(ctx conte
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

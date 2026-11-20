@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VirtualHubPut.json
+// Generated from example definition: 2026-05-01/VirtualHubPut.json
 func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualHubDelete.json
+// Generated from example definition: 2026-05-01/VirtualHubDelete.json
 func ExampleVirtualHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleVirtualHubsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/EffectiveRoutesListForConnection.json
+// Generated from example definition: 2026-05-01/EffectiveRoutesListForConnection.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForAConnectionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2026-03-01/EffectiveRoutesListForRouteTable.json
+// Generated from example definition: 2026-05-01/EffectiveRoutesListForRouteTable.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForARouteTableResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2026-03-01/EffectiveRoutesListForVirtualHub.json
+// Generated from example definition: 2026-05-01/EffectiveRoutesListForVirtualHub.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForTheVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2026-03-01/GetInboundRoutes.json
+// Generated from example definition: 2026-05-01/GetInboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/GetOutboundRoutes.json
+// Generated from example definition: 2026-05-01/GetOutboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +361,7 @@ func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualHubGet.json
+// Generated from example definition: 2026-05-01/VirtualHubGet.json
 func ExampleVirtualHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +417,7 @@ func ExampleVirtualHubsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualHubListByResourceGroup.json
+// Generated from example definition: 2026-05-01/VirtualHubListByResourceGroup.json
 func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -584,7 +584,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualHubList.json
+// Generated from example definition: 2026-05-01/VirtualHubList.json
 func ExampleVirtualHubsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -751,7 +751,7 @@ func ExampleVirtualHubsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualHubUpdateTags.json
+// Generated from example definition: 2026-05-01/VirtualHubUpdateTags.json
 func ExampleVirtualHubsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

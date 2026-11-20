@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/DdosCustomPolicyCreate.json
+// Generated from example definition: 2026-05-01/DdosCustomPolicyCreate.json
 func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DdosCustomPolicyDelete.json
+// Generated from example definition: 2026-05-01/DdosCustomPolicyDelete.json
 func ExampleDdosCustomPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleDdosCustomPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DdosCustomPolicyGet.json
+// Generated from example definition: 2026-05-01/DdosCustomPolicyGet.json
 func ExampleDdosCustomPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,7 +347,7 @@ func ExampleDdosCustomPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DdosCustomPolicyListAll.json
+// Generated from example definition: 2026-05-01/DdosCustomPolicyListAll.json
 func ExampleDdosCustomPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +414,7 @@ func ExampleDdosCustomPoliciesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/DdosCustomPolicyList.json
+// Generated from example definition: 2026-05-01/DdosCustomPolicyList.json
 func ExampleDdosCustomPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,7 +481,7 @@ func ExampleDdosCustomPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/DdosCustomPolicyUpdateTags.json
+// Generated from example definition: 2026-05-01/DdosCustomPolicyUpdateTags.json
 func ExampleDdosCustomPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VpnSiteLinkConnectionGetIkeSas.json
+// Generated from example definition: 2026-05-01/VpnSiteLinkConnectionGetIkeSas.json
 func ExampleVPNLinkConnectionsClient_BeginGetIkeSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleVPNLinkConnectionsClient_BeginGetIkeSas() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnSiteLinkConnectionReset.json
+// Generated from example definition: 2026-05-01/VpnSiteLinkConnectionReset.json
 func ExampleVPNLinkConnectionsClient_BeginResetConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleVPNLinkConnectionsClient_BeginResetConnection() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VpnSiteLinkConnectionDefaultSharedKeyPut.json
+// Generated from example definition: 2026-05-01/VpnSiteLinkConnectionDefaultSharedKeyPut.json
 func ExampleVPNLinkConnectionsClient_BeginSetOrInitDefaultSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleVPNLinkConnectionsClient_BeginSetOrInitDefaultSharedKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnSiteLinkConnectionDefaultSharedKeyGet.json
+// Generated from example definition: 2026-05-01/VpnSiteLinkConnectionDefaultSharedKeyGet.json
 func ExampleVPNLinkConnectionsClient_GetDefaultSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleVPNLinkConnectionsClient_GetDefaultSharedKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnSiteLinkConnectionDefaultSharedKeyList.json
+// Generated from example definition: 2026-05-01/VpnSiteLinkConnectionDefaultSharedKeyList.json
 func ExampleVPNLinkConnectionsClient_ListDefaultSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleVPNLinkConnectionsClient_ListDefaultSharedKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnSiteLinkConnectionSharedKeysGet.json
+// Generated from example definition: 2026-05-01/VpnSiteLinkConnectionSharedKeysGet.json
 func ExampleVPNLinkConnectionsClient_NewGetAllSharedKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleVPNLinkConnectionsClient_NewGetAllSharedKeysPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VpnSiteLinkConnectionList.json
+// Generated from example definition: 2026-05-01/VpnSiteLinkConnectionList.json
 func ExampleVPNLinkConnectionsClient_NewListByVPNConnectionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

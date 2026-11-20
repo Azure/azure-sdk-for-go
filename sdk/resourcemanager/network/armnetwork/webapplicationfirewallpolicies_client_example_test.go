@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/WafPolicyDelete.json
+// Generated from example definition: 2026-05-01/WafPolicyDelete.json
 func ExampleWebApplicationFirewallPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleWebApplicationFirewallPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/WafPolicyCreateOrUpdate.json
+// Generated from example definition: 2026-05-01/WafPolicyCreateOrUpdate.json
 func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate_createsOrUpdatesAWafPolicyWithinAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -706,7 +706,7 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate_createsOrUpdates
 	// }
 }
 
-// Generated from example definition: 2026-03-01/WafPolicyCreateOrUpdateBasic.json
+// Generated from example definition: 2026-05-01/WafPolicyCreateOrUpdateBasic.json
 func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate_createsOrUpdatesABasicTierWafPolicyWithinAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1375,7 +1375,7 @@ func ExampleWebApplicationFirewallPoliciesClient_CreateOrUpdate_createsOrUpdates
 	// }
 }
 
-// Generated from example definition: 2026-03-01/WafPolicyGet.json
+// Generated from example definition: 2026-05-01/WafPolicyGet.json
 func ExampleWebApplicationFirewallPoliciesClient_Get_getsAWafPolicyWithinAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1793,7 +1793,7 @@ func ExampleWebApplicationFirewallPoliciesClient_Get_getsAWafPolicyWithinAResour
 	// }
 }
 
-// Generated from example definition: 2026-03-01/WafPolicyGetBasic.json
+// Generated from example definition: 2026-05-01/WafPolicyGetBasic.json
 func ExampleWebApplicationFirewallPoliciesClient_Get_getsABasicTierWafPolicyWithinAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2211,7 +2211,7 @@ func ExampleWebApplicationFirewallPoliciesClient_Get_getsABasicTierWafPolicyWith
 	// }
 }
 
-// Generated from example definition: 2026-03-01/WafListAllPolicies.json
+// Generated from example definition: 2026-05-01/WafListAllPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2455,7 +2455,7 @@ func ExampleWebApplicationFirewallPoliciesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/WafListPolicies.json
+// Generated from example definition: 2026-05-01/WafListPolicies.json
 func ExampleWebApplicationFirewallPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

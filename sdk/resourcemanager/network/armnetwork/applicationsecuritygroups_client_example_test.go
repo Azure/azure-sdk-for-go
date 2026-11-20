@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ApplicationSecurityGroupCreate.json
+// Generated from example definition: 2026-05-01/ApplicationSecurityGroupCreate.json
 func ExampleApplicationSecurityGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleApplicationSecurityGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationSecurityGroupDelete.json
+// Generated from example definition: 2026-05-01/ApplicationSecurityGroupDelete.json
 func ExampleApplicationSecurityGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleApplicationSecurityGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationSecurityGroupGet.json
+// Generated from example definition: 2026-05-01/ApplicationSecurityGroupGet.json
 func ExampleApplicationSecurityGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleApplicationSecurityGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationSecurityGroupListAll.json
+// Generated from example definition: 2026-05-01/ApplicationSecurityGroupListAll.json
 func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleApplicationSecurityGroupsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ApplicationSecurityGroupList.json
+// Generated from example definition: 2026-05-01/ApplicationSecurityGroupList.json
 func ExampleApplicationSecurityGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleApplicationSecurityGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ApplicationSecurityGroupUpdateTags.json
+// Generated from example definition: 2026-05-01/ApplicationSecurityGroupUpdateTags.json
 func ExampleApplicationSecurityGroupsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

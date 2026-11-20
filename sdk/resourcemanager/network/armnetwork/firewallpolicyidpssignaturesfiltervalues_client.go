@@ -19,7 +19,7 @@ import (
 // FirewallPolicyIdpsSignaturesFilterValuesClient contains the methods for the FirewallPolicyIdpsSignaturesFilterValues group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesFilterValuesClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type FirewallPolicyIdpsSignaturesFilterValuesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -88,7 +88,7 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

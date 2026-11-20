@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayCreate.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayCreate.json
 func ExampleExpressRouteGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleExpressRouteGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayDelete.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayDelete.json
 func ExampleExpressRouteGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleExpressRouteGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayGetFailoverAllTestsDetails.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayGetFailoverAllTestsDetails.json
 func ExampleExpressRouteGatewaysClient_BeginGetFailoverAllTestsDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetFailoverAllTestsDetails() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayGetFailoverSingleTestDetails.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayGetFailoverSingleTestDetails.json
 func ExampleExpressRouteGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayGetResiliencyInformation.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayGetResiliencyInformation.json
 func ExampleExpressRouteGatewaysClient_BeginGetResiliencyInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,7 +284,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetResiliencyInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayGetRoutesInformation.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayGetRoutesInformation.json
 func ExampleExpressRouteGatewaysClient_BeginGetRoutesInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetRoutesInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayStartSiteFailoverTest.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayStartSiteFailoverTest.json
 func ExampleExpressRouteGatewaysClient_BeginStartSiteFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +385,7 @@ func ExampleExpressRouteGatewaysClient_BeginStartSiteFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayStopSiteFailoverTest.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayStopSiteFailoverTest.json
 func ExampleExpressRouteGatewaysClient_BeginStopSiteFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,7 +422,7 @@ func ExampleExpressRouteGatewaysClient_BeginStopSiteFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayUpdateTags.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayUpdateTags.json
 func ExampleExpressRouteGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +471,7 @@ func ExampleExpressRouteGatewaysClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayGet.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayGet.json
 func ExampleExpressRouteGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -507,7 +507,7 @@ func ExampleExpressRouteGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayListByResourceGroup.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayListByResourceGroup.json
 func ExampleExpressRouteGatewaysClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -593,7 +593,7 @@ func ExampleExpressRouteGatewaysClient_ListByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteGatewayListBySubscription.json
+// Generated from example definition: 2026-05-01/ExpressRouteGatewayListBySubscription.json
 func ExampleExpressRouteGatewaysClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

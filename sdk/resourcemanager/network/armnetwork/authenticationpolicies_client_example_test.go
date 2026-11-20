@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/AuthenticationPolicyCreateOrUpdate.json
+// Generated from example definition: 2026-05-01/AuthenticationPolicyCreateOrUpdate.json
 func ExampleAuthenticationPoliciesClient_BeginCreateOrUpdate_createsOrUpdatesAUserSignInAuthenticationPolicyWithinAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleAuthenticationPoliciesClient_BeginCreateOrUpdate_createsOrUpdatesAUs
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AuthenticationPolicyCreateOrUpdateJwtValidation.json
+// Generated from example definition: 2026-05-01/AuthenticationPolicyCreateOrUpdateJwtValidation.json
 func ExampleAuthenticationPoliciesClient_BeginCreateOrUpdate_createsOrUpdatesAJwtValidationAuthenticationPolicyWithinAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleAuthenticationPoliciesClient_BeginCreateOrUpdate_createsOrUpdatesAJw
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AuthenticationPolicyDelete.json
+// Generated from example definition: 2026-05-01/AuthenticationPolicyDelete.json
 func ExampleAuthenticationPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleAuthenticationPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AuthenticationPolicyGet.json
+// Generated from example definition: 2026-05-01/AuthenticationPolicyGet.json
 func ExampleAuthenticationPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleAuthenticationPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AuthenticationPolicyListAll.json
+// Generated from example definition: 2026-05-01/AuthenticationPolicyListAll.json
 func ExampleAuthenticationPoliciesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleAuthenticationPoliciesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AuthenticationPolicyList.json
+// Generated from example definition: 2026-05-01/AuthenticationPolicyList.json
 func ExampleAuthenticationPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleAuthenticationPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AuthenticationPolicyUpdate.json
+// Generated from example definition: 2026-05-01/AuthenticationPolicyUpdate.json
 func ExampleAuthenticationPoliciesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/BastionHostDeveloperPut.json
+// Generated from example definition: 2026-05-01/BastionHostDeveloperPut.json
 func ExampleBastionHostsClient_BeginCreateOrUpdate_createDeveloperBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate_createDeveloperBastionHost() 
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostPut.json
+// Generated from example definition: 2026-05-01/BastionHostPut.json
 func ExampleBastionHostsClient_BeginCreateOrUpdate_createBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate_createBastionHost() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostPutWithPrivateOnly.json
+// Generated from example definition: 2026-05-01/BastionHostPutWithPrivateOnly.json
 func ExampleBastionHostsClient_BeginCreateOrUpdate_createBastionHostWithPrivateOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate_createBastionHostWithPrivateO
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostPutWithSystemAssignedIdentityForSRConfig.json
+// Generated from example definition: 2026-05-01/BastionHostPutWithSystemAssignedIdentityForSRConfig.json
 func ExampleBastionHostsClient_BeginCreateOrUpdate_createOrUpdateBastionHostWithSystemAssignedIdentityForSessionRecordingConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,7 +337,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate_createOrUpdateBastionHostWith
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostPutWithUserAssignedIdentityForSRConfig.json
+// Generated from example definition: 2026-05-01/BastionHostPutWithUserAssignedIdentityForSRConfig.json
 func ExampleBastionHostsClient_BeginCreateOrUpdate_createOrUpdateBastionHostWithUserAssignedIdentityForSessionRecordingConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,7 +443,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate_createOrUpdateBastionHostWith
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostPutWithZones.json
+// Generated from example definition: 2026-05-01/BastionHostPutWithZones.json
 func ExampleBastionHostsClient_BeginCreateOrUpdate_createBastionHostWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -525,7 +525,7 @@ func ExampleBastionHostsClient_BeginCreateOrUpdate_createBastionHostWithZones() 
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostDelete.json
+// Generated from example definition: 2026-05-01/BastionHostDelete.json
 func ExampleBastionHostsClient_BeginDelete_deleteBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +551,7 @@ func ExampleBastionHostsClient_BeginDelete_deleteBastionHost() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostDeveloperDelete.json
+// Generated from example definition: 2026-05-01/BastionHostDeveloperDelete.json
 func ExampleBastionHostsClient_BeginDelete_deleteDeveloperBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +577,7 @@ func ExampleBastionHostsClient_BeginDelete_deleteDeveloperBastionHost() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostPatch.json
+// Generated from example definition: 2026-05-01/BastionHostPatch.json
 func ExampleBastionHostsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -666,7 +666,7 @@ func ExampleBastionHostsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostDeveloperGet.json
+// Generated from example definition: 2026-05-01/BastionHostDeveloperGet.json
 func ExampleBastionHostsClient_Get_getDeveloperBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +714,7 @@ func ExampleBastionHostsClient_Get_getDeveloperBastionHost() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostGet.json
+// Generated from example definition: 2026-05-01/BastionHostGet.json
 func ExampleBastionHostsClient_Get_getBastionHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -781,7 +781,7 @@ func ExampleBastionHostsClient_Get_getBastionHost() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostGetWithPrivateOnly.json
+// Generated from example definition: 2026-05-01/BastionHostGetWithPrivateOnly.json
 func ExampleBastionHostsClient_Get_getBastionHostWithPrivateOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -845,7 +845,7 @@ func ExampleBastionHostsClient_Get_getBastionHostWithPrivateOnly() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostGetWithZones.json
+// Generated from example definition: 2026-05-01/BastionHostGetWithZones.json
 func ExampleBastionHostsClient_Get_getBastionHostWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -914,7 +914,7 @@ func ExampleBastionHostsClient_Get_getBastionHostWithZones() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/BastionHostListByResourceGroup.json
+// Generated from example definition: 2026-05-01/BastionHostListByResourceGroup.json
 func ExampleBastionHostsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1068,7 +1068,7 @@ func ExampleBastionHostsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/BastionHostListBySubscription.json
+// Generated from example definition: 2026-05-01/BastionHostListBySubscription.json
 func ExampleBastionHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

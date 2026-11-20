@@ -3999,6 +3999,8 @@ func (a ApplicationGatewayPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backendSettingsCollection", a.BackendSettingsCollection)
 	populate(objectMap, "customErrorConfigurations", a.CustomErrorConfigurations)
 	populate(objectMap, "defaultPredefinedSslPolicy", a.DefaultPredefinedSSLPolicy)
+	populate(objectMap, "deploymentTier", a.DeploymentTier)
+	populate(objectMap, "enableConfidentialCompute", a.EnableConfidentialCompute)
 	populate(objectMap, "enableFips", a.EnableFips)
 	populate(objectMap, "enableHttp2", a.EnableHTTP2)
 	populate(objectMap, "entraJWTValidationConfigs", a.EntraJWTValidationConfigs)
@@ -4068,6 +4070,12 @@ func (a *ApplicationGatewayPropertiesFormat) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "defaultPredefinedSslPolicy":
 			err = unpopulate(val, "DefaultPredefinedSSLPolicy", &a.DefaultPredefinedSSLPolicy)
+			delete(rawMsg, key)
+		case "deploymentTier":
+			err = unpopulate(val, "DeploymentTier", &a.DeploymentTier)
+			delete(rawMsg, key)
+		case "enableConfidentialCompute":
+			err = unpopulate(val, "EnableConfidentialCompute", &a.EnableConfidentialCompute)
 			delete(rawMsg, key)
 		case "enableFips":
 			err = unpopulate(val, "EnableFips", &a.EnableFips)
@@ -7344,6 +7352,7 @@ func (a AzureFirewallPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "networkRuleCollections", a.NetworkRuleCollections)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "tcpIdleTimeoutInMinutes", a.TCPIdleTimeoutInMinutes)
 	populate(objectMap, "threatIntelMode", a.ThreatIntelMode)
 	populate(objectMap, "virtualHub", a.VirtualHub)
 	return json.Marshal(objectMap)
@@ -7399,6 +7408,9 @@ func (a *AzureFirewallPropertiesFormat) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "sku":
 			err = unpopulate(val, "SKU", &a.SKU)
+			delete(rawMsg, key)
+		case "tcpIdleTimeoutInMinutes":
+			err = unpopulate(val, "TCPIdleTimeoutInMinutes", &a.TCPIdleTimeoutInMinutes)
 			delete(rawMsg, key)
 		case "threatIntelMode":
 			err = unpopulate(val, "ThreatIntelMode", &a.ThreatIntelMode)
@@ -22199,6 +22211,7 @@ func (i InboundSecurityRules) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "appliesOn", i.AppliesOn)
 	populate(objectMap, "destinationPortRange", i.DestinationPortRange)
 	populate(objectMap, "destinationPortRanges", i.DestinationPortRanges)
+	populate(objectMap, "loadBalancerConfiguration", i.LoadBalancerConfiguration)
 	populate(objectMap, "name", i.Name)
 	populate(objectMap, "protocol", i.Protocol)
 	populate(objectMap, "sourceAddressPrefix", i.SourceAddressPrefix)
@@ -22222,6 +22235,9 @@ func (i *InboundSecurityRules) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "destinationPortRanges":
 			err = unpopulate(val, "DestinationPortRanges", &i.DestinationPortRanges)
+			delete(rawMsg, key)
+		case "loadBalancerConfiguration":
+			err = unpopulate(val, "LoadBalancerConfiguration", &i.LoadBalancerConfiguration)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &i.Name)
@@ -22907,6 +22923,7 @@ func (i InterfacePropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ipConfigurations", i.IPConfigurations)
 	populate(objectMap, "macAddress", i.MacAddress)
 	populate(objectMap, "migrationPhase", i.MigrationPhase)
+	populate(objectMap, "networkAdapterIndex", i.NetworkAdapterIndex)
 	populate(objectMap, "networkSecurityGroup", i.NetworkSecurityGroup)
 	populate(objectMap, "nicType", i.NicType)
 	populate(objectMap, "primary", i.Primary)
@@ -22965,6 +22982,9 @@ func (i *InterfacePropertiesFormat) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "migrationPhase":
 			err = unpopulate(val, "MigrationPhase", &i.MigrationPhase)
+			delete(rawMsg, key)
+		case "networkAdapterIndex":
+			err = unpopulate(val, "NetworkAdapterIndex", &i.NetworkAdapterIndex)
 			delete(rawMsg, key)
 		case "networkSecurityGroup":
 			err = unpopulate(val, "NetworkSecurityGroup", &i.NetworkSecurityGroup)
@@ -40929,6 +40949,37 @@ func (v *VirtualApplianceListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type VirtualApplianceLoadBalancerConfiguration.
+func (v VirtualApplianceLoadBalancerConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "idleTimeoutInMinutes", v.IdleTimeoutInMinutes)
+	populate(objectMap, "loadDistribution", v.LoadDistribution)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualApplianceLoadBalancerConfiguration.
+func (v *VirtualApplianceLoadBalancerConfiguration) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "idleTimeoutInMinutes":
+			err = unpopulate(val, "IdleTimeoutInMinutes", &v.IdleTimeoutInMinutes)
+			delete(rawMsg, key)
+		case "loadDistribution":
+			err = unpopulate(val, "LoadDistribution", &v.LoadDistribution)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type VirtualApplianceMigrationStatus.
 func (v VirtualApplianceMigrationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -41145,6 +41196,7 @@ func (v VirtualAppliancePropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "deploymentType", v.DeploymentType)
 	populate(objectMap, "inboundSecurityRules", v.InboundSecurityRules)
 	populate(objectMap, "internetIngressPublicIps", v.InternetIngressPublicIPs)
+	populate(objectMap, "loadBalancerConfiguration", v.LoadBalancerConfiguration)
 	populate(objectMap, "migrationStatus", v.MigrationStatus)
 	populate(objectMap, "networkProfile", v.NetworkProfile)
 	populate(objectMap, "nvaInterfaceConfigurations", v.NvaInterfaceConfigurations)
@@ -41203,6 +41255,9 @@ func (v *VirtualAppliancePropertiesFormat) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "internetIngressPublicIps":
 			err = unpopulate(val, "InternetIngressPublicIPs", &v.InternetIngressPublicIPs)
+			delete(rawMsg, key)
+		case "loadBalancerConfiguration":
+			err = unpopulate(val, "LoadBalancerConfiguration", &v.LoadBalancerConfiguration)
 			delete(rawMsg, key)
 		case "migrationStatus":
 			err = unpopulate(val, "MigrationStatus", &v.MigrationStatus)

@@ -11,7 +11,6 @@ func buildImplementations() []Implementation {
 	const (
 		noManagementCapabilitiesEndpoint = "the pinned hosted emulator now exposes a versioned GET /capabilities document, but Go has not yet ported the scenario's capability-document assertions; this remains a scenario-implementation gap, not a missing emulator endpoint."
 		noChangeFeedAPI                  = "change feed is not yet implemented in azcosmos/v2; tracked by #27690."
-		noBatchAPI                       = "transactional batch is not yet implemented in azcosmos/v2; tracked by #27690."
 		noFaultInjection                 = "requires deterministic hosted-emulator fault-injection controls; the pinned emulator exposes topology management actions but no fault-injection capability or endpoint."
 		noTopologyControl                = "the pinned emulator exposes region/partition topology controls, but Go has no topology-control client and this implementation pass does not port topology scenarios."
 		deferredScope                    = "in scope for this scenario catalog but deferred past this implementation pass for time; no missing Go capability is known."
@@ -31,6 +30,10 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "item.not-found-wrong-partition-key", Status: StatusActive, Test: "TestItemNotFoundDoesNotCrossPartitionKeys"},
 		{ScenarioID: "item.optimistic-concurrency", Status: StatusActive, Test: "TestItemOptimisticConcurrencyStaleETag"},
 		{ScenarioID: "item.hierarchical-partition-key", Status: StatusActive, Test: "TestItemHierarchicalPartitionKeyPointAndPrefix"},
+		{ScenarioID: "batch.atomicity", Status: StatusActive, Test: "TestBatchAtomicity"},
+		{ScenarioID: "item.patch-state", Status: StatusActive, Test: "TestItemPatchState"},
+		{ScenarioID: "item.validation-contracts", Status: StatusActive, Test: "TestItemValidationContracts"},
+		{ScenarioID: "item.numeric-unique-key-equivalence", Status: StatusActive, Test: "TestItemNumericUniqueKeyEquivalence"},
 		{ScenarioID: "query.parameterized-filter", Status: StatusActive, Test: "TestQueryParameterizedFilterAndOrder"},
 		{ScenarioID: "query.invalid-syntax", Status: StatusActive, Test: "TestQueryInvalidSyntaxIsNotAnEmptyFeed"},
 		{ScenarioID: "query.pagination-resume", Status: StatusActive, Test: "TestQueryPaginationResumesWithoutLossOrDuplication"},
@@ -48,7 +51,6 @@ func buildImplementations() []Implementation {
 		// registered as certification evidence for this scenario.
 		{ScenarioID: "management.resource-lifecycle", Status: StatusBlocked, Reason: "azcosmos/v2 (as of #27700) has Create/Read/Delete for databases and containers, but no Replace or List/Query API for either; the catalog requires create, read, query, replace, and delete, so the full contract is not yet certifiable through the public API."},
 		{ScenarioID: "bootstrap.backup-fallback", Status: StatusBlocked, Reason: "NewClient/NewClientWithKey accept a single endpoint; azcosmos/v2 has no multi-endpoint/backup-bootstrap API yet."},
-		{ScenarioID: "batch.atomicity", Status: StatusBlocked, Reason: noBatchAPI},
 		{ScenarioID: "changefeed.pagination-resume", Status: StatusBlocked, Reason: noChangeFeedAPI},
 		{ScenarioID: "changefeed.all-versions-start-validation", Status: StatusBlocked, Reason: noChangeFeedAPI},
 		{ScenarioID: "diagnostics.handlers-telemetry", Status: StatusBlocked, Reason: "requires confirming azcosmos/v2 exposes diagnostics-handler/OpenTelemetry hooks equivalent to Rust's; not yet verified to exist for v2's native-driver diagnostics surface."},
@@ -73,12 +75,6 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "topology.write-failover", Status: StatusBlocked, Reason: noTopologyControl},
 
 		// --- Blocked: in scope, deferred this pass (no missing capability, just not yet ported) ---
-		{ScenarioID: "item.patch-state", Status: StatusBlocked, Reason: "PatchItem exists publicly, but the shared scenario's exact post-image/patch-strategy assertions have not yet been verified against Go's patch semantics; " + deferredScope},
-		{ScenarioID: "item.validation-contracts", Status: StatusBlocked, Reason: "requires auditing every shared validation-contract case against Go's argument-validation error codes one by one; " + deferredScope},
-		// #27700 added CreateContainer with UniqueKeyPolicy, so an isolated container with a
-		// unique-key policy is now constructible through the public API; this is no longer
-		// missing a Go capability, just not yet ported.
-		{ScenarioID: "item.numeric-unique-key-equivalence", Status: StatusBlocked, Reason: "requires a container with a unique-key policy; azcosmos/v2's management API (#27700) can now provision one, so " + deferredScope},
 		{ScenarioID: "item.quoted-partition-key-paths", Status: StatusBlocked, Reason: "requires a container whose partition-key path itself contains characters needing quoting; not yet provisioned in the emulator fixture; " + deferredScope},
 		{ScenarioID: "configuration.binary-routing", Status: StatusBlocked, Reason: "requires verifying azcosmos/v2's binary-encoding override surface against the shared scenario's exact combinations; " + deferredScope},
 		{ScenarioID: "consistency.feed-read-strategies", Status: StatusBlocked, Reason: "requires the lifecycleConsistencyMatrix account set across all five consistency levels; " + deferredScope},

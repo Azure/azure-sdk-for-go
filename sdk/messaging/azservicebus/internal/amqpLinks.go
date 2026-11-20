@@ -317,7 +317,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	defer l.mu.Unlock()
 
 	if err := l.initWithoutLocking(ctx); err != nil {
-		return nil, err
+		return &LinksWithID{ID: l.id}, err
 	}
 
 	return &LinksWithID{
@@ -339,16 +339,21 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName azlog.Event, op
 
 	return utils.Retry(ctx, eventName, links.Prefix()+"("+operation+")", func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := links.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
+			// Recovery can advance the connection revision before link creation fails.
+			links.mu.RLock()
+			lastID = links.id
+			links.mu.RUnlock()
 			return err
 		}
 
 		linksWithVersion, err := links.Get(ctx)
+		if linksWithVersion != nil {
+			lastID = linksWithVersion.ID
+		}
 
 		if err != nil {
 			return err
 		}
-
-		lastID = linksWithVersion.ID
 
 		if err := fn(ctx, linksWithVersion, args); err != nil {
 			if args.I == 0 && !didQuickRetry && IsLinkError(err) {
@@ -468,6 +473,7 @@ func (links *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	links.cancelAuthRefreshMgmtLink = tmpCancelAuthRefreshMgmtLink
 
 	tmpSession, cr, err := links.ns.NewAMQPSession(ctx)
+	links.id.Conn = cr
 
 	if err != nil {
 		if err := links.closeWithoutLocking(ctx, false); err != nil {
@@ -477,7 +483,6 @@ func (links *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	}
 
 	links.session = tmpSession
-	links.id.Conn = cr
 
 	tmpSender, tmpReceiver, err := links.createLink(ctx, links.session)
 

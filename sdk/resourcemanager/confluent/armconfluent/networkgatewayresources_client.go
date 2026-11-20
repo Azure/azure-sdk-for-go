@@ -19,7 +19,7 @@ import (
 // NetworkGatewayResourcesClient contains the methods for the NetworkGatewayResources group.
 // Don't use this type directly, use NewNetworkGatewayResourcesClient() instead.
 //
-// Generated from API version 2026-06-02-preview
+// Generated from API version 2026-10-21-preview
 type NetworkGatewayResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -121,7 +121,7 @@ func (client *NetworkGatewayResourcesClient) createOrReplaceCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -207,7 +207,7 @@ func (client *NetworkGatewayResourcesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -266,7 +266,7 @@ func (client *NetworkGatewayResourcesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,7 +347,7 @@ func (client *NetworkGatewayResourcesClient) listCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20261021Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

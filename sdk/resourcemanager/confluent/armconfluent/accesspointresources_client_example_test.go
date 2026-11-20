@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/AccessPointResources_CreateOrReplace_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/AccessPointResources_CreateOrReplace_MaximumSet_Gen.json
 func ExampleAccessPointResourcesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleAccessPointResourcesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/AccessPointResources_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/AccessPointResources_Delete_MaximumSet_Gen.json
 func ExampleAccessPointResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleAccessPointResourcesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/AccessPointResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/AccessPointResources_Get_MaximumSet_Gen.json
 func ExampleAccessPointResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleAccessPointResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/AccessPointResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/AccessPointResources_List_MaximumSet_Gen.json
 func ExampleAccessPointResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleAccessPointResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/DC34558A-05D3-4370-AED8-75E60B381F94/resourceGroups/rgconfluent/providers/Microsoft.Confluent/organizations/myOrganization/environments/env-abc123/networkGateways/gw-def456/accessPoints?api-version=2026-06-02-preview&$skipToken=token123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/DC34558A-05D3-4370-AED8-75E60B381F94/resourceGroups/rgconfluent/providers/Microsoft.Confluent/organizations/myOrganization/environments/env-abc123/networkGateways/gw-def456/accessPoints?api-version=2026-10-21-preview&$skipToken=token123"),
 		// 	},
 		// }
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/Organization_ActivateResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ActivateResource_MaximumSet_Gen.json
 func ExampleOrganizationClient_BeginActivateResource_organizationActivateResourceMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleOrganizationClient_BeginActivateResource_organizationActivateResourc
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ActivateResource_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ActivateResource_MinimumSet_Gen.json
 func ExampleOrganizationClient_BeginActivateResource_organizationActivateResourceMinimumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleOrganizationClient_BeginActivateResource_organizationActivateResourc
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_Create_MaximumSet_Gen.json
 func ExampleOrganizationClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleOrganizationClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_Delete_MaximumSet_Gen.json
 func ExampleOrganizationClient_BeginDelete_organizationDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleOrganizationClient_BeginDelete_organizationDeleteMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_Delete_MinimumSet_Gen.json
 func ExampleOrganizationClient_BeginDelete_organizationDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleOrganizationClient_BeginDelete_organizationDeleteMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_LinkSaaS_MaximumSet_Gen.json
 func ExampleOrganizationClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,7 +303,7 @@ func ExampleOrganizationClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_CreateAPIKey_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_CreateAPIKey_MaximumSet_Gen.json
 func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMaximumSet()
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_CreateAPIKey_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_CreateAPIKey_MinimumSet_Gen.json
 func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +382,7 @@ func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMinimumSet()
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_DeleteClusterAPIKey_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_DeleteClusterAPIKey_MaximumSet_Gen.json
 func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiKeyMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,7 +404,7 @@ func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiK
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_DeleteClusterAPIKey_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_DeleteClusterAPIKey_MinimumSet_Gen.json
 func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiKeyMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,7 +426,7 @@ func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiK
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_Get_MaximumSet_Gen.json
 func ExampleOrganizationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,7 +493,7 @@ func ExampleOrganizationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -545,7 +545,7 @@ func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMaxi
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
 func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -569,7 +569,7 @@ func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMini
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_GetClusterById_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_GetClusterById_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetClusterByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -649,7 +649,7 @@ func ExampleOrganizationClient_GetClusterByID() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_GetEnvironmentById_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_GetEnvironmentById_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetEnvironmentByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -697,7 +697,7 @@ func ExampleOrganizationClient_GetEnvironmentByID() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_GetSchemaRegistryClusterById_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_GetSchemaRegistryClusterById_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchemaRegistryClusterByIdMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -751,7 +751,7 @@ func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchem
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_GetSchemaRegistryClusterById_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_GetSchemaRegistryClusterById_MinimumSet_Gen.json
 func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchemaRegistryClusterByIdMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -775,7 +775,7 @@ func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchem
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_LatestLinkedSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_LatestLinkedSaaS_MaximumSet_Gen.json
 func ExampleOrganizationClient_LatestLinkedSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -801,7 +801,7 @@ func ExampleOrganizationClient_LatestLinkedSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListRegions_MaximumSet_Gen.json
 func ExampleOrganizationClient_ListRegions_organizationListRegionsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -852,7 +852,7 @@ func ExampleOrganizationClient_ListRegions_organizationListRegionsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListRegions_MinimumSet_Gen.json
 func ExampleOrganizationClient_ListRegions_organizationListRegionsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +876,7 @@ func ExampleOrganizationClient_ListRegions_organizationListRegionsMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -953,7 +953,7 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListBySubscription_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1030,7 +1030,7 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListClusters_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListClusters_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1122,7 +1122,7 @@ func ExampleOrganizationClient_NewListClustersPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListEnvironments_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListEnvironments_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListEnvironmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1182,7 +1182,7 @@ func ExampleOrganizationClient_NewListEnvironmentsPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListSchemaRegistryClusters_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListSchemaRegistryClusters_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationListSchemaRegistryClustersMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1248,7 +1248,7 @@ func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationLi
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_ListSchemaRegistryClusters_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_ListSchemaRegistryClusters_MinimumSet_Gen.json
 func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationListSchemaRegistryClustersMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1281,7 +1281,7 @@ func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationLi
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Organization_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Organization_Update_MaximumSet_Gen.json
 func ExampleOrganizationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

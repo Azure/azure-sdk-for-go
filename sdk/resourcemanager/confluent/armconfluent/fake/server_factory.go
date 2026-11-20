@@ -33,6 +33,12 @@ type ServerFactory struct {
 	// MarketplaceAgreementsServer contains the fakes for client MarketplaceAgreementsClient
 	MarketplaceAgreementsServer MarketplaceAgreementsServer
 
+	// MonitorResourcesServer contains the fakes for client MonitorResourcesClient
+	MonitorResourcesServer MonitorResourcesServer
+
+	// MonitorTagRulesServer contains the fakes for client MonitorTagRulesClient
+	MonitorTagRulesServer MonitorTagRulesServer
+
 	// NetworkGatewayResourcesServer contains the fakes for client NetworkGatewayResourcesClient
 	NetworkGatewayResourcesServer NetworkGatewayResourcesServer
 
@@ -69,6 +75,8 @@ type ServerFactoryTransport struct {
 	trConnectorServer               *ConnectorServerTransport
 	trEnvironmentServer             *EnvironmentServerTransport
 	trMarketplaceAgreementsServer   *MarketplaceAgreementsServerTransport
+	trMonitorResourcesServer        *MonitorResourcesServerTransport
+	trMonitorTagRulesServer         *MonitorTagRulesServerTransport
 	trNetworkGatewayResourcesServer *NetworkGatewayResourcesServerTransport
 	trOrganizationServer            *OrganizationServerTransport
 	trOrganizationOperationsServer  *OrganizationOperationsServerTransport
@@ -111,6 +119,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMarketplaceAgreementsServerTransport(&s.srv.MarketplaceAgreementsServer)
 		})
 		resp, err = s.trMarketplaceAgreementsServer.Do(req)
+	case "MonitorResourcesClient":
+		initServer(&s.trMu, &s.trMonitorResourcesServer, func() *MonitorResourcesServerTransport {
+			return NewMonitorResourcesServerTransport(&s.srv.MonitorResourcesServer)
+		})
+		resp, err = s.trMonitorResourcesServer.Do(req)
+	case "MonitorTagRulesClient":
+		initServer(&s.trMu, &s.trMonitorTagRulesServer, func() *MonitorTagRulesServerTransport {
+			return NewMonitorTagRulesServerTransport(&s.srv.MonitorTagRulesServer)
+		})
+		resp, err = s.trMonitorTagRulesServer.Do(req)
 	case "NetworkGatewayResourcesClient":
 		initServer(&s.trMu, &s.trNetworkGatewayResourcesServer, func() *NetworkGatewayResourcesServerTransport {
 			return NewNetworkGatewayResourcesServerTransport(&s.srv.NetworkGatewayResourcesServer)

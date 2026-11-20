@@ -20,7 +20,7 @@ import (
 // OrganizationClient contains the methods for the Organization group.
 // Don't use this type directly, use NewOrganizationClient() instead.
 //
-// Generated from API version 2026-06-02-preview
+// Generated from API version 2026-10-21-preview
 type OrganizationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -102,7 +102,7 @@ func (client *OrganizationClient) activateResourceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -179,7 +179,7 @@ func (client *OrganizationClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -255,7 +255,7 @@ func (client *OrganizationClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -332,7 +332,7 @@ func (client *OrganizationClient) linkSaaSCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -397,7 +397,7 @@ func (client *OrganizationClient) createAPIKeyCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -471,7 +471,7 @@ func (client *OrganizationClient) deleteClusterAPIKeyCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -519,7 +519,7 @@ func (client *OrganizationClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -586,7 +586,7 @@ func (client *OrganizationClient) getClusterAPIKeyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -658,7 +658,7 @@ func (client *OrganizationClient) getClusterByIDCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -725,7 +725,7 @@ func (client *OrganizationClient) getEnvironmentByIDCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -797,7 +797,7 @@ func (client *OrganizationClient) getSchemaRegistryClusterByIDCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -859,7 +859,7 @@ func (client *OrganizationClient) latestLinkedSaaSCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -922,7 +922,7 @@ func (client *OrganizationClient) listRegionsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -997,7 +997,7 @@ func (client *OrganizationClient) listByResourceGroupCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20261021Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1064,7 +1064,7 @@ func (client *OrganizationClient) listBySubscriptionCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20261021Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1146,7 +1146,7 @@ func (client *OrganizationClient) listClustersCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20261021Preview)
 		if options != nil && options.PageSize != nil {
 			reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
 		}
@@ -1229,7 +1229,7 @@ func (client *OrganizationClient) listEnvironmentsCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20261021Preview)
 		if options != nil && options.PageSize != nil {
 			reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
 		}
@@ -1317,7 +1317,7 @@ func (client *OrganizationClient) listSchemaRegistryClustersCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260602Preview)
+		reqQP.Set("api-version", version20261021Preview)
 		if options != nil && options.PageSize != nil {
 			reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
 		}
@@ -1386,7 +1386,7 @@ func (client *OrganizationClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261021Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

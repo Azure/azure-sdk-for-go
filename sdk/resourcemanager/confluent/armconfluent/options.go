@@ -138,6 +138,58 @@ type MarketplaceAgreementsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MonitorResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the MonitorResourcesClient.BeginCreateOrUpdate
+// method.
+type MonitorResourcesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitorResourcesClientBeginDeleteOptions contains the optional parameters for the MonitorResourcesClient.BeginDelete method.
+type MonitorResourcesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitorResourcesClientBeginUpdateOptions contains the optional parameters for the MonitorResourcesClient.BeginUpdate method.
+type MonitorResourcesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitorResourcesClientGetOptions contains the optional parameters for the MonitorResourcesClient.Get method.
+type MonitorResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorResourcesClientListByOrganizationOptions contains the optional parameters for the MonitorResourcesClient.NewListByOrganizationPager
+// method.
+type MonitorResourcesClientListByOrganizationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorTagRulesClientCreateOrUpdateOptions contains the optional parameters for the MonitorTagRulesClient.CreateOrUpdate
+// method.
+type MonitorTagRulesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorTagRulesClientDeleteOptions contains the optional parameters for the MonitorTagRulesClient.Delete method.
+type MonitorTagRulesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorTagRulesClientGetOptions contains the optional parameters for the MonitorTagRulesClient.Get method.
+type MonitorTagRulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitorTagRulesClientListByMonitorOptions contains the optional parameters for the MonitorTagRulesClient.NewListByMonitorPager
+// method.
+type MonitorTagRulesClientListByMonitorOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NetworkGatewayResourcesClientBeginCreateOrReplaceOptions contains the optional parameters for the NetworkGatewayResourcesClient.BeginCreateOrReplace
 // method.
 type NetworkGatewayResourcesClientBeginCreateOrReplaceOptions struct {

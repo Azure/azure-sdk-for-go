@@ -80,6 +80,22 @@ func (c *ClientFactory) NewMarketplaceAgreementsClient() *MarketplaceAgreementsC
 	}
 }
 
+// NewMonitorResourcesClient creates a new instance of MonitorResourcesClient.
+func (c *ClientFactory) NewMonitorResourcesClient() *MonitorResourcesClient {
+	return &MonitorResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMonitorTagRulesClient creates a new instance of MonitorTagRulesClient.
+func (c *ClientFactory) NewMonitorTagRulesClient() *MonitorTagRulesClient {
+	return &MonitorTagRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewNetworkGatewayResourcesClient creates a new instance of NetworkGatewayResourcesClient.
 func (c *ClientFactory) NewNetworkGatewayResourcesClient() *NetworkGatewayResourcesClient {
 	return &NetworkGatewayResourcesClient{

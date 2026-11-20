@@ -1,5 +1,34 @@
 # Release History
 
+## 2.0.0-beta.3 (2026-11-19)
+### Features Added
+
+- New enum type `MonitoringStatus` with values `MonitoringStatusDisabled`, `MonitoringStatusEnabled`
+- New enum type `TagAction` with values `TagActionExclude`, `TagActionInclude`
+- New function `*ClientFactory.NewMonitorResourcesClient() *MonitorResourcesClient`
+- New function `*ClientFactory.NewMonitorTagRulesClient() *MonitorTagRulesClient`
+- New function `NewMonitorResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorResourcesClient, error)`
+- New function `*MonitorResourcesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, organizationName string, monitorName string, resource MonitorResource, options *MonitorResourcesClientBeginCreateOrUpdateOptions) (*runtime.Poller[MonitorResourcesClientCreateOrUpdateResponse], error)`
+- New function `*MonitorResourcesClient.BeginDelete(ctx context.Context, resourceGroupName string, organizationName string, monitorName string, options *MonitorResourcesClientBeginDeleteOptions) (*runtime.Poller[MonitorResourcesClientDeleteResponse], error)`
+- New function `*MonitorResourcesClient.Get(ctx context.Context, resourceGroupName string, organizationName string, monitorName string, options *MonitorResourcesClientGetOptions) (MonitorResourcesClientGetResponse, error)`
+- New function `*MonitorResourcesClient.NewListByOrganizationPager(resourceGroupName string, organizationName string, options *MonitorResourcesClientListByOrganizationOptions) *runtime.Pager[MonitorResourcesClientListByOrganizationResponse]`
+- New function `*MonitorResourcesClient.BeginUpdate(ctx context.Context, resourceGroupName string, organizationName string, monitorName string, properties MonitorResourceUpdateParameters, options *MonitorResourcesClientBeginUpdateOptions) (*runtime.Poller[MonitorResourcesClientUpdateResponse], error)`
+- New function `NewMonitorTagRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorTagRulesClient, error)`
+- New function `*MonitorTagRulesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, organizationName string, monitorName string, ruleSetName string, resource MonitorTagRule, options *MonitorTagRulesClientCreateOrUpdateOptions) (MonitorTagRulesClientCreateOrUpdateResponse, error)`
+- New function `*MonitorTagRulesClient.Delete(ctx context.Context, resourceGroupName string, organizationName string, monitorName string, ruleSetName string, options *MonitorTagRulesClientDeleteOptions) (MonitorTagRulesClientDeleteResponse, error)`
+- New function `*MonitorTagRulesClient.Get(ctx context.Context, resourceGroupName string, organizationName string, monitorName string, ruleSetName string, options *MonitorTagRulesClientGetOptions) (MonitorTagRulesClientGetResponse, error)`
+- New function `*MonitorTagRulesClient.NewListByMonitorPager(resourceGroupName string, organizationName string, monitorName string, options *MonitorTagRulesClientListByMonitorOptions) *runtime.Pager[MonitorTagRulesClientListByMonitorResponse]`
+- New struct `FilteringTag`
+- New struct `LogRules`
+- New struct `MonitorProperties`
+- New struct `MonitorResource`
+- New struct `MonitorResourceListResult`
+- New struct `MonitorResourceUpdateParameters`
+- New struct `MonitorTagRule`
+- New struct `MonitorTagRuleListResult`
+- New struct `MonitorTagRuleProperties`
+
+
 ## 2.0.0-beta.2 (2026-07-16)
 ### Features Added
 

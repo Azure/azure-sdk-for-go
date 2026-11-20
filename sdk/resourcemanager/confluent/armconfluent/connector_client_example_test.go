@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/Connector_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Connector_Delete_MaximumSet_Gen.json
 func ExampleConnectorClient_BeginDelete_connectorDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleConnectorClient_BeginDelete_connectorDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Connector_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Connector_Delete_MinimumSet_Gen.json
 func ExampleConnectorClient_BeginDelete_connectorDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleConnectorClient_BeginDelete_connectorDeleteMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleConnectorClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleConnectorClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Connector_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Connector_Get_MaximumSet_Gen.json
 func ExampleConnectorClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleConnectorClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Connector_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Connector_List_MaximumSet_Gen.json
 func ExampleConnectorClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

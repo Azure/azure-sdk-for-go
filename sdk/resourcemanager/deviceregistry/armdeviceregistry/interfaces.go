@@ -4,6 +4,24 @@
 
 package armdeviceregistry
 
+// CertificateAuthorityIssuerClassification provides polymorphic access to related types.
+// Call the interface's GetCertificateAuthorityIssuer() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CertificateAuthorityIssuer, *ExternalCertificateAuthorityIssuer, *MicrosoftCertificateAuthorityIssuer
+type CertificateAuthorityIssuerClassification interface {
+	// GetCertificateAuthorityIssuer returns the CertificateAuthorityIssuer content of the underlying type.
+	GetCertificateAuthorityIssuer() *CertificateAuthorityIssuer
+}
+
+// CertificateAuthorityPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetCertificateAuthorityProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CertificateAuthorityProperties, *IntermediateCertificateAuthorityProperties, *RootCertificateAuthorityProperties
+type CertificateAuthorityPropertiesClassification interface {
+	// GetCertificateAuthorityProperties returns the CertificateAuthorityProperties content of the underlying type.
+	GetCertificateAuthorityProperties() *CertificateAuthorityProperties
+}
+
 // DatasetDestinationClassification provides polymorphic access to related types.
 // Call the interface's GetDatasetDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

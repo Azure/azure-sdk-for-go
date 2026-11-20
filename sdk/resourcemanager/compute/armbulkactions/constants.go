@@ -5,7 +5,7 @@
 package armbulkactions
 
 const (
-	version20261006Preview string = "2026-10-06-preview"
+	version20261016 string = "2026-10-16"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -367,21 +367,6 @@ func PossibleIPVersionsValues() []IPVersions {
 	}
 }
 
-// Language - The language used for recurring bulk action notifications.
-type Language string
-
-const (
-	// LanguageEnUs - English (United States).
-	LanguageEnUs Language = "en-us"
-)
-
-// PossibleLanguageValues returns the possible values for the Language const type.
-func PossibleLanguageValues() []Language {
-	return []Language{
-		LanguageEnUs,
-	}
-}
-
 // LinuxPatchAssessmentMode - Specifies the mode of VM Guest Patch Assessment for the IaaS virtual machine.<br /><br /> Possible
 // values are:<br /><br /> **ImageDefault** - You control the timing of patch assessments on a virtual machine. <br /><br
 // /> **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property provisionVMAgent must be
@@ -516,57 +501,6 @@ func PossibleModesValues() []Modes {
 	}
 }
 
-// Month - A month in which the recurring bulk action can run.
-type Month string
-
-const (
-	// MonthAll - Every month.
-	MonthAll Month = "All"
-	// MonthApril - The recurring bulk action can run in April.
-	MonthApril Month = "April"
-	// MonthAugust - The recurring bulk action can run in August.
-	MonthAugust Month = "August"
-	// MonthDecember - The recurring bulk action can run in December.
-	MonthDecember Month = "December"
-	// MonthFebruary - The recurring bulk action can run in February.
-	MonthFebruary Month = "February"
-	// MonthJanuary - The recurring bulk action can run in January.
-	MonthJanuary Month = "January"
-	// MonthJuly - The recurring bulk action can run in July.
-	MonthJuly Month = "July"
-	// MonthJune - The recurring bulk action can run in June.
-	MonthJune Month = "June"
-	// MonthMarch - The recurring bulk action can run in March.
-	MonthMarch Month = "March"
-	// MonthMay - The recurring bulk action can run in May.
-	MonthMay Month = "May"
-	// MonthNovember - The recurring bulk action can run in November.
-	MonthNovember Month = "November"
-	// MonthOctober - The recurring bulk action can run in October.
-	MonthOctober Month = "October"
-	// MonthSeptember - The recurring bulk action can run in September.
-	MonthSeptember Month = "September"
-)
-
-// PossibleMonthValues returns the possible values for the Month const type.
-func PossibleMonthValues() []Month {
-	return []Month{
-		MonthAll,
-		MonthApril,
-		MonthAugust,
-		MonthDecember,
-		MonthFebruary,
-		MonthJanuary,
-		MonthJuly,
-		MonthJune,
-		MonthMarch,
-		MonthMay,
-		MonthNovember,
-		MonthOctober,
-		MonthSeptember,
-	}
-}
-
 // NetworkAPIVersion - Specifies the Microsoft.Network API version used when creating networking resources in the Network
 // Interface Configurations
 type NetworkAPIVersion string
@@ -631,90 +565,6 @@ func PossibleNetworkInterfaceAuxiliarySKUValues() []NetworkInterfaceAuxiliarySKU
 		NetworkInterfaceAuxiliarySKUA4,
 		NetworkInterfaceAuxiliarySKUA8,
 		NetworkInterfaceAuxiliarySKUNone,
-	}
-}
-
-// NotificationType - The delivery method for recurring bulk action notifications.
-type NotificationType string
-
-const (
-	// NotificationTypeEmail - Sends notifications by email.
-	NotificationTypeEmail NotificationType = "Email"
-)
-
-// PossibleNotificationTypeValues returns the possible values for the NotificationType const type.
-func PossibleNotificationTypeValues() []NotificationType {
-	return []NotificationType{
-		NotificationTypeEmail,
-	}
-}
-
-// OccurrenceResourceProvisioningState - The provisioning state of a recurring bulk action resource within an occurrence.
-type OccurrenceResourceProvisioningState string
-
-const (
-	// OccurrenceResourceProvisioningStateCanceled - Resource creation was canceled.
-	OccurrenceResourceProvisioningStateCanceled OccurrenceResourceProvisioningState = "Canceled"
-	// OccurrenceResourceProvisioningStateCancelling - The resource is going through cancellation
-	OccurrenceResourceProvisioningStateCancelling OccurrenceResourceProvisioningState = "Cancelling"
-	// OccurrenceResourceProvisioningStateCreated - The resource has been created
-	OccurrenceResourceProvisioningStateCreated OccurrenceResourceProvisioningState = "Created"
-	// OccurrenceResourceProvisioningStateFailed - Resource creation failed.
-	OccurrenceResourceProvisioningStateFailed OccurrenceResourceProvisioningState = "Failed"
-	// OccurrenceResourceProvisioningStateInvalidState - The resource is in an invalid state
-	OccurrenceResourceProvisioningStateInvalidState OccurrenceResourceProvisioningState = "InvalidState"
-	// OccurrenceResourceProvisioningStateRescheduling - The resource is being rescheduled
-	OccurrenceResourceProvisioningStateRescheduling OccurrenceResourceProvisioningState = "Rescheduling"
-	// OccurrenceResourceProvisioningStateScheduled - The resource has been scheduled
-	OccurrenceResourceProvisioningStateScheduled OccurrenceResourceProvisioningState = "Scheduled"
-	// OccurrenceResourceProvisioningStateSucceeded - Resource has been created.
-	OccurrenceResourceProvisioningStateSucceeded OccurrenceResourceProvisioningState = "Succeeded"
-)
-
-// PossibleOccurrenceResourceProvisioningStateValues returns the possible values for the OccurrenceResourceProvisioningState const type.
-func PossibleOccurrenceResourceProvisioningStateValues() []OccurrenceResourceProvisioningState {
-	return []OccurrenceResourceProvisioningState{
-		OccurrenceResourceProvisioningStateCanceled,
-		OccurrenceResourceProvisioningStateCancelling,
-		OccurrenceResourceProvisioningStateCreated,
-		OccurrenceResourceProvisioningStateFailed,
-		OccurrenceResourceProvisioningStateInvalidState,
-		OccurrenceResourceProvisioningStateRescheduling,
-		OccurrenceResourceProvisioningStateScheduled,
-		OccurrenceResourceProvisioningStateSucceeded,
-	}
-}
-
-// OccurrenceState - The current state of a recurring bulk action occurrence.
-type OccurrenceState string
-
-const (
-	// OccurrenceStateCanceled - The occurrence was canceled.
-	OccurrenceStateCanceled OccurrenceState = "Canceled"
-	// OccurrenceStateCancelling - Cancellation of the occurrence is in progress.
-	OccurrenceStateCancelling OccurrenceState = "Cancelling"
-	// OccurrenceStateCreated - The occurrence has been created.
-	OccurrenceStateCreated OccurrenceState = "Created"
-	// OccurrenceStateFailed - One or more of the occurrence operations failed.
-	OccurrenceStateFailed OccurrenceState = "Failed"
-	// OccurrenceStateRescheduling - The scheduled time for the occurrence is being updated.
-	OccurrenceStateRescheduling OccurrenceState = "Rescheduling"
-	// OccurrenceStateScheduled - The occurrence has been scheduled.
-	OccurrenceStateScheduled OccurrenceState = "Scheduled"
-	// OccurrenceStateSucceeded - The occurrence operations completed successfully.
-	OccurrenceStateSucceeded OccurrenceState = "Succeeded"
-)
-
-// PossibleOccurrenceStateValues returns the possible values for the OccurrenceState const type.
-func PossibleOccurrenceStateValues() []OccurrenceState {
-	return []OccurrenceState{
-		OccurrenceStateCanceled,
-		OccurrenceStateCancelling,
-		OccurrenceStateCreated,
-		OccurrenceStateFailed,
-		OccurrenceStateRescheduling,
-		OccurrenceStateScheduled,
-		OccurrenceStateSucceeded,
 	}
 }
 
@@ -928,24 +778,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ResourceOperationStatus - Current status of an operation for the specific occurrence and resource
-type ResourceOperationStatus string
-
-const (
-	// ResourceOperationStatusFailed - The operation failed for the resource.
-	ResourceOperationStatusFailed ResourceOperationStatus = "Failed"
-	// ResourceOperationStatusSucceeded - The operation completed successfully for the resource.
-	ResourceOperationStatusSucceeded ResourceOperationStatus = "Succeeded"
-)
-
-// PossibleResourceOperationStatusValues returns the possible values for the ResourceOperationStatus const type.
-func PossibleResourceOperationStatusValues() []ResourceOperationStatus {
-	return []ResourceOperationStatus{
-		ResourceOperationStatusFailed,
-		ResourceOperationStatusSucceeded,
-	}
-}
-
 // ResourceOperationType - The type of operation performed by Bulk Actions.
 type ResourceOperationType string
 
@@ -970,117 +802,6 @@ func PossibleResourceOperationTypeValues() []ResourceOperationType {
 		ResourceOperationTypeDelete,
 		ResourceOperationTypeHibernate,
 		ResourceOperationTypeStart,
-	}
-}
-
-// ResourceType - The type of compute resource targeted by the recurring bulk action.
-type ResourceType string
-
-const (
-	// ResourceTypeVirtualMachine - Azure virtual machines.
-	ResourceTypeVirtualMachine ResourceType = "VirtualMachine"
-	// ResourceTypeVirtualMachineScaleSet - Azure Virtual Machine Scale Sets.
-	ResourceTypeVirtualMachineScaleSet ResourceType = "VirtualMachineScaleSet"
-)
-
-// PossibleResourceTypeValues returns the possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{
-		ResourceTypeVirtualMachine,
-		ResourceTypeVirtualMachineScaleSet,
-	}
-}
-
-// ScheduledActionType - The operation performed by the recurring bulk action.
-type ScheduledActionType string
-
-const (
-	// ScheduledActionTypeDeallocate - Deallocates the targeted resources.
-	ScheduledActionTypeDeallocate ScheduledActionType = "Deallocate"
-	// ScheduledActionTypeHibernate - Hibernates the targeted resources.
-	ScheduledActionTypeHibernate ScheduledActionType = "Hibernate"
-	// ScheduledActionTypeStart - Starts the targeted resources.
-	ScheduledActionTypeStart ScheduledActionType = "Start"
-)
-
-// PossibleScheduledActionTypeValues returns the possible values for the ScheduledActionType const type.
-func PossibleScheduledActionTypeValues() []ScheduledActionType {
-	return []ScheduledActionType{
-		ScheduledActionTypeDeallocate,
-		ScheduledActionTypeHibernate,
-		ScheduledActionTypeStart,
-	}
-}
-
-// ScheduledActionsDeadlineType - How the scheduled time is interpreted for the resource operation.
-type ScheduledActionsDeadlineType string
-
-const (
-	// ScheduledActionsDeadlineTypeCompleteBy - Completes the operation by the scheduled time.
-	ScheduledActionsDeadlineTypeCompleteBy ScheduledActionsDeadlineType = "CompleteBy"
-	// ScheduledActionsDeadlineTypeInitiateAt - Starts the operation at the scheduled time.
-	ScheduledActionsDeadlineTypeInitiateAt ScheduledActionsDeadlineType = "InitiateAt"
-)
-
-// PossibleScheduledActionsDeadlineTypeValues returns the possible values for the ScheduledActionsDeadlineType const type.
-func PossibleScheduledActionsDeadlineTypeValues() []ScheduledActionsDeadlineType {
-	return []ScheduledActionsDeadlineType{
-		ScheduledActionsDeadlineTypeCompleteBy,
-		ScheduledActionsDeadlineTypeInitiateAt,
-	}
-}
-
-// ScheduledActionsProvisioningState - The provisioning state of the recurring bulk action.
-type ScheduledActionsProvisioningState string
-
-const (
-	// ScheduledActionsProvisioningStateCanceled - Resource creation was canceled.
-	ScheduledActionsProvisioningStateCanceled ScheduledActionsProvisioningState = "Canceled"
-	// ScheduledActionsProvisioningStateDeleting - The recurring bulk action is being deleted.
-	ScheduledActionsProvisioningStateDeleting ScheduledActionsProvisioningState = "Deleting"
-	// ScheduledActionsProvisioningStateFailed - Resource creation failed.
-	ScheduledActionsProvisioningStateFailed ScheduledActionsProvisioningState = "Failed"
-	// ScheduledActionsProvisioningStateSucceeded - Resource has been created.
-	ScheduledActionsProvisioningStateSucceeded ScheduledActionsProvisioningState = "Succeeded"
-	// ScheduledActionsProvisioningStateUpdating - The recurring bulk action is being updated.
-	ScheduledActionsProvisioningStateUpdating ScheduledActionsProvisioningState = "Updating"
-)
-
-// PossibleScheduledActionsProvisioningStateValues returns the possible values for the ScheduledActionsProvisioningState const type.
-func PossibleScheduledActionsProvisioningStateValues() []ScheduledActionsProvisioningState {
-	return []ScheduledActionsProvisioningState{
-		ScheduledActionsProvisioningStateCanceled,
-		ScheduledActionsProvisioningStateDeleting,
-		ScheduledActionsProvisioningStateFailed,
-		ScheduledActionsProvisioningStateSucceeded,
-		ScheduledActionsProvisioningStateUpdating,
-	}
-}
-
-// ScheduledActionsResourceOperationType - The operation to retry when a recurring bulk action fails.
-type ScheduledActionsResourceOperationType string
-
-const (
-	// ScheduledActionsResourceOperationTypeCreate - Creates the resources.
-	ScheduledActionsResourceOperationTypeCreate ScheduledActionsResourceOperationType = "Create"
-	// ScheduledActionsResourceOperationTypeDeallocate - Deallocates the resources.
-	ScheduledActionsResourceOperationTypeDeallocate ScheduledActionsResourceOperationType = "Deallocate"
-	// ScheduledActionsResourceOperationTypeDelete - Deletes the resources.
-	ScheduledActionsResourceOperationTypeDelete ScheduledActionsResourceOperationType = "Delete"
-	// ScheduledActionsResourceOperationTypeHibernate - Hibernates the resources.
-	ScheduledActionsResourceOperationTypeHibernate ScheduledActionsResourceOperationType = "Hibernate"
-	// ScheduledActionsResourceOperationTypeStart - Starts the resources.
-	ScheduledActionsResourceOperationTypeStart ScheduledActionsResourceOperationType = "Start"
-)
-
-// PossibleScheduledActionsResourceOperationTypeValues returns the possible values for the ScheduledActionsResourceOperationType const type.
-func PossibleScheduledActionsResourceOperationTypeValues() []ScheduledActionsResourceOperationType {
-	return []ScheduledActionsResourceOperationType{
-		ScheduledActionsResourceOperationTypeCreate,
-		ScheduledActionsResourceOperationTypeDeallocate,
-		ScheduledActionsResourceOperationTypeDelete,
-		ScheduledActionsResourceOperationTypeHibernate,
-		ScheduledActionsResourceOperationTypeStart,
 	}
 }
 
@@ -1180,42 +901,6 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 		StorageAccountTypesStandardSSDLRS,
 		StorageAccountTypesStandardSSDZRS,
 		StorageAccountTypesUltraSSDLRS,
-	}
-}
-
-// WeekDay - A day of the week on which the recurring bulk action can run.
-type WeekDay string
-
-const (
-	// WeekDayAll - Every day of the week.
-	WeekDayAll WeekDay = "All"
-	// WeekDayFriday - The recurring bulk action can run on Friday.
-	WeekDayFriday WeekDay = "Friday"
-	// WeekDayMonday - The recurring bulk action can run on Monday.
-	WeekDayMonday WeekDay = "Monday"
-	// WeekDaySaturday - The recurring bulk action can run on Saturday.
-	WeekDaySaturday WeekDay = "Saturday"
-	// WeekDaySunday - The recurring bulk action can run on Sunday.
-	WeekDaySunday WeekDay = "Sunday"
-	// WeekDayThursday - The recurring bulk action can run on Thursday.
-	WeekDayThursday WeekDay = "Thursday"
-	// WeekDayTuesday - The recurring bulk action can run on Tuesday.
-	WeekDayTuesday WeekDay = "Tuesday"
-	// WeekDayWednesday - The recurring bulk action can run on Wednesday.
-	WeekDayWednesday WeekDay = "Wednesday"
-)
-
-// PossibleWeekDayValues returns the possible values for the WeekDay const type.
-func PossibleWeekDayValues() []WeekDay {
-	return []WeekDay{
-		WeekDayAll,
-		WeekDayFriday,
-		WeekDayMonday,
-		WeekDaySaturday,
-		WeekDaySunday,
-		WeekDayThursday,
-		WeekDayTuesday,
-		WeekDayWednesday,
 	}
 }
 

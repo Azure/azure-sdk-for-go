@@ -21,23 +21,8 @@ type ServerFactory struct {
 	// BulkCreateCustomServer contains the fakes for client BulkCreateCustomClient
 	BulkCreateCustomServer BulkCreateCustomServer
 
-	// OccurrenceExtensionServer contains the fakes for client OccurrenceExtensionClient
-	OccurrenceExtensionServer OccurrenceExtensionServer
-
-	// OccurrencesServer contains the fakes for client OccurrencesClient
-	OccurrencesServer OccurrencesServer
-
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
-
-	// ScheduledActionExtensionServer contains the fakes for client ScheduledActionExtensionClient
-	ScheduledActionExtensionServer ScheduledActionExtensionServer
-
-	// ScheduledActionOperationStatusServer contains the fakes for client ScheduledActionOperationStatusClient
-	ScheduledActionOperationStatusServer ScheduledActionOperationStatusServer
-
-	// ScheduledActionsServer contains the fakes for client ScheduledActionsClient
-	ScheduledActionsServer ScheduledActionsServer
 
 	// VirtualMachineBulkOperationsServer contains the fakes for client VirtualMachineBulkOperationsClient
 	VirtualMachineBulkOperationsServer VirtualMachineBulkOperationsServer
@@ -55,17 +40,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armbulkactions.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                    *ServerFactory
-	trMu                                   sync.Mutex
-	trBulkCreateServer                     *BulkCreateServerTransport
-	trBulkCreateCustomServer               *BulkCreateCustomServerTransport
-	trOccurrenceExtensionServer            *OccurrenceExtensionServerTransport
-	trOccurrencesServer                    *OccurrencesServerTransport
-	trOperationsServer                     *OperationsServerTransport
-	trScheduledActionExtensionServer       *ScheduledActionExtensionServerTransport
-	trScheduledActionOperationStatusServer *ScheduledActionOperationStatusServerTransport
-	trScheduledActionsServer               *ScheduledActionsServerTransport
-	trVirtualMachineBulkOperationsServer   *VirtualMachineBulkOperationsServerTransport
+	srv                                  *ServerFactory
+	trMu                                 sync.Mutex
+	trBulkCreateServer                   *BulkCreateServerTransport
+	trBulkCreateCustomServer             *BulkCreateCustomServerTransport
+	trOperationsServer                   *OperationsServerTransport
+	trVirtualMachineBulkOperationsServer *VirtualMachineBulkOperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -89,32 +69,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewBulkCreateCustomServerTransport(&s.srv.BulkCreateCustomServer)
 		})
 		resp, err = s.trBulkCreateCustomServer.Do(req)
-	case "OccurrenceExtensionClient":
-		initServer(&s.trMu, &s.trOccurrenceExtensionServer, func() *OccurrenceExtensionServerTransport {
-			return NewOccurrenceExtensionServerTransport(&s.srv.OccurrenceExtensionServer)
-		})
-		resp, err = s.trOccurrenceExtensionServer.Do(req)
-	case "OccurrencesClient":
-		initServer(&s.trMu, &s.trOccurrencesServer, func() *OccurrencesServerTransport { return NewOccurrencesServerTransport(&s.srv.OccurrencesServer) })
-		resp, err = s.trOccurrencesServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "ScheduledActionExtensionClient":
-		initServer(&s.trMu, &s.trScheduledActionExtensionServer, func() *ScheduledActionExtensionServerTransport {
-			return NewScheduledActionExtensionServerTransport(&s.srv.ScheduledActionExtensionServer)
-		})
-		resp, err = s.trScheduledActionExtensionServer.Do(req)
-	case "ScheduledActionOperationStatusClient":
-		initServer(&s.trMu, &s.trScheduledActionOperationStatusServer, func() *ScheduledActionOperationStatusServerTransport {
-			return NewScheduledActionOperationStatusServerTransport(&s.srv.ScheduledActionOperationStatusServer)
-		})
-		resp, err = s.trScheduledActionOperationStatusServer.Do(req)
-	case "ScheduledActionsClient":
-		initServer(&s.trMu, &s.trScheduledActionsServer, func() *ScheduledActionsServerTransport {
-			return NewScheduledActionsServerTransport(&s.srv.ScheduledActionsServer)
-		})
-		resp, err = s.trScheduledActionsServer.Do(req)
 	case "VirtualMachineBulkOperationsClient":
 		initServer(&s.trMu, &s.trVirtualMachineBulkOperationsServer, func() *VirtualMachineBulkOperationsServerTransport {
 			return NewVirtualMachineBulkOperationsServerTransport(&s.srv.VirtualMachineBulkOperationsServer)

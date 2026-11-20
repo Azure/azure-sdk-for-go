@@ -4,24 +4,8 @@
 
 package armbulkactions
 
-// BulkCreateClientBeginCancelOptions contains the optional parameters for the BulkCreateClient.BeginCancel method.
-type BulkCreateClientBeginCancelOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BulkCreateClientBeginCreateOrUpdateOptions contains the optional parameters for the BulkCreateClient.BeginCreateOrUpdate
-// method.
-type BulkCreateClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BulkCreateClientBeginDeleteOptions contains the optional parameters for the BulkCreateClient.BeginDelete method.
-type BulkCreateClientBeginDeleteOptions struct {
-	// When true, deletes all virtual machines created by this BulkAction Operation.
-	DeleteInstances *bool
-
+// BulkCreateClientBeginCreateOptions contains the optional parameters for the BulkCreateClient.BeginCreate method.
+type BulkCreateClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -55,24 +39,8 @@ type BulkCreateClientVirtualMachinesGetOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BulkCreateCustomClientBeginCancelOptions contains the optional parameters for the BulkCreateCustomClient.BeginCancel method.
-type BulkCreateCustomClientBeginCancelOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BulkCreateCustomClientBeginCreateOrUpdateOptions contains the optional parameters for the BulkCreateCustomClient.BeginCreateOrUpdate
-// method.
-type BulkCreateCustomClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BulkCreateCustomClientBeginDeleteOptions contains the optional parameters for the BulkCreateCustomClient.BeginDelete method.
-type BulkCreateCustomClientBeginDeleteOptions struct {
-	// When true, deletes all virtual machines created by this BulkAction Operation.
-	DeleteInstances *bool
-
+// BulkCreateCustomClientBeginCreateOptions contains the optional parameters for the BulkCreateCustomClient.BeginCreate method.
+type BulkCreateCustomClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -106,150 +74,8 @@ type BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OccurrenceExtensionClientListOccurrenceByVMsOptions contains the optional parameters for the OccurrenceExtensionClient.NewListOccurrenceByVMsPager
-// method.
-type OccurrenceExtensionClientListOccurrenceByVMsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OccurrencesClientBeginCancelOptions contains the optional parameters for the OccurrencesClient.BeginCancel method.
-type OccurrencesClientBeginCancelOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
-type OccurrencesClientBeginDelayOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// OccurrencesClientGetOptions contains the optional parameters for the OccurrencesClient.Get method.
-type OccurrencesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OccurrencesClientListByScheduledActionOptions contains the optional parameters for the OccurrencesClient.NewListByScheduledActionPager
-// method.
-type OccurrencesClientListByScheduledActionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OccurrencesClientListResourcesOptions contains the optional parameters for the OccurrencesClient.NewListResourcesPager
-// method.
-type OccurrencesClientListResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduledActionExtensionClientListByVMsOptions contains the optional parameters for the ScheduledActionExtensionClient.NewListByVMsPager
-// method.
-type ScheduledActionExtensionClientListByVMsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduledActionOperationStatusClientGetOptions contains the optional parameters for the ScheduledActionOperationStatusClient.Get
-// method.
-type ScheduledActionOperationStatusClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduledActionsClientBeginAttachResourcesOptions contains the optional parameters for the ScheduledActionsClient.BeginAttachResources
-// method.
-type ScheduledActionsClientBeginAttachResourcesOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginCancelNextOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.BeginCancelNextOccurrence
-// method.
-type ScheduledActionsClientBeginCancelNextOccurrenceOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginCreateOrUpdate
-// method.
-type ScheduledActionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginDeleteOptions contains the optional parameters for the ScheduledActionsClient.BeginDelete method.
-type ScheduledActionsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginDetachResourcesOptions contains the optional parameters for the ScheduledActionsClient.BeginDetachResources
-// method.
-type ScheduledActionsClientBeginDetachResourcesOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginDisableOptions contains the optional parameters for the ScheduledActionsClient.BeginDisable
-// method.
-type ScheduledActionsClientBeginDisableOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginEnableOptions contains the optional parameters for the ScheduledActionsClient.BeginEnable method.
-type ScheduledActionsClientBeginEnableOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginTriggerManualOccurrenceOptions contains the optional parameters for the ScheduledActionsClient.BeginTriggerManualOccurrence
-// method.
-type ScheduledActionsClientBeginTriggerManualOccurrenceOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientBeginUpdateOptions contains the optional parameters for the ScheduledActionsClient.BeginUpdate method.
-type ScheduledActionsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ScheduledActionsClientGetOptions contains the optional parameters for the ScheduledActionsClient.Get method.
-type ScheduledActionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduledActionsClientListByResourceGroupOptions contains the optional parameters for the ScheduledActionsClient.NewListByResourceGroupPager
-// method.
-type ScheduledActionsClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduledActionsClientListBySubscriptionOptions contains the optional parameters for the ScheduledActionsClient.NewListBySubscriptionPager
-// method.
-type ScheduledActionsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduledActionsClientListResourcesOptions contains the optional parameters for the ScheduledActionsClient.NewListResourcesPager
-// method.
-type ScheduledActionsClientListResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ScheduledActionsClientPatchResourcesOptions contains the optional parameters for the ScheduledActionsClient.PatchResources
-// method.
-type ScheduledActionsClientPatchResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors
-// method.
-type VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -280,19 +106,6 @@ type VirtualMachineBulkOperationsClientBulkGetOperationsStatusOptions struct {
 // VirtualMachineBulkOperationsClientBulkHibernateOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkHibernateOperation
 // method.
 type VirtualMachineBulkOperationsClientBulkHibernateOperationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager
-// method.
-type VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions struct {
-	// The number of minutes before the current time to include when listing bulk action errors.
-	LookbackInMinutes *int32
-}
-
-// VirtualMachineBulkOperationsClientBulkReimageOperationOptions contains the optional parameters for the VirtualMachineBulkOperationsClient.BulkReimageOperation
-// method.
-type VirtualMachineBulkOperationsClientBulkReimageOperationOptions struct {
 	// placeholder for future optional parameters
 }
 

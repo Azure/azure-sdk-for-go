@@ -4,20 +4,10 @@
 
 package armbulkactions
 
-// BulkCreateClientCancelResponse contains the response from method BulkCreateClient.BeginCancel.
-type BulkCreateClientCancelResponse struct {
-	// placeholder for future response values
-}
-
-// BulkCreateClientCreateOrUpdateResponse contains the response from method BulkCreateClient.BeginCreateOrUpdate.
-type BulkCreateClientCreateOrUpdateResponse struct {
+// BulkCreateClientCreateResponse contains the response from method BulkCreateClient.BeginCreate.
+type BulkCreateClientCreateResponse struct {
 	// Location based BulkCreate resource. The location is part of the resource path.
 	LocationBasedBulkCreate
-}
-
-// BulkCreateClientDeleteResponse contains the response from method BulkCreateClient.BeginDelete.
-type BulkCreateClientDeleteResponse struct {
-	// placeholder for future response values
 }
 
 // BulkCreateClientGetAsyncOperationStatusResponse contains the response from method BulkCreateClient.GetAsyncOperationStatus.
@@ -50,20 +40,10 @@ type BulkCreateClientVirtualMachinesGetOperationStatusResponse struct {
 	BulkCreateOperationStatusListResult
 }
 
-// BulkCreateCustomClientCancelResponse contains the response from method BulkCreateCustomClient.BeginCancel.
-type BulkCreateCustomClientCancelResponse struct {
-	// placeholder for future response values
-}
-
-// BulkCreateCustomClientCreateOrUpdateResponse contains the response from method BulkCreateCustomClient.BeginCreateOrUpdate.
-type BulkCreateCustomClientCreateOrUpdateResponse struct {
+// BulkCreateCustomClientCreateResponse contains the response from method BulkCreateCustomClient.BeginCreate.
+type BulkCreateCustomClientCreateResponse struct {
 	// Location based BulkCreateCustom resource. The location is part of the resource path.
 	LocationBasedBulkCreateCustom
-}
-
-// BulkCreateCustomClientDeleteResponse contains the response from method BulkCreateCustomClient.BeginDelete.
-type BulkCreateCustomClientDeleteResponse struct {
-	// placeholder for future response values
 }
 
 // BulkCreateCustomClientGetAsyncOperationStatusResponse contains the response from method BulkCreateCustomClient.GetAsyncOperationStatus.
@@ -96,144 +76,10 @@ type BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse struct {
 	BulkCreateCustomOperationStatusListResult
 }
 
-// OccurrenceExtensionClientListOccurrenceByVMsResponse contains the response from method OccurrenceExtensionClient.NewListOccurrenceByVMsPager.
-type OccurrenceExtensionClientListOccurrenceByVMsResponse struct {
-	// The response of a OccurrenceExtensionResource list operation.
-	OccurrenceExtensionResourceListResult
-}
-
-// OccurrencesClientCancelResponse contains the response from method OccurrencesClient.BeginCancel.
-type OccurrencesClientCancelResponse struct {
-	// Results of a recurring bulk action operation for targeted resources.
-	ResourceOperationResponse
-}
-
-// OccurrencesClientDelayResponse contains the response from method OccurrencesClient.BeginDelay.
-type OccurrencesClientDelayResponse struct {
-	// Results of a recurring bulk action operation for targeted resources.
-	ResourceOperationResponse
-}
-
-// OccurrencesClientGetResponse contains the response from method OccurrencesClient.Get.
-type OccurrencesClientGetResponse struct {
-	// One scheduled execution of a recurring bulk action.
-	Occurrence
-}
-
-// OccurrencesClientListByScheduledActionResponse contains the response from method OccurrencesClient.NewListByScheduledActionPager.
-type OccurrencesClientListByScheduledActionResponse struct {
-	// The response of a Occurrence list operation.
-	OccurrenceListResult
-}
-
-// OccurrencesClientListResourcesResponse contains the response from method OccurrencesClient.NewListResourcesPager.
-type OccurrencesClientListResourcesResponse struct {
-	// Paged list of resources included in a recurring bulk action occurrence.
-	OccurrenceResourceListResponse
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
-}
-
-// ScheduledActionExtensionClientListByVMsResponse contains the response from method ScheduledActionExtensionClient.NewListByVMsPager.
-type ScheduledActionExtensionClientListByVMsResponse struct {
-	// The response of a ScheduledActionResources list operation.
-	ScheduledActionResourcesListResult
-}
-
-// ScheduledActionOperationStatusClientGetResponse contains the response from method ScheduledActionOperationStatusClient.Get.
-type ScheduledActionOperationStatusClientGetResponse struct {
-	// The current status of an async operation.
-	OperationStatusResult
-}
-
-// ScheduledActionsClientAttachResourcesResponse contains the response from method ScheduledActionsClient.BeginAttachResources.
-type ScheduledActionsClientAttachResourcesResponse struct {
-	// Results of a recurring bulk action operation for targeted resources.
-	ResourceOperationResponse
-}
-
-// ScheduledActionsClientCancelNextOccurrenceResponse contains the response from method ScheduledActionsClient.BeginCancelNextOccurrence.
-type ScheduledActionsClientCancelNextOccurrenceResponse struct {
-	// Results of a recurring bulk action operation for targeted resources.
-	ResourceOperationResponse
-}
-
-// ScheduledActionsClientCreateOrUpdateResponse contains the response from method ScheduledActionsClient.BeginCreateOrUpdate.
-type ScheduledActionsClientCreateOrUpdateResponse struct {
-	// A recurring bulk action that operates on specified compute resources.
-	ScheduledAction
-}
-
-// ScheduledActionsClientDeleteResponse contains the response from method ScheduledActionsClient.BeginDelete.
-type ScheduledActionsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ScheduledActionsClientDetachResourcesResponse contains the response from method ScheduledActionsClient.BeginDetachResources.
-type ScheduledActionsClientDetachResourcesResponse struct {
-	// Results of a recurring bulk action operation for targeted resources.
-	ResourceOperationResponse
-}
-
-// ScheduledActionsClientDisableResponse contains the response from method ScheduledActionsClient.BeginDisable.
-type ScheduledActionsClientDisableResponse struct {
-	// placeholder for future response values
-}
-
-// ScheduledActionsClientEnableResponse contains the response from method ScheduledActionsClient.BeginEnable.
-type ScheduledActionsClientEnableResponse struct {
-	// placeholder for future response values
-}
-
-// ScheduledActionsClientGetResponse contains the response from method ScheduledActionsClient.Get.
-type ScheduledActionsClientGetResponse struct {
-	// A recurring bulk action that operates on specified compute resources.
-	ScheduledAction
-}
-
-// ScheduledActionsClientListByResourceGroupResponse contains the response from method ScheduledActionsClient.NewListByResourceGroupPager.
-type ScheduledActionsClientListByResourceGroupResponse struct {
-	// The response of a ScheduledAction list operation.
-	ScheduledActionListResult
-}
-
-// ScheduledActionsClientListBySubscriptionResponse contains the response from method ScheduledActionsClient.NewListBySubscriptionPager.
-type ScheduledActionsClientListBySubscriptionResponse struct {
-	// The response of a ScheduledAction list operation.
-	ScheduledActionListResult
-}
-
-// ScheduledActionsClientListResourcesResponse contains the response from method ScheduledActionsClient.NewListResourcesPager.
-type ScheduledActionsClientListResourcesResponse struct {
-	// A paged list of compute resources associated with a recurring bulk action.
-	ResourceListResponse
-}
-
-// ScheduledActionsClientPatchResourcesResponse contains the response from method ScheduledActionsClient.PatchResources.
-type ScheduledActionsClientPatchResourcesResponse struct {
-	// Results of a recurring bulk action operation for targeted resources.
-	ResourceOperationResponse
-}
-
-// ScheduledActionsClientTriggerManualOccurrenceResponse contains the response from method ScheduledActionsClient.BeginTriggerManualOccurrence.
-type ScheduledActionsClientTriggerManualOccurrenceResponse struct {
-	// One scheduled execution of a recurring bulk action.
-	Occurrence
-}
-
-// ScheduledActionsClientUpdateResponse contains the response from method ScheduledActionsClient.BeginUpdate.
-type ScheduledActionsClientUpdateResponse struct {
-	// placeholder for future response values
-}
-
-// VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse contains the response from method VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors.
-type VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse struct {
-	// The result of acknowledging errors for specified operations.
-	AcknowledgeBulkOperationErrorsResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkCancelOperationsResponse contains the response from method VirtualMachineBulkOperationsClient.BulkCancelOperations.
@@ -264,18 +110,6 @@ type VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse struct {
 type VirtualMachineBulkOperationsClientBulkHibernateOperationResponse struct {
 	// The result of a bulk hibernate action.
 	HibernateResourceOperationResponse
-}
-
-// VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse contains the response from method VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager.
-type VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse struct {
-	// A paged list of recent bulk action errors.
-	ListBulkOperationErrorsResponse
-}
-
-// VirtualMachineBulkOperationsClientBulkReimageOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkReimageOperation.
-type VirtualMachineBulkOperationsClientBulkReimageOperationResponse struct {
-	// The result of a bulk reimage action.
-	ReimageResourceOperationResponse
 }
 
 // VirtualMachineBulkOperationsClientBulkStartOperationResponse contains the response from method VirtualMachineBulkOperationsClient.BulkStartOperation.

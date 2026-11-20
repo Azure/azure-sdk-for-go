@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1240" height="970" viewBox="0 0 1240 970" role="img" aria-labelledby="title description">
+<!-- cspell:ignore labelledby -->
 <title id="title">W64 - Allocator isolation: T2 / T3</title>
 <desc id="description">Four zero-based horizontal bar charts show reads per second, process CPU microseconds per read, mean repeat p99 latency and whole-process RSS. Each chart uses only rows from one run. Two repeats per cell; not a confidence interval. Scales are shared with the other run chart.</desc>
 <rect width="1240" height="970" fill="#f8fafc"/>

@@ -1,0 +1,84 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+//go:build go_v2
+
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
+)
+
+type v2Client struct {
+	client    *azcosmos.Client
+	container *azcosmos.ContainerClient
+}
+
+func newSDKClient(ctx context.Context, options options) (sdkClient, error) {
+	credential, err := azcosmos.NewKeyCredential(options.key)
+	if err != nil {
+		return nil, err
+	}
+	client, err := azcosmos.NewClientWithKey(ctx, options.endpoint, credential, &azcosmos.ClientOptions{
+		DiagnosticsVerbosity: azcosmos.DiagnosticsVerbosityDetailed,
+	})
+	if err != nil {
+		return nil, err
+	}
+	container, err := client.NewContainer(ctx, options.database, options.container)
+	if err != nil {
+		_ = client.Close()
+		return nil, err
+	}
+	return &v2Client{client: client, container: container}, nil
+}
+
+func (client *v2Client) Read(ctx context.Context, pk string, id string) (operationResponse, error) {
+	response, err := client.container.ReadItem(ctx, azcosmos.NewPartitionKeyString(pk), id, nil)
+	if err != nil {
+		return operationResponse{}, err
+	}
+	return operationResponse{
+		Body:       response.Value,
+		StatusCode: response.StatusCode,
+		Attempts:   response.AttemptCount,
+	}, nil
+}
+
+func (client *v2Client) Create(ctx context.Context, pk string, id string, body []byte) (operationResponse, error) {
+	response, err := client.container.CreateItem(ctx, azcosmos.NewPartitionKeyString(pk), id, json.RawMessage(body), nil)
+	if err != nil {
+		return operationResponse{}, err
+	}
+	return operationResponse{StatusCode: response.StatusCode, Attempts: response.AttemptCount}, nil
+}
+
+func (client *v2Client) Upsert(ctx context.Context, pk string, id string, body []byte) (operationResponse, error) {
+	response, err := client.container.UpsertItem(ctx, azcosmos.NewPartitionKeyString(pk), id, json.RawMessage(body), nil)
+	if err != nil {
+		return operationResponse{}, err
+	}
+	return operationResponse{StatusCode: response.StatusCode, Attempts: response.AttemptCount}, nil
+}
+
+func (client *v2Client) Delete(ctx context.Context, pk string, id string) (operationResponse, error) {
+	response, err := client.container.DeleteItem(ctx, azcosmos.NewPartitionKeyString(pk), id, nil)
+	if err != nil {
+		return operationResponse{}, err
+	}
+	return operationResponse{StatusCode: response.StatusCode, Attempts: response.AttemptCount}, nil
+}
+
+func (client *v2Client) Close() error {
+	return client.client.Close()
+}
+
+func isNotFound(err error) bool {
+	var cosmosError *azcosmos.Error
+	return errors.As(err, &cosmosError) && cosmosError.StatusCode == http.StatusNotFound
+}

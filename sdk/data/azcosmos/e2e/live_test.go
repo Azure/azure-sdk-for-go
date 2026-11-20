@@ -40,7 +40,7 @@ func TestAzureLive(t *testing.T) {
 	endpoint, databaseID, containerID := os.Getenv("AZCOSMOS_ENDPOINT"),
 		os.Getenv("AZCOSMOS_DATABASE"), os.Getenv("AZCOSMOS_CONTAINER")
 	target, err := url.Parse(endpoint)
-	require.NoError(t, err)
+	liveNoError(t, "parse live account endpoint", err)
 	require.True(t, target.Scheme == "https" && target.Hostname() != "" &&
 		target.User == nil && target.RawQuery == "" && target.Fragment == "",
 		"an explicit HTTPS account endpoint without credentials or query is required")
@@ -63,6 +63,7 @@ func TestAzureLive(t *testing.T) {
 		"item.optimistic-concurrency":   liveConcurrency,
 		"diagnostics.success-and-error": liveDiagnostics,
 		"query.pagination-resume":       livePagination,
+		"changefeed.pagination-resume":  liveChangeFeed,
 	}
 	require.Len(t, tests, len(internale2e.LiveScenarios))
 	if path := os.Getenv("AZCOSMOS_LIVE_PLAN_FILE"); path != "" {
@@ -91,17 +92,46 @@ func TestAzureLive(t *testing.T) {
 }
 
 type liveFixture struct {
-	ctx       context.Context
-	client    *azcosmos.Client
-	container *azcosmos.ContainerClient
-	pk        azcosmos.PartitionKey
-	prefix    string
+	ctx         context.Context
+	client      *azcosmos.Client
+	container   *azcosmos.ContainerClient
+	pk          azcosmos.PartitionKey
+	prefix      string
+	endpoint    string
+	databaseID  string
+	containerID string
 }
 
 func newLiveFixture(t *testing.T, endpoint, databaseID, containerID string) *liveFixture {
 	t.Helper()
+	return newLiveFixtureWithPaths(t, endpoint, databaseID, containerID, []string{"/pk"})
+}
+
+func newLiveFixtureWithPaths(t *testing.T, endpoint, databaseID, containerID string, paths []string) *liveFixture {
+	t.Helper()
 	ctx, cancel := context.WithTimeout(t.Context(), 2*time.Minute)
 	t.Cleanup(cancel)
+	client := newLiveClient(t, ctx, endpoint)
+	container, err := client.NewContainer(ctx, databaseID, containerID)
+	liveNoError(t, "create container handle", err)
+	metadata, err := container.Read(ctx, nil)
+	liveNoError(t, "read container metadata", err)
+	require.Equal(t, paths, metadata.ContainerProperties.PartitionKeyDefinition.Paths)
+	if len(paths) > 1 {
+		require.Equal(t, azcosmos.PartitionKeyKindMultiHash, metadata.ContainerProperties.PartitionKeyDefinition.Kind)
+	}
+	var random [16]byte
+	_, err = rand.Read(random[:])
+	liveNoError(t, "generate test partition", err)
+	prefix := "go-live-" + hex.EncodeToString(random[:])
+	return &liveFixture{ctx: ctx, client: client, container: container,
+		prefix: prefix, pk: azcosmos.NewPartitionKeyString(prefix),
+		endpoint: endpoint, databaseID: databaseID, containerID: containerID}
+}
+
+// Each resumed client has its own runtime, so it cannot inherit captured session or pager state.
+func newLiveClient(t *testing.T, ctx context.Context, endpoint string) *azcosmos.Client {
+	t.Helper()
 	cred, err := credential.New(nil)
 	liveNoError(t, "create Entra credential", err)
 	timeout := 20 * time.Second
@@ -130,17 +160,7 @@ func newLiveFixture(t *testing.T, endpoint, databaseID, containerID string) *liv
 	}
 	liveNoError(t, "initialize token-auth client", err)
 	t.Cleanup(func() { liveNoError(t, "close client", client.Close()) })
-	container, err := client.NewContainer(ctx, databaseID, containerID)
-	liveNoError(t, "create container handle", err)
-	metadata, err := container.Read(ctx, nil)
-	liveNoError(t, "read container metadata", err)
-	require.Equal(t, []string{"/pk"}, metadata.ContainerProperties.PartitionKeyDefinition.Paths)
-	var random [16]byte
-	_, err = rand.Read(random[:])
-	liveNoError(t, "generate test partition", err)
-	prefix := "go-live-" + hex.EncodeToString(random[:])
-	return &liveFixture{ctx: ctx, client: client, container: container,
-		prefix: prefix, pk: azcosmos.NewPartitionKeyString(prefix)}
+	return client
 }
 
 // Never print raw credential/service errors: they can contain endpoint or authentication data.

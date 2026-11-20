@@ -12,7 +12,7 @@ This is the v2 major version of the module and it is **not usable yet**. The v2 
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and creating, reading, replacing, upserting,
 deleting, and patching single items, database and container lifecycle operations, transactional
-batches with complete hierarchical partition keys, and paged queries.
+batches with complete hierarchical partition keys, ReadMany, and retained query and change-feed paging.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -497,9 +497,36 @@ returning text JSON to Go. A nil `ExcludedRegions` slice inherits exclusions, wh
 empty slice explicitly clears them. The buffered-window and explicit server-decides gaps
 still require a native contract change.
 
+### Reading the change feed
+
+Use `ContainerClient.NewChangeFeedPager(scope, startFrom, options)` with a complete partition
+key or a full-container scope. Hierarchical partition key prefixes have not been verified
+against the live service for change-feed reads.
+
+The default mode, `ChangeFeedModeLatestVersion`, supports starting from the beginning, now,
+or a point in time (second precision). For `ChangeFeedModeAllVersionsAndDeletes`, use a
+supported account and start from now or resume from a checkpoint within the retention window.
+
+Poll with `NextPage` and call `Close` when you're done. Empty pages and HTTP 304 mean you
+can poll again, not that the feed is finished. In a full-container feed, an idle page for
+one range does not mean other ranges are caught up. `More()` only tells you the pager is open.
+
+`ChangeFeedResponse.Items` holds raw JSON. For change envelopes, use
+`azcosmos.DecodeChangeFeedItem[YourModel](raw)` to read the current image, previous image,
+and metadata when present. Keep the raw JSON if you need additional fields. If your backend
+returns a plain document rather than an envelope, decode it directly into your model.
+
+After processing a successful page (including an idle page), call `pager.ContinuationToken(ctx)`
+before closing the pager. Save that opaque token, not the page ETag. To resume, pass it in
+`ChangeFeedOptions.Feed.ContinuationToken` with the same container, scope, mode, and start
+position used originally. Keep the last saved checkpoint if a page fetch fails and you need
+to open a new pager. A checkpoint does not acknowledge application processing or guarantee
+exactly-once delivery.
+
 ### Running the end-to-end tests
 
-The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, and `retry_native_test.go` run
+The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, `change_feed_emulator_test.go`,
+and `retry_native_test.go` run
 real operations against a service. They need a driver-backed build and the `EMULATOR` environment
 variable, and they skip otherwise.
 
@@ -531,6 +558,19 @@ The contract tests use a local HTTP proxy to inject known error and metric respo
 while the real native driver executes against the emulator. This validates the binding and
 native decoding, not live-service metric generation. Per-cursor test hooks control checkpoint
 delivery and cancellation races without relying on network timing.
+
+Change-feed unit and scripted HTTP contract tests run without an emulator. They cover native
+selectors, payload ownership, idle polling, checkpoint/resume (including untouched ranges),
+multi-range HPK-prefix fan-out, compatibility errors, and cursor cleanup against the pinned
+driver. Scripted responses are binding evidence, not certification of live change history,
+AllVersionsAndDeletes retention/pre-images, or splits.
+`TestEmulatorChangeFeed` adds complete-key/complete-HPK isolation and full-container binding
+checks under the existing `EMULATOR` configuration. It does not certify live-service prefix
+fan-out or historical fidelity. Run those separately against a configured endpoint:
+
+```sh
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run 'TestEmulatorChangeFeed' ./...
+```
 
 ## Getting Started
 

@@ -60,8 +60,11 @@ type Type struct {
 	PromotedMethods []PromotedMethod
 
 	// EmbeddedMethods lists exported methods contributed only by private
-	// interface embeddings, sorted by name.
+	// or internal-package interface embeddings, sorted by name.
 	EmbeddedMethods []string
+
+	// ConstraintNotes records type terms not visible in the declaration.
+	ConstraintNotes []string
 }
 
 // PromotedField describes a public field and its first embedding.
@@ -127,7 +130,8 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 				if err != nil {
 					return nil, nil, fmt.Errorf("type %q parameters: %w", spec.Name.Name, err)
 				}
-				if !spec.Assign.IsValid() && hiddenTypeTarget(pkg.Types, referencedTypeName(pkg, spec.Type)) {
+				derived := !spec.Assign.IsValid() && hiddenTypeTarget(pkg.Types, referencedTypeName(pkg, spec.Type))
+				if derived {
 					copy.Type, err = definedUnderlyingType(pkg, object, aliases, refs)
 				} else {
 					copy.Type, err = normalizer.typeExpr(source.Type)
@@ -136,9 +140,17 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 					return nil, nil, fmt.Errorf("type %q: %w", spec.Name.Name, err)
 				}
 				iface, isInterface := object.Type().Underlying().(*types.Interface)
+				constraintNotes := typeParameterNotes(spec.Name.Name, namedTypeParameters(object.Type()), pkg.Types)
 				var embeddedMethods []string
 				if _, inline := ast.Unparen(copy.Type).(*ast.InterfaceType); isInterface && inline {
-					embeddedMethods = privatelyEmbeddedMethods(iface, pkg.Types)
+					if terms := hiddenConstraintTerms(iface, pkg.Types); terms != "" {
+						constraintNotes = append(constraintNotes, spec.Name.Name+": "+terms)
+					}
+					var rewrittenAliases *aliasExpander
+					if derived || expansion != nil {
+						rewrittenAliases = aliases
+					}
+					embeddedMethods = hiddenEmbeddedMethods(iface, pkg.Types, rewrittenAliases)
 				}
 				var promotedFields []PromotedField
 				var promotedMethods []PromotedMethod
@@ -160,6 +172,7 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 					PromotedFields:  promotedFields,
 					PromotedMethods: promotedMethods,
 					EmbeddedMethods: embeddedMethods,
+					ConstraintNotes: constraintNotes,
 				})
 			}
 		}
@@ -176,7 +189,7 @@ func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.I
 	return result, methods, nil
 }
 
-func privatelyEmbeddedMethods(iface *types.Interface, pkg *types.Package) []string {
+func hiddenEmbeddedMethods(iface *types.Interface, pkg *types.Package, rewrittenAliases *aliasExpander) []string {
 	shown := make(map[string]bool)
 	hidden := make(map[string]string)
 	qualify := types.RelativeTo(pkg)
@@ -195,9 +208,15 @@ func privatelyEmbeddedMethods(iface *types.Interface, pkg *types.Package) []stri
 				collect(embeddedInterface)
 				continue
 			}
+			obj := named.Obj()
+			isHidden := !obj.Exported() || hiddenTypeTarget(pkg, obj)
+			if isHidden && rewrittenAliases != nil && obj.Pkg() != nil && internalPackagePath(obj.Pkg().Path()) {
+				// Expanded declarations can show the embedding under a public alias.
+				isHidden = rewrittenAliases.publicAlias(obj.Type(), pkg, "") == nil
+			}
 			for method := range embeddedInterface.Methods() {
 				name := method.Name()
-				if named.Obj().Exported() {
+				if !isHidden {
 					shown[name] = true
 				} else if method.Exported() {
 					signature := name + strings.TrimPrefix(TypeStringWithoutTags(method.Type(), qualify), "func")

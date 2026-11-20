@@ -121,7 +121,7 @@ type Forward = Wrapped
 	assert.Equal(t, "type Event string", rendered["Event"])
 	assert.Contains(t, rendered["Opaque"], "// contains filtered or unexported fields")
 	assert.NotContains(t, rendered["Opaque"], "unexposed")
-	assert.Contains(t, rendered["Credential"], "Get(options options.RequestOptions) (PublicRecord, error)")
+	assert.Contains(t, rendered["Credential"], "Get(options opt.RequestOptions) (PublicRecord, error)")
 
 	spec, ok := declarations["PublicRecord"].Decl.Specs[0].(*ast.TypeSpec)
 	require.True(t, ok)
@@ -138,7 +138,7 @@ type Forward = Wrapped
 	}
 	assert.Equal(t, map[string]string{
 		"Name": "string", "Next": "*PublicRecord",
-		"Options": "options.RequestOptions", "When": "time.Time",
+		"Options": "opt.RequestOptions", "When": "time.Time",
 	}, fieldTypes)
 
 	signatures := make(map[string]string)
@@ -160,7 +160,7 @@ type Forward = Wrapped
 		"Forward.Value":       "func (Forward) Value() int",
 		"Opaque.Reset":        "func (*Opaque) Reset()",
 		"PublicRecord.IsZero": "func (PublicRecord) IsZero() bool",
-		"PublicRecord.Update": "func (*PublicRecord) Update(other *PublicRecord, options options.RequestOptions) PublicRecord",
+		"PublicRecord.Update": "func (*PublicRecord) Update(other *PublicRecord, options opt.RequestOptions) PublicRecord",
 	}, signatures)
 
 	var after bytes.Buffer

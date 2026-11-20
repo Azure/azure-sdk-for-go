@@ -366,6 +366,101 @@ type Plain interface{ hidden }
 		files["sample.go"].Data = []byte(strings.Replace(source, "Read() T", "Read() []T", 1))
 		assert.Equal(t, strings.ReplaceAll(before, "Read() string", "Read() []string"), render(t, files, false))
 	})
+	t.Run("hidden generic constraints", func(t *testing.T) {
+		const source = `package sample
+
+import "example.com/sample/internal/limits"
+
+type hidden interface{ ~int }
+type nested interface{ hidden; ~int | ~string | ~bool }
+type comparableOnly = comparable
+type unused interface{ ~uint64 }
+
+type Allowed interface{ hidden }
+type Box[T nested] struct{ Value T }
+type WithLimit[T limits.Allowed] struct{ Value T }
+func Echo[T Allowed](v T) T { return v }
+func Direct[T interface{ comparableOnly; hidden }](v T) T { return v }
+func Unrestricted[T any](v T) T { return v }
+`
+		files := fstest.MapFS{
+			"go.mod":                    {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go":                 {Data: []byte(source)},
+			"internal/limits/limits.go": {Data: []byte("package limits\n\ntype Allowed interface{ ~int16 }\n")},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, "// Type set of Allowed: ~int\ntype Allowed interface")
+		assert.Contains(t, before, "// Type set of Box.T: interface{~bool | ~int | ~string; ~int}\ntype Box")
+		assert.Contains(t, before, "// Type set of WithLimit.T: ~int16\ntype WithLimit")
+		assert.Contains(t, before, "// Type set of Direct.T: interface{comparable; ~int}\nfunc Direct")
+		assert.NotContains(t, before, "// Type set of Echo.T:")
+		assert.NotContains(t, before, "// Type set of Unrestricted.T:")
+		assert.NotContains(t, before, "type hidden")
+		assert.NotContains(t, before, "~uint64")
+
+		files["sample.go"].Data = []byte(strings.NewReplacer(
+			"hidden; ~int | ~string | ~bool", "~bool | ~string | ~int; hidden",
+			"comparableOnly; hidden", "hidden; comparableOnly",
+		).Replace(source))
+		assert.Equal(t, before, render(t, files, false))
+
+		files["sample.go"].Data = []byte(strings.Replace(source, "type hidden interface{ ~int }", "type hidden interface{ ~string }", 1))
+		expected := strings.NewReplacer(
+			"Allowed: ~int", "Allowed: ~string",
+			"; ~int}", "; ~string}",
+		).Replace(before)
+		assert.Equal(t, expected, render(t, files, false))
+	})
+	t.Run("internal-package interface embeddings", func(t *testing.T) {
+		const source = `package sample
+
+import "example.com/sample/internal/generated"
+
+type Visible interface{ Shared() }
+type PublicReader = generated.Reader
+type Expanded = generated.Wrapper
+
+type Contract interface {
+	generated.Reader
+	Visible
+	Reset()
+}
+
+type AliasContract interface {
+	generated.Reader
+	PublicReader
+}
+`
+		const embedded = `package generated
+
+type Reader interface {
+	Read() string
+	Shared()
+	Reset()
+	sealed()
+}
+
+type Wrapper interface{ Reader }
+`
+		files := fstest.MapFS{
+			"go.mod":                       {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go":                    {Data: []byte(source)},
+			"internal/generated/reader.go": {Data: []byte(embedded)},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, `type Contract interface {
+	Reset()
+	Visible
+	generated.Reader
+}
+
+// Embedded method on Contract: Read() string`)
+		assert.Contains(t, before, "type Expanded interface {\n\tPublicReader\n}")
+		assert.Equal(t, 1, strings.Count(before, "// Embedded method on "))
+
+		files["internal/generated/reader.go"].Data = []byte(strings.Replace(embedded, "Read() string", "Read() []string", 1))
+		assert.Equal(t, strings.ReplaceAll(before, "Read() string", "Read() []string"), render(t, files, false))
+	})
 	t.Run("exported internal-package embeddings", func(t *testing.T) {
 		source := `package sample
 
@@ -503,6 +598,47 @@ type List = model.List
 		files["internal/model/model.go"].Data = []byte(strings.Replace(models, "Forward = A", "Forward = B", 1))
 		expected := strings.Replace(before, "/model.A.", "/model.B.", 1)
 		assert.Equal(t, expected, render(t, files, false))
+	})
+	t.Run("synthesized import qualifiers avoid source collisions", func(t *testing.T) {
+		files := fstest.MapFS{
+			"go.mod": {Data: []byte("module example.com/sample\n\ngo 1.26.0\n")},
+			"sample.go": {Data: []byte(`package sample
+
+import (
+	fs "context"
+	time "example.com/sample/api"
+	"example.com/sample/internal/model"
+)
+
+type Public = model.Record
+const Delay = model.Delay
+const Separator = model.Separator
+func Existing() time.Marker { return 0 }
+func ExistingContext() fs.Context { return nil }
+`)},
+			"api/api.go": {Data: []byte("package api\n\ntype Marker int\n")},
+			"internal/model/model.go": {Data: []byte(`package model
+
+import (
+	"io/fs"
+	tm "time"
+)
+
+type Record struct{ When tm.Time }
+const Delay tm.Duration = 1
+const Separator fs.FileMode = 2
+`)},
+		}
+		before := render(t, files, false)
+		assert.Contains(t, before, `time "example.com/sample/api"`)
+		assert.Contains(t, before, `time2 "time"`)
+		assert.Contains(t, before, `fs "context"`)
+		assert.Contains(t, before, `fs2 "io/fs"`)
+		assert.Contains(t, before, "func Existing() time.Marker")
+		assert.Contains(t, before, "func ExistingContext() fs.Context")
+		assert.Contains(t, before, "When time2.Time")
+		assert.Contains(t, before, "Delay time2.Duration = 1")
+		assert.Contains(t, before, "Separator fs2.FileMode = 2")
 	})
 	t.Run("inferred variable types", func(t *testing.T) {
 		files := fstest.MapFS{

@@ -66,6 +66,9 @@ type Function struct {
 	// Comments is a non-nil list of report-generated comments for Decl.
 	// Use it with printer.CommentedNode when formatting to suppress source comments.
 	Comments []*ast.CommentGroup
+
+	// ConstraintNotes records type terms not visible in the signature.
+	ConstraintNotes []string
 }
 
 // ExtractPackages extracts public package metadata and exported declarations.
@@ -86,11 +89,6 @@ func ExtractPackages(loaded *loader.Result) ([]Package, error) {
 			continue
 		}
 		refs := make(map[*ast.Ident]*types.Package)
-		for ident, object := range pkg.TypesInfo.Uses {
-			if name, ok := object.(*types.PkgName); ok {
-				refs[ident] = name.Imported()
-			}
-		}
 		functions, err := extractFunctions(pkg)
 		if err != nil {
 			return nil, fmt.Errorf("extract functions from package %q: %w", pkg.PkgPath, err)
@@ -203,6 +201,7 @@ func extractFunctions(pkg *packages.Package) ([]Function, error) {
 			if publicReceiver != nil {
 				function.Decl.Recv.List[0].Type = publicReceiver
 			}
+			function.ConstraintNotes = typeParameterNotes(function.Name, object.Signature().TypeParams(), pkg.Types)
 			functions = append(functions, function)
 		}
 	}

@@ -193,6 +193,7 @@ func (w *packageWriter) typeDeclaration(typ report.Type) error {
 	if typ.AliasOf != "" {
 		fmt.Fprintf(&w.source, "// Alias of %s.\n", typ.AliasOf)
 	}
+	w.constraintNotes(typ.ConstraintNotes)
 	text, err := w.node(typ.Decl, typ.Comments)
 	if err != nil {
 		return fmt.Errorf("type %q: %w", typ.Name, err)
@@ -344,6 +345,7 @@ func (w *packageWriter) functions(functions []report.Function) error {
 		if err != nil {
 			return fmt.Errorf("function %q: %w", function.Name, err)
 		}
+		w.constraintNotes(function.ConstraintNotes)
 		w.source.WriteString(text)
 		w.source.WriteString("\n")
 	}
@@ -351,6 +353,12 @@ func (w *packageWriter) functions(functions []report.Function) error {
 		w.source.WriteByte('\n')
 	}
 	return nil
+}
+
+func (w *packageWriter) constraintNotes(notes []string) {
+	for _, note := range notes {
+		fmt.Fprintf(&w.source, "// Type set of %s\n", note)
+	}
 }
 
 func (w *packageWriter) constants(constants []report.Constant) error {

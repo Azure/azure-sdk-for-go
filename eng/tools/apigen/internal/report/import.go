@@ -31,11 +31,12 @@ type Import struct {
 
 type importCollector struct {
 	source     *packages.Package
-	refs       map[*ast.Ident]*types.Package
+	refs       map[*ast.Ident]*types.Package // synthesized qualifiers
 	aliases    *aliasExpander
 	packages   map[*types.Package]*packages.Package
 	imports    map[Import]struct{}
 	qualifiers map[string]string
+	pending    []*ast.Ident
 }
 
 func (c *importCollector) collect(pkg *Package) ([]Import, error) {
@@ -54,6 +55,18 @@ func (c *importCollector) collect(pkg *Package) ([]Import, error) {
 			return nil, err
 		}
 	}
+	// Preserve source qualifiers and allocate synthesized ones in import-path
+	// order, independent of the order in which declarations were collected.
+	slices.SortFunc(c.pending, func(a, b *ast.Ident) int {
+		return strings.Compare(c.refs[a].Path(), c.refs[b].Path())
+	})
+	for _, ident := range c.pending {
+		name, err := c.allocateQualifier(c.refs[ident])
+		if err != nil {
+			return nil, err
+		}
+		ident.Name = name
+	}
 	for i := range pkg.Constants {
 		value := &pkg.Constants[i]
 		var err error
@@ -61,14 +74,7 @@ func (c *importCollector) collect(pkg *Package) ([]Import, error) {
 		if err != nil {
 			return nil, fmt.Errorf("constant %q: %w", value.Name, err)
 		}
-		if value.TypeExpr != nil {
-			if err := c.node(value.TypeExpr); err != nil {
-				return nil, err
-			}
-		}
 	}
-	// Synthesize missing variable types only after collecting the qualifiers
-	// already used by the displayed source declarations.
 	for i := range pkg.Variables {
 		variable := &pkg.Variables[i]
 		if err := c.completeVariableType(variable); err != nil {
@@ -105,11 +111,13 @@ func (c *importCollector) node(node ast.Node) error {
 		case *ast.SelectorExpr:
 			selected[node.Sel] = true
 		case *ast.Ident:
-			if imported := c.refs[node]; imported != nil {
-				collectError = c.add(imported, node.Name)
+			if c.refs[node] != nil {
+				c.pending = append(c.pending, node)
 			} else if !selected[node] {
 				object := c.source.TypesInfo.Uses[node]
-				if object != nil && object.Pkg() != nil && object.Pkg() != c.source.Types && object.Parent() == object.Pkg().Scope() {
+				if imported, ok := object.(*types.PkgName); ok {
+					collectError = c.add(imported.Imported(), node.Name)
+				} else if object != nil && object.Pkg() != nil && object.Pkg() != c.source.Types && object.Parent() == object.Pkg().Scope() {
 					collectError = c.add(object.Pkg(), ".")
 				}
 			}
@@ -157,6 +165,15 @@ func (c *importCollector) preferredQualifier(pkg *types.Package) string {
 	return pkg.Name()
 }
 
+func (c *importCollector) allocateQualifier(pkg *types.Package) (string, error) {
+	base := c.preferredQualifier(pkg)
+	name := base
+	for suffix := 2; c.qualifiers[name] != "" && c.qualifiers[name] != pkg.Path(); suffix++ {
+		name = base + strconv.Itoa(suffix)
+	}
+	return name, c.add(pkg, name)
+}
+
 func (c *importCollector) completeVariableType(variable *Variable) error {
 	spec := variable.Decl.Specs[0].(*ast.ValueSpec)
 	if spec.Type != nil || len(spec.Values) != 0 {
@@ -178,13 +195,8 @@ func (c *importCollector) completeVariableType(variable *Variable) error {
 			if !ok || qualified[qualifier.Name] == nil {
 				return nil, fmt.Errorf("unknown variable type qualifier in %T", expr)
 			}
-			pkg := qualified[qualifier.Name]
-			base := c.preferredQualifier(pkg)
-			name := base
-			for suffix := 2; c.qualifiers[name] != "" && c.qualifiers[name] != pkg.Path(); suffix++ {
-				name = base + strconv.Itoa(suffix)
-			}
-			if err := c.add(pkg, name); err != nil {
+			name, err := c.allocateQualifier(qualified[qualifier.Name])
+			if err != nil {
 				return nil, err
 			}
 			qualifier.Name = name
@@ -234,10 +246,14 @@ func (c *importCollector) constantType(value *Constant) (ast.Expr, []*ast.Commen
 		reference := c.aliases.typeReference(name, c.source.Types, nil, requiredName, expr.Pos(), c.refs)
 		if selector, ok := reference.(*ast.SelectorExpr); ok {
 			qualifier, ok := selector.X.(*ast.Ident)
-			if !ok {
+			if !ok || c.refs[qualifier] == nil {
 				return nil, fmt.Errorf("unexpected constant type qualifier %T", selector.X)
 			}
-			qualifier.Name = c.preferredQualifier(c.refs[qualifier])
+			name, err := c.allocateQualifier(c.refs[qualifier])
+			if err != nil {
+				return nil, err
+			}
+			qualifier.Name = name
 		}
 		return reference, nil
 	}

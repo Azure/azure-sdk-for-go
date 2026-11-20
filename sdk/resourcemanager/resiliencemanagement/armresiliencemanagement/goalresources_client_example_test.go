@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/GoalResources_Get_Complete_Example.json
+// Generated from example definition: 2026-11-30-preview/GoalResources_Get_Complete_Example.json
 func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGoalResourcesClient().Get(ctx, "production-sg", "zonal-resiliency-goal", "primary-vm", nil)
+	res, err := clientFactory.NewGoalResourcesClient().Get(ctx, "production-sg", "resiliencyGoalAssignment", "web-app-resource", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -33,7 +33,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	// res = armresiliencemanagement.GoalResourcesClientGetResponse{
 	// 	GoalResource: armresiliencemanagement.GoalResource{
 	// 		Properties: &armresiliencemanagement.GoalResourceProperties{
-	// 			ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/ProductionRG/providers/Microsoft.Compute/virtualMachines/PrimaryVm"),
+	// 			ResourceArmID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/ProductionRG/providers/Microsoft.Web/sites/MyWebApp"),
 	// 			ZonalResiliency: &armresiliencemanagement.ResiliencyProperties{
 	// 				UserConfirmation: []*armresiliencemanagement.UserConfirmationItem{
 	// 					{
@@ -45,11 +45,15 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
 	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
 	// 			},
+	// 			RegionalResiliency: &armresiliencemanagement.ResiliencyProperties{
+	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateIncluded),
+	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/production-sg/providers/Microsoft.AzureResilienceManagement/goalAssignments/zonal-resiliency-goal/goalResources/primary-vm"),
-	// 		Name: to.Ptr("primary-vm"),
-	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/goalAssignments/goalResources"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/ProductionRG/providers/Microsoft.AzureResilienceManagement/goalAssignments/resiliency-goal-assignment/goalResources/web-app-resource"),
+	// 		Name: to.Ptr("web-app-resource"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/goalResources"),
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
@@ -62,7 +66,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetCompleteExample() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/GoalResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/GoalResources_Get_MaximumSet_Gen.json
 func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +77,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGoalResourcesClient().Get(ctx, "production-sg", "zonal-resiliency-goal", "primary-vm", nil)
+	res, err := clientFactory.NewGoalResourcesClient().Get(ctx, "umyghwnfpzsgrhpczizcn", "ga1", "gr1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -101,16 +105,21 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
 	// 				ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonUserSelectedExclusion),
 	// 			},
+	// 			RegionalResiliency: &armresiliencemanagement.ResiliencyProperties{
+	// 				GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
+	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
+	// 				ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonFailedOverResource),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/production-sg/providers/Microsoft.AzureResilienceManagement/goalAssignments/zonal-resiliency-goal/goalResources/primary-vm"),
-	// 		Name: to.Ptr("primary-vm"),
-	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/goalAssignments/goalResources"),
+	// 		ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1/goalResources/gr1"),
+	// 		Name: to.Ptr("gr1"),
+	// 		Type: to.Ptr("lvbclp"),
 	// 		SystemData: &armresiliencemanagement.SystemData{
-	// 			CreatedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedBy: to.Ptr("lndhhaimomorael"),
 	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 	// 		},
@@ -118,7 +127,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/GoalResources_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/GoalResources_Get_MinimumSet_Gen.json
 func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +138,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewGoalResourcesClient().Get(ctx, "production-sg", "zonal-resiliency-goal", "primary-vm", nil)
+	res, err := clientFactory.NewGoalResourcesClient().Get(ctx, "sg1", "ga1", "gr1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -146,9 +155,9 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 	// 				AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
 	// 			},
 	// 		},
-	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/production-sg/providers/Microsoft.AzureResilienceManagement/goalAssignments/zonal-resiliency-goal/goalResources/primary-vm"),
-	// 		Name: to.Ptr("primary-vm"),
-	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/goalAssignments/goalResources"),
+	// 		ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1/goalResources/gr1"),
+	// 		Name: to.Ptr("gr1"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/goalResources"),
 	// 		SystemData: &armresiliencemanagement.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
@@ -161,7 +170,7 @@ func ExampleGoalResourcesClient_Get_goalResourcesGetMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/GoalResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/GoalResources_List_MaximumSet_Gen.json
 func ExampleGoalResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +181,7 @@ func ExampleGoalResourcesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewGoalResourcesClient().NewListPager("production-sg", "zonal-resiliency-goal", &armresiliencemanagement.GoalResourcesClientListOptions{
+	pager := clientFactory.NewGoalResourcesClient().NewListPager("sg1", "ga1", &armresiliencemanagement.GoalResourcesClientListOptions{
 		SkipToken: to.Ptr("xntbyoswztnmvitj"),
 		Top:       to.Ptr[int32](69)})
 	for pager.More() {
@@ -208,22 +217,27 @@ func ExampleGoalResourcesClient_NewListPager() {
 		// 						AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateManuallyAttested),
 		// 						ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonUserSelectedExclusion),
 		// 					},
+		// 					RegionalResiliency: &armresiliencemanagement.ResiliencyProperties{
+		// 						GoalParticipation: to.Ptr(armresiliencemanagement.ExclusionStateExcluded),
+		// 						AttestationStatus: to.Ptr(armresiliencemanagement.AttestationStateNotAttested),
+		// 						ExclusionReason: to.Ptr(armresiliencemanagement.ExclusionReasonFailedOverResource),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
 		// 				},
-		// 				ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/production-sg/providers/Microsoft.AzureResilienceManagement/goalAssignments/zonal-resiliency-goal/goalResources/primary-vm"),
-		// 				Name: to.Ptr("primary-vm"),
-		// 				Type: to.Ptr("Microsoft.AzureResilienceManagement/goalAssignments/goalResources"),
+		// 				ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1/goalResources/gr1"),
+		// 				Name: to.Ptr("gr1"),
+		// 				Type: to.Ptr("lvbclp"),
 		// 				SystemData: &armresiliencemanagement.SystemData{
-		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedBy: to.Ptr("dvnfxbuyqhvivfjddjccdtlwajfht"),
 		// 					CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 796000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedBy: to.Ptr("lndhhaimomorael"),
 		// 					LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 6, 15, 3, 42, 797000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/production-sg/providers/Microsoft.AzureResilienceManagement/goalAssignments/zonal-resiliency-goal/goalResources?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sg1/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1/goalResources?api-version=2026-11-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

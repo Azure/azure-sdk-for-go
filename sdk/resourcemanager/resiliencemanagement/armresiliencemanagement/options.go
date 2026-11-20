@@ -255,6 +255,38 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RecoveryConfigProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the RecoveryConfigProfilesClient.BeginCreateOrUpdate
+// method.
+type RecoveryConfigProfilesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoveryConfigProfilesClientBeginDeleteOptions contains the optional parameters for the RecoveryConfigProfilesClient.BeginDelete
+// method.
+type RecoveryConfigProfilesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoveryConfigProfilesClientBeginUpdateOptions contains the optional parameters for the RecoveryConfigProfilesClient.BeginUpdate
+// method.
+type RecoveryConfigProfilesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoveryConfigProfilesClientGetOptions contains the optional parameters for the RecoveryConfigProfilesClient.Get method.
+type RecoveryConfigProfilesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecoveryConfigProfilesClientListOptions contains the optional parameters for the RecoveryConfigProfilesClient.NewListPager
+// method.
+type RecoveryConfigProfilesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // RecoveryJobResourcesClientGetOptions contains the optional parameters for the RecoveryJobResourcesClient.Get method.
 type RecoveryJobResourcesClientGetOptions struct {
 	// placeholder for future optional parameters

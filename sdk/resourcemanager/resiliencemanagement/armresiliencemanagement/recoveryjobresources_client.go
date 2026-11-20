@@ -19,7 +19,7 @@ import (
 // RecoveryJobResourcesClient - Operations for managing recovery job resources.
 // Don't use this type directly, use NewRecoveryJobResourcesClient() instead.
 //
-// Generated from API version 2026-10-01
+// Generated from API version 2026-11-30-preview
 type RecoveryJobResourcesClient struct {
 	internal *arm.Client
 }
@@ -88,7 +88,7 @@ func (client *RecoveryJobResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -165,7 +165,7 @@ func (client *RecoveryJobResourcesClient) listCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261001)
+		reqQP.Set("api-version", version20261130Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

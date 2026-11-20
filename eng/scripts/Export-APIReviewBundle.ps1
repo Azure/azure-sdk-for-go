@@ -73,7 +73,7 @@ try {
   if ($parserExitCode -ne 0) {
     throw "Go APIView parser failed for $PackageName with exit code $parserExitCode."
   }
-  $unsupported = @($parserOutput | Where-Object { $_ -match '^(unexpected|unhandled) node type\b' })
+  $unsupported = @($parserOutput | Where-Object { $_ -match '^(?:(?:unexpected|unhandled) node type\b|unhandled declaration\b)' })
   if ($unsupported.Count -gt 0) {
     throw "Go APIView parser reported unsupported syntax for ${PackageName}: $($unsupported -join '; ')"
   }

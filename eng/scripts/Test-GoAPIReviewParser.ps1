@@ -32,6 +32,10 @@ function Get-ReviewLineText($Line) {
   return (@($Line.Tokens | ForEach-Object { $_.Value }) -join '')
 }
 
+function Get-ProbeDeclarationText($Line) {
+  return (Get-ReviewLineText $Line) -replace '/\* alias of .+ \*/$', ''
+}
+
 function Read-ParserProbe([string] $Executable, [string] $SourceDirectory, [string] $OutputDirectory) {
   New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
   & $Executable $SourceDirectory $OutputDirectory | Out-Host
@@ -51,7 +55,7 @@ function Read-ParserProbe([string] $Executable, [string] $SourceDirectory, [stri
 
 function Assert-ProbeDeclaration($Review, [string] $Name, [string] $Text) {
   $line = Find-ReviewLine $Review.ReviewLines "parserprobe.$Name"
-  if ($null -eq $line -or (Get-ReviewLineText $line) -cne $Text) {
+  if ($null -eq $line -or (Get-ProbeDeclarationText $line) -cne $Text) {
     throw "Go APIView parser compatibility check expected $Text for $Name."
   }
 }
@@ -59,6 +63,7 @@ function Assert-ProbeDeclaration($Review, [string] $Name, [string] $Text) {
 $probeDirectory = Join-Path $WorkingDirectory ('.parser-probe-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $probeDirectory | Out-Null
 $originalModCache = $env:GOMODCACHE
+$originalProxy = $env:GOPROXY
 try {
   $sourceDirectory = Join-Path $probeDirectory 'sdk/parserprobe'
   $typesDirectory = Join-Path $sourceDirectory 'internal/types'
@@ -75,7 +80,7 @@ require example.com/sdk/dependency v1.0.0
 package parserprobe
 import (
   "example.com/sdk/parserprobe/internal/types"
-  "example.com/sdk/dependency"
+  dependency "example.com/sdk/dependency"
 )
 type ByteSlice = types.Data
 type AnotherSlice = types.Data
@@ -85,6 +90,7 @@ func (Defined) Local() {}
 type Direct = []byte
 type External = dependency.Data
 type Contract[T any] interface { Handle(T) }
+type Responder[T any] func(T)
 func StartTestProxy() {}
 func StopTestProxy() {}
 func ExampleClient() {}
@@ -99,15 +105,22 @@ type StringMap map[string]int
 func (StringMap) Size() int { return 0 }
 '@)
   $env:GOMODCACHE = Join-Path $probeDirectory 'modcache'
+  $env:GOPROXY = 'off'
   foreach ($dependency in @(
-    @{ Path = 'modcache/example.com/sdk/dependency@v1.0.0'; Type = '[]byte' },
-    @{ Path = 'modcache/example.com/sdk/dependency@v1.1.0'; Type = '[]rune' },
+    @{ Path = 'modcache/example.com/sdk/dependency@v1.0.0'; Type = '[]byte'; Version = 'v1.0.0' },
+    @{ Path = 'modcache/example.com/sdk/dependency@v1.1.0'; Type = '[]rune'; Version = 'v1.1.0' },
     @{ Path = 'sdk/dependency'; Type = '[]bool' }
   )) {
     $directory = Join-Path $probeDirectory $dependency.Path
     New-Item -ItemType Directory -Path $directory -Force | Out-Null
     [IO.File]::WriteAllText((Join-Path $directory 'go.mod'), "module example.com/sdk/dependency`n`ngo 1.21`n")
     [IO.File]::WriteAllText((Join-Path $directory 'types.go'), "package dependency`ntype Data $($dependency.Type)`n")
+    if ($dependency.ContainsKey('Version')) {
+      $downloadDirectory = Join-Path $env:GOMODCACHE 'cache/download/example.com/sdk/dependency/@v'
+      New-Item -ItemType Directory -Path $downloadDirectory -Force | Out-Null
+      [IO.File]::WriteAllText((Join-Path $downloadDirectory "$($dependency.Version).mod"), "module example.com/sdk/dependency`n`ngo 1.21`n")
+      [IO.File]::WriteAllText((Join-Path $downloadDirectory "$($dependency.Version).info"), "{`"Version`":`"$($dependency.Version)`",`"Time`":`"2020-01-01T00:00:00Z`"}")
+    }
   }
 
   $review = Read-ParserProbe $ParserPath $sourceDirectory $outputDirectory
@@ -119,7 +132,7 @@ func (StringMap) Size() int { return 0 }
   )
   foreach ($expected in $expectedTypes) {
     $line = Find-ReviewLine $review.ReviewLines "parserprobe.$($expected.Name)"
-    if ($null -eq $line -or (Get-ReviewLineText $line) -cne "type$($expected.Name)$($expected.Definition)") {
+    if ($null -eq $line -or (Get-ProbeDeclarationText $line) -cne "type$($expected.Name)$($expected.Definition)") {
       throw "Go APIView parser does not resolve the $($expected.Name) alias. Use a parser that supports aliased composite types."
     }
     foreach ($method in $expected.Methods) {
@@ -141,6 +154,7 @@ func (StringMap) Size() int { return 0 }
   Assert-ProbeDeclaration $review 'Direct' 'typeDirect=[]byte'
   Assert-ProbeDeclaration $review 'External' 'typeExternal=[]byte'
   Assert-ProbeDeclaration $review 'Contract' 'typeContract[Tany]interface'
+  Assert-ProbeDeclaration $review 'Responder' 'typeResponder[Tany]func(T)'
   foreach ($name in @('StartTestProxy', 'StopTestProxy', 'ExampleClient')) {
     if ($null -eq (Find-ReviewLine $review.ReviewLines "parserprobe-$name")) {
       throw "Go APIView parser omitted the exported $name function."
@@ -154,8 +168,10 @@ func (StringMap) Size() int { return 0 }
   Assert-ProbeDeclaration $changed 'Direct' 'typeDirect[]byte'
   Assert-ProbeDeclaration $changed 'External' 'typeExternal=[]rune'
   Assert-ProbeDeclaration $changed 'Contract' 'typeContract[Tcomparable]interface'
+  Assert-ProbeDeclaration $changed 'Responder' 'typeResponder[Tcomparable]func(T)'
 }
 finally {
   $env:GOMODCACHE = $originalModCache
+  $env:GOPROXY = $originalProxy
   Remove-Item -LiteralPath $probeDirectory -Recurse -Force
 }

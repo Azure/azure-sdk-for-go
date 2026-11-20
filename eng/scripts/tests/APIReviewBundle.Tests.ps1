@@ -4,6 +4,7 @@ BeforeAll {
   $confirmPublishedScript = Join-Path $repoRoot 'eng/scripts/Confirm-GoPackagePublished.ps1'
   $testParserScript = Join-Path $repoRoot 'eng/scripts/Test-GoAPIReviewParser.ps1'
   $buildToolsScript = Join-Path $repoRoot 'eng/scripts/Build-APIReviewTools.ps1'
+  $buildHubToolsScript = Join-Path $repoRoot 'eng/scripts/Build-APIReviewHubTools.ps1'
 }
 
 Describe 'Go API review bundles' {
@@ -106,7 +107,9 @@ $global:LASTEXITCODE = 0
 
   It 'rejects unsupported syntax reported by the parser' -TestCases @(
     @{ Diagnostic = 'unexpected node type *ast.ArrayType' },
-    @{ Diagnostic = 'unhandled node type *ast.StarExpr: type Alias *Value' }
+    @{ Diagnostic = 'unhandled node type *ast.StarExpr: type Alias *Value' },
+    @{ Diagnostic = 'unhandled declaration []byte' },
+    @{ Diagnostic = 'unhandled declaration type *ast.ArrayType for *[2]byte' }
   ) {
     param($Diagnostic)
     Add-Content -LiteralPath $parser -Value "`nWrite-Output '$Diagnostic'"
@@ -208,7 +211,8 @@ $lines = foreach ($alias in $aliases) {
 }
 $lines += @(
   @{ LineId = 'parserprobe.Direct'; Tokens = @(@{ Value = $direct }) },
-  @{ LineId = 'parserprobe.Contract'; Tokens = @(@{ Value = "typeContract[$constraint]interface" }) }
+  @{ LineId = 'parserprobe.Contract'; Tokens = @(@{ Value = "typeContract[$constraint]interface" }) },
+  @{ LineId = 'parserprobe.Responder'; Tokens = @(@{ Value = "typeResponder[$constraint]func(T)" }) }
 )
 foreach ($name in @('StartTestProxy', 'StopTestProxy', 'ExampleClient')) {
   $lines += @{ LineId = "parserprobe-$name"; Tokens = @(@{ Value = "func$name()" }) }
@@ -248,6 +252,7 @@ $global:LASTEXITCODE = 0
   It 'rejects incomplete API contracts: <Case>' -TestCases @(
     @{ Case = 'alias identity'; Original = "'typeDirect=[]byte'"; Replacement = "'typeDirect[]byte'"; Error = '*expected typeDirect=*' },
     @{ Case = 'generic constraints'; Original = "'Tcomparable'"; Replacement = "'Tany'"; Error = '*expected typeContract*Tcomparable*' },
+    @{ Case = 'generic defined types'; Original = '"typeResponder[$constraint]func(T)"'; Replacement = "'typeResponderfunc(T)'"; Error = '*expected typeResponder*Tany*' },
     @{ Case = 'dependency versions'; Original = "'=[]rune'"; Replacement = "'=[]byte'"; Error = '*expected typeExternal=*rune*' },
     @{ Case = 'exported function names'; Original = "'StartTestProxy'"; Replacement = "'Suppressed'"; Error = '*omitted the exported StartTestProxy*' }
   ) {
@@ -341,6 +346,89 @@ Describe 'Pinned Go API review tooling' {
     $global:ToolingFetchFails = $FailFetch
     { & $buildToolsScript -LanguageToolsSourceDirectory $languageRoot -BinOutputDirectory $binDirectory } | Should -Throw $Error
     @(Get-ChildItem -LiteralPath $binDirectory -Filter '.tools-source-*' -Force).Count | Should -Be 0
+  }
+}
+
+Describe 'Go API Review Hub target tooling' {
+  BeforeAll {
+    function global:git {
+      $arguments = @($args)
+      $global:HubGitCalls += ($arguments -join '|')
+      $global:LASTEXITCODE = 0
+      if ($arguments[0] -eq 'init') {
+        New-Item -ItemType Directory -Path $arguments[-1] -Force | Out-Null
+      }
+      elseif ($arguments -contains 'checkout') {
+        $checkout = $arguments[1]
+        New-Item -ItemType Directory -Path (Join-Path $checkout 'eng/scripts') -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $checkout 'eng/scripts/Build-APIReviewTools.ps1') -Value @'
+param($LanguageToolsSourceDirectory, $BinOutputDirectory)
+$global:HubToolsRoot = $LanguageToolsSourceDirectory
+'@
+      }
+      elseif ($arguments -contains 'rev-parse') {
+        return $global:HubTargetHead
+      }
+    }
+  }
+
+  AfterAll {
+    Remove-Item Function:\git
+    Remove-Variable HubGitCalls, HubTargetHead, HubToolsRoot -Scope Global
+  }
+
+  BeforeEach {
+    $testRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString())
+    $sourceRoot = Join-Path $testRoot 'source'
+    $toolsDirectory = Join-Path $testRoot 'bin'
+    New-Item -ItemType Directory -Path (Join-Path $sourceRoot 'eng/scripts'), $toolsDirectory -Force | Out-Null
+    Set-Content -LiteralPath (Join-Path $sourceRoot 'eng/scripts/Build-APIReviewTools.ps1') -Value @'
+param($LanguageToolsSourceDirectory, $BinOutputDirectory)
+$global:HubToolsRoot = $LanguageToolsSourceDirectory
+'@
+    $targetCommit = 'a' * 40
+    $global:HubTargetHead = $targetCommit
+    $global:HubGitCalls = @()
+    $global:HubToolsRoot = ''
+  }
+
+  It 'builds target tools for both <Kind> and target artifacts' -TestCases @(
+    @{ Kind = 'base' }, @{ Kind = 'target' }
+  ) {
+    param($Kind)
+    & $buildHubToolsScript -SourceRoot $sourceRoot -RepositoryFullName 'Azure/azure-sdk-for-go' `
+      -TargetCommit $targetCommit -Kind $Kind -ToolsDirectory $toolsDirectory -WorkingDirectory $testRoot
+    if ($Kind -eq 'target') {
+      $global:HubToolsRoot | Should -Be $sourceRoot
+      @($global:HubGitCalls | Where-Object { $_ -like '*|fetch|*' }).Count | Should -Be 0
+    }
+    else {
+      $global:HubToolsRoot | Should -Not -Be $sourceRoot
+      @($global:HubGitCalls | Where-Object { $_ -like "*|fetch|*|origin|$targetCommit" }).Count | Should -Be 1
+      (Test-Path -LiteralPath $global:HubToolsRoot) | Should -BeFalse
+    }
+  }
+
+  It 'rejects a <Kind> target checkout that does not match the requested commit' -TestCases @(
+    @{ Kind = 'base' }, @{ Kind = 'target' }
+  ) {
+    param($Kind)
+    $global:HubTargetHead = 'b' * 40
+    { & $buildHubToolsScript -SourceRoot $sourceRoot -RepositoryFullName 'Azure/azure-sdk-for-go' `
+        -TargetCommit $targetCommit -Kind $Kind -ToolsDirectory $toolsDirectory -WorkingDirectory $testRoot } |
+      Should -Throw '*does not match commit*'
+    $global:HubToolsRoot | Should -BeNullOrEmpty
+    @(Get-ChildItem -LiteralPath $testRoot -Filter 'go-api-review-target-*' -Directory).Count | Should -Be 0
+  }
+
+  It 'rejects an invalid target commit or repository before fetching' {
+    { & $buildHubToolsScript -SourceRoot $sourceRoot -RepositoryFullName 'Azure/azure-sdk-for-go' `
+        -TargetCommit 'main' -Kind base -ToolsDirectory $toolsDirectory -WorkingDirectory $testRoot } |
+      Should -Throw '*40-character target commit*'
+    { & $buildHubToolsScript -SourceRoot $sourceRoot -RepositoryFullName 'invalid/repo/extra' `
+        -TargetCommit $targetCommit -Kind base -ToolsDirectory $toolsDirectory -WorkingDirectory $testRoot } |
+      Should -Throw '*owner/repository*'
+    $global:HubGitCalls.Count | Should -Be 0
   }
 }
 

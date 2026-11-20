@@ -21,19 +21,11 @@ jobs:
       poolName: ${{ parameters.poolName }}
       imageOverride: ${{ parameters.imageOverride }}
       stepList:
-        - task: GoTool@0
-          displayName: Select Go version
-          inputs:
-            version: $(GO_VERSION_LATEST)
-
         - pwsh: |
             $ErrorActionPreference = 'Stop'
-            & (Join-Path $env:LANGUAGE_TOOLS_SOURCE_DIRECTORY 'eng/scripts/Build-APIReviewTools.ps1') `
-              -ToolsSourceDirectory $env:TOOLS_SOURCE_DIRECTORY `
-              -LanguageToolsSourceDirectory $env:LANGUAGE_TOOLS_SOURCE_DIRECTORY `
-              -BinOutputDirectory $env:BIN_OUTPUT_DIRECTORY
-          displayName: Build Go API review tooling
+            Copy-Item -LiteralPath (Join-Path $env:LANGUAGE_TOOLS_SOURCE_DIRECTORY 'eng/scripts/Build-APIReviewHubTools.ps1') `
+              -Destination $env:BIN_OUTPUT_DIRECTORY
+          displayName: Prepare Go API review tooling bootstrap
           env:
-            TOOLS_SOURCE_DIRECTORY: $(ToolsSourceDirectory)
             LANGUAGE_TOOLS_SOURCE_DIRECTORY: $(LanguageToolsSourceDirectory)
             BIN_OUTPUT_DIRECTORY: $(BinOutputDirectory)

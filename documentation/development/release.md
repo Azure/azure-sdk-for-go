@@ -30,10 +30,10 @@ Obtain package-name approval and any required API review approval before releasi
 
 Repository registration and authorization of the **ADO to ARH Service Connection** are required; forks also need the GitHub Apps described in the [onboarding guide](https://github.com/Azure/azure-sdk-tools/wiki/API-Review-Hub-Onboarding).
 
-Review generation and release checks build the Go APIView parser and copy the Markdown renderer from the immutable `azure-sdk-tools` commit in `eng/api-review-tools.json`. Update this pin deliberately and regenerate affected reviews when the tooling changes. The Hub's `toolsRef` selects orchestration code, not the parser or renderer.
+Review generation and release checks build the Go APIView parser and copy the Markdown renderer from the immutable `azure-sdk-tools` commit in `eng/api-review-tools.json` at the reviewed target commit. Both base and target reviews use that pin. Update it deliberately and regenerate affected reviews when the tooling changes. The Hub's `toolsRef` selects orchestration code, not the parser or renderer.
 
-Tool builds verify aliased composite types and methods, alias identity, generic interface constraints, exported function names, and dependency-version resolution using an offline probe. Bundle generation rejects parser error and fatal diagnostics rather than approving incomplete APIs; informational and warning diagnostics are allowed.
+Tool builds verify aliased composite types and methods, alias identity, generic interface and defined-type constraints, exported function names, and dependency-version resolution using an offline probe. Bundle generation rejects unsupported declarations and parser error and fatal diagnostics rather than approving incomplete APIs; informational and warning diagnostics are allowed.
 
-Modules with unsupported APIs, such as unexported embedded types or unresolved nested aliases, remain blocked until the parser is corrected and the tooling pin is updated.
+The current parser does not preserve generic defined-type constraints, so the compatibility probe blocks tooling builds until that is corrected and the pin is updated. Modules with unsupported APIs, such as unexported embedded types or unresolved nested aliases, also remain blocked until the parser is corrected.
 
 If release recording fails after the tag is created, repair it using `azsdk package mark-released` with the package name, version, and API hash from the pipeline logs rather than creating the tag again.

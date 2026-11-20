@@ -42,6 +42,26 @@ jobs:
       poolName: ${{ parameters.poolName }}
       imageOverride: ${{ parameters.imageOverride }}
       stepList:
+        - task: GoTool@0
+          displayName: Select Go version
+          inputs:
+            version: $(GO_VERSION_LATEST)
+        - pwsh: |
+            $ErrorActionPreference = 'Stop'
+            & (Join-Path $env:BIN_DIRECTORY 'Build-APIReviewHubTools.ps1') `
+              -SourceRoot $env:SOURCE_DIRECTORY `
+              -RepositoryFullName $env:REPOSITORY_FULL_NAME `
+              -TargetCommit $env:TARGET_COMMIT `
+              -Kind $env:REVIEW_KIND `
+              -ToolsDirectory $env:BIN_DIRECTORY `
+              -WorkingDirectory $env:AGENT_TEMPDIRECTORY
+          displayName: Build Go tools from the target commit
+          env:
+            SOURCE_DIRECTORY: $(Build.SourcesDirectory)
+            BIN_DIRECTORY: $(BinDirectory)
+            REPOSITORY_FULL_NAME: ${{ format('{0}/{1}', parameters.repositoryOwner, 'azure-sdk-for-go') }}
+            TARGET_COMMIT: $(ApiReviewTargetCommit)
+            REVIEW_KIND: ${{ parameters.kind }}
         - pwsh: |
             $ErrorActionPreference = 'Stop'
             $parserName = if ($IsWindows) { 'apiviewgo.exe' } else { 'apiviewgo' }

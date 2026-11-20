@@ -214,6 +214,17 @@ stages:
           - template: /eng/common/pipelines/templates/steps/install-azsdk-cli.yml
             parameters:
               SourceRootPath: $(Build.SourcesDirectory)
+              Condition: >-
+                and(
+                  succeeded(),
+                  not(
+                    and(
+                      eq(variables['Skip.CheckPackageApproval'], 'true'),
+                      eq(variables['Skip.MarkPackageReleased'], 'true'),
+                      eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
+                    )
+                  )
+                )
           - template: /eng/common/pipelines/templates/steps/get-package-approval-status.yml
             parameters:
               PackageInfoFiles:

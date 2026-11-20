@@ -1669,51 +1669,6 @@ typedef struct cosmos_operation_options_t {
 } cosmos_operation_options_t;
 
 /**
- * Flat C ABI options for building a `cosmos_runtime_t` in a single call.
- *
- * Every field is sentinel-encoded so a zeroed struct (or a NULL pointer
- * passed to [`cosmos_runtime_build`]) means "use the driver defaults for
- * everything":
- *
- * - `workload_id`: `0` = unset (valid range otherwise `1`–`50`).
- * - `correlation_id` / `user_agent_suffix` / `wrapping_sdk_identifier`:
- *   NULL/0 = unset; non-NULL/0 = explicit empty, per [`CosmosStringView`].
- * - `cpu_refresh_interval_ms`: `0` = unset (valid range otherwise
- *   `1000`–`60000`).
- *
- * Construct with [`cosmos_runtime_options_default`] to obtain an all-unset
- * value, then set the fields you care about.
- */
-typedef struct cosmos_runtime_options_t {
-  /**
-   * Workload identifier (valid range `1`–`50`). `0` = unset.
-   */
-  uint8_t workload_id;
-  /**
-   * Correlation id for client-side metrics (counted UTF-8), or NULL/0 = unset.
-   */
-  struct cosmos_string_view_t correlation_id;
-  /**
-   * User-agent suffix (counted UTF-8), or NULL/0 = unset.
-   */
-  struct cosmos_string_view_t user_agent_suffix;
-  /**
-   * Wrapping-SDK identifier prepended to the User-Agent header
-   * (counted UTF-8), or NULL/0 = unset.
-   */
-  struct cosmos_string_view_t wrapping_sdk_identifier;
-  /**
-   * CPU/memory monitoring refresh interval in milliseconds (valid range
-   * `1000`–`60000`). `0` = unset.
-   */
-  uint64_t cpu_refresh_interval_ms;
-  /**
-   * Runtime operation defaults, copied during construction. NULL inherits.
-   */
-  const struct cosmos_operation_options_t *operation_options;
-} cosmos_runtime_options_t;
-
-/**
  * Optional exact Rust duration: seconds plus nanoseconds less than 1,000,000,000.
  *
  * `is_set` is 0 or 1. Unset payloads must be zero. The full Rust Duration domain
@@ -1735,14 +1690,36 @@ typedef struct cosmos_optional_u64_t {
 } cosmos_optional_u64_t;
 
 /**
- * Typed connection-pool overrides. Unset fields preserve native environment/default resolution.
+ * Self-contained runtime construction options. Initialize with [`cosmos_runtime_options_v2_init()`].
  *
  * Boolean fields use 0 unset, 1 false, 2 true. Duration and numeric bounds are
- * validated by the native pool builder; no host policy engine is required.
+ * validated by the native builders. All borrowed strings, arrays, and operation
+ * options are copied during construction. Unset fields retain native defaults.
  */
-typedef struct cosmos_connection_pool_options_t {
+typedef struct cosmos_runtime_options_v2_t {
   uint32_t struct_size_bytes;
   uint32_t abi_version;
+  /**
+   * 0 inherits; otherwise a workload identifier from 1 through 50.
+   */
+  uint8_t workload_id;
+  struct cosmos_string_view_t correlation_id;
+  struct cosmos_string_view_t user_agent_suffix;
+  struct cosmos_string_view_t wrapping_sdk_identifier;
+  /**
+   * 0 inherits; otherwise 1000 through 60000 milliseconds.
+   */
+  uint64_t cpu_refresh_interval_ms;
+  /**
+   * NULL inherits. Borrowed options and their inputs are copied during construction.
+   */
+  const struct cosmos_operation_options_t *operation_options;
+  struct cosmos_duration_t endpoint_unavailability_ttl;
+  struct cosmos_duration_t max_throttle_retry_wait_time;
+  /**
+   * A positive threshold enables hedging; explicit zero is rejected.
+   */
+  struct cosmos_duration_t hedge_threshold;
   int8_t proxy_allowed;
   int8_t is_http2_allowed;
   int8_t gateway_v2_disabled;
@@ -1779,72 +1756,13 @@ typedef struct cosmos_connection_pool_options_t {
   struct cosmos_optional_u64_t min_http2_connections_per_endpoint;
   struct cosmos_optional_u64_t http2_consecutive_failure_threshold;
   struct cosmos_optional_u64_t tcp_keepalive_retries;
-} cosmos_connection_pool_options_t;
-
-/**
- * Runtime diagnostics defaults and retention limits, applied at construction only.
- */
-typedef struct cosmos_diagnostics_options_t {
-  uint32_t struct_size_bytes;
-  uint32_t abi_version;
   /**
    * 0 inherits; 1 selects summary; 2 selects detailed.
    */
-  uint32_t default_verbosity;
+  uint32_t diagnostics_verbosity;
   struct cosmos_optional_u64_t max_summary_size_bytes;
   struct cosmos_optional_u64_t max_request_diagnostics;
-} cosmos_diagnostics_options_t;
-
-/**
- * Exact-duration overrides for operation defaults at runtime or client construction.
- *
- * NULL `legacy` preserves the enclosing runtime or client base. All nested inputs are copied.
- */
-typedef struct cosmos_operation_options_v2_t {
-  uint32_t struct_size_bytes;
-  uint32_t abi_version;
-  const struct cosmos_operation_options_t *legacy;
-  struct cosmos_duration_t endpoint_unavailability_ttl;
-  struct cosmos_duration_t max_throttle_retry_wait_time;
-  /**
-   * A positive threshold enables hedging; zero is rejected.
-   */
-  struct cosmos_duration_t hedge_threshold;
-} cosmos_operation_options_v2_t;
-
-/**
- * Additive runtime construction. NULL nested records inherit defaults.
- */
-typedef struct cosmos_runtime_options_v2_t {
-  uint32_t struct_size_bytes;
-  uint32_t abi_version;
-  const struct cosmos_runtime_options_t *legacy;
-  const struct cosmos_connection_pool_options_t *connection_pool;
-  const struct cosmos_diagnostics_options_t *diagnostics;
-  const struct cosmos_operation_options_v2_t *operation_options;
 } cosmos_runtime_options_v2_t;
-
-/**
- * Client-scoped topology and partition-failover overrides.
- */
-typedef struct cosmos_partition_failover_options_t {
-  uint32_t struct_size_bytes;
-  uint32_t abi_version;
-  /**
-   * 0 inherits; 1 eager; 2 lazy.
-   */
-  uint32_t topology_cache_mode;
-  /**
-   * 0 inherits, 1 disables, 2 enables; native environment kill switches retain precedence.
-   */
-  int8_t circuit_breaker_enabled;
-  struct cosmos_optional_u64_t read_failure_threshold;
-  struct cosmos_optional_u64_t write_failure_threshold;
-  struct cosmos_optional_u64_t consecutive_hedge_win_threshold;
-  struct cosmos_duration_t counter_reset_window;
-  struct cosmos_duration_t partition_unavailability_duration;
-  struct cosmos_duration_t failback_sweep_interval;
-} cosmos_partition_failover_options_t;
 
 /**
  * Size/version prefix shared by native fault-injection records.
@@ -1928,47 +1846,27 @@ typedef struct cosmos_fault_injection_rule_t {
 } cosmos_fault_injection_rule_t;
 
 /**
- * Versioned driver-options record with native fault-injection rules.
+ * Self-contained client configuration. Initialize with [`cosmos_driver_options_config_v3_init()`].
  *
- * The caller owns every pointer reachable from this record. The build call
- * validates and copies all regions, operation options, rules, headers, and
- * body bytes before returning; none of those input buffers need to outlive
- * [`cosmos_driver_options_build_v2`].
- *
- * `fault_injection_rules` is a strided array. For v1 records set
- * `fault_injection_rule_stride` to `sizeof(cosmos_fault_injection_rule_t)`.
- * A future larger rule record can be passed without changing this layout by
- * increasing its own `struct_size` and the stride while retaining ABI version
- * 1. A new ABI version is rejected until the native wrapper supports it.
+ * Construction copies all strings, arrays, rules, and operation options. Unset
+ * fields retain native defaults; no runtime or sibling client is mutated.
  */
-typedef struct cosmos_driver_options_config_v2_t {
-  struct cosmos_fault_injection_record_header_t header;
+typedef struct cosmos_driver_options_config_v3_t {
+  uint32_t struct_size_bytes;
+  uint32_t abi_version;
   const struct cosmos_string_view_t *preferred_regions;
   uintptr_t preferred_regions_len;
+  /**
+   * NULL inherits. Borrowed options and their inputs are copied during construction.
+   */
   const struct cosmos_operation_options_t *operation_options;
   const struct cosmos_fault_injection_rule_t *fault_injection_rules;
   uintptr_t fault_injection_rules_len;
   uintptr_t fault_injection_rule_stride;
   /**
-   * Whether to reject unsafe user-defined names before request planning,
-   * including item names supplied to Create and Upsert.
-   *
-   * Tri-state bool: `0` leaves the driver default unchanged, `1` disables
-   * validation, and `2` enables validation. The driver default is enabled.
+   * 0 inherits, 1 disables validation, 2 enables validation.
    */
   int8_t resource_name_validation_enabled;
-} cosmos_driver_options_config_v2_t;
-
-/**
- * Additive client construction, copying all nested records, strings, and ordered endpoints.
- */
-typedef struct cosmos_driver_options_config_v3_t {
-  uint32_t struct_size_bytes;
-  uint32_t abi_version;
-  /**
-   * Required v2 base, preserving fault-injection and existing option behavior.
-   */
-  const struct cosmos_driver_options_config_v2_t *legacy;
   /**
    * NULL/0 inherits the account's backup endpoints; non-NULL/0 explicitly clears them.
    */
@@ -1978,8 +1876,26 @@ typedef struct cosmos_driver_options_config_v3_t {
    * NULL/0 inherits runtime identity; explicit empty is validated by UserAgentSuffix.
    */
   struct cosmos_string_view_t user_agent_suffix;
-  const struct cosmos_partition_failover_options_t *partition_failover;
-  const struct cosmos_operation_options_v2_t *operation_options;
+  /**
+   * 0 inherits; 1 eager; 2 lazy.
+   */
+  uint32_t topology_cache_mode;
+  /**
+   * 0 inherits, 1 disables, 2 enables; native environment kill switches retain precedence.
+   */
+  int8_t circuit_breaker_enabled;
+  struct cosmos_optional_u64_t read_failure_threshold;
+  struct cosmos_optional_u64_t write_failure_threshold;
+  struct cosmos_optional_u64_t consecutive_hedge_win_threshold;
+  struct cosmos_duration_t counter_reset_window;
+  struct cosmos_duration_t partition_unavailability_duration;
+  struct cosmos_duration_t failback_sweep_interval;
+  struct cosmos_duration_t endpoint_unavailability_ttl;
+  struct cosmos_duration_t max_throttle_retry_wait_time;
+  /**
+   * A positive threshold enables hedging; explicit zero is rejected.
+   */
+  struct cosmos_duration_t hedge_threshold;
 } cosmos_driver_options_config_v3_t;
 
 /**
@@ -2371,6 +2287,73 @@ typedef struct cosmos_driver_options_config_t {
 } cosmos_driver_options_config_t;
 
 /**
+ * Versioned driver-options record with native fault-injection rules.
+ *
+ * The caller owns every pointer reachable from this record. The build call
+ * validates and copies all regions, operation options, rules, headers, and
+ * body bytes before returning; none of those input buffers need to outlive
+ * [`cosmos_driver_options_build_v2`].
+ *
+ * `fault_injection_rules` is a strided array. For v1 records set
+ * `fault_injection_rule_stride` to `sizeof(cosmos_fault_injection_rule_t)`.
+ * A future larger rule record can be passed without changing this layout by
+ * increasing its own `struct_size` and the stride while retaining ABI version
+ * 1. A new ABI version is rejected until the native wrapper supports it.
+ */
+typedef struct cosmos_driver_options_config_v2_t {
+  struct cosmos_fault_injection_record_header_t header;
+  const struct cosmos_string_view_t *preferred_regions;
+  uintptr_t preferred_regions_len;
+  const struct cosmos_operation_options_t *operation_options;
+  const struct cosmos_fault_injection_rule_t *fault_injection_rules;
+  uintptr_t fault_injection_rules_len;
+  uintptr_t fault_injection_rule_stride;
+  /**
+   * Whether to reject unsafe user-defined names before request planning,
+   * including item names supplied to Create and Upsert.
+   *
+   * Tri-state bool: `0` leaves the driver default unchanged, `1` disables
+   * validation, and `2` enables validation. The driver default is enabled.
+   */
+  int8_t resource_name_validation_enabled;
+} cosmos_driver_options_config_v2_t;
+
+/**
+ * Owned feed-range bounds and logical partition-key identity.
+ *
+ * Free each string independently with `cosmos_string_free`. Neither string
+ * borrows from the range handle; no separate result-record free is needed.
+ */
+typedef struct cosmos_feed_range_info_t {
+  /**
+   * Owned hexadecimal inclusive minimum, including the empty minimum.
+   */
+  char *min_inclusive;
+  /**
+   * Owned hexadecimal exclusive maximum.
+   */
+  char *max_exclusive;
+  /**
+   * 1 if the handle retains logical partition-key identity; otherwise 0.
+   */
+  uint8_t is_logical_partition;
+} cosmos_feed_range_info_t;
+
+/**
+ * The driver's effective-bound subset and overlap results, encoded as 0 or 1.
+ */
+typedef struct cosmos_feed_range_relation_t {
+  /**
+   * Whether the first range is a subset of the second range.
+   */
+  uint8_t is_subset;
+  /**
+   * Whether the ranges overlap.
+   */
+  uint8_t overlaps;
+} cosmos_feed_range_relation_t;
+
+/**
  * One selected logical key, with an item id only for item selection.
  */
 typedef struct cosmos_read_many_identity_t {
@@ -2451,6 +2434,51 @@ typedef struct cosmos_read_many_request_t {
    */
   uint32_t reserved[4];
 } cosmos_read_many_request_t;
+
+/**
+ * Flat C ABI options for building a `cosmos_runtime_t` in a single call.
+ *
+ * Every field is sentinel-encoded so a zeroed struct (or a NULL pointer
+ * passed to [`cosmos_runtime_build`]) means "use the driver defaults for
+ * everything":
+ *
+ * - `workload_id`: `0` = unset (valid range otherwise `1`–`50`).
+ * - `correlation_id` / `user_agent_suffix` / `wrapping_sdk_identifier`:
+ *   NULL/0 = unset; non-NULL/0 = explicit empty, per [`CosmosStringView`].
+ * - `cpu_refresh_interval_ms`: `0` = unset (valid range otherwise
+ *   `1000`–`60000`).
+ *
+ * Construct with [`cosmos_runtime_options_default`] to obtain an all-unset
+ * value, then set the fields you care about.
+ */
+typedef struct cosmos_runtime_options_t {
+  /**
+   * Workload identifier (valid range `1`–`50`). `0` = unset.
+   */
+  uint8_t workload_id;
+  /**
+   * Correlation id for client-side metrics (counted UTF-8), or NULL/0 = unset.
+   */
+  struct cosmos_string_view_t correlation_id;
+  /**
+   * User-agent suffix (counted UTF-8), or NULL/0 = unset.
+   */
+  struct cosmos_string_view_t user_agent_suffix;
+  /**
+   * Wrapping-SDK identifier prepended to the User-Agent header
+   * (counted UTF-8), or NULL/0 = unset.
+   */
+  struct cosmos_string_view_t wrapping_sdk_identifier;
+  /**
+   * CPU/memory monitoring refresh interval in milliseconds (valid range
+   * `1000`–`60000`). `0` = unset.
+   */
+  uint64_t cpu_refresh_interval_ms;
+  /**
+   * Runtime operation defaults, copied during construction. NULL inherits.
+   */
+  const struct cosmos_operation_options_t *operation_options;
+} cosmos_runtime_options_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -2698,29 +2726,9 @@ void cosmos_management_options_init(struct cosmos_management_options_t *out);
 void cosmos_runtime_options_v2_init(struct cosmos_runtime_options_v2_t *out);
 
 /**
- * Initializes transport configuration to inherited defaults.
- */
-void cosmos_connection_pool_options_init(struct cosmos_connection_pool_options_t *out);
-
-/**
- * Initializes diagnostics configuration to inherited defaults.
- */
-void cosmos_diagnostics_options_init(struct cosmos_diagnostics_options_t *out);
-
-/**
- * Initializes partition-failover configuration to inherited defaults.
- */
-void cosmos_partition_failover_options_init(struct cosmos_partition_failover_options_t *out);
-
-/**
  * Initializes client construction options to inherited defaults.
  */
 void cosmos_driver_options_config_v3_init(struct cosmos_driver_options_config_v3_t *out);
-
-/**
- * Initializes exact-duration operation defaults to inherited settings.
- */
-void cosmos_operation_options_v2_init(struct cosmos_operation_options_v2_t *out);
 
 /**
  * Builds a runtime with typed transport, diagnostics, and precision-preserving defaults.
@@ -3196,33 +3204,23 @@ cosmos_status_code_t cosmos_feed_range_serialize(const struct cosmos_feed_range_
                                                  char **out);
 
 /**
- * Returns owned hexadecimal bounds. Free each string with `cosmos_string_free`.
+ * Returns owned bounds and logical identity. Zeroes the output on failure.
  *
- * Both output slots must be non-NULL and distinct.
+ * `out` must point to writable, aligned storage for one [`CosmosFeedRangeInfo`].
+ * Free any previous strings before reusing the output storage.
  */
-cosmos_status_code_t cosmos_feed_range_bounds(const struct cosmos_feed_range_t *range,
-                                              char **min,
-                                              char **max);
+cosmos_status_code_t cosmos_feed_range_inspect(const struct cosmos_feed_range_t *range,
+                                               struct cosmos_feed_range_info_t *out);
 
 /**
- * Reports whether the handle retains logical partition-key identity (0 or 1).
+ * Compares effective bounds using the driver's existing subset and overlap semantics.
+ *
+ * `out` must point to writable, aligned storage for one [`CosmosFeedRangeRelation`].
+ * Failure zeroes the output; neither input handle is consumed.
  */
-cosmos_status_code_t cosmos_feed_range_is_logical_partition(const struct cosmos_feed_range_t *range,
-                                                            uint8_t *out);
-
-/**
- * Reports the driver's effective-bound subset comparison (0 or 1).
- */
-cosmos_status_code_t cosmos_feed_range_is_subset_of(const struct cosmos_feed_range_t *range,
-                                                    const struct cosmos_feed_range_t *other,
-                                                    uint8_t *out);
-
-/**
- * Reports the driver's half-open effective-bound overlap comparison (0 or 1).
- */
-cosmos_status_code_t cosmos_feed_range_overlaps(const struct cosmos_feed_range_t *range,
-                                                const struct cosmos_feed_range_t *other,
-                                                uint8_t *out);
+cosmos_status_code_t cosmos_feed_range_relate(const struct cosmos_feed_range_t *range,
+                                              const struct cosmos_feed_range_t *other,
+                                              struct cosmos_feed_range_relation_t *out);
 
 /**
  * Constructs a feed range covering the entire EPK key space. Mirrors

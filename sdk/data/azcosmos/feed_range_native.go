@@ -52,7 +52,7 @@ func copyNativeFeedRange(handle *C.cosmos_feed_range_t) (FeedRange, error) {
 	if handle == nil {
 		return FeedRange{}, errors.New("azcosmos: native completion has no feed range")
 	}
-	var serialized, min, max *C.char
+	var serialized *C.char
 	if status := C.cosmos_feed_range_serialize(handle, &serialized); status != 0 {
 		return FeedRange{}, statusError(status, nil, "serializing feed range")
 	}
@@ -63,18 +63,15 @@ func copyNativeFeedRange(handle *C.cosmos_feed_range_t) (FeedRange, error) {
 	}
 	defer C.cosmos_feed_range_free(canonical)
 	handle = canonical
-	if status := C.cosmos_feed_range_bounds(handle, &min, &max); status != 0 {
-		return FeedRange{}, statusError(status, nil, "inspecting feed range bounds")
+	var info C.cosmos_feed_range_info_t
+	if status := C.cosmos_feed_range_inspect(handle, &info); status != 0 {
+		return FeedRange{}, statusError(status, nil, "inspecting feed range")
 	}
-	defer C.cosmos_string_free(min)
-	defer C.cosmos_string_free(max)
-	var logical C.uint8_t
-	if status := C.cosmos_feed_range_is_logical_partition(handle, &logical); status != 0 {
-		return FeedRange{}, statusError(status, nil, "inspecting feed range kind")
-	}
+	defer C.cosmos_string_free(info.min_inclusive)
+	defer C.cosmos_string_free(info.max_exclusive)
 	return FeedRange{
-		serialized: C.GoString(serialized), minInclusive: C.GoString(min),
-		maxExclusive: C.GoString(max), logical: logical != 0,
+		serialized: C.GoString(serialized), minInclusive: C.GoString(info.min_inclusive),
+		maxExclusive: C.GoString(info.max_exclusive), logical: info.is_logical_partition != 0,
 	}, nil
 }
 
@@ -89,16 +86,15 @@ func compareFeedRanges(left, right FeedRange, overlaps bool) (bool, error) {
 		return false, statusError(status, nil, "parsing second feed range")
 	}
 	defer C.cosmos_feed_range_free(r)
-	var result C.uint8_t
-	if overlaps {
-		status = C.cosmos_feed_range_overlaps(l, r, &result)
-	} else {
-		status = C.cosmos_feed_range_is_subset_of(l, r, &result)
-	}
+	var result C.cosmos_feed_range_relation_t
+	status = C.cosmos_feed_range_relate(l, r, &result)
 	if status != 0 {
 		return false, statusError(status, nil, "comparing feed ranges")
 	}
-	return result != 0, nil
+	if overlaps {
+		return result.overlaps != 0, nil
+	}
+	return result.is_subset != 0, nil
 }
 
 func (c *ContainerClient) getFeedRanges(ctx context.Context, forceRefresh bool) (GetFeedRangesResponse, error) {

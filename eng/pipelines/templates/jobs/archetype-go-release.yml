@@ -167,60 +167,16 @@ stages:
               filePath: ./eng/scripts/validate_go_mod_major_version.ps1
               arguments: '${{ parameters.ServiceDirectory }}'
               pwsh: true
-          - task: GoTool@0
-            displayName: Select Go version for API review
-            condition: >-
-              and(
-                succeeded(),
-                not(
-                  and(
-                    eq(variables['Skip.CheckPackageApproval'], 'true'),
-                    eq(variables['Skip.MarkPackageReleased'], 'true'),
-                    eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
-                  )
-                )
-              )
-            inputs:
-              version: $(GO_VERSION_LATEST)
-          - pwsh: |
-              $ErrorActionPreference = 'Stop'
-              $workDirectory = Join-Path $env:AGENT_TEMPDIRECTORY ('go-api-review-' + [guid]::NewGuid().ToString('N'))
-              New-Item -ItemType Directory -Path $workDirectory | Out-Null
-              $binDirectory = Join-Path $workDirectory 'bin'
-              & (Join-Path $env:SOURCE_DIRECTORY 'eng/scripts/Build-APIReviewTools.ps1') `
-                -LanguageToolsSourceDirectory $env:SOURCE_DIRECTORY `
-                -BinOutputDirectory $binDirectory
-              & (Join-Path $env:SOURCE_DIRECTORY 'eng/scripts/Set-PackageApiReviewHash.ps1') `
-                -PackageInfoFile $env:PACKAGE_INFO_FILE `
-                -SourceRoot $env:SOURCE_DIRECTORY `
-                -ToolsDirectory $binDirectory `
-                -ParserPath (Join-Path $binDirectory 'apiviewgo') `
-                -OutputDirectory (Join-Path $workDirectory 'bundle')
-            displayName: Prepare Go API review hash
-            condition: >-
-              and(
-                succeeded(),
-                not(
-                  and(
-                    eq(variables['Skip.CheckPackageApproval'], 'true'),
-                    eq(variables['Skip.MarkPackageReleased'], 'true'),
-                    eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
-                  )
-                )
-              )
-            env:
-              SOURCE_DIRECTORY: $(Build.SourcesDirectory)
-              PACKAGE_INFO_FILE: $(GoReleasePackageInfoFile)
           - template: /eng/common/pipelines/templates/steps/install-azsdk-cli.yml
             parameters:
               SourceRootPath: $(Build.SourcesDirectory)
               Condition: >-
                 and(
                   succeeded(),
+                  eq(variables['System.TeamProject'], 'internal'),
                   not(
                     and(
                       eq(variables['Skip.CheckPackageApproval'], 'true'),
-                      eq(variables['Skip.MarkPackageReleased'], 'true'),
                       eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
                     )
                   )
@@ -270,19 +226,31 @@ stages:
               RepoId: Azure/azure-sdk-for-go
               WorkingDirectory: $(System.DefaultWorkingDirectory)
               AuthToken: ''
-          - task: PowerShell@2
-            displayName: Verify the Go package was published
-            inputs:
-              filePath: $(Build.SourcesDirectory)/eng/scripts/Confirm-GoPackagePublished.ps1
-              arguments: >
-                -PackageInfoFile '$(GoReleasePackageInfoFile)'
-                -ExpectedCommit '$(Build.SourceVersion)'
-              pwsh: true
-          - template: /eng/common/pipelines/templates/steps/mark-package-released.yml
+          - download: current
+            artifact: 'packages'
+          - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
             parameters:
-              PackageInfoFiles:
-                - $(GoReleasePackageInfoFile)
-              SourceRootPath: $(Build.SourcesDirectory)
+              WorkingDirectory: $(Build.SourcesDirectory)
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'APIView prod deployment'
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+                New-APIViewFromCI `
+                  -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
+                  -ArtifactPath '$(Pipeline.Workspace)/packages' `
+                  -SourceBranch '$(Build.SourceBranchName)' `
+                  -DefaultBranch '$(DefaultBranch)' `
+                  -ConfigFileDir '$(Pipeline.Workspace)/packages/PackageInfo' `
+                  -BuildId $(Build.BuildId) `
+                  -RepoName '$(Build.Repository.Name)' `
+                  -MarkPackageAsShipped $true
+              pwsh: true
+              workingDirectory: $(Pipeline.Workspace)
+            displayName: Create API review for Go
+            condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
           # Log whether this is an auto-release or a manual release, and the auto-release SDK PR.
           - pwsh: |
               $type = if ($env:BUILD_REASON -eq 'IndividualCI') { 'auto-release' } else { 'manual release' }

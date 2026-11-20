@@ -89,16 +89,28 @@ steps:
         ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
         CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
-  - ${{ if and(ne(parameters.ServiceDirectory, 'auto'), eq(parameters.IsSdkLibrary, true)) }}:
-    - template: /eng/common/pipelines/templates/steps/create-apiview-revision.yml
-      parameters:
-        ArtifactPath: $(Build.ArtifactStagingDirectory)
-        PackageInfoFiles:
-          - ${{ each serviceDirectory in split(parameters.ServiceDirectory, ',') }}:
-            - ${{ if or(startsWith(serviceDirectory, 'sdk'), startsWith(serviceDirectory, 'eng')) }}:
-              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{ serviceDirectory }}.json
-            - ${{ else }}:
-              - $(Build.ArtifactStagingDirectory)/PackageInfo/sdk/${{ serviceDirectory }}.json
+  - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+
+  - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'], 'PullRequest'), not(endsWith(variables['Build.Repository.Name'], '-pr'))) }}:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'APIView prod deployment'
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+          New-APIViewFromCI `
+            -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
+            -ArtifactPath '$(Build.ArtifactStagingDirectory)' `
+            -SourceBranch '$(Build.SourceBranchName)' `
+            -DefaultBranch '$(DefaultBranch)' `
+            -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
+            -BuildId $(Build.BuildId) `
+            -RepoName '$(Build.Repository.Name)'
+        pwsh: true
+        workingDirectory: $(Pipeline.Workspace)
+      displayName: Create API review for Go
+      condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
 
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml

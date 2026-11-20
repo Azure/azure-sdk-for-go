@@ -6,7 +6,7 @@ After going through a minimal architects board review and preparing your package
 
 - [] Verify there are no replace directives in the go.mod file
 - [] Verify the package has a LICENSE file
-- [] Verify documentation is present and accurate for all public methods and types. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
+- [] Verify documentation is present and accurate for all public methods and types. Reference the [content guidelines](https://review.docs.microsoft.com/help/contribute-ref/contribute-ref-how-to-document-sdk?branch=master#api-reference) for best practices. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
 - [] Verify there are no broken links
 - [] Verify all links are non-localized (no "en-us" in links)
 - [] Check the package manager link goes to the correct package
@@ -26,14 +26,8 @@ After going through a minimal architects board review and preparing your package
 
 ## API Review Hub
 
-Obtain package-name approval and any required API review approval before releasing. The internal release pipeline checks approval against the generated API hash before creating the tag, then records the release after verifying the tag.
+Obtain package-name approval and any required API review approval before releasing. The internal release pipeline checks approval before creating the tag.
 
 Repository registration and authorization of the **ADO to ARH Service Connection** are required; forks also need the GitHub Apps described in the [onboarding guide](https://github.com/Azure/azure-sdk-tools/wiki/API-Review-Hub-Onboarding).
 
-Review generation and release checks build the Go APIView parser and copy the Markdown renderer from the immutable `azure-sdk-tools` commit in `eng/api-review-tools.json` at the reviewed target commit. Both base and target reviews use that pin. Update it deliberately and regenerate affected reviews when the tooling changes. The Hub's `toolsRef` selects orchestration code, not the parser or renderer.
-
-Tool builds verify aliased composite types and methods, alias identity, generic interface and defined-type constraints, exported function names, and dependency-version resolution using an offline probe. Bundle generation rejects unsupported declarations and parser error and fatal diagnostics rather than approving incomplete APIs; informational and warning diagnostics are allowed.
-
-Modules with unsupported APIs, such as unexported embedded types or unresolved nested aliases, remain blocked until the parser is corrected.
-
-If release recording fails after the tag is created, repair it using `azsdk package mark-released` with the package name, version, and API hash from the pipeline logs rather than creating the tag again.
+The check does not supply an API hash until replacement tooling is available, so it cannot verify hash-specific API Review Hub approval. The CLI can fall back to existing APIView approval.

@@ -7,8 +7,8 @@ package armiotfirmwaredefense
 // SummaryResourcePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetSummaryResourceProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BinaryHardeningSummaryResource, *CryptoCertificateSummaryResource, *CryptoKeySummaryResource, *CveSummary, *FirmwareSummary,
-// - *SummaryResourceProperties
+// - *BinaryHardeningSummaryResource, *CryptoCertificateSummaryResource, *CryptoKeySummaryResource, *CveSummary, *CveSummaryResource,
+// - *FirmwareSummary, *PasswordHashSummaryResource, *SbomSummaryResource, *SummaryResourceProperties, *UnsafeFunctionCallsSummaryResource
 type SummaryResourcePropertiesClassification interface {
 	// GetSummaryResourceProperties returns the SummaryResourceProperties content of the underlying type.
 	GetSummaryResourceProperties() *SummaryResourceProperties

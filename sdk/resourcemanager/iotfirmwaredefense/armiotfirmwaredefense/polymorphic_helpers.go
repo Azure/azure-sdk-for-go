@@ -24,8 +24,16 @@ func unmarshalSummaryResourcePropertiesClassification(rawMsg json.RawMessage) (S
 		b = &CryptoCertificateSummaryResource{}
 	case string(SummaryTypeCryptoKey):
 		b = &CryptoKeySummaryResource{}
+	case string(SummaryTypeCve):
+		b = &CveSummaryResource{}
 	case string(SummaryTypeFirmware):
 		b = &FirmwareSummary{}
+	case string(SummaryTypePasswordHash):
+		b = &PasswordHashSummaryResource{}
+	case string(SummaryTypeSbom):
+		b = &SbomSummaryResource{}
+	case string(SummaryTypeUnsafeFunctionCalls):
+		b = &UnsafeFunctionCallsSummaryResource{}
 	default:
 		b = &SummaryResourceProperties{}
 	}

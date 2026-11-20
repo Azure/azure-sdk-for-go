@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/BinaryHardening_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/BinaryHardening_ListByFirmware_MaximumSet_Gen.json
 func ExampleBinaryHardeningClient_NewListByFirmwarePager_binaryHardeningListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleBinaryHardeningClient_NewListByFirmwarePager_binaryHardeningListByFi
 	}
 }
 
-// Generated from example definition: 2025-08-02/BinaryHardening_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/BinaryHardening_ListByFirmware_MinimumSet_Gen.json
 func ExampleBinaryHardeningClient_NewListByFirmwarePager_binaryHardeningListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

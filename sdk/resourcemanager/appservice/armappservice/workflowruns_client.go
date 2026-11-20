@@ -20,7 +20,7 @@ import (
 // WorkflowRunsClient contains the methods for the WorkflowRuns group.
 // Don't use this type directly, use NewWorkflowRunsClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type WorkflowRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -101,7 +101,7 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -159,7 +159,7 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

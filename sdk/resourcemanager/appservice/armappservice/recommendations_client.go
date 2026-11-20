@@ -20,7 +20,7 @@ import (
 // RecommendationsClient contains the methods for the Recommendations group.
 // Don't use this type directly, use NewRecommendationsClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type RecommendationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -95,7 +95,7 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	reqQP.Set("environmentName", environmentName)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
@@ -150,7 +150,7 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -207,7 +207,7 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	reqQP.Set("environmentName", environmentName)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
@@ -267,7 +267,7 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -316,7 +316,7 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -372,7 +372,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
@@ -447,7 +447,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
@@ -534,7 +534,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.ExpiredOnly != nil {
 			reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 		}
@@ -619,7 +619,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.ExpiredOnly != nil {
 			reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 		}
@@ -694,7 +694,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, next
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.Featured != nil {
 			reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 		}
@@ -779,7 +779,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.Featured != nil {
 			reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 		}
@@ -864,7 +864,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.Featured != nil {
 			reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 		}
@@ -925,7 +925,7 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -980,7 +980,7 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	reqQP.Set("environmentName", environmentName)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
@@ -1035,7 +1035,7 @@ func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

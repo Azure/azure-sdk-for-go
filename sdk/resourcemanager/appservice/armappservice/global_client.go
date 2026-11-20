@@ -19,7 +19,7 @@ import (
 // GlobalClient contains the methods for the Global group.
 // Don't use this type directly, use NewGlobalClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type GlobalClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,7 +84,7 @@ func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -143,7 +143,7 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +210,7 @@ func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

@@ -5,7 +5,7 @@
 package armappservice
 
 const (
-	version20250501 string = "2025-05-01"
+	version20260801 string = "2026-08-01"
 )
 
 // AppServicePlanRestrictions - App Service plans this offer is restricted to.
@@ -1337,6 +1337,27 @@ func PossibleParameterTypeValues() []ParameterType {
 	}
 }
 
+// PlatformReleaseChannel - The platform release channel for the site.
+type PlatformReleaseChannel string
+
+const (
+	// PlatformReleaseChannelExtended - Extended receives updates last with extended support.
+	PlatformReleaseChannelExtended PlatformReleaseChannel = "Extended"
+	// PlatformReleaseChannelLatest - Latest receives updates earliest.
+	PlatformReleaseChannelLatest PlatformReleaseChannel = "Latest"
+	// PlatformReleaseChannelStandard - Standard receives updates after Latest.
+	PlatformReleaseChannelStandard PlatformReleaseChannel = "Standard"
+)
+
+// PossiblePlatformReleaseChannelValues returns the possible values for the PlatformReleaseChannel const type.
+func PossiblePlatformReleaseChannelValues() []PlatformReleaseChannel {
+	return []PlatformReleaseChannel{
+		PlatformReleaseChannelExtended,
+		PlatformReleaseChannelLatest,
+		PlatformReleaseChannelStandard,
+	}
+}
+
 type ProviderOsTypeSelected string
 
 const (
@@ -1651,6 +1672,7 @@ type RuntimeName string
 const (
 	RuntimeNameCustom         RuntimeName = "custom"
 	RuntimeNameDotnetIsolated RuntimeName = "dotnet-isolated"
+	RuntimeNameGo             RuntimeName = "go"
 	RuntimeNameJava           RuntimeName = "java"
 	RuntimeNameNode           RuntimeName = "node"
 	RuntimeNamePowershell     RuntimeName = "powershell"
@@ -1662,6 +1684,7 @@ func PossibleRuntimeNameValues() []RuntimeName {
 	return []RuntimeName{
 		RuntimeNameCustom,
 		RuntimeNameDotnetIsolated,
+		RuntimeNameGo,
 		RuntimeNameJava,
 		RuntimeNameNode,
 		RuntimeNamePowershell,
@@ -1763,6 +1786,58 @@ func PossibleScmTypeValues() []ScmType {
 		ScmTypeTfs,
 		ScmTypeVSO,
 		ScmTypeVSTSRM,
+	}
+}
+
+// SiloFailOverMode - Traffic routing mode for silo failover.
+type SiloFailOverMode string
+
+const (
+	// SiloFailOverModeActive - Silo is in active mode.
+	SiloFailOverModeActive SiloFailOverMode = "Active"
+	// SiloFailOverModePassive - Silo is in passive mode.
+	SiloFailOverModePassive SiloFailOverMode = "Passive"
+	// SiloFailOverModeUnknown - Silo failover mode is unknown.
+	SiloFailOverModeUnknown SiloFailOverMode = "Unknown"
+)
+
+// PossibleSiloFailOverModeValues returns the possible values for the SiloFailOverMode const type.
+func PossibleSiloFailOverModeValues() []SiloFailOverMode {
+	return []SiloFailOverMode{
+		SiloFailOverModeActive,
+		SiloFailOverModePassive,
+		SiloFailOverModeUnknown,
+	}
+}
+
+// SiloProvisioningState - Defines provisioning states for silo resources.
+type SiloProvisioningState string
+
+const (
+	// SiloProvisioningStateCanceled - Provisioning was canceled.
+	SiloProvisioningStateCanceled SiloProvisioningState = "Canceled"
+	// SiloProvisioningStateDegraded - Silo is routable and serving its previous revision, but the last background sync failed
+	// to converge. Distinct from Failed, which means there is no usable silo.
+	SiloProvisioningStateDegraded SiloProvisioningState = "Degraded"
+	// SiloProvisioningStateDeleting - Resource is being deleted asynchronously.
+	SiloProvisioningStateDeleting SiloProvisioningState = "Deleting"
+	// SiloProvisioningStateFailed - Provisioning failed.
+	SiloProvisioningStateFailed SiloProvisioningState = "Failed"
+	// SiloProvisioningStateInProgress - Provisioning is in progress.
+	SiloProvisioningStateInProgress SiloProvisioningState = "InProgress"
+	// SiloProvisioningStateSucceeded - Provisioning succeeded.
+	SiloProvisioningStateSucceeded SiloProvisioningState = "Succeeded"
+)
+
+// PossibleSiloProvisioningStateValues returns the possible values for the SiloProvisioningState const type.
+func PossibleSiloProvisioningStateValues() []SiloProvisioningState {
+	return []SiloProvisioningState{
+		SiloProvisioningStateCanceled,
+		SiloProvisioningStateDegraded,
+		SiloProvisioningStateDeleting,
+		SiloProvisioningStateFailed,
+		SiloProvisioningStateInProgress,
+		SiloProvisioningStateSucceeded,
 	}
 }
 

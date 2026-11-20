@@ -1,0 +1,603 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package report
+
+import (
+	"bytes"
+	"fmt"
+	"go/ast"
+	"go/format"
+	"go/token"
+	"go/types"
+	"maps"
+	"regexp"
+	"slices"
+	"strconv"
+	"strings"
+
+	"golang.org/x/tools/go/packages"
+)
+
+// Type describes an exported named type declaration.
+type Type struct {
+	// Name is the type name.
+	Name string
+
+	// Object is the compiler identity of the public type declaration.
+	Object *types.TypeName
+
+	// IsInterface indicates an interface or an alias to an interface.
+	IsInterface bool
+
+	// AliasOf describes the final target of an expanded alias, or is empty
+	// for declarations that were not expanded.
+	AliasOf string
+
+	// Decl contains a standalone type declaration with unexported struct fields
+	// and descriptive comments removed. Unexpanded aliases retain their source targets.
+	// It shares type-expression nodes with loaded source and must be treated as read-only.
+	Decl *ast.GenDecl
+
+	// Comments is a non-nil list of report-generated comments for Decl.
+	// Use it with printer.CommentedNode when formatting to suppress source comments.
+	Comments []*ast.CommentGroup
+
+	// Constants contains this string or integer enum's exported constants,
+	// sorted by name. A nonempty list identifies an enum group.
+	Constants []Constant
+
+	// Functions contains New or NewX constructors and Possible<Type>Values enum
+	// helpers associated with this type, sorted by name.
+	Functions []Function
+
+	// Methods contains exported methods on this public receiver, sorted by name.
+	Methods []Function
+
+	// PromotedFields and PromotedMethods describe exported members reached
+	// through private or internal-package embeddings, sorted by name.
+	PromotedFields  []PromotedField
+	PromotedMethods []PromotedMethod
+
+	// EmbeddedMethods lists exported methods contributed only by private
+	// or internal-package interface embeddings, sorted by name.
+	EmbeddedMethods []string
+
+	// ConstraintNotes records type terms not visible in the declaration.
+	ConstraintNotes []string
+}
+
+// PromotedField describes a public field and its first embedding.
+type PromotedField struct {
+	Embedding string
+	Signature string
+}
+
+// PromotedMethod describes a method promoted to the pointer method set and,
+// unless PointerOnly is true, the value method set.
+type PromotedMethod struct {
+	Signature   string
+	PointerOnly bool
+}
+
+func extractTypes(pkg *packages.Package, aliases *aliasExpander, refs map[*ast.Ident]*types.Package) ([]Type, []Function, error) {
+	var result []Type
+	var methods []Function
+	for _, file := range pkg.Syntax {
+		for _, node := range file.Decls {
+			decl, ok := node.(*ast.GenDecl)
+			if !ok || decl.Tok != token.TYPE {
+				continue
+			}
+			for _, node := range decl.Specs {
+				spec, ok := node.(*ast.TypeSpec)
+				if !ok {
+					return nil, nil, fmt.Errorf("unexpected type specification %T", node)
+				}
+				if !spec.Name.IsExported() {
+					continue
+				}
+				object, ok := pkg.TypesInfo.Defs[spec.Name].(*types.TypeName)
+				if !ok {
+					return nil, nil, fmt.Errorf("type %q has no type information", spec.Name.Name)
+				}
+				expansion, err := aliases.expansion(pkg, spec, object)
+				if err != nil {
+					return nil, nil, err
+				}
+				source := spec
+				normalizer := declarationNormalizer{comments: []*ast.CommentGroup{}, typeInfo: pkg.TypesInfo}
+				aliasOf := ""
+				if expansion != nil {
+					source = expansion.source.spec
+					normalizer.typeInfo = expansion.source.pkg.TypesInfo
+					normalizer.resolve = aliases.resolver(expansion.source.pkg, pkg, expansion, refs)
+					aliasOf = expansion.origin
+					functions, err := aliases.aliasMethods(expansion, pkg, refs)
+					if err != nil {
+						return nil, nil, err
+					}
+					methods = append(methods, functions...)
+				}
+				copy := *source
+				copy.Name = &ast.Ident{NamePos: source.Name.Pos(), Name: spec.Name.Name}
+				copy.Doc = nil
+				copy.Comment = nil
+				if expansion != nil {
+					copy.Assign = token.NoPos
+				}
+				copy.TypeParams, err = normalizer.fields(source.TypeParams, false)
+				if err != nil {
+					return nil, nil, fmt.Errorf("type %q parameters: %w", spec.Name.Name, err)
+				}
+				derived := !spec.Assign.IsValid() && hiddenTypeTarget(pkg.Types, referencedTypeName(pkg, spec.Type))
+				if derived {
+					copy.Type, err = definedUnderlyingType(pkg, object, aliases, refs)
+				} else {
+					copy.Type, err = normalizer.typeExpr(source.Type)
+				}
+				if err != nil {
+					return nil, nil, fmt.Errorf("type %q: %w", spec.Name.Name, err)
+				}
+				iface, isInterface := object.Type().Underlying().(*types.Interface)
+				constraintNotes := typeParameterNotes(spec.Name.Name, namedTypeParameters(object.Type()), pkg.Types)
+				var embeddedMethods []string
+				if _, inline := ast.Unparen(copy.Type).(*ast.InterfaceType); isInterface && inline {
+					if terms := hiddenConstraintTerms(iface, pkg.Types); terms != "" {
+						constraintNotes = append(constraintNotes, spec.Name.Name+": "+terms)
+					}
+					var rewrittenAliases *aliasExpander
+					if derived || expansion != nil {
+						rewrittenAliases = aliases
+					}
+					embeddedMethods = hiddenEmbeddedMethods(iface, pkg.Types, rewrittenAliases)
+				}
+				var promotedFields []PromotedField
+				var promotedMethods []PromotedMethod
+				// Unexpanded aliases to named types already show the target name.
+				if _, isStruct := ast.Unparen(source.Type).(*ast.StructType); !copy.Assign.IsValid() || isStruct {
+					promotedFields, promotedMethods = promotedMembers(object.Type(), pkg.Types)
+				}
+				result = append(result, Type{
+					Name:        spec.Name.Name,
+					Object:      object,
+					IsInterface: isInterface,
+					AliasOf:     aliasOf,
+					Decl: &ast.GenDecl{
+						TokPos: source.Pos(),
+						Tok:    token.TYPE,
+						Specs:  []ast.Spec{&copy},
+					},
+					Comments:        normalizer.comments,
+					PromotedFields:  promotedFields,
+					PromotedMethods: promotedMethods,
+					EmbeddedMethods: embeddedMethods,
+					ConstraintNotes: constraintNotes,
+				})
+			}
+		}
+	}
+	slices.SortFunc(result, func(a, b Type) int {
+		if a.IsInterface != b.IsInterface {
+			if a.IsInterface {
+				return -1
+			}
+			return 1
+		}
+		return strings.Compare(a.Name, b.Name)
+	})
+	return result, methods, nil
+}
+
+func hiddenEmbeddedMethods(iface *types.Interface, pkg *types.Package, rewrittenAliases *aliasExpander) []string {
+	shown := make(map[string]bool)
+	hidden := make(map[string]string)
+	qualify := types.RelativeTo(pkg)
+	var collect func(*types.Interface)
+	collect = func(iface *types.Interface) {
+		for method := range iface.ExplicitMethods() {
+			shown[method.Name()] = true
+		}
+		for embedded := range iface.EmbeddedTypes() {
+			embeddedInterface, ok := embedded.Underlying().(*types.Interface)
+			if !ok {
+				continue
+			}
+			named, ok := embedded.(interface{ Obj() *types.TypeName })
+			if !ok {
+				collect(embeddedInterface)
+				continue
+			}
+			obj := named.Obj()
+			isHidden := !obj.Exported() || hiddenTypeTarget(pkg, obj)
+			if isHidden && rewrittenAliases != nil && obj.Pkg() != nil && internalPackagePath(obj.Pkg().Path()) {
+				// Expanded declarations can show the embedding under a public alias.
+				isHidden = rewrittenAliases.publicAlias(obj.Type(), pkg, "") == nil
+			}
+			for method := range embeddedInterface.Methods() {
+				name := method.Name()
+				if !isHidden {
+					shown[name] = true
+				} else if method.Exported() {
+					signature := name + strings.TrimPrefix(TypeStringWithoutTags(method.Type(), qualify), "func")
+					// Identical methods can use different parameter names.
+					if previous, ok := hidden[name]; !ok || signature < previous {
+						hidden[name] = signature
+					}
+				}
+			}
+		}
+	}
+	collect(iface)
+	var methods []string
+	for _, name := range slices.Sorted(maps.Keys(hidden)) {
+		if !shown[name] {
+			methods = append(methods, hidden[name])
+		}
+	}
+	return methods
+}
+
+func definedUnderlyingType(pkg *packages.Package, object *types.TypeName, aliases *aliasExpander, refs map[*ast.Ident]*types.Package) (ast.Expr, error) {
+	expr, qualified, err := parseCompilerType(pkg, "underlying-"+object.Name()+".api.go", object.Type().Underlying())
+	if err != nil {
+		return nil, fmt.Errorf("parse underlying type: %w", err)
+	}
+	normalizer := declarationNormalizer{
+		resolve: func(expr ast.Expr, requiredName string) (ast.Expr, error) {
+			selected, ok := expr.(*ast.SelectorExpr)
+			if !ok {
+				return expr, nil
+			}
+			qualifier, ok := selected.X.(*ast.Ident)
+			if !ok || qualified[qualifier.Name] == nil {
+				return nil, fmt.Errorf("unknown underlying type qualifier in %T", expr)
+			}
+			target, ok := qualified[qualifier.Name].Scope().Lookup(selected.Sel.Name).(*types.TypeName)
+			if !ok {
+				return nil, fmt.Errorf("underlying type information for %s is unavailable", selected.Sel.Name)
+			}
+			return aliases.typeReference(target, pkg.Types, nil, requiredName, expr.Pos(), refs), nil
+		},
+	}
+	return normalizer.typeExpr(expr)
+}
+
+func promotedMembers(receiver types.Type, pkg *types.Package) (fields []PromotedField, methods []PromotedMethod) {
+	structure, ok := receiver.Underlying().(*types.Struct)
+	if !ok {
+		return nil, nil
+	}
+	hiddenEmbeddings := make(map[int]bool)
+	fieldNames := make(map[string]bool)
+	seen := make(map[*types.Struct]bool)
+	var collectFieldNames func(types.Type)
+	collectFieldNames = func(t types.Type) {
+		if pointer, ok := types.Unalias(t).(*types.Pointer); ok {
+			t = pointer.Elem()
+		}
+		embedded, ok := t.Underlying().(*types.Struct)
+		if !ok || seen[embedded] {
+			return
+		}
+		seen[embedded] = true
+		for field := range embedded.Fields() {
+			if field.Exported() {
+				fieldNames[field.Name()] = true
+			}
+			if field.Embedded() {
+				collectFieldNames(field.Type())
+			}
+		}
+	}
+	for i := range structure.NumFields() {
+		field := structure.Field(i)
+		if field.Embedded() && hiddenEmbedding(field, pkg) {
+			hiddenEmbeddings[i] = true
+			collectFieldNames(field.Type())
+		}
+	}
+	if len(hiddenEmbeddings) == 0 {
+		return nil, nil
+	}
+	throughHiddenEmbedding := func(index []int) bool {
+		return len(index) > 1 && hiddenEmbeddings[index[0]]
+	}
+	// Paths in report comments avoid ambiguous qualifiers and do not need imports.
+	qualify := func(other *types.Package) string {
+		if other == pkg {
+			return ""
+		}
+		return other.Path()
+	}
+	for _, name := range slices.Sorted(maps.Keys(fieldNames)) {
+		object, index, _ := types.LookupFieldOrMethod(receiver, true, nil, name)
+		if field, ok := object.(*types.Var); ok && throughHiddenEmbedding(index) {
+			fields = append(fields, PromotedField{
+				Embedding: structure.Field(index[0]).Name(),
+				Signature: name + " " + TypeStringWithoutTags(field.Type(), qualify),
+			})
+		}
+	}
+	valueMethods := types.NewMethodSet(receiver)
+	for method := range types.NewMethodSet(types.NewPointer(receiver)).Methods() {
+		if !method.Obj().Exported() || !throughHiddenEmbedding(method.Index()) {
+			continue
+		}
+		name := method.Obj().Name()
+		signature := name + strings.TrimPrefix(TypeStringWithoutTags(method.Type(), qualify), "func")
+		methods = append(methods, PromotedMethod{
+			Signature:   signature,
+			PointerOnly: valueMethods.Lookup(nil, name) == nil,
+		})
+	}
+	return fields, methods
+}
+
+// go/types prints tags with strconv.Quote. No other part of its type strings
+// contains quoted literals: even array lengths are printed as numbers.
+var quotedStructTag = regexp.MustCompile(` "(?:[^"\\]|\\.)*"`)
+
+// TypeStringWithoutTags formats a compiler type for use in a report comment.
+func TypeStringWithoutTags(typ types.Type, qualify types.Qualifier) string {
+	return quotedStructTag.ReplaceAllString(types.TypeString(typ, qualify), "")
+}
+
+// EmbeddedFieldName returns the name of an embedded field, or an empty name
+// for a field with explicit names.
+func EmbeddedFieldName(field *ast.Field) (string, error) {
+	if len(field.Names) != 0 {
+		return "", nil
+	}
+	return baseTypeName(field.Type)
+}
+
+func hiddenEmbedding(field *types.Var, pkg *types.Package) bool {
+	if !field.Exported() {
+		return true
+	}
+	t := field.Type()
+	if pointer, ok := t.(*types.Pointer); ok {
+		t = pointer.Elem()
+	}
+	// Keep alias identity: a public alias already documents the embedded type.
+	named, ok := t.(interface{ Obj() *types.TypeName })
+	return ok && hiddenTypeTarget(pkg, named.Obj())
+}
+
+type declarationNormalizer struct {
+	comments []*ast.CommentGroup
+	typeInfo *types.Info
+	resolve  func(ast.Expr, string) (ast.Expr, error)
+}
+
+func (n *declarationNormalizer) typeExpr(expr ast.Expr) (ast.Expr, error) {
+	return n.typeExprWithName(expr, "")
+}
+
+func (n *declarationNormalizer) typeExprWithName(expr ast.Expr, requiredName string) (ast.Expr, error) {
+	switch source := expr.(type) {
+	case *ast.Ident, *ast.SelectorExpr:
+		if n.resolve != nil {
+			return n.resolve(expr, requiredName)
+		}
+		return expr, nil
+	case *ast.StructType:
+		copy := *source
+		var err error
+		copy.Fields, err = n.fields(source.Fields, true)
+		if err != nil {
+			return nil, err
+		}
+		if err := sortFields(copy.Fields, true); err != nil {
+			return nil, err
+		}
+		if source.Fields.NumFields() > copy.Fields.NumFields() {
+			copy.Incomplete = true
+		}
+		if len(source.Fields.List) > 0 {
+			// Keep the layout independent of source line breaks and member count.
+			copy.Fields.Opening = token.NoPos
+		}
+		return &copy, nil
+	case *ast.InterfaceType:
+		copy := *source
+		var err error
+		copy.Methods, err = n.fields(source.Methods, false)
+		if err != nil {
+			return nil, err
+		}
+		if err := sortFields(copy.Methods, false); err != nil {
+			return nil, err
+		}
+		if len(source.Methods.List) > 0 {
+			copy.Methods.Opening = token.NoPos
+		}
+		return &copy, nil
+	case *ast.FuncType:
+		return n.signature(source)
+	case *ast.ArrayType:
+		copy := *source
+		// Types parsed from compiler output already have evaluated lengths.
+		if source.Len != nil && n.typeInfo != nil {
+			array, ok := n.typeInfo.TypeOf(source).(*types.Array)
+			if !ok {
+				return nil, fmt.Errorf("array length has no array type information")
+			}
+			copy.Len = &ast.BasicLit{
+				ValuePos: source.Len.Pos(),
+				Kind:     token.INT,
+				Value:    strconv.FormatInt(array.Len(), 10),
+			}
+		}
+		var err error
+		copy.Elt, err = n.typeExpr(source.Elt)
+		return &copy, err
+	case *ast.MapType:
+		copy := *source
+		var err error
+		copy.Key, err = n.typeExpr(source.Key)
+		if err != nil {
+			return nil, err
+		}
+		copy.Value, err = n.typeExpr(source.Value)
+		return &copy, err
+	case *ast.ChanType:
+		copy := *source
+		var err error
+		copy.Value, err = n.typeExpr(source.Value)
+		return &copy, err
+	case *ast.StarExpr:
+		copy := *source
+		var err error
+		copy.X, err = n.typeExprWithName(source.X, requiredName)
+		return &copy, err
+	case *ast.ParenExpr:
+		copy := *source
+		var err error
+		copy.X, err = n.typeExprWithName(source.X, requiredName)
+		return &copy, err
+	case *ast.Ellipsis:
+		copy := *source
+		var err error
+		copy.Elt, err = n.typeExpr(source.Elt)
+		return &copy, err
+	case *ast.IndexExpr:
+		copy := *source
+		var err error
+		copy.X, err = n.typeExprWithName(source.X, requiredName)
+		if err != nil {
+			return nil, err
+		}
+		copy.Index, err = n.typeExpr(source.Index)
+		return &copy, err
+	case *ast.IndexListExpr:
+		copy := *source
+		var err error
+		copy.X, err = n.typeExprWithName(source.X, requiredName)
+		if err != nil {
+			return nil, err
+		}
+		copy.Indices = make([]ast.Expr, len(source.Indices))
+		for i, index := range source.Indices {
+			copy.Indices[i], err = n.typeExpr(index)
+			if err != nil {
+				return nil, err
+			}
+		}
+		return &copy, nil
+	case *ast.UnaryExpr:
+		copy := *source
+		var err error
+		copy.X, err = n.typeExpr(source.X)
+		return &copy, err
+	case *ast.BinaryExpr:
+		copy := *source
+		var err error
+		copy.X, err = n.typeExpr(source.X)
+		if err != nil {
+			return nil, err
+		}
+		copy.Y, err = n.typeExpr(source.Y)
+		return &copy, err
+	default:
+		return nil, fmt.Errorf("unsupported type expression %T", expr)
+	}
+}
+
+func (n *declarationNormalizer) fields(source *ast.FieldList, publicOnly bool) (*ast.FieldList, error) {
+	if source == nil {
+		return nil, nil
+	}
+	copy := *source
+	copy.List = nil
+	for _, field := range source.List {
+		filtered := *field
+		filtered.Doc = nil
+		filtered.Comment = nil
+		requiredName := ""
+		if publicOnly {
+			if len(field.Names) == 0 {
+				name, err := baseTypeName(field.Type)
+				if err != nil {
+					return nil, fmt.Errorf("embedded field: %w", err)
+				}
+				if !token.IsExported(name) {
+					continue
+				}
+				requiredName = name
+			} else {
+				filtered.Names = nil
+				for _, name := range field.Names {
+					if name.IsExported() {
+						filtered.Names = append(filtered.Names, name)
+					}
+				}
+				if len(filtered.Names) == 0 {
+					continue
+				}
+			}
+		}
+		var err error
+		filtered.Type, err = n.typeExprWithName(field.Type, requiredName)
+		if err != nil {
+			return nil, err
+		}
+		if publicOnly && len(filtered.Names) > 1 {
+			for _, name := range filtered.Names {
+				single := filtered
+				single.Names = []*ast.Ident{name}
+				copy.List = append(copy.List, &single)
+			}
+		} else {
+			copy.List = append(copy.List, &filtered)
+		}
+	}
+	return &copy, nil
+}
+
+func sortFields(fields *ast.FieldList, structure bool) error {
+	names := make(map[*ast.Field]string, len(fields.List))
+	for _, field := range fields.List {
+		if len(field.Names) > 0 {
+			names[field] = field.Names[0].Name
+		} else if structure {
+			name, err := baseTypeName(field.Type)
+			if err != nil {
+				return fmt.Errorf("sort embedded field: %w", err)
+			}
+			names[field] = name
+		} else {
+			var text bytes.Buffer
+			if err := format.Node(&text, token.NewFileSet(), field.Type); err != nil {
+				return fmt.Errorf("sort interface member: %w", err)
+			}
+			names[field] = text.String()
+		}
+	}
+	slices.SortStableFunc(fields.List, func(a, b *ast.Field) int {
+		if structure && (len(a.Names) == 0) != (len(b.Names) == 0) {
+			if len(a.Names) == 0 {
+				return -1
+			}
+			return 1
+		}
+		return strings.Compare(names[a], names[b])
+	})
+	return nil
+}
+
+func (n *declarationNormalizer) signature(source *ast.FuncType) (*ast.FuncType, error) {
+	copy := *source
+	var err error
+	copy.TypeParams, err = n.fields(source.TypeParams, false)
+	if err != nil {
+		return nil, err
+	}
+	copy.Params, err = n.fields(source.Params, false)
+	if err != nil {
+		return nil, err
+	}
+	copy.Results, err = n.fields(source.Results, false)
+	return &copy, err
+}

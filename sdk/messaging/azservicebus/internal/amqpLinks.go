@@ -337,7 +337,7 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName azlog.Event, op
 		return links.getRecoveryKindFunc(err) == RecoveryKindFatal
 	}
 
-	return utils.Retry(ctx, eventName, links.Prefix()+"("+operation+")", func(ctx context.Context, args *utils.RetryFnArgs) error {
+	err := utils.Retry(ctx, eventName, links.Prefix()+"("+operation+")", func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := links.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
 		}
@@ -380,6 +380,15 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName azlog.Event, op
 
 		return nil
 	}, isFatalErrorFunc, o)
+
+	if err != nil {
+		switch links.getRecoveryKindFunc(err) {
+		case RecoveryKindLink, RecoveryKindConn:
+			links.closeIfNeeded(context.Background(), err, &lastID)
+		}
+	}
+
+	return err
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.
@@ -413,8 +422,16 @@ func (l *AMQPLinksImpl) Close(ctx context.Context, permanent bool) error {
 // if you're trying to exit out of a function quickly but still need to react
 // to a returned error.
 func (links *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKind {
+	return links.closeIfNeeded(ctx, err, nil)
+}
+
+func (links *AMQPLinksImpl) closeIfNeeded(ctx context.Context, err error, lastID *LinkID) RecoveryKind {
 	links.mu.Lock()
 	defer links.mu.Unlock()
+
+	if lastID != nil && links.id != *lastID {
+		return RecoveryKindNone
+	}
 
 	if IsCancelError(err) {
 		links.Writef(exported.EventConn, "No close needed for cancellation")
@@ -434,7 +451,11 @@ func (links *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) Recove
 	case RecoveryKindConn:
 		links.Writef(exported.EventConn, "Closing connection AND links for error %s", err.Error())
 		_ = links.closeWithoutLocking(ctx, false)
-		_ = links.ns.Close(false)
+		if lastID != nil {
+			_ = links.ns.CloseIfNeeded(lastID.Conn)
+		} else {
+			_ = links.ns.Close(false)
+		}
 		return rk
 	case RecoveryKindNone:
 		return rk

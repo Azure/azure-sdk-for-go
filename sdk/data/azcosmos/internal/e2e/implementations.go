@@ -10,7 +10,6 @@ package e2e
 func buildImplementations() []Implementation {
 	const (
 		noManagementCapabilitiesEndpoint = "requires the hosted emulator's management API to expose a versioned capability document (a GET /capabilities-equivalent endpoint); confirmed live against the pinned emulator (404) and against the emulator source's own management.rs route table (no such route), so this is an emulator-revision gap, not a Go SDK gap - azcosmos/v2's new database/container management API (#27700) is unrelated to this scenario."
-		noChangeFeedAPI                  = "change feed is not yet implemented in azcosmos/v2; tracked by #27690."
 		noBatchAPI                       = "transactional batch is not yet implemented in azcosmos/v2; tracked by #27690."
 		noFaultInjection                 = "requires the hosted emulator's deterministic fault-injection management API. The currently pinned EmulatorSourceRevision (a05f024d, 2026-09-02) predates the e2e_tests catalog (2026-09-11) and has no such API; bumping the pin is a separate decision (see catalog/README.md)."
 		noTopologyControl                = "requires the hosted emulator's region/partition topology-transition management API, which the currently pinned emulator revision does not expose (same gap as resilience.*). Dynamic topology is also explicitly out of this issue's initial-implementation scope."
@@ -34,6 +33,8 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "query.parameterized-filter", Status: StatusActive, Test: "TestQueryParameterizedFilterAndOrder"},
 		{ScenarioID: "query.invalid-syntax", Status: StatusActive, Test: "TestQueryInvalidSyntaxIsNotAnEmptyFeed"},
 		{ScenarioID: "query.pagination-resume", Status: StatusActive, Test: "TestQueryPaginationResumesWithoutLossOrDuplication"},
+		{ScenarioID: "changefeed.pagination-resume", Status: StatusActive, Test: "TestChangeFeedPaginationResumesWithoutLossOrDuplication"},
+		{ScenarioID: "changefeed.all-versions-start-validation", Status: StatusActive, Test: "TestEmulatorChangeFeedAllVersionsStartValidation"},
 		{ScenarioID: "diagnostics.success-and-error", Status: StatusActive, Test: "TestDiagnosticsCoverSuccessAndError"},
 
 		// --- Blocked: missing Go product capability ---
@@ -49,8 +50,6 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "management.resource-lifecycle", Status: StatusBlocked, Reason: "azcosmos/v2 (as of #27700) has Create/Read/Delete for databases and containers, but no Replace or List/Query API for either; the catalog requires create, read, query, replace, and delete, so the full contract is not yet certifiable through the public API."},
 		{ScenarioID: "bootstrap.backup-fallback", Status: StatusBlocked, Reason: "NewClient/NewClientWithKey accept a single endpoint; azcosmos/v2 has no multi-endpoint/backup-bootstrap API yet."},
 		{ScenarioID: "batch.atomicity", Status: StatusBlocked, Reason: noBatchAPI},
-		{ScenarioID: "changefeed.pagination-resume", Status: StatusBlocked, Reason: noChangeFeedAPI},
-		{ScenarioID: "changefeed.all-versions-start-validation", Status: StatusBlocked, Reason: noChangeFeedAPI},
 		{ScenarioID: "diagnostics.handlers-telemetry", Status: StatusBlocked, Reason: "requires confirming azcosmos/v2 exposes diagnostics-handler/OpenTelemetry hooks equivalent to Rust's; not yet verified to exist for v2's native-driver diagnostics surface."},
 		{ScenarioID: "query.feed-ranges", Status: StatusBlocked, Reason: "azcosmos/v2's ContainerClient has no public feed-range API (no equivalent of Rust's read_feed_ranges/feed_range_from_partition_key); only NewQueryItemsPager's partition-key/full-container scopes exist."},
 		{ScenarioID: "consistency.response-token-capture", Status: StatusBlocked, Reason: "Rust's scenario pauses West US replication and routes with multi-region PreferredRegions to force an Eventual-then-Session switch; the pinned emulator is single-region with no replication-pause management API, so this cannot be arranged honestly. " + noFaultInjection},
@@ -79,7 +78,7 @@ func buildImplementations() []Implementation {
 		// unique-key policy is now constructible through the public API; this is no longer
 		// missing a Go capability, just not yet ported.
 		{ScenarioID: "item.numeric-unique-key-equivalence", Status: StatusBlocked, Reason: "requires a container with a unique-key policy; azcosmos/v2's management API (#27700) can now provision one, so " + deferredScope},
-		{ScenarioID: "item.quoted-partition-key-paths", Status: StatusBlocked, Reason: "requires a container whose partition-key path itself contains characters needing quoting; not yet provisioned in the emulator fixture; " + deferredScope},
+		{ScenarioID: "item.quoted-partition-key-paths", Status: StatusBlocked, Reason: "requires a dedicated container whose partition-key paths contain quoted characters and a full CRUD/Patch/Query/change-feed/transactional-batch matrix. Change feed is now implemented, but the fixture and remaining assertions are not yet certified; " + deferredScope},
 		{ScenarioID: "configuration.binary-routing", Status: StatusBlocked, Reason: "requires verifying azcosmos/v2's binary-encoding override surface against the shared scenario's exact combinations; " + deferredScope},
 		{ScenarioID: "consistency.feed-read-strategies", Status: StatusBlocked, Reason: "requires the lifecycleConsistencyMatrix account set across all five consistency levels; " + deferredScope},
 		{ScenarioID: "consistency.session-staleness", Status: StatusBlocked, Reason: "requires disabling automatic session-token capture and observing a deliberately stale replica under controlled replication delay; " + deferredScope},

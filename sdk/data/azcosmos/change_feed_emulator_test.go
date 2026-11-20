@@ -11,6 +11,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
@@ -92,6 +93,74 @@ func TestEmulatorChangeFeedFullContainerScope(t *testing.T) {
 	}
 	for id, seen := range wanted {
 		require.True(t, seen, "full-container polling must include %q", id)
+	}
+}
+
+func TestEmulatorChangeFeedAllVersionsStartValidation(t *testing.T) {
+	client, databaseID, _ := emulatorClient(t)
+	containerID := uniqueItemID(t)
+	// ChangeFeedPolicy is intentionally not exposed by the v2 public container model. Create this
+	// test-only container through the normal native management path so the backend can validate
+	// AVAD starts without changing the public API or the shared emulator seed configuration.
+	body, err := json.Marshal(struct {
+		ID                     string                 `json:"id"`
+		PartitionKeyDefinition PartitionKeyDefinition `json:"partitionKey"`
+		ChangeFeedPolicy       struct {
+			RetentionDuration string `json:"retentionDuration"`
+		} `json:"changeFeedPolicy"`
+	}{
+		ID:                     containerID,
+		PartitionKeyDefinition: PartitionKeyDefinition{Kind: PartitionKeyKindHash, Paths: []string{"/pk"}, Version: 2},
+		ChangeFeedPolicy: struct {
+			RetentionDuration string `json:"retentionDuration"`
+		}{RetentionDuration: "PT5M"},
+	})
+	require.NoError(t, err)
+
+	release, err := client.acquire()
+	require.NoError(t, err)
+	_, _, err = client.executeManagement(t.Context(), operationKindCreateContainer, databaseID, containerID, body, OperationOptions{})
+	release()
+	require.NoError(t, err)
+
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_, err := container.Delete(ctx, nil)
+		require.NoError(t, err)
+	})
+
+	scope := NewFeedScopeForPartitionKey(NewPartitionKeyString("partition"))
+	supported := container.NewChangeFeedPager(scope, NewChangeFeedStartFromNow(),
+		&ChangeFeedOptions{Mode: ChangeFeedModeAllVersionsAndDeletes})
+	page, err := supported.NextPage(t.Context())
+	require.NoError(t, err, "StartFromNow is the supported AVAD positive control")
+	require.Contains(t, []int{http.StatusOK, http.StatusNotModified}, page.StatusCode)
+	require.True(t, supported.More())
+	require.NoError(t, supported.Close())
+
+	for _, tt := range []struct {
+		name  string
+		start ChangeFeedStartFrom
+	}{
+		{name: "beginning", start: NewChangeFeedStartFromBeginning()},
+		{name: "point-in-time", start: NewChangeFeedStartFromPointInTime(time.Date(2026, 1, 2, 3, 4, 5, 0, time.UTC))},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			pager := container.NewChangeFeedPager(scope, tt.start,
+				&ChangeFeedOptions{Mode: ChangeFeedModeAllVersionsAndDeletes})
+			page, err := pager.NextPage(t.Context())
+			require.Zero(t, page)
+			var cosmosErr *Error
+			require.ErrorAs(t, err, &cosmosErr)
+			require.Equal(t, http.StatusBadRequest, cosmosErr.StatusCode)
+			require.Equal(t, CodeBadRequest, cosmosErr.Code)
+			require.True(t, cosmosErr.FromWire, "the configured emulator must reject the unsupported start")
+			require.False(t, pager.More())
+			require.NoError(t, pager.Close())
+		})
 	}
 }
 

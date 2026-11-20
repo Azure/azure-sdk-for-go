@@ -1,5 +1,16 @@
 # Release History
 
+## 2.3.2-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+* `SettingSelector.AcceptDateTime` is now sent as the `Accept-Datetime` header when listing settings and revisions, instead of being sent as the `After` query parameter (which is a pagination token).
+
+### Other Changes
+
 ## 2.3.1 (2026-11-19)
 
 ### Other Changes

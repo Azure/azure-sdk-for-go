@@ -5,8 +5,14 @@
 ### Features Added
 * Added the `SecureWrapKey` and `SecureUnwrapKey` operations
 * Added the `JSONWebKeyWrapAlgorithm` type and the `ExternalKey`, `SecureKeyOperationResult`,
-  `SecureKeyUnWrapOperationParameters`, and `SecureKeyWrapOperationParameters` models
+  `SecureKeyUnwrapOperationParameters`, and `SecureKeyWrapOperationParameters` models
 * Added the `ExternalKey` and `KeySize` fields to `KeyAttributes`
+
+### Breaking Changes
+> These changes affect only code written against beta version v1.6.0-beta.1
+* Renamed `SecureKeyOperationResult.Kid` to `KID` and changed its type from `*string` to `*ID`,
+  consistent with the other `KID` fields
+* Renamed `SecureKeyUnWrapOperationParameters` to `SecureKeyUnwrapOperationParameters`
 
 ### Other Changes
 * Upgraded to API service version `2026-04-01`

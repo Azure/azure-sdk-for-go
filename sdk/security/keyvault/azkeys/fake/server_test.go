@@ -481,7 +481,7 @@ func TestSecureWrapKey(t *testing.T) {
 			resp.SetResponse(http.StatusOK, azkeys.SecureWrapKeyResponse{
 				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
 					Algorithm: parameters.Algorithm,
-					Kid:       to.Ptr("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion),
+					KID:       to.Ptr(azkeys.ID("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion)),
 					Value:     []byte(wrappedKey),
 				},
 			}, nil)
@@ -509,7 +509,7 @@ func TestSecureUnwrapKey(t *testing.T) {
 	const unwrappedKey = "unwrapped-aes-key"
 
 	fakeServer := fake.Server{
-		SecureUnwrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnWrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder) {
+		SecureUnwrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnwrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder) {
 			require.Equal(t, keyName, name)
 			require.Empty(t, version)
 			require.NotNil(t, parameters.Algorithm)
@@ -521,7 +521,7 @@ func TestSecureUnwrapKey(t *testing.T) {
 			resp.SetResponse(http.StatusOK, azkeys.SecureUnwrapKeyResponse{
 				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
 					Algorithm: parameters.Algorithm,
-					Kid:       to.Ptr("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion),
+					KID:       to.Ptr(azkeys.ID("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion)),
 					Value:     []byte(unwrappedKey),
 				},
 			}, nil)
@@ -536,7 +536,7 @@ func TestSecureUnwrapKey(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	resp, err := client.SecureUnwrapKey(context.Background(), keyName, "", azkeys.SecureKeyUnWrapOperationParameters{
+	resp, err := client.SecureUnwrapKey(context.Background(), keyName, "", azkeys.SecureKeyUnwrapOperationParameters{
 		Algorithm:              to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
 		TargetAttestationToken: to.Ptr("attestation-token"),
 		Value:                  []byte(wrappedKey),

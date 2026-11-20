@@ -29,7 +29,7 @@ func TestSecureWrapKey_Fake(t *testing.T) {
 			resp.SetResponse(http.StatusOK, azkeys.SecureWrapKeyResponse{
 				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
 					Algorithm: parameters.Algorithm,
-					Kid:       to.Ptr("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion),
+					KID:       to.Ptr(azkeys.ID("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion)),
 					Value:     wrappedKey,
 				},
 			}, nil)
@@ -57,7 +57,7 @@ func TestSecureUnwrapKey_Fake(t *testing.T) {
 	wrappedKey := []byte("wrapped-aes-key")
 
 	server := fake.Server{
-		SecureUnwrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnWrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder) {
+		SecureUnwrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnwrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder) {
 			require.NotNil(t, parameters.Algorithm)
 			require.Equal(t, azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, *parameters.Algorithm)
 			require.Equal(t, wrappedKey, parameters.Value)
@@ -65,7 +65,7 @@ func TestSecureUnwrapKey_Fake(t *testing.T) {
 			resp.SetResponse(http.StatusOK, azkeys.SecureUnwrapKeyResponse{
 				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
 					Algorithm: parameters.Algorithm,
-					Kid:       to.Ptr("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion),
+					KID:       to.Ptr(azkeys.ID("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion)),
 					Value:     unwrappedKey,
 				},
 			}, nil)
@@ -78,7 +78,7 @@ func TestSecureUnwrapKey_Fake(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	params := azkeys.SecureKeyUnWrapOperationParameters{
+	params := azkeys.SecureKeyUnwrapOperationParameters{
 		Algorithm:              to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
 		TargetAttestationToken: to.Ptr("attestation-token"),
 		Value:                  wrappedKey,

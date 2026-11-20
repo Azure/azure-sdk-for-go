@@ -212,7 +212,7 @@ func ExampleClient_SecureWrapKey() {
 		// TODO: handle error
 	}
 	// resp.Value contains the wrapped key material, which SecureUnwrapKey can later reverse
-	fmt.Printf("Wrapped a key with %s", *resp.Kid)
+	fmt.Printf("Wrapped a key with %s", *resp.KID)
 }
 
 // SecureUnwrapKey reverses [Client.SecureWrapKey], decrypting previously wrapped key material inside a
@@ -227,7 +227,7 @@ func ExampleClient_SecureUnwrapKey() {
 	// wrappedKey is the key material returned by a prior SecureWrapKey call.
 	var wrappedKey []byte
 
-	params := azkeys.SecureKeyUnWrapOperationParameters{
+	params := azkeys.SecureKeyUnwrapOperationParameters{
 		Algorithm:              to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
 		TargetAttestationToken: to.Ptr(targetAttestationToken),
 		Value:                  wrappedKey,
@@ -238,5 +238,5 @@ func ExampleClient_SecureUnwrapKey() {
 		// TODO: handle error
 	}
 	// resp.Value contains the unwrapped key material
-	fmt.Printf("Unwrapped a key with %s", *resp.Kid)
+	fmt.Printf("Unwrapped a key with %s", *resp.KID)
 }

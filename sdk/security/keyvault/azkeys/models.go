@@ -428,14 +428,14 @@ type SecureKeyOperationResult struct {
 	Algorithm *JSONWebKeyWrapAlgorithm
 
 	// REQUIRED; Key identifier
-	Kid *string
+	KID *ID
 
 	// REQUIRED; The result of the operation.
 	Value []byte
 }
 
-// SecureKeyUnWrapOperationParameters - The Secure Key unwrap attributes.
-type SecureKeyUnWrapOperationParameters struct {
+// SecureKeyUnwrapOperationParameters - The Secure Key unwrap attributes.
+type SecureKeyUnwrapOperationParameters struct {
 	// REQUIRED; algorithm identifier
 	Algorithm *JSONWebKeyWrapAlgorithm
 

@@ -583,9 +583,14 @@ against the matching generated header and platform library. It is not a release-
 
 `ContainerClient.GetFeedRanges(ctx, options)` returns copied `FeedRange` values in native order.
 `ForceRefresh` is forwarded to the driver's routing-map cache; Go owns no topology cache.
+With a warm cache, a failed forced refresh can return cached success rather than the refresh
+error ([Azure/azure-sdk-for-rust#5637](https://github.com/Azure/azure-sdk-for-rust/issues/5637)).
 `NewFeedRange(minInclusive, maxExclusive)` validates explicit half-open EPK bounds through
 native code. `GetFeedRangeForPartitionKey` uses the container's partition definition and returns
 setup-read metadata. Bounds inspection, subset and overlap checks use native semantics.
+Equal-bound point subset/overlap comparisons inherit native boundary limitations
+([Azure/azure-sdk-for-rust#5638](https://github.com/Azure/azure-sdk-for-rust/issues/5638)).
+Neither limitation is corrected or reimplemented in Go.
 
 `FeedRange.String()` and `ParseFeedRange` use the driver's stable opaque representation.
 That format preserves bounds, **not logical partition-key identity**: all public range values,

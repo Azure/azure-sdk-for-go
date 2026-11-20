@@ -55,12 +55,14 @@ func (r FeedRange) IsLogicalPartition() bool { return r.logical }
 
 // IsSubsetOf reports whether the native driver considers r contained in other.
 // Invalid zero values return an error.
+// Equal-bound point comparisons inherit https://github.com/Azure/azure-sdk-for-rust/issues/5638.
 func (r FeedRange) IsSubsetOf(other FeedRange) (bool, error) {
 	return r.compare(other, false)
 }
 
 // Overlaps reports whether the native driver considers the two intervals intersecting.
 // Adjacent half-open intervals do not overlap. Invalid zero values return an error.
+// Equal-bound point comparisons inherit https://github.com/Azure/azure-sdk-for-rust/issues/5638.
 func (r FeedRange) Overlaps(other FeedRange) (bool, error) {
 	return r.compare(other, true)
 }
@@ -85,6 +87,7 @@ func (r FeedRange) validate() error {
 // GetFeedRangesOptions configures discovery. Nil selects native cached discovery.
 type GetFeedRangesOptions struct {
 	// ForceRefresh requests a native routing-map refresh. Go maintains no topology cache.
+	// A failed refresh can return cached success: https://github.com/Azure/azure-sdk-for-rust/issues/5637.
 	ForceRefresh bool
 }
 

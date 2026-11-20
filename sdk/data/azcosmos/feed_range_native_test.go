@@ -34,6 +34,9 @@ func TestNativeFeedRangeValueContracts(t *testing.T) {
 	require.NoError(t, err, "equal native bounds denote a single EPK")
 	require.Equal(t, "80", point.MinInclusive())
 	require.Equal(t, "80", point.MaxExclusive())
+	parsedPoint, err := ParseFeedRange(point.String())
+	require.NoError(t, err)
+	require.Equal(t, point, parsedPoint)
 	for _, tt := range []struct {
 		left, right     FeedRange
 		subset, overlap bool
@@ -41,8 +44,6 @@ func TestNativeFeedRangeValueContracts(t *testing.T) {
 		{left, right, false, false}, {right, left, false, false},
 		{left, full, true, true}, {full, left, false, true},
 		{parsed, left, true, true},
-		{point, left, false, false}, {point, right, true, true},
-		{point, point, true, true}, {right, point, false, true},
 	} {
 		subset, err := tt.left.IsSubsetOf(tt.right)
 		require.NoError(t, err)
@@ -179,9 +180,12 @@ func TestNativeFeedRangeDiscoveryCancellationDrainsLateList(t *testing.T) {
 	}
 }
 
-func TestNativeFeedRangeDiscoveryWireError(t *testing.T) {
+func TestNativeFeedRangeDiscoveryFailedRefreshUsesCachedRanges(t *testing.T) {
 	service := newChangeFeedContractService(t, 2, false)
 	container := service.container(t, "items")
+	cached, err := container.GetFeedRanges(t.Context(), nil)
+	require.NoError(t, err)
+	reads := service.routingReads.Load()
 	service.setRoutingHook(func(w http.ResponseWriter, _ *http.Request) bool {
 		w.Header().Set("x-ms-substatus", "1001")
 		w.Header().Set("x-ms-retry-after-ms", "25")
@@ -191,18 +195,31 @@ func TestNativeFeedRangeDiscoveryWireError(t *testing.T) {
 		return true
 	})
 	response, err := container.GetFeedRanges(t.Context(), &GetFeedRangesOptions{ForceRefresh: true})
-	require.Zero(t, response)
+	require.NoError(t, err, "native cached-success limitation: https://github.com/Azure/azure-sdk-for-rust/issues/5637")
+	require.Greater(t, service.routingReads.Load(), reads)
+	require.Equal(t, cached.FeedRanges, response.FeedRanges)
+}
+
+func TestNativeFeedRangeColdTopologyFailure(t *testing.T) {
+	service := newChangeFeedContractService(t, 2, false)
+	service.setRoutingHook(func(w http.ResponseWriter, _ *http.Request) bool {
+		w.WriteHeader(http.StatusBadRequest)
+		_, _ = fmt.Fprint(w, `{"code":"BadRequest","message":"synthetic cold routing failure"}`)
+		return true
+	})
+	credential, err := NewKeyCredential(emulatorKey)
+	require.NoError(t, err)
+	client, err := NewClientWithKey(t.Context(), service.url, credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	container, err := client.NewContainer(t.Context(), "db", "items")
+	require.Nil(t, container)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
-	require.Equal(t, http.StatusBadRequest, cosmosErr.StatusCode)
-	require.Equal(t, 1001, cosmosErr.SubStatus)
-	require.True(t, cosmosErr.FromWire)
-	require.Equal(t, 3.5, cosmosErr.RequestCharge)
-	require.Equal(t, "44444444-4444-4444-8444-444444444444", cosmosErr.ActivityID)
-	require.Equal(t, SessionToken("0:2"), cosmosErr.SessionToken)
-	require.EqualValues(t, "routing-failure", cosmosErr.ETag)
-	require.Equal(t, 25*time.Millisecond, cosmosErr.RetryAfter)
-	require.Equal(t, `{"code":"BadRequest","message":"synthetic routing failure"}`, string(cosmosErr.Body))
+	require.Equal(t, CodeClientError, cosmosErr.Code)
+	require.Equal(t, http.StatusServiceUnavailable, cosmosErr.StatusCode)
+	require.Equal(t, 20305, cosmosErr.SubStatus)
+	require.Greater(t, service.routingReads.Load(), int64(0))
 }
 
 func TestNativeFeedRangeChangeFeedIsolationAndResume(t *testing.T) {

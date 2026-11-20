@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/AvailabilityStatus_GetByResource.json
+// Generated from example definition: 2026-07-01/AvailabilityStatus_GetByResource.json
 func ExampleAvailabilityStatusesClient_GetByResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleAvailabilityStatusesClient_GetByResource() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/AvailabilityStatuses_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/AvailabilityStatuses_ListByResourceGroup.json
 func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,13 +154,13 @@ func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2025-05-01&$skipToken=OpaquePageNumber"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2026-07-01&$skipToken=OpaquePageNumber"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-05-01/AvailabilityStatuses_ListBySubscriptionId.json
+// Generated from example definition: 2026-07-01/AvailabilityStatuses_ListBySubscriptionId.json
 func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse{
 		// 	AvailabilityStatusListResult: armresourcehealth.AvailabilityStatusListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2025-05-01&$skipToken=OpaquePageNumber"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.ResourceHealth/availabilityStatuses?api-version=2026-07-01&$skipToken=OpaquePageNumber"),
 		// 		Value: []*armresourcehealth.AvailabilityStatus{
 		// 			{
 		// 				Name: to.Ptr("current"),
@@ -253,7 +253,7 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/AvailabilityStatuses_List.json
+// Generated from example definition: 2026-07-01/AvailabilityStatuses_List.json
 func ExampleAvailabilityStatusesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

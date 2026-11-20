@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/Event_fetchBillingCommunicationDetailsBySubscriptionIdAndTrackingId.json
+// Generated from example definition: 2026-07-01/Event_fetchBillingCommunicationDetailsBySubscriptionIdAndTrackingId.json
 func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrac
 	// }
 }
 
-// Generated from example definition: 2025-05-01/Event_fetchDetailsBySubscriptionIdAndTrackingId.json
+// Generated from example definition: 2026-07-01/Event_fetchDetailsBySubscriptionIdAndTrackingId.json
 func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,20 +162,23 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 		Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
 	// 		ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}"),
 	// 		Properties: &armresourcehealth.EventProperties{
+	// 			AdvisorRecommendations: &armresourcehealth.APIOperationLink{
+	// 				HTTPMethod: to.Ptr("GET"),
+	// 				URL: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Advisor/recommendations?api-version=2025-01-01&$filter=trackingIds/any(t:%20t%20eq%20'eventTrackingId')"),
+	// 				Description: to.Ptr("Lists Advisor recommendations associated with this retirement event."),
+	// 			},
 	// 			Article: &armresourcehealth.EventPropertiesArticle{
-	// 				ArticleContent: to.Ptr("<html>An outage alert is being investigated. More information will be provided as it is known</html>"),
+	// 				ArticleContent: to.Ptr("<html>An Azure service retirement is planned. Review the retirement guidance and recommended actions.</html>"),
 	// 			},
 	// 			EnableChatWithUs: to.Ptr(false),
 	// 			EnableMicrosoftSupport: to.Ptr(true),
 	// 			EventLevel: to.Ptr(armresourcehealth.EventLevelValuesWarning),
-	// 			EventSource: to.Ptr(armresourcehealth.EventSourceValuesResourceHealth),
+	// 			EventSource: to.Ptr(armresourcehealth.EventSourceValuesServiceHealth),
 	// 			EventTags: []*string{
 	// 				to.Ptr("Action Recommended"),
-	// 				to.Ptr("False Positive"),
-	// 				to.Ptr("Preliminary PIR"),
-	// 				to.Ptr("Final PIR"),
 	// 			},
-	// 			EventType: to.Ptr(armresourcehealth.EventTypeValuesServiceIssue),
+	// 			EventSubType: to.Ptr(armresourcehealth.EventSubTypeValuesRetirement),
+	// 			EventType: to.Ptr(armresourcehealth.EventTypeValuesHealthAdvisory),
 	// 			Faqs: []*armresourcehealth.Faq{
 	// 				{
 	// 					Answer: to.Ptr("This is an answer"),
@@ -183,7 +186,7 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 					Question: to.Ptr("This is a question"),
 	// 				},
 	// 			},
-	// 			Header: to.Ptr("Your service might have been impacted by an Azure service issue"),
+	// 			Header: to.Ptr("Action may be required for an upcoming Azure service retirement"),
 	// 			HirStage: to.Ptr("resolved"),
 	// 			Impact: []*armresourcehealth.Impact{
 	// 				{
@@ -199,25 +202,18 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 							Updates: []*armresourcehealth.Update{
 	// 								{
-	// 									EventTags: []*string{
-	// 										to.Ptr("Final PIR"),
-	// 									},
-	// 									Summary: to.Ptr("Update 3 - An outage alert is being investigated. More information will be provided as it is known."),
+	// 									Summary: to.Ptr("Update 3 - Retirement guidance and recommended actions have been updated."),
 	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
-	// 									EventTags: []*string{
-	// 										to.Ptr("False Positive"),
-	// 										to.Ptr("Preliminary PIR"),
-	// 									},
-	// 									Summary: to.Ptr("Update 2 - An outage alert is being investigated. More information will be provided as it is known."),
+	// 									Summary: to.Ptr("Update 2 - Additional retirement impact details are available."),
 	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 10, 32, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
 	// 									EventTags: []*string{
 	// 										to.Ptr("Action Recommended"),
 	// 									},
-	// 									Summary: to.Ptr("Update 1 - An outage alert is being investigated. More information will be provided as it is known."),
+	// 									Summary: to.Ptr("Update 1 - An upcoming Azure service retirement was announced."),
 	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 12, 15, 0, 48, 120353000, time.UTC)),
 	// 								},
 	// 							},
@@ -276,14 +272,14 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 				Message: to.Ptr("Recommended actions title"),
 	// 			},
 	// 			Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
-	// 			Summary: to.Ptr("An outage alert is being investigated. More information will be provided as it is known."),
-	// 			Title: to.Ptr("ACTIVE: Virtual machines in West US"),
+	// 			Summary: to.Ptr("An Azure service retirement is planned. Review the retirement guidance and recommended actions."),
+	// 			Title: to.Ptr("Upcoming retirement: Virtual Machines in West US"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01/Event_fetchDetailsByTenantIdAndTrackingId.json
+// Generated from example definition: 2026-07-01/Event_fetchDetailsByTenantIdAndTrackingId.json
 func ExampleEventClient_FetchDetailsByTenantIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +393,7 @@ func ExampleEventClient_FetchDetailsByTenantIDAndTrackingID() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/Event_GetBySubscriptionIdAndTrackingId.json
+// Generated from example definition: 2026-07-01/Event_GetBySubscriptionIdAndTrackingId.json
 func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,20 +419,23 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 		Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
 	// 		ID: to.Ptr("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}"),
 	// 		Properties: &armresourcehealth.EventProperties{
+	// 			AdvisorRecommendations: &armresourcehealth.APIOperationLink{
+	// 				HTTPMethod: to.Ptr("GET"),
+	// 				URL: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Advisor/recommendations?api-version=2025-01-01&$filter=trackingIds/any(t:%20t%20eq%20'eventTrackingId')"),
+	// 				Description: to.Ptr("Lists Advisor recommendations associated with this retirement event."),
+	// 			},
 	// 			Article: &armresourcehealth.EventPropertiesArticle{
-	// 				ArticleContent: to.Ptr("<html>An outage alert is being investigated. More information will be provided as it is known</html>"),
+	// 				ArticleContent: to.Ptr("<html>An Azure service retirement is planned. Review the retirement guidance and recommended actions.</html>"),
 	// 			},
 	// 			EnableChatWithUs: to.Ptr(false),
 	// 			EnableMicrosoftSupport: to.Ptr(true),
 	// 			EventLevel: to.Ptr(armresourcehealth.EventLevelValuesWarning),
-	// 			EventSource: to.Ptr(armresourcehealth.EventSourceValuesResourceHealth),
+	// 			EventSource: to.Ptr(armresourcehealth.EventSourceValuesServiceHealth),
 	// 			EventTags: []*string{
 	// 				to.Ptr("Action Recommended"),
-	// 				to.Ptr("False Positive"),
-	// 				to.Ptr("Preliminary PIR"),
-	// 				to.Ptr("Final PIR"),
 	// 			},
-	// 			EventType: to.Ptr(armresourcehealth.EventTypeValuesServiceIssue),
+	// 			EventSubType: to.Ptr(armresourcehealth.EventSubTypeValuesRetirement),
+	// 			EventType: to.Ptr(armresourcehealth.EventTypeValuesHealthAdvisory),
 	// 			Faqs: []*armresourcehealth.Faq{
 	// 				{
 	// 					Answer: to.Ptr("This is an answer"),
@@ -444,7 +443,7 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 					Question: to.Ptr("This is a question"),
 	// 				},
 	// 			},
-	// 			Header: to.Ptr("Your service might have been impacted by an Azure service issue"),
+	// 			Header: to.Ptr("Action may be required for an upcoming Azure service retirement"),
 	// 			HirStage: to.Ptr("resolved"),
 	// 			Impact: []*armresourcehealth.Impact{
 	// 				{
@@ -460,25 +459,18 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 							Updates: []*armresourcehealth.Update{
 	// 								{
-	// 									EventTags: []*string{
-	// 										to.Ptr("Final PIR"),
-	// 									},
-	// 									Summary: to.Ptr("Update 3 - An outage alert is being investigated. More information will be provided as it is known."),
+	// 									Summary: to.Ptr("Update 3 - Retirement guidance and recommended actions have been updated."),
 	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
-	// 									EventTags: []*string{
-	// 										to.Ptr("False Positive"),
-	// 										to.Ptr("Preliminary PIR"),
-	// 									},
-	// 									Summary: to.Ptr("Update 2 - An outage alert is being investigated. More information will be provided as it is known."),
+	// 									Summary: to.Ptr("Update 2 - Additional retirement impact details are available."),
 	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 10, 32, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
 	// 									EventTags: []*string{
 	// 										to.Ptr("Action Recommended"),
 	// 									},
-	// 									Summary: to.Ptr("Update 1 - An outage alert is being investigated. More information will be provided as it is known."),
+	// 									Summary: to.Ptr("Update 1 - An upcoming Azure service retirement was announced."),
 	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 12, 15, 0, 48, 120353000, time.UTC)),
 	// 								},
 	// 							},
@@ -537,14 +529,14 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 				Message: to.Ptr("Recommended actions title"),
 	// 			},
 	// 			Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
-	// 			Summary: to.Ptr("An outage alert is being investigated. More information will be provided as it is known."),
-	// 			Title: to.Ptr("ACTIVE: Virtual machines in West US"),
+	// 			Summary: to.Ptr("An Azure service retirement is planned. Review the retirement guidance and recommended actions."),
+	// 			Title: to.Ptr("Upcoming retirement: Virtual Machines in West US"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01/Event_GetByTenantIdAndTrackingId.json
+// Generated from example definition: 2026-07-01/Event_GetByTenantIdAndTrackingId.json
 func ExampleEventClient_GetByTenantIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

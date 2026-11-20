@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/ImpactedResources_Get.json
+// Generated from example definition: 2026-07-01/ImpactedResources_Get.json
 func ExampleImpactedResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleImpactedResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ImpactedResources_GetByTenantId.json
+// Generated from example definition: 2026-07-01/ImpactedResources_GetByTenantId.json
 func ExampleImpactedResourcesClient_GetByTenantID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleImpactedResourcesClient_GetByTenantID() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/ImpactedResources_ListBySubscriptionId_ListByEventId.json
+// Generated from example definition: 2026-07-01/ImpactedResources_ListBySubscriptionId_ListByEventId.json
 func ExampleImpactedResourcesClient_NewListBySubscriptionIDAndEventIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleImpactedResourcesClient_NewListBySubscriptionIDAndEventIDPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/ImpactedResources_ListByTenantId_ListByEventId.json
+// Generated from example definition: 2026-07-01/ImpactedResources_ListByTenantId_ListByEventId.json
 func ExampleImpactedResourcesClient_NewListByTenantIDAndEventIDPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

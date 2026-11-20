@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkFabricControllers_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricControllers_Create.json
 func ExampleNetworkFabricControllersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,6 +58,9 @@ func ExampleNetworkFabricControllersClient_BeginCreate() {
 			IPv4AddressSpace:                   to.Ptr("172.253.0.0/19"),
 			IPv6AddressSpace:                   to.Ptr("::/60"),
 			NfcSKU:                             to.Ptr(armmanagednetworkfabric.NfcSKUStandard),
+			VMProfile: &armmanagednetworkfabric.VMProfile{
+				VMSKUName: to.Ptr("Standard_D4s_v3"),
+			},
 		},
 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
@@ -123,6 +126,10 @@ func ExampleNetworkFabricControllersClient_BeginCreate() {
 	// 			IPv6AddressSpace: to.Ptr("::/60"),
 	// 			NfcSKU: to.Ptr(armmanagednetworkfabric.NfcSKUStandard),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+	// 			VMProfile: &armmanagednetworkfabric.VMProfile{
+	// 				VMSKUName: to.Ptr("Standard_D4s_v3"),
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -154,7 +161,7 @@ func ExampleNetworkFabricControllersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabricControllers_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricControllers_Delete.json
 func ExampleNetworkFabricControllersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +182,7 @@ func ExampleNetworkFabricControllersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabricControllers_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricControllers_Update.json
 func ExampleNetworkFabricControllersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,6 +271,10 @@ func ExampleNetworkFabricControllersClient_BeginUpdate() {
 	// 			IPv6AddressSpace: to.Ptr("::/60"),
 	// 			NfcSKU: to.Ptr(armmanagednetworkfabric.NfcSKUStandard),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+	// 			VMProfile: &armmanagednetworkfabric.VMProfile{
+	// 				VMSKUName: to.Ptr("Standard_D4s_v3"),
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -295,7 +306,7 @@ func ExampleNetworkFabricControllersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabricControllers_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricControllers_Get.json
 func ExampleNetworkFabricControllersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -359,6 +370,10 @@ func ExampleNetworkFabricControllersClient_Get() {
 	// 				Details: to.Ptr("Succeeded"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+	// 			VMProfile: &armmanagednetworkfabric.VMProfile{
+	// 				VMSKUName: to.Ptr("Standard_D4s_v3"),
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -390,7 +405,7 @@ func ExampleNetworkFabricControllersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabricControllers_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricControllers_ListByResourceGroup.json
 func ExampleNetworkFabricControllersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,6 +475,10 @@ func ExampleNetworkFabricControllersClient_NewListByResourceGroupPager() {
 		// 						Details: to.Ptr("Succeeded"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+		// 					VMProfile: &armmanagednetworkfabric.VMProfile{
+		// 						VMSKUName: to.Ptr("Standard_D4s_v3"),
+		// 					},
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -495,7 +514,7 @@ func ExampleNetworkFabricControllersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabricControllers_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricControllers_ListBySubscription.json
 func ExampleNetworkFabricControllersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,6 +584,10 @@ func ExampleNetworkFabricControllersClient_NewListBySubscriptionPager() {
 		// 						Details: to.Ptr("Succeeded"),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+		// 					VMProfile: &armmanagednetworkfabric.VMProfile{
+		// 						VMSKUName: to.Ptr("Standard_D4s_v3"),
+		// 					},
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),

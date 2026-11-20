@@ -3,6 +3,7 @@ BeforeAll {
   $setHashScript = Join-Path $repoRoot 'eng/scripts/Set-PackageApiReviewHash.ps1'
   $confirmPublishedScript = Join-Path $repoRoot 'eng/scripts/Confirm-GoPackagePublished.ps1'
   $testParserScript = Join-Path $repoRoot 'eng/scripts/Test-GoAPIReviewParser.ps1'
+  $buildToolsScript = Join-Path $repoRoot 'eng/scripts/Build-APIReviewTools.ps1'
 }
 
 Describe 'Go API review bundles' {
@@ -77,6 +78,16 @@ $global:LASTEXITCODE = 0
     $second.PackageVersion | Should -Be '1.2.4'
   }
 
+  It 'supports shipping profile modules' {
+    $profilePath = Join-Path $sourceRoot 'profile/p20200901'
+    New-Item -ItemType Directory -Path $profilePath -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $packagePath 'go.mod'), (Join-Path $packagePath 'version.go') -Destination $profilePath
+    Set-Content -LiteralPath $parser -Value ((Get-Content -LiteralPath $parser -Raw).Replace('sdk/service/example', 'profile/p20200901'))
+    $bundle = & $bundleScript -SourceRoot $sourceRoot -PackageName 'profile/p20200901' `
+      -OutputDirectory $outputDirectory -ParserPath $parser
+    $bundle.PackageName | Should -Be 'profile/p20200901'
+  }
+
   It 'rejects package traversal and a parser result for a different package' {
     { & $bundleScript -SourceRoot $sourceRoot -PackageName 'sdk/../example' `
         -OutputDirectory $outputDirectory -ParserPath $parser } | Should -Throw '*repository-relative SDK module path*'
@@ -102,6 +113,32 @@ $global:LASTEXITCODE = 0
     { & $bundleScript -SourceRoot $sourceRoot -PackageName 'sdk/service/example' `
         -OutputDirectory $outputDirectory -ParserPath $parser } | Should -Throw '*unsupported syntax*'
     (Test-Path -LiteralPath (Join-Path $outputDirectory 'api.metadata.yml')) | Should -BeFalse
+  }
+
+  It 'rejects error and fatal diagnostics before publishing a hash' -TestCases @(
+    @{ Level = 3 }, @{ Level = 4 }, @{ Level = 'Error' }, @{ Level = 'Fatal' }
+  ) {
+    param($Level)
+    $contents = (Get-Content -LiteralPath $parser -Raw).Replace(
+      "Language = 'Go'",
+      "Language = 'Go'`n  Diagnostics = @(@{ Level = '$Level'; TargetID = 'example.Error'; Text = 'omitted promoted methods' })"
+    )
+    Set-Content -LiteralPath $parser -Value $contents
+    { & $bundleScript -SourceRoot $sourceRoot -PackageName 'sdk/service/example' `
+        -OutputDirectory $outputDirectory -ParserPath $parser } |
+      Should -Throw '*example.Error: omitted promoted methods*'
+    (Test-Path -LiteralPath (Join-Path $outputDirectory 'api.md')) | Should -BeFalse
+    (Test-Path -LiteralPath (Join-Path $outputDirectory 'api.metadata.yml')) | Should -BeFalse
+  }
+
+  It 'allows informational and warning diagnostics' {
+    $contents = (Get-Content -LiteralPath $parser -Raw).Replace(
+      "Language = 'Go'",
+      "Language = 'Go'`n  Diagnostics = @(@{ Level = 1; TargetID = 'example.Alias'; Text = 'alias' }, @{ Level = 2; TargetID = 'example.External'; Text = 'external alias' })"
+    )
+    Set-Content -LiteralPath $parser -Value $contents
+    { & $bundleScript -SourceRoot $sourceRoot -PackageName 'sdk/service/example' `
+        -OutputDirectory $outputDirectory -ParserPath $parser } | Should -Not -Throw
   }
 
   It 'emits an empty API when the module has no public review lines' {
@@ -151,11 +188,16 @@ Describe 'Go APIView parser compatibility' {
     $parser = Join-Path $testRoot 'parser.ps1'
     @'
 param($SourceDirectory, $OutputDirectory)
+$updated = (Get-Content -LiteralPath (Join-Path $SourceDirectory 'alias.go') -Raw).Contains('T comparable')
+$external = if ($updated) { '=[]rune' } else { '=[]byte' }
+$direct = if ($updated) { 'typeDirect[]byte' } else { 'typeDirect=[]byte' }
+$constraint = if ($updated) { 'Tcomparable' } else { 'Tany' }
 $aliases = @(
-  @{ Name = 'ByteSlice'; Definition = '[]byte'; Methods = @('func(ByteSlice)Len()int', 'func(*ByteSlice)Reset()') },
-  @{ Name = 'AnotherSlice'; Definition = '[]byte'; Methods = @('func(AnotherSlice)Len()int', 'func(*AnotherSlice)Reset()') },
-  @{ Name = 'Mapping'; Definition = 'map[string]int'; Methods = @('func(Mapping)Size()int') },
-  @{ Name = 'Defined'; Definition = '[]byte'; Methods = @('func(Defined)Local()') }
+  @{ Name = 'ByteSlice'; Definition = '=[]byte'; Methods = @('func(ByteSlice)Len()int', 'func(*ByteSlice)Reset()') },
+  @{ Name = 'AnotherSlice'; Definition = '=[]byte'; Methods = @('func(AnotherSlice)Len()int', 'func(*AnotherSlice)Reset()') },
+  @{ Name = 'Mapping'; Definition = '=map[string]int'; Methods = @('func(Mapping)Size()int') },
+  @{ Name = 'Defined'; Definition = '[]byte'; Methods = @('func(Defined)Local()') },
+  @{ Name = 'External'; Definition = $external; Methods = @() }
 )
 $lines = foreach ($alias in $aliases) {
   @{
@@ -163,6 +205,13 @@ $lines = foreach ($alias in $aliases) {
     Tokens = @(@{ Value = "type$($alias.Name)$($alias.Definition)" })
     Children = @($alias.Methods | ForEach-Object { @{ Tokens = @(@{ Value = $_ }) } })
   }
+}
+$lines += @(
+  @{ LineId = 'parserprobe.Direct'; Tokens = @(@{ Value = $direct }) },
+  @{ LineId = 'parserprobe.Contract'; Tokens = @(@{ Value = "typeContract[$constraint]interface" }) }
+)
+foreach ($name in @('StartTestProxy', 'StopTestProxy', 'ExampleClient')) {
+  $lines += @{ LineId = "parserprobe-$name"; Tokens = @(@{ Value = "func$name()" }) }
 }
 @{ ReviewLines = @(@{ LineId = 'parserprobe'; Tokens = @(); Children = @($lines) }) } |
   ConvertTo-Json -Depth 10 | Set-Content -Path (Join-Path $OutputDirectory 'parserprobe.json')
@@ -194,6 +243,104 @@ $global:LASTEXITCODE = 0
     )
     Set-Content -LiteralPath $parser -Value $contents
     { & $testParserScript -ParserPath $parser -WorkingDirectory $testRoot } | Should -Throw '*incorrectly inherited*'
+  }
+
+  It 'rejects incomplete API contracts: <Case>' -TestCases @(
+    @{ Case = 'alias identity'; Original = "'typeDirect=[]byte'"; Replacement = "'typeDirect[]byte'"; Error = '*expected typeDirect=*' },
+    @{ Case = 'generic constraints'; Original = "'Tcomparable'"; Replacement = "'Tany'"; Error = '*expected typeContract*Tcomparable*' },
+    @{ Case = 'dependency versions'; Original = "'=[]rune'"; Replacement = "'=[]byte'"; Error = '*expected typeExternal=*rune*' },
+    @{ Case = 'exported function names'; Original = "'StartTestProxy'"; Replacement = "'Suppressed'"; Error = '*omitted the exported StartTestProxy*' }
+  ) {
+    param($Case, $Original, $Replacement, $Error)
+    Set-Content -LiteralPath $parser -Value ((Get-Content -LiteralPath $parser -Raw).Replace($Original, $Replacement))
+    { & $testParserScript -ParserPath $parser -WorkingDirectory $testRoot } | Should -Throw $Error
+    @(Get-ChildItem -LiteralPath $testRoot -Filter '.parser-probe-*' -Force).Count | Should -Be 0
+  }
+}
+
+Describe 'Pinned Go API review tooling' {
+  BeforeAll {
+    function global:git {
+      $Arguments = @($args)
+      $global:ToolingGitCalls += ($Arguments -join '|')
+      $global:LASTEXITCODE = 0
+      if ($Arguments -contains 'fetch' -and $global:ToolingFetchFails) {
+        $global:LASTEXITCODE = 1
+      }
+      elseif ($Arguments[0] -eq 'init') {
+        New-Item -ItemType Directory -Path $Arguments[-1] | Out-Null
+      }
+      elseif ($Arguments -contains 'checkout') {
+        $checkout = $Arguments[1]
+        New-Item -ItemType Directory -Path (Join-Path $checkout 'src/go'), (Join-Path $checkout 'eng/common/scripts') -Force | Out-Null
+        foreach ($script in @('Export-APIViewMarkdown.ps1', 'SemVer.ps1', 'logging.ps1')) {
+          Set-Content -LiteralPath (Join-Path $checkout "eng/common/scripts/$script") -Value 'pinned tooling'
+        }
+      }
+      elseif ($Arguments -contains 'rev-parse') {
+        return $global:ToolingHead
+      }
+    }
+
+    function global:go {
+      $Arguments = @($args)
+      Set-Content -LiteralPath $Arguments[$Arguments.IndexOf('-o') + 1] -Value 'parser binary'
+      $global:LASTEXITCODE = 0
+    }
+  }
+
+  AfterAll {
+    Remove-Item Function:\git, Function:\go
+    Remove-Variable ToolingGitCalls, ToolingFetchFails, ToolingHead -Scope Global
+  }
+
+  BeforeEach {
+    $testRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString())
+    $languageRoot = Join-Path $testRoot 'language'
+    $binDirectory = Join-Path $testRoot 'bin'
+    New-Item -ItemType Directory -Path (Join-Path $languageRoot 'eng/scripts') -Force | Out-Null
+    $pin = 'a' * 40
+    @{ commit = $pin } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $languageRoot 'eng/api-review-tools.json')
+    foreach ($script in @('Export-APIReviewBundle.ps1', 'Get-GoModuleVersionInfo.ps1')) {
+      Set-Content -LiteralPath (Join-Path $languageRoot "eng/scripts/$script") -Value 'language tooling'
+    }
+    Set-Content -LiteralPath (Join-Path $languageRoot 'eng/scripts/Test-GoAPIReviewParser.ps1') `
+      -Value 'param($ParserPath, $WorkingDirectory); if (-not (Test-Path -LiteralPath $ParserPath)) { throw "Parser missing" }'
+    $global:ToolingGitCalls = @()
+    $global:ToolingFetchFails = $false
+    $global:ToolingHead = $pin
+  }
+
+  It 'uses the same immutable pin with or without an orchestration checkout' -TestCases @(
+    @{ UseCheckout = $false }, @{ UseCheckout = $true }
+  ) {
+    param($UseCheckout)
+    $parameters = @{ LanguageToolsSourceDirectory = $languageRoot; BinOutputDirectory = $binDirectory }
+    if ($UseCheckout) {
+      $parameters.ToolsSourceDirectory = Join-Path $testRoot 'orchestration'
+    }
+    & $buildToolsScript @parameters
+    @($global:ToolingGitCalls | Where-Object { $_ -like "*|fetch|*|origin|$pin" }).Count | Should -Be 1
+    (Get-Content -LiteralPath (Join-Path $binDirectory 'Export-APIViewMarkdown.ps1') -Raw).Trim() | Should -Be 'pinned tooling'
+    @(Get-ChildItem -LiteralPath $binDirectory -Filter '.tools-source-*' -Force).Count | Should -Be 0
+  }
+
+  It 'rejects moving refs before fetching tooling' {
+    @{ commit = 'main' } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $languageRoot 'eng/api-review-tools.json')
+    { & $buildToolsScript -LanguageToolsSourceDirectory $languageRoot -BinOutputDirectory $binDirectory } |
+      Should -Throw '*immutable 40-character commit*'
+    $global:ToolingGitCalls.Count | Should -Be 0
+  }
+
+  It 'rejects an incorrect checkout or a failed fetch' -TestCases @(
+    @{ FailFetch = $false; Error = '*does not match pinned commit*' },
+    @{ FailFetch = $true; Error = '*Failed to fetch API review tooling commit*' }
+  ) {
+    param($FailFetch, $Error)
+    $global:ToolingHead = 'b' * 40
+    $global:ToolingFetchFails = $FailFetch
+    { & $buildToolsScript -LanguageToolsSourceDirectory $languageRoot -BinOutputDirectory $binDirectory } | Should -Throw $Error
+    @(Get-ChildItem -LiteralPath $binDirectory -Filter '.tools-source-*' -Force).Count | Should -Be 0
   }
 }
 

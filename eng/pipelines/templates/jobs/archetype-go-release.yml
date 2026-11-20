@@ -186,20 +186,8 @@ stages:
               $ErrorActionPreference = 'Stop'
               $workDirectory = Join-Path $env:AGENT_TEMPDIRECTORY ('go-api-review-' + [guid]::NewGuid().ToString('N'))
               New-Item -ItemType Directory -Path $workDirectory | Out-Null
-              $toolsSource = Join-Path $workDirectory 'azure-sdk-tools'
-              & git clone --depth 1 --filter=blob:none --sparse --branch main `
-                'https://github.com/Azure/azure-sdk-tools.git' $toolsSource
-              if ($LASTEXITCODE -ne 0) {
-                throw 'Failed to fetch the Go API review parser.'
-              }
-              & git -C $toolsSource rev-parse HEAD
-              if ($LASTEXITCODE -ne 0) {
-                throw 'Failed to identify the API review tooling revision.'
-              }
-
               $binDirectory = Join-Path $workDirectory 'bin'
               & (Join-Path $env:SOURCE_DIRECTORY 'eng/scripts/Build-APIReviewTools.ps1') `
-                -ToolsSourceDirectory $toolsSource `
                 -LanguageToolsSourceDirectory $env:SOURCE_DIRECTORY `
                 -BinOutputDirectory $binDirectory
               & (Join-Path $env:SOURCE_DIRECTORY 'eng/scripts/Set-PackageApiReviewHash.ps1') `

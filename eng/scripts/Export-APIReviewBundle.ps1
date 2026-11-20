@@ -41,7 +41,7 @@ function Initialize-GoTokenSpacing([object[]] $Lines) {
 
 $packageRelativePath = $PackageName.Replace('\', '/')
 $pathParts = $packageRelativePath.Split('/')
-if ($packageRelativePath -cnotmatch '^sdk(?:/[A-Za-z0-9._-]+)+$' -or
+if ($packageRelativePath -cnotmatch '^(?:sdk|profile)(?:/[A-Za-z0-9._-]+)+$' -or
     @($pathParts | Where-Object { $_ -in @('.', '..') }).Count -gt 0) {
   throw "PackageName must be a repository-relative SDK module path: $PackageName"
 }
@@ -88,6 +88,13 @@ try {
   }
   if (-not $review.PSObject.Properties['Language'] -or $review.Language -cne 'Go') {
     throw "Go APIView parser returned an invalid language for $PackageName."
+  }
+  if ($review.PSObject.Properties['Diagnostics'] -and $review.Diagnostics) {
+    $errors = @($review.Diagnostics | Where-Object { $_.Level -in @(3, 4, 'Error', 'Fatal') })
+    if ($errors.Count -gt 0) {
+      $details = ($errors | ForEach-Object { "$($_.TargetID): $($_.Text)" }) -join '; '
+      throw "Go APIView parser reported incomplete API for ${PackageName}: $details"
+    }
   }
 
   if (-not $review.PSObject.Properties['ReviewLines'] -or -not $review.ReviewLines) {

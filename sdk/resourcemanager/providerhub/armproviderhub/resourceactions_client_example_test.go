@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/ResourceActions_DeleteResources.json
+// Generated from example definition: 2026-10-01/ResourceActions_DeleteResources.json
 func ExampleResourceActionsClient_BeginDeleteResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

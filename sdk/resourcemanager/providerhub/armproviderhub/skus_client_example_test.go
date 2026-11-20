@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/Skus_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/Skus_CreateOrUpdate.json
 func ExampleSKUsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleSKUsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
+// Generated from example definition: 2026-10-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
 func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
+// Generated from example definition: 2026-10-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
 func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
+// Generated from example definition: 2026-10-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
 func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_Delete.json
+// Generated from example definition: 2026-10-01/Skus_Delete.json
 func ExampleSKUsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleSKUsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_DeleteNestedResourceTypeFirst.json
+// Generated from example definition: 2026-10-01/Skus_DeleteNestedResourceTypeFirst.json
 func ExampleSKUsClient_DeleteNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleSKUsClient_DeleteNestedResourceTypeFirst() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_DeleteNestedResourceTypeSecond.json
+// Generated from example definition: 2026-10-01/Skus_DeleteNestedResourceTypeSecond.json
 func ExampleSKUsClient_DeleteNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +298,7 @@ func ExampleSKUsClient_DeleteNestedResourceTypeSecond() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_DeleteNestedResourceTypeThird.json
+// Generated from example definition: 2026-10-01/Skus_DeleteNestedResourceTypeThird.json
 func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_Get.json
+// Generated from example definition: 2026-10-01/Skus_Get.json
 func ExampleSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -374,7 +374,7 @@ func ExampleSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_GetNestedResourceTypeFirst.json
+// Generated from example definition: 2026-10-01/Skus_GetNestedResourceTypeFirst.json
 func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_GetNestedResourceTypeSecond.json
+// Generated from example definition: 2026-10-01/Skus_GetNestedResourceTypeSecond.json
 func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +482,7 @@ func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_GetNestedResourceTypeThird.json
+// Generated from example definition: 2026-10-01/Skus_GetNestedResourceTypeThird.json
 func ExampleSKUsClient_GetNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,7 +536,7 @@ func ExampleSKUsClient_GetNestedResourceTypeThird() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
+// Generated from example definition: 2026-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -599,7 +599,7 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirst
 	}
 }
 
-// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
+// Generated from example definition: 2026-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +662,7 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecon
 	}
 }
 
-// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
+// Generated from example definition: 2026-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -725,7 +725,7 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeThird
 	}
 }
 
-// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrations.json
+// Generated from example definition: 2026-10-01/Skus_ListByResourceTypeRegistrations.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -736,7 +736,7 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSKUsClient().NewListByResourceTypeRegistrationsPager("Microsoft.Contoso", "testResourceType", nil)
+	pager := clientFactory.NewSKUsClient().NewListByResourceTypeRegistrationsPager("Microsoft.Contoso", "employees", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

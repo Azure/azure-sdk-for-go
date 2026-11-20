@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/DirectProviderRegistrations_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/DirectProviderRegistrations_CreateOrUpdate.json
 func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegistrationsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_directProviderRegist
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderRegistrations_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/ProviderRegistrations_CreateOrUpdate.json
 func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistrationsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,6 +280,14 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 				{
 					QuotaID: to.Ptr("CSP_MG_2017-12-01"),
 					Effect:  to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
+				},
+			},
+			LifecycleInfo: &armproviderhub.ResourceProviderLifecycleInfo{
+				IsolationType:   to.Ptr(armproviderhub.IsolationTypePublic),
+				PartnerCategory: to.Ptr(armproviderhub.PartnerCategoryFirstParty),
+				LifecycleStage:  to.Ptr(armproviderhub.LifecycleStageInDevelopment),
+				AllowedSubscriptions: []*string{
+					to.Ptr("00000000-0000-0000-0000-000000000000"),
 				},
 			},
 		},
@@ -388,6 +396,14 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// 			ProviderHubMetadata: &armproviderhub.ProviderRegistrationPropertiesProviderHubMetadata{
 	// 				DirectRpRoleDefinitionID: to.Ptr("1x86y807-6zx0-40y3-8z5x-686y7z43x0y2"),
 	// 			},
+	// 			LifecycleInfo: &armproviderhub.ResourceProviderLifecycleInfo{
+	// 				IsolationType: to.Ptr(armproviderhub.IsolationTypePublic),
+	// 				PartnerCategory: to.Ptr(armproviderhub.PartnerCategoryFirstParty),
+	// 				LifecycleStage: to.Ptr(armproviderhub.LifecycleStageInDevelopment),
+	// 				AllowedSubscriptions: []*string{
+	// 					to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
@@ -401,7 +417,7 @@ func ExampleProviderRegistrationsClient_BeginCreateOrUpdate_providerRegistration
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderRegistrations_Delete.json
+// Generated from example definition: 2026-10-01/ProviderRegistrations_Delete.json
 func ExampleProviderRegistrationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +439,7 @@ func ExampleProviderRegistrationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderRegistrations_GenerateOperations.json
+// Generated from example definition: 2026-10-01/ProviderRegistrations_GenerateOperations.json
 func ExampleProviderRegistrationsClient_GenerateOperations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,10 +458,54 @@ func ExampleProviderRegistrationsClient_GenerateOperations() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderRegistrationsClientGenerateOperationsResponse{
+	// 	OperationsDefinitionArray: []*armproviderhub.OperationsDefinition{
+	// 		{
+	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Read"),
+	// 			IsDataAction: to.Ptr(false),
+	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
+	// 				Provider: to.Ptr("Microsoft.Contoso"),
+	// 				Resource: to.Ptr("Employees"),
+	// 				Operation: to.Ptr("Gets/List employee resources"),
+	// 				Description: to.Ptr("Read employees"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Write"),
+	// 			IsDataAction: to.Ptr(false),
+	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
+	// 				Provider: to.Ptr("Microsoft.Contoso"),
+	// 				Resource: to.Ptr("Employees"),
+	// 				Operation: to.Ptr("Create/update employee resources"),
+	// 				Description: to.Ptr("Writes employees"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Delete"),
+	// 			IsDataAction: to.Ptr(false),
+	// 			Origin: to.Ptr(armproviderhub.OperationOriginsUser),
+	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
+	// 				Provider: to.Ptr("Microsoft.Contoso"),
+	// 				Resource: to.Ptr("Employees"),
+	// 				Operation: to.Ptr("Deletes employee resource"),
+	// 				Description: to.Ptr("Deletes employees"),
+	// 			},
+	// 		},
+	// 		{
+	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Action"),
+	// 			IsDataAction: to.Ptr(true),
+	// 			Origin: to.Ptr(armproviderhub.OperationOriginsSystem),
+	// 			Display: &armproviderhub.OperationsDefinitionDisplay{
+	// 				Provider: to.Ptr("Microsoft.Contoso"),
+	// 				Resource: to.Ptr("Employees"),
+	// 				Operation: to.Ptr("Create/update employee resources"),
+	// 				Description: to.Ptr("Writes employees"),
+	// 			},
+	// 		},
+	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderRegistrations_Get.json
+// Generated from example definition: 2026-10-01/ProviderRegistrations_Get.json
 func ExampleProviderRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -527,6 +587,14 @@ func ExampleProviderRegistrationsClient_Get() {
 	// 				},
 	// 			},
 	// 			Metadata: nil,
+	// 			LifecycleInfo: &armproviderhub.ResourceProviderLifecycleInfo{
+	// 				IsolationType: to.Ptr(armproviderhub.IsolationTypePublic),
+	// 				PartnerCategory: to.Ptr(armproviderhub.PartnerCategoryFirstParty),
+	// 				LifecycleStage: to.Ptr(armproviderhub.LifecycleStageInDevelopment),
+	// 				AllowedSubscriptions: []*string{
+	// 					to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
@@ -540,7 +608,7 @@ func ExampleProviderRegistrationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/ProviderRegistrations_List.json
+// Generated from example definition: 2026-10-01/ProviderRegistrations_List.json
 func ExampleProviderRegistrationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

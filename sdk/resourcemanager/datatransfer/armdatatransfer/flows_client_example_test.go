@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-06-preview/createOrUpdateFlow.json
+// Generated from example definition: 2026-06-29-preview/createOrUpdateFlow.json
 func ExampleFlowsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleFlowsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/deleteFlow.json
+// Generated from example definition: 2026-06-29-preview/deleteFlow.json
 func ExampleFlowsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleFlowsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/disableFlow.json
+// Generated from example definition: 2026-06-29-preview/disableFlow.json
 func ExampleFlowsClient_BeginDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleFlowsClient_BeginDisable() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/enableFlow.json
+// Generated from example definition: 2026-06-29-preview/enableFlow.json
 func ExampleFlowsClient_BeginEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleFlowsClient_BeginEnable() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/generateFlowPassphrase.json
+// Generated from example definition: 2026-06-29-preview/generateFlowPassphrase.json
 func ExampleFlowsClient_BeginGeneratePassphrase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleFlowsClient_BeginGeneratePassphrase() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/linkFlow.json
+// Generated from example definition: 2026-06-29-preview/linkFlow.json
 func ExampleFlowsClient_BeginLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleFlowsClient_BeginLink() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/setFlowDestinationEndpointPorts.json
+// Generated from example definition: 2026-06-29-preview/setFlowDestinationEndpointPorts.json
 func ExampleFlowsClient_BeginSetDestinationEndpointPorts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleFlowsClient_BeginSetDestinationEndpointPorts() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/setFlowDestinationEndpoints.json
+// Generated from example definition: 2026-06-29-preview/setFlowDestinationEndpoints.json
 func ExampleFlowsClient_BeginSetDestinationEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleFlowsClient_BeginSetDestinationEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/setFlowPassphrase.json
+// Generated from example definition: 2026-06-29-preview/setFlowPassphrase.json
 func ExampleFlowsClient_BeginSetPassphrase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleFlowsClient_BeginSetPassphrase() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/setFlowSourceAddresses.json
+// Generated from example definition: 2026-06-29-preview/setFlowSourceAddresses.json
 func ExampleFlowsClient_BeginSetSourceAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,7 +347,7 @@ func ExampleFlowsClient_BeginSetSourceAddresses() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/patchFlow.json
+// Generated from example definition: 2026-06-29-preview/patchFlow.json
 func ExampleFlowsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +373,7 @@ func ExampleFlowsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getFlow.json
+// Generated from example definition: 2026-06-29-preview/getFlow.json
 func ExampleFlowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +400,7 @@ func ExampleFlowsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getFlowDestinationEndpointPorts.json
+// Generated from example definition: 2026-06-29-preview/getFlowDestinationEndpointPorts.json
 func ExampleFlowsClient_GetDestinationEndpointPorts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleFlowsClient_GetDestinationEndpointPorts() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getFlowDestinationEndpoints.json
+// Generated from example definition: 2026-06-29-preview/getFlowDestinationEndpoints.json
 func ExampleFlowsClient_GetDestinationEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +454,7 @@ func ExampleFlowsClient_GetDestinationEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getFlowSourceAddresses.json
+// Generated from example definition: 2026-06-29-preview/getFlowSourceAddresses.json
 func ExampleFlowsClient_GetSourceAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +482,7 @@ func ExampleFlowsClient_GetSourceAddresses() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getStreamConnectionString.json
+// Generated from example definition: 2026-06-29-preview/getStreamConnectionString.json
 func ExampleFlowsClient_GetStreamConnectionString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -507,7 +507,7 @@ func ExampleFlowsClient_GetStreamConnectionString() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/listFlowsByConnection.json
+// Generated from example definition: 2026-06-29-preview/listFlowsByConnection.json
 func ExampleFlowsClient_NewListByConnectionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -542,7 +542,7 @@ func ExampleFlowsClient_NewListByConnectionPager() {
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/connections/testFlow"),
 		// 					},
 		// 					FlowProfile: &armdatatransfer.FlowProfileMetadata{
-		// 						Pipeline: to.Ptr("pipelinea"),
+		// 						Pipeline: to.Ptr("testPipeline"),
 		// 						Name: to.Ptr("flowProfileNamea"),
 		// 						FlowProfileID: to.Ptr("25f2c41a-6e29-4c40-a033-b4de81d4a681"),
 		// 						ReplicationScenario: to.Ptr(armdatatransfer.DataClassTypeFiles),
@@ -563,7 +563,7 @@ func ExampleFlowsClient_NewListByConnectionPager() {
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/connections/testFlow"),
 		// 					},
 		// 					FlowProfile: &armdatatransfer.FlowProfileMetadata{
-		// 						Pipeline: to.Ptr("pipelinea"),
+		// 						Pipeline: to.Ptr("testPipeline"),
 		// 						Name: to.Ptr("flowProfileNamea"),
 		// 						FlowProfileID: to.Ptr("25f2c41a-6e29-4c40-a033-b4de81d4a681"),
 		// 						ReplicationScenario: to.Ptr(armdatatransfer.DataClassTypeFiles),

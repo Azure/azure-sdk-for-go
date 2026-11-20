@@ -276,6 +276,16 @@ type DirectionSettings struct {
 
 	// The pricing options available for messaging flows in this direction.
 	MessagingFlowsPricingOptions []*FlowBillingTier
+
+	// The one-to-one mappings between messaging flow locations in this cloud and
+	// corresponding messaging flow locations in the other cloud for this direction.
+	// Each location and paired location appears in at most one mapping.
+	MessagingLocationMappings []*LocationMapping
+
+	// The one-to-one mappings between storage flow locations in this cloud and
+	// corresponding storage flow locations in the other cloud for this direction.
+	// Each location and paired location appears in at most one mapping.
+	StorageLocationMappings []*LocationMapping
 }
 
 // Flow - The flow resource definition.
@@ -664,6 +674,45 @@ type ListPipelineMetadataResult struct {
 	Send *DirectionSettings
 }
 
+// ListTransferFlowsByPipelineRequestBody - The request resource body to reference.
+type ListTransferFlowsByPipelineRequestBody struct {
+	// Filters applied to the storage and messaging transfer flows returned.
+	Flows *ListTransferFlowsRequestBody
+}
+
+// ListTransferFlowsByPipelineResult - A page of transfer flow summaries associated with a pipeline.
+type ListTransferFlowsByPipelineResult struct {
+	// REQUIRED; Summaries of the storage and messaging transfer flows associated with the pipeline.
+	Value []*TransferFlowSummary
+
+	// The link to the next page of results, if any.
+	NextLink *string
+}
+
+type ListTransferFlowsParameterBody struct {
+	// Filters used to select the flow resources to be retrieved.
+	Body *ListTransferFlowsByPipelineRequestBody
+}
+
+// ListTransferFlowsRequestBody - The request resource body to reference for Flow resources.
+type ListTransferFlowsRequestBody struct {
+	// Data class types of the resource(s). If null, all data class types are considered.
+	DataClassTypes []*DataClassType
+
+	// Status of the resource(s). If null, all statuses are considered.
+	Status *CommonTransferFlowStatus
+}
+
+// LocationMapping - Maps a flow location in this cloud to the corresponding flow location
+// in the other cloud.
+type LocationMapping struct {
+	// REQUIRED; The Azure location name of the flow in this cloud.
+	Location *string
+
+	// REQUIRED; The Azure location name of the corresponding flow in the other cloud.
+	PairedLocation *string
+}
+
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
@@ -688,6 +737,91 @@ type MessagingOptions struct {
 	// Field indicating whether to enable guaranteed delivery on the flow or not. The default disabled option chooses speed over
 	// consistency. When enabled, messages are delivered with minimal delay, but delivery is not guaranteed under all conditions
 	PerformancePriority *EnablementStatus
+}
+
+// MessagingTransferFlow - The messaging transfer flow resource definition.
+type MessagingTransferFlow struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties of MessagingTransferFlow
+	Properties *MessagingTransferFlowProperties
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MessagingTransferFlowListResult - The response of a MessagingTransferFlow list operation.
+type MessagingTransferFlowListResult struct {
+	// REQUIRED; The MessagingTransferFlow items on this page
+	Value []*MessagingTransferFlow
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MessagingTransferFlowProperties - Properties of a messaging flow
+type MessagingTransferFlowProperties struct {
+	// REQUIRED; Name of the FlowProfile to use for transfer via the flow. Resolved relative to the pipeline identified by the
+	// pipeline property.
+	FlowProfileName *string
+
+	// REQUIRED; ARM resource ID of the Service Bus queue or Event Hub used for this flow. The
+	// messaging namespace and messaging type are derived from this ID.
+	MessagingDataResourceID *string
+
+	// REQUIRED; Name of the pipeline the transfer flow uses. Pipelines are service-managed resources that customers cannot access
+	// directly; customers are given the name of the pipeline they are approved to use.
+	Pipeline *string
+
+	// REQUIRED; ARM resource ID of the paired transfer flow on the remote side of the pipeline.
+	RemoteTransferFlowResourceID *string
+
+	// REQUIRED; Transfer role indicating the direction of data movement
+	TransferRole *TransferRole
+
+	// Event Hub consumer group. Only valid when messagingDataResourceId is an Event Hub. Defaults to "$Default".
+	ConsumerGroup *string
+
+	// The messaging options for this flow.
+	MessagingOptions *MessagingOptions
+
+	// READ-ONLY; Dataflow GUID associated with this flow
+	FlowID *string
+
+	// READ-ONLY; Force disablement status of the current flow
+	ForceDisabledStatus []*ForceDisabledStatus
+
+	// READ-ONLY; Provisioning state of the flow
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Approval and lifecycle status of the transfer flow. Set by the service; use the approve/reject pipeline actions
+	// and the enableTransfer/disableTransfer actions to change it.
+	Status *CommonTransferFlowStatus
+}
+
+// MessagingTransferFlowsPatch - The messaging transfer flow resource patch definition.
+type MessagingTransferFlowsPatch struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // MimeFilterRuleset - Rules for filtering files based on Media types (f.k.a MIME types).
@@ -1253,6 +1387,85 @@ type SetStreamPassphrase struct {
 	Value *string
 }
 
+// StorageTransferFlow - The storage flow resource definition.
+type StorageTransferFlow struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties of StorageTransferFlow
+	Properties *StorageTransferFlowProperties
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// StorageTransferFlowListResult - The response of a StorageTransferFlow list operation.
+type StorageTransferFlowListResult struct {
+	// REQUIRED; The StorageTransferFlow items on this page
+	Value []*StorageTransferFlow
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// StorageTransferFlowProperties - Properties of a storage flow
+type StorageTransferFlowProperties struct {
+	// REQUIRED; Name of the FlowProfile to use for transfer via the flow. Resolved relative to the pipeline identified by the
+	// pipeline property.
+	FlowProfileName *string
+
+	// REQUIRED; Name of the pipeline the transfer flow uses. Pipelines are service-managed resources that customers cannot access
+	// directly; customers are given the name of the pipeline they are approved to use.
+	Pipeline *string
+
+	// REQUIRED; ARM resource ID of the paired transfer flow on the remote side of the pipeline.
+	RemoteTransferFlowResourceID *string
+
+	// REQUIRED; ARM resource ID of the blob container or table used for this flow. The storage
+	// account is derived from this ID.
+	StorageDataResourceID *string
+
+	// REQUIRED; Transfer role indicating the direction of data movement
+	TransferRole *TransferRole
+
+	// READ-ONLY; Dataflow GUID associated with this flow
+	FlowID *string
+
+	// READ-ONLY; Force disablement status of the current flow
+	ForceDisabledStatus []*ForceDisabledStatus
+
+	// READ-ONLY; Provisioning state of the flow
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Approval and lifecycle status of the transfer flow. Set by the service; use the approve/reject pipeline actions
+	// and the enableTransfer/disableTransfer actions to change it.
+	Status *CommonTransferFlowStatus
+}
+
+// StorageTransferFlowsPatch - The storage transfer flow resource patch definition.
+type StorageTransferFlowsPatch struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // StreamSourceAddresses - The source IP address and CIDR ranges of the stream
 type StreamSourceAddresses struct {
 	// A source IP address or CIDR range
@@ -1305,6 +1518,63 @@ type TextMatchingRulesetDeny struct {
 
 	// REQUIRED; The word or phrase to match against replicated content. A phrase with spaces will be considered a single substring.
 	Text *string
+}
+
+// TransferFlowIDBody - The resource to reference.
+type TransferFlowIDBody struct {
+	// REQUIRED; ARM resource ID of the transfer flow.
+	ID *string
+
+	// Flow resource's status.
+	Status *CommonTransferFlowStatus
+}
+
+// TransferFlowRequestBody - The request resource body to reference.
+type TransferFlowRequestBody struct {
+	// ARM resource IDs of the transfer flows to approve or reject.
+	ID []*string
+
+	// Reason for resource operation.
+	StatusReason *string
+}
+
+// TransferFlowResponseBody - The resource response body to reference.
+type TransferFlowResponseBody struct {
+	// REQUIRED; The transfer flows that were approved or rejected, with their resulting status.
+	ID []*TransferFlowIDBody
+}
+
+// TransferFlowSummary - Compact summary of a transfer flow associated with a pipeline.
+type TransferFlowSummary struct {
+	// REQUIRED; ARM resource ID of the transfer flow.
+	ID *string
+
+	// Data class type of the transfer flow.
+	DataClassType *DataClassType
+
+	// ARM resource ID of the data resource (storage container/table or messaging queue/event hub) used by the transfer flow.
+	DataResourceID *string
+
+	// Name of the FlowProfile used by the transfer flow.
+	FlowProfileName *string
+
+	// The pipeline associated with the transfer flow.
+	Pipeline *string
+
+	// ARM resource ID of the paired transfer flow on the remote side of the pipeline.
+	RemoteTransferFlowResourceID *string
+
+	// The identity that requested the transfer flow.
+	Requestor *string
+
+	// Status of the transfer flow.
+	Status *CommonTransferFlowStatus
+
+	// Tenant ID of the transfer flow.
+	TenantID *string
+
+	// Transfer role of the transfer flow.
+	TransferRole *TransferRole
 }
 
 // UserAssignedIdentity - User assigned identity properties

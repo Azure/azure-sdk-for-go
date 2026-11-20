@@ -214,6 +214,65 @@ type FlowsClientListByConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MessagingTransferFlowsClientBeginCreateOrUpdateOptions contains the optional parameters for the MessagingTransferFlowsClient.BeginCreateOrUpdate
+// method.
+type MessagingTransferFlowsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MessagingTransferFlowsClientBeginDeleteOptions contains the optional parameters for the MessagingTransferFlowsClient.BeginDelete
+// method.
+type MessagingTransferFlowsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MessagingTransferFlowsClientBeginDisableTransferOptions contains the optional parameters for the MessagingTransferFlowsClient.BeginDisableTransfer
+// method.
+type MessagingTransferFlowsClientBeginDisableTransferOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MessagingTransferFlowsClientBeginEnableTransferOptions contains the optional parameters for the MessagingTransferFlowsClient.BeginEnableTransfer
+// method.
+type MessagingTransferFlowsClientBeginEnableTransferOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MessagingTransferFlowsClientBeginLinkRemoteFlowOptions contains the optional parameters for the MessagingTransferFlowsClient.BeginLinkRemoteFlow
+// method.
+type MessagingTransferFlowsClientBeginLinkRemoteFlowOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MessagingTransferFlowsClientBeginUpdateOptions contains the optional parameters for the MessagingTransferFlowsClient.BeginUpdate
+// method.
+type MessagingTransferFlowsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MessagingTransferFlowsClientGetOptions contains the optional parameters for the MessagingTransferFlowsClient.Get method.
+type MessagingTransferFlowsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MessagingTransferFlowsClientListByResourceGroupOptions contains the optional parameters for the MessagingTransferFlowsClient.NewListByResourceGroupPager
+// method.
+type MessagingTransferFlowsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MessagingTransferFlowsClientListBySubscriptionOptions contains the optional parameters for the MessagingTransferFlowsClient.NewListBySubscriptionPager
+// method.
+type MessagingTransferFlowsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -222,6 +281,13 @@ type OperationsClientListOptions struct {
 // PipelinesClientBeginApproveConnectionOptions contains the optional parameters for the PipelinesClient.BeginApproveConnection
 // method.
 type PipelinesClientBeginApproveConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PipelinesClientBeginApproveTransferFlowOptions contains the optional parameters for the PipelinesClient.BeginApproveTransferFlow
+// method.
+type PipelinesClientBeginApproveTransferFlowOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -248,6 +314,13 @@ type PipelinesClientBeginExecuteActionOptions struct {
 // PipelinesClientBeginRejectConnectionOptions contains the optional parameters for the PipelinesClient.BeginRejectConnection
 // method.
 type PipelinesClientBeginRejectConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PipelinesClientBeginRejectTransferFlowOptions contains the optional parameters for the PipelinesClient.BeginRejectTransferFlow
+// method.
+type PipelinesClientBeginRejectTransferFlowOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -283,5 +356,71 @@ type PipelinesClientListOptions struct {
 
 // PipelinesClientListSchemasListOptions contains the optional parameters for the PipelinesClient.ListSchemasList method.
 type PipelinesClientListSchemasListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PipelinesClientListTransferFlowsOptions contains the optional parameters for the PipelinesClient.NewListTransferFlowsPager
+// method.
+type PipelinesClientListTransferFlowsOptions struct {
+	// The content of the action request
+	Body *ListTransferFlowsByPipelineRequestBody
+}
+
+// StorageTransferFlowsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageTransferFlowsClient.BeginCreateOrUpdate
+// method.
+type StorageTransferFlowsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// StorageTransferFlowsClientBeginDeleteOptions contains the optional parameters for the StorageTransferFlowsClient.BeginDelete
+// method.
+type StorageTransferFlowsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// StorageTransferFlowsClientBeginDisableTransferOptions contains the optional parameters for the StorageTransferFlowsClient.BeginDisableTransfer
+// method.
+type StorageTransferFlowsClientBeginDisableTransferOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// StorageTransferFlowsClientBeginEnableTransferOptions contains the optional parameters for the StorageTransferFlowsClient.BeginEnableTransfer
+// method.
+type StorageTransferFlowsClientBeginEnableTransferOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// StorageTransferFlowsClientBeginLinkRemoteFlowOptions contains the optional parameters for the StorageTransferFlowsClient.BeginLinkRemoteFlow
+// method.
+type StorageTransferFlowsClientBeginLinkRemoteFlowOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// StorageTransferFlowsClientBeginUpdateOptions contains the optional parameters for the StorageTransferFlowsClient.BeginUpdate
+// method.
+type StorageTransferFlowsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// StorageTransferFlowsClientGetOptions contains the optional parameters for the StorageTransferFlowsClient.Get method.
+type StorageTransferFlowsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageTransferFlowsClientListByResourceGroupOptions contains the optional parameters for the StorageTransferFlowsClient.NewListByResourceGroupPager
+// method.
+type StorageTransferFlowsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageTransferFlowsClientListBySubscriptionOptions contains the optional parameters for the StorageTransferFlowsClient.NewListBySubscriptionPager
+// method.
+type StorageTransferFlowsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }

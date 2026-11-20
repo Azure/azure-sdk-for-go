@@ -63,6 +63,14 @@ func (c *ClientFactory) NewFlowsClient() *FlowsClient {
 	}
 }
 
+// NewMessagingTransferFlowsClient creates a new instance of MessagingTransferFlowsClient.
+func (c *ClientFactory) NewMessagingTransferFlowsClient() *MessagingTransferFlowsClient {
+	return &MessagingTransferFlowsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -73,6 +81,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 // NewPipelinesClient creates a new instance of PipelinesClient.
 func (c *ClientFactory) NewPipelinesClient() *PipelinesClient {
 	return &PipelinesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewStorageTransferFlowsClient creates a new instance of StorageTransferFlowsClient.
+func (c *ClientFactory) NewStorageTransferFlowsClient() *StorageTransferFlowsClient {
+	return &StorageTransferFlowsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

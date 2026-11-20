@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-06-preview/createOrUpdateFlowProfile.json
+// Generated from example definition: 2026-06-29-preview/createOrUpdateFlowProfile.json
 func ExampleFlowProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleFlowProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/deleteFlowProfile.json
+// Generated from example definition: 2026-06-29-preview/deleteFlowProfile.json
 func ExampleFlowProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleFlowProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/patchFlowProfile.json
+// Generated from example definition: 2026-06-29-preview/patchFlowProfile.json
 func ExampleFlowProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleFlowProfilesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getFlowProfile.json
+// Generated from example definition: 2026-06-29-preview/getFlowProfile.json
 func ExampleFlowProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleFlowProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/listFlowProfilesByPipeline.json
+// Generated from example definition: 2026-06-29-preview/listFlowProfilesByPipeline.json
 func ExampleFlowProfilesClient_NewListByPipelinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-06-preview/postListApprovedSchemas.json
+// Generated from example definition: 2026-06-29-preview/postListApprovedSchemas.json
 func ExampleAzureDataTransferClient_ListApprovedSchemas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleAzureDataTransferClient_ListApprovedSchemas() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/AzureDataTransfer_ListFlowProfiles_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-29-preview/AzureDataTransfer_ListFlowProfiles_MaximumSet_Gen.json
 func ExampleAzureDataTransferClient_ListFlowProfiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleAzureDataTransferClient_ListFlowProfiles() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/AzureDataTransfer_ListPipelineMetadata.json
+// Generated from example definition: 2026-06-29-preview/AzureDataTransfer_ListPipelineMetadata.json
 func ExampleAzureDataTransferClient_ListPipelineMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleAzureDataTransferClient_ListPipelineMetadata() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/postValidateSchema.json
+// Generated from example definition: 2026-06-29-preview/postValidateSchema.json
 func ExampleAzureDataTransferClient_ValidateSchema() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

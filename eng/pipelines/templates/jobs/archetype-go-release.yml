@@ -169,6 +169,17 @@ stages:
               pwsh: true
           - task: GoTool@0
             displayName: Select Go version for API review
+            condition: >-
+              and(
+                succeeded(),
+                not(
+                  and(
+                    eq(variables['Skip.CheckPackageApproval'], 'true'),
+                    eq(variables['Skip.MarkPackageReleased'], 'true'),
+                    eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
+                  )
+                )
+              )
             inputs:
               version: $(GO_VERSION_LATEST)
           - pwsh: |

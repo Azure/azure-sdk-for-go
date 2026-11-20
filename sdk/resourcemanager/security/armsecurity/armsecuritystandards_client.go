@@ -59,11 +59,7 @@ func (client *ArmSecurityStandardsClient) CreateOrUpdate(ctx context.Context, sc
 	if err != nil {
 		return ArmSecurityStandardsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ArmSecurityStandardsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -94,8 +90,11 @@ func (client *ArmSecurityStandardsClient) createOrUpdateCreateRequest(ctx contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ArmSecurityStandardsClient) createOrUpdateHandleResponse(resp *http.Response) (ArmSecurityStandardsClientCreateOrUpdateResponse, error) {
+func (client *ArmSecurityStandardsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ArmSecurityStandardsClientCreateOrUpdateResponse, error) {
 	result := ArmSecurityStandardsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmSecurityStandard); err != nil {
 		return ArmSecurityStandardsClientCreateOrUpdateResponse{}, err
 	}
@@ -170,11 +169,7 @@ func (client *ArmSecurityStandardsClient) Get(ctx context.Context, scope string,
 	if err != nil {
 		return ArmSecurityStandardsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ArmSecurityStandardsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -201,8 +196,11 @@ func (client *ArmSecurityStandardsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ArmSecurityStandardsClient) getHandleResponse(resp *http.Response) (ArmSecurityStandardsClientGetResponse, error) {
+func (client *ArmSecurityStandardsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ArmSecurityStandardsClientGetResponse, error) {
 	result := ArmSecurityStandardsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArmSecurityStandard); err != nil {
 		return ArmSecurityStandardsClientGetResponse{}, err
 	}
@@ -224,39 +222,53 @@ func (client *ArmSecurityStandardsClient) NewListPager(scope string, options *Ar
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return ArmSecurityStandardsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ArmSecurityStandardsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ArmSecurityStandardsClient) listCreateRequest(ctx context.Context, scope string, _ *ArmSecurityStandardsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/securityStandards"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *ArmSecurityStandardsClient) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *ArmSecurityStandardsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/securityStandards"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ArmSecurityStandardsClient) listHandleResponse(resp *http.Response) (ArmSecurityStandardsClientListResponse, error) {
+func (client *ArmSecurityStandardsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ArmSecurityStandardsClientListResponse, error) {
 	result := ArmSecurityStandardsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StandardList); err != nil {
 		return ArmSecurityStandardsClientListResponse{}, err
 	}

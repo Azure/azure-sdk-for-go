@@ -30,6 +30,9 @@ type OperatorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperatorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *OperatorsClient) CreateOrUpdate(ctx context.Context, pricingName s
 	if err != nil {
 		return OperatorsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperatorsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *OperatorsClient) CreateOrUpdate(ctx context.Context, pricingName s
 func (client *OperatorsClient) createOrUpdateCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, _ *OperatorsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if pricingName == "" {
@@ -96,8 +95,11 @@ func (client *OperatorsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *OperatorsClient) createOrUpdateHandleResponse(resp *http.Response) (OperatorsClientCreateOrUpdateResponse, error) {
+func (client *OperatorsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (OperatorsClientCreateOrUpdateResponse, error) {
 	result := OperatorsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperatorResource); err != nil {
 		return OperatorsClientCreateOrUpdateResponse{}, err
 	}
@@ -134,7 +136,7 @@ func (client *OperatorsClient) Delete(ctx context.Context, pricingName string, s
 func (client *OperatorsClient) deleteCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, _ *OperatorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if pricingName == "" {
@@ -174,11 +176,7 @@ func (client *OperatorsClient) Get(ctx context.Context, pricingName string, secu
 	if err != nil {
 		return OperatorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperatorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -186,7 +184,7 @@ func (client *OperatorsClient) Get(ctx context.Context, pricingName string, secu
 func (client *OperatorsClient) getCreateRequest(ctx context.Context, pricingName string, securityOperatorName string, _ *OperatorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if pricingName == "" {
@@ -209,8 +207,11 @@ func (client *OperatorsClient) getCreateRequest(ctx context.Context, pricingName
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperatorsClient) getHandleResponse(resp *http.Response) (OperatorsClientGetResponse, error) {
+func (client *OperatorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperatorsClientGetResponse, error) {
 	result := OperatorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperatorResource); err != nil {
 		return OperatorsClientGetResponse{}, err
 	}
@@ -235,10 +236,7 @@ func (client *OperatorsClient) NewListPager(pricingName string, options *Operato
 			if err != nil {
 				return OperatorsClientListResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return OperatorsClientListResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listHandleResponse(resp)
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
@@ -248,7 +246,7 @@ func (client *OperatorsClient) NewListPager(pricingName string, options *Operato
 func (client *OperatorsClient) listCreateRequest(ctx context.Context, pricingName string, _ *OperatorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if pricingName == "" {
@@ -267,8 +265,11 @@ func (client *OperatorsClient) listCreateRequest(ctx context.Context, pricingNam
 }
 
 // listHandleResponse handles the List response.
-func (client *OperatorsClient) listHandleResponse(resp *http.Response) (OperatorsClientListResponse, error) {
+func (client *OperatorsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OperatorsClientListResponse, error) {
 	result := OperatorsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperatorList); err != nil {
 		return OperatorsClientListResponse{}, err
 	}

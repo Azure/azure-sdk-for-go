@@ -25,13 +25,13 @@ type GitHubOwnersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, securityConnectorName string, ownerName string, options *armsecurity.GitHubOwnersClientGetOptions) (resp azfake.Responder[armsecurity.GitHubOwnersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method GitHubOwnersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, securityConnectorName string, options *armsecurity.GitHubOwnersClientListOptions) (resp azfake.PagerResponder[armsecurity.GitHubOwnersClientListResponse])
-
 	// ListAvailable is the fake for method GitHubOwnersClient.ListAvailable
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAvailable func(ctx context.Context, resourceGroupName string, securityConnectorName string, options *armsecurity.GitHubOwnersClientListAvailableOptions) (resp azfake.Responder[armsecurity.GitHubOwnersClientListAvailableResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method GitHubOwnersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, securityConnectorName string, options *armsecurity.GitHubOwnersClientListOptions) (resp azfake.PagerResponder[armsecurity.GitHubOwnersClientListResponse])
 }
 
 // NewGitHubOwnersServerTransport creates a new instance of GitHubOwnersServerTransport with the provided implementation.
@@ -56,7 +56,7 @@ func (g *GitHubOwnersServerTransport) Do(req *http.Request) (*http.Response, err
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)
@@ -74,10 +74,10 @@ func (g *GitHubOwnersServerTransport) dispatchToMethodFake(req *http.Request, me
 			switch method {
 			case "GitHubOwnersClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
-			case "GitHubOwnersClient.NewListPager":
-				res.resp, res.err = g.dispatchNewListPager(req)
 			case "GitHubOwnersClient.ListAvailable":
 				res.resp, res.err = g.dispatchListAvailable(req)
+			case "GitHubOwnersClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -98,7 +98,7 @@ func (g *GitHubOwnersServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/gitHubOwners/(?P<ownerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/gitHubOwners/(?P<ownerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,13 +131,46 @@ func (g *GitHubOwnersServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
+func (g *GitHubOwnersServerTransport) dispatchListAvailable(req *http.Request) (*http.Response, error) {
+	if g.srv.ListAvailable == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAvailable not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/listAvailableGitHubOwners`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	securityConnectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("securityConnectorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.ListAvailable(req.Context(), resourceGroupNameParam, securityConnectorNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GitHubOwnerListResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (g *GitHubOwnersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if g.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/gitHubOwners`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/gitHubOwners`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -168,39 +201,6 @@ func (g *GitHubOwnersServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	if !server.PagerResponderMore(newListPager) {
 		g.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (g *GitHubOwnersServerTransport) dispatchListAvailable(req *http.Request) (*http.Response, error) {
-	if g.srv.ListAvailable == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAvailable not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/listAvailableGitHubOwners`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	securityConnectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("securityConnectorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.ListAvailable(req.Context(), resourceGroupNameParam, securityConnectorNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GitHubOwnerListResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

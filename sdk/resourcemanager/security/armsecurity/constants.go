@@ -24,15 +24,15 @@ const (
 	version20230501Preview string = "2023-05-01-preview"
 	version20231115        string = "2023-11-15"
 	version20231201Preview string = "2023-12-01-preview"
-	version20240101        string = "2024-01-01"
 	version20240801        string = "2024-08-01"
-	version20240801Preview string = "2024-08-01-preview"
 	version20250504        string = "2025-05-04"
-	version20250901Preview string = "2025-09-01-preview"
 	version20251001Preview string = "2025-10-01-preview"
 	version20251101Preview string = "2025-11-01-preview"
 	version20260101        string = "2026-01-01"
 	version20260401Preview string = "2026-04-01-preview"
+	version20260701        string = "2026-07-01"
+	version20260801Preview string = "2026-08-01-preview"
+	version20260901        string = "2026-09-01"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -439,6 +439,27 @@ func PossibleAutomatedResponseTypeValues() []AutomatedResponseType {
 	return []AutomatedResponseType{
 		AutomatedResponseTypeBlobSoftDelete,
 		AutomatedResponseTypeNone,
+	}
+}
+
+// AwsCloudTrailProvisioningType - The provisioning type for AWS CloudTrail resources
+type AwsCloudTrailProvisioningType string
+
+const (
+	// AwsCloudTrailProvisioningTypeAutoProvisioning - Resources are provisioned on Microsoft's side
+	AwsCloudTrailProvisioningTypeAutoProvisioning AwsCloudTrailProvisioningType = "AutoProvisioning"
+	// AwsCloudTrailProvisioningTypeBringYourOwn - The customer provides their own CloudTrail resources
+	AwsCloudTrailProvisioningTypeBringYourOwn AwsCloudTrailProvisioningType = "BringYourOwn"
+	// AwsCloudTrailProvisioningTypeManualProvisioning - Resources are provisioned on the customer's side
+	AwsCloudTrailProvisioningTypeManualProvisioning AwsCloudTrailProvisioningType = "ManualProvisioning"
+)
+
+// PossibleAwsCloudTrailProvisioningTypeValues returns the possible values for the AwsCloudTrailProvisioningType const type.
+func PossibleAwsCloudTrailProvisioningTypeValues() []AwsCloudTrailProvisioningType {
+	return []AwsCloudTrailProvisioningType{
+		AwsCloudTrailProvisioningTypeAutoProvisioning,
+		AwsCloudTrailProvisioningTypeBringYourOwn,
+		AwsCloudTrailProvisioningTypeManualProvisioning,
 	}
 }
 
@@ -891,6 +912,27 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 	}
 }
 
+// GcpLoggingProvisioningType - The provisioning type for GCP logging resources
+type GcpLoggingProvisioningType string
+
+const (
+	// GcpLoggingProvisioningTypeAutoProvisioning - Resources are provisioned on Microsoft's side
+	GcpLoggingProvisioningTypeAutoProvisioning GcpLoggingProvisioningType = "AutoProvisioning"
+	// GcpLoggingProvisioningTypeBringYourOwn - The customer provides their own GCP logging resources
+	GcpLoggingProvisioningTypeBringYourOwn GcpLoggingProvisioningType = "BringYourOwn"
+	// GcpLoggingProvisioningTypeManualProvisioning - Resources are provisioned on the customer's side
+	GcpLoggingProvisioningTypeManualProvisioning GcpLoggingProvisioningType = "ManualProvisioning"
+)
+
+// PossibleGcpLoggingProvisioningTypeValues returns the possible values for the GcpLoggingProvisioningType const type.
+func PossibleGcpLoggingProvisioningTypeValues() []GcpLoggingProvisioningType {
+	return []GcpLoggingProvisioningType{
+		GcpLoggingProvisioningTypeAutoProvisioning,
+		GcpLoggingProvisioningTypeBringYourOwn,
+		GcpLoggingProvisioningTypeManualProvisioning,
+	}
+}
+
 // GovernanceRuleOwnerSourceType - The owner type for the governance rule owner source
 type GovernanceRuleOwnerSourceType string
 
@@ -1018,6 +1060,24 @@ func PossibleInheritedValues() []Inherited {
 	return []Inherited{
 		InheritedFalse,
 		InheritedTrue,
+	}
+}
+
+// InstallationMethod - The installation method for the Defender for Containers agent.
+type InstallationMethod string
+
+const (
+	// InstallationMethodArc - Arc-based installation
+	InstallationMethodArc InstallationMethod = "Arc"
+	// InstallationMethodHelm - Helm-based installation
+	InstallationMethodHelm InstallationMethod = "Helm"
+)
+
+// PossibleInstallationMethodValues returns the possible values for the InstallationMethod const type.
+func PossibleInstallationMethodValues() []InstallationMethod {
+	return []InstallationMethod{
+		InstallationMethodArc,
+		InstallationMethodHelm,
 	}
 }
 
@@ -1172,6 +1232,80 @@ const (
 func PossibleKindValues() []Kind {
 	return []Kind{
 		KindBundles,
+	}
+}
+
+// MalwareScanStatus - A status code of the malware scan operation.
+type MalwareScanStatus string
+
+const (
+	// MalwareScanStatusCanceled - The scan has been canceled.
+	MalwareScanStatusCanceled MalwareScanStatus = "Canceled"
+	// MalwareScanStatusCanceling - The scan is being cancelled upon user request.
+	MalwareScanStatusCanceling MalwareScanStatus = "Canceling"
+	// MalwareScanStatusCompleted - The scan has completed successfully.
+	MalwareScanStatusCompleted MalwareScanStatus = "Completed"
+	// MalwareScanStatusFailed - The scan failed.
+	MalwareScanStatusFailed MalwareScanStatus = "Failed"
+	// MalwareScanStatusInProgress - The scan is currently in progress.
+	MalwareScanStatusInProgress MalwareScanStatus = "InProgress"
+	// MalwareScanStatusQueued - The scan request has been queued and is waiting to be processed.
+	MalwareScanStatusQueued MalwareScanStatus = "Queued"
+	// MalwareScanStatusWaitingForCompletion - The scan has finished processing and is waiting for final results.
+	MalwareScanStatusWaitingForCompletion MalwareScanStatus = "WaitingForCompletion"
+)
+
+// PossibleMalwareScanStatusValues returns the possible values for the MalwareScanStatus const type.
+func PossibleMalwareScanStatusValues() []MalwareScanStatus {
+	return []MalwareScanStatus{
+		MalwareScanStatusCanceled,
+		MalwareScanStatusCanceling,
+		MalwareScanStatusCompleted,
+		MalwareScanStatusFailed,
+		MalwareScanStatusInProgress,
+		MalwareScanStatusQueued,
+		MalwareScanStatusWaitingForCompletion,
+	}
+}
+
+// ManagedByType - Indicates whether this resource's Defender for Storage settings are managed by a higher MDC enforcement
+// scope and which component is managing them.
+type ManagedByType string
+
+const (
+	// ManagedByTypeMicrosoftDefenderXDR - The resource's Defender for Storage settings are managed by Microsoft Defender XDR.
+	ManagedByTypeMicrosoftDefenderXDR ManagedByType = "MicrosoftDefenderXDR"
+	// ManagedByTypeNone - The resource's Defender for Storage settings are not managed by a higher enforcement scope.
+	ManagedByTypeNone ManagedByType = "None"
+	// ManagedByTypeSubscriptionSettingsEnforcer - The resource's Defender for Storage settings are managed by the subscription-level
+	// settings enforcer.
+	ManagedByTypeSubscriptionSettingsEnforcer ManagedByType = "SubscriptionSettingsEnforcer"
+)
+
+// PossibleManagedByTypeValues returns the possible values for the ManagedByType const type.
+func PossibleManagedByTypeValues() []ManagedByType {
+	return []ManagedByType{
+		ManagedByTypeMicrosoftDefenderXDR,
+		ManagedByTypeNone,
+		ManagedByTypeSubscriptionSettingsEnforcer,
+	}
+}
+
+// MatchType - The matching strategy for the filter.
+type MatchType string
+
+const (
+	// MatchTypeExact - Match resources with the exact value specified.
+	MatchTypeExact MatchType = "Exact"
+	// MatchTypePrefix - Match resources with values starting with the specified string.
+	MatchTypePrefix MatchType = "Prefix"
+)
+
+// PossibleMatchTypeValues returns the possible values for the MatchType const type.
+func PossibleMatchTypeValues() []MatchType {
+	return []MatchType{
+		MatchTypeExact,
+		MatchTypePrefix,
 	}
 }
 
@@ -1439,6 +1573,39 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// OriginatedFrom - Indicates the origin of the most recent pricing configuration change.
+type OriginatedFrom string
+
+const (
+	// OriginatedFromM365 - Indicates that the configuration change originated from Microsoft 365.
+	OriginatedFromM365 OriginatedFrom = "M365"
+)
+
+// PossibleOriginatedFromValues returns the possible values for the OriginatedFrom const type.
+func PossibleOriginatedFromValues() []OriginatedFrom {
+	return []OriginatedFrom{
+		OriginatedFromM365,
+	}
+}
+
+// PricingPlanOperationStatusCode - Status code for a pricing plan update operation.
+type PricingPlanOperationStatusCode string
+
+const (
+	// PricingPlanOperationStatusCodeFailed - The pricing plan was not updated successfully.
+	PricingPlanOperationStatusCodeFailed PricingPlanOperationStatusCode = "Failed"
+	// PricingPlanOperationStatusCodeSucceeded - The pricing plan was updated successfully.
+	PricingPlanOperationStatusCodeSucceeded PricingPlanOperationStatusCode = "Succeeded"
+)
+
+// PossiblePricingPlanOperationStatusCodeValues returns the possible values for the PricingPlanOperationStatusCode const type.
+func PossiblePricingPlanOperationStatusCodeValues() []PricingPlanOperationStatusCode {
+	return []PricingPlanOperationStatusCode{
+		PricingPlanOperationStatusCodeFailed,
+		PricingPlanOperationStatusCodeSucceeded,
 	}
 }
 
@@ -2299,20 +2466,22 @@ func PossibleSettingKindValues() []SettingKind {
 	}
 }
 
+// SettingName - The name of a Microsoft.Security integration or Defender for Storage setting.
 type SettingName string
 
 const (
-	// SettingNameCurrent - Name of the Defender for Storage Settings name.
+	// SettingNameCurrent - The current Defender for Storage setting for the resource.
 	SettingNameCurrent SettingName = "current"
-	// SettingNameMCAS - MCAS
+	// SettingNameMCAS - Integration with Microsoft Defender for Cloud Apps (formerly Microsoft Cloud App Security).
 	SettingNameMCAS SettingName = "MCAS"
-	// SettingNameSentinel - Sentinel
+	// SettingNameSentinel - Integration with Microsoft Sentinel.
 	SettingNameSentinel SettingName = "Sentinel"
-	// SettingNameWDATP - WDATP
+	// SettingNameWDATP - Integration with Microsoft Defender for Endpoint (formerly Windows Defender ATP).
 	SettingNameWDATP SettingName = "WDATP"
-	// SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW - WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW
+	// SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW - Microsoft Defender for Endpoint integration that excludes the Linux public
+	// preview.
 	SettingNameWDATPEXCLUDELINUXPUBLICPREVIEW SettingName = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
-	// SettingNameWDATPUNIFIEDSOLUTION - WDATP_UNIFIED_SOLUTION
+	// SettingNameWDATPUNIFIEDSOLUTION - Integration with the Microsoft Defender for Endpoint unified agent solution.
 	SettingNameWDATPUNIFIEDSOLUTION SettingName = "WDATP_UNIFIED_SOLUTION"
 )
 

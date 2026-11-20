@@ -30,6 +30,9 @@ type ConnectorApplicationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorApplicationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,11 +66,7 @@ func (client *ConnectorApplicationClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return ConnectorApplicationClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectorApplicationClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -75,7 +74,7 @@ func (client *ConnectorApplicationClient) CreateOrUpdate(ctx context.Context, re
 func (client *ConnectorApplicationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, application Application, _ *ConnectorApplicationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +105,11 @@ func (client *ConnectorApplicationClient) createOrUpdateCreateRequest(ctx contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConnectorApplicationClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectorApplicationClientCreateOrUpdateResponse, error) {
+func (client *ConnectorApplicationClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConnectorApplicationClientCreateOrUpdateResponse, error) {
 	result := ConnectorApplicationClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
 		return ConnectorApplicationClientCreateOrUpdateResponse{}, err
 	}
@@ -146,7 +148,7 @@ func (client *ConnectorApplicationClient) Delete(ctx context.Context, resourceGr
 func (client *ConnectorApplicationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, _ *ConnectorApplicationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,11 +194,7 @@ func (client *ConnectorApplicationClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ConnectorApplicationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectorApplicationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -204,7 +202,7 @@ func (client *ConnectorApplicationClient) Get(ctx context.Context, resourceGroup
 func (client *ConnectorApplicationClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, applicationID string, _ *ConnectorApplicationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -231,8 +229,11 @@ func (client *ConnectorApplicationClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectorApplicationClient) getHandleResponse(resp *http.Response) (ConnectorApplicationClientGetResponse, error) {
+func (client *ConnectorApplicationClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectorApplicationClientGetResponse, error) {
 	result := ConnectorApplicationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
 		return ConnectorApplicationClientGetResponse{}, err
 	}

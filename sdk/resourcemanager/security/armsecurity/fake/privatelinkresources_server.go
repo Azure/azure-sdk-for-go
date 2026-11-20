@@ -23,11 +23,11 @@ import (
 type PrivateLinkResourcesServer struct {
 	// Get is the fake for method PrivateLinkResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, groupID string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateLinkResourcesClientGetOptions) (resp azfake.Responder[armsecurity.PrivateLinkResourcesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, privateLinkName string, groupID string, options *armsecurity.PrivateLinkResourcesClientGetOptions) (resp azfake.Responder[armsecurity.PrivateLinkResourcesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method PrivateLinkResourcesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateLinkResourcesClientListOptions) (resp azfake.PagerResponder[armsecurity.PrivateLinkResourcesClientListResponse])
+	NewListPager func(resourceGroupName string, privateLinkName string, options *armsecurity.PrivateLinkResourcesClientListOptions) (resp azfake.PagerResponder[armsecurity.PrivateLinkResourcesClientListResponse])
 }
 
 // NewPrivateLinkResourcesServerTransport creates a new instance of PrivateLinkResourcesServerTransport with the provided implementation.
@@ -52,7 +52,7 @@ func (p *PrivateLinkResourcesServerTransport) Do(req *http.Request) (*http.Respo
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return p.dispatchToMethodFake(req, method)
@@ -92,7 +92,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchGet(req *http.Request) (*h
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -110,10 +110,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchGet(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	privateLinkName := armsecurity.PrivateLinkParameters{
-		PrivateLinkName: privateLinkNameParam,
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, groupIDParam, privateLinkName, nil)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, privateLinkNameParam, groupIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -134,7 +131,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchNewListPager(req *http.Req
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -148,10 +145,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchNewListPager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		privateLinkName := armsecurity.PrivateLinkParameters{
-			PrivateLinkName: privateLinkNameParam,
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, privateLinkName, nil)
+		resp := p.srv.NewListPager(resourceGroupNameParam, privateLinkNameParam, nil)
 		newListPager = &resp
 		p.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.PrivateLinkResourcesClientListResponse, createLink func() string) {

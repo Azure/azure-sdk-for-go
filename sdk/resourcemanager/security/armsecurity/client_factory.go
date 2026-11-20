@@ -157,6 +157,13 @@ func (c *ClientFactory) NewAzureDevOpsReposClient() *AzureDevOpsReposClient {
 	}
 }
 
+// NewBatchPricingsClient creates a new instance of BatchPricingsClient.
+func (c *ClientFactory) NewBatchPricingsClient() *BatchPricingsClient {
+	return &BatchPricingsClient{
+		internal: c.internal,
+	}
+}
+
 // NewComplianceResultsClient creates a new instance of ComplianceResultsClient.
 func (c *ClientFactory) NewComplianceResultsClient() *ComplianceResultsClient {
 	return &ComplianceResultsClient{
@@ -606,6 +613,14 @@ func (c *ClientFactory) NewTasksClient() *TasksClient {
 // NewTopologyClient creates a new instance of TopologyClient.
 func (c *ClientFactory) NewTopologyClient() *TopologyClient {
 	return &TopologyClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTopologyResourcesClient creates a new instance of TopologyResourcesClient.
+func (c *ClientFactory) NewTopologyResourcesClient() *TopologyResourcesClient {
+	return &TopologyResourcesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

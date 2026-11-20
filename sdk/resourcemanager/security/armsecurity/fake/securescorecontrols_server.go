@@ -20,13 +20,13 @@ import (
 
 // SecureScoreControlsServer is a fake server for instances of the armsecurity.SecureScoreControlsClient type.
 type SecureScoreControlsServer struct {
-	// NewListPager is the fake for method SecureScoreControlsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.SecureScoreControlsClientListOptions) (resp azfake.PagerResponder[armsecurity.SecureScoreControlsClientListResponse])
-
 	// NewListBySecureScorePager is the fake for method SecureScoreControlsClient.NewListBySecureScorePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySecureScorePager func(secureScoreName string, options *armsecurity.SecureScoreControlsClientListBySecureScoreOptions) (resp azfake.PagerResponder[armsecurity.SecureScoreControlsClientListBySecureScoreResponse])
+
+	// NewListPager is the fake for method SecureScoreControlsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.SecureScoreControlsClientListOptions) (resp azfake.PagerResponder[armsecurity.SecureScoreControlsClientListResponse])
 }
 
 // NewSecureScoreControlsServerTransport creates a new instance of SecureScoreControlsServerTransport with the provided implementation.
@@ -35,8 +35,8 @@ type SecureScoreControlsServer struct {
 func NewSecureScoreControlsServerTransport(srv *SecureScoreControlsServer) *SecureScoreControlsServerTransport {
 	return &SecureScoreControlsServerTransport{
 		srv:                       srv,
-		newListPager:              newTracker[azfake.PagerResponder[armsecurity.SecureScoreControlsClientListResponse]](),
 		newListBySecureScorePager: newTracker[azfake.PagerResponder[armsecurity.SecureScoreControlsClientListBySecureScoreResponse]](),
+		newListPager:              newTracker[azfake.PagerResponder[armsecurity.SecureScoreControlsClientListResponse]](),
 	}
 }
 
@@ -44,8 +44,8 @@ func NewSecureScoreControlsServerTransport(srv *SecureScoreControlsServer) *Secu
 // Don't use this type directly, use NewSecureScoreControlsServerTransport instead.
 type SecureScoreControlsServerTransport struct {
 	srv                       *SecureScoreControlsServer
-	newListPager              *tracker[azfake.PagerResponder[armsecurity.SecureScoreControlsClientListResponse]]
 	newListBySecureScorePager *tracker[azfake.PagerResponder[armsecurity.SecureScoreControlsClientListBySecureScoreResponse]]
+	newListPager              *tracker[azfake.PagerResponder[armsecurity.SecureScoreControlsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SecureScoreControlsServerTransport.
@@ -53,7 +53,7 @@ func (s *SecureScoreControlsServerTransport) Do(req *http.Request) (*http.Respon
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return s.dispatchToMethodFake(req, method)
@@ -69,10 +69,10 @@ func (s *SecureScoreControlsServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
-			case "SecureScoreControlsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SecureScoreControlsClient.NewListBySecureScorePager":
 				res.resp, res.err = s.dispatchNewListBySecureScorePager(req)
+			case "SecureScoreControlsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -89,54 +89,13 @@ func (s *SecureScoreControlsServerTransport) dispatchToMethodFake(req *http.Requ
 	}
 }
 
-func (s *SecureScoreControlsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/secureScoreControls`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		expandParam := getOptional(armsecurity.ExpandControlsEnum(qp.Get("$expand")))
-		var options *armsecurity.SecureScoreControlsClientListOptions
-		if expandParam != nil {
-			options = &armsecurity.SecureScoreControlsClientListOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := s.srv.NewListPager(options)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.SecureScoreControlsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *SecureScoreControlsServerTransport) dispatchNewListBySecureScorePager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListBySecureScorePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySecureScorePager not implemented")}
 	}
 	newListBySecureScorePager := s.newListBySecureScorePager.get(req)
 	if newListBySecureScorePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/secureScores/(?P<secureScoreName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/secureScoreControls`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/secureScores/(?P<secureScoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/secureScoreControls`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -171,6 +130,47 @@ func (s *SecureScoreControlsServerTransport) dispatchNewListBySecureScorePager(r
 	}
 	if !server.PagerResponderMore(newListBySecureScorePager) {
 		s.newListBySecureScorePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *SecureScoreControlsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := s.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/secureScoreControls`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		expandParam := getOptional(armsecurity.ExpandControlsEnum(qp.Get("$expand")))
+		var options *armsecurity.SecureScoreControlsClientListOptions
+		if expandParam != nil {
+			options = &armsecurity.SecureScoreControlsClientListOptions{
+				Expand: expandParam,
+			}
+		}
+		resp := s.srv.NewListPager(options)
+		newListPager = &resp
+		s.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.SecureScoreControlsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		s.newListPager.remove(req)
 	}
 	return resp, nil
 }

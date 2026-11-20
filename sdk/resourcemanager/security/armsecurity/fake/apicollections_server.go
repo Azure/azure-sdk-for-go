@@ -21,6 +21,10 @@ import (
 
 // APICollectionsServer is a fake server for instances of the armsecurity.APICollectionsClient type.
 type APICollectionsServer struct {
+	// BeginOnboardAzureAPIManagementAPI is the fake for method APICollectionsClient.BeginOnboardAzureAPIManagementAPI
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginOnboardAzureAPIManagementAPI func(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *armsecurity.APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (resp azfake.PollerResponder[armsecurity.APICollectionsClientOnboardAzureAPIManagementAPIResponse], errResp azfake.ErrorResponder)
+
 	// GetByAzureAPIManagementService is the fake for method APICollectionsClient.GetByAzureAPIManagementService
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByAzureAPIManagementService func(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *armsecurity.APICollectionsClientGetByAzureAPIManagementServiceOptions) (resp azfake.Responder[armsecurity.APICollectionsClientGetByAzureAPIManagementServiceResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type APICollectionsServer struct {
 	// OffboardAzureAPIManagementAPI is the fake for method APICollectionsClient.OffboardAzureAPIManagementAPI
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	OffboardAzureAPIManagementAPI func(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *armsecurity.APICollectionsClientOffboardAzureAPIManagementAPIOptions) (resp azfake.Responder[armsecurity.APICollectionsClientOffboardAzureAPIManagementAPIResponse], errResp azfake.ErrorResponder)
-
-	// BeginOnboardAzureAPIManagementAPI is the fake for method APICollectionsClient.BeginOnboardAzureAPIManagementAPI
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginOnboardAzureAPIManagementAPI func(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *armsecurity.APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (resp azfake.PollerResponder[armsecurity.APICollectionsClientOnboardAzureAPIManagementAPIResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAPICollectionsServerTransport creates a new instance of APICollectionsServerTransport with the provided implementation.
@@ -52,10 +52,10 @@ type APICollectionsServer struct {
 func NewAPICollectionsServerTransport(srv *APICollectionsServer) *APICollectionsServerTransport {
 	return &APICollectionsServerTransport{
 		srv:                                     srv,
+		beginOnboardAzureAPIManagementAPI:       newTracker[azfake.PollerResponder[armsecurity.APICollectionsClientOnboardAzureAPIManagementAPIResponse]](),
 		newListByAzureAPIManagementServicePager: newTracker[azfake.PagerResponder[armsecurity.APICollectionsClientListByAzureAPIManagementServiceResponse]](),
 		newListByResourceGroupPager:             newTracker[azfake.PagerResponder[armsecurity.APICollectionsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:              newTracker[azfake.PagerResponder[armsecurity.APICollectionsClientListBySubscriptionResponse]](),
-		beginOnboardAzureAPIManagementAPI:       newTracker[azfake.PollerResponder[armsecurity.APICollectionsClientOnboardAzureAPIManagementAPIResponse]](),
 	}
 }
 
@@ -63,10 +63,10 @@ func NewAPICollectionsServerTransport(srv *APICollectionsServer) *APICollections
 // Don't use this type directly, use NewAPICollectionsServerTransport instead.
 type APICollectionsServerTransport struct {
 	srv                                     *APICollectionsServer
+	beginOnboardAzureAPIManagementAPI       *tracker[azfake.PollerResponder[armsecurity.APICollectionsClientOnboardAzureAPIManagementAPIResponse]]
 	newListByAzureAPIManagementServicePager *tracker[azfake.PagerResponder[armsecurity.APICollectionsClientListByAzureAPIManagementServiceResponse]]
 	newListByResourceGroupPager             *tracker[azfake.PagerResponder[armsecurity.APICollectionsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager              *tracker[azfake.PagerResponder[armsecurity.APICollectionsClientListBySubscriptionResponse]]
-	beginOnboardAzureAPIManagementAPI       *tracker[azfake.PollerResponder[armsecurity.APICollectionsClientOnboardAzureAPIManagementAPIResponse]]
 }
 
 // Do implements the policy.Transporter interface for APICollectionsServerTransport.
@@ -74,7 +74,7 @@ func (a *APICollectionsServerTransport) Do(req *http.Request) (*http.Response, e
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -90,6 +90,8 @@ func (a *APICollectionsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
+			case "APICollectionsClient.BeginOnboardAzureAPIManagementAPI":
+				res.resp, res.err = a.dispatchBeginOnboardAzureAPIManagementAPI(req)
 			case "APICollectionsClient.GetByAzureAPIManagementService":
 				res.resp, res.err = a.dispatchGetByAzureAPIManagementService(req)
 			case "APICollectionsClient.NewListByAzureAPIManagementServicePager":
@@ -100,8 +102,6 @@ func (a *APICollectionsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "APICollectionsClient.OffboardAzureAPIManagementAPI":
 				res.resp, res.err = a.dispatchOffboardAzureAPIManagementAPI(req)
-			case "APICollectionsClient.BeginOnboardAzureAPIManagementAPI":
-				res.resp, res.err = a.dispatchBeginOnboardAzureAPIManagementAPI(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,11 +118,59 @@ func (a *APICollectionsServerTransport) dispatchToMethodFake(req *http.Request, 
 	}
 }
 
+func (a *APICollectionsServerTransport) dispatchBeginOnboardAzureAPIManagementAPI(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginOnboardAzureAPIManagementAPI == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginOnboardAzureAPIManagementAPI not implemented")}
+	}
+	beginOnboardAzureAPIManagementAPI := a.beginOnboardAzureAPIManagementAPI.get(req)
+	if beginOnboardAzureAPIManagementAPI == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/apiCollections/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+		if err != nil {
+			return nil, err
+		}
+		apiIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("apiId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginOnboardAzureAPIManagementAPI(req.Context(), resourceGroupNameParam, serviceNameParam, apiIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginOnboardAzureAPIManagementAPI = &respr
+		a.beginOnboardAzureAPIManagementAPI.add(req, beginOnboardAzureAPIManagementAPI)
+	}
+
+	resp, err := server.PollerResponderNext(beginOnboardAzureAPIManagementAPI, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		a.beginOnboardAzureAPIManagementAPI.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginOnboardAzureAPIManagementAPI) {
+		a.beginOnboardAzureAPIManagementAPI.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *APICollectionsServerTransport) dispatchGetByAzureAPIManagementService(req *http.Request) (*http.Response, error) {
 	if a.srv.GetByAzureAPIManagementService == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByAzureAPIManagementService not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/apiCollections/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/apiCollections/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -161,7 +209,7 @@ func (a *APICollectionsServerTransport) dispatchNewListByAzureAPIManagementServi
 	}
 	newListByAzureAPIManagementServicePager := a.newListByAzureAPIManagementServicePager.get(req)
 	if newListByAzureAPIManagementServicePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/apiCollections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/apiCollections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -202,7 +250,7 @@ func (a *APICollectionsServerTransport) dispatchNewListByResourceGroupPager(req 
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/apiCollections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/apiCollections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -239,7 +287,7 @@ func (a *APICollectionsServerTransport) dispatchNewListBySubscriptionPager(req *
 	}
 	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/apiCollections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/apiCollections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -270,7 +318,7 @@ func (a *APICollectionsServerTransport) dispatchOffboardAzureAPIManagementAPI(re
 	if a.srv.OffboardAzureAPIManagementAPI == nil {
 		return nil, &nonRetriableError{errors.New("fake for method OffboardAzureAPIManagementAPI not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/apiCollections/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/apiCollections/(?P<apiId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -300,54 +348,6 @@ func (a *APICollectionsServerTransport) dispatchOffboardAzureAPIManagementAPI(re
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (a *APICollectionsServerTransport) dispatchBeginOnboardAzureAPIManagementAPI(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginOnboardAzureAPIManagementAPI == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginOnboardAzureAPIManagementAPI not implemented")}
-	}
-	beginOnboardAzureAPIManagementAPI := a.beginOnboardAzureAPIManagementAPI.get(req)
-	if beginOnboardAzureAPIManagementAPI == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/apiCollections/(?P<apiId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
-		if err != nil {
-			return nil, err
-		}
-		apiIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("apiId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginOnboardAzureAPIManagementAPI(req.Context(), resourceGroupNameParam, serviceNameParam, apiIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginOnboardAzureAPIManagementAPI = &respr
-		a.beginOnboardAzureAPIManagementAPI.add(req, beginOnboardAzureAPIManagementAPI)
-	}
-
-	resp, err := server.PollerResponderNext(beginOnboardAzureAPIManagementAPI, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		a.beginOnboardAzureAPIManagementAPI.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginOnboardAzureAPIManagementAPI) {
-		a.beginOnboardAzureAPIManagementAPI.remove(req)
-	}
-
 	return resp, nil
 }
 

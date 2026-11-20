@@ -59,7 +59,7 @@ func (o *OperatorsServerTransport) Do(req *http.Request) (*http.Response, error)
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return o.dispatchToMethodFake(req, method)
@@ -103,7 +103,7 @@ func (o *OperatorsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	if o.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators/(?P<securityOperatorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityOperators/(?P<securityOperatorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -136,7 +136,7 @@ func (o *OperatorsServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	if o.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators/(?P<securityOperatorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityOperators/(?P<securityOperatorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -169,7 +169,7 @@ func (o *OperatorsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if o.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators/(?P<securityOperatorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityOperators/(?P<securityOperatorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -204,7 +204,7 @@ func (o *OperatorsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := o.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/securityOperators`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/pricings/(?P<pricingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/securityOperators`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

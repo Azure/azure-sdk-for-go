@@ -443,6 +443,24 @@ type AzureDevOpsReposClientUpdateResponse struct {
 	AzureDevOpsRepository
 }
 
+// BatchPricingsClientCreateOrUpdateResponse contains the response from method BatchPricingsClient.CreateOrUpdate.
+type BatchPricingsClientCreateOrUpdateResponse struct {
+	// Pricing batch resource for updating multiple pricing configurations.
+	PricingBatch
+}
+
+// BatchPricingsClientGetResponse contains the response from method BatchPricingsClient.Get.
+type BatchPricingsClientGetResponse struct {
+	// Pricing batch resource for updating multiple pricing configurations.
+	PricingBatch
+}
+
+// BatchPricingsClientListResponse contains the response from method BatchPricingsClient.NewListPager.
+type BatchPricingsClientListResponse struct {
+	// A list of pricing batch resources.
+	PricingBatchList
+}
+
 // ComplianceResultsClientGetResponse contains the response from method ComplianceResultsClient.Get.
 type ComplianceResultsClientGetResponse struct {
 	// a compliance result
@@ -1516,19 +1534,19 @@ type TasksClientUpdateSubscriptionLevelTaskStateResponse struct {
 	// placeholder for future response values
 }
 
-// TopologyClientGetResponse contains the response from method TopologyClient.Get.
-type TopologyClientGetResponse struct {
+// TopologyClientListResponse contains the response from method TopologyClient.NewListPager.
+type TopologyClientListResponse struct {
+	TopologyList
+}
+
+// TopologyResourcesClientGetResponse contains the response from method TopologyResourcesClient.Get.
+type TopologyResourcesClientGetResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
 	TopologyResource
 }
 
-// TopologyClientListByHomeRegionResponse contains the response from method TopologyClient.NewListByHomeRegionPager.
-type TopologyClientListByHomeRegionResponse struct {
-	TopologyList
-}
-
-// TopologyClientListResponse contains the response from method TopologyClient.NewListPager.
-type TopologyClientListResponse struct {
+// TopologyResourcesClientListByHomeRegionResponse contains the response from method TopologyResourcesClient.NewListByHomeRegionPager.
+type TopologyResourcesClientListByHomeRegionResponse struct {
 	TopologyList
 }
 

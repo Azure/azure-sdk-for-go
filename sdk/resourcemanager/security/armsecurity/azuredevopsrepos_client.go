@@ -30,6 +30,9 @@ type AzureDevOpsReposClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAzureDevOpsReposClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureDevOpsReposClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *AzureDevOpsReposClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates a monitored Azure DevOps repository resource.
+// createOrUpdate - Creates or updates a monitored Azure DevOps repository resource.
 //
 // Creates or updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -92,11 +95,11 @@ func (client *AzureDevOpsReposClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, _ *AzureDevOpsReposClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -134,155 +137,6 @@ func (client *AzureDevOpsReposClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// Get - Returns a monitored Azure DevOps repository resource.
-//
-// Returns a monitored Azure DevOps repository resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - securityConnectorName - The security connector name.
-//   - options - AzureDevOpsReposClientGetOptions contains the optional parameters for the AzureDevOpsReposClient.Get method.
-func (client *AzureDevOpsReposClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, options *AzureDevOpsReposClientGetOptions) (AzureDevOpsReposClientGetResponse, error) {
-	var err error
-	const operationName = "AzureDevOpsReposClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, securityConnectorName, orgName, projectName, repoName, options)
-	if err != nil {
-		return AzureDevOpsReposClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AzureDevOpsReposClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AzureDevOpsReposClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *AzureDevOpsReposClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, _ *AzureDevOpsReposClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	if orgName == "" {
-		return nil, errors.New("parameter orgName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{orgName}", url.PathEscape(orgName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if repoName == "" {
-		return nil, errors.New("parameter repoName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{repoName}", url.PathEscape(repoName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *AzureDevOpsReposClient) getHandleResponse(resp *http.Response) (AzureDevOpsReposClientGetResponse, error) {
-	result := AzureDevOpsReposClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsRepository); err != nil {
-		return AzureDevOpsReposClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Returns a list of Azure DevOps repositories onboarded to the connector.
-//
-// Returns a list of Azure DevOps repositories onboarded to the connector.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - securityConnectorName - The security connector name.
-//   - options - AzureDevOpsReposClientListOptions contains the optional parameters for the AzureDevOpsReposClient.NewListPager
-//     method.
-func (client *AzureDevOpsReposClient) NewListPager(resourceGroupName string, securityConnectorName string, orgName string, projectName string, options *AzureDevOpsReposClientListOptions) *runtime.Pager[AzureDevOpsReposClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AzureDevOpsReposClientListResponse]{
-		More: func(page AzureDevOpsReposClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AzureDevOpsReposClientListResponse) (AzureDevOpsReposClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureDevOpsReposClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, orgName, projectName, options)
-			}, nil)
-			if err != nil {
-				return AzureDevOpsReposClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AzureDevOpsReposClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, _ *AzureDevOpsReposClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	if orgName == "" {
-		return nil, errors.New("parameter orgName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{orgName}", url.PathEscape(orgName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AzureDevOpsReposClient) listHandleResponse(resp *http.Response) (AzureDevOpsReposClientListResponse, error) {
-	result := AzureDevOpsReposClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsRepositoryListResponse); err != nil {
-		return AzureDevOpsReposClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginUpdate - Updates a monitored Azure DevOps repository resource.
 //
 // Updates a monitored Azure DevOps repository resource.
@@ -309,7 +163,7 @@ func (client *AzureDevOpsReposClient) BeginUpdate(ctx context.Context, resourceG
 	}
 }
 
-// Update - Updates a monitored Azure DevOps repository resource.
+// update - Updates a monitored Azure DevOps repository resource.
 //
 // Updates a monitored Azure DevOps repository resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -334,11 +188,11 @@ func (client *AzureDevOpsReposClient) update(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *AzureDevOpsReposClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, azureDevOpsRepository AzureDevOpsRepository, _ *AzureDevOpsReposClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -374,4 +228,166 @@ func (client *AzureDevOpsReposClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Returns a monitored Azure DevOps repository resource.
+//
+// Returns a monitored Azure DevOps repository resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - options - AzureDevOpsReposClientGetOptions contains the optional parameters for the AzureDevOpsReposClient.Get method.
+func (client *AzureDevOpsReposClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, options *AzureDevOpsReposClientGetOptions) (AzureDevOpsReposClientGetResponse, error) {
+	var err error
+	const operationName = "AzureDevOpsReposClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, securityConnectorName, orgName, projectName, repoName, options)
+	if err != nil {
+		return AzureDevOpsReposClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AzureDevOpsReposClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *AzureDevOpsReposClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, repoName string, _ *AzureDevOpsReposClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos/{repoName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if securityConnectorName == "" {
+		return nil, errors.New("parameter securityConnectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+	if orgName == "" {
+		return nil, errors.New("parameter orgName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{orgName}", url.PathEscape(orgName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if repoName == "" {
+		return nil, errors.New("parameter repoName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{repoName}", url.PathEscape(repoName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *AzureDevOpsReposClient) getHandleResponse(resp *http.Response, successCodes ...int) (AzureDevOpsReposClientGetResponse, error) {
+	result := AzureDevOpsReposClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsRepository); err != nil {
+		return AzureDevOpsReposClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Returns a list of Azure DevOps repositories onboarded to the connector.
+//
+// Returns a list of Azure DevOps repositories onboarded to the connector.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - options - AzureDevOpsReposClientListOptions contains the optional parameters for the AzureDevOpsReposClient.NewListPager
+//     method.
+func (client *AzureDevOpsReposClient) NewListPager(resourceGroupName string, securityConnectorName string, orgName string, projectName string, options *AzureDevOpsReposClientListOptions) *runtime.Pager[AzureDevOpsReposClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AzureDevOpsReposClientListResponse]{
+		More: func(page AzureDevOpsReposClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AzureDevOpsReposClientListResponse) (AzureDevOpsReposClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureDevOpsReposClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, orgName, projectName, nextLink, options)
+			if err != nil {
+				return AzureDevOpsReposClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AzureDevOpsReposClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AzureDevOpsReposClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, projectName string, nextLink string, _ *AzureDevOpsReposClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}/projects/{projectName}/repos"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if securityConnectorName == "" {
+			return nil, errors.New("parameter securityConnectorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+		if orgName == "" {
+			return nil, errors.New("parameter orgName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{orgName}", url.PathEscape(orgName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AzureDevOpsReposClient) listHandleResponse(resp *http.Response, successCodes ...int) (AzureDevOpsReposClientListResponse, error) {
+	result := AzureDevOpsReposClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsRepositoryListResponse); err != nil {
+		return AzureDevOpsReposClientListResponse{}, err
+	}
+	return result, nil
 }

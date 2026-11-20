@@ -30,6 +30,9 @@ type GitLabSubgroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGitLabSubgroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitLabSubgroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *GitLabSubgroupsClient) List(ctx context.Context, resourceGroupName
 	if err != nil {
 		return GitLabSubgroupsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GitLabSubgroupsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *GitLabSubgroupsClient) List(ctx context.Context, resourceGroupName
 func (client *GitLabSubgroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, groupFQName string, _ *GitLabSubgroupsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitLabGroups/{groupFQName}/listSubgroups"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +100,11 @@ func (client *GitLabSubgroupsClient) listCreateRequest(ctx context.Context, reso
 }
 
 // listHandleResponse handles the List response.
-func (client *GitLabSubgroupsClient) listHandleResponse(resp *http.Response) (GitLabSubgroupsClientListResponse, error) {
+func (client *GitLabSubgroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (GitLabSubgroupsClientListResponse, error) {
 	result := GitLabSubgroupsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitLabGroupListResponse); err != nil {
 		return GitLabSubgroupsClientListResponse{}, err
 	}

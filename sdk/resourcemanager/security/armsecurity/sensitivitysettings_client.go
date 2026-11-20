@@ -55,11 +55,7 @@ func (client *SensitivitySettingsClient) CreateOrUpdate(ctx context.Context, sen
 	if err != nil {
 		return SensitivitySettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SensitivitySettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -82,8 +78,11 @@ func (client *SensitivitySettingsClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SensitivitySettingsClient) createOrUpdateHandleResponse(resp *http.Response) (SensitivitySettingsClientCreateOrUpdateResponse, error) {
+func (client *SensitivitySettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SensitivitySettingsClientCreateOrUpdateResponse, error) {
 	result := SensitivitySettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetSensitivitySettingsResponse); err != nil {
 		return SensitivitySettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -107,11 +106,7 @@ func (client *SensitivitySettingsClient) Get(ctx context.Context, options *Sensi
 	if err != nil {
 		return SensitivitySettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SensitivitySettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -130,8 +125,11 @@ func (client *SensitivitySettingsClient) getCreateRequest(ctx context.Context, _
 }
 
 // getHandleResponse handles the Get response.
-func (client *SensitivitySettingsClient) getHandleResponse(resp *http.Response) (SensitivitySettingsClientGetResponse, error) {
+func (client *SensitivitySettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SensitivitySettingsClientGetResponse, error) {
 	result := SensitivitySettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetSensitivitySettingsResponse); err != nil {
 		return SensitivitySettingsClientGetResponse{}, err
 	}
@@ -156,11 +154,7 @@ func (client *SensitivitySettingsClient) List(ctx context.Context, options *Sens
 	if err != nil {
 		return SensitivitySettingsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SensitivitySettingsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -179,8 +173,11 @@ func (client *SensitivitySettingsClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *SensitivitySettingsClient) listHandleResponse(resp *http.Response) (SensitivitySettingsClientListResponse, error) {
+func (client *SensitivitySettingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SensitivitySettingsClientListResponse, error) {
 	result := SensitivitySettingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetSensitivitySettingsListResponse); err != nil {
 		return SensitivitySettingsClientListResponse{}, err
 	}

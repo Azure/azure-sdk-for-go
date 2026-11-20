@@ -57,6 +57,51 @@ func ExampleAzureDevOpsOrgsClient_BeginCreateOrUpdate() {
 	// }
 }
 
+// Generated from example definition: 2025-11-01-preview/SecurityConnectorsDevOps/UpdateAzureDevOpsOrgs_example.json
+func ExampleAzureDevOpsOrgsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("0806e1cd-cfda-4ff8-b99c-2b0af42cffd3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAzureDevOpsOrgsClient().BeginUpdate(ctx, "myRg", "mySecurityConnectorName", "myAzDevOpsOrg", armsecurity.AzureDevOpsOrg{
+		Properties: &armsecurity.AzureDevOpsOrgProperties{
+			ActionableRemediation: &armsecurity.ActionableRemediation{
+				State: to.Ptr(armsecurity.ActionableRemediationStateEnabled),
+			},
+			OnboardingState: to.Ptr(armsecurity.OnboardingStateNotApplicable),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurity.AzureDevOpsOrgsClientUpdateResponse{
+	// 	AzureDevOpsOrg: armsecurity.AzureDevOpsOrg{
+	// 		Name: to.Ptr("myAzDevOpsOrg"),
+	// 		Type: to.Ptr("Microsoft.Security/securityConnectors/devops/azureDevOpsOrgs"),
+	// 		ID: to.Ptr("/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourceGroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/azureDevOpsOrgs/myAzDevOpsOrg"),
+	// 		Properties: &armsecurity.AzureDevOpsOrgProperties{
+	// 			ActionableRemediation: &armsecurity.ActionableRemediation{
+	// 				State: to.Ptr(armsecurity.ActionableRemediationStateEnabled),
+	// 			},
+	// 			OnboardingState: to.Ptr(armsecurity.OnboardingStateOnboarded),
+	// 			ProvisioningState: to.Ptr(armsecurity.DevOpsProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-11-01-preview/SecurityConnectorsDevOps/GetAzureDevOpsOrgs_example.json
 func ExampleAzureDevOpsOrgsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -89,49 +134,6 @@ func ExampleAzureDevOpsOrgsClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/SecurityConnectorsDevOps/ListAzureDevOpsOrgs_example.json
-func ExampleAzureDevOpsOrgsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("0806e1cd-cfda-4ff8-b99c-2b0af42cffd3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAzureDevOpsOrgsClient().NewListPager("myRg", "mySecurityConnectorName", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurity.AzureDevOpsOrgsClientListResponse{
-		// 	AzureDevOpsOrgListResponse: armsecurity.AzureDevOpsOrgListResponse{
-		// 		Value: []*armsecurity.AzureDevOpsOrg{
-		// 			{
-		// 				Name: to.Ptr("myAzDevOpsOrg"),
-		// 				Type: to.Ptr("Microsoft.Security/securityConnectors/devops/azureDevOpsOrgs"),
-		// 				ID: to.Ptr("/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourceGroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/azureDevOpsOrgs/myAzDevOpsOrg"),
-		// 				Properties: &armsecurity.AzureDevOpsOrgProperties{
-		// 					ActionableRemediation: &armsecurity.ActionableRemediation{
-		// 						State: to.Ptr(armsecurity.ActionableRemediationStateEnabled),
-		// 					},
-		// 					OnboardingState: to.Ptr(armsecurity.OnboardingStateOnboarded),
-		// 					ProvisioningState: to.Ptr(armsecurity.DevOpsProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-11-01-preview/SecurityConnectorsDevOps/ListAvailableAzureDevOpsOrgs_example.json
@@ -195,8 +197,8 @@ func ExampleAzureDevOpsOrgsClient_ListAvailable() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/SecurityConnectorsDevOps/UpdateAzureDevOpsOrgs_example.json
-func ExampleAzureDevOpsOrgsClient_BeginUpdate() {
+// Generated from example definition: 2025-11-01-preview/SecurityConnectorsDevOps/ListAzureDevOpsOrgs_example.json
+func ExampleAzureDevOpsOrgsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -206,36 +208,34 @@ func ExampleAzureDevOpsOrgsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAzureDevOpsOrgsClient().BeginUpdate(ctx, "myRg", "mySecurityConnectorName", "myAzDevOpsOrg", armsecurity.AzureDevOpsOrg{
-		Properties: &armsecurity.AzureDevOpsOrgProperties{
-			ActionableRemediation: &armsecurity.ActionableRemediation{
-				State: to.Ptr(armsecurity.ActionableRemediationStateEnabled),
-			},
-			OnboardingState: to.Ptr(armsecurity.OnboardingStateNotApplicable),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewAzureDevOpsOrgsClient().NewListPager("myRg", "mySecurityConnectorName", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsecurity.AzureDevOpsOrgsClientListResponse{
+		// 	AzureDevOpsOrgListResponse: armsecurity.AzureDevOpsOrgListResponse{
+		// 		Value: []*armsecurity.AzureDevOpsOrg{
+		// 			{
+		// 				Name: to.Ptr("myAzDevOpsOrg"),
+		// 				Type: to.Ptr("Microsoft.Security/securityConnectors/devops/azureDevOpsOrgs"),
+		// 				ID: to.Ptr("/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourceGroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/azureDevOpsOrgs/myAzDevOpsOrg"),
+		// 				Properties: &armsecurity.AzureDevOpsOrgProperties{
+		// 					ActionableRemediation: &armsecurity.ActionableRemediation{
+		// 						State: to.Ptr(armsecurity.ActionableRemediationStateEnabled),
+		// 					},
+		// 					OnboardingState: to.Ptr(armsecurity.OnboardingStateOnboarded),
+		// 					ProvisioningState: to.Ptr(armsecurity.DevOpsProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsecurity.AzureDevOpsOrgsClientUpdateResponse{
-	// 	AzureDevOpsOrg: armsecurity.AzureDevOpsOrg{
-	// 		Name: to.Ptr("myAzDevOpsOrg"),
-	// 		Type: to.Ptr("Microsoft.Security/securityConnectors/devops/azureDevOpsOrgs"),
-	// 		ID: to.Ptr("/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourceGroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/azureDevOpsOrgs/myAzDevOpsOrg"),
-	// 		Properties: &armsecurity.AzureDevOpsOrgProperties{
-	// 			ActionableRemediation: &armsecurity.ActionableRemediation{
-	// 				State: to.Ptr(armsecurity.ActionableRemediationStateEnabled),
-	// 			},
-	// 			OnboardingState: to.Ptr(armsecurity.OnboardingStateOnboarded),
-	// 			ProvisioningState: to.Ptr(armsecurity.DevOpsProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

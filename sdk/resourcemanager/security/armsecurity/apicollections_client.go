@@ -30,6 +30,9 @@ type APICollectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAPICollectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APICollectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,90 @@ func NewAPICollectionsClient(subscriptionID string, credential azcore.TokenCrede
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginOnboardAzureAPIManagementAPI - Onboard an Azure API Management API to Microsoft Defender for APIs
+//
+// Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the operations within
+// the Azure Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serviceName - The name of the API Management service.
+//   - apiID - API revision identifier. Must be unique in the API Management service instance. Non-current revision has ;rev=n
+//     as a suffix where n is the revision number.
+//   - options - APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions contains the optional parameters for the APICollectionsClient.BeginOnboardAzureAPIManagementAPI
+//     method.
+func (client *APICollectionsClient) BeginOnboardAzureAPIManagementAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*runtime.Poller[APICollectionsClientOnboardAzureAPIManagementAPIResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.onboardAzureAPIManagementAPI(ctx, resourceGroupName, serviceName, apiID, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[APICollectionsClientOnboardAzureAPIManagementAPIResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[APICollectionsClientOnboardAzureAPIManagementAPIResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// onboardAzureAPIManagementAPI - Onboard an Azure API Management API to Microsoft Defender for APIs
+//
+// Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the operations within
+// the Azure Management API for intrusive behaviors and provide alerts for attacks that have been detected.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *APICollectionsClient) onboardAzureAPIManagementAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*http.Response, error) {
+	var err error
+	const operationName = "APICollectionsClient.BeginOnboardAzureAPIManagementAPI"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.onboardAzureAPIManagementAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// onboardAzureAPIManagementAPICreateRequest creates the onboardAzureAPIManagementAPI request.
+func (client *APICollectionsClient) onboardAzureAPIManagementAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if apiID == "" {
+		return nil, errors.New("parameter apiID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20231115)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
 }
 
 // GetByAzureAPIManagementService - Gets an onboarded Azure API Management API
@@ -67,11 +154,7 @@ func (client *APICollectionsClient) GetByAzureAPIManagementService(ctx context.C
 	if err != nil {
 		return APICollectionsClientGetByAzureAPIManagementServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return APICollectionsClientGetByAzureAPIManagementServiceResponse{}, err
-	}
-	resp, err := client.getByAzureAPIManagementServiceHandleResponse(httpResp)
+	resp, err := client.getByAzureAPIManagementServiceHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -79,7 +162,7 @@ func (client *APICollectionsClient) GetByAzureAPIManagementService(ctx context.C
 func (client *APICollectionsClient) getByAzureAPIManagementServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APICollectionsClientGetByAzureAPIManagementServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -106,8 +189,11 @@ func (client *APICollectionsClient) getByAzureAPIManagementServiceCreateRequest(
 }
 
 // getByAzureAPIManagementServiceHandleResponse handles the GetByAzureAPIManagementService response.
-func (client *APICollectionsClient) getByAzureAPIManagementServiceHandleResponse(resp *http.Response) (APICollectionsClientGetByAzureAPIManagementServiceResponse, error) {
+func (client *APICollectionsClient) getByAzureAPIManagementServiceHandleResponse(resp *http.Response, successCodes ...int) (APICollectionsClientGetByAzureAPIManagementServiceResponse, error) {
 	result := APICollectionsClientGetByAzureAPIManagementServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APICollection); err != nil {
 		return APICollectionsClientGetByAzureAPIManagementServiceResponse{}, err
 	}
@@ -134,47 +220,61 @@ func (client *APICollectionsClient) NewListByAzureAPIManagementServicePager(reso
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAzureAPIManagementServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
-			}, nil)
+			req, err := client.listByAzureAPIManagementServiceCreateRequest(ctx, resourceGroupName, serviceName, nextLink, options)
 			if err != nil {
 				return APICollectionsClientListByAzureAPIManagementServiceResponse{}, err
 			}
-			return client.listByAzureAPIManagementServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return APICollectionsClientListByAzureAPIManagementServiceResponse{}, err
+			}
+			return client.listByAzureAPIManagementServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAzureAPIManagementServiceCreateRequest creates the ListByAzureAPIManagementService request.
-func (client *APICollectionsClient) listByAzureAPIManagementServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, _ *APICollectionsClientListByAzureAPIManagementServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *APICollectionsClient) listByAzureAPIManagementServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, nextLink string, _ *APICollectionsClientListByAzureAPIManagementServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231115)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231115)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAzureAPIManagementServiceHandleResponse handles the ListByAzureAPIManagementService response.
-func (client *APICollectionsClient) listByAzureAPIManagementServiceHandleResponse(resp *http.Response) (APICollectionsClientListByAzureAPIManagementServiceResponse, error) {
+func (client *APICollectionsClient) listByAzureAPIManagementServiceHandleResponse(resp *http.Response, successCodes ...int) (APICollectionsClientListByAzureAPIManagementServiceResponse, error) {
 	result := APICollectionsClientListByAzureAPIManagementServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APICollectionList); err != nil {
 		return APICollectionsClientListByAzureAPIManagementServiceResponse{}, err
 	}
@@ -198,43 +298,57 @@ func (client *APICollectionsClient) NewListByResourceGroupPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return APICollectionsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return APICollectionsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *APICollectionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *APICollectionsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/apiCollections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *APICollectionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *APICollectionsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/apiCollections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231115)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231115)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *APICollectionsClient) listByResourceGroupHandleResponse(resp *http.Response) (APICollectionsClientListByResourceGroupResponse, error) {
+func (client *APICollectionsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (APICollectionsClientListByResourceGroupResponse, error) {
 	result := APICollectionsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APICollectionList); err != nil {
 		return APICollectionsClientListByResourceGroupResponse{}, err
 	}
@@ -257,39 +371,53 @@ func (client *APICollectionsClient) NewListBySubscriptionPager(options *APIColle
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return APICollectionsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return APICollectionsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *APICollectionsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *APICollectionsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/apiCollections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *APICollectionsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *APICollectionsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/apiCollections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231115)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231115)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *APICollectionsClient) listBySubscriptionHandleResponse(resp *http.Response) (APICollectionsClientListBySubscriptionResponse, error) {
+func (client *APICollectionsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (APICollectionsClientListBySubscriptionResponse, error) {
 	result := APICollectionsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APICollectionList); err != nil {
 		return APICollectionsClientListBySubscriptionResponse{}, err
 	}
@@ -332,7 +460,7 @@ func (client *APICollectionsClient) OffboardAzureAPIManagementAPI(ctx context.Co
 func (client *APICollectionsClient) offboardAzureAPIManagementAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APICollectionsClientOffboardAzureAPIManagementAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -354,89 +482,5 @@ func (client *APICollectionsClient) offboardAzureAPIManagementAPICreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20231115)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginOnboardAzureAPIManagementAPI - Onboard an Azure API Management API to Microsoft Defender for APIs
-//
-// Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the operations within
-// the Azure Management API for intrusive behaviors and provide alerts for attacks that have been detected.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serviceName - The name of the API Management service.
-//   - apiID - API revision identifier. Must be unique in the API Management service instance. Non-current revision has ;rev=n
-//     as a suffix where n is the revision number.
-//   - options - APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions contains the optional parameters for the APICollectionsClient.BeginOnboardAzureAPIManagementAPI
-//     method.
-func (client *APICollectionsClient) BeginOnboardAzureAPIManagementAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*runtime.Poller[APICollectionsClientOnboardAzureAPIManagementAPIResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.onboardAzureAPIManagementAPI(ctx, resourceGroupName, serviceName, apiID, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[APICollectionsClientOnboardAzureAPIManagementAPIResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[APICollectionsClientOnboardAzureAPIManagementAPIResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// OnboardAzureAPIManagementAPI - Onboard an Azure API Management API to Microsoft Defender for APIs
-//
-// Onboard an Azure API Management API to Microsoft Defender for APIs. The system will start monitoring the operations within
-// the Azure Management API for intrusive behaviors and provide alerts for attacks that have been detected.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *APICollectionsClient) onboardAzureAPIManagementAPI(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*http.Response, error) {
-	var err error
-	const operationName = "APICollectionsClient.BeginOnboardAzureAPIManagementAPI"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.onboardAzureAPIManagementAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// onboardAzureAPIManagementAPICreateRequest creates the OnboardAzureAPIManagementAPI request.
-func (client *APICollectionsClient) onboardAzureAPIManagementAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, _ *APICollectionsClientBeginOnboardAzureAPIManagementAPIOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/providers/Microsoft.Security/apiCollections/{apiId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if apiID == "" {
-		return nil, errors.New("parameter apiID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{apiId}", url.PathEscape(apiID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231115)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

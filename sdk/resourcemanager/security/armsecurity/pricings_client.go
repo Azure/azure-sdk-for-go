@@ -19,7 +19,7 @@ import (
 // PricingsClient contains the methods for the Pricings group.
 // Don't use this type directly, use NewPricingsClient() instead.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2026-07-01
 type PricingsClient struct {
 	internal *arm.Client
 }
@@ -81,7 +81,7 @@ func (client *PricingsClient) deleteCreateRequest(ctx context.Context, scopeID s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -106,11 +106,7 @@ func (client *PricingsClient) Get(ctx context.Context, scopeID string, pricingNa
 	if err != nil {
 		return PricingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PricingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -130,15 +126,18 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, scopeID stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PricingsClient) getHandleResponse(resp *http.Response) (PricingsClientGetResponse, error) {
+func (client *PricingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PricingsClientGetResponse, error) {
 	result := PricingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pricing); err != nil {
 		return PricingsClientGetResponse{}, err
 	}
@@ -167,11 +166,7 @@ func (client *PricingsClient) List(ctx context.Context, scopeID string, options 
 	if err != nil {
 		return PricingsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PricingsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -190,15 +185,18 @@ func (client *PricingsClient) listCreateRequest(ctx context.Context, scopeID str
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PricingsClient) listHandleResponse(resp *http.Response) (PricingsClientListResponse, error) {
+func (client *PricingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (PricingsClientListResponse, error) {
 	result := PricingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PricingList); err != nil {
 		return PricingsClientListResponse{}, err
 	}
@@ -227,11 +225,7 @@ func (client *PricingsClient) Update(ctx context.Context, scopeID string, pricin
 	if err != nil {
 		return PricingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PricingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -251,7 +245,7 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, scopeID s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -262,8 +256,11 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, scopeID s
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PricingsClient) updateHandleResponse(resp *http.Response) (PricingsClientUpdateResponse, error) {
+func (client *PricingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PricingsClientUpdateResponse, error) {
 	result := PricingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pricing); err != nil {
 		return PricingsClientUpdateResponse{}, err
 	}

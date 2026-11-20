@@ -6,5 +6,5 @@ package armsecurity
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
-	moduleVersion = "v0.15.0"
+	moduleVersion = "v0.16.0"
 )

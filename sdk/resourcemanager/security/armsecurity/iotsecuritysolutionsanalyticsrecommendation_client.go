@@ -32,6 +32,9 @@ type IotSecuritySolutionsAnalyticsRecommendationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionsAnalyticsRecommendationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,11 +68,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) Get(ctx context
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -77,7 +76,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) Get(ctx context
 func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string, _ *IotSecuritySolutionsAnalyticsRecommendationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations/{aggregatedRecommendationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -104,8 +103,11 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateReques
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationClientGetResponse, error) {
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleResponse(resp *http.Response, successCodes ...int) (IotSecuritySolutionsAnalyticsRecommendationClientGetResponse, error) {
 	result := IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedRecommendation); err != nil {
 		return IotSecuritySolutionsAnalyticsRecommendationClientGetResponse{}, err
 	}
@@ -128,50 +130,64 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) NewListPager(re
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, solutionName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, solutionName, nextLink, options)
 			if err != nil {
 				return IotSecuritySolutionsAnalyticsRecommendationClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IotSecuritySolutionsAnalyticsRecommendationClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, nextLink string, options *IotSecuritySolutionsAnalyticsRecommendationClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if solutionName == "" {
+			return nil, errors.New("parameter solutionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if solutionName == "" {
-		return nil, errors.New("parameter solutionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20190801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20190801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationClientListResponse, error) {
+func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listHandleResponse(resp *http.Response, successCodes ...int) (IotSecuritySolutionsAnalyticsRecommendationClientListResponse, error) {
 	result := IotSecuritySolutionsAnalyticsRecommendationClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedRecommendationList); err != nil {
 		return IotSecuritySolutionsAnalyticsRecommendationClientListResponse{}, err
 	}

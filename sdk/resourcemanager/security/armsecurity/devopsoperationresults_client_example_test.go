@@ -32,14 +32,14 @@ func ExampleDevOpsOperationResultsClient_Get_getDevOpsOperationResultsFailed() {
 	// res = armsecurity.DevOpsOperationResultsClientGetResponse{
 	// 	OperationStatusResult: armsecurity.OperationStatusResult{
 	// 		Name: to.Ptr("8d4caace-e7b3-4b3e-af99-73f76829ebcf"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-21T03:25:15Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2023, time.June, 21, 3, 25, 15, 0, time.UTC)),
 	// 		Error: &armsecurity.ErrorDetail{
 	// 			Code: to.Ptr("TokenExchangeFailed"),
 	// 			Message: to.Ptr("AzureDevOps OAuth token exchange failed"),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourceGroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/operationResults/8d4caace-e7b3-4b3e-af99-73f76829ebcf?api-version=2025-11-01-preview"),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-21T03:23:15Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2023, time.June, 21, 3, 23, 15, 0, time.UTC)),
 	// 		Status: to.Ptr("Failed"),
 	// 	},
 	// }
@@ -66,10 +66,10 @@ func ExampleDevOpsOperationResultsClient_Get_getDevOpsOperationResultsSucceeded(
 	// res = armsecurity.DevOpsOperationResultsClientGetResponse{
 	// 	OperationStatusResult: armsecurity.OperationStatusResult{
 	// 		Name: to.Ptr("4e826cf1-5c36-4808-a7d2-fb4f5170978b"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-21T03:25:15Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2023, time.June, 21, 3, 25, 15, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/0806e1cd-cfda-4ff8-b99c-2b0af42cffd3/resourceGroups/myRg/providers/Microsoft.Security/securityConnectors/mySecurityConnectorName/devops/default/operationResults/4e826cf1-5c36-4808-a7d2-fb4f5170978b?api-version=2025-11-01-preview"),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-21T03:23:15Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2023, time.June, 21, 3, 23, 15, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }

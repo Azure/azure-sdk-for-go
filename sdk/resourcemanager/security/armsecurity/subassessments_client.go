@@ -58,11 +58,7 @@ func (client *SubAssessmentsClient) Get(ctx context.Context, scope string, asses
 	if err != nil {
 		return SubAssessmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubAssessmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -93,68 +89,13 @@ func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope 
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response) (SubAssessmentsClientGetResponse, error) {
+func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SubAssessmentsClientGetResponse, error) {
 	result := SubAssessmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubAssessment); err != nil {
 		return SubAssessmentsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Get security sub-assessments on all your scanned resources inside a scope
-//   - scope - The scope of the sub-assessment.
-//   - assessmentName - The security assessment key - unique key for the assessment type
-//   - options - SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.NewListPager method.
-func (client *SubAssessmentsClient) NewListPager(scope string, assessmentName string, options *SubAssessmentsClientListOptions) *runtime.Pager[SubAssessmentsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SubAssessmentsClientListResponse]{
-		More: func(page SubAssessmentsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SubAssessmentsClientListResponse) (SubAssessmentsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubAssessmentsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, assessmentName, options)
-			}, nil)
-			if err != nil {
-				return SubAssessmentsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, _ *SubAssessmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if assessmentName == "" {
-		return nil, errors.New("parameter assessmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20190101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response) (SubAssessmentsClientListResponse, error) {
-	result := SubAssessmentsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SubAssessmentList); err != nil {
-		return SubAssessmentsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -174,41 +115,127 @@ func (client *SubAssessmentsClient) NewListAllPager(scope string, options *SubAs
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return SubAssessmentsClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SubAssessmentsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, _ *SubAssessmentsClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/subAssessments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, nextLink string, _ *SubAssessmentsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/subAssessments"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20190101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20190101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *SubAssessmentsClient) listAllHandleResponse(resp *http.Response) (SubAssessmentsClientListAllResponse, error) {
+func (client *SubAssessmentsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (SubAssessmentsClientListAllResponse, error) {
 	result := SubAssessmentsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubAssessmentList); err != nil {
 		return SubAssessmentsClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Get security sub-assessments on all your scanned resources inside a scope
+//   - scope - The scope of the sub-assessment.
+//   - assessmentName - The security assessment key - unique key for the assessment type
+//   - options - SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.NewListPager method.
+func (client *SubAssessmentsClient) NewListPager(scope string, assessmentName string, options *SubAssessmentsClientListOptions) *runtime.Pager[SubAssessmentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SubAssessmentsClientListResponse]{
+		More: func(page SubAssessmentsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SubAssessmentsClientListResponse) (SubAssessmentsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SubAssessmentsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, scope, assessmentName, nextLink, options)
+			if err != nil {
+				return SubAssessmentsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SubAssessmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, nextLink string, _ *SubAssessmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		if assessmentName == "" {
+			return nil, errors.New("parameter assessmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20190101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SubAssessmentsClientListResponse, error) {
+	result := SubAssessmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubAssessmentList); err != nil {
+		return SubAssessmentsClientListResponse{}, err
 	}
 	return result, nil
 }

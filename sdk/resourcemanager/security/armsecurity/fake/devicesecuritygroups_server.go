@@ -60,7 +60,7 @@ func (d *DeviceSecurityGroupsServerTransport) Do(req *http.Request) (*http.Respo
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return d.dispatchToMethodFake(req, method)
@@ -104,7 +104,7 @@ func (d *DeviceSecurityGroupsServerTransport) dispatchCreateOrUpdate(req *http.R
 	if d.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/deviceSecurityGroups/(?P<deviceSecurityGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/deviceSecurityGroups/(?P<deviceSecurityGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -114,10 +114,7 @@ func (d *DeviceSecurityGroupsServerTransport) dispatchCreateOrUpdate(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 	deviceSecurityGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceSecurityGroupName")])
 	if err != nil {
 		return nil, err
@@ -141,16 +138,13 @@ func (d *DeviceSecurityGroupsServerTransport) dispatchDelete(req *http.Request) 
 	if d.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/deviceSecurityGroups/(?P<deviceSecurityGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/deviceSecurityGroups/(?P<deviceSecurityGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 	deviceSecurityGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceSecurityGroupName")])
 	if err != nil {
 		return nil, err
@@ -174,16 +168,13 @@ func (d *DeviceSecurityGroupsServerTransport) dispatchGet(req *http.Request) (*h
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/deviceSecurityGroups/(?P<deviceSecurityGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/deviceSecurityGroups/(?P<deviceSecurityGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 	deviceSecurityGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deviceSecurityGroupName")])
 	if err != nil {
 		return nil, err
@@ -209,16 +200,13 @@ func (d *DeviceSecurityGroupsServerTransport) dispatchNewListPager(req *http.Req
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/deviceSecurityGroups`
+		const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/deviceSecurityGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-		if err != nil {
-			return nil, err
-		}
+		resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 		resp := d.srv.NewListPager(resourceIDParam, nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)

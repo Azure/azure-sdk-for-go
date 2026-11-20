@@ -30,6 +30,9 @@ type DiscoveredSecuritySolutionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDiscoveredSecuritySolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiscoveredSecuritySolutionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *DiscoveredSecuritySolutionsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return DiscoveredSecuritySolutionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiscoveredSecuritySolutionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *DiscoveredSecuritySolutionsClient) Get(ctx context.Context, resour
 func (client *DiscoveredSecuritySolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, discoveredSecuritySolutionName string, _ *DiscoveredSecuritySolutionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/discoveredSecuritySolutions/{discoveredSecuritySolutionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,63 +100,13 @@ func (client *DiscoveredSecuritySolutionsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiscoveredSecuritySolutionsClient) getHandleResponse(resp *http.Response) (DiscoveredSecuritySolutionsClientGetResponse, error) {
+func (client *DiscoveredSecuritySolutionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DiscoveredSecuritySolutionsClientGetResponse, error) {
 	result := DiscoveredSecuritySolutionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiscoveredSecuritySolution); err != nil {
 		return DiscoveredSecuritySolutionsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets a list of discovered Security Solutions for the subscription.
-//   - options - DiscoveredSecuritySolutionsClientListOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.NewListPager
-//     method.
-func (client *DiscoveredSecuritySolutionsClient) NewListPager(options *DiscoveredSecuritySolutionsClientListOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DiscoveredSecuritySolutionsClientListResponse]{
-		More: func(page DiscoveredSecuritySolutionsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DiscoveredSecuritySolutionsClientListResponse) (DiscoveredSecuritySolutionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiscoveredSecuritySolutionsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return DiscoveredSecuritySolutionsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *DiscoveredSecuritySolutionsClient) listCreateRequest(ctx context.Context, _ *DiscoveredSecuritySolutionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/discoveredSecuritySolutions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DiscoveredSecuritySolutionsClient) listHandleResponse(resp *http.Response) (DiscoveredSecuritySolutionsClientListResponse, error) {
-	result := DiscoveredSecuritySolutionsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DiscoveredSecuritySolutionList); err != nil {
-		return DiscoveredSecuritySolutionsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -177,45 +126,126 @@ func (client *DiscoveredSecuritySolutionsClient) NewListByHomeRegionPager(ascLoc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHomeRegionCreateRequest(ctx, ascLocation, options)
-			}, nil)
+			req, err := client.listByHomeRegionCreateRequest(ctx, ascLocation, nextLink, options)
 			if err != nil {
 				return DiscoveredSecuritySolutionsClientListByHomeRegionResponse{}, err
 			}
-			return client.listByHomeRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiscoveredSecuritySolutionsClientListByHomeRegionResponse{}, err
+			}
+			return client.listByHomeRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *DiscoveredSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *DiscoveredSecuritySolutionsClientListByHomeRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/discoveredSecuritySolutions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiscoveredSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, nextLink string, _ *DiscoveredSecuritySolutionsClientListByHomeRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/discoveredSecuritySolutions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *DiscoveredSecuritySolutionsClient) listByHomeRegionHandleResponse(resp *http.Response) (DiscoveredSecuritySolutionsClientListByHomeRegionResponse, error) {
+func (client *DiscoveredSecuritySolutionsClient) listByHomeRegionHandleResponse(resp *http.Response, successCodes ...int) (DiscoveredSecuritySolutionsClientListByHomeRegionResponse, error) {
 	result := DiscoveredSecuritySolutionsClientListByHomeRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiscoveredSecuritySolutionList); err != nil {
 		return DiscoveredSecuritySolutionsClientListByHomeRegionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets a list of discovered Security Solutions for the subscription.
+//   - options - DiscoveredSecuritySolutionsClientListOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.NewListPager
+//     method.
+func (client *DiscoveredSecuritySolutionsClient) NewListPager(options *DiscoveredSecuritySolutionsClientListOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DiscoveredSecuritySolutionsClientListResponse]{
+		More: func(page DiscoveredSecuritySolutionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DiscoveredSecuritySolutionsClientListResponse) (DiscoveredSecuritySolutionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DiscoveredSecuritySolutionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DiscoveredSecuritySolutionsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiscoveredSecuritySolutionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *DiscoveredSecuritySolutionsClient) listCreateRequest(ctx context.Context, nextLink string, _ *DiscoveredSecuritySolutionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/discoveredSecuritySolutions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *DiscoveredSecuritySolutionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DiscoveredSecuritySolutionsClientListResponse, error) {
+	result := DiscoveredSecuritySolutionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DiscoveredSecuritySolutionList); err != nil {
+		return DiscoveredSecuritySolutionsClientListResponse{}, err
 	}
 	return result, nil
 }

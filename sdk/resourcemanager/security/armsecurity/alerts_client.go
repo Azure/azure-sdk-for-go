@@ -30,6 +30,9 @@ type AlertsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,77 @@ func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, o
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginSimulate - Simulate security alerts
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - alertSimulatorRequestBody - The request body
+//   - options - AlertsClientBeginSimulateOptions contains the optional parameters for the AlertsClient.BeginSimulate method.
+func (client *AlertsClient) BeginSimulate(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (*runtime.Poller[AlertsClientSimulateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.simulate(ctx, ascLocation, alertSimulatorRequestBody, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AlertsClientSimulateResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AlertsClientSimulateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// simulate - Simulate security alerts
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AlertsClient) simulate(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AlertsClient.BeginSimulate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.simulateCreateRequest(ctx, ascLocation, alertSimulatorRequestBody, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// simulateCreateRequest creates the simulate request.
+func (client *AlertsClient) simulateCreateRequest(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, _ *AlertsClientBeginSimulateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/default/simulate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20220101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, alertSimulatorRequestBody); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // GetResourceGroupLevel - Get an alert that is associated a resource group or a resource in a resource group
@@ -62,11 +136,7 @@ func (client *AlertsClient) GetResourceGroupLevel(ctx context.Context, resourceG
 	if err != nil {
 		return AlertsClientGetResourceGroupLevelResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetResourceGroupLevelResponse{}, err
-	}
-	resp, err := client.getResourceGroupLevelHandleResponse(httpResp)
+	resp, err := client.getResourceGroupLevelHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +144,7 @@ func (client *AlertsClient) GetResourceGroupLevel(ctx context.Context, resourceG
 func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientGetResourceGroupLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +171,11 @@ func (client *AlertsClient) getResourceGroupLevelCreateRequest(ctx context.Conte
 }
 
 // getResourceGroupLevelHandleResponse handles the GetResourceGroupLevel response.
-func (client *AlertsClient) getResourceGroupLevelHandleResponse(resp *http.Response) (AlertsClientGetResourceGroupLevelResponse, error) {
+func (client *AlertsClient) getResourceGroupLevelHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetResourceGroupLevelResponse, error) {
 	result := AlertsClientGetResourceGroupLevelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientGetResourceGroupLevelResponse{}, err
 	}
@@ -129,11 +202,7 @@ func (client *AlertsClient) GetSubscriptionLevel(ctx context.Context, ascLocatio
 	if err != nil {
 		return AlertsClientGetSubscriptionLevelResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetSubscriptionLevelResponse{}, err
-	}
-	resp, err := client.getSubscriptionLevelHandleResponse(httpResp)
+	resp, err := client.getSubscriptionLevelHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -141,7 +210,7 @@ func (client *AlertsClient) GetSubscriptionLevel(ctx context.Context, ascLocatio
 func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientGetSubscriptionLevelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {
@@ -164,62 +233,13 @@ func (client *AlertsClient) getSubscriptionLevelCreateRequest(ctx context.Contex
 }
 
 // getSubscriptionLevelHandleResponse handles the GetSubscriptionLevel response.
-func (client *AlertsClient) getSubscriptionLevelHandleResponse(resp *http.Response) (AlertsClientGetSubscriptionLevelResponse, error) {
+func (client *AlertsClient) getSubscriptionLevelHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetSubscriptionLevelResponse, error) {
 	result := AlertsClientGetSubscriptionLevelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientGetSubscriptionLevelResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List all the alerts that are associated with the subscription
-//   - options - AlertsClientListOptions contains the optional parameters for the AlertsClient.NewListPager method.
-func (client *AlertsClient) NewListPager(options *AlertsClientListOptions) *runtime.Pager[AlertsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AlertsClientListResponse]{
-		More: func(page AlertsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AlertsClientListResponse) (AlertsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return AlertsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AlertsClient) listCreateRequest(ctx context.Context, _ *AlertsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AlertsClient) listHandleResponse(resp *http.Response) (AlertsClientListResponse, error) {
-	result := AlertsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
-		return AlertsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -239,56 +259,136 @@ func (client *AlertsClient) NewListByResourceGroupPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AlertsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AlertsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/alerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AlertsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AlertsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/alerts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20220101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (AlertsClientListByResourceGroupResponse, error) {
+func (client *AlertsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientListByResourceGroupResponse, error) {
 	result := AlertsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
 		return AlertsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
+// NewListPager - List all the alerts that are associated with the subscription
+//   - options - AlertsClientListOptions contains the optional parameters for the AlertsClient.NewListPager method.
+func (client *AlertsClient) NewListPager(options *AlertsClientListOptions) *runtime.Pager[AlertsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AlertsClientListResponse]{
+		More: func(page AlertsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AlertsClientListResponse) (AlertsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AlertsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AlertsClient) listCreateRequest(ctx context.Context, nextLink string, _ *AlertsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alerts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20220101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AlertsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientListResponse, error) {
+	result := AlertsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
+		return AlertsClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListResourceGroupLevelByRegionPager - List all the alerts that are associated with the resource group that are stored
 // in a specific location
-//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 //   - options - AlertsClientListResourceGroupLevelByRegionOptions contains the optional parameters for the AlertsClient.NewListResourceGroupLevelByRegionPager
 //     method.
-func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(ascLocation string, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions) *runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse] {
+func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(resourceGroupName string, ascLocation string, options *AlertsClientListResourceGroupLevelByRegionOptions) *runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertsClientListResourceGroupLevelByRegionResponse]{
 		More: func(page AlertsClientListResourceGroupLevelByRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,47 +399,61 @@ func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(ascLocation s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listResourceGroupLevelByRegionCreateRequest(ctx, ascLocation, resourceGroupName, options)
-			}, nil)
+			req, err := client.listResourceGroupLevelByRegionCreateRequest(ctx, resourceGroupName, ascLocation, nextLink, options)
 			if err != nil {
 				return AlertsClientListResourceGroupLevelByRegionResponse{}, err
 			}
-			return client.listResourceGroupLevelByRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsClientListResourceGroupLevelByRegionResponse{}, err
+			}
+			return client.listResourceGroupLevelByRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listResourceGroupLevelByRegionCreateRequest creates the ListResourceGroupLevelByRegion request.
-func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, ascLocation string, resourceGroupName string, _ *AlertsClientListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, nextLink string, _ *AlertsClientListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20220101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listResourceGroupLevelByRegionHandleResponse handles the ListResourceGroupLevelByRegion response.
-func (client *AlertsClient) listResourceGroupLevelByRegionHandleResponse(resp *http.Response) (AlertsClientListResourceGroupLevelByRegionResponse, error) {
+func (client *AlertsClient) listResourceGroupLevelByRegionHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientListResourceGroupLevelByRegionResponse, error) {
 	result := AlertsClientListResourceGroupLevelByRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
 		return AlertsClientListResourceGroupLevelByRegionResponse{}, err
 	}
@@ -362,118 +476,61 @@ func (client *AlertsClient) NewListSubscriptionLevelByRegionPager(ascLocation st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSubscriptionLevelByRegionCreateRequest(ctx, ascLocation, options)
-			}, nil)
+			req, err := client.listSubscriptionLevelByRegionCreateRequest(ctx, ascLocation, nextLink, options)
 			if err != nil {
 				return AlertsClientListSubscriptionLevelByRegionResponse{}, err
 			}
-			return client.listSubscriptionLevelByRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsClientListSubscriptionLevelByRegionResponse{}, err
+			}
+			return client.listSubscriptionLevelByRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSubscriptionLevelByRegionCreateRequest creates the ListSubscriptionLevelByRegion request.
-func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx context.Context, ascLocation string, _ *AlertsClientListSubscriptionLevelByRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AlertsClient) listSubscriptionLevelByRegionCreateRequest(ctx context.Context, ascLocation string, nextLink string, _ *AlertsClientListSubscriptionLevelByRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20220101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSubscriptionLevelByRegionHandleResponse handles the ListSubscriptionLevelByRegion response.
-func (client *AlertsClient) listSubscriptionLevelByRegionHandleResponse(resp *http.Response) (AlertsClientListSubscriptionLevelByRegionResponse, error) {
+func (client *AlertsClient) listSubscriptionLevelByRegionHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientListSubscriptionLevelByRegionResponse, error) {
 	result := AlertsClientListSubscriptionLevelByRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertList); err != nil {
 		return AlertsClientListSubscriptionLevelByRegionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginSimulate - Simulate security alerts
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
-//   - alertSimulatorRequestBody - The request body
-//   - options - AlertsClientBeginSimulateOptions contains the optional parameters for the AlertsClient.BeginSimulate method.
-func (client *AlertsClient) BeginSimulate(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (*runtime.Poller[AlertsClientSimulateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.simulate(ctx, ascLocation, alertSimulatorRequestBody, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AlertsClientSimulateResponse]{
-			FinalStateVia: runtime.FinalStateViaOriginalURI,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AlertsClientSimulateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Simulate - Simulate security alerts
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AlertsClient) simulate(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, options *AlertsClientBeginSimulateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AlertsClient.BeginSimulate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.simulateCreateRequest(ctx, ascLocation, alertSimulatorRequestBody, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// simulateCreateRequest creates the Simulate request.
-func (client *AlertsClient) simulateCreateRequest(ctx context.Context, ascLocation string, alertSimulatorRequestBody AlertSimulatorRequestBody, _ *AlertsClientBeginSimulateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/default/simulate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, alertSimulatorRequestBody); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // UpdateResourceGroupLevelStateToActivate - Update the alert's state
@@ -508,7 +565,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToActivate(ctx context.
 func (client *AlertsClient) updateResourceGroupLevelStateToActivateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -565,7 +622,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToDismiss(ctx context.C
 func (client *AlertsClient) updateResourceGroupLevelStateToDismissCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -622,7 +679,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToInProgress(ctx contex
 func (client *AlertsClient) updateResourceGroupLevelStateToInProgressCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToInProgressOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/inProgress"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -679,7 +736,7 @@ func (client *AlertsClient) UpdateResourceGroupLevelStateToResolve(ctx context.C
 func (client *AlertsClient) updateResourceGroupLevelStateToResolveCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, _ *AlertsClientUpdateResourceGroupLevelStateToResolveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -735,7 +792,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToActivate(ctx context.C
 func (client *AlertsClient) updateSubscriptionLevelStateToActivateCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToActivateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/activate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {
@@ -787,7 +844,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToDismiss(ctx context.Co
 func (client *AlertsClient) updateSubscriptionLevelStateToDismissCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/dismiss"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {
@@ -839,7 +896,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToInProgress(ctx context
 func (client *AlertsClient) updateSubscriptionLevelStateToInProgressCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToInProgressOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/inProgress"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {
@@ -891,7 +948,7 @@ func (client *AlertsClient) UpdateSubscriptionLevelStateToResolve(ctx context.Co
 func (client *AlertsClient) updateSubscriptionLevelStateToResolveCreateRequest(ctx context.Context, ascLocation string, alertName string, _ *AlertsClientUpdateSubscriptionLevelStateToResolveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}/resolve"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {

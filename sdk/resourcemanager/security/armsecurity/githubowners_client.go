@@ -30,6 +30,9 @@ type GitHubOwnersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGitHubOwnersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitHubOwnersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *GitHubOwnersClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return GitHubOwnersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GitHubOwnersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *GitHubOwnersClient) Get(ctx context.Context, resourceGroupName str
 func (client *GitHubOwnersClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, ownerName string, _ *GitHubOwnersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitHubOwners/{ownerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,74 +100,13 @@ func (client *GitHubOwnersClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *GitHubOwnersClient) getHandleResponse(resp *http.Response) (GitHubOwnersClientGetResponse, error) {
+func (client *GitHubOwnersClient) getHandleResponse(resp *http.Response, successCodes ...int) (GitHubOwnersClientGetResponse, error) {
 	result := GitHubOwnersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubOwner); err != nil {
 		return GitHubOwnersClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Returns a list of GitHub owners onboarded to the connector.
-//
-// Returns a list of GitHub owners onboarded to the connector.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - securityConnectorName - The security connector name.
-//   - options - GitHubOwnersClientListOptions contains the optional parameters for the GitHubOwnersClient.NewListPager method.
-func (client *GitHubOwnersClient) NewListPager(resourceGroupName string, securityConnectorName string, options *GitHubOwnersClientListOptions) *runtime.Pager[GitHubOwnersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GitHubOwnersClientListResponse]{
-		More: func(page GitHubOwnersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GitHubOwnersClientListResponse) (GitHubOwnersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GitHubOwnersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
-			}, nil)
-			if err != nil {
-				return GitHubOwnersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *GitHubOwnersClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *GitHubOwnersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitHubOwners"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *GitHubOwnersClient) listHandleResponse(resp *http.Response) (GitHubOwnersClientListResponse, error) {
-	result := GitHubOwnersClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubOwnerListResponse); err != nil {
-		return GitHubOwnersClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -195,11 +133,7 @@ func (client *GitHubOwnersClient) ListAvailable(ctx context.Context, resourceGro
 	if err != nil {
 		return GitHubOwnersClientListAvailableResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GitHubOwnersClientListAvailableResponse{}, err
-	}
-	resp, err := client.listAvailableHandleResponse(httpResp)
+	resp, err := client.listAvailableHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -207,7 +141,7 @@ func (client *GitHubOwnersClient) ListAvailable(ctx context.Context, resourceGro
 func (client *GitHubOwnersClient) listAvailableCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *GitHubOwnersClientListAvailableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/listAvailableGitHubOwners"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,10 +164,91 @@ func (client *GitHubOwnersClient) listAvailableCreateRequest(ctx context.Context
 }
 
 // listAvailableHandleResponse handles the ListAvailable response.
-func (client *GitHubOwnersClient) listAvailableHandleResponse(resp *http.Response) (GitHubOwnersClientListAvailableResponse, error) {
+func (client *GitHubOwnersClient) listAvailableHandleResponse(resp *http.Response, successCodes ...int) (GitHubOwnersClientListAvailableResponse, error) {
 	result := GitHubOwnersClientListAvailableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubOwnerListResponse); err != nil {
 		return GitHubOwnersClientListAvailableResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Returns a list of GitHub owners onboarded to the connector.
+//
+// Returns a list of GitHub owners onboarded to the connector.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - options - GitHubOwnersClientListOptions contains the optional parameters for the GitHubOwnersClient.NewListPager method.
+func (client *GitHubOwnersClient) NewListPager(resourceGroupName string, securityConnectorName string, options *GitHubOwnersClientListOptions) *runtime.Pager[GitHubOwnersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GitHubOwnersClientListResponse]{
+		More: func(page GitHubOwnersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GitHubOwnersClientListResponse) (GitHubOwnersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GitHubOwnersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, nextLink, options)
+			if err != nil {
+				return GitHubOwnersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GitHubOwnersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *GitHubOwnersClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, nextLink string, _ *GitHubOwnersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitHubOwners"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if securityConnectorName == "" {
+			return nil, errors.New("parameter securityConnectorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *GitHubOwnersClient) listHandleResponse(resp *http.Response, successCodes ...int) (GitHubOwnersClientListResponse, error) {
+	result := GitHubOwnersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubOwnerListResponse); err != nil {
+		return GitHubOwnersClientListResponse{}, err
 	}
 	return result, nil
 }

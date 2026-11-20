@@ -52,7 +52,7 @@ func (r *RegulatoryComplianceAssessmentsServerTransport) Do(req *http.Request) (
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return r.dispatchToMethodFake(req, method)
@@ -92,7 +92,7 @@ func (r *RegulatoryComplianceAssessmentsServerTransport) dispatchGet(req *http.R
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/regulatoryComplianceStandards/(?P<regulatoryComplianceStandardName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regulatoryComplianceControls/(?P<regulatoryComplianceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regulatoryComplianceAssessments/(?P<regulatoryComplianceAssessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/regulatoryComplianceStandards/(?P<regulatoryComplianceStandardName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regulatoryComplianceControls/(?P<regulatoryComplianceControlName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regulatoryComplianceAssessments/(?P<regulatoryComplianceAssessmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +131,7 @@ func (r *RegulatoryComplianceAssessmentsServerTransport) dispatchNewListPager(re
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/regulatoryComplianceStandards/(?P<regulatoryComplianceStandardName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regulatoryComplianceControls/(?P<regulatoryComplianceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regulatoryComplianceAssessments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/regulatoryComplianceStandards/(?P<regulatoryComplianceStandardName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regulatoryComplianceControls/(?P<regulatoryComplianceControlName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regulatoryComplianceAssessments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

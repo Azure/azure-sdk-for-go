@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/settings-createOrUpdate.json
+// Generated from example definition: 2026-06-01/settings-createOrUpdate.json
 func ExampleSettingsClient_CreateOrUpdateByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleSettingsClient_CreateOrUpdateByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/setting-delete.json
+// Generated from example definition: 2026-06-01/setting-delete.json
 func ExampleSettingsClient_DeleteByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleSettingsClient_DeleteByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/setting-get.json
+// Generated from example definition: 2026-06-01/setting-get.json
 func ExampleSettingsClient_GetByScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleSettingsClient_GetByScope() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/settingsList.json
+// Generated from example definition: 2026-06-01/settingsList.json
 func ExampleSettingsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/Cost/CreateOrUpdate-Cost-Subscription-Budget.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/Cost/CreateOrUpdate-Cost-Subscription-Budget.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateCostSubscriptionBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateCostSubscriptionBudget() 
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule-ReservationIdFilter.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule-ReservationIdFilter.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBillingAccountEaAlertRuleReservationIdFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBil
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule-ReservedResourceTypeFilter.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule-ReservedResourceTypeFilter.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBillingAccountEaAlertRuleReservedResourceTypeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +362,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBil
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBillingAccountEaAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBil
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule-ReservationIdFilter.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule-ReservationIdFilter.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBillingProfileMcaAlertRuleReservationIdFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,7 +531,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBil
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule-ReservedResourceTypeFilter.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule-ReservedResourceTypeFilter.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBillingProfileMcaAlertRuleReservedResourceTypeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,7 +625,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBil
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBillingProfileMcaAlertRuleJson() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -700,7 +700,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationBil
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule-ReservationIdFilter.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule-ReservationIdFilter.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationCustomerCspAlertRuleReservationIdFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -794,7 +794,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationCus
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule-ReservedResourceTypeFilter.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule-ReservedResourceTypeFilter.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationCustomerCspAlertRuleReservedResourceTypeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -888,7 +888,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationCus
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule.json
+// Generated from example definition: 2026-06-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule.json
 func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationCustomerCspAlertRuleJson() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -963,7 +963,7 @@ func ExampleBudgetsClient_CreateOrUpdate_createOrUpdateReservationUtilizationCus
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/Delete/DeleteBudget.json
+// Generated from example definition: 2026-06-01/Budgets/Delete/DeleteBudget.json
 func ExampleBudgetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -985,7 +985,7 @@ func ExampleBudgetsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/Get/Cost/Get-Cost-Budget.json
+// Generated from example definition: 2026-06-01/Budgets/Get/Cost/Get-Cost-Budget.json
 func ExampleBudgetsClient_Get_getCostBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1079,7 +1079,7 @@ func ExampleBudgetsClient_Get_getCostBudget() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/Get/ReservationUtilization/Get-ReservationUtilization-AlertRule.json
+// Generated from example definition: 2026-06-01/Budgets/Get/ReservationUtilization/Get-ReservationUtilization-AlertRule.json
 func ExampleBudgetsClient_Get_getReservationUtilizationAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1139,7 +1139,7 @@ func ExampleBudgetsClient_Get_getReservationUtilizationAlertRule() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/EA/BillingAccountBudgetsList-EA-CategoryTypeFilter.json
+// Generated from example definition: 2026-06-01/Budgets/List/EA/BillingAccountBudgetsList-EA-CategoryTypeFilter.json
 func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListEaCategoryTypeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1200,7 +1200,7 @@ func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListEaCategoryTypeFi
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/EA/BillingAccountBudgetsList-EA.json
+// Generated from example definition: 2026-06-01/Budgets/List/EA/BillingAccountBudgetsList-EA.json
 func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListEa() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1322,7 +1322,7 @@ func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListEa() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/EA/DepartmentBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/EA/DepartmentBudgetsList.json
 func ExampleBudgetsClient_NewListPager_departmentBudgetsListEa() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1415,7 +1415,7 @@ func ExampleBudgetsClient_NewListPager_departmentBudgetsListEa() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/EA/EnrollmentAccountBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/EA/EnrollmentAccountBudgetsList.json
 func ExampleBudgetsClient_NewListPager_enrollmentAccountBudgetsListEa() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1508,7 +1508,7 @@ func ExampleBudgetsClient_NewListPager_enrollmentAccountBudgetsListEa() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/MCA/BillingAccountBudgetsList-MCA-CategoryTypeFilter.json
+// Generated from example definition: 2026-06-01/Budgets/List/MCA/BillingAccountBudgetsList-MCA-CategoryTypeFilter.json
 func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListMcaCategoryTypeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1569,7 +1569,7 @@ func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListMcaCategoryTypeF
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/MCA/BillingAccountBudgetsList-MCA.json
+// Generated from example definition: 2026-06-01/Budgets/List/MCA/BillingAccountBudgetsList-MCA.json
 func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1691,7 +1691,7 @@ func ExampleBudgetsClient_NewListPager_billingAccountBudgetsListMca() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/MCA/BillingProfileBudgetsList-CategoryTypeFilter.json
+// Generated from example definition: 2026-06-01/Budgets/List/MCA/BillingProfileBudgetsList-CategoryTypeFilter.json
 func ExampleBudgetsClient_NewListPager_billingProfileBudgetsListMcaCategoryTypeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1790,7 +1790,7 @@ func ExampleBudgetsClient_NewListPager_billingProfileBudgetsListMcaCategoryTypeF
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/MCA/BillingProfileBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/MCA/BillingProfileBudgetsList.json
 func ExampleBudgetsClient_NewListPager_billingProfileBudgetsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1950,7 +1950,7 @@ func ExampleBudgetsClient_NewListPager_billingProfileBudgetsListMca() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/MCA/CustomerBudgetsList-CategoryTypeFilter.json
+// Generated from example definition: 2026-06-01/Budgets/List/MCA/CustomerBudgetsList-CategoryTypeFilter.json
 func ExampleBudgetsClient_NewListPager_customerBudgetsListMcaCspCategoryTypeFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2049,7 +2049,7 @@ func ExampleBudgetsClient_NewListPager_customerBudgetsListMcaCspCategoryTypeFilt
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/MCA/CustomerBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/MCA/CustomerBudgetsList.json
 func ExampleBudgetsClient_NewListPager_customerBudgetsListMcaCsp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2209,7 +2209,7 @@ func ExampleBudgetsClient_NewListPager_customerBudgetsListMcaCsp() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/MCA/InvoiceSectionBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/MCA/InvoiceSectionBudgetsList.json
 func ExampleBudgetsClient_NewListPager_invoiceSectionBudgetsListMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2302,7 +2302,7 @@ func ExampleBudgetsClient_NewListPager_invoiceSectionBudgetsListMca() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/RBAC/ManagementGroupBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/RBAC/ManagementGroupBudgetsList.json
 func ExampleBudgetsClient_NewListPager_managementGroupBudgetsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2543,7 +2543,7 @@ func ExampleBudgetsClient_NewListPager_managementGroupBudgetsList() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/RBAC/ResourceGroupBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/RBAC/ResourceGroupBudgetsList.json
 func ExampleBudgetsClient_NewListPager_resourceGroupBudgetsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2712,7 +2712,7 @@ func ExampleBudgetsClient_NewListPager_resourceGroupBudgetsList() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/Budgets/List/RBAC/SubscriptionBudgetsList.json
+// Generated from example definition: 2026-06-01/Budgets/List/RBAC/SubscriptionBudgetsList.json
 func ExampleBudgetsClient_NewListPager_subscriptionBudgetsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

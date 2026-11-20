@@ -19,7 +19,7 @@ import (
 // ExecutionsClient contains the methods for the Executions group.
 // Don't use this type directly, use NewExecutionsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-05-01-preview
 type ExecutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -126,7 +126,7 @@ func (client *ExecutionsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -216,7 +216,7 @@ func (client *ExecutionsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -302,7 +302,7 @@ func (client *ExecutionsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -370,7 +370,7 @@ func (client *ExecutionsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -456,7 +456,7 @@ func (client *ExecutionsClient) listByWorkflowVersionCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/SchemaReferences_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaReferences_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSchemaReferencesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,9 +23,9 @@ func ExampleSchemaReferencesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSchemaReferencesClient().BeginCreateOrUpdate(ctx, "gt", "default", armworkloadorchestration.SchemaReference{
+	poller, err := clientFactory.NewSchemaReferencesClient().BeginCreateOrUpdate(ctx, "subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", "default", armworkloadorchestration.SchemaReference{
 		Properties: &armworkloadorchestration.SchemaReferenceProperties{
-			SchemaID: to.Ptr("vxgxfkfws"),
+			SchemaID: to.Ptr("fpztlfnz"),
 		},
 	}, nil)
 	if err != nil {
@@ -41,26 +41,26 @@ func ExampleSchemaReferencesClient_BeginCreateOrUpdate() {
 	// res = armworkloadorchestration.SchemaReferencesClientCreateOrUpdateResponse{
 	// 	SchemaReference: armworkloadorchestration.SchemaReference{
 	// 		Properties: &armworkloadorchestration.SchemaReferenceProperties{
-	// 			SchemaID: to.Ptr("vxgxfkfws"),
+	// 			SchemaID: to.Ptr("fpztlfnz"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("rpblituadyvurec"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("brijvbbrrzgtttybezvtrjzu"),
-	// 		Type: to.Ptr("jbdfmlyogaxxys"),
+	// 		ETag: to.Ptr("kwmsyzaoadbsepkby"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemaReferences/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemaReferences"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SchemaReferences_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaReferences_Delete_MaximumSet_Gen.json
 func ExampleSchemaReferencesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleSchemaReferencesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSchemaReferencesClient().BeginDelete(ctx, "gt", "default", nil)
+	poller, err := clientFactory.NewSchemaReferencesClient().BeginDelete(ctx, "subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -81,7 +81,7 @@ func ExampleSchemaReferencesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SchemaReferences_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaReferences_Get_MaximumSet_Gen.json
 func ExampleSchemaReferencesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleSchemaReferencesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSchemaReferencesClient().Get(ctx, "gt", "default", nil)
+	res, err := clientFactory.NewSchemaReferencesClient().Get(ctx, "subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", "default", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -102,27 +102,27 @@ func ExampleSchemaReferencesClient_Get() {
 	// res = armworkloadorchestration.SchemaReferencesClientGetResponse{
 	// 	SchemaReference: armworkloadorchestration.SchemaReference{
 	// 		Properties: &armworkloadorchestration.SchemaReferenceProperties{
-	// 			SchemaID: to.Ptr("vxgxfkfws"),
+	// 			SchemaID: to.Ptr("fpztlfnz"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("rpblituadyvurec"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("brijvbbrrzgtttybezvtrjzu"),
-	// 		Type: to.Ptr("jbdfmlyogaxxys"),
+	// 		ETag: to.Ptr("kwmsyzaoadbsepkby"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemaReferences/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemaReferences"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/SchemaReferences_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleSchemaReferencesClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-05-01-preview/SchemaReferences_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleSchemaReferencesClient_NewListByResourceGroupPager_schemaReferencesListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -132,7 +132,7 @@ func ExampleSchemaReferencesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSchemaReferencesClient().NewListByResourceGroupPager("gt", nil)
+	pager := clientFactory.NewSchemaReferencesClient().NewListByResourceGroupPager("subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -148,20 +148,20 @@ func ExampleSchemaReferencesClient_NewListByResourceGroupPager() {
 		// 		Value: []*armworkloadorchestration.SchemaReference{
 		// 			{
 		// 				Properties: &armworkloadorchestration.SchemaReferenceProperties{
-		// 					SchemaID: to.Ptr("vxgxfkfws"),
+		// 					SchemaID: to.Ptr("fpztlfnz"),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
-		// 				ETag: to.Ptr("rpblituadyvurec"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("brijvbbrrzgtttybezvtrjzu"),
-		// 				Type: to.Ptr("jbdfmlyogaxxys"),
+		// 				ETag: to.Ptr("kwmsyzaoadbsepkby"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemaReferences/testSchemaReference"),
+		// 				Name: to.Ptr("testSchemaReference"),
+		// 				Type: to.Ptr("Microsoft.Edge/schemaReferences"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -171,7 +171,43 @@ func ExampleSchemaReferencesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/SchemaReferences_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/SchemaReferences_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleSchemaReferencesClient_NewListByResourceGroupPager_schemaReferencesListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSchemaReferencesClient().NewListByResourceGroupPager("subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.SchemaReferencesClientListByResourceGroupResponse{
+		// 	SchemaReferenceListResult: armworkloadorchestration.SchemaReferenceListResult{
+		// 		Value: []*armworkloadorchestration.SchemaReference{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemaReferences/testSchemaReference"),
+		// 				Name: to.Ptr("testSchemaReference"),
+		// 				Type: to.Ptr("Microsoft.Edge/schemaReferences"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/SchemaReferences_Update_MaximumSet_Gen.json
 func ExampleSchemaReferencesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,9 +218,9 @@ func ExampleSchemaReferencesClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSchemaReferencesClient().Update(ctx, "gt", "default", armworkloadorchestration.SchemaReference{
+	res, err := clientFactory.NewSchemaReferencesClient().Update(ctx, "subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget", "default", armworkloadorchestration.SchemaReference{
 		Properties: &armworkloadorchestration.SchemaReferenceProperties{
-			SchemaID: to.Ptr("kxrcdqabzlzgd"),
+			SchemaID: to.Ptr("uqhgbbzeyuwjdqnvfmntj"),
 		},
 	}, nil)
 	if err != nil {
@@ -196,20 +232,20 @@ func ExampleSchemaReferencesClient_Update() {
 	// res = armworkloadorchestration.SchemaReferencesClientUpdateResponse{
 	// 	SchemaReference: armworkloadorchestration.SchemaReference{
 	// 		Properties: &armworkloadorchestration.SchemaReferenceProperties{
-	// 			SchemaID: to.Ptr("vxgxfkfws"),
+	// 			SchemaID: to.Ptr("fpztlfnz"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("rpblituadyvurec"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("brijvbbrrzgtttybezvtrjzu"),
-	// 		Type: to.Ptr("jbdfmlyogaxxys"),
+	// 		ETag: to.Ptr("kwmsyzaoadbsepkby"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemaReferences/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemaReferences"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

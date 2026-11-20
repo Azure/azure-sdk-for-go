@@ -274,7 +274,9 @@ func ExampleClient_CreateDatabase() {
 
 	databaseResponse, err := client.CreateDatabase(context.TODO(), azcosmos.DatabaseProperties{
 		ID: "catalog",
-	}, nil)
+	}, &azcosmos.CreateDatabaseOptions{
+		Throughput: &azcosmos.ThroughputProperties{ManualThroughput: to.Ptr(uint64(400))},
+	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -300,10 +302,44 @@ func ExampleClient_CreateDatabase() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if _, err := container.Read(context.TODO(), nil); err != nil {
+	read, err := container.Read(context.TODO(), nil)
+	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
+	read.ContainerProperties.DefaultTimeToLive = to.Ptr(int32(3600))
+	if _, err := container.Replace(context.TODO(), read.ContainerProperties, &azcosmos.ReplaceContainerOptions{
+		IfMatchETag: read.ContainerProperties.ETag,
+	}); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	pager := database.NewQueryContainersPager(azcosmos.NewQuery("SELECT * FROM c"), nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		log.Printf("discovered %d containers", len(page.Items))
+	}
+	if err := pager.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	poller, err := database.BeginReplaceThroughput(context.TODO(), azcosmos.ThroughputProperties{
+		ManualThroughput: to.Ptr(uint64(600)),
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	changed, err := poller.PollUntilDone(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("updated shared throughput to %d RU/s", *changed.ThroughputProperties.ManualThroughput)
 	if _, err := container.Delete(context.TODO(), nil); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)

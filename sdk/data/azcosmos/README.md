@@ -205,8 +205,8 @@ driver's full internal circuit-breaker state.
 
 ### Managing databases and containers
 
-Use `Client.CreateDatabase`, `DatabaseClient.CreateContainer`, and the resource clients' `Read` and
-`Delete` methods to manage databases and containers. Creates and deletes require a client created
+Use `Client.CreateDatabase`, `DatabaseClient.CreateContainer`, the resource clients' `Read` and
+`Delete` methods, and `ContainerClient.Replace` to manage databases and containers. Mutations require a client created
 with `NewClientWithKey`. Metadata reads also support Microsoft Entra ID through `NewClient` when
 the identity has the `Microsoft.DocumentDB/databaseAccounts/readMetadata` data action.
 
@@ -214,13 +214,61 @@ Container creates require at least one partition key path. An omitted partition 
 as `Hash` for one path and `MultiHash` for multiple paths. An omitted partition key version creates
 the container with version 2. The definition is immutable after creation.
 
-Database and container creates always request the response body so the returned properties include
+Database and container creates and container replacements always request the response body so the returned properties include
 the service-assigned resource ID, self-link, ETag, and last-modified time. For these operations,
 `OperationOptions.EnableContentResponseOnWrite` is ignored. Deleting a database also deletes every
 container and item in it; deleting a container deletes every item in it.
 
-Provisioned-throughput creation and throughput read/replace APIs are not included yet. Configure
-throughput separately until the follow-up throughput surface lands.
+Use `Client.NewQueryDatabasesPager` and `DatabaseClient.NewQueryContainersPager` with
+`NewQuery("SELECT * FROM c")` for discovery, or add SQL predicates and parameters.
+Call `NextPage` while `More` is true; empty pages do not imply exhaustion. Always close a pager
+when stopping early. `ContinuationToken(ctx)` returns the last delivered page's opaque server
+continuation; resume with the same query and `ManagementQueryOptions.ContinuationToken`.
+An empty continuation means the last delivered service page had no next-page token.
+Management properties use standard JSON decoding, not application-item serialization hooks.
+
+`ContainerProperties` includes partitioning, indexing (including spatial, composite, vector and
+full-text indexes), unique keys, conflict resolution, vector embeddings, full-text analysis,
+change-feed retention, item TTL and analytical-store TTL. Read the current properties before
+replacement to retain immutable and unknown service configuration. `ReplaceContainerOptions.IfMatchETag`
+can protect a read-modify-replace operation. There is no database replacement or implicit
+create-if-not-exists operation.
+
+Set `CreateDatabaseOptions.Throughput` for database-shared throughput or
+`CreateContainerOptions.Throughput` for dedicated throughput. Select exactly one of
+`ThroughputProperties.ManualThroughput` (RU/s) and `ThroughputProperties.Autoscale`
+(maximum RU/s and optional auto-upgrade policy). Service constraints, account capabilities and
+immutable-property restrictions are validated by the native driver and service.
+
+With published native v0.3.0, typed creation throughput works when no inherited custom headers
+would be replaced, or when request `Operation.CustomHeaders` explicitly replaces them.
+Otherwise the call returns a prerequisite error before submission rather than silently dropping
+runtime/client headers. A nil custom-header map inherits; an explicitly empty map clears
+inheritance. The `azcosmos_native_preview` path uses additive typed native throughput settings,
+preserving inherited headers and complete autoscale policies without resolving header maps in Go.
+It requires the matching unpublished header/library, not the published v0.3.0 artifact.
+Conditional replacements use native precondition fields and preserve header inheritance in both builds.
+The preview driver rejects an inherited header selecting the opposite throughput mode before dispatch.
+
+Both resource clients provide `ReadThroughput` and `BeginReplaceThroughput`. Offer operations,
+including reads, require account-key authentication; Microsoft Entra ID data-plane RBAC cannot
+authorize them. A successful read with nil `ThroughputProperties` means this resource has no
+offer, as with a shared-throughput container or serverless resource. A container operation never
+falls back to its database's shared offer; replacing a missing offer returns an error.
+
+`BeginReplaceThroughput` returns a `ThroughputPoller`. Submission is not completion:
+HTTP 202 or `x-ms-offer-replace-pending: true` remains pending until subsequent offer reads
+report a terminal response. Use `Poll`/`Done`/`Result`, or `PollUntilDone` (five-second default
+interval). Polling errors are observable; context cancellation permits later polling and does
+not cancel the service-side change. Charges include resource lookup, offer discovery, replacement
+and observed polls. Native routing, transport and retry policy remain authoritative.
+
+The management surface matches the Rust SDK's `control_plane` APIs and also provides typed
+container reads. The pinned v0.3.0 ABI supports the management operation kinds, with the
+typed-throughput/header-inheritance limitation described above. Emulator tests cover lifecycle,
+replacement, pagination and shared/dedicated manual throughput. Deterministic native HTTP tests
+cover autoscale headers, pending polling, errors and RU accounting. Real autoscale/live completion
+depends on account capabilities; the existing Entra-only live fixtures cannot authorize offers.
 
 ### SDK identity
 

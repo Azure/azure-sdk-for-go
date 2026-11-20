@@ -8,18 +8,26 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // Management operation kinds, mirroring the driver's CosmosOperationKind discriminants used for
 // database and container lifecycle operations. See cgo_native.go for the static asserts that pin
 // these against the vendored header.
 const (
-	operationKindCreateDatabase  operationKind = 1
-	operationKindReadDatabase    operationKind = 7
-	operationKindDeleteDatabase  operationKind = 8
-	operationKindCreateContainer operationKind = 9
-	operationKindReadContainer   operationKind = 12
-	operationKindDeleteContainer operationKind = 14
+	operationKindCreateDatabase   operationKind = 1
+	operationKindQueryDatabases   operationKind = 3
+	operationKindQueryOffers      operationKind = 4
+	operationKindReadOffer        operationKind = 5
+	operationKindReplaceOffer     operationKind = 6
+	operationKindReadDatabase     operationKind = 7
+	operationKindDeleteDatabase   operationKind = 8
+	operationKindCreateContainer  operationKind = 9
+	operationKindQueryContainers  operationKind = 11
+	operationKindReadContainer    operationKind = 12
+	operationKindReplaceContainer operationKind = 13
+	operationKindDeleteContainer  operationKind = 14
 )
 
 // CreateDatabaseOptions configures [Client.CreateDatabase]. A nil *CreateDatabaseOptions selects
@@ -28,6 +36,8 @@ type CreateDatabaseOptions struct {
 	// Operation holds the settings every operation accepts. CreateDatabase always requests the
 	// response body, so Operation.EnableContentResponseOnWrite is ignored.
 	Operation OperationOptions
+	// Throughput provisions shared database throughput. Nil uses the service default.
+	Throughput *ThroughputProperties
 }
 
 // ReadDatabaseOptions configures [DatabaseClient.Read]. A nil *ReadDatabaseOptions selects the
@@ -50,6 +60,8 @@ type CreateContainerOptions struct {
 	// Operation holds the settings every operation accepts. CreateContainer always requests the
 	// response body, so Operation.EnableContentResponseOnWrite is ignored.
 	Operation OperationOptions
+	// Throughput provisions dedicated container throughput. Nil uses the service default.
+	Throughput *ThroughputProperties
 }
 
 // ReadContainerOptions configures [ContainerClient.Read]. A nil *ReadContainerOptions
@@ -72,9 +84,8 @@ type DeleteContainerOptions struct {
 func errKeyCredentialRequired() error {
 	return &Error{
 		Code: CodeClientError,
-		Message: "azcosmos: database and container management mutations require a client " +
-			"created with NewClientWithKey; Microsoft Entra ID authentication (NewClient) is not " +
-			"supported for create or delete operations",
+		Message: "azcosmos: database/container management mutations and throughput offer operations require " +
+			"NewClientWithKey; Microsoft Entra ID authentication (NewClient) only supports metadata reads and queries",
 	}
 }
 
@@ -83,6 +94,19 @@ func errKeyCredentialRequired() error {
 func (c *Client) createDatabase(ctx context.Context, properties DatabaseProperties, options *CreateDatabaseOptions) (DatabaseResponse, error) {
 	if properties.ID == "" {
 		return DatabaseResponse{}, errors.New("azcosmos: DatabaseProperties.ID must not be empty")
+	}
+	operation := OperationOptions{}
+	var throughput *ThroughputProperties
+	if options != nil {
+		var err error
+		operation, err = managementCreateOptions(options.Operation, options.Throughput)
+		if err != nil {
+			return DatabaseResponse{}, err
+		}
+		throughput = options.Throughput
+	}
+	if err := validateManagementContext(ctx, operation); err != nil {
+		return DatabaseResponse{}, err
 	}
 	if !c.usesKeyAuth {
 		return DatabaseResponse{}, errKeyCredentialRequired()
@@ -101,20 +125,18 @@ func (c *Client) createDatabase(ctx context.Context, properties DatabaseProperti
 		return DatabaseResponse{}, err
 	}
 
-	operation := OperationOptions{}
-	if options != nil {
-		operation = options.Operation
-	}
 	// A database create has no purpose without its server-assigned properties (resource ID,
 	// self-link, etag) coming back, so this always asks for the response body regardless of
 	// any write-content preference the caller configured for item operations.
 	forceContentResponseOnWrite(&operation)
 
-	response, respBody, err := c.executeManagement(ctx, operationKindCreateDatabase, "", "", body, operation)
+	result, err := c.executeManagementRequest(ctx, managementRequest{
+		kind: operationKindCreateDatabase, body: body, operation: operation, throughput: throughput,
+	})
 	if err != nil {
 		return DatabaseResponse{}, err
 	}
-	return newDatabaseResponse(response, respBody)
+	return newDatabaseResponse(result.response, result.body)
 }
 
 // forceContentResponseOnWrite overrides the operation's write-content preference to always
@@ -130,7 +152,7 @@ type databaseCreateBody struct {
 }
 
 func newDatabaseResponse(response ItemResponse, body []byte) (DatabaseResponse, error) {
-	result := DatabaseResponse{Response: response.Response}
+	result := DatabaseResponse{Response: response.Response, ETag: response.ETag, SessionToken: response.SessionToken}
 	if len(body) == 0 {
 		return result, nil
 	}
@@ -143,7 +165,7 @@ func newDatabaseResponse(response ItemResponse, body []byte) (DatabaseResponse, 
 }
 
 func newContainerResponse(response ItemResponse, body []byte) (ContainerResponse, error) {
-	result := ContainerResponse{Response: response.Response}
+	result := ContainerResponse{Response: response.Response, ETag: response.ETag, SessionToken: response.SessionToken}
 	if len(body) == 0 {
 		return result, nil
 	}
@@ -175,10 +197,12 @@ func newManagementSerializationError(response ItemResponse, body []byte, resourc
 
 // read implements [DatabaseClient.Read].
 func (d *DatabaseClient) read(ctx context.Context, options *ReadDatabaseOptions) (DatabaseResponse, error) {
+	operation := OperationOptions{}
 	if options != nil {
-		if err := options.Operation.ConsistencyStrategy.validate(); err != nil {
-			return DatabaseResponse{}, err
-		}
+		operation = options.Operation
+	}
+	if err := validateManagementContext(ctx, operation); err != nil {
+		return DatabaseResponse{}, err
 	}
 	release, err := d.client.acquire()
 	if err != nil {
@@ -187,11 +211,6 @@ func (d *DatabaseClient) read(ctx context.Context, options *ReadDatabaseOptions)
 	defer release()
 	if err := ctx.Err(); err != nil {
 		return DatabaseResponse{}, err
-	}
-
-	operation := OperationOptions{}
-	if options != nil {
-		operation = options.Operation
 	}
 
 	response, body, err := d.client.executeManagement(ctx, operationKindReadDatabase, d.id, "", nil, operation)
@@ -203,6 +222,13 @@ func (d *DatabaseClient) read(ctx context.Context, options *ReadDatabaseOptions)
 
 // delete implements [DatabaseClient.Delete].
 func (d *DatabaseClient) delete(ctx context.Context, options *DeleteDatabaseOptions) (DatabaseResponse, error) {
+	operation := OperationOptions{}
+	if options != nil {
+		operation = options.Operation
+	}
+	if err := validateManagementContext(ctx, operation); err != nil {
+		return DatabaseResponse{}, err
+	}
 	if !d.client.usesKeyAuth {
 		return DatabaseResponse{}, errKeyCredentialRequired()
 	}
@@ -213,11 +239,6 @@ func (d *DatabaseClient) delete(ctx context.Context, options *DeleteDatabaseOpti
 	defer release()
 	if err := ctx.Err(); err != nil {
 		return DatabaseResponse{}, err
-	}
-
-	operation := OperationOptions{}
-	if options != nil {
-		operation = options.Operation
 	}
 
 	response, body, err := d.client.executeManagement(ctx, operationKindDeleteDatabase, d.id, "", nil, operation)
@@ -234,6 +255,19 @@ func (d *DatabaseClient) createContainer(ctx context.Context, properties Contain
 	}
 	if len(properties.PartitionKeyDefinition.Paths) == 0 {
 		return ContainerResponse{}, errors.New("azcosmos: ContainerProperties.PartitionKeyDefinition.Paths must not be empty")
+	}
+	operation := OperationOptions{}
+	var throughput *ThroughputProperties
+	if options != nil {
+		var err error
+		operation, err = managementCreateOptions(options.Operation, options.Throughput)
+		if err != nil {
+			return ContainerResponse{}, err
+		}
+		throughput = options.Throughput
+	}
+	if err := validateManagementContext(ctx, operation); err != nil {
+		return ContainerResponse{}, err
 	}
 	if !d.client.usesKeyAuth {
 		return ContainerResponse{}, errKeyCredentialRequired()
@@ -252,27 +286,28 @@ func (d *DatabaseClient) createContainer(ctx context.Context, properties Contain
 		return ContainerResponse{}, err
 	}
 
-	operation := OperationOptions{}
-	if options != nil {
-		operation = options.Operation
-	}
 	// Same rationale as [Client.createDatabase]: the caller always needs the server-assigned
 	// properties back from a container create.
 	forceContentResponseOnWrite(&operation)
 
-	response, respBody, err := d.client.executeManagement(ctx, operationKindCreateContainer, d.id, properties.ID, body, operation)
+	result, err := d.client.executeManagementRequest(ctx, managementRequest{
+		kind: operationKindCreateContainer, databaseID: d.id, containerID: properties.ID,
+		body: body, operation: operation, throughput: throughput,
+	})
 	if err != nil {
 		return ContainerResponse{}, err
 	}
-	return newContainerResponse(response, respBody)
+	return newContainerResponse(result.response, result.body)
 }
 
 // readContainer implements [ContainerClient.Read].
 func (c *ContainerClient) readContainer(ctx context.Context, options *ReadContainerOptions) (ContainerResponse, error) {
+	operation := OperationOptions{}
 	if options != nil {
-		if err := options.Operation.ConsistencyStrategy.validate(); err != nil {
-			return ContainerResponse{}, err
-		}
+		operation = options.Operation
+	}
+	if err := validateManagementContext(ctx, operation); err != nil {
+		return ContainerResponse{}, err
 	}
 	release, err := c.database.client.acquire()
 	if err != nil {
@@ -281,11 +316,6 @@ func (c *ContainerClient) readContainer(ctx context.Context, options *ReadContai
 	defer release()
 	if err := ctx.Err(); err != nil {
 		return ContainerResponse{}, err
-	}
-
-	operation := OperationOptions{}
-	if options != nil {
-		operation = options.Operation
 	}
 
 	response, body, err := c.database.client.executeManagement(ctx, operationKindReadContainer, c.database.id, c.id, nil, operation)
@@ -297,6 +327,13 @@ func (c *ContainerClient) readContainer(ctx context.Context, options *ReadContai
 
 // deleteContainer implements [ContainerClient.Delete].
 func (c *ContainerClient) deleteContainer(ctx context.Context, options *DeleteContainerOptions) (ContainerResponse, error) {
+	operation := OperationOptions{}
+	if options != nil {
+		operation = options.Operation
+	}
+	if err := validateManagementContext(ctx, operation); err != nil {
+		return ContainerResponse{}, err
+	}
 	if !c.database.client.usesKeyAuth {
 		return ContainerResponse{}, errKeyCredentialRequired()
 	}
@@ -309,14 +346,75 @@ func (c *ContainerClient) deleteContainer(ctx context.Context, options *DeleteCo
 		return ContainerResponse{}, err
 	}
 
-	operation := OperationOptions{}
-	if options != nil {
-		operation = options.Operation
-	}
-
 	response, body, err := c.database.client.executeManagement(ctx, operationKindDeleteContainer, c.database.id, c.id, nil, operation)
 	if err != nil {
 		return ContainerResponse{}, err
 	}
 	return newContainerResponse(response, body)
+}
+
+// ReplaceContainerOptions configures [ContainerClient.Replace].
+type ReplaceContainerOptions struct {
+	// Operation holds shared operation settings.
+	Operation OperationOptions
+	// IfMatchETag makes replacement conditional on the current ETag. Nil is unconditional.
+	IfMatchETag *azcore.ETag
+}
+
+// Replace replaces a container's mutable properties. ID must match this client.
+// Read the current properties first to preserve immutable and unmodeled properties.
+// Management mutations require account-key authentication.
+func (c *ContainerClient) Replace(ctx context.Context, properties ContainerProperties, options *ReplaceContainerOptions) (ContainerResponse, error) {
+	if properties.ID == "" || properties.ID != c.id {
+		return ContainerResponse{}, errors.New("azcosmos: ContainerProperties.ID must match the container client")
+	}
+	if len(properties.PartitionKeyDefinition.Paths) == 0 {
+		return ContainerResponse{}, errors.New("azcosmos: ContainerProperties.PartitionKeyDefinition.Paths must not be empty")
+	}
+	operation := OperationOptions{}
+	var precondition Precondition
+	if options != nil {
+		operation = options.Operation.clone()
+		if options.IfMatchETag != nil {
+			var err error
+			precondition, err = IfMatch(*options.IfMatchETag)
+			if err != nil {
+				return ContainerResponse{}, err
+			}
+		}
+	}
+	if err := validateManagementContext(ctx, operation); err != nil {
+		return ContainerResponse{}, err
+	}
+	if !c.database.client.usesKeyAuth {
+		return ContainerResponse{}, errKeyCredentialRequired()
+	}
+	release, err := c.database.client.acquire()
+	if err != nil {
+		return ContainerResponse{}, err
+	}
+	defer release()
+	if err := ctx.Err(); err != nil {
+		return ContainerResponse{}, err
+	}
+	body, err := json.Marshal(properties)
+	if err != nil {
+		return ContainerResponse{}, err
+	}
+	forceContentResponseOnWrite(&operation)
+	result, err := c.database.client.executeManagementRequest(ctx, managementRequest{
+		kind: operationKindReplaceContainer, databaseID: c.database.id, containerID: c.id,
+		body: body, operation: operation, precondition: precondition,
+	})
+	if err != nil {
+		return ContainerResponse{}, err
+	}
+	return newContainerResponse(result.response, result.body)
+}
+
+func validateManagementContext(ctx context.Context, operation OperationOptions) error {
+	if ctx == nil {
+		return errors.New("azcosmos: context must not be nil")
+	}
+	return operation.validate()
 }

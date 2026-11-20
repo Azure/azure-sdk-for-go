@@ -128,7 +128,7 @@ extends:
         - name: EmulatorBinDir
           value: $(Agent.TempDirectory)/cosmos-emulator-target/release
         - name: EmulatorSourceRevision
-          value: 13b9707cf9a73d274c6e2309321d4b0e92b52375
+          value: 408c4eb145b189cb14771ed7ae1f52626e5873ef
         - name: EmulatorRustVersion
           value: '1.95.0'
         - name: EmulatorCargoHome
@@ -232,6 +232,54 @@ extends:
             displayName: 'Start the in-memory Cosmos emulator'
 
           - script: |
+              set -euo pipefail
+              config='sdk/data/azcosmos/internal/testdata/emulator-smoke-config.json'
+              ready="$(Agent.TempDirectory)/emulator-smoke-ready.json"
+              log="$(Agent.TempDirectory)/emulator-smoke.log"
+              nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$ready" 2> "$log" &
+
+              for _ in $(seq 1 60); do
+                if grep -q '"event":"ready"' "$ready" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" "$ready")
+                  management_endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['managementEndpoint'])" "$ready")
+                  echo "single-region E2E emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorSingleRegionEndpoint]$endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorSingleRegionManagementEndpoint]$management_endpoint"
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo '##[error] The single-region E2E emulator did not become ready.'
+              tail -50 "$log" || true
+              exit 1
+            displayName: 'Start the single-region E2E Cosmos emulator'
+
+          - script: |
+              set -euo pipefail
+              config='sdk/data/azcosmos/internal/testdata/emulator-configuration-resilience-config.json'
+              ready="$(Agent.TempDirectory)/emulator-configuration-resilience-ready.json"
+              log="$(Agent.TempDirectory)/emulator-configuration-resilience.log"
+              nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$ready" 2> "$log" &
+
+              for _ in $(seq 1 60); do
+                if grep -q '"event":"ready"' "$ready" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" "$ready")
+                  management_endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['managementEndpoint'])" "$ready")
+                  echo "configurationResilience emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorConfigurationResilienceEndpoint]$endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorConfigurationResilienceManagementEndpoint]$management_endpoint"
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo '##[error] The configurationResilience emulator did not become ready.'
+              tail -50 "$log" || true
+              exit 1
+            displayName: 'Start the configurationResilience Cosmos emulator'
+
+          - script: |
               # cSpell:ignore ppaf PPAF
               set -euo pipefail
               config='sdk/data/azcosmos/internal/testdata/emulator-ppaf-config.json'
@@ -271,6 +319,10 @@ extends:
                 EMULATOR: 'true'
                 AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
                 AZCOSMOS_MANAGEMENT_ENDPOINT: $(EmulatorManagementEndpoint)
+                AZCOSMOS_E2E_SINGLE_REGION_ENDPOINT: $(EmulatorSingleRegionEndpoint)
+                AZCOSMOS_E2E_SINGLE_REGION_MANAGEMENT_ENDPOINT: $(EmulatorSingleRegionManagementEndpoint)
+                AZCOSMOS_CONFIGURATION_RESILIENCE_ENDPOINT: $(EmulatorConfigurationResilienceEndpoint)
+                AZCOSMOS_CONFIGURATION_RESILIENCE_MANAGEMENT_ENDPOINT: $(EmulatorConfigurationResilienceManagementEndpoint)
                 AZCOSMOS_PPAF_ENDPOINT: $(EmulatorPPAFEndpoint)
                 CGO_ENABLED: '1'
 

@@ -9,11 +9,11 @@ package e2e
 // issue and #27690/#27655 for related follow-up work this map defers to.
 func buildImplementations() []Implementation {
 	const (
-		noManagementCapabilitiesEndpoint = "requires the hosted emulator's management API to expose a versioned capability document (a GET /capabilities-equivalent endpoint); confirmed live against the pinned emulator (404) and against the emulator source's own management.rs route table (no such route), so this is an emulator-revision gap, not a Go SDK gap - azcosmos/v2's new database/container management API (#27700) is unrelated to this scenario."
+		noManagementCapabilitiesEndpoint = "the pinned hosted emulator now exposes a versioned GET /capabilities document, but Go has not yet ported the scenario's capability-document assertions; this remains a scenario-implementation gap, not a missing emulator endpoint."
 		noChangeFeedAPI                  = "change feed is not yet implemented in azcosmos/v2; tracked by #27690."
 		noBatchAPI                       = "transactional batch is not yet implemented in azcosmos/v2; tracked by #27690."
-		noFaultInjection                 = "requires the hosted emulator's deterministic fault-injection management API. The currently pinned EmulatorSourceRevision (a05f024d, 2026-09-02) predates the e2e_tests catalog (2026-09-11) and has no such API; bumping the pin is a separate decision (see catalog/README.md)."
-		noTopologyControl                = "requires the hosted emulator's region/partition topology-transition management API, which the currently pinned emulator revision does not expose (same gap as resilience.*). Dynamic topology is also explicitly out of this issue's initial-implementation scope."
+		noFaultInjection                 = "requires deterministic hosted-emulator fault-injection controls; the pinned emulator exposes topology management actions but no fault-injection capability or endpoint."
+		noTopologyControl                = "the pinned emulator exposes region/partition topology controls, but Go has no topology-control client and this implementation pass does not port topology scenarios."
 		deferredScope                    = "in scope for this scenario catalog but deferred past this implementation pass for time; no missing Go capability is known."
 	)
 
@@ -53,7 +53,7 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "changefeed.all-versions-start-validation", Status: StatusBlocked, Reason: noChangeFeedAPI},
 		{ScenarioID: "diagnostics.handlers-telemetry", Status: StatusBlocked, Reason: "requires confirming azcosmos/v2 exposes diagnostics-handler/OpenTelemetry hooks equivalent to Rust's; not yet verified to exist for v2's native-driver diagnostics surface."},
 		{ScenarioID: "query.feed-ranges", Status: StatusBlocked, Reason: "azcosmos/v2's ContainerClient has no public feed-range API (no equivalent of Rust's read_feed_ranges/feed_range_from_partition_key); only NewQueryItemsPager's partition-key/full-container scopes exist."},
-		{ScenarioID: "consistency.response-token-capture", Status: StatusBlocked, Reason: "Rust's scenario pauses West US replication and routes with multi-region PreferredRegions to force an Eventual-then-Session switch; the pinned emulator is single-region with no replication-pause management API, so this cannot be arranged honestly. " + noFaultInjection},
+		{ScenarioID: "consistency.response-token-capture", Status: StatusBlocked, Reason: "Rust's scenario pauses West US replication and routes with multi-region PreferredRegions to force an Eventual-then-Session switch. The pinned emulator and fixture can provide that account profile, but Go does not yet drive the emulator's replication controls for the scenario."},
 
 		// --- Blocked: requires hosted-emulator capability beyond the currently pinned revision ---
 		{ScenarioID: "resilience.deadline", Status: StatusBlocked, Reason: noFaultInjection},

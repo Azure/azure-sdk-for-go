@@ -12,7 +12,7 @@ This is the v2 major version of the module and it is **not usable yet**. The v2 
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and creating, reading, replacing, upserting,
 deleting, and patching single items, database and container lifecycle operations, transactional
-batches with complete hierarchical partition keys, and paged queries.
+batches with complete hierarchical partition keys, ReadMany, and retained query and change-feed paging.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
@@ -205,8 +205,8 @@ driver's full internal circuit-breaker state.
 
 ### Managing databases and containers
 
-Use `Client.CreateDatabase`, `DatabaseClient.CreateContainer`, and the resource clients' `Read` and
-`Delete` methods to manage databases and containers. Creates and deletes require a client created
+Use `Client.CreateDatabase`, `DatabaseClient.CreateContainer`, the resource clients' `Read` and
+`Delete` methods, and `ContainerClient.Replace` to manage databases and containers. Mutations require a client created
 with `NewClientWithKey`. Metadata reads also support Microsoft Entra ID through `NewClient` when
 the identity has the `Microsoft.DocumentDB/databaseAccounts/readMetadata` data action.
 
@@ -214,13 +214,61 @@ Container creates require at least one partition key path. An omitted partition 
 as `Hash` for one path and `MultiHash` for multiple paths. An omitted partition key version creates
 the container with version 2. The definition is immutable after creation.
 
-Database and container creates always request the response body so the returned properties include
+Database and container creates and container replacements always request the response body so the returned properties include
 the service-assigned resource ID, self-link, ETag, and last-modified time. For these operations,
 `OperationOptions.EnableContentResponseOnWrite` is ignored. Deleting a database also deletes every
 container and item in it; deleting a container deletes every item in it.
 
-Provisioned-throughput creation and throughput read/replace APIs are not included yet. Configure
-throughput separately until the follow-up throughput surface lands.
+Use `Client.NewQueryDatabasesPager` and `DatabaseClient.NewQueryContainersPager` with
+`NewQuery("SELECT * FROM c")` for discovery, or add SQL predicates and parameters.
+Call `NextPage` while `More` is true; empty pages do not imply exhaustion. Always close a pager
+when stopping early. `ContinuationToken(ctx)` returns the last delivered page's opaque server
+continuation; resume with the same query and `ManagementQueryOptions.ContinuationToken`.
+An empty continuation means the last delivered service page had no next-page token.
+Management properties use standard JSON decoding, not application-item serialization hooks.
+
+`ContainerProperties` includes partitioning, indexing (including spatial, composite, vector and
+full-text indexes), unique keys, conflict resolution, vector embeddings, full-text analysis,
+change-feed retention, item TTL and analytical-store TTL. Read the current properties before
+replacement to retain immutable and unknown service configuration. `ReplaceContainerOptions.IfMatchETag`
+can protect a read-modify-replace operation. There is no database replacement or implicit
+create-if-not-exists operation.
+
+Set `CreateDatabaseOptions.Throughput` for database-shared throughput or
+`CreateContainerOptions.Throughput` for dedicated throughput. Select exactly one of
+`ThroughputProperties.ManualThroughput` (RU/s) and `ThroughputProperties.Autoscale`
+(maximum RU/s and optional auto-upgrade policy). Service constraints, account capabilities and
+immutable-property restrictions are validated by the native driver and service.
+
+With published native v0.3.0, typed creation throughput works when no inherited custom headers
+would be replaced, or when request `Operation.CustomHeaders` explicitly replaces them.
+Otherwise the call returns a prerequisite error before submission rather than silently dropping
+runtime/client headers. A nil custom-header map inherits; an explicitly empty map clears
+inheritance. The `azcosmos_native_preview` path uses additive typed native throughput settings,
+preserving inherited headers and complete autoscale policies without resolving header maps in Go.
+It requires the matching unpublished header/library, not the published v0.3.0 artifact.
+Conditional replacements use native precondition fields and preserve header inheritance in both builds.
+The preview driver rejects an inherited header selecting the opposite throughput mode before dispatch.
+
+Both resource clients provide `ReadThroughput` and `BeginReplaceThroughput`. Offer operations,
+including reads, require account-key authentication; Microsoft Entra ID data-plane RBAC cannot
+authorize them. A successful read with nil `ThroughputProperties` means this resource has no
+offer, as with a shared-throughput container or serverless resource. A container operation never
+falls back to its database's shared offer; replacing a missing offer returns an error.
+
+`BeginReplaceThroughput` returns a `ThroughputPoller`. Submission is not completion:
+HTTP 202 or `x-ms-offer-replace-pending: true` remains pending until subsequent offer reads
+report a terminal response. Use `Poll`/`Done`/`Result`, or `PollUntilDone` (five-second default
+interval). Polling errors are observable; context cancellation permits later polling and does
+not cancel the service-side change. Charges include resource lookup, offer discovery, replacement
+and observed polls. Native routing, transport and retry policy remain authoritative.
+
+The management surface matches the Rust SDK's `control_plane` APIs and also provides typed
+container reads. The pinned v0.3.0 ABI supports the management operation kinds, with the
+typed-throughput/header-inheritance limitation described above. Emulator tests cover lifecycle,
+replacement, pagination and shared/dedicated manual throughput. Deterministic native HTTP tests
+cover autoscale headers, pending polling, errors and RU accounting. Real autoscale/live completion
+depends on account capabilities; the existing Entra-only live fixtures cannot authorize offers.
 
 ### SDK identity
 
@@ -497,9 +545,103 @@ returning text JSON to Go. A nil `ExcludedRegions` slice inherits exclusions, wh
 empty slice explicitly clears them. The buffered-window and explicit server-decides gaps
 still require a native contract change.
 
+### Reading the change feed
+
+`ContainerClient.NewChangeFeedPager(scope, startFrom, options)` reads changes through the
+released Rust driver's retained cursor contract. Pass an explicit `FeedScope` and one of
+`NewChangeFeedStartFromBeginning()`, `NewChangeFeedStartFromNow()`, or
+`NewChangeFeedStartFromPointInTime(time)`. Construction performs no I/O and snapshots the
+inputs; `NextPage` reports argument and execution errors.
+
+Nil options and a zero `ChangeFeedOptions.Mode` select `ChangeFeedModeLatestVersion`.
+LatestVersion accepts beginning, now, and time starts. `ChangeFeedModeAllVersionsAndDeletes`
+requires a supported account and retention policy; fresh reads start from now. Beginning
+and time starts in that mode are passed through for the service to reject. The service uses
+second precision for time starts. Account enablement, retention, and mode/start restrictions
+remain driver or service errors rather than duplicated Go policy.
+
+Use a complete partition key or full-container scope. Hierarchical prefixes are forwarded to
+the native driver, but live testing of the draft change-feed dependency reproduced HTTP
+400/substatus 1001 for prefix scopes; do not assume that scripted fan-out certifies service support.
+`ChangeFeedOptions.Feed` supplies the page-size hint and initial
+fan-out limit with the same semantics as queries. Partition-scoped pagers perform the same
+additional container-metadata read and first-page charge accounting as query pagers.
+
+`ChangeFeedResponse.Items` contains independently owned raw JSON change envelopes. Optional
+`previous` images, metadata, unknown fields, and numeric precision are preserved; Go does not
+unwrap `current` or synthesize missing data. `Response` carries status, charge, activity ID,
+and diagnostics, and the change-feed response also carries the returned ETag and session token.
+The ETag is a service position, **not** a driver checkpoint.
+
+Empty and HTTP 304 pages are successful, pollable pages, not EOF. `More()` means that the
+pager is open, not that changes are immediately available. Callers choose polling cadence
+and when to stop. A full-container pager can return an idle page from one range while other
+ranges still have changes; one HTTP 304 must not be treated as container-wide catch-up.
+
+After a successful page, including an idle page, call `pager.ContinuationToken(ctx)` before
+Close. This snapshots delivered-to-Go progress without fetching another page. To resume,
+supply that opaque token through `ChangeFeedOptions.Feed.ContinuationToken` and use the same
+container, scope, and mode. An explicit valid start is still required, but saved token
+positions take precedence. Go does not parse or wrap tokens, recover their scope, or impose
+extra scope-equality checks; native compatibility errors are preserved. A checkpoint is not
+application acknowledgement and does not provide exactly-once delivery. Persist it according
+to the application's processing and replay policy.
+
+The draft dependency's earlier live run also reproduced historical loss when resuming an untouched
+range with a different `Now` start. The native owner reports the start-header fixes are included in
+v0.3.0, and current scripted tests pass, but live recertification is still required.
+
+Defer `pager.Close()` when stopping. Execution or admitted cancellation failures terminate
+the pager. As with queries, contexts bound the Go wait rather than cancel admitted native
+work, per-page timeouts retain the configured native duration, late completions are drained,
+and `Client.Close` waits for pending cleanup. Iteration and checkpoint calls must not be
+concurrent; Close synchronizes with active calls. Query and change-feed cursors share the
+existing client-owned reactor.
+
+### Feed ranges (unpublished native extension)
+
+Feed-range bindings are under development for [#28056](https://github.com/Azure/azure-sdk-for-go/issues/28056)
+and require the additive native contract in
+[Azure/azure-sdk-for-rust#5606](https://github.com/Azure/azure-sdk-for-rust/issues/5606).
+**The default build still pins published native v0.3.0 and cannot execute these APIs.**
+It returns an explicit prerequisite error instead of silently reading the full container.
+The `azcosmos_native_preview` build tag is only a local integration path and must be linked
+against the matching generated header and platform library. It is not a release-ready fallback.
+
+`ContainerClient.GetFeedRanges(ctx, options)` returns copied `FeedRange` values in native order.
+`ForceRefresh` is forwarded to the driver's routing-map cache; Go owns no topology cache.
+`NewFeedRange(minInclusive, maxExclusive)` validates explicit half-open EPK bounds through
+native code. `GetFeedRangeForPartitionKey` uses the container's partition definition and returns
+setup-read metadata. Bounds inspection, subset and overlap checks use native semantics.
+
+`FeedRange.String()` and `ParseFeedRange` use the driver's stable opaque representation.
+That format preserves bounds, **not logical partition-key identity**: all public range values,
+including those constructed from a key, are normalized to EPK scope. Equal bounds denote one EPK,
+not an empty interval. For logical-key routing use `NewFeedScopeForPartitionKey` with the original
+partition key instead. Go values own no native handles
+and remain valid after the discovery client is closed.
+
+Use `NewFeedScopeForFeedRange` with the existing query or change-feed pager. Save each range
+with its own continuation token, container, mode, and original start; do not substitute a
+physical partition ID or apply one worker's token to every range. Routing, checkpoint compatibility,
+split and merge recovery belong to the native planner. Unsupported sub-partition intervals must
+fail explicitly, never widen. The current native build rejects equal-bound EPK point scopes
+before data I/O (query 500/20302, change feed 503/20305); use logical-key scope for point partitions.
+Scripted checkpoint tests cover both same-client split recovery and fresh-client child-range
+resumption, but scripted and local native checks are not live split/merge evidence.
+The compiling `ExampleContainerClient_GetFeedRanges` assigns one change-feed reader per range.
+
+The Go change-feed implementation is locally integrated from draft
+[#27709](https://github.com/Azure/azure-sdk-for-go/pull/27709) at
+`3bf69ee023397e17950732f34f84b02959bb31b8`; that integration does not mean the dependency is merged.
+Before enabling the default path, publish matching macOS arm64 and Linux amd64 native modules,
+generated header and checksums with source provenance, then update both Go module pins,
+`nativeDriverVersion`, and compatibility checks together.
+
 ### Running the end-to-end tests
 
-The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, and `retry_native_test.go` run
+The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, `change_feed_emulator_test.go`,
+and `retry_native_test.go` run
 real operations against a service. They need a driver-backed build and the `EMULATOR` environment
 variable, and they skip otherwise.
 
@@ -531,6 +673,19 @@ The contract tests use a local HTTP proxy to inject known error and metric respo
 while the real native driver executes against the emulator. This validates the binding and
 native decoding, not live-service metric generation. Per-cursor test hooks control checkpoint
 delivery and cancellation races without relying on network timing.
+
+Change-feed unit and scripted HTTP contract tests run without an emulator. They cover native
+selectors, payload ownership, idle polling, checkpoint/resume (including untouched ranges),
+multi-range HPK-prefix fan-out, compatibility errors, and cursor cleanup against the pinned
+driver. Scripted responses are binding evidence, not certification of live change history,
+AllVersionsAndDeletes retention/pre-images, or splits.
+`TestEmulatorChangeFeed` adds complete-key/complete-HPK isolation and full-container binding
+checks under the existing `EMULATOR` configuration. It does not certify live-service prefix
+fan-out or historical fidelity. Run those separately against a configured endpoint:
+
+```sh
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run 'TestEmulatorChangeFeed' ./...
+```
 
 ## Getting Started
 

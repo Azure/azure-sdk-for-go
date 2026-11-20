@@ -20,10 +20,16 @@ func TestManagementOperationUsesRequiredScope(t *testing.T) {
 		hasContainer bool
 	}{
 		{name: "create database", kind: operationKindCreateDatabase, hasAccount: true},
+		{name: "query databases", kind: operationKindQueryDatabases, hasAccount: true},
+		{name: "query offers", kind: operationKindQueryOffers, hasAccount: true},
+		{name: "read offer", kind: operationKindReadOffer, hasAccount: true},
+		{name: "replace offer", kind: operationKindReplaceOffer, hasAccount: true},
 		{name: "read database", kind: operationKindReadDatabase, hasDatabase: true},
 		{name: "delete database", kind: operationKindDeleteDatabase, hasDatabase: true},
 		{name: "create container", kind: operationKindCreateContainer, hasDatabase: true},
+		{name: "query containers", kind: operationKindQueryContainers, hasDatabase: true},
 		{name: "read container", kind: operationKindReadContainer, hasContainer: true},
+		{name: "replace container", kind: operationKindReplaceContainer, hasContainer: true},
 		{name: "delete container", kind: operationKindDeleteContainer, hasContainer: true},
 	}
 

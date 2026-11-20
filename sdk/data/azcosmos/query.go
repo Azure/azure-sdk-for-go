@@ -59,19 +59,37 @@ func (q Query) body() ([]byte, error) {
 	}{q.text, q.parameters})
 }
 
-// FeedScope identifies the partitions targeted by a query. The zero value is invalid.
+// FeedScope identifies the partitions targeted by a query or change feed. The zero value is invalid.
 type FeedScope struct {
 	partitionKey  PartitionKey
 	fullContainer bool
+	feedRange     FeedRange
+	rangeScope    bool
+}
+
+// NewFeedScopeForFeedRange targets exactly the supplied effective-partition-key interval.
+// Unsupported sub-partition scopes return a native error, never a widened read.
+func NewFeedScopeForFeedRange(feedRange FeedRange) FeedScope {
+	return FeedScope{feedRange: feedRange, rangeScope: true}
+}
+
+func (s FeedScope) validate() error {
+	if s.rangeScope {
+		return s.feedRange.validate()
+	}
+	if !s.fullContainer {
+		return validateItemArguments(s.partitionKey)
+	}
+	return nil
 }
 
 // NewFeedScopeForPartitionKey targets one logical partition or a hierarchical key prefix.
-// A prefix includes every logical partition sharing the supplied leading components.
+// A prefix includes all logical partitions sharing the supplied leading components.
 func NewFeedScopeForPartitionKey(partitionKey PartitionKey) FeedScope {
 	return FeedScope{partitionKey: partitionKey}
 }
 
-// NewFeedScopeForFullContainer targets every partition. Broad queries can consume substantial RUs.
+// NewFeedScopeForFullContainer targets every partition. Broad feeds can consume substantial RUs.
 func NewFeedScopeForFullContainer() FeedScope {
 	return FeedScope{fullContainer: true}
 }
@@ -92,8 +110,8 @@ type FeedOptions struct {
 	// Zero uses the driver default. Negative values are invalid.
 	PageSizeHint int32
 
-	// ContinuationToken resumes a previous query with the same query and scope.
-	// Empty starts a new query. Tokens are opaque and must not be modified.
+	// ContinuationToken resumes the same operation, scope and mode.
+	// Empty starts a fresh operation. Tokens are opaque and must not be modified.
 	ContinuationToken string
 
 	// MaxFanOut limits physical partitions at initial setup. Zero uses the native default (100).

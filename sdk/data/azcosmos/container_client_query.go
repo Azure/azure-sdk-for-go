@@ -229,20 +229,19 @@ type queryRequest struct {
 	body          []byte
 	partitionKey  PartitionKey
 	fullContainer bool
+	feedRange     FeedRange
 	options       QueryOptions
 }
 
 func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (queryRequest, error) {
-	req := queryRequest{partitionKey: scope.partitionKey, fullContainer: scope.fullContainer}
+	req := queryRequest{partitionKey: scope.partitionKey, fullContainer: scope.fullContainer, feedRange: scope.feedRange}
 	var err error
 	req.body, err = query.body()
 	if err != nil {
 		return req, err
 	}
-	if !scope.fullContainer {
-		if err := validateItemArguments(scope.partitionKey); err != nil {
-			return req, err
-		}
+	if err := scope.validate(); err != nil {
+		return req, err
 	}
 	if options != nil {
 		req.options = *options
@@ -284,20 +283,29 @@ func decodeQueryPage(body []byte, response Response, sessionToken SessionToken, 
 		}
 		return page, nil
 	}
+	items, err := decodeFeedItems(body)
+	if err != nil {
+		return queryPage{}, queryResponseError(response, sessionToken, err)
+	}
+	page.Items = items
+	return page, nil
+}
+
+func decodeFeedItems(body []byte) ([][]byte, error) {
 	var envelope struct {
 		Documents []json.RawMessage `json:"Documents"`
 	}
 	if err := json.Unmarshal(body, &envelope); err != nil {
-		return queryPage{}, queryResponseError(response, sessionToken, err)
+		return nil, err
 	}
 	if envelope.Documents == nil {
-		return queryPage{}, queryResponseError(response, sessionToken, errors.New("query response has no Documents array"))
+		return nil, errors.New("feed response has no Documents array")
 	}
-	page.Items = make([][]byte, len(envelope.Documents))
+	items := make([][]byte, len(envelope.Documents))
 	for i, item := range envelope.Documents {
-		page.Items[i] = item
+		items[i] = item
 	}
-	return page, nil
+	return items, nil
 }
 
 func queryResponseError(response Response, sessionToken SessionToken, cause error) *Error {
@@ -315,14 +323,18 @@ func queryResponseError(response Response, sessionToken SessionToken, cause erro
 }
 
 func validateQueryPartitionKey(body []byte, partitionKey PartitionKey) error {
-	count, err := partitionKeyPathCount(body, "query scope")
+	return validateFeedPartitionKey(body, partitionKey, "query scope")
+}
+
+func validateFeedPartitionKey(body []byte, partitionKey PartitionKey, operation string) error {
+	count, err := partitionKeyPathCount(body, operation)
 	if err != nil {
 		return err
 	}
 	if partitionKey.Len() == 0 || partitionKey.Len() > count {
 		return &Error{Code: CodeBadRequest, Message: fmt.Sprintf(
-			"query scope requires between 1 and %d partition key components; got %d",
-			count, partitionKey.Len())}
+			"%s requires between 1 and %d partition key components; got %d",
+			operation, count, partitionKey.Len())}
 	}
 	return nil
 }

@@ -34,6 +34,6 @@ Review generation and release checks build the Go APIView parser and copy the Ma
 
 Tool builds verify aliased composite types and methods, alias identity, generic interface and defined-type constraints, exported function names, and dependency-version resolution using an offline probe. Bundle generation rejects unsupported declarations and parser error and fatal diagnostics rather than approving incomplete APIs; informational and warning diagnostics are allowed.
 
-The current parser does not preserve generic defined-type constraints, so the compatibility probe blocks tooling builds until that is corrected and the pin is updated. Modules with unsupported APIs, such as unexported embedded types or unresolved nested aliases, also remain blocked until the parser is corrected.
+Modules with unsupported APIs, such as unexported embedded types or unresolved nested aliases, remain blocked until the parser is corrected.
 
 If release recording fails after the tag is created, repair it using `azsdk package mark-released` with the package name, version, and API hash from the pipeline logs rather than creating the tag again.

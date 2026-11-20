@@ -4,6 +4,118 @@
 
 package armnetworksecurity
 
+// AgentFabricsClientBeginCreateOrUpdateOptions contains the optional parameters for the AgentFabricsClient.BeginCreateOrUpdate
+// method.
+type AgentFabricsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentFabricsClientBeginDeleteOptions contains the optional parameters for the AgentFabricsClient.BeginDelete method.
+type AgentFabricsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentFabricsClientBeginUpdateOptions contains the optional parameters for the AgentFabricsClient.BeginUpdate method.
+type AgentFabricsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AgentFabricsClientGetOptions contains the optional parameters for the AgentFabricsClient.Get method.
+type AgentFabricsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentFabricsClientListByResourceGroupOptions contains the optional parameters for the AgentFabricsClient.NewListByResourceGroupPager
+// method.
+type AgentFabricsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AgentFabricsClientListBySubscriptionOptions contains the optional parameters for the AgentFabricsClient.NewListBySubscriptionPager
+// method.
+type AgentFabricsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClusterAssociationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterAssociationsClient.BeginCreateOrUpdate
+// method.
+type ClusterAssociationsClientBeginCreateOrUpdateOptions struct {
+	// Set to "*" when creating an association to require that the resource does
+	// not already exist. The service returns 412 Precondition Failed when the
+	// condition is not met.
+	IfNoneMatch *ClusterAssociationIfNoneMatch
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterAssociationsClientBeginDeleteOptions contains the optional parameters for the ClusterAssociationsClient.BeginDelete
+// method.
+type ClusterAssociationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterAssociationsClientBeginUpdateOptions contains the optional parameters for the ClusterAssociationsClient.BeginUpdate
+// method.
+type ClusterAssociationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClusterAssociationsClientGetOptions contains the optional parameters for the ClusterAssociationsClient.Get method.
+type ClusterAssociationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClusterAssociationsClientListByParentOptions contains the optional parameters for the ClusterAssociationsClient.NewListByParentPager
+// method.
+type ClusterAssociationsClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EgressTrustBundlesClientGetOptions contains the optional parameters for the EgressTrustBundlesClient.Get method.
+type EgressTrustBundlesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EgressTrustBundlesClientListByParentOptions contains the optional parameters for the EgressTrustBundlesClient.NewListByParentPager
+// method.
+type EgressTrustBundlesClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MembersClientBeginCreateOrUpdateOptions contains the optional parameters for the MembersClient.BeginCreateOrUpdate method.
+type MembersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MembersClientBeginDeleteOptions contains the optional parameters for the MembersClient.BeginDelete method.
+type MembersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MembersClientBeginUpdateOptions contains the optional parameters for the MembersClient.BeginUpdate method.
+type MembersClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MembersClientGetOptions contains the optional parameters for the MembersClient.Get method.
+type MembersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MembersClientListByParentOptions contains the optional parameters for the MembersClient.NewListByParentPager method.
+type MembersClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NeuroShieldFindingsClientGetOptions contains the optional parameters for the NeuroShieldFindingsClient.Get method.
 type NeuroShieldFindingsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -177,7 +289,48 @@ type NeuroShieldsClientUpdateOptions struct {
 	IfMatch *string
 }
 
+// OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
+type OperationStatusClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PolicyGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the PolicyGroupsClient.BeginCreateOrUpdate
+// method.
+type PolicyGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PolicyGroupsClientBeginDeleteOptions contains the optional parameters for the PolicyGroupsClient.BeginDelete method.
+type PolicyGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PolicyGroupsClientBeginUpdateOptions contains the optional parameters for the PolicyGroupsClient.BeginUpdate method.
+type PolicyGroupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PolicyGroupsClientGetOptions contains the optional parameters for the PolicyGroupsClient.Get method.
+type PolicyGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PolicyGroupsClientListByResourceGroupOptions contains the optional parameters for the PolicyGroupsClient.NewListByResourceGroupPager
+// method.
+type PolicyGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PolicyGroupsClientListBySubscriptionOptions contains the optional parameters for the PolicyGroupsClient.NewListBySubscriptionPager
+// method.
+type PolicyGroupsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }

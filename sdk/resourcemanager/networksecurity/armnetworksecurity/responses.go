@@ -4,6 +4,131 @@
 
 package armnetworksecurity
 
+// AgentFabricsClientCreateOrUpdateResponse contains the response from method AgentFabricsClient.BeginCreateOrUpdate.
+type AgentFabricsClientCreateOrUpdateResponse struct {
+	// AgentFabric resource
+	AgentFabric
+}
+
+// AgentFabricsClientDeleteResponse contains the response from method AgentFabricsClient.BeginDelete.
+type AgentFabricsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AgentFabricsClientGetResponse contains the response from method AgentFabricsClient.Get.
+type AgentFabricsClientGetResponse struct {
+	// AgentFabric resource
+	AgentFabric
+}
+
+// AgentFabricsClientListByResourceGroupResponse contains the response from method AgentFabricsClient.NewListByResourceGroupPager.
+type AgentFabricsClientListByResourceGroupResponse struct {
+	// The response of a AgentFabric list operation.
+	AgentFabricListResult
+}
+
+// AgentFabricsClientListBySubscriptionResponse contains the response from method AgentFabricsClient.NewListBySubscriptionPager.
+type AgentFabricsClientListBySubscriptionResponse struct {
+	// The response of a AgentFabric list operation.
+	AgentFabricListResult
+}
+
+// AgentFabricsClientUpdateResponse contains the response from method AgentFabricsClient.BeginUpdate.
+type AgentFabricsClientUpdateResponse struct {
+	// AgentFabric resource
+	AgentFabric
+}
+
+// ClusterAssociationsClientCreateOrUpdateResponse contains the response from method ClusterAssociationsClient.BeginCreateOrUpdate.
+type ClusterAssociationsClientCreateOrUpdateResponse struct {
+	// ClusterAssociation resource. Enrolls an AKS managed cluster, or an ACI
+	// SandboxGroup, into this AgentFabric; deleting it removes the enrollment.
+	// This is not a Member. Workloads are enrolled separately, and creating an
+	// association does not create members.
+	ClusterAssociation
+}
+
+// ClusterAssociationsClientDeleteResponse contains the response from method ClusterAssociationsClient.BeginDelete.
+type ClusterAssociationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClusterAssociationsClientGetResponse contains the response from method ClusterAssociationsClient.Get.
+type ClusterAssociationsClientGetResponse struct {
+	// ClusterAssociation resource. Enrolls an AKS managed cluster, or an ACI
+	// SandboxGroup, into this AgentFabric; deleting it removes the enrollment.
+	// This is not a Member. Workloads are enrolled separately, and creating an
+	// association does not create members.
+	ClusterAssociation
+}
+
+// ClusterAssociationsClientListByParentResponse contains the response from method ClusterAssociationsClient.NewListByParentPager.
+type ClusterAssociationsClientListByParentResponse struct {
+	// The response of a ClusterAssociation list operation.
+	ClusterAssociationListResult
+}
+
+// ClusterAssociationsClientUpdateResponse contains the response from method ClusterAssociationsClient.BeginUpdate.
+type ClusterAssociationsClientUpdateResponse struct {
+	// ClusterAssociation resource. Enrolls an AKS managed cluster, or an ACI
+	// SandboxGroup, into this AgentFabric; deleting it removes the enrollment.
+	// This is not a Member. Workloads are enrolled separately, and creating an
+	// association does not create members.
+	ClusterAssociation
+}
+
+// EgressTrustBundlesClientGetResponse contains the response from method EgressTrustBundlesClient.Get.
+type EgressTrustBundlesClientGetResponse struct {
+	// The egress TLS-inspection trust bundle for an agent fabric.
+	// AgentFabric terminates and re-encrypts enrolled egress traffic, presenting leaf
+	// certificates signed by an AgentFabric-operated certificate authority. A workload can only
+	// complete those handshakes if the CA's PUBLIC anchor is already present in its trust store.
+	// This singleton publishes the anchors that are installed into the fabric's sandboxes, so
+	// the compute platform can install them during sandbox bring-up and so you can audit exactly
+	// which authorities your workloads are being asked to trust.
+	// The resource is read-only and computed: it is never created, updated or deleted through
+	// ARM, and reading it neither enrolls a workload nor redirects any traffic. It returns PUBLIC
+	// certificates only -- private key material never leaves AgentFabric's key vault.
+	// A bundle is always returned as a list, even when it holds a single anchor, so that a CA
+	// rollover can publish the outgoing and incoming anchors together.
+	EgressTrustBundle
+}
+
+// EgressTrustBundlesClientListByParentResponse contains the response from method EgressTrustBundlesClient.NewListByParentPager.
+type EgressTrustBundlesClientListByParentResponse struct {
+	// The response of a EgressTrustBundle list operation.
+	EgressTrustBundleListResult
+}
+
+// MembersClientCreateOrUpdateResponse contains the response from method MembersClient.BeginCreateOrUpdate.
+type MembersClientCreateOrUpdateResponse struct {
+	// Member resource
+	Member
+}
+
+// MembersClientDeleteResponse contains the response from method MembersClient.BeginDelete.
+type MembersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MembersClientGetResponse contains the response from method MembersClient.Get.
+type MembersClientGetResponse struct {
+	// Member resource
+	Member
+}
+
+// MembersClientListByParentResponse contains the response from method MembersClient.NewListByParentPager.
+type MembersClientListByParentResponse struct {
+	// The response of a Member list operation.
+	MemberListResult
+}
+
+// MembersClientUpdateResponse contains the response from method MembersClient.BeginUpdate.
+type MembersClientUpdateResponse struct {
+	// Member resource
+	Member
+}
+
 // NeuroShieldFindingsClientGetResponse contains the response from method NeuroShieldFindingsClient.Get.
 type NeuroShieldFindingsClientGetResponse struct {
 	// Azure Resource Manager proxy child resource representing a finding.
@@ -165,8 +290,49 @@ type NeuroShieldsClientUpdateResponse struct {
 	EtagHeader *string
 }
 
+// OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
+type OperationStatusClientGetResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// PolicyGroupsClientCreateOrUpdateResponse contains the response from method PolicyGroupsClient.BeginCreateOrUpdate.
+type PolicyGroupsClientCreateOrUpdateResponse struct {
+	// PolicyGroup resource.
+	PolicyGroup
+}
+
+// PolicyGroupsClientDeleteResponse contains the response from method PolicyGroupsClient.BeginDelete.
+type PolicyGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PolicyGroupsClientGetResponse contains the response from method PolicyGroupsClient.Get.
+type PolicyGroupsClientGetResponse struct {
+	// PolicyGroup resource.
+	PolicyGroup
+}
+
+// PolicyGroupsClientListByResourceGroupResponse contains the response from method PolicyGroupsClient.NewListByResourceGroupPager.
+type PolicyGroupsClientListByResourceGroupResponse struct {
+	// The response of a PolicyGroup list operation.
+	PolicyGroupListResult
+}
+
+// PolicyGroupsClientListBySubscriptionResponse contains the response from method PolicyGroupsClient.NewListBySubscriptionPager.
+type PolicyGroupsClientListBySubscriptionResponse struct {
+	// The response of a PolicyGroup list operation.
+	PolicyGroupListResult
+}
+
+// PolicyGroupsClientUpdateResponse contains the response from method PolicyGroupsClient.BeginUpdate.
+type PolicyGroupsClientUpdateResponse struct {
+	// PolicyGroup resource.
+	PolicyGroup
 }

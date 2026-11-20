@@ -121,6 +121,12 @@ type CommunityEndpointsClientListBySubscriptionResponse struct {
 	CommunityEndpointResourceListResult
 }
 
+// CommunityEndpointsClientSyncResponse contains the response from method CommunityEndpointsClient.BeginSync.
+type CommunityEndpointsClientSyncResponse struct {
+	// CommunityEndpoint Model Resource
+	CommunityEndpointResource
+}
+
 // CommunityEndpointsClientUpdateResponse contains the response from method CommunityEndpointsClient.BeginUpdate.
 type CommunityEndpointsClientUpdateResponse struct {
 	// CommunityEndpoint Model Resource

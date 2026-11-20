@@ -109,6 +109,12 @@ type CommunityEndpointsClientBeginHandleApprovalDeletionOptions struct {
 	ResumeToken string
 }
 
+// CommunityEndpointsClientBeginSyncOptions contains the optional parameters for the CommunityEndpointsClient.BeginSync method.
+type CommunityEndpointsClientBeginSyncOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // CommunityEndpointsClientBeginUpdateOptions contains the optional parameters for the CommunityEndpointsClient.BeginUpdate
 // method.
 type CommunityEndpointsClientBeginUpdateOptions struct {

@@ -19,7 +19,7 @@ import (
 // CommunityEndpointsClient - Community Endpoint Interface
 // Don't use this type directly, use NewCommunityEndpointsClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-10-01-preview
 type CommunityEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -117,7 +117,7 @@ func (client *CommunityEndpointsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -198,7 +198,7 @@ func (client *CommunityEndpointsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -275,7 +275,7 @@ func (client *CommunityEndpointsClient) handleApprovalCreationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -357,13 +357,90 @@ func (client *CommunityEndpointsClient) handleApprovalDeletionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
+	return req, nil
+}
+
+// BeginSync - Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - communityName - The name of the communityResource Resource
+//   - communityEndpointName - The name of the Community Endpoint Resource
+//   - options - CommunityEndpointsClientBeginSyncOptions contains the optional parameters for the CommunityEndpointsClient.BeginSync
+//     method.
+func (client *CommunityEndpointsClient) BeginSync(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, options *CommunityEndpointsClientBeginSyncOptions) (*runtime.Poller[CommunityEndpointsClientSyncResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.syncOperation(ctx, resourceGroupName, communityName, communityEndpointName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityEndpointsClientSyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityEndpointsClientSyncResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// syncOperation - Triggers a manual re-sync of community endpoint connections to all configured sync destinations.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CommunityEndpointsClient) syncOperation(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, options *CommunityEndpointsClientBeginSyncOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CommunityEndpointsClient.BeginSync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.syncCreateRequest(ctx, resourceGroupName, communityName, communityEndpointName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// syncCreateRequest creates the sync request.
+func (client *CommunityEndpointsClient) syncCreateRequest(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, _ *CommunityEndpointsClientBeginSyncOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}/sync"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if communityName == "" {
+		return nil, errors.New("parameter communityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+	if communityEndpointName == "" {
+		return nil, errors.New("parameter communityEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityEndpointName}", url.PathEscape(communityEndpointName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -439,7 +516,7 @@ func (client *CommunityEndpointsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -497,7 +574,7 @@ func (client *CommunityEndpointsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -573,7 +650,7 @@ func (client *CommunityEndpointsClient) listByCommunityResourceCreateRequest(ctx
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401)
+		reqQP.Set("api-version", version20261001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -645,7 +722,7 @@ func (client *CommunityEndpointsClient) listBySubscriptionCreateRequest(ctx cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401)
+		reqQP.Set("api-version", version20261001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

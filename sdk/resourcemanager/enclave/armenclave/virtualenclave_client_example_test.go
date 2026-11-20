@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_CreateOrUpdate.json
 func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,17 +31,6 @@ func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 			},
 		},
 		Properties: &armenclave.VirtualEnclaveProperties{
-			EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-				NetworkSize:     to.Ptr("small"),
-				CustomCidrRange: to.Ptr("10.0.0.0/24"),
-				SubnetConfigurations: []*armenclave.SubnetConfiguration{
-					{
-						SubnetName:        to.Ptr("test"),
-						NetworkPrefixSize: to.Ptr[int32](26),
-					},
-				},
-				AllowSubnetCommunication: to.Ptr(true),
-			},
 			CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity"),
 			EnclaveDefaultSettings: &armenclave.DefaultSettingsModel{
 				DiagnosticDestination: to.Ptr(armenclave.DiagnosticDestinationBoth),
@@ -159,6 +148,19 @@ func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 					DiagnosticSettingsName:    to.Ptr("customName"),
 				},
 			},
+			SubnetConfigurations: []*armenclave.SubnetConfiguration{
+				{
+					SubnetName:        to.Ptr("test"),
+					NetworkPrefixSize: to.Ptr[int32](26),
+				},
+			},
+			AllowSubnetCommunication: to.Ptr(true),
+			AddressSpaces: []*armenclave.AddressSpaceEntry{
+				{
+					PrefixLength: to.Ptr[int32](23),
+					AddressSpace: to.Ptr("10.1.0.0/23"),
+				},
+			},
 		},
 		Tags: map[string]*string{
 			"Tag1": to.Ptr("Value1"),
@@ -190,17 +192,6 @@ func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		Properties: &armenclave.VirtualEnclaveProperties{
 	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 			EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-	// 				NetworkSize: to.Ptr("small"),
-	// 				CustomCidrRange: to.Ptr("10.0.0.0/24"),
-	// 				SubnetConfigurations: []*armenclave.SubnetConfiguration{
-	// 					{
-	// 						SubnetName: to.Ptr("test"),
-	// 						NetworkPrefixSize: to.Ptr[int32](26),
-	// 					},
-	// 				},
-	// 				AllowSubnetCommunication: to.Ptr(true),
-	// 			},
 	// 			CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity"),
 	// 			EnclaveDefaultSettings: &armenclave.DefaultSettingsModel{
 	// 				KeyVaultResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
@@ -300,12 +291,64 @@ func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 	// 					ApprovalPolicy: to.Ptr(armenclave.ApprovalPolicyNotRequired),
 	// 				},
 	// 			},
+	// 			MonitoringSettings: &armenclave.MonitoringSettingsModel{
+	// 				DiagnosticDestinations: []*armenclave.MonitoringDestination{
+	// 					{
+	// 						DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCommunityWorkspace),
+	// 					},
+	// 					{
+	// 						DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeEnclaveWorkspace),
+	// 						DiagnosticSettingsName: to.Ptr("customName"),
+	// 					},
+	// 					{
+	// 						DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+	// 						CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+	// 						DiagnosticSettingsName: to.Ptr("customName"),
+	// 					},
+	// 					{
+	// 						DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+	// 						CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+	// 						DiagnosticSettingsName: to.Ptr("customName"),
+	// 					},
+	// 				},
+	// 				FlowLogDestination: &armenclave.MonitoringDestination{
+	// 					DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+	// 					CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+	// 					DiagnosticSettingsName: to.Ptr("customName"),
+	// 				},
+	// 			},
+	// 			SubnetConfigurations: []*armenclave.SubnetConfiguration{
+	// 				{
+	// 					SubnetName: to.Ptr("test"),
+	// 					NetworkPrefixSize: to.Ptr[int32](26),
+	// 				},
+	// 			},
+	// 			AllowSubnetCommunication: to.Ptr(true),
+	// 			AddressSpaces: []*armenclave.AddressSpaceEntry{
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](23),
+	// 					AddressSpace: to.Ptr("10.1.0.0/23"),
+	// 				},
+	// 			},
+	// 			ComputedAddressSpaces: []*armenclave.ComputedAddressSpaceEntry{
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](23),
+	// 					AddressSpace: to.Ptr("10.1.0.0/23"),
+	// 					Ownership: to.Ptr(armenclave.AddressSpaceOwnershipCustomerManaged),
+	// 				},
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](25),
+	// 					AddressSpace: to.Ptr("192.168.0.0/25"),
+	// 					Ownership: to.Ptr(armenclave.AddressSpaceOwnershipProductManaged),
+	// 				},
+	// 			},
+	// 			NetworkName: to.Ptr("my-enclave-vnet"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.Mission/virtualEnclaves/TestMyEnclave"),
 	// 		Name: to.Ptr("TestMyEnclave"),
 	// 		Type: to.Ptr("microsoft.mission/virtualenclaves"),
 	// 		SystemData: &armenclave.SystemData{
@@ -320,7 +363,7 @@ func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_Delete.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_Delete.json
 func ExampleVirtualEnclaveClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +384,7 @@ func ExampleVirtualEnclaveClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_HandleApprovalCreation.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_HandleApprovalCreation.json
 func ExampleVirtualEnclaveClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -374,7 +417,7 @@ func ExampleVirtualEnclaveClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_HandleApprovalDeletion.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_HandleApprovalDeletion.json
 func ExampleVirtualEnclaveClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +448,7 @@ func ExampleVirtualEnclaveClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_Update.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_Update.json
 func ExampleVirtualEnclaveClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -421,17 +464,6 @@ func ExampleVirtualEnclaveClient_BeginUpdate() {
 			"Tag1": to.Ptr("Value1"),
 		},
 		Properties: &armenclave.VirtualEnclavePatchProperties{
-			EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-				NetworkSize:     to.Ptr("small"),
-				CustomCidrRange: to.Ptr("10.0.0.0/24"),
-				SubnetConfigurations: []*armenclave.SubnetConfiguration{
-					{
-						SubnetName:        to.Ptr("test"),
-						NetworkPrefixSize: to.Ptr[int32](26),
-					},
-				},
-				AllowSubnetCommunication: to.Ptr(true),
-			},
 			EnclaveDefaultSettings: &armenclave.DefaultSettingsPatchModel{
 				DiagnosticDestination: to.Ptr(armenclave.DiagnosticDestinationBoth),
 			},
@@ -528,6 +560,18 @@ func ExampleVirtualEnclaveClient_BeginUpdate() {
 					},
 				},
 			},
+			SubnetConfigurations: []*armenclave.SubnetConfiguration{
+				{
+					SubnetName:        to.Ptr("test"),
+					NetworkPrefixSize: to.Ptr[int32](26),
+				},
+			},
+			AddressSpaces: []*armenclave.AddressSpaceEntry{
+				{
+					PrefixLength: to.Ptr[int32](23),
+					AddressSpace: to.Ptr("10.1.0.0/23"),
+				},
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -555,17 +599,6 @@ func ExampleVirtualEnclaveClient_BeginUpdate() {
 	// 		},
 	// 		Properties: &armenclave.VirtualEnclaveProperties{
 	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 			EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-	// 				NetworkSize: to.Ptr("small"),
-	// 				CustomCidrRange: to.Ptr("10.0.0.0/24"),
-	// 				SubnetConfigurations: []*armenclave.SubnetConfiguration{
-	// 					{
-	// 						SubnetName: to.Ptr("test"),
-	// 						NetworkPrefixSize: to.Ptr[int32](26),
-	// 					},
-	// 				},
-	// 				AllowSubnetCommunication: to.Ptr(true),
-	// 			},
 	// 			CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity"),
 	// 			EnclaveDefaultSettings: &armenclave.DefaultSettingsModel{
 	// 				KeyVaultResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
@@ -672,12 +705,38 @@ func ExampleVirtualEnclaveClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			SubnetConfigurations: []*armenclave.SubnetConfiguration{
+	// 				{
+	// 					SubnetName: to.Ptr("test"),
+	// 					NetworkPrefixSize: to.Ptr[int32](26),
+	// 				},
+	// 			},
+	// 			AllowSubnetCommunication: to.Ptr(true),
+	// 			AddressSpaces: []*armenclave.AddressSpaceEntry{
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](23),
+	// 					AddressSpace: to.Ptr("10.1.0.0/23"),
+	// 				},
+	// 			},
+	// 			ComputedAddressSpaces: []*armenclave.ComputedAddressSpaceEntry{
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](23),
+	// 					AddressSpace: to.Ptr("10.1.0.0/23"),
+	// 					Ownership: to.Ptr(armenclave.AddressSpaceOwnershipCustomerManaged),
+	// 				},
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](25),
+	// 					AddressSpace: to.Ptr("192.168.0.0/25"),
+	// 					Ownership: to.Ptr(armenclave.AddressSpaceOwnershipProductManaged),
+	// 				},
+	// 			},
+	// 			NetworkName: to.Ptr("my-enclave-vnet"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/virtualEnclaves/TestMyEnclave"),
 	// 		Name: to.Ptr("TestMyEnclave"),
 	// 		Type: to.Ptr("microsoft.mission/virtualenclaves"),
 	// 		SystemData: &armenclave.SystemData{
@@ -692,7 +751,7 @@ func ExampleVirtualEnclaveClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_Get.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_Get.json
 func ExampleVirtualEnclaveClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -725,20 +784,6 @@ func ExampleVirtualEnclaveClient_Get() {
 	// 		},
 	// 		Properties: &armenclave.VirtualEnclaveProperties{
 	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 			EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-	// 				NetworkSize: to.Ptr("small"),
-	// 				CustomCidrRange: to.Ptr("10.0.0.0/24"),
-	// 				SubnetConfigurations: []*armenclave.SubnetConfiguration{
-	// 					{
-	// 						SubnetName: to.Ptr("test"),
-	// 						SubnetResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
-	// 						NetworkPrefixSize: to.Ptr[int32](26),
-	// 						AddressPrefix: to.Ptr("10.0.0.0/26"),
-	// 						NetworkSecurityGroupResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
-	// 					},
-	// 				},
-	// 				AllowSubnetCommunication: to.Ptr(true),
-	// 			},
 	// 			ManagedOnBehalfOfConfiguration: &armenclave.ManagedOnBehalfOfConfiguration{
 	// 				MoboBrokerResources: []*armenclave.MoboBrokerResource{
 	// 					{
@@ -845,12 +890,41 @@ func ExampleVirtualEnclaveClient_Get() {
 	// 					DiagnosticSettingsName: to.Ptr("customName"),
 	// 				},
 	// 			},
+	// 			SubnetConfigurations: []*armenclave.SubnetConfiguration{
+	// 				{
+	// 					SubnetName: to.Ptr("test"),
+	// 					SubnetResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+	// 					NetworkPrefixSize: to.Ptr[int32](26),
+	// 					AddressPrefix: to.Ptr("10.0.0.0/26"),
+	// 					NetworkSecurityGroupResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+	// 				},
+	// 			},
+	// 			AllowSubnetCommunication: to.Ptr(true),
+	// 			AddressSpaces: []*armenclave.AddressSpaceEntry{
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](23),
+	// 					AddressSpace: to.Ptr("10.1.0.0/23"),
+	// 				},
+	// 			},
+	// 			ComputedAddressSpaces: []*armenclave.ComputedAddressSpaceEntry{
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](23),
+	// 					AddressSpace: to.Ptr("10.1.0.0/23"),
+	// 					Ownership: to.Ptr(armenclave.AddressSpaceOwnershipCustomerManaged),
+	// 				},
+	// 				{
+	// 					PrefixLength: to.Ptr[int32](25),
+	// 					AddressSpace: to.Ptr("192.168.0.0/25"),
+	// 					Ownership: to.Ptr(armenclave.AddressSpaceOwnershipProductManaged),
+	// 				},
+	// 			},
+	// 			NetworkName: to.Ptr("my-enclave-vnet"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/virtualEnclaves/TestMyEnclave"),
 	// 		Name: to.Ptr("TestMyEnclave"),
 	// 		Type: to.Ptr("microsoft.mission/virtualenclaves"),
 	// 		SystemData: &armenclave.SystemData{
@@ -865,7 +939,7 @@ func ExampleVirtualEnclaveClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_ListByResourceGroup.json
 func ExampleVirtualEnclaveClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -904,19 +978,12 @@ func ExampleVirtualEnclaveClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				Properties: &armenclave.VirtualEnclaveProperties{
 		// 					ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-		// 					EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-		// 						NetworkSize: to.Ptr("small"),
-		// 						CustomCidrRange: to.Ptr("10.0.0.0/24"),
-		// 						SubnetConfigurations: []*armenclave.SubnetConfiguration{
+		// 					ManagedOnBehalfOfConfiguration: &armenclave.ManagedOnBehalfOfConfiguration{
+		// 						MoboBrokerResources: []*armenclave.MoboBrokerResource{
 		// 							{
-		// 								SubnetName: to.Ptr("test"),
-		// 								SubnetResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
-		// 								NetworkPrefixSize: to.Ptr[int32](26),
-		// 								AddressPrefix: to.Ptr("10.0.0.0/26"),
-		// 								NetworkSecurityGroupResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+		// 								ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Resources/moboBrokers/bnthrkwfkfeorrzvtdxbfz"),
 		// 							},
 		// 						},
-		// 						AllowSubnetCommunication: to.Ptr(true),
 		// 					},
 		// 					CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity"),
 		// 					EnclaveDefaultSettings: &armenclave.DefaultSettingsModel{
@@ -991,6 +1058,61 @@ func ExampleVirtualEnclaveClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					MonitoringSettings: &armenclave.MonitoringSettingsModel{
+		// 						DiagnosticDestinations: []*armenclave.MonitoringDestination{
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCommunityWorkspace),
+		// 							},
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeEnclaveWorkspace),
+		// 								DiagnosticSettingsName: to.Ptr("customName"),
+		// 							},
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+		// 								CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+		// 								DiagnosticSettingsName: to.Ptr("customName"),
+		// 							},
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+		// 								CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+		// 								DiagnosticSettingsName: to.Ptr("customName"),
+		// 							},
+		// 						},
+		// 						FlowLogDestination: &armenclave.MonitoringDestination{
+		// 							DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+		// 							CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+		// 							DiagnosticSettingsName: to.Ptr("customName"),
+		// 						},
+		// 					},
+		// 					SubnetConfigurations: []*armenclave.SubnetConfiguration{
+		// 						{
+		// 							SubnetName: to.Ptr("test"),
+		// 							SubnetResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+		// 							NetworkPrefixSize: to.Ptr[int32](26),
+		// 							AddressPrefix: to.Ptr("10.0.0.0/26"),
+		// 							NetworkSecurityGroupResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+		// 						},
+		// 					},
+		// 					AllowSubnetCommunication: to.Ptr(true),
+		// 					AddressSpaces: []*armenclave.AddressSpaceEntry{
+		// 						{
+		// 							PrefixLength: to.Ptr[int32](23),
+		// 							AddressSpace: to.Ptr("10.1.0.0/23"),
+		// 						},
+		// 					},
+		// 					ComputedAddressSpaces: []*armenclave.ComputedAddressSpaceEntry{
+		// 						{
+		// 							PrefixLength: to.Ptr[int32](23),
+		// 							AddressSpace: to.Ptr("10.1.0.0/23"),
+		// 							Ownership: to.Ptr(armenclave.AddressSpaceOwnershipCustomerManaged),
+		// 						},
+		// 						{
+		// 							PrefixLength: to.Ptr[int32](25),
+		// 							AddressSpace: to.Ptr("192.168.0.0/25"),
+		// 							Ownership: to.Ptr(armenclave.AddressSpaceOwnershipProductManaged),
+		// 						},
+		// 					},
+		// 					NetworkName: to.Ptr("my-enclave-vnet"),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"Tag1": to.Ptr("Value1"),
@@ -1015,7 +1137,7 @@ func ExampleVirtualEnclaveClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/VirtualEnclave_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/VirtualEnclave_ListBySubscription.json
 func ExampleVirtualEnclaveClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1054,19 +1176,12 @@ func ExampleVirtualEnclaveClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				Properties: &armenclave.VirtualEnclaveProperties{
 		// 					ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-		// 					EnclaveVirtualNetwork: &armenclave.VirtualNetworkModel{
-		// 						NetworkSize: to.Ptr("small"),
-		// 						CustomCidrRange: to.Ptr("10.0.0.0/24"),
-		// 						SubnetConfigurations: []*armenclave.SubnetConfiguration{
+		// 					ManagedOnBehalfOfConfiguration: &armenclave.ManagedOnBehalfOfConfiguration{
+		// 						MoboBrokerResources: []*armenclave.MoboBrokerResource{
 		// 							{
-		// 								SubnetName: to.Ptr("test"),
-		// 								SubnetResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
-		// 								NetworkPrefixSize: to.Ptr[int32](26),
-		// 								AddressPrefix: to.Ptr("10.0.0.0/26"),
-		// 								NetworkSecurityGroupResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+		// 								ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Resources/moboBrokers/bnthrkwfkfeorrzvtdxbfz"),
 		// 							},
 		// 						},
-		// 						AllowSubnetCommunication: to.Ptr(true),
 		// 					},
 		// 					CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity"),
 		// 					EnclaveDefaultSettings: &armenclave.DefaultSettingsModel{
@@ -1141,6 +1256,61 @@ func ExampleVirtualEnclaveClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
+		// 					MonitoringSettings: &armenclave.MonitoringSettingsModel{
+		// 						DiagnosticDestinations: []*armenclave.MonitoringDestination{
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCommunityWorkspace),
+		// 							},
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeEnclaveWorkspace),
+		// 								DiagnosticSettingsName: to.Ptr("customName"),
+		// 							},
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+		// 								CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+		// 								DiagnosticSettingsName: to.Ptr("customName"),
+		// 							},
+		// 							{
+		// 								DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+		// 								CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+		// 								DiagnosticSettingsName: to.Ptr("customName"),
+		// 							},
+		// 						},
+		// 						FlowLogDestination: &armenclave.MonitoringDestination{
+		// 							DestinationType: to.Ptr(armenclave.MonitoringDestinationTypeCustomWorkspace),
+		// 							CustomWorkspaceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/rgopenapi/providers/Microsoft.OperationalInsights/workspaces/CustomWorkspace"),
+		// 							DiagnosticSettingsName: to.Ptr("customName"),
+		// 						},
+		// 					},
+		// 					SubnetConfigurations: []*armenclave.SubnetConfiguration{
+		// 						{
+		// 							SubnetName: to.Ptr("test"),
+		// 							SubnetResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+		// 							NetworkPrefixSize: to.Ptr[int32](26),
+		// 							AddressPrefix: to.Ptr("10.0.0.0/26"),
+		// 							NetworkSecurityGroupResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.KeyVault/vaults/TestMyKeyVault1"),
+		// 						},
+		// 					},
+		// 					AllowSubnetCommunication: to.Ptr(true),
+		// 					AddressSpaces: []*armenclave.AddressSpaceEntry{
+		// 						{
+		// 							PrefixLength: to.Ptr[int32](23),
+		// 							AddressSpace: to.Ptr("10.1.0.0/23"),
+		// 						},
+		// 					},
+		// 					ComputedAddressSpaces: []*armenclave.ComputedAddressSpaceEntry{
+		// 						{
+		// 							PrefixLength: to.Ptr[int32](23),
+		// 							AddressSpace: to.Ptr("10.1.0.0/23"),
+		// 							Ownership: to.Ptr(armenclave.AddressSpaceOwnershipCustomerManaged),
+		// 						},
+		// 						{
+		// 							PrefixLength: to.Ptr[int32](25),
+		// 							AddressSpace: to.Ptr("192.168.0.0/25"),
+		// 							Ownership: to.Ptr(armenclave.AddressSpaceOwnershipProductManaged),
+		// 						},
+		// 					},
+		// 					NetworkName: to.Ptr("my-enclave-vnet"),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"Tag1": to.Ptr("Value1"),

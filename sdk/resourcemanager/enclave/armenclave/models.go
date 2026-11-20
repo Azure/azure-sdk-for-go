@@ -6,13 +6,14 @@ package armenclave
 
 import "time"
 
-// AddressSpacesModel - Enclave Address Spaces
-type AddressSpacesModel struct {
-	// Enclave Address Space
-	EnclaveAddressSpace *string
+// AddressSpaceEntry - A customer-requested address space for the enclave. The RP returns this entry exactly as provided.
+type AddressSpaceEntry struct {
+	// CIDR notation address space (e.g., '10.0.0.0/23'). Optional — if omitted, RP allocates based on prefixLength. If provided,
+	// used as-is (custom address space).
+	AddressSpace *string
 
-	// Managed Address Space
-	ManagedAddressSpace *string
+	// CIDR prefix length (e.g., 22, 23, 24). Determines the size of the address space.
+	PrefixLength *int32
 }
 
 // ApprovalActionRequest - Request body for calling post-action
@@ -225,8 +226,11 @@ type CheckAddressSpaceAvailabilityRequest struct {
 	// REQUIRED; Resource Id of the Community
 	CommunityResourceID *string
 
-	// REQUIRED; Information about the enclave virtual network
-	EnclaveVirtualNetwork *VirtualNetworkModel
+	// Specific CIDR address space to check availability for. If omitted, RP checks for any available space of the given prefixLength.
+	AddressSpace *string
+
+	// CIDR prefix length (e.g., 22, 23, 24). Determines the size of the address space to check.
+	PrefixLength *int32
 }
 
 // CheckAddressSpaceAvailabilityResponse - Response of availability of the requested address space.
@@ -243,6 +247,9 @@ type CommunityEndpointDestinationRule struct {
 
 	// Destination Type.
 	DestinationType *DestinationType
+
+	// The direction of traffic for this rule. Defaults to Outbound if not specified.
+	Direction *RuleDirection
 
 	// Endpoint Rule Name.
 	EndpointRuleName *string
@@ -271,6 +278,10 @@ type CommunityEndpointPatchProperties struct {
 	// REQUIRED; Community Endpoint Rule Collection.
 	RuleCollection []*CommunityEndpointDestinationRule
 
+	// Array of ARM resource IDs of destination communities to synchronize this endpoint's rules to. The RP creates and manages
+	// the destination CEPs automatically within each community. Maximum 100 destinations per source endpoint.
+	SyncTo []*string
+
 	// Whether update mode is automatic or manual.
 	UpdateMode *UpdateMode
 }
@@ -280,6 +291,10 @@ type CommunityEndpointProperties struct {
 	// REQUIRED; Community Endpoint Rule Collection.
 	RuleCollection []*CommunityEndpointDestinationRule
 
+	// Array of ARM resource IDs of destination communities to synchronize this endpoint's rules to. The RP creates and manages
+	// the destination CEPs automatically within each community. Maximum 100 destinations per source endpoint.
+	SyncTo []*string
+
 	// Whether update mode is automatic or manual.
 	UpdateMode *UpdateMode
 
@@ -288,6 +303,20 @@ type CommunityEndpointProperties struct {
 
 	// READ-ONLY; List of resource ids created by community endpoint.
 	ResourceCollection []*string
+
+	// READ-ONLY; Per-destination synchronization status. Only populated on source CEPs that have syncTo configured.
+	SyncDestinationStatuses []*SyncDestinationStatus
+
+	// READ-ONLY; ARM resource ID of the source Community Endpoint that manages this endpoint's rules via synchronization. This
+	// property is read-only and set by the RP on destination CEPs created by the sync process.
+	SyncFrom *string
+
+	// READ-ONLY; Information about the principal who last configured or modified syncTo. Set by the RP and surfaced for audit
+	// transparency.
+	SyncPerformedBy *SyncPerformedBy
+
+	// READ-ONLY; The synchronization status of this Community Endpoint. Tracks sync state independently of provisioningState.
+	SyncStatus *SyncStatus
 }
 
 // CommunityEndpointResource - CommunityEndpoint Model Resource
@@ -363,6 +392,10 @@ type CommunityPatchProperties struct {
 
 	// Policy override setting for the community. Specifies whether to apply enclave-specific policies or disable policy enforcement.
 	PolicyOverride *CommunityPropertiesPolicyOverride
+
+	// Desired enforcement mode for the subscription-scoped subnet join deny policy. Defaults to 'Deny' on api-version 2026-10-01-preview
+	// and later.
+	SubnetJoinPolicyMode *SubnetJoinPolicyMode
 }
 
 // CommunityProperties - Community Resource Properties
@@ -396,6 +429,10 @@ type CommunityProperties struct {
 
 	// Policy override setting for the community. Specifies whether to apply enclave-specific policies or disable policy enforcement.
 	PolicyOverride *CommunityPropertiesPolicyOverride
+
+	// Desired enforcement mode for the subscription-scoped subnet join deny policy. Defaults to 'Deny' on api-version 2026-10-01-preview
+	// and later.
+	SubnetJoinPolicyMode *SubnetJoinPolicyMode
 
 	// READ-ONLY; DedicatedHub List.
 	DedicatedHubList []*DedicatedHubResource
@@ -447,6 +484,19 @@ type CommunityResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// ComputedAddressSpaceEntry - An address space computed by the RP for the enclave. Customer-requested entries have ownership
+// 'CustomerManaged'; the RP-managed address space has ownership 'ProductManaged' and is always the last element.
+type ComputedAddressSpaceEntry struct {
+	// CIDR notation address space allocated to the enclave (e.g., '10.0.0.0/23').
+	AddressSpace *string
+
+	// Indicates whether this address space is customer-managed or product-managed.
+	Ownership *AddressSpaceOwnership
+
+	// CIDR prefix length of the address space.
+	PrefixLength *int32
 }
 
 // ConnectionPatchModel - Enclave Connection Patch Resource
@@ -965,6 +1015,9 @@ type SubnetConfiguration struct {
 	// Subnet delegation.
 	SubnetDelegation *string
 
+	// The purpose of the subnet, used to determine automatic configuration behavior.
+	SubnetPurpose *SubnetPurpose
+
 	// READ-ONLY; Address prefix.
 	AddressPrefix *string
 
@@ -973,6 +1026,39 @@ type SubnetConfiguration struct {
 
 	// READ-ONLY; Subnet Resource ID.
 	SubnetResourceID *string
+}
+
+// SyncDestinationStatus - Status of synchronization to a specific destination Community Endpoint.
+type SyncDestinationStatus struct {
+	// READ-ONLY; ARM resource ID of the destination Community Endpoint.
+	DestinationID *string
+
+	// READ-ONLY; The synchronization status for this destination.
+	Status *SyncStatus
+
+	// READ-ONLY; Error message if the sync to this destination failed.
+	ErrorMessage *string
+
+	// READ-ONLY; Timestamp of the last successful sync to this destination.
+	LastSyncTime *time.Time
+}
+
+// SyncPerformedBy - Information about the principal who performed the sync operation.
+type SyncPerformedBy struct {
+	// READ-ONLY; ARM correlation ID from the source PUT that set up syncTo.
+	CorrelationID *string
+
+	// READ-ONLY; Timestamp when the syncTo was configured or last modified.
+	PerformedAt *time.Time
+
+	// READ-ONLY; Object ID of the user principal who configured syncTo.
+	PrincipalID *string
+
+	// READ-ONLY; The type of principal (e.g., User, ServicePrincipal).
+	PrincipalType *string
+
+	// READ-ONLY; Tenant ID of the principal.
+	TenantID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1139,8 +1225,10 @@ type VirtualEnclavePatchModel struct {
 
 // VirtualEnclavePatchProperties - Virtual Enclave Patchable Properties
 type VirtualEnclavePatchProperties struct {
-	// REQUIRED; Virtual Network.
-	EnclaveVirtualNetwork *VirtualNetworkModel
+	// Customer-requested address spaces for the enclave. Supports multiple entries. Each entry specifies a prefixLength for the
+	// RP to allocate, or a custom addressSpace CIDR. The RP returns these entries exactly as provided; allocated values are reported
+	// in computedAddressSpaces.
+	AddressSpaces []*AddressSpaceEntry
 
 	// Approval requirements for various actions on the enclave's resources.
 	ApprovalSettings *VirtualEnclaveApprovalSettingsPatchProperties
@@ -1169,6 +1257,9 @@ type VirtualEnclavePatchProperties struct {
 	// Controls whether standard Azure RBAC role inheritance applies to the workload resource group(s)
 	RbacInheritance *RbacInheritanceMode
 
+	// Subnet configurations for the enclave network.
+	SubnetConfigurations []*SubnetConfiguration
+
 	// Specifies whether resources in the workload resource group(s) are visible through standard RBAC
 	WorkloadResourceVisibility *ResourceVisibilityMode
 
@@ -1181,8 +1272,13 @@ type VirtualEnclaveProperties struct {
 	// REQUIRED; Community Resource Id.
 	CommunityResourceID *string
 
-	// REQUIRED; Virtual Network.
-	EnclaveVirtualNetwork *VirtualNetworkModel
+	// Customer-requested address spaces for the enclave. Supports multiple entries. Each entry specifies a prefixLength for the
+	// RP to allocate, or a custom addressSpace CIDR. The RP returns these entries exactly as provided; allocated values are reported
+	// in computedAddressSpaces.
+	AddressSpaces []*AddressSpaceEntry
+
+	// Whether subnets within the enclave can communicate with each other.
+	AllowSubnetCommunication *bool
 
 	// Approval requirements for various actions on the enclave's resources.
 	ApprovalSettings *VirtualEnclaveApprovalSettings
@@ -1211,14 +1307,18 @@ type VirtualEnclaveProperties struct {
 	// Controls whether standard Azure RBAC role inheritance applies to the workload resource group(s)
 	RbacInheritance *RbacInheritanceMode
 
+	// Subnet configurations for the enclave network.
+	SubnetConfigurations []*SubnetConfiguration
+
 	// Specifies whether resources in the workload resource group(s) are visible through standard RBAC
 	WorkloadResourceVisibility *ResourceVisibilityMode
 
 	// Workload role assignments
 	WorkloadRoleAssignments []*RoleAssignmentItem
 
-	// READ-ONLY; Enclave Address Spaces
-	EnclaveAddressSpaces *AddressSpacesModel
+	// READ-ONLY; Address spaces computed by the RP for the enclave. Contains an entry for each customer-requested address space
+	// with its allocated CIDR, followed by the product-managed address space.
+	ComputedAddressSpaces []*ComputedAddressSpaceEntry
 
 	// READ-ONLY; Managed On Behalf Of Configuration.
 	ManagedOnBehalfOfConfiguration *ManagedOnBehalfOfConfiguration
@@ -1226,29 +1326,14 @@ type VirtualEnclaveProperties struct {
 	// READ-ONLY; Managed resource group name.
 	ManagedResourceGroupName *string
 
+	// READ-ONLY; The name of the enclave's virtual network.
+	NetworkName *string
+
 	// READ-ONLY; Provisioning State.
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; List of resource ids created by Virtual Enclave.
 	ResourceCollection []*string
-}
-
-// VirtualNetworkModel - Enclave Virtual Network Properties
-type VirtualNetworkModel struct {
-	// Allow Subnet Communication.
-	AllowSubnetCommunication *bool
-
-	// Custom CIDR Range.
-	CustomCidrRange *string
-
-	// Network Name.
-	NetworkName *string
-
-	// Network Size.
-	NetworkSize *string
-
-	// Subnet Configurations.
-	SubnetConfigurations []*SubnetConfiguration
 }
 
 // WorkloadPatchModel - Workload Patch Resource

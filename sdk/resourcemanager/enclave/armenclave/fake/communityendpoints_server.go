@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -36,6 +36,10 @@ type CommunityEndpointsServer struct {
 	// BeginHandleApprovalDeletion is the fake for method CommunityEndpointsClient.BeginHandleApprovalDeletion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginHandleApprovalDeletion func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, body armenclave.ApprovalDeletionCallbackRequest, options *armenclave.CommunityEndpointsClientBeginHandleApprovalDeletionOptions) (resp azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalDeletionResponse], errResp azfake.ErrorResponder)
+
+	// BeginSync is the fake for method CommunityEndpointsClient.BeginSync
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSync func(ctx context.Context, resourceGroupName string, communityName string, communityEndpointName string, options *armenclave.CommunityEndpointsClientBeginSyncOptions) (resp azfake.PollerResponder[armenclave.CommunityEndpointsClientSyncResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method CommunityEndpointsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -64,6 +68,7 @@ func NewCommunityEndpointsServerTransport(srv *CommunityEndpointsServer) *Commun
 		beginDelete:                     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientDeleteResponse]](),
 		beginHandleApprovalCreation:     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalCreationResponse]](),
 		beginHandleApprovalDeletion:     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalDeletionResponse]](),
+		beginSync:                       newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientSyncResponse]](),
 		beginUpdate:                     newTracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse]](),
 		newListByCommunityResourcePager: newTracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListByCommunityResourceResponse]](),
 		newListBySubscriptionPager:      newTracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListBySubscriptionResponse]](),
@@ -78,6 +83,7 @@ type CommunityEndpointsServerTransport struct {
 	beginDelete                     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientDeleteResponse]]
 	beginHandleApprovalCreation     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalCreationResponse]]
 	beginHandleApprovalDeletion     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientHandleApprovalDeletionResponse]]
+	beginSync                       *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientSyncResponse]]
 	beginUpdate                     *tracker[azfake.PollerResponder[armenclave.CommunityEndpointsClientUpdateResponse]]
 	newListByCommunityResourcePager *tracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListByCommunityResourceResponse]]
 	newListBySubscriptionPager      *tracker[azfake.PagerResponder[armenclave.CommunityEndpointsClientListBySubscriptionResponse]]
@@ -112,6 +118,8 @@ func (c *CommunityEndpointsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchBeginHandleApprovalCreation(req)
 			case "CommunityEndpointsClient.BeginHandleApprovalDeletion":
 				res.resp, res.err = c.dispatchBeginHandleApprovalDeletion(req)
+			case "CommunityEndpointsClient.BeginSync":
+				res.resp, res.err = c.dispatchBeginSync(req)
 			case "CommunityEndpointsClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CommunityEndpointsClient.Get":
@@ -335,6 +343,54 @@ func (c *CommunityEndpointsServerTransport) dispatchBeginHandleApprovalDeletion(
 	}
 	if !server.PollerResponderMore(beginHandleApprovalDeletion) {
 		c.beginHandleApprovalDeletion.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CommunityEndpointsServerTransport) dispatchBeginSync(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginSync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSync not implemented")}
+	}
+	beginSync := c.beginSync.get(req)
+	if beginSync == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Mission/communities/(?P<communityName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/communityEndpoints/(?P<communityEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sync`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		communityNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityName")])
+		if err != nil {
+			return nil, err
+		}
+		communityEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("communityEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginSync(req.Context(), resourceGroupNameParam, communityNameParam, communityEndpointNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSync = &respr
+		c.beginSync.add(req, beginSync)
+	}
+
+	resp, err := server.PollerResponderNext(beginSync, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginSync.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSync) {
+		c.beginSync.remove(req)
 	}
 
 	return resp, nil

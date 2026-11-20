@@ -42,13 +42,12 @@ func TestCoverageReportListsEveryScenario(t *testing.T) {
 	t.Log("\n" + report.String())
 }
 
-// compiledTestNames runs `go test -list` against this package so the implementation map is
-// checked against tests the current build actually compiled, matching the current package's
-// build constraints (platform, cgo, build tags) rather than a static source scan.
+// compiledTestNames runs `go test -list` against this package and the SDK package so the
+// implementation map includes cgo-only tests that need package-private emulator setup.
 func compiledTestNames(t *testing.T) map[string]bool {
 	t.Helper()
 
-	output, err := exec.Command("go", "test", "-list", "^Test", ".").CombinedOutput() //nolint:gosec // fixed args, no injection
+	output, err := exec.Command("go", "test", "-list", "^Test", ".", "..").CombinedOutput() //nolint:gosec // fixed args, no injection
 	require.NoErrorf(t, err, "go test -list failed: %s", output)
 
 	names := make(map[string]bool)

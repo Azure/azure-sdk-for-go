@@ -514,9 +514,7 @@ func newFixture(t *testing.T, scenarioID string, containerIDOverride string) fix
 // newRawFixture builds a client/container pair against the default single-region emulator account
 // without validating any catalog scenario ID or profile. Use this only for a supplementary
 // regression test that is not registered as scenario certification evidence in
-// internal/e2e.Implementations (for example, TestSessionTokenExplicitManagement, whose declared
-// scenario profile needs infrastructure this fixture cannot build); every scenario-certifying
-// test must go through newFixture instead so its profile is validated.
+// internal/e2e.Implementations; every scenario-certifying test must validate its profile instead.
 func newRawFixture(t *testing.T, containerIDOverride string) fixture {
 	t.Helper()
 	endpoint, databaseID, containerID := requireEmulator(t)

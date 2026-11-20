@@ -18,136 +18,6 @@ type Actor struct {
 	Name *string
 }
 
-// AdditionalAuthenticationProperties - Authentication configuration used by a cache rule to access an upstream registry.
-type AdditionalAuthenticationProperties struct {
-	// REQUIRED; Authentication type discriminator. The authentication type cannot change once configured.
-	AuthenticationType *AdditionalAuthenticationType
-}
-
-// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
-// AdditionalAuthenticationProperties.
-func (a *AdditionalAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
-	return a
-}
-
-// AdditionalAuthenticationUpdateProperties - Partial authentication configuration for a cache rule. Omitted fields retain
-// their current
-// values. When authentication is first configured, all required fields of the selected
-// authentication type must be supplied. Changing an existing authentication type is not supported.
-type AdditionalAuthenticationUpdateProperties struct {
-	// REQUIRED; The existing authentication type, or the type to configure when no authentication exists.
-	// This discriminator is required, but changing an existing authentication type is not supported.
-	AuthenticationType *AdditionalAuthenticationType
-}
-
-// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
-// for type AdditionalAuthenticationUpdateProperties.
-func (a *AdditionalAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
-	return a
-}
-
-// Archive - An object that represents a archive for a container registry.
-type Archive struct {
-	// The properties of the archive.
-	Properties *ArchiveProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the private link resource.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ArchiveListResult - The result of a request to list archives for a container registry.
-type ArchiveListResult struct {
-	// The URI that can be used to request the next list of archives.
-	NextLink *string
-
-	// The list of archives. Since this list may be incomplete, the nextLink field should be used to request the next list of
-	// archives.
-	Value []*Archive
-}
-
-// ArchivePackageSourceProperties - The properties of the archive package source.
-type ArchivePackageSourceProperties struct {
-	// The type of package source for a archive.
-	Type *PackageSourceType
-
-	// The external repository url.
-	URL *string
-}
-
-// ArchiveProperties - The properties of a archive.
-type ArchiveProperties struct {
-	// The package source of the archive.
-	PackageSource *ArchivePackageSourceProperties
-
-	// The published version of the archive.
-	PublishedVersion         *string
-	RepositoryEndpointPrefix *string
-
-	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY
-	RepositoryEndpoint *string
-}
-
-// ArchiveUpdateParameters - The parameters for updating a archive.
-type ArchiveUpdateParameters struct {
-	// The properties of the connected registry update parameters.
-	Properties *ArchiveUpdateProperties
-}
-
-// ArchiveUpdateProperties - The properties of a archive.
-type ArchiveUpdateProperties struct {
-	// The published version of the archive.
-	PublishedVersion *string
-}
-
-// ArchiveVersion - An object that represents an export pipeline for a container registry.
-type ArchiveVersion struct {
-	// The properties of the archive.
-	Properties *ArchiveVersionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the private link resource.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ArchiveVersionListResult - The result of a request to list archive versions for a container registry.
-type ArchiveVersionListResult struct {
-	// The URI that can be used to request the next list of archive versions.
-	NextLink *string
-
-	// The list of archive versions. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of archive versions.
-	Value []*ArchiveVersion
-}
-
-// ArchiveVersionProperties - The properties of an archive version.
-type ArchiveVersionProperties struct {
-	// The detailed error message for the archive version in the case of failure.
-	ArchiveVersionErrorMessage *string
-
-	// READ-ONLY; The provisioning state of the archive at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
 // AuthCredential - Authentication credential stored for an upstream.
 type AuthCredential struct {
 	// The name of the credential.
@@ -171,9 +41,6 @@ type AzureADAuthenticationAsArmPolicy struct {
 
 // CacheRule - An object that represents a cache rule for a container registry.
 type CacheRule struct {
-	// The identity of the cache rule.
-	Identity *IdentityProperties
-
 	// The properties of the cache rule.
 	Properties *CacheRuleProperties
 
@@ -192,9 +59,6 @@ type CacheRule struct {
 
 // CacheRuleProperties - The properties of a cache rule.
 type CacheRuleProperties struct {
-	// Authentication configuration used by the cache rule to access the upstream source repository.
-	AdditionalAuthenticationProperties AdditionalAuthenticationPropertiesClassification
-
 	// The ARM resource ID of the credential store which is associated with the cache rule.
 	CredentialSetResourceID *string
 
@@ -214,21 +78,12 @@ type CacheRuleProperties struct {
 
 // CacheRuleUpdateParameters - The parameters for updating a cache rule.
 type CacheRuleUpdateParameters struct {
-	// The identity of the cache rule.
-	Identity *IdentityProperties
-
 	// The properties of the cache rule update parameters.
 	Properties *CacheRuleUpdateProperties
 }
 
 // CacheRuleUpdateProperties - The parameters for updating cache rule properties.
 type CacheRuleUpdateProperties struct {
-	// Authentication configuration used by the cache rule to access the upstream source repository.
-	// Omitted fields retain their current values. When authentication is first configured, all
-	// required fields of the selected authentication type must be supplied. Changing an existing
-	// authentication type is not supported.
-	AdditionalAuthenticationProperties AdditionalAuthenticationUpdatePropertiesClassification
-
 	// The ARM resource ID of the credential store which is associated with the Cache rule.
 	CredentialSetResourceID *string
 }
@@ -254,10 +109,6 @@ type CallbackConfig struct {
 
 // ConnectedRegistry - An object that represents a connected registry for a container registry.
 type ConnectedRegistry struct {
-	// The user-assigned managed identity used by the on-prem connected registry to authenticate with the cloud registry for sync
-	// operations. Requires authType to be ManagedIdentity.
-	Identity *ManagedServiceIdentity
-
 	// The properties of the connected registry.
 	Properties *ConnectedRegistryProperties
 
@@ -307,9 +158,6 @@ type ConnectedRegistryProperties struct {
 	// The list of notifications subscription information for the connected registry.
 	NotificationsList []*string
 
-	// The result of the connected registry's most recent sync with its parent.
-	RegistrySyncResult *RegistrySyncResult
-
 	// READ-ONLY; The activation properties of the connected registry.
 	Activation *ActivationProperties
 
@@ -331,10 +179,6 @@ type ConnectedRegistryProperties struct {
 
 // ConnectedRegistryUpdateParameters - The parameters for updating a connected registry.
 type ConnectedRegistryUpdateParameters struct {
-	// The user-assigned managed identity used to authenticate the connected registry with its parent during synchronization.
-	// Requires authType to be ManagedIdentity.
-	Identity *ManagedServiceIdentity
-
 	// The properties of the connected registry update parameters.
 	Properties *ConnectedRegistryUpdateProperties
 }
@@ -432,149 +276,12 @@ type CredentialSetUpdateProperties struct {
 	AuthCredentials []*AuthCredential
 }
 
-// ECRAuthenticationProperties - Amazon Elastic Container Registry (ECR) authentication configuration.
-type ECRAuthenticationProperties struct {
-	// REQUIRED; The AWS account that owns the IAM role used for authentication.
-	// The IAM role is assumed via AWS Security Token Service (STS) when exchanging a
-	// federated Entra access token for an ECR access token. The full IAM role ARN is
-	// derived from `accountNumber`, `rolePath`, and `roleName` as
-	// `arn:aws:iam::{accountNumber}:role{rolePath}{roleName}` (the initial path defaults to `/`).
-	AccountNumber *string
-
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAWSElasticContainerRegistry, any specified value is ignored.
-	AuthenticationType *AdditionalAuthenticationType
-
-	// REQUIRED; The AWS region of the upstream Elastic Container Registry (e.g. `us-west-2`).
-	// Only commercial AWS regions are supported; the GovCloud (`us-gov-*`), China
-	// (`cn-*`), and Secret/Top Secret ISO (`us-iso*`) partitions are rejected. The
-	// pattern stays forward-compatible for new commercial regions without requiring a
-	// contract change.
-	Region *string
-
-	// REQUIRED; The name of the AWS IAM role assumed for authentication.
-	// This is the role name only, not the full ARN; the IAM path is supplied separately
-	// via `rolePath`, so '/' is not permitted here.
-	RoleName *string
-
-	// Optional IAM path of the role (for example `/team/` or `/division/team/`). The value
-	// must be supplied in canonical form with a leading and trailing '/'; it is validated
-	// as-is and is never normalized. A non-root path must contain at least one character
-	// between the surrounding slashes. When authentication is first configured, an omitted
-	// path defaults to the root (`/`). When updating an existing authentication configuration,
-	// an omitted path retains its current value.
-	RolePath *string
-}
-
-// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
-// ECRAuthenticationProperties.
-func (e *ECRAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
-	return &AdditionalAuthenticationProperties{
-		AuthenticationType: e.AuthenticationType,
-	}
-}
-
-// ECRAuthenticationUpdateProperties - Partial Amazon Elastic Container Registry (ECR) authentication configuration.
-// When authentication is first configured, accountNumber, region, and roleName must be supplied.
-type ECRAuthenticationUpdateProperties struct {
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAWSElasticContainerRegistry, any specified value is ignored.
-	AuthenticationType *AdditionalAuthenticationType
-
-	// The AWS account that owns the IAM role used for authentication.
-	// The IAM role is assumed via AWS Security Token Service (STS) when exchanging a
-	// federated Entra access token for an ECR access token. The full IAM role ARN is
-	// derived from `accountNumber`, `rolePath`, and `roleName` as
-	// `arn:aws:iam::{accountNumber}:role{rolePath}{roleName}` (the initial path defaults to `/`).
-	AccountNumber *string
-
-	// The AWS region of the upstream Elastic Container Registry (e.g. `us-west-2`).
-	// Only commercial AWS regions are supported; the GovCloud (`us-gov-*`), China
-	// (`cn-*`), and Secret/Top Secret ISO (`us-iso*`) partitions are rejected. The
-	// pattern stays forward-compatible for new commercial regions without requiring a
-	// contract change.
-	Region *string
-
-	// The name of the AWS IAM role assumed for authentication.
-	// This is the role name only, not the full ARN; the IAM path is supplied separately
-	// via `rolePath`, so '/' is not permitted here.
-	RoleName *string
-
-	// Optional IAM path of the role (for example `/team/` or `/division/team/`). The value
-	// must be supplied in canonical form with a leading and trailing '/'; it is validated
-	// as-is and is never normalized. A non-root path must contain at least one character
-	// between the surrounding slashes. When authentication is first configured, an omitted
-	// path defaults to the root (`/`). When updating an existing authentication configuration,
-	// an omitted path retains its current value.
-	RolePath *string
-}
-
-// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
-// for type ECRAuthenticationUpdateProperties.
-func (e *ECRAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
-	return &AdditionalAuthenticationUpdateProperties{
-		AuthenticationType: e.AuthenticationType,
-	}
-}
-
 type EncryptionProperty struct {
 	// Key vault properties.
 	KeyVaultProperties *KeyVaultProperties
 
 	// Indicates whether or not the encryption is enabled for container registry.
 	Status *EncryptionStatus
-}
-
-// EntraFederatedIdentityCredentialAuthenticationProperties - Microsoft Entra federated identity credential authentication
-// configuration.
-type EntraFederatedIdentityCredentialAuthenticationProperties struct {
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeEntraFederatedIdentityCredential, any specified value is
-	// ignored.
-	AuthenticationType *AdditionalAuthenticationType
-
-	// REQUIRED; The client ID of the multi-tenant application. Its application registration and
-	// federated identity credential must be in the cache rule managed identity's home tenant.
-	// The credential's subject is the managed identity's principal/object ID, not its client ID.
-	// Its enterprise application (service principal) must exist in `sourceTenantId`.
-	FederatedApplicationClientID *string
-
-	// REQUIRED; The upstream tenant that issues the token for `federatedApplicationClientId` and contains
-	// the application's enterprise application (service principal).
-	SourceTenantID *string
-}
-
-// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
-// EntraFederatedIdentityCredentialAuthenticationProperties.
-func (e *EntraFederatedIdentityCredentialAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
-	return &AdditionalAuthenticationProperties{
-		AuthenticationType: e.AuthenticationType,
-	}
-}
-
-// EntraFederatedIdentityCredentialAuthenticationUpdateProperties - Partial Microsoft Entra federated identity credential
-// authentication configuration.
-// When authentication is first configured, sourceTenantId and federatedApplicationClientId
-// must be supplied.
-type EntraFederatedIdentityCredentialAuthenticationUpdateProperties struct {
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeEntraFederatedIdentityCredential, any specified value is
-	// ignored.
-	AuthenticationType *AdditionalAuthenticationType
-
-	// The client ID of the multi-tenant application. Its application registration and
-	// federated identity credential must be in the cache rule managed identity's home tenant.
-	// The credential's subject is the managed identity's principal/object ID, not its client ID.
-	// Its enterprise application (service principal) must exist in `sourceTenantId`.
-	FederatedApplicationClientID *string
-
-	// The upstream tenant that issues the token for `federatedApplicationClientId` and contains
-	// the application's enterprise application (service principal).
-	SourceTenantID *string
-}
-
-// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
-// for type EntraFederatedIdentityCredentialAuthenticationUpdateProperties.
-func (e *EntraFederatedIdentityCredentialAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
-	return &AdditionalAuthenticationUpdateProperties{
-		AuthenticationType: e.AuthenticationType,
-	}
 }
 
 // Event - The event for a webhook.
@@ -665,123 +372,10 @@ type EventResponseMessage struct {
 	Version *string
 }
 
-// ExportPipeline - An object that represents an export pipeline for a container registry.
-type ExportPipeline struct {
-	// The identity of the export pipeline.
-	Identity *IdentityProperties
-
-	// The location of the export pipeline.
-	Location *string
-
-	// The properties of the export pipeline.
-	Properties *ExportPipelineProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the private link resource.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ExportPipelineListResult - The result of a request to list export pipelines for a container registry.
-type ExportPipelineListResult struct {
-	// The URI that can be used to request the next list of export pipelines.
-	NextLink *string
-
-	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of export pipelines.
-	Value []*ExportPipeline
-}
-
-// ExportPipelineProperties - The properties of an export pipeline.
-type ExportPipelineProperties struct {
-	// REQUIRED; The target properties of the export pipeline.
-	Target *ExportPipelineTargetProperties
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
-// ExportPipelineTargetProperties - The properties of the export pipeline target.
-type ExportPipelineTargetProperties struct {
-	// They key vault secret uri to obtain the target storage SAS token.
-	KeyVaultURI *string
-
-	// The storage access mode used for the customer storage account.
-	StorageAccessMode *StorageAccessMode
-
-	// The type of target for the export pipeline.
-	Type *string
-
-	// The target uri of the export pipeline.
-	// When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer': "https://accountName.blob.core.windows.net/containerName"
-	URI *string
-}
-
 // ExportPolicy - The export policy for a container registry.
 type ExportPolicy struct {
 	// The value that indicates whether the policy is enabled or not.
 	Status *ExportPolicyStatus
-}
-
-// GARAuthenticationUpdateProperties - Partial Google Artifact Registry (GAR) authentication configuration.
-// When authentication is first configured, projectNumber, workloadIdentityPool, and
-// workloadIdentityProvider must be supplied.
-type GARAuthenticationUpdateProperties struct {
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeGoogleArtifactRegistry, any specified value is ignored.
-	AuthenticationType *AdditionalAuthenticationType
-
-	// The Google Cloud Platform project that is configured for authentication
-	// Permissions should be granted to principal://iam.googleapis.com/projects/{ProjectNumber}/locations/global/workloadIdentityPools/{WorkloadIdentityPool}/providers/{WorkloadIdentityProvider}/subject/{ManagedIdentityPrincipal}
-	ProjectNumber *string
-
-	// The Google Cloud platform workload identity pool used for authentication.
-	WorkloadIdentityPool *string
-
-	// The Google Cloud Platform workload identity provider used for authentication.
-	WorkloadIdentityProvider *string
-}
-
-// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
-// for type GARAuthenticationUpdateProperties.
-func (g *GARAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
-	return &AdditionalAuthenticationUpdateProperties{
-		AuthenticationType: g.AuthenticationType,
-	}
-}
-
-// GarAuthenticationProperties - Google Artifact Registry (GAR) authentication configuration.
-type GarAuthenticationProperties struct {
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeGoogleArtifactRegistry, any specified value is ignored.
-	AuthenticationType *AdditionalAuthenticationType
-
-	// REQUIRED; The Google Cloud Platform project that is configured for authentication
-	// Permissions should be granted to principal://iam.googleapis.com/projects/{ProjectNumber}/locations/global/workloadIdentityPools/{WorkloadIdentityPool}/providers/{WorkloadIdentityProvider}/subject/{ManagedIdentityPrincipal}
-	ProjectNumber *string
-
-	// REQUIRED; The Google Cloud platform workload identity pool used for authentication.
-	WorkloadIdentityPool *string
-
-	// REQUIRED; The Google Cloud Platform workload identity provider used for authentication.
-	WorkloadIdentityProvider *string
-}
-
-// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
-// GarAuthenticationProperties.
-func (g *GarAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
-	return &AdditionalAuthenticationProperties{
-		AuthenticationType: g.AuthenticationType,
-	}
 }
 
 // GarbageCollectionProperties - The garbage collection properties of the connected registry.
@@ -858,72 +452,6 @@ type ImportImageParameters struct {
 	UntaggedTargetRepositories []*string
 }
 
-// ImportPipeline - An object that represents an import pipeline for a container registry.
-type ImportPipeline struct {
-	// The identity of the import pipeline.
-	Identity *IdentityProperties
-
-	// The location of the import pipeline.
-	Location *string
-
-	// The properties of the import pipeline.
-	Properties *ImportPipelineProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the private link resource.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ImportPipelineListResult - The result of a request to list import pipelines for a container registry.
-type ImportPipelineListResult struct {
-	// The URI that can be used to request the next list of import pipelines.
-	NextLink *string
-
-	// The list of import pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
-	// list of import pipelines.
-	Value []*ImportPipeline
-}
-
-// ImportPipelineProperties - The properties of an import pipeline.
-type ImportPipelineProperties struct {
-	// REQUIRED; The source properties of the import pipeline.
-	Source *ImportPipelineSourceProperties
-
-	// The list of all options configured for the pipeline.
-	Options []*PipelineOptions
-
-	// The properties that describe the trigger of the import pipeline.
-	Trigger *PipelineTriggerProperties
-
-	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
-	ProvisioningState *ProvisioningState
-}
-
-// ImportPipelineSourceProperties - The properties of the import pipeline source.
-type ImportPipelineSourceProperties struct {
-	// They key vault secret uri to obtain the source storage SAS token.
-	KeyVaultURI *string
-
-	// The storage access mode used for the customer storage account.
-	StorageAccessMode *StorageAccessMode
-
-	// The type of source for the import pipeline.
-	Type *PipelineSourceType
-
-	// The source uri of the import pipeline.
-	// When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
-	// When 'AzureStorageBlobContainer': "https://accountName.blob.core.windows.net/containerName"
-	URI *string
-}
-
 type ImportSource struct {
 	// REQUIRED; Repository name of the source image.
 	// Specify an image by repository ('hello-world'). This will use the 'latest' tag.
@@ -982,22 +510,6 @@ type LoginServerProperties struct {
 
 	// READ-ONLY; The TLS properties of the connected registry login server.
 	TLS *TLSProperties
-}
-
-// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
-type ManagedServiceIdentity struct {
-	// REQUIRED; The type of managed identity assigned to this resource.
-	Type *ManagedServiceIdentityType
-
-	// The identities assigned to this resource by the user.
-	UserAssignedIdentities map[string]*UserAssignedIdentity
-
-	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
-	// identity.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string
 }
 
 // NetworkRuleSet - The network rule set for a container registry.
@@ -1113,145 +625,6 @@ type ParentProperties struct {
 	ID *string
 }
 
-// PipelineRun - An object that represents a pipeline run for a container registry.
-type PipelineRun struct {
-	// The properties of a pipeline run.
-	Properties *PipelineRunProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the private link resource.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PipelineRunListResult - The result of a request to list pipeline runs for a container registry.
-type PipelineRunListResult struct {
-	// The URI that can be used to request the next list of pipeline runs.
-	NextLink *string
-
-	// The list of pipeline runs. Since this list may be incomplete, the nextLink field should be used to request the next list
-	// of pipeline runs.
-	Value []*PipelineRun
-}
-
-// PipelineRunProperties - The properties of a pipeline run.
-type PipelineRunProperties struct {
-	// How the pipeline run should be forced to recreate even if the pipeline run configuration has not changed.
-	ForceUpdateTag *string
-
-	// The request parameters for a pipeline run.
-	Request *PipelineRunRequest
-
-	// READ-ONLY; The provisioning state of a pipeline run.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The response of a pipeline run.
-	Response *PipelineRunResponse
-}
-
-// PipelineRunRequest - The request properties provided for a pipeline run.
-type PipelineRunRequest struct {
-	// List of source artifacts to be transferred by the pipeline.
-	// Specify an image by repository ('hello-world'). This will use the 'latest' tag.
-	// Specify an image by tag ('hello-world:latest').
-	// Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
-	Artifacts []*string
-
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string
-
-	// The resource ID of the pipeline to run.
-	PipelineResourceID *string
-
-	// The source properties of the pipeline run.
-	Source *PipelineRunSourceProperties
-
-	// The target properties of the pipeline run.
-	Target *PipelineRunTargetProperties
-}
-
-// PipelineRunResponse - The response properties returned for a pipeline run.
-type PipelineRunResponse struct {
-	// The digest of the tar used to transfer the artifacts.
-	CatalogDigest *string
-
-	// The time the pipeline run finished.
-	FinishTime *time.Time
-
-	// The artifacts imported in the pipeline run.
-	ImportedArtifacts []*string
-
-	// The detailed error message for the pipeline run in the case of failure.
-	PipelineRunErrorMessage *string
-
-	// The current progress of the copy operation.
-	Progress *ProgressProperties
-
-	// The source of the pipeline run.
-	Source *ImportPipelineSourceProperties
-
-	// The time the pipeline run started.
-	StartTime *time.Time
-
-	// The current status of the pipeline run.
-	Status *string
-
-	// The target of the pipeline run.
-	Target *ExportPipelineTargetProperties
-
-	// The trigger that caused the pipeline run.
-	Trigger *PipelineTriggerDescriptor
-}
-
-// PipelineRunSourceProperties - The pipeline run source properties
-type PipelineRunSourceProperties struct {
-	// The name of the source.
-	Name *string
-
-	// The type of the source.
-	Type *PipelineRunSourceType
-}
-
-// PipelineRunTargetProperties - The pipeline run target properties
-type PipelineRunTargetProperties struct {
-	// The name of the target.
-	Name *string
-
-	// The type of the target.
-	Type *PipelineRunTargetType
-}
-
-// PipelineSourceTriggerDescriptor - The pipeline source trigger descriptor.
-type PipelineSourceTriggerDescriptor struct {
-	// The timestamp when the source update happened.
-	Timestamp *time.Time
-}
-
-// PipelineSourceTriggerProperties - The source trigger properties of the import pipeline
-type PipelineSourceTriggerProperties struct {
-	// REQUIRED; The current status of the source trigger.
-	Status *TriggerStatus
-}
-
-// PipelineTriggerDescriptor - The pipeline trigger descriptor
-type PipelineTriggerDescriptor struct {
-	// The source trigger that caused the pipeline run.
-	SourceTrigger *PipelineSourceTriggerDescriptor
-}
-
-// PipelineTriggerProperties - The trigger properties of the import pipeline
-type PipelineTriggerProperties struct {
-	// The source trigger properties of the pipeline.
-	SourceTrigger *PipelineSourceTriggerProperties
-}
-
 // Policies - The policies for a container registry.
 type Policies struct {
 	// The policy for using Azure Resource Manager audience token for a container registry.
@@ -1265,9 +638,6 @@ type Policies struct {
 
 	// The retention policy for a container registry.
 	RetentionPolicy *RetentionPolicy
-
-	// The soft delete policy for a container registry.
-	SoftDeletePolicy *SoftDeletePolicy
 
 	// The content trust policy for a container registry.
 	TrustPolicy *TrustPolicy
@@ -1371,12 +741,6 @@ type PrivateLinkServiceConnectionState struct {
 	Status *ConnectionStatus
 }
 
-// ProgressProperties - The progress properties.
-type ProgressProperties struct {
-	// The percentage complete of the copy operation.
-	Percentage *string
-}
-
 // QuarantinePolicy - The quarantine policy for a container registry.
 type QuarantinePolicy struct {
 	// The value that indicates whether the policy is enabled or not.
@@ -1446,19 +810,10 @@ type RegistryNameCheckRequest struct {
 	// CONSTANT; The resource type of the container registry. This field must be set to 'Microsoft.ContainerRegistry/registries'.
 	// Field has constant value "Microsoft.ContainerRegistry/registries", any specified value is ignored.
 	Type *string
-
-	// The auto generated domain name label of the container registry. This value defaults to "Unsecure".
-	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope
-
-	// The resource group name of the container registry.
-	ResourceGroupName *string
 }
 
 // RegistryNameStatus - The result of a request to check the availability of a container registry name.
 type RegistryNameStatus struct {
-	// The complete login server name with domain name label (DNL) hash, if available
-	AvailableLoginServerName *string
-
 	// If any, the error message that provides more detail for the reason that the name is not available.
 	Message *string
 
@@ -1486,9 +841,6 @@ type RegistryProperties struct {
 	// Enables registry-wide pull from unauthenticated clients.
 	AnonymousPullEnabled *bool
 
-	// Determines the domain name label reuse scope.
-	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope
-
 	// Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool
 
@@ -1497,9 +849,6 @@ type RegistryProperties struct {
 
 	// The connectivity protocol for the registry, such as IPv4 or dual stack (IPv4 and IPv6).
 	EndpointProtocol *EndpointProtocol
-
-	// Determines whether registry artifacts are indexed for metadata search.
-	MetadataSearch *MetadataSearch
 
 	// Whether or not Tasks allowed to bypass the network rules for this container registry.
 	NetworkRuleBypassAllowedForTasks *bool
@@ -1521,9 +870,6 @@ type RegistryProperties struct {
 
 	// Determines registry role assignment mode.
 	RoleAssignmentMode *RoleAssignmentMode
-
-	// Whether to allow cache operations that write to repositories in this registry.
-	WritableCacheRepos *WritableCacheRepos
 
 	// Whether or not zone redundancy is enabled for this container registry
 	ZoneRedundancy *ZoneRedundancy
@@ -1567,9 +913,6 @@ type RegistryPropertiesUpdateParameters struct {
 	// The connectivity protocol for the registry, such as IPv4 or dual stack (IPv4 and IPv6).
 	EndpointProtocol *EndpointProtocol
 
-	// Determines whether registry artifacts are indexed for metadata search.
-	MetadataSearch *MetadataSearch
-
 	// Whether to allow ACR Tasks service to access a network restricted registry.
 	NetworkRuleBypassAllowedForTasks *bool
 
@@ -1590,27 +933,6 @@ type RegistryPropertiesUpdateParameters struct {
 
 	// Determines registry role assignment mode.
 	RoleAssignmentMode *RoleAssignmentMode
-
-	// Whether to allow cache operations that write to repositories in this registry.
-	WritableCacheRepos *WritableCacheRepos
-}
-
-// RegistrySyncResult - The registry sync result of the connected registry.
-type RegistrySyncResult struct {
-	// READ-ONLY; The status of the connected registry's most recent sync.
-	SyncState *SyncState
-
-	// READ-ONLY; The action that triggered the most recent registry sync.
-	SyncTrigger *SyncTrigger
-
-	// The time that the connected registry's most recent successful sync ended.
-	LastSuccessfulSyncEndTime *time.Time
-
-	// The time that the connected registry's most recent sync ended.
-	LastSyncEndTime *time.Time
-
-	// The time that the connected registry's most recent sync started.
-	LastSyncStartTime *time.Time
 }
 
 // RegistryUpdateParameters - The parameters for updating a container registry.
@@ -1819,18 +1141,6 @@ type ScopeMapUpdateParameters struct {
 	Properties *ScopeMapPropertiesUpdateParameters
 }
 
-// SoftDeletePolicy - The soft delete policy for a container registry
-type SoftDeletePolicy struct {
-	// The number of days after which a soft-deleted item is permanently deleted.
-	RetentionDays *int32
-
-	// The value that indicates whether the policy is enabled or not.
-	Status *PolicyStatus
-
-	// READ-ONLY; The timestamp when the policy was last updated.
-	LastUpdatedTime *time.Time
-}
-
 // Source - The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
 // it.
 type Source struct {
@@ -1856,9 +1166,6 @@ type Status struct {
 
 // StatusDetailProperties - The status detail properties of the connected registry.
 type StatusDetailProperties struct {
-	// READ-ONLY; The available disk space in gibibytes (Gib, base-2).
-	AvailableGib *float64
-
 	// READ-ONLY; The HTTP status code.
 	Code *string
 
@@ -1871,9 +1178,6 @@ type StatusDetailProperties struct {
 	// READ-ONLY; The timestamp of the status.
 	Timestamp *time.Time
 
-	// READ-ONLY; The total disk space in gibibytes (Gib, base-2).
-	TotalGib *float64
-
 	// READ-ONLY; The component of the connected registry corresponding to the status.
 	Type *string
 }
@@ -1883,9 +1187,6 @@ type SyncProperties struct {
 	// REQUIRED; The period of time for which a message is available to sync before it is expired. Specify the duration using
 	// the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
 	MessageTTL *string
-
-	// The authentication type used for the connected registry to sync with its parent.
-	AuthType *AuthType
 
 	// The cron expression indicating the schedule that the connected registry will sync with its parent.
 	Schedule *string
@@ -1906,9 +1207,6 @@ type SyncProperties struct {
 
 // SyncUpdateProperties - The parameters for updating the sync properties of the connected registry with its parent.
 type SyncUpdateProperties struct {
-	// The authentication type used for the connected registry to sync with its parent.
-	AuthType *AuthType
-
 	// The period of time for which a message is available to sync before it is expired. Specify the duration using the format
 	// P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
 	MessageTTL *string
@@ -2094,15 +1392,6 @@ type TrustPolicy struct {
 
 	// The type of trust policy.
 	Type *TrustPolicyType
-}
-
-// UserAssignedIdentity - User assigned identity properties
-type UserAssignedIdentity struct {
-	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string
-
-	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string
 }
 
 type UserIdentityProperties struct {

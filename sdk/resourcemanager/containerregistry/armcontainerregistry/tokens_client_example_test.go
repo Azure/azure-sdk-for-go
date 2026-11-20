@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-10-15-preview/TokenCreate.json
+// Generated from example definition: 2026-11-01/TokenCreate.json
 func ExampleTokensClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleTokensClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-15-preview/TokenDelete.json
+// Generated from example definition: 2026-11-01/TokenDelete.json
 func ExampleTokensClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleTokensClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-15-preview/TokenUpdate.json
+// Generated from example definition: 2026-11-01/TokenUpdate.json
 func ExampleTokensClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleTokensClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-15-preview/TokenGet.json
+// Generated from example definition: 2026-11-01/TokenGet.json
 func ExampleTokensClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleTokensClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-15-preview/TokenList.json
+// Generated from example definition: 2026-11-01/TokenList.json
 func ExampleTokensClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

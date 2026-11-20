@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0 (2026-11-18)
+## 1.6.0 (2026-11-20)
 
 ### Features Added
 * Added the `SecureWrapKey` and `SecureUnwrapKey` operations

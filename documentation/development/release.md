@@ -30,7 +30,7 @@ Obtain package-name approval and any required API review approval before releasi
 
 Repository registration and authorization of the **ADO to ARH Service Connection** are required; forks also need the GitHub Apps described in the [onboarding guide](https://github.com/Azure/azure-sdk-tools/wiki/API-Review-Hub-Onboarding).
 
-Review generation and release checks build the Go APIView parser and copy the Markdown renderer from the immutable `azure-sdk-tools` commit in [`eng/api-review-tools.json`](../../eng/api-review-tools.json). Update this pin deliberately and regenerate affected reviews when the tooling changes. The Hub's `toolsRef` selects orchestration code, not the parser or renderer.
+Review generation and release checks build the Go APIView parser and copy the Markdown renderer from the immutable `azure-sdk-tools` commit in `eng/api-review-tools.json`. Update this pin deliberately and regenerate affected reviews when the tooling changes. The Hub's `toolsRef` selects orchestration code, not the parser or renderer.
 
 Tool builds verify aliased composite types and methods, alias identity, generic interface constraints, exported function names, and dependency-version resolution using an offline probe. Bundle generation rejects parser error and fatal diagnostics rather than approving incomplete APIs; informational and warning diagnostics are allowed.
 

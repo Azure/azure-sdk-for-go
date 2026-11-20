@@ -6,12 +6,13 @@ catalog (schema, profiles, and scenario metadata) from `Azure/azure-sdk-for-rust
 Pinned revision: `bfb35725eb9b02ab845c37c781db2ae364d26622` (`sdk/cosmos/e2e_tests`).
 
 This revision is **not** the same as the `EmulatorSourceRevision` pinned in `../../ci.yml`
-(`a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e`). That emulator build predates the catalog
-(2026-09-02, versus the catalog's introduction on 2026-09-11) and has no hosted-emulator
-management API for deterministic fault/topology control. Smoke-tier scenarios that only need
-item CRUD and query run against the currently pinned emulator; scenarios whose
-`implementations.go` entry is `StatusBlocked` with a reason mentioning "emulator capability"
-require bumping `EmulatorSourceRevision` first. Do not silently widen scope by relaxing that gap.
+(`408c4eb145b189cb14771ed7ae1f52626e5873ef`). The emulator exposes a versioned management
+capabilities endpoint and deterministic region/partition topology controls, but it does not expose
+the deterministic fault-injection API required by the resilience scenarios. The Go fixture
+realizes the `sessionSingleRegion` and `sessionTwoRegionsDelayed` account profiles with the public
+azcosmos/v2 options; dynamic-topology scenario ports and a topology-control client remain out of
+scope. Check each scenario's backend requirements and Go implementation entry rather than
+assuming every blocker is cleared by changing the emulator revision.
 
 Do not hand-edit these JSON files. To refresh the pin:
 

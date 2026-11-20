@@ -1,0 +1,54 @@
+{
+  "account": {
+    "id": "sessionTwoRegionsDelayed",
+    "writeMode": "single",
+    "consistency": "session",
+    "perPartitionFailover": false,
+    "throttling": false,
+    "regions": [
+      {
+        "name": "East US",
+        "gatewayPort": 0,
+        "regionId": 0
+      },
+      {
+        "name": "West US",
+        "gatewayPort": 0,
+        "regionId": 1
+      }
+    ],
+    "replication": {
+      "minDelayMs": 750,
+      "maxDelayMs": 750,
+      "maxBufferedReplications": 10000
+    }
+  },
+  "management": {
+    "port": 0
+  },
+  "databases": [
+    {
+      "id": "itemdb",
+      "containers": [
+        {
+          "id": "items",
+          "partitionKey": { "paths": ["/pk"], "kind": "Hash", "version": 2 },
+          "partitionCount": 4,
+          "throughput": 400
+        },
+        {
+          "id": "query-hierarchical",
+          "partitionKey": { "paths": ["/pk", "/child"], "kind": "MultiHash", "version": 2 },
+          "partitionCount": 4,
+          "throughput": 400
+        },
+        {
+          "id": "batch-hierarchical",
+          "partitionKey": { "paths": ["/pk", "/child", "/leaf"], "kind": "MultiHash", "version": 2 },
+          "partitionCount": 4,
+          "throughput": 400
+        }
+      ]
+    }
+  ]
+}

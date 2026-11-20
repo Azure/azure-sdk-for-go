@@ -8,6 +8,13 @@
 Emulator-based end-to-end tests are described in the README's
 [Running the end-to-end tests](README.md#running-the-end-to-end-tests) section.
 
+## Change-feed contract tests
+
+The scripted HTTP tests in `change_feed_contract_native_test.go` run the published
+native driver against controlled responses. They check ownership of raw JSON
+envelopes, checkpoint compatibility, and routing across scripted physical ranges.
+They do not establish service-side prefix filtering or historical change fidelity.
+
 ## Azure Live smoke tests
 
 `ci.yml` keeps unit and emulator validation unchanged and adds an opt-in, Linux amd64
@@ -19,12 +26,14 @@ same bounded smoke suite. Separate definitions can reuse this `ci.yml`; no separ
 Only those live-run contexts opt in to the additional Cosmos outbound-network policy;
 ordinary Cosmos validation and other Go pipelines retain the shared policy defaults.
 
-The selection in [`internal/e2e/live.go`](internal/e2e/live.go) contains five permanent
-shared scenario IDs: `bootstrap.primary-success`, `item.lifecycle`,
-`item.optimistic-concurrency`, `diagnostics.success-and-error`, and
-`query.pagination-resume`. The first four select `smokeTests`; pagination selects
-`coreOperations`. This certifies only these selected scenarios, not every scenario or
-axis in either profile. Extended, multi-region, and long-running partition-split
+The selection in [`internal/e2e/live.go`](internal/e2e/live.go) contains six shared
+scenario IDs: `bootstrap.primary-success`, `item.lifecycle`,
+`item.optimistic-concurrency`, `diagnostics.success-and-error`,
+`query.pagination-resume`, and `changefeed.pagination-resume`. The two pagination
+scenarios select `coreOperations`; the others select `smokeTests`. The change-feed case
+checks fresh-client resume after idle, point-in-time filtering, and prefix isolation and
+resume within one verified physical range. Multi-range change-feed behavior is not
+covered by this lane. Extended, multi-region, and long-running partition-split
 profiles are not implemented by this lane, including on scheduled runs.
 The pinned catalog is not refreshed. Its single-region East US profiles are explicitly
 adapted to East US 2 for live smoke; all other profile requirements remain unchanged.
@@ -33,7 +42,8 @@ unmodified profile run. Unsupported deployment regions, setup requirements, and 
 required live scenarios fail validation before network I/O.
 
 For local execution, use a dedicated single-region East US 2 Session account and a
-database/container with partition-key path `/pk`. The identity needs Cosmos DB
+database with a `/pk` container and a single-range hierarchical container with paths
+`/tenant` and `/user`. The identity needs Cosmos DB
 data-plane permissions for metadata, items, and queries at database scope; management
 permissions alone are insufficient. Live tests authenticate only with Microsoft Entra ID;
 disable local (key) authentication on the account (`disableLocalAuth: true`) so account
@@ -49,6 +59,7 @@ $env:AZURE_COSMOS_E2E_BACKEND = 'azureLive'
 $env:AZCOSMOS_ENDPOINT = 'https://<test-account>.documents.azure.com/'
 $env:AZCOSMOS_DATABASE = '<test-database>'
 $env:AZCOSMOS_CONTAINER = '<test-container>'
+$env:AZCOSMOS_HPK_CONTAINER = '<hierarchical-test-container>'
 $env:AZCOSMOS_REGION = 'eastus2'
 $env:CGO_ENABLED = '1'
 ./sdk/data/azcosmos/eng/scripts/Invoke-LiveTests.ps1 -OutputDirectory <temporary-results-directory>
@@ -79,7 +90,7 @@ reuse is covered without claiming broader session-management profile coverage.
 
 [`test-resources.bicep`](test-resources.bicep) uses the deployment location (East US 2
 in CI) to create a run-owned Session account,
-database, 400 RU/s container, and database-scoped data role assignment. The account
+database, two containers at 400 RU/s each, and a database-scoped data role assignment. The account
 disables local (key) authentication, so only Entra ID tokens are accepted and no account
 keys are emitted. Live jobs allow 45 minutes for provisioning and execution, with a 15-minute
 cancellation cleanup grace period. Teardown runs on success, failure, and cancellation;

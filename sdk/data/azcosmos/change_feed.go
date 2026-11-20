@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"encoding/json"
 	"errors"
 	"strings"
 	"time"
@@ -23,7 +24,7 @@ const (
 )
 
 // ChangeFeedStartFrom is an explicit initial position. Its zero value is invalid.
-// A resume token takes precedence over this position, but the position must still be valid.
+// When resuming with a checkpoint, supply the same start position as the original pager.
 type ChangeFeedStartFrom struct {
 	kind uint32
 	time time.Time
@@ -63,13 +64,53 @@ type ChangeFeedOptions struct {
 // Empty and HTTP 304 pages remain pollable. One idle range does not imply container-wide catch-up.
 type ChangeFeedResponse struct {
 	Response
-	// Items contains independently owned raw JSON change envelopes in native order.
-	// Optional previous images, metadata and unknown fields are preserved without synthesis.
+	// Items contains independently owned raw JSON feed entries in feed order.
+	// Use DecodeChangeFeedItem to read entries that are change envelopes into a typed model.
 	Items [][]byte
 	// ETag is the page's service position, not a resumable planner checkpoint.
 	ETag azcore.ETag
 	// SessionToken is the session token returned for this page.
 	SessionToken SessionToken
+}
+
+// ChangeFeedItem contains the item images and metadata supplied for one change.
+// Each field is nil when its value is absent or null.
+type ChangeFeedItem[T any] struct {
+	Current  *T                  `json:"current"`
+	Previous *T                  `json:"previous"`
+	Metadata *ChangeFeedMetadata `json:"metadata"`
+}
+
+// ChangeFeedMetadata describes a change. The feed mode determines which fields are available.
+type ChangeFeedMetadata struct {
+	// OperationType is the operation reported by the service, such as "create", "replace",
+	// or "delete". It is empty if not supplied. Other values can be returned.
+	OperationType string `json:"operationType"`
+	// LSN is the logical sequence number, or nil if not supplied.
+	LSN *int64 `json:"lsn"`
+}
+
+// DecodeChangeFeedItem decodes one change envelope from ChangeFeedResponse.Items.
+// It returns the zero item and an error if raw is not an envelope or a field fails to decode.
+// If the backend returns a plain document instead, decode it directly into the document model.
+// Unknown fields are ignored in the typed result but remain available in raw.
+func DecodeChangeFeedItem[T any](raw []byte) (ChangeFeedItem[T], error) {
+	var envelope struct {
+		Current  json.RawMessage `json:"current"`
+		Previous json.RawMessage `json:"previous"`
+		Metadata json.RawMessage `json:"metadata"`
+	}
+	if err := json.Unmarshal(raw, &envelope); err != nil {
+		return ChangeFeedItem[T]{}, err
+	}
+	if envelope.Current == nil && envelope.Previous == nil && envelope.Metadata == nil {
+		return ChangeFeedItem[T]{}, errors.New("azcosmos: expected a change feed envelope")
+	}
+	var item ChangeFeedItem[T]
+	if err := json.Unmarshal(raw, &item); err != nil {
+		return ChangeFeedItem[T]{}, err
+	}
+	return item, nil
 }
 
 type changeFeedRequest struct {

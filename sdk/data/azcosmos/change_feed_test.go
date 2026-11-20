@@ -279,6 +279,42 @@ func TestChangeFeedCloseWaitsForActiveCall(t *testing.T) {
 	require.False(t, pager.More())
 }
 
+func TestDecodeChangeFeedItem(t *testing.T) {
+	type document struct {
+		ID string `json:"id"`
+		N  int64  `json:"n"`
+	}
+	const large = int64(9007199254740993)
+	for _, tt := range []struct {
+		name string
+		raw  string
+		want ChangeFeedItem[document]
+	}{
+		{"create", `{"current":{"id":"a"},"metadata":{"operationType":"create"}}`,
+			ChangeFeedItem[document]{Current: &document{ID: "a"}, Metadata: &ChangeFeedMetadata{OperationType: "create"}}},
+		{"replace", `{"current":{"id":"a","n":9007199254740993},"previous":{"id":"a","n":1},"metadata":{"operationType":"replace","lsn":9007199254740993,"future":true},"future":[1]}`,
+			ChangeFeedItem[document]{Current: &document{ID: "a", N: large}, Previous: &document{ID: "a", N: 1}, Metadata: &ChangeFeedMetadata{OperationType: "replace", LSN: to(large)}}},
+		{"delete", `{"current":null,"previous":{"id":"a"},"metadata":{"operationType":"delete"}}`,
+			ChangeFeedItem[document]{Previous: &document{ID: "a"}, Metadata: &ChangeFeedMetadata{OperationType: "delete"}}},
+		{"latest version", `{"current":{"id":"a"},"previous":null,"metadata":null}`,
+			ChangeFeedItem[document]{Current: &document{ID: "a"}}},
+		{"null envelope images", `{"current":null,"previous":null}`, ChangeFeedItem[document]{}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			raw := []byte(tt.raw)
+			got, err := DecodeChangeFeedItem[document](raw)
+			require.NoError(t, err)
+			require.Equal(t, tt.want, got)
+			require.Equal(t, tt.raw, string(raw))
+		})
+	}
+	for _, raw := range []string{`{"current":`, `null`, `[]`, `{"id":"plain"}`, `{"current":{"id":"a"},"metadata":{"lsn":"bad"}}`} {
+		got, err := DecodeChangeFeedItem[document]([]byte(raw))
+		require.Error(t, err)
+		require.Zero(t, got, "do not return a partially decoded item")
+	}
+}
+
 func TestChangeFeedPreservesRawEnvelopesAndMetadata(t *testing.T) {
 	items := []string{
 		`{"current":{"id":"one","large":9007199254740993},"metadata":{"operationType":"create"},"future":[1,true]}`,

@@ -11,8 +11,9 @@ import (
 
 // NewChangeFeedPager reads changes for an explicit scope and initial position.
 // Construction performs no I/O; NextPage reports argument errors. Nil options use LatestVersion.
-// Complete keys, explicit feed ranges, HPK prefixes and full-container scopes follow native routing.
-// Unsupported scopes return native errors; they must never widen to a physical partition.
+// Use a complete partition key, explicit feed range or full-container scope. Hierarchical key prefixes
+// have not been verified against the live service for change-feed reads.
+// Unsupported feed ranges fail explicitly rather than widening to physical partitions.
 // Defer Close. Empty and HTTP 304 pages remain usable; callers choose when to poll again.
 func (c *ContainerClient) NewChangeFeedPager(scope FeedScope, startFrom ChangeFeedStartFrom, options *ChangeFeedOptions) *ChangeFeedPager {
 	req, err := newChangeFeedRequest(scope, startFrom, options)
@@ -95,8 +96,8 @@ func (p *ChangeFeedPager) NextPage(ctx context.Context) (ChangeFeedResponse, err
 
 // ContinuationToken snapshots progress delivered to Go without advancing the feed.
 // Call after a successful NextPage, including an idle page, and before Close.
-// Resume using the same container, scope and mode. StartFrom is validated but the token's saved
-// positions take precedence. Go does not parse tokens, restore their scope or enforce scope equality.
+// Resume using the same container, scope, mode and explicit start position as the original pager.
+// The token is opaque and does not restore or validate the caller's scope.
 // The checkpoint does not acknowledge application processing or guarantee exactly-once delivery.
 func (p *ChangeFeedPager) ContinuationToken(ctx context.Context) (string, error) {
 	p.mu.Lock()

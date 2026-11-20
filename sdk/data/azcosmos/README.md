@@ -547,56 +547,29 @@ still require a native contract change.
 
 ### Reading the change feed
 
-`ContainerClient.NewChangeFeedPager(scope, startFrom, options)` reads changes through the
-released Rust driver's retained cursor contract. Pass an explicit `FeedScope` and one of
-`NewChangeFeedStartFromBeginning()`, `NewChangeFeedStartFromNow()`, or
-`NewChangeFeedStartFromPointInTime(time)`. Construction performs no I/O and snapshots the
-inputs; `NextPage` reports argument and execution errors.
+Use `ContainerClient.NewChangeFeedPager(scope, startFrom, options)` with a complete partition
+key or a full-container scope. Hierarchical partition key prefixes have not been verified
+against the live service for change-feed reads.
 
-Nil options and a zero `ChangeFeedOptions.Mode` select `ChangeFeedModeLatestVersion`.
-LatestVersion accepts beginning, now, and time starts. `ChangeFeedModeAllVersionsAndDeletes`
-requires a supported account and retention policy; fresh reads start from now. Beginning
-and time starts in that mode are passed through for the service to reject. The service uses
-second precision for time starts. Account enablement, retention, and mode/start restrictions
-remain driver or service errors rather than duplicated Go policy.
+The default mode, `ChangeFeedModeLatestVersion`, supports starting from the beginning, now,
+or a point in time (second precision). For `ChangeFeedModeAllVersionsAndDeletes`, use a
+supported account and start from now or resume from a checkpoint within the retention window.
 
-Use a complete partition key or full-container scope. Hierarchical prefixes are forwarded to
-the native driver, but live testing of the draft change-feed dependency reproduced HTTP
-400/substatus 1001 for prefix scopes; do not assume that scripted fan-out certifies service support.
-`ChangeFeedOptions.Feed` supplies the page-size hint and initial
-fan-out limit with the same semantics as queries. Partition-scoped pagers perform the same
-additional container-metadata read and first-page charge accounting as query pagers.
+Poll with `NextPage` and call `Close` when you're done. Empty pages and HTTP 304 mean you
+can poll again, not that the feed is finished. In a full-container feed, an idle page for
+one range does not mean other ranges are caught up. `More()` only tells you the pager is open.
 
-`ChangeFeedResponse.Items` contains independently owned raw JSON change envelopes. Optional
-`previous` images, metadata, unknown fields, and numeric precision are preserved; Go does not
-unwrap `current` or synthesize missing data. `Response` carries status, charge, activity ID,
-and diagnostics, and the change-feed response also carries the returned ETag and session token.
-The ETag is a service position, **not** a driver checkpoint.
+`ChangeFeedResponse.Items` holds raw JSON. For change envelopes, use
+`azcosmos.DecodeChangeFeedItem[YourModel](raw)` to read the current image, previous image,
+and metadata when present. Keep the raw JSON if you need additional fields. If your backend
+returns a plain document rather than an envelope, decode it directly into your model.
 
-Empty and HTTP 304 pages are successful, pollable pages, not EOF. `More()` means that the
-pager is open, not that changes are immediately available. Callers choose polling cadence
-and when to stop. A full-container pager can return an idle page from one range while other
-ranges still have changes; one HTTP 304 must not be treated as container-wide catch-up.
-
-After a successful page, including an idle page, call `pager.ContinuationToken(ctx)` before
-Close. This snapshots delivered-to-Go progress without fetching another page. To resume,
-supply that opaque token through `ChangeFeedOptions.Feed.ContinuationToken` and use the same
-container, scope, and mode. An explicit valid start is still required, but saved token
-positions take precedence. Go does not parse or wrap tokens, recover their scope, or impose
-extra scope-equality checks; native compatibility errors are preserved. A checkpoint is not
-application acknowledgement and does not provide exactly-once delivery. Persist it according
-to the application's processing and replay policy.
-
-The draft dependency's earlier live run also reproduced historical loss when resuming an untouched
-range with a different `Now` start. The native owner reports the start-header fixes are included in
-v0.3.0, and current scripted tests pass, but live recertification is still required.
-
-Defer `pager.Close()` when stopping. Execution or admitted cancellation failures terminate
-the pager. As with queries, contexts bound the Go wait rather than cancel admitted native
-work, per-page timeouts retain the configured native duration, late completions are drained,
-and `Client.Close` waits for pending cleanup. Iteration and checkpoint calls must not be
-concurrent; Close synchronizes with active calls. Query and change-feed cursors share the
-existing client-owned reactor.
+After processing a successful page (including an idle page), call `pager.ContinuationToken(ctx)`
+before closing the pager. Save that opaque token, not the page ETag. To resume, pass it in
+`ChangeFeedOptions.Feed.ContinuationToken` with the same container, scope, mode, and start
+position used originally. Keep the last saved checkpoint if a page fetch fails and you need
+to open a new pager. A checkpoint does not acknowledge application processing or guarantee
+exactly-once delivery.
 
 ### Feed ranges (unpublished native extension)
 
@@ -631,9 +604,9 @@ Scripted checkpoint tests cover both same-client split recovery and fresh-client
 resumption, but scripted and local native checks are not live split/merge evidence.
 The compiling `ExampleContainerClient_GetFeedRanges` assigns one change-feed reader per range.
 
-The Go change-feed implementation is locally integrated from draft
-[#27709](https://github.com/Azure/azure-sdk-for-go/pull/27709) at
-`3bf69ee023397e17950732f34f84b02959bb31b8`; that integration does not mean the dependency is merged.
+Feed-range scopes extend the change-feed reader landed in
+[#27709](https://github.com/Azure/azure-sdk-for-go/pull/27709), retaining its typed helpers,
+tests, and checkpoint guidance.
 Before enabling the default path, publish matching macOS arm64 and Linux amd64 native modules,
 generated header and checksums with source provenance, then update both Go module pins,
 `nativeDriverVersion`, and compatibility checks together.

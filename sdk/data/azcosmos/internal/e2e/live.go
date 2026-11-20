@@ -31,6 +31,7 @@ var LiveScenarios = []LiveScenario{
 	{ID: "item.optimistic-concurrency", Profile: "smokeTests"},
 	{ID: "diagnostics.success-and-error", Profile: "smokeTests"},
 	{ID: "query.pagination-resume", Profile: "coreOperations"},
+	{ID: "changefeed.pagination-resume", Profile: "coreOperations"},
 }
 
 // ValidateLiveSelection rejects catalog drift and unsupported requirements before network I/O.

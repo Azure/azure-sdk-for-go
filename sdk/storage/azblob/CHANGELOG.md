@@ -1,5 +1,10 @@
 # Release History
 
+## 1.9.0-beta.2 (Unreleased)
+
+### Bugs Fixed
+* Fixed `blob.Client.DownloadStream` omitting object replication policies and rule statuses returned by the service.
+
 ## 1.9.0-beta.1 (2026-11-12)
 
 ### Features Added

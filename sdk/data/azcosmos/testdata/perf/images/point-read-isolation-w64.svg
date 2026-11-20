@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="970" viewBox="0 0 1240 970" role="img" aria-labelledby="title description">
+<!-- cspell:ignore labelledby -->
+<title id="title">W64 - Allocator isolation: T2 / T3</title>
+<desc id="description">Four zero-based horizontal bar charts show reads per second, process CPU microseconds per read, mean repeat p99 latency and whole-process RSS. Each chart uses only rows from one run. Two repeats per cell; not a confidence interval. Scales are shared with the other run chart.</desc>
+<rect width="1240" height="970" fill="#f8fafc"/>
+<g font-family="Arial, Helvetica, sans-serif" fill="#0f172a">
+<text x="24" y="38" font-size="26" font-weight="700">W64 | Allocator isolation: T2 / T3</text>
+<text x="24" y="65" font-size="16">November 6, 2026 | 4 vCPU | Gateway V1 / HTTP/2 | 1,024-byte point reads | n = 2</text>
+<text x="24" y="91" font-size="16">Go v1 reference and glibc/mimalloc x Tokio 2/3 in one run.</text>
+<rect x="24" y="114" width="592" height="398" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+<text x="40" y="143" font-size="20" font-weight="700">Throughput</text>
+<text x="40" y="167" font-size="14" fill="#475569">reads/s | higher is better</text>
+<line x1="215.00" x2="215.00" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="215.00" y="501" text-anchor="middle" font-size="12" fill="#475569">0k</text>
+<line x1="287.50" x2="287.50" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="287.50" y="501" text-anchor="middle" font-size="12" fill="#475569">6k</text>
+<line x1="360.00" x2="360.00" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="360.00" y="501" text-anchor="middle" font-size="12" fill="#475569">12k</text>
+<line x1="432.50" x2="432.50" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="432.50" y="501" text-anchor="middle" font-size="12" fill="#475569">18k</text>
+<line x1="505.00" x2="505.00" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="505.00" y="501" text-anchor="middle" font-size="12" fill="#475569">24k</text>
+<g data-series="isolation" data-row="0" data-metric="reads_per_second" data-value="16405">
+<title>Go v1: 16,405 reads/s</title>
+<text x="36" y="204" font-size="13">Go v1</text>
+<rect x="215" y="189" width="198.2271" height="22" rx="2" fill="#64748b"/>
+<text x="420.23" y="204" font-size="14" font-weight="700">16,405</text>
+</g>
+<g data-series="isolation" data-row="1" data-metric="reads_per_second" data-value="8630">
+<title>Go v2 glibc T2: 8,630 reads/s</title>
+<text x="36" y="236" font-size="13">Go v2 glibc T2</text>
+<rect x="215" y="221" width="104.2792" height="22" rx="2" fill="#2563eb"/>
+<text x="326.28" y="236" font-size="14" font-weight="700">8,630</text>
+</g>
+<g data-series="isolation" data-row="2" data-metric="reads_per_second" data-value="12366">
+<title>Go v2 mimalloc T2: 12,366 reads/s</title>
+<text x="36" y="268" font-size="13">Go v2 mimalloc T2</text>
+<rect x="215" y="253" width="149.4225" height="22" rx="2" fill="#0f766e"/>
+<text x="371.42" y="268" font-size="14" font-weight="700">12,366</text>
+</g>
+<g data-series="isolation" data-row="3" data-metric="reads_per_second" data-value="10243">
+<title>Go v2 glibc T3: 10,243 reads/s</title>
+<text x="36" y="300" font-size="13">Go v2 glibc T3</text>
+<rect x="215" y="285" width="123.7696" height="22" rx="2" fill="#2563eb"/>
+<text x="345.77" y="300" font-size="14" font-weight="700">10,243</text>
+</g>
+<g data-series="isolation" data-row="4" data-metric="reads_per_second" data-value="15599">
+<title>Go v2 mimalloc T3: 15,599 reads/s</title>
+<text x="36" y="332" font-size="13">Go v2 mimalloc T3</text>
+<rect x="215" y="317" width="188.4879" height="22" rx="2" fill="#0f766e"/>
+<text x="410.49" y="332" font-size="14" font-weight="700">15,599</text>
+</g>
+<g data-series="isolation" data-row="5" data-metric="reads_per_second" data-value="10671">
+<title>Rust SDK glibc T2: 10,671 reads/s</title>
+<text x="36" y="364" font-size="13">Rust SDK glibc T2</text>
+<rect x="215" y="349" width="128.9412" height="22" rx="2" fill="#a16207"/>
+<text x="350.94" y="364" font-size="14" font-weight="700">10,671</text>
+</g>
+<g data-series="isolation" data-row="6" data-metric="reads_per_second" data-value="16159">
+<title>Rust SDK mimalloc T2: 16,159 reads/s</title>
+<text x="36" y="396" font-size="13">Rust SDK mimalloc T2</text>
+<rect x="215" y="381" width="195.2546" height="22" rx="2" fill="#9333ea"/>
+<text x="417.25" y="396" font-size="14" font-weight="700">16,159</text>
+</g>
+<g data-series="isolation" data-row="7" data-metric="reads_per_second" data-value="12534">
+<title>Rust SDK glibc T3: 12,534 reads/s</title>
+<text x="36" y="428" font-size="13">Rust SDK glibc T3</text>
+<rect x="215" y="413" width="151.4525" height="22" rx="2" fill="#a16207"/>
+<text x="373.45" y="428" font-size="14" font-weight="700">12,534</text>
+</g>
+<g data-series="isolation" data-row="8" data-metric="reads_per_second" data-value="19143">
+<title>Rust SDK mimalloc T3: 19,143 reads/s</title>
+<text x="36" y="460" font-size="13">Rust SDK mimalloc T3</text>
+<rect x="215" y="445" width="231.3113" height="22" rx="2" fill="#9333ea"/>
+<text x="453.31" y="460" font-size="14" font-weight="700">19,143</text>
+</g>
+<rect x="640" y="114" width="592" height="398" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+<text x="656" y="143" font-size="20" font-weight="700">Process CPU per read</text>
+<text x="656" y="167" font-size="14" fill="#475569">us/read | lower is better</text>
+<line x1="831.00" x2="831.00" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="831.00" y="501" text-anchor="middle" font-size="12" fill="#475569">0</text>
+<line x1="903.50" x2="903.50" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="903.50" y="501" text-anchor="middle" font-size="12" fill="#475569">90</text>
+<line x1="976.00" x2="976.00" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="976.00" y="501" text-anchor="middle" font-size="12" fill="#475569">180</text>
+<line x1="1048.50" x2="1048.50" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="1048.50" y="501" text-anchor="middle" font-size="12" fill="#475569">270</text>
+<line x1="1121.00" x2="1121.00" y1="189" y2="484" stroke="#e2e8f0"/>
+<text x="1121.00" y="501" text-anchor="middle" font-size="12" fill="#475569">360</text>
+<g data-series="isolation" data-row="0" data-metric="cpu_us_per_read" data-value="164.2">
+<title>Go v1: 164.2 us/read</title>
+<text x="652" y="204" font-size="13">Go v1</text>
+<rect x="831" y="189" width="132.2722" height="22" rx="2" fill="#64748b"/>
+<text x="970.27" y="204" font-size="14" font-weight="700">164.2</text>
+</g>
+<g data-series="isolation" data-row="1" data-metric="cpu_us_per_read" data-value="284.9">
+<title>Go v2 glibc T2: 284.9 us/read</title>
+<text x="652" y="236" font-size="13">Go v2 glibc T2</text>
+<rect x="831" y="221" width="229.5028" height="22" rx="2" fill="#2563eb"/>
+<text x="1067.50" y="236" font-size="14" font-weight="700">284.9</text>
+</g>
+<g data-series="isolation" data-row="2" data-metric="cpu_us_per_read" data-value="211.2">
+<title>Go v2 mimalloc T2: 211.2 us/read</title>
+<text x="652" y="268" font-size="13">Go v2 mimalloc T2</text>
+<rect x="831" y="253" width="170.1333" height="22" rx="2" fill="#0f766e"/>
+<text x="1008.13" y="268" font-size="14" font-weight="700">211.2</text>
+</g>
+<g data-series="isolation" data-row="3" data-metric="cpu_us_per_read" data-value="315.0">
+<title>Go v2 glibc T3: 315.0 us/read</title>
+<text x="652" y="300" font-size="13">Go v2 glibc T3</text>
+<rect x="831" y="285" width="253.7500" height="22" rx="2" fill="#2563eb"/>
+<text x="1091.75" y="300" font-size="14" font-weight="700">315.0</text>
+</g>
+<g data-series="isolation" data-row="4" data-metric="cpu_us_per_read" data-value="215.8">
+<title>Go v2 mimalloc T3: 215.8 us/read</title>
+<text x="652" y="332" font-size="13">Go v2 mimalloc T3</text>
+<rect x="831" y="317" width="173.8389" height="22" rx="2" fill="#0f766e"/>
+<text x="1011.84" y="332" font-size="14" font-weight="700">215.8</text>
+</g>
+<g data-series="isolation" data-row="5" data-metric="cpu_us_per_read" data-value="171.8">
+<title>Rust SDK glibc T2: 171.8 us/read</title>
+<text x="652" y="364" font-size="13">Rust SDK glibc T2</text>
+<rect x="831" y="349" width="138.3944" height="22" rx="2" fill="#a16207"/>
+<text x="976.39" y="364" font-size="14" font-weight="700">171.8</text>
+</g>
+<g data-series="isolation" data-row="6" data-metric="cpu_us_per_read" data-value="121.8">
+<title>Rust SDK mimalloc T2: 121.8 us/read</title>
+<text x="652" y="396" font-size="13">Rust SDK mimalloc T2</text>
+<rect x="831" y="381" width="98.1167" height="22" rx="2" fill="#9333ea"/>
+<text x="936.12" y="396" font-size="14" font-weight="700">121.8</text>
+</g>
+<g data-series="isolation" data-row="7" data-metric="cpu_us_per_read" data-value="216.2">
+<title>Rust SDK glibc T3: 216.2 us/read</title>
+<text x="652" y="428" font-size="13">Rust SDK glibc T3</text>
+<rect x="831" y="413" width="174.1611" height="22" rx="2" fill="#a16207"/>
+<text x="1012.16" y="428" font-size="14" font-weight="700">216.2</text>
+</g>
+<g data-series="isolation" data-row="8" data-metric="cpu_us_per_read" data-value="152.4">
+<title>Rust SDK mimalloc T3: 152.4 us/read</title>
+<text x="652" y="460" font-size="13">Rust SDK mimalloc T3</text>
+<rect x="831" y="445" width="122.7667" height="22" rx="2" fill="#9333ea"/>
+<text x="960.77" y="460" font-size="14" font-weight="700">152.4</text>
+</g>
+<rect x="24" y="528" width="592" height="398" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+<text x="40" y="557" font-size="20" font-weight="700">Mean repeat p99 latency</text>
+<text x="40" y="581" font-size="14" fill="#475569">ms | lower is better; not pooled p99</text>
+<line x1="215.00" x2="215.00" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="215.00" y="915" text-anchor="middle" font-size="12" fill="#475569">0</text>
+<line x1="287.50" x2="287.50" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="287.50" y="915" text-anchor="middle" font-size="12" fill="#475569">3.5</text>
+<line x1="360.00" x2="360.00" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="360.00" y="915" text-anchor="middle" font-size="12" fill="#475569">7</text>
+<line x1="432.50" x2="432.50" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="432.50" y="915" text-anchor="middle" font-size="12" fill="#475569">10.5</text>
+<line x1="505.00" x2="505.00" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="505.00" y="915" text-anchor="middle" font-size="12" fill="#475569">14</text>
+<g data-series="isolation" data-row="0" data-metric="p99_ms" data-value="8.79">
+<title>Go v1: 8.79 ms</title>
+<text x="36" y="618" font-size="13">Go v1</text>
+<rect x="215" y="603" width="182.0786" height="22" rx="2" fill="#64748b"/>
+<text x="404.08" y="618" font-size="14" font-weight="700">8.79</text>
+</g>
+<g data-series="isolation" data-row="1" data-metric="p99_ms" data-value="12.83">
+<title>Go v2 glibc T2: 12.83 ms</title>
+<text x="36" y="650" font-size="13">Go v2 glibc T2</text>
+<rect x="215" y="635" width="265.7643" height="22" rx="2" fill="#2563eb"/>
+<text x="487.76" y="650" font-size="14" font-weight="700">12.83</text>
+</g>
+<g data-series="isolation" data-row="2" data-metric="p99_ms" data-value="9.40">
+<title>Go v2 mimalloc T2: 9.40 ms</title>
+<text x="36" y="682" font-size="13">Go v2 mimalloc T2</text>
+<rect x="215" y="667" width="194.7143" height="22" rx="2" fill="#0f766e"/>
+<text x="416.71" y="682" font-size="14" font-weight="700">9.40</text>
+</g>
+<g data-series="isolation" data-row="3" data-metric="p99_ms" data-value="11.11">
+<title>Go v2 glibc T3: 11.11 ms</title>
+<text x="36" y="714" font-size="13">Go v2 glibc T3</text>
+<rect x="215" y="699" width="230.1357" height="22" rx="2" fill="#2563eb"/>
+<text x="452.14" y="714" font-size="14" font-weight="700">11.11</text>
+</g>
+<g data-series="isolation" data-row="4" data-metric="p99_ms" data-value="7.84">
+<title>Go v2 mimalloc T3: 7.84 ms</title>
+<text x="36" y="746" font-size="13">Go v2 mimalloc T3</text>
+<rect x="215" y="731" width="162.4000" height="22" rx="2" fill="#0f766e"/>
+<text x="384.40" y="746" font-size="14" font-weight="700">7.84</text>
+</g>
+<g data-series="isolation" data-row="5" data-metric="p99_ms" data-value="10.48">
+<title>Rust SDK glibc T2: 10.48 ms</title>
+<text x="36" y="778" font-size="13">Rust SDK glibc T2</text>
+<rect x="215" y="763" width="217.0857" height="22" rx="2" fill="#a16207"/>
+<text x="439.09" y="778" font-size="14" font-weight="700">10.48</text>
+</g>
+<g data-series="isolation" data-row="6" data-metric="p99_ms" data-value="7.78">
+<title>Rust SDK mimalloc T2: 7.78 ms</title>
+<text x="36" y="810" font-size="13">Rust SDK mimalloc T2</text>
+<rect x="215" y="795" width="161.1571" height="22" rx="2" fill="#9333ea"/>
+<text x="383.16" y="810" font-size="14" font-weight="700">7.78</text>
+</g>
+<g data-series="isolation" data-row="7" data-metric="p99_ms" data-value="9.15">
+<title>Rust SDK glibc T3: 9.15 ms</title>
+<text x="36" y="842" font-size="13">Rust SDK glibc T3</text>
+<rect x="215" y="827" width="189.5357" height="22" rx="2" fill="#a16207"/>
+<text x="411.54" y="842" font-size="14" font-weight="700">9.15</text>
+</g>
+<g data-series="isolation" data-row="8" data-metric="p99_ms" data-value="7.05">
+<title>Rust SDK mimalloc T3: 7.05 ms</title>
+<text x="36" y="874" font-size="13">Rust SDK mimalloc T3</text>
+<rect x="215" y="859" width="146.0357" height="22" rx="2" fill="#9333ea"/>
+<text x="368.04" y="874" font-size="14" font-weight="700">7.05</text>
+</g>
+<rect x="640" y="528" width="592" height="398" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+<text x="656" y="557" font-size="20" font-weight="700">Reported process RSS</text>
+<text x="656" y="581" font-size="14" fill="#475569">MiB | whole process, not Go heap</text>
+<line x1="831.00" x2="831.00" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="831.00" y="915" text-anchor="middle" font-size="12" fill="#475569">0</text>
+<line x1="903.50" x2="903.50" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="903.50" y="915" text-anchor="middle" font-size="12" fill="#475569">30</text>
+<line x1="976.00" x2="976.00" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="976.00" y="915" text-anchor="middle" font-size="12" fill="#475569">60</text>
+<line x1="1048.50" x2="1048.50" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="1048.50" y="915" text-anchor="middle" font-size="12" fill="#475569">90</text>
+<line x1="1121.00" x2="1121.00" y1="603" y2="898" stroke="#e2e8f0"/>
+<text x="1121.00" y="915" text-anchor="middle" font-size="12" fill="#475569">120</text>
+<g data-series="isolation" data-row="0" data-metric="rss_mib" data-value="37">
+<title>Go v1: 37 MiB</title>
+<text x="652" y="618" font-size="13">Go v1</text>
+<rect x="831" y="603" width="89.4167" height="22" rx="2" fill="#64748b"/>
+<text x="927.42" y="618" font-size="14" font-weight="700">37</text>
+</g>
+<g data-series="isolation" data-row="1" data-metric="rss_mib" data-value="56">
+<title>Go v2 glibc T2: 56 MiB</title>
+<text x="652" y="650" font-size="13">Go v2 glibc T2</text>
+<rect x="831" y="635" width="135.3333" height="22" rx="2" fill="#2563eb"/>
+<text x="973.33" y="650" font-size="14" font-weight="700">56</text>
+</g>
+<g data-series="isolation" data-row="2" data-metric="rss_mib" data-value="75">
+<title>Go v2 mimalloc T2: 75 MiB</title>
+<text x="652" y="682" font-size="13">Go v2 mimalloc T2</text>
+<rect x="831" y="667" width="181.2500" height="22" rx="2" fill="#0f766e"/>
+<text x="1019.25" y="682" font-size="14" font-weight="700">75</text>
+</g>
+<g data-series="isolation" data-row="3" data-metric="rss_mib" data-value="62">
+<title>Go v2 glibc T3: 62 MiB</title>
+<text x="652" y="714" font-size="13">Go v2 glibc T3</text>
+<rect x="831" y="699" width="149.8333" height="22" rx="2" fill="#2563eb"/>
+<text x="987.83" y="714" font-size="14" font-weight="700">62</text>
+</g>
+<g data-series="isolation" data-row="4" data-metric="rss_mib" data-value="88">
+<title>Go v2 mimalloc T3: 88 MiB</title>
+<text x="652" y="746" font-size="13">Go v2 mimalloc T3</text>
+<rect x="831" y="731" width="212.6667" height="22" rx="2" fill="#0f766e"/>
+<text x="1050.67" y="746" font-size="14" font-weight="700">88</text>
+</g>
+<g data-series="isolation" data-row="5" data-metric="rss_mib" data-value="29">
+<title>Rust SDK glibc T2: 29 MiB</title>
+<text x="652" y="778" font-size="13">Rust SDK glibc T2</text>
+<rect x="831" y="763" width="70.0833" height="22" rx="2" fill="#a16207"/>
+<text x="908.08" y="778" font-size="14" font-weight="700">29</text>
+</g>
+<g data-series="isolation" data-row="6" data-metric="rss_mib" data-value="66">
+<title>Rust SDK mimalloc T2: 66 MiB</title>
+<text x="652" y="810" font-size="13">Rust SDK mimalloc T2</text>
+<rect x="831" y="795" width="159.5000" height="22" rx="2" fill="#9333ea"/>
+<text x="997.50" y="810" font-size="14" font-weight="700">66</text>
+</g>
+<g data-series="isolation" data-row="7" data-metric="rss_mib" data-value="31">
+<title>Rust SDK glibc T3: 31 MiB</title>
+<text x="652" y="842" font-size="13">Rust SDK glibc T3</text>
+<rect x="831" y="827" width="74.9167" height="22" rx="2" fill="#a16207"/>
+<text x="912.92" y="842" font-size="14" font-weight="700">31</text>
+</g>
+<g data-series="isolation" data-row="8" data-metric="rss_mib" data-value="76">
+<title>Rust SDK mimalloc T3: 76 MiB</title>
+<text x="652" y="874" font-size="13">Rust SDK mimalloc T3</text>
+<rect x="831" y="859" width="183.6667" height="22" rx="2" fill="#9333ea"/>
+<text x="1021.67" y="874" font-size="14" font-weight="700">76</text>
+</g>
+<text x="24" y="946" font-size="13" fill="#475569">alloc-tokio-iso-20261106-a | Source: data/point-read-results.csv | Same scales on both run charts</text>
+</g>
+</svg>

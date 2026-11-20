@@ -418,7 +418,7 @@ func readManagementDocument(t *testing.T, managementEndpoint, path string, targe
 	if err != nil {
 		return fmt.Errorf("reading emulator management endpoint %q: %w", endpoint, err)
 	}
-	defer response.Body.Close()
+	defer func() { require.NoError(t, response.Body.Close()) }()
 	if response.StatusCode != http.StatusOK {
 		return fmt.Errorf("emulator management endpoint %q returned %s", endpoint, response.Status)
 	}

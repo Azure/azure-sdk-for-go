@@ -2,6 +2,7 @@ parameters:
   DependsOn: Build
   TestPipeline: false
   ServiceDirectory: ''
+  ReleasePlanId: '0'
 
 stages:
   - stage: CheckRelease
@@ -208,6 +209,7 @@ stages:
             parameters:
               ConfigFileDir: $(Pipeline.Workspace)/PackageInfo
               PackageArtifactName: sdk/${{ parameters.ServiceDirectory }}
+              ReleasePlanId: ${{ parameters.ReleasePlanId }}
 
       - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
         - job: UpdatePackageVersion

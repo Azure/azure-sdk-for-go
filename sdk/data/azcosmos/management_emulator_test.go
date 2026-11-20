@@ -9,6 +9,7 @@ import (
 	"context"
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -216,4 +217,59 @@ func TestEmulatorOutOfBandContainerRecreationResolvesFreshIdentity(t *testing.T)
 	_, err = databaseB.CreateContainer(ctx, props, nil)
 	require.NoError(t, err)
 	createItem(containerA)
+}
+
+func TestEmulatorManagementPaginationReplaceAndThroughput(t *testing.T) {
+	client, _, _ := emulatorClientConfigured(t, nil, false)
+	ctx, cancel := context.WithTimeout(t.Context(), 90*time.Second)
+	defer cancel()
+	databaseID := uniqueItemID(t) + "-management"
+	manual := ThroughputProperties{ManualThroughput: to(uint64(400))}
+	_, err := client.CreateDatabase(ctx, DatabaseProperties{ID: databaseID}, &CreateDatabaseOptions{Throughput: &manual})
+	require.NoError(t, err)
+	database, err := client.NewDatabase(databaseID)
+	require.NoError(t, err)
+	t.Cleanup(func() { _, _ = database.Delete(context.Background(), nil) })
+	for _, id := range []string{"shared", "dedicated"} {
+		options := &CreateContainerOptions{}
+		if id == "dedicated" {
+			options.Throughput = &manual
+		}
+		_, err := database.CreateContainer(ctx, ContainerProperties{ID: id, PartitionKeyDefinition: PartitionKeyDefinition{Paths: []string{"/pk"}}}, options)
+		require.NoError(t, err)
+	}
+	pager := database.NewQueryContainersPager(NewQuery("SELECT * FROM c"), &ManagementQueryOptions{PageSizeHint: 1})
+	defer pager.Close()
+	var ids []string
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		require.NoError(t, err)
+		for _, properties := range page.Items {
+			ids = append(ids, properties.ID)
+		}
+	}
+	require.ElementsMatch(t, []string{"shared", "dedicated"}, ids)
+	dbThroughput, err := database.ReadThroughput(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, uint64(400), *dbThroughput.ThroughputProperties.ManualThroughput)
+	shared, err := database.NewContainer(ctx, "shared")
+	require.NoError(t, err)
+	sharedThroughput, err := shared.ReadThroughput(ctx, nil)
+	require.NoError(t, err)
+	require.Nil(t, sharedThroughput.ThroughputProperties)
+	dedicated, err := database.NewContainer(ctx, "dedicated")
+	require.NoError(t, err)
+	response, err := dedicated.Read(ctx, nil)
+	require.NoError(t, err)
+	response.ContainerProperties.DefaultTimeToLive = to(int32(30))
+	_, err = dedicated.Replace(ctx, response.ContainerProperties, &ReplaceContainerOptions{IfMatchETag: response.ContainerProperties.ETag})
+	require.NoError(t, err)
+	response, err = dedicated.Read(ctx, nil)
+	require.NoError(t, err)
+	require.Equal(t, int32(30), *response.ContainerProperties.DefaultTimeToLive)
+	poller, err := dedicated.BeginReplaceThroughput(ctx, ThroughputProperties{ManualThroughput: to(uint64(600))}, nil)
+	require.NoError(t, err)
+	changed, err := poller.PollUntilDone(ctx, &PollUntilDoneOptions{Frequency: 10 * time.Millisecond})
+	require.NoError(t, err)
+	require.Equal(t, uint64(600), *changed.ThroughputProperties.ManualThroughput)
 }

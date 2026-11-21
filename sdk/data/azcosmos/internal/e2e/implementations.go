@@ -38,10 +38,11 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "query.invalid-syntax", Status: StatusActive, Test: "TestQueryInvalidSyntaxIsNotAnEmptyFeed"},
 		{ScenarioID: "query.pagination-resume", Status: StatusActive, Test: "TestQueryPaginationResumesWithoutLossOrDuplication"},
 		{ScenarioID: "diagnostics.success-and-error", Status: StatusActive, Test: "TestDiagnosticsCoverSuccessAndError"},
+		{ScenarioID: "consistency.session-management", Status: StatusActive, Test: "TestSessionManagement"},
+		{ScenarioID: "configuration.binary-routing", Status: StatusActive, Test: "TestBinaryEncodingAndRouting"},
 
 		// --- Blocked: missing Go product capability ---
 		{ScenarioID: "item.scalar-partition-keys", Status: StatusBlocked, Reason: "the pinned in-memory emulator's header parser (azure_data_cosmos_driver::in_memory_emulator::epk::json_to_pk_component) rejects any JSON-object-shaped partition-key component with \"partition key components must be scalar\" - including the driver's own \"{}\" wire encoding for an Undefined partition key - so the catalog's required undefined-key case cannot be exercised through any client against this emulator build, not just Go. A TestItemScalarPartitionKeysRemainDistinct test still exists exercising the other four kinds (string/numeric/boolean/null) as supplementary regression coverage, but is not registered as certification evidence for this scenario; bumping the emulator pin is a separate decision (see catalog/README.md)."},
-		{ScenarioID: "consistency.session-management", Status: StatusBlocked, Reason: "the catalog requires disabling automatic session-token capture and exercising continuation-based queries alongside the explicit token; azcosmos/v2 has no public option to disable automatic session capture (see OperationOptions/ClientOptions), so the full contract cannot be certified through the public API. A TestSessionTokenExplicitManagement test still exists verifying the narrower claim that an explicitly supplied session token is honored, but is not registered as certification evidence for this scenario."},
 		{ScenarioID: "management.capabilities", Status: StatusBlocked, Reason: noManagementCapabilitiesEndpoint},
 		// #27700 added azcosmos/v2's public database/container management API (Create/Read/Delete
 		// for both), but not Replace or a List/Query API for either resource; the catalog's
@@ -76,7 +77,6 @@ func buildImplementations() []Implementation {
 
 		// --- Blocked: in scope, deferred this pass (no missing capability, just not yet ported) ---
 		{ScenarioID: "item.quoted-partition-key-paths", Status: StatusBlocked, Reason: "requires a container whose partition-key path itself contains characters needing quoting; not yet provisioned in the emulator fixture; " + deferredScope},
-		{ScenarioID: "configuration.binary-routing", Status: StatusBlocked, Reason: "requires verifying azcosmos/v2's binary-encoding override surface against the shared scenario's exact combinations; " + deferredScope},
 		{ScenarioID: "consistency.feed-read-strategies", Status: StatusBlocked, Reason: "requires the lifecycleConsistencyMatrix account set across all five consistency levels; " + deferredScope},
 		{ScenarioID: "consistency.session-staleness", Status: StatusBlocked, Reason: "requires disabling automatic session-token capture and observing a deliberately stale replica under controlled replication delay; " + deferredScope},
 	}

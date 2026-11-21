@@ -6,7 +6,7 @@ After going through a minimal architects board review and preparing your package
 
 - [] Verify there are no replace directives in the go.mod file
 - [] Verify the package has a LICENSE file
-- [] Verify documentation is present and accurate for all public methods and types. Reference the [content guidelines](https://review.docs.microsoft.com/help/contribute-ref/contribute-ref-how-to-document-sdk?branch=master#api-reference) for best practices. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
+- [] Verify documentation is present and accurate for all public methods and types. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
 - [] Verify there are no broken links
 - [] Verify all links are non-localized (no "en-us" in links)
 - [] Check the package manager link goes to the correct package
@@ -30,4 +30,6 @@ Obtain package-name approval and any required API review approval before releasi
 
 Repository registration and authorization of the **ADO to ARH Service Connection** are required; forks also need the GitHub Apps described in the [onboarding guide](https://github.com/Azure/azure-sdk-tools/wiki/API-Review-Hub-Onboarding).
 
-The check does not supply an API hash until replacement tooling is available, so it cannot verify hash-specific API Review Hub approval. The CLI can fall back to existing APIView approval.
+API Review Hub bundles and release checks use `eng/tools/apigen` and the Go version pinned in `eng/tools/apigen-go-version.txt`. The Hub build uses `languageToolsRef`; its apigen source and Go-version file must match the target commit or review generation fails. Set `languageToolsRef` to a matching branch or tag when reviewing a release branch.
+
+The release pipeline regenerates the bundle and supplies its API hash to the approval check. The CLI can also fall back to existing APIView approval.

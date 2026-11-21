@@ -45,6 +45,30 @@ Describe 'Go release approval' {
     $global:AzSdkArguments | Should -Not -Contain '--api-hash'
   }
 
+  It 'passes the generated API hash to the release approval command' {
+    $packageInfo = Get-Content $packageInfoFile -Raw | ConvertFrom-Json
+    $packageInfo | Add-Member -NotePropertyName ApiHash -NotePropertyValue ('a' * 64)
+    $packageInfo | ConvertTo-Json | Set-Content -Path $packageInfoFile
+    $global:AzSdkResponse = '{"operation_status":"Succeeded","result":{"isApproved":true,"finalSource":"reviewHub","reason":"approved"}}'
+
+    & $approvalScript -PackageInfoFiles @($packageInfoFile) -AzSdkExePath 'azsdk' -RequireApiHash
+
+    ($global:AzSdkArguments -join '|') | Should -Match "--api-hash\|$('a' * 64)"
+  }
+
+  It 'blocks release when a required API hash is missing' {
+    { & $approvalScript -PackageInfoFiles @($packageInfoFile) -AzSdkExePath 'azsdk' -RequireApiHash } |
+      Should -Throw '*valid API hash*'
+  }
+
+  It 'blocks release when the required API hash is malformed' {
+    $packageInfo = Get-Content $packageInfoFile -Raw | ConvertFrom-Json
+    $packageInfo | Add-Member -NotePropertyName ApiHash -NotePropertyValue ('A' * 64)
+    $packageInfo | ConvertTo-Json | Set-Content -Path $packageInfoFile
+    { & $approvalScript -PackageInfoFiles @($packageInfoFile) -AzSdkExePath 'azsdk' -RequireApiHash } |
+      Should -Throw '*valid API hash*'
+  }
+
   It 'blocks release when <Reason> is returned' -TestCases @(
     @{ Reason = 'missingApiHash' }
     @{ Reason = 'packageNameNotApproved' }
@@ -167,13 +191,16 @@ Describe 'Go release pipeline' {
     $template = Get-Content (Join-Path $repoRoot 'eng/pipelines/templates/jobs/archetype-go-release.yml') -Raw
     $tagJob = $template.IndexOf('- job: TagRepository')
     $tagJob | Should -BeGreaterThan -1
+    $prepareHash = $template.IndexOf('displayName: Prepare Go API review hash', $tagJob)
     $approval = $template.IndexOf('displayName: Check Package Approval Status', $tagJob)
     $otherTriggers = $template.IndexOf('displayName: Check Package Approval Status for other release triggers', $tagJob)
     $tag = $template.IndexOf('/steps/create-tags-and-git-release.yml', $tagJob)
 
-    $approval | Should -BeGreaterThan $tagJob
-    $otherTriggers | Should -BeGreaterThan $tagJob
+    $prepareHash | Should -BeGreaterThan $tagJob
+    $approval | Should -BeGreaterThan $prepareHash
+    $otherTriggers | Should -BeGreaterThan $prepareHash
     $tag | Should -BeGreaterThan $approval
     $tag | Should -BeGreaterThan $otherTriggers
+    ([regex]::Matches($template.Substring($prepareHash, $tag - $prepareHash), '-RequireApiHash')).Count | Should -Be 2
   }
 }

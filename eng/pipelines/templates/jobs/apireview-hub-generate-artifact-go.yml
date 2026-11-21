@@ -1,0 +1,77 @@
+parameters:
+  - name: kind
+    type: string
+    values:
+      - base
+      - target
+  - name: requestMode
+    type: string
+    values:
+      - create
+      - update
+  - name: repositoryOwner
+    type: string
+    default: Azure
+  - name: ref
+    type: string
+  - name: packageName
+    type: string
+  - name: operationId
+    type: string
+  - name: poolName
+    type: string
+    default: 'azsdk-pool'
+  - name: imageOverride
+    type: string
+    default: 'ubuntu-24.04'
+
+jobs:
+  - template: /eng/common/pipelines/templates/jobs/apireview-hub-generate-artifact-base.yml
+    parameters:
+      ${{ if eq(parameters.kind, 'base') }}:
+        jobName: GenerateBase
+      ${{ if eq(parameters.kind, 'target') }}:
+        jobName: GenerateTarget
+      kind: ${{ parameters.kind }}
+      requestMode: ${{ parameters.requestMode }}
+      language: go
+      repositoryFullName: ${{ format('{0}/{1}', parameters.repositoryOwner, 'azure-sdk-for-go') }}
+      ref: ${{ parameters.ref }}
+      packageName: ${{ parameters.packageName }}
+      operationId: ${{ parameters.operationId }}
+      poolName: ${{ parameters.poolName }}
+      imageOverride: ${{ parameters.imageOverride }}
+      stepList:
+        - template: /eng/pipelines/templates/steps/use-apigen-go.yml
+          parameters:
+            VersionFile: $(BinDirectory)/apigen-go-version.txt
+        - pwsh: |
+            $ErrorActionPreference = 'Stop'
+            if ($env:REVIEW_KIND -eq 'target') {
+              $expected = @(Get-Content -LiteralPath (Join-Path $env:BIN_DIRECTORY 'apigen-source.txt'))
+              $actual = @()
+              foreach ($path in @('eng/tools/apigen', 'eng/tools/apigen-go-version.txt')) {
+                $identity = & git -C $env:SOURCE_DIRECTORY rev-parse "HEAD:$path"
+                if ($LASTEXITCODE -ne 0) { throw "Failed to identify target $path." }
+                $actual += $identity
+              }
+              if ($expected.Count -ne 2 -or ($expected -join ',') -cne ($actual -join ',')) {
+                throw 'The target apigen source or Go version differs from languageToolsRef. Select a matching languageToolsRef and regenerate the review.'
+              }
+            }
+            $executable = if ($IsWindows) { 'apigen.exe' } else { 'apigen' }
+            $apigen = Join-Path $env:BIN_DIRECTORY $executable
+            if (-not $IsWindows) {
+              & chmod +x $apigen
+              if ($LASTEXITCODE -ne 0) { throw 'Failed to make apigen executable.' }
+            }
+            & (Join-Path $env:BIN_DIRECTORY 'Export-GoApiReviewBundle.ps1') `
+              -SourceRoot $env:SOURCE_DIRECTORY -PackageName $env:PACKAGE_NAME `
+              -OutputDirectory $env:ARTIFACT_OUTPUT_DIRECTORY -ApigenPath $apigen | Out-Null
+          displayName: Generate ${{ parameters.kind }} Go API review bundle
+          env:
+            REVIEW_KIND: ${{ parameters.kind }}
+            SOURCE_DIRECTORY: $(Build.SourcesDirectory)
+            BIN_DIRECTORY: $(BinDirectory)
+            ARTIFACT_OUTPUT_DIRECTORY: $(ArtifactOutputDirectory)
+            PACKAGE_NAME: ${{ parameters.packageName }}

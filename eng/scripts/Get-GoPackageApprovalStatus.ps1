@@ -10,6 +10,9 @@ Package-info JSON files containing the package name and version.
 
 .PARAMETER AzSdkExePath
 The path to the azsdk executable.
+
+.PARAMETER RequireApiHash
+Require an API hash in every package-info file.
 #>
 [CmdletBinding()]
 param (
@@ -18,7 +21,9 @@ param (
     [array] $PackageInfoFiles,
 
     [ValidateNotNullOrEmpty()]
-    [string] $AzSdkExePath = "azsdk"
+    [string] $AzSdkExePath = "azsdk",
+
+    [switch] $RequireApiHash
 )
 
 Set-StrictMode -Version 4
@@ -47,12 +52,16 @@ foreach ($packageInfoFile in $packageInfoPaths) {
         $packageName = if ($packageInfo.PSObject.Properties["Name"]) { [string] $packageInfo.Name } else { "" }
         $packageVersion = if ($packageInfo.PSObject.Properties["Version"]) { [string] $packageInfo.Version } else { "" }
         $releaseStatus = if ($packageInfo.PSObject.Properties["ReleaseStatus"]) { [string] $packageInfo.ReleaseStatus } else { "" }
+        $apiHash = if ($packageInfo.PSObject.Properties["ApiHash"]) { [string] $packageInfo.ApiHash } else { "" }
 
         if ([string]::IsNullOrWhiteSpace($packageName)) {
             throw "Package-info file does not contain a package Name."
         }
         if ([string]::IsNullOrWhiteSpace($packageVersion)) {
             throw "Package-info file does not contain a package Version."
+        }
+        if ($RequireApiHash -and $apiHash -cnotmatch '^[0-9a-f]{64}$') {
+            throw "Package-info file does not contain a valid API hash."
         }
 
         $version = [AzureEngSemanticVersion]::ParseVersionString($packageVersion)
@@ -68,7 +77,11 @@ foreach ($packageInfoFile in $packageInfoPaths) {
             "--package-version", $packageVersion,
             "--output", "json"
         )
-        Write-Host "Checking package approval: language=$LanguageShort, package=$packageName, version=$packageVersion, apiHash=not provided"
+        if (-not [string]::IsNullOrWhiteSpace($apiHash)) {
+            $arguments += @("--api-hash", $apiHash)
+        }
+        $hashDescription = if ($apiHash) { $apiHash } else { "not provided" }
+        Write-Host "Checking package approval: language=$LanguageShort, package=$packageName, version=$packageVersion, apiHash=$hashDescription"
 
         try {
             $commandResult = Invoke-AzSdkCliCommand $AzSdkExePath $arguments

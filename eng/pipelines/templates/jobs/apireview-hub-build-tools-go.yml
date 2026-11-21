@@ -1,0 +1,47 @@
+parameters:
+  - name: languageRepoResource
+    type: string
+  - name: toolsRef
+    type: string
+  - name: languageToolsRef
+    type: string
+  - name: poolName
+    type: string
+    default: 'azsdk-pool'
+  - name: imageOverride
+    type: string
+    default: 'ubuntu-24.04'
+
+jobs:
+  - template: /eng/common/pipelines/templates/jobs/apireview-hub-build-tools-base.yml
+    parameters:
+      languageRepoResource: ${{ parameters.languageRepoResource }}
+      toolsRef: ${{ parameters.toolsRef }}
+      languageToolsRef: ${{ parameters.languageToolsRef }}
+      poolName: ${{ parameters.poolName }}
+      imageOverride: ${{ parameters.imageOverride }}
+      stepList:
+        - template: /eng/pipelines/templates/steps/use-apigen-go.yml
+        - pwsh: |
+            $ErrorActionPreference = 'Stop'
+            $root = $env:LANGUAGE_TOOLS_SOURCE_DIRECTORY
+            $bin = $env:BIN_OUTPUT_DIRECTORY
+            $executable = if ($IsWindows) { 'apigen.exe' } else { 'apigen' }
+            Push-Location (Join-Path $root 'eng/tools/apigen')
+            try {
+              & go build -mod=readonly -o (Join-Path $bin $executable) .
+              if ($LASTEXITCODE -ne 0) { throw 'Failed to build apigen.' }
+            }
+            finally { Pop-Location }
+            $identities = foreach ($path in @('eng/tools/apigen', 'eng/tools/apigen-go-version.txt')) {
+              $identity = & git -C $root rev-parse "HEAD:$path"
+              if ($LASTEXITCODE -ne 0) { throw "Failed to identify $path." }
+              $identity
+            }
+            $identities | Set-Content -LiteralPath (Join-Path $bin 'apigen-source.txt')
+            Copy-Item -LiteralPath (Join-Path $root 'eng/scripts/Export-GoApiReviewBundle.ps1') -Destination $bin
+            Copy-Item -LiteralPath (Join-Path $root 'eng/tools/apigen-go-version.txt') -Destination $bin
+          displayName: Build Go API review tooling
+          env:
+            LANGUAGE_TOOLS_SOURCE_DIRECTORY: $(LanguageToolsSourceDirectory)
+            BIN_OUTPUT_DIRECTORY: $(BinOutputDirectory)

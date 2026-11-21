@@ -167,6 +167,49 @@ stages:
               filePath: ./eng/scripts/validate_go_mod_major_version.ps1
               arguments: '${{ parameters.ServiceDirectory }}'
               pwsh: true
+          - template: /eng/pipelines/templates/steps/use-apigen-go.yml
+            parameters:
+              Condition: >-
+                and(
+                  succeeded(),
+                  eq(variables['System.TeamProject'], 'internal'),
+                  not(
+                    and(
+                      eq(variables['Skip.CheckPackageApproval'], 'true'),
+                      eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
+                    )
+                  )
+                )
+          - pwsh: |
+              $ErrorActionPreference = 'Stop'
+              $workDirectory = Join-Path $env:AGENT_TEMPDIRECTORY ('go-api-review-' + [guid]::NewGuid().ToString('N'))
+              New-Item -ItemType Directory -Path $workDirectory | Out-Null
+              $executable = if ($IsWindows) { 'apigen.exe' } else { 'apigen' }
+              $apigen = Join-Path $workDirectory $executable
+              Push-Location (Join-Path $env:SOURCE_DIRECTORY 'eng/tools/apigen')
+              try {
+                & go build -mod=readonly -o $apigen .
+                if ($LASTEXITCODE -ne 0) { throw 'Failed to build apigen.' }
+              }
+              finally { Pop-Location }
+              & (Join-Path $env:SOURCE_DIRECTORY 'eng/scripts/Set-GoPackageApiReviewHash.ps1') `
+                -PackageInfoFile $env:PACKAGE_INFO_FILE -SourceRoot $env:SOURCE_DIRECTORY `
+                -ApigenPath $apigen -OutputDirectory (Join-Path $workDirectory 'bundle')
+            displayName: Prepare Go API review hash
+            condition: >-
+              and(
+                succeeded(),
+                eq(variables['System.TeamProject'], 'internal'),
+                not(
+                  and(
+                    eq(variables['Skip.CheckPackageApproval'], 'true'),
+                    eq(variables['IsRequesterAuthorizedToSkipApiReview'], 'true')
+                  )
+                )
+              )
+            env:
+              SOURCE_DIRECTORY: $(Build.SourcesDirectory)
+              PACKAGE_INFO_FILE: $(GoReleasePackageInfoFile)
           - template: /eng/common/pipelines/templates/steps/install-azsdk-cli.yml
             parameters:
               SourceRootPath: $(Build.SourcesDirectory)
@@ -209,6 +252,7 @@ stages:
               arguments: >
                 -PackageInfoFiles @('$(GoReleasePackageInfoFile)')
                 -AzSdkExePath '$(AZSDK)'
+                -RequireApiHash
               workingDirectory: $(Pipeline.Workspace)
           # The shared template skips non-main CI and other release triggers; those must also be gated.
           - task: AzureCLI@2
@@ -241,6 +285,7 @@ stages:
               arguments: >
                 -PackageInfoFiles @('$(GoReleasePackageInfoFile)')
                 -AzSdkExePath '$(AZSDK)'
+                -RequireApiHash
               workingDirectory: $(Pipeline.Workspace)
           - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
             parameters:

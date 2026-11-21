@@ -294,6 +294,7 @@ func (c *ContainerClient) CreateItem(
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       c.link,
 		isWriteOperation:      true,
+		replaySafe:            o.ReplaySafe,
 		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
@@ -356,6 +357,7 @@ func (c *ContainerClient) UpsertItem(
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       c.link,
 		isWriteOperation:      true,
+		replaySafe:            o.ReplaySafe,
 		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
@@ -419,6 +421,7 @@ func (c *ContainerClient) ReplaceItem(
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
 		isWriteOperation:      true,
+		replaySafe:            o.ReplaySafe,
 		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
@@ -605,6 +608,7 @@ func (c *ContainerClient) DeleteItem(
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
 		isWriteOperation:      true,
+		replaySafe:            o.ReplaySafe,
 		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
@@ -751,6 +755,7 @@ func (c *ContainerClient) PatchItem(
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       createLink(c.link, pathSegmentDocument, itemId),
 		isWriteOperation:      true,
+		replaySafe:            o.ReplaySafe,
 		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)

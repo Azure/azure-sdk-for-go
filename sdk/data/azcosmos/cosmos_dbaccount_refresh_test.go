@@ -1486,3 +1486,112 @@ func TestFix8_UpdateWaiterRespectsContextCancellation(t *testing.T) {
 	// Clean up: let the leader finish so the test doesn't leak the goroutine.
 	<-leaderDone
 }
+
+// ----------------------------------------------------------------------------
+// F9: until the GEM has been populated, every request runs the bootstrap
+// refresh synchronously. That request (whether it leads the flight or joins
+// it) must still return by its own ctx deadline. The shared refresh keeps
+// running in the background and populates the GEM for later requests.
+// ----------------------------------------------------------------------------
+func TestFix9_BootstrapRespectsRequestContextDeadline(t *testing.T) {
+	if testing.Short() {
+		t.Skip("blocks on a 2s GEM refresh by design; skipped under -short")
+	}
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 2 * time.Second}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+	pol := &globalEndpointManagerPolicy{gem: gem}
+
+	downstream := &countingTransport{status: http.StatusOK}
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: []policy.Policy{pol}},
+		&policy.ClientOptions{Transport: downstream})
+
+	doWithDeadline := func() (time.Duration, error) {
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond)
+		defer cancel()
+		r, _ := azruntime.NewRequest(ctx, http.MethodGet, "https://fake.documents.azure.com/")
+		r.SetOperationValue(pipelineRequestOptions{resourceType: resourceTypeDocument})
+		start := time.Now()
+		_, err := pl.Do(r)
+		return time.Since(start), err
+	}
+
+	// Leader: starts the bootstrap refresh.
+	type result struct {
+		waited time.Duration
+		err    error
+	}
+	leader := make(chan result, 1)
+	go func() {
+		waited, err := doWithDeadline()
+		leader <- result{waited, err}
+	}()
+	require.Eventually(t, gem.hasInflight, 500*time.Millisecond, 5*time.Millisecond,
+		"leader must claim the in-flight slot within 500ms")
+
+	// Waiter: joins the in-flight bootstrap refresh.
+	waited, err := doWithDeadline()
+	require.ErrorIs(t, err, context.DeadlineExceeded, "waiter must surface its ctx error")
+	require.Less(t, waited, time.Second, "waiter must respect its 100ms deadline, waited %v", waited)
+
+	res := <-leader
+	require.ErrorIs(t, res.err, context.DeadlineExceeded, "leader must surface its ctx error")
+	require.Less(t, res.waited, time.Second, "leader must respect its 100ms deadline, waited %v", res.waited)
+	require.Equal(t, int64(0), downstream.count.Load(), "no request may be sent before the GEM is populated")
+
+	// The shared refresh was not cancelled with the callers and still
+	// populates the GEM, so the next request goes through.
+	require.Eventually(t, gem.populated, 5*time.Second, 10*time.Millisecond,
+		"the bootstrap refresh must complete in the background")
+	r, _ := azruntime.NewRequest(context.Background(), http.MethodGet, "https://fake.documents.azure.com/")
+	r.SetOperationValue(pipelineRequestOptions{resourceType: resourceTypeDocument})
+	_, err = pl.Do(r)
+	require.NoError(t, err)
+	require.Equal(t, int64(1), transport.count.Load(), "the bootstrap must make exactly one GEM call")
+}
+
+type panickingTransport struct{}
+
+func (panickingTransport) Do(*http.Request) (*http.Response, error) {
+	panic("transport exploded")
+}
+
+// F9b: the leader's refresh runs in a goroutine, so a panic in it must be
+// recovered there and surfaced to the caller as the flight error instead of
+// crashing the process.
+func TestFix9b_LeaderRefreshPanicIsReturnedAsError(t *testing.T) {
+	gem := newGEMWithTransport(t, []string{"West US"}, panickingTransport{}, 5*time.Minute)
+	err := gem.Update(context.Background(), false)
+	require.ErrorContains(t, err, "panic in GEM refresh: transport exploded")
+	require.False(t, gem.hasInflight(), "the in-flight slot must be released")
+}
+
+// F9c: the bootstrap refresh can outlive a caller that stopped waiting on its
+// ctx deadline. It must not write the GEM's account-properties response
+// through the caller's policy.WithCaptureResponse destination after Update
+// has returned.
+func TestFix9c_BootstrapDoesNotWriteCallerCaptureResponseAfterReturn(t *testing.T) {
+	if testing.Short() {
+		t.Skip("blocks on a 500ms GEM refresh by design; skipped under -short")
+	}
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 500 * time.Millisecond}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+
+	var captured *http.Response
+	ctx, cancel := context.WithTimeout(policy.WithCaptureResponse(context.Background(), &captured), 50*time.Millisecond)
+	defer cancel()
+	err := gem.Update(ctx, false)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+
+	require.Eventually(t, gem.populated, 5*time.Second, 10*time.Millisecond,
+		"the bootstrap refresh must complete in the background")
+	require.Nil(t, captured, "the background refresh must not write the caller's captured response after Update returned")
+}

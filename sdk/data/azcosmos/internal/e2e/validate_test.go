@@ -102,14 +102,14 @@ func TestValidateFailsOnBlockedEntryMissingReason(t *testing.T) {
 
 	impls := append([]Implementation{}, Implementations...)
 	for i, impl := range impls {
-		if impl.ScenarioID == "management.capabilities" {
+		if impl.ScenarioID == "management.resource-lifecycle" {
 			impls[i].Reason = ""
 		}
 	}
 
 	err = Validate(catalog, impls, compiledTestNames(impls))
 	require.Error(t, err)
-	require.Contains(t, err.Error(), `"management.capabilities" has status "blocked" but gives no Reason`)
+	require.Contains(t, err.Error(), `"management.resource-lifecycle" has status "blocked" but gives no Reason`)
 }
 
 func TestCoverageAccountsForEveryScenarioExactlyOnce(t *testing.T) {

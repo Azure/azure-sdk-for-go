@@ -7,6 +7,7 @@ package e2e
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,6 +18,104 @@ import (
 	azcosmos "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 	"github.com/stretchr/testify/require"
 )
+
+func TestSessionStaleness(t *testing.T) {
+	profile := selectedProfile(t, "consistency.session-staleness")
+	endpoint, managementEndpoint, databaseID, containerID := requireProfileEmulator(t, profile)
+	require.NoError(t, validateEmulatorBackend(os.Getenv("AZURE_COSMOS_E2E_BACKEND")))
+	probeEmulatorCapabilities(t, profile, endpoint, managementEndpoint)
+	fx := newFixtureAt(t, endpoint, databaseID, containerID, "", &azcosmos.ClientOptions{
+		Routing:   azcosmos.PreferredRegions(azcosmos.RegionWestUS, azcosmos.RegionEastUS),
+		Operation: azcosmos.OperationOptions{SessionCapturingDisabled: to(true)},
+	})
+	pauseReplication(t, managementEndpoint)
+
+	ctx := context.Background()
+	id := uniqueID(t)
+	pk := azcosmos.NewPartitionKeyString(id)
+	expected := item(id, id, 42)
+	_, err := fx.Container.CreateItem(ctx, pk, id, mustMarshalItem(t, expected), nil)
+	require.NoError(t, err)
+	trackItem(t, fx.Container, pk, id)
+	options := &azcosmos.ReadItemOptions{
+		Operation: azcosmos.OperationOptions{ConsistencyStrategy: azcosmos.ReadConsistencyStrategyEventual},
+	}
+	_, err = fx.Container.ReadItem(ctx, pk, id, options)
+	stale := requireCode(t, err, azcosmos.CodeNotFound)
+	require.NotNil(t, stale.Diagnostics)
+	require.NotEmpty(t, stale.Diagnostics.RegionsContacted)
+	require.Equal(t, string(azcosmos.RegionWestUS), stale.Diagnostics.RegionsContacted[0])
+
+	setReplication(t, managementEndpoint, "resume")
+	var read azcosmos.ItemResponse
+	var readErr error
+	require.Eventually(t, func() bool {
+		read, readErr = fx.Container.ReadItem(ctx, pk, id, options)
+		if readErr == nil {
+			return true
+		}
+		var cosmosErr *azcosmos.Error
+		return !errors.As(readErr, &cosmosErr) || cosmosErr.Code != azcosmos.CodeNotFound
+	}, 10*time.Second, 100*time.Millisecond)
+	require.NoError(t, readErr)
+	require.Equal(t, expected, mustUnmarshalItem(t, read.Value))
+	require.NotNil(t, read.Diagnostics)
+	require.NotEmpty(t, read.Diagnostics.RegionsContacted)
+	require.Equal(t, string(azcosmos.RegionWestUS), read.Diagnostics.RegionsContacted[0])
+}
+
+func TestResponseTokenCapture(t *testing.T) {
+	profile := selectedProfile(t, "consistency.response-token-capture")
+	endpoint, managementEndpoint, databaseID, containerID := requireProfileEmulator(t, profile)
+	require.NoError(t, validateEmulatorBackend(os.Getenv("AZURE_COSMOS_E2E_BACKEND")))
+	probeEmulatorCapabilities(t, profile, endpoint, managementEndpoint)
+	writer := newFixtureAt(t, endpoint, databaseID, containerID, "", profile.clientOptions)
+	reader := newFixtureAt(t, endpoint, databaseID, containerID, "", &azcosmos.ClientOptions{
+		Routing: azcosmos.PreferredRegions(azcosmos.RegionWestUS, azcosmos.RegionEastUS),
+	})
+	pauseReplication(t, managementEndpoint)
+
+	ctx := context.Background()
+	id := uniqueID(t)
+	pk := azcosmos.NewPartitionKeyString(id)
+	expected := item(id, id, 42)
+	_, err := writer.Container.CreateItem(ctx, pk, id, mustMarshalItem(t, expected), nil)
+	require.NoError(t, err)
+	trackItem(t, writer.Container, pk, id)
+
+	eventual, err := reader.Container.ReadItem(ctx, pk, id, &azcosmos.ReadItemOptions{
+		Operation: azcosmos.OperationOptions{
+			ConsistencyStrategy: azcosmos.ReadConsistencyStrategyEventual,
+			ExcludedRegions:     []azcosmos.Region{azcosmos.RegionWestUS},
+		},
+	})
+	require.NoError(t, err)
+	require.NotEmpty(t, eventual.SessionToken)
+	require.Equal(t, expected, mustUnmarshalItem(t, eventual.Value))
+	require.NotNil(t, eventual.Diagnostics)
+	require.NotEmpty(t, eventual.Diagnostics.RegionsContacted)
+	require.Equal(t, string(azcosmos.RegionEastUS), eventual.Diagnostics.RegionsContacted[0])
+
+	_, err = reader.Container.ReadItem(ctx, pk, id, &azcosmos.ReadItemOptions{
+		Operation: azcosmos.OperationOptions{
+			ConsistencyStrategy:      azcosmos.ReadConsistencyStrategySession,
+			SessionCapturingDisabled: to(true),
+		},
+	})
+	stale := requireCode(t, err, azcosmos.CodeNotFound)
+	require.NotNil(t, stale.Diagnostics)
+	require.NotEmpty(t, stale.Diagnostics.RegionsContacted)
+	require.Equal(t, string(azcosmos.RegionWestUS), stale.Diagnostics.RegionsContacted[0])
+
+	read, err := reader.Container.ReadItem(ctx, pk, id, &azcosmos.ReadItemOptions{
+		Operation: azcosmos.OperationOptions{ConsistencyStrategy: azcosmos.ReadConsistencyStrategySession},
+	})
+	require.NoError(t, err)
+	require.Equal(t, expected, mustUnmarshalItem(t, read.Value))
+	require.NotNil(t, read.Diagnostics)
+	require.NotEmpty(t, read.Diagnostics.RegionsContacted)
+	require.Equal(t, string(azcosmos.RegionWestUS), read.Diagnostics.RegionsContacted[0])
+}
 
 func setReplication(t *testing.T, managementEndpoint, action string) {
 	t.Helper()
@@ -32,6 +131,12 @@ func setReplication(t *testing.T, managementEndpoint, action string) {
 	require.Equal(t, http.StatusOK, response.StatusCode)
 }
 
+func pauseReplication(t *testing.T, managementEndpoint string) {
+	t.Helper()
+	t.Cleanup(func() { setReplication(t, managementEndpoint, "resume") })
+	setReplication(t, managementEndpoint, "pause")
+}
+
 func TestSessionManagement(t *testing.T) {
 	profile := selectedProfile(t, "consistency.session-management")
 	endpoint, managementEndpoint, databaseID, containerID := requireProfileEmulator(t, profile)
@@ -42,8 +147,7 @@ func TestSessionManagement(t *testing.T) {
 		Operation: azcosmos.OperationOptions{SessionCapturingDisabled: to(true)},
 	}
 	fx := newFixtureAt(t, endpoint, databaseID, containerID, "", options)
-	setReplication(t, managementEndpoint, "pause")
-	t.Cleanup(func() { setReplication(t, managementEndpoint, "resume") })
+	pauseReplication(t, managementEndpoint)
 
 	ctx := context.Background()
 	const count = 6

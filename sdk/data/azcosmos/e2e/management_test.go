@@ -8,11 +8,41 @@ package e2e
 import (
 	"context"
 	"encoding/json"
+	"os"
 	"testing"
 
 	azcosmos "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 	"github.com/stretchr/testify/require"
 )
+
+func TestEmulatorCapabilities(t *testing.T) {
+	profile := selectedProfile(t, "management.capabilities")
+	endpoint, managementEndpoint, _, _ := requireProfileEmulator(t, profile)
+	require.NoError(t, validateEmulatorBackend(os.Getenv("AZURE_COSMOS_E2E_BACKEND")))
+	probeEmulatorCapabilities(t, profile, endpoint, managementEndpoint)
+
+	var raw json.RawMessage
+	require.NoError(t, readManagementDocument(t, managementEndpoint, "capabilities", &raw))
+	var document map[string]json.RawMessage
+	require.NoError(t, json.Unmarshal(raw, &document))
+	for _, field := range []string{"apiVersion", "emulatorVersion", "protocols", "dataPlane", "managementActions", "limitations"} {
+		require.Contains(t, document, field)
+		require.NotEqual(t, "null", string(document[field]))
+	}
+	var protocols map[string]json.RawMessage
+	require.NoError(t, json.Unmarshal(document["protocols"], &protocols))
+	require.Equal(t, "true", string(protocols["gatewayV1"]))
+	require.Equal(t, "false", string(protocols["gatewayV2"]))
+	var capabilities emulatorCapabilities
+	require.NoError(t, json.Unmarshal(raw, &capabilities))
+	require.NoError(t, validateEmulatorCapabilities(profile.backend, capabilities))
+	require.NotEmpty(t, capabilities.EmulatorVersion)
+	require.True(t, capabilities.Protocols.GatewayV1)
+	require.False(t, capabilities.Protocols.GatewayV2)
+	require.ElementsMatch(t, []string{"database", "container", "offer", "item", "query", "changeFeed", "transactionalBatch", "patch"}, capabilities.DataPlane)
+	require.ElementsMatch(t, []string{"partitionSplit", "partitionMerge", "perPartitionFailover", "replicationPauseResume", "regionLifecycle", "writeRegionFailover"}, capabilities.ManagementActions)
+	require.ElementsMatch(t, []string{"authenticationNotEnforced", "loopbackOnly", "volatileStorage"}, capabilities.Limitations)
+}
 
 // TestDatabaseContainerManagementAvailableOperations is supplementary, non-certifying coverage
 // for scenario management.resource-lifecycle, whose catalog requirement is "create, read, query,

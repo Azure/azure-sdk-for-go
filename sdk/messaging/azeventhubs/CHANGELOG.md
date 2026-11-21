@@ -2,6 +2,10 @@
 
 ## 2.0.3 (Unreleased)
 
+### Features Added
+
+- Added optional OpenTelemetry traces, metrics, and AMQP lifecycle logs to producer and consumer clients.
+
 ### Bugs Fixed
 
 - Fixed missing `consumers.Delete()` call when checkpoint initialization fails, which could block future consumer creation for the affected partition. (#24983)

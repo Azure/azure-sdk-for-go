@@ -17,6 +17,9 @@ import (
 
 // ConsumerClientOptions configures optional parameters for a ConsumerClient.
 type ConsumerClientOptions struct {
+	// Telemetry configures optional traces, metrics, and AMQP lifecycle logs.
+	Telemetry TelemetryOptions
+
 	// ApplicationID is used as the identifier when setting the User-Agent property.
 	ApplicationID string
 
@@ -135,6 +138,7 @@ type PartitionClientOptions struct {
 func (cc *ConsumerClient) NewPartitionClient(partitionID string, options *PartitionClientOptions) (*PartitionClient, error) {
 	return newPartitionClient(partitionClientArgs{
 		namespace:     cc.namespace,
+		diagnostics:   cc.namespace.Diagnostics,
 		eventHub:      cc.eventHub,
 		partitionID:   partitionID,
 		instanceID:    cc.instanceID,
@@ -248,6 +252,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	}
 
 	client.namespace = tempNS
+	tempNS.Diagnostics = internal.NewDiagnostics(tempNS.FQDN, client.eventHub, options.Telemetry.TracingProvider, options.Telemetry.MeterProvider, options.Telemetry.LoggerProvider)
 	client.links = internal.NewLinks[amqpwrap.RPCLink](tempNS, fmt.Sprintf("%s/$management", client.eventHub), nil, nil)
 
 	return client, nil

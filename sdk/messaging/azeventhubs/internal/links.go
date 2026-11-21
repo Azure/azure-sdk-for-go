@@ -37,6 +37,8 @@ type Links[LinkT AMQPLink] struct {
 	managementLinkMu *sync.RWMutex
 	managementLink   *linkState[amqpwrap.RPCLink]
 
+	diagnostics    *Diagnostics
+	component      string
 	managementPath string
 	newLinkFn      NewLinksFn[LinkT]
 	entityPathFn   func(partitionID string) string
@@ -75,6 +77,12 @@ func NewLinks[LinkT AMQPLink](ns NamespaceForAMQPLinks, managementPath string, e
 		NSRecover: l.ns.Recover,
 	}
 
+	return l
+}
+
+// WithDiagnostics configures AMQP link telemetry before the client is published.
+func (l *Links[LinkT]) WithDiagnostics(d *Diagnostics, component string) *Links[LinkT] {
+	l.diagnostics, l.component = d, component
 	return l
 }
 
@@ -169,7 +177,9 @@ func (l *Links[LinkT]) newLinkState(ctx context.Context, partitionID string) (*l
 	ls.session = session
 	ls.connID = connID
 
-	tmpLink, err := l.newLinkFn(ctx, session, l.entityPathFn(partitionID), partitionID)
+	attachCtx, end := l.diagnostics.StartLifecycle(ctx, l.component, "attach")
+	tmpLink, err := l.newLinkFn(attachCtx, session, l.entityPathFn(partitionID), partitionID)
+	end(err)
 
 	if err != nil {
 		azlog.Writef(exported.EventConn, "(%s): Failed to create link for partition ID '%s': %s", ls.String(), partitionID, err)
@@ -302,6 +312,7 @@ func (l *Links[LinkT]) closePartitionLinkIfMatch(ctx context.Context, partitionI
 	}
 
 	delete(l.links, partitionID)
+	l.diagnostics.recordLifecycle(ctx, l.component, "invalidated")
 	return current.Close(ctx)
 }
 

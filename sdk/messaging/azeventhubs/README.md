@@ -92,6 +92,24 @@ azlog.SetEvents(
 )
 ```
 
+### OpenTelemetry
+
+Set the `Telemetry` field on `ProducerClientOptions` or `ConsumerClientOptions` to enable each signal independently. Partition clients and processors inherit the consumer client’s providers.
+
+```go
+telemetry := azeventhubs.TelemetryOptions{
+    TracingProvider: azotel.NewTracingProvider(tracerProvider, nil),
+    MeterProvider:   meterProvider,
+    LoggerProvider:  loggerProvider,
+}
+options := &azeventhubs.ProducerClientOptions{Telemetry: telemetry}
+producer, err := azeventhubs.NewProducerClient(namespace, eventHub, credential, options)
+```
+
+Supply the providers from the application’s OpenTelemetry configuration. The application chooses exporters, sampling, and shutdown. The default client options leave all three signals disabled. Existing `azcore/log` listeners continue to work independently.
+
+Logical send and receive spans include preparation and retries. Child spans identify transport attempts, connection and session creation, and sender and receiver attachment. AMQP lifecycle logs include component and outcome. The meter records completed operations (`az.eventhubs.operations`), accepted or returned events (`az.eventhubs.events`), operation duration in seconds (`az.eventhubs.operation.duration`), and AMQP transitions (`az.eventhubs.amqp.lifecycle`).
+
 ## Contributing
 For details on contributing to this repository, see the [contributing guide][azure_sdk_for_go_contributing].
 

@@ -36,6 +36,7 @@ type (
 		//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
 		connID uint64
 
+		Diagnostics   *Diagnostics
 		FQDN          string
 		TokenProvider *sbauth.TokenProvider
 		tlsConfig     *tls.Config
@@ -217,7 +218,9 @@ func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, 
 		return nil, 0, err
 	}
 
+	ctx, end := ns.Diagnostics.StartLifecycle(ctx, "session", "begin")
 	session, err := client.NewSession(ctx, nil)
+	end(err)
 
 	if err != nil {
 		return nil, 0, err
@@ -283,6 +286,7 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
 	}
 
 	if ns.client != nil {
+		ns.Diagnostics.recordLifecycle(ctx, "connection", "invalidated")
 		oldClient := ns.client
 		ns.client = nil
 
@@ -458,7 +462,9 @@ func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQP
 	log.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
 
 	newConnID := ns.connID + 1
+	ctx, end := ns.Diagnostics.StartLifecycle(ctx, "connection", "open")
 	tempClient, err := ns.newClientFn(ctx, newConnID)
+	end(err)
 
 	if err != nil {
 		return nil, 0, err

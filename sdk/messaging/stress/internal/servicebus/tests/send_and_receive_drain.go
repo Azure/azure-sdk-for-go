@@ -120,7 +120,7 @@ func SendAndReceiveDrain(remainingArgs []string) {
 		sc.PanicOnError("Failed to get runtime propeties for queue", err)
 
 		if rtp.ActiveMessageCount != 0 {
-			sc.PanicOnError(fmt.Sprintf("No messages should be active in the queue, but actually still had %d", rtp.ActiveMessageCount), errors.New("Messages still left in queue"))
+			sc.PanicOnError(fmt.Sprintf("No messages should be active in the queue, but actually still had %d", rtp.ActiveMessageCount), errors.New("messages still left in queue"))
 		}
 	}
 }

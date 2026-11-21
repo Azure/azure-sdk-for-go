@@ -37,12 +37,12 @@ func runBatchReceiver(sc *shared.StressContext, topicName string, subscriptionNa
 	client, err := azservicebus.NewClient(sc.Endpoint, sc.Cred, nil)
 	sc.PanicOnError("failed to create a client", err)
 
-	defer client.Close(context.Background())
+	defer func() { _ = client.Close(context.Background()) }()
 
 	receiver, err := shared.NewTrackingReceiverForSubscription(sc.TC, client, topicName, subscriptionName, nil)
 	sc.PanicOnError("failed to create receiver", err)
 
-	defer receiver.Close(context.Background())
+	defer func() { _ = receiver.Close(context.Background()) }()
 
 	for {
 		messages, err := receiver.ReceiveMessages(sc.Context, 20, nil)
@@ -72,7 +72,7 @@ func continuallySend(sc *shared.StressContext, queueName string) {
 	sender, err := shared.NewTrackingSender(sc.TC, client, queueName, nil)
 	sc.PanicOnError("failed to create sender", err)
 
-	defer sender.Close(context.Background())
+	defer func() { _ = sender.Close(context.Background()) }()
 
 	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()

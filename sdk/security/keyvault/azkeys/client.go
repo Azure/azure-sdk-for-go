@@ -1171,7 +1171,7 @@ func (client *Client) rotateKeyHandleResponse(resp *http.Response, successCodes 
 //   - version - The version of the key.
 //   - parameters - The parameters for unwrap operation.
 //   - options - SecureUnwrapKeyOptions contains the optional parameters for the Client.SecureUnwrapKey method.
-func (client *Client) SecureUnwrapKey(ctx context.Context, name string, version string, parameters SecureKeyUnWrapOperationParameters, options *SecureUnwrapKeyOptions) (SecureUnwrapKeyResponse, error) {
+func (client *Client) SecureUnwrapKey(ctx context.Context, name string, version string, parameters SecureKeyUnwrapOperationParameters, options *SecureUnwrapKeyOptions) (SecureUnwrapKeyResponse, error) {
 	var err error
 	const operationName = "Client.SecureUnwrapKey"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1190,7 +1190,7 @@ func (client *Client) SecureUnwrapKey(ctx context.Context, name string, version 
 }
 
 // secureUnwrapKeyCreateRequest creates the SecureUnwrapKey request.
-func (client *Client) secureUnwrapKeyCreateRequest(ctx context.Context, name string, version string, parameters SecureKeyUnWrapOperationParameters, _ *SecureUnwrapKeyOptions) (*policy.Request, error) {
+func (client *Client) secureUnwrapKeyCreateRequest(ctx context.Context, name string, version string, parameters SecureKeyUnwrapOperationParameters, _ *SecureUnwrapKeyOptions) (*policy.Request, error) {
 	urlPath := "/keys/{key-name}/{key-version}/secureunwrapkey"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")

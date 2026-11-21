@@ -32,13 +32,18 @@ func TestEmulatorCapabilities(t *testing.T) {
 	var protocols map[string]json.RawMessage
 	require.NoError(t, json.Unmarshal(document["protocols"], &protocols))
 	require.Equal(t, "true", string(protocols["gatewayV1"]))
-	require.Equal(t, "false", string(protocols["gatewayV2"]))
+	require.Contains(t, []string{"true", "false"}, string(protocols["gatewayV2"]))
+	if profile.backendID == emulatorGatewayV2 {
+		require.Equal(t, "true", string(protocols["gatewayV2"]))
+	}
 	var capabilities emulatorCapabilities
 	require.NoError(t, json.Unmarshal(raw, &capabilities))
 	require.NoError(t, validateEmulatorCapabilities(profile.backend, capabilities))
 	require.NotEmpty(t, capabilities.EmulatorVersion)
 	require.True(t, capabilities.Protocols.GatewayV1)
-	require.False(t, capabilities.Protocols.GatewayV2)
+	if profile.backendID == emulatorGatewayV2 {
+		require.True(t, capabilities.Protocols.GatewayV2)
+	}
 	require.ElementsMatch(t, []string{"database", "container", "offer", "item", "query", "changeFeed", "transactionalBatch", "patch"}, capabilities.DataPlane)
 	require.ElementsMatch(t, []string{"partitionSplit", "partitionMerge", "perPartitionFailover", "replicationPauseResume", "regionLifecycle", "writeRegionFailover"}, capabilities.ManagementActions)
 	require.ElementsMatch(t, []string{"authenticationNotEnforced", "loopbackOnly", "volatileStorage"}, capabilities.Limitations)

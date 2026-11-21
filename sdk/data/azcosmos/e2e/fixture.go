@@ -384,13 +384,15 @@ func validateEmulatorBackend(backend string) error {
 }
 
 type emulatorCapabilities struct {
-	APIVersion int `json:"apiVersion"`
-	Protocols  struct {
+	APIVersion      int    `json:"apiVersion"`
+	EmulatorVersion string `json:"emulatorVersion"`
+	Protocols       struct {
 		GatewayV1 bool `json:"gatewayV1"`
 		GatewayV2 bool `json:"gatewayV2"`
 	} `json:"protocols"`
 	DataPlane         []string `json:"dataPlane"`
 	ManagementActions []string `json:"managementActions"`
+	Limitations       []string `json:"limitations"`
 }
 
 func probeEmulatorCapabilities(t *testing.T, profile fixtureProfile, endpoint, managementEndpoint string) {
@@ -462,16 +464,19 @@ func validateEmulatorCapabilities(backend internale2e.Backend, capabilities emul
 	if capabilities.APIVersion != 1 {
 		return fmt.Errorf("unsupported emulator capabilities API version %d", capabilities.APIVersion)
 	}
-	if backend.Applicability != internale2e.ApplicabilityRequired && backend.Applicability != internale2e.ApplicabilitySupported {
+	if backend.Applicability != internale2e.ApplicabilityRequired && backend.Applicability != internale2e.ApplicabilitySupported && backend.Applicability != internale2e.ApplicabilitySimulated {
 		return fmt.Errorf("selected hosted emulator backend applicability is %q", backend.Applicability)
 	}
-	if backend.Fidelity != "full" {
-		return fmt.Errorf("selected hosted emulator backend fidelity is %q, not full", backend.Fidelity)
+	if (backend.Applicability == internale2e.ApplicabilitySimulated && backend.Fidelity != "simulated") ||
+		(backend.Applicability != internale2e.ApplicabilitySimulated && backend.Fidelity != "full") {
+		return fmt.Errorf("selected hosted emulator backend fidelity %q does not match applicability %q", backend.Fidelity, backend.Applicability)
 	}
 	if !capabilities.Protocols.GatewayV1 {
 		return fmt.Errorf("selected hostedEmulatorGatewayV1 backend is not available")
 	}
 	available := make(map[string]bool, len(capabilities.DataPlane)+len(capabilities.ManagementActions)+2)
+	// A successfully decoded versioned document establishes the capabilities endpoint itself.
+	available["capabilities"] = true
 	for _, capability := range capabilities.DataPlane {
 		available[capability] = true
 	}

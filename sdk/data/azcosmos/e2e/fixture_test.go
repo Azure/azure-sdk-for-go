@@ -126,6 +126,21 @@ func TestValidateEmulatorCapabilitiesRejectsMismatchedBackend(t *testing.T) {
 	require.ErrorContains(t, err, "hostedEmulatorGatewayV1 backend is not available")
 }
 
+func TestValidateEmulatorCapabilitiesAcceptsSimulatedFidelity(t *testing.T) {
+	var capabilities emulatorCapabilities
+	capabilities.APIVersion = 1
+	capabilities.Protocols.GatewayV1 = true
+	capabilities.DataPlane = []string{"item"}
+	backend := internale2e.Backend{
+		Applicability: internale2e.ApplicabilitySimulated,
+		Fidelity:      "simulated",
+		Requires:      []string{"item"},
+	}
+	require.NoError(t, validateEmulatorCapabilities(backend, capabilities))
+	backend.Fidelity = "full"
+	require.ErrorContains(t, validateEmulatorCapabilities(backend, capabilities), "does not match applicability")
+}
+
 func TestValidateEmulatorAccountMatchesSelectedProfile(t *testing.T) {
 	profile, err := resolveFixtureProfile(loadFixtureTestCatalog(t).Profiles["configurationResilience"], "", "", "")
 	require.NoError(t, err)

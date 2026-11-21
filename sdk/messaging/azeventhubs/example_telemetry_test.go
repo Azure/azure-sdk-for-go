@@ -10,14 +10,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/tracing/azotel"
 	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/log/global"
 )
 
 func ExampleTelemetryOptions() {
 	// Use providers that the application has configured with its exporters.
 	telemetry := azeventhubs.TelemetryOptions{
 		TracingProvider: azotel.NewTracingProvider(otel.GetTracerProvider(), nil),
-		LoggerProvider:  global.GetLoggerProvider(),
+		LoggerProvider:  otel.GetLoggerProvider(),
 		MeterProvider:   otel.GetMeterProvider(),
 	}
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(
@@ -25,5 +24,7 @@ func ExampleTelemetryOptions() {
 	if err != nil {
 		panic(err)
 	}
-	defer producer.Close(context.Background())
+	if err := producer.Close(context.Background()); err != nil {
+		panic(err)
+	}
 }

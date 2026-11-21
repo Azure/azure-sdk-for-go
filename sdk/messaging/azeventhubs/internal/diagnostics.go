@@ -5,7 +5,6 @@ package internal
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
@@ -55,7 +54,7 @@ func outcome(err error) string {
 	switch {
 	case err == nil:
 		return "success"
-	case errors.Is(err, context.Canceled), errors.Is(err, context.DeadlineExceeded):
+	case IsCancelError(err):
 		return "cancelled"
 	default:
 		return "error"
@@ -93,7 +92,7 @@ func (d *Diagnostics) StartOperation(ctx context.Context, operation string, kind
 		if d.operations != nil {
 			d.operations.Add(ctx, 1, attrs)
 		}
-		if d.events != nil && count > 0 {
+		if d.events != nil && err == nil && count > 0 {
 			d.events.Add(ctx, int64(count), attrs)
 		}
 	}
@@ -126,7 +125,8 @@ func (d *Diagnostics) recordLifecycle(ctx context.Context, component, result str
 	}
 	d.logLifecycle(ctx, component, result)
 	if d.lifecycle != nil {
-		d.lifecycle.Add(ctx, 1, metric.WithAttributes(attribute.String("component", component), attribute.String("outcome", result)))
+		d.lifecycle.Add(ctx, 1, metric.WithAttributes(attribute.String("server.address", d.host),
+			attribute.String("messaging.destination.name", d.hub), attribute.String("component", component), attribute.String("outcome", result)))
 	}
 }
 

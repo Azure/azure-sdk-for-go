@@ -94,21 +94,21 @@ azlog.SetEvents(
 
 ### OpenTelemetry
 
-Set the `Telemetry` field on `ProducerClientOptions` or `ConsumerClientOptions` to enable each signal independently. Partition clients and processors inherit the consumer client’s providers.
+Set the `Telemetry` field on `ProducerClientOptions` or `ConsumerClientOptions` to enable each signal independently. Partition clients and processors inherit the consumer client’s settings.
 
 ```go
 telemetry := azeventhubs.TelemetryOptions{
     TracingProvider: azotel.NewTracingProvider(tracerProvider, nil),
-    MeterProvider:   meterProvider,
-    LoggerProvider:  loggerProvider,
+    EnableMetrics:   true,
+    EnableLogs:      true,
 }
 options := &azeventhubs.ProducerClientOptions{Telemetry: telemetry}
 producer, err := azeventhubs.NewProducerClient(namespace, eventHub, credential, options)
 ```
 
-Supply the providers from the application’s OpenTelemetry configuration. The application chooses exporters, sampling, and shutdown. The default client options leave all three signals disabled. Existing `azcore/log` listeners continue to work independently.
+Register the application’s meter and logger providers with `otel.SetMeterProvider` and `otel.SetLoggerProvider` before creating the client. The application chooses exporters, sampling, and shutdown. The default client options leave all three signals disabled. Existing `azcore/log` listeners continue to work independently.
 
-Logical send and receive spans include preparation and retries. Child spans identify transport attempts, connection and session creation, and sender and receiver attachment. AMQP lifecycle logs include component and outcome. The meter records completed operations (`az.eventhubs.operations`), accepted or returned events (`az.eventhubs.events`), operation duration in seconds (`az.eventhubs.operation.duration`), and AMQP transitions (`az.eventhubs.amqp.lifecycle`).
+Logical send and receive spans include preparation and retries. Transport work performed during these calls creates child spans. A cold producer can create its connection, session, and sender during `NewEventDataBatch`. A processor can attach its receiver during initialization. These earlier spans inherit the context of the operation that created the resource. AMQP lifecycle logs include component and outcome. The meter records completed operations (`az.eventhubs.operations`), accepted or returned events (`az.eventhubs.events`), operation duration in seconds (`az.eventhubs.operation.duration`), and AMQP transitions (`az.eventhubs.amqp.lifecycle`).
 
 ## Contributing
 For details on contributing to this repository, see the [contributing guide][azure_sdk_for_go_contributing].

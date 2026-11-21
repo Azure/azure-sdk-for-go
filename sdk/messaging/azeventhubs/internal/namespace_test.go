@@ -324,7 +324,7 @@ func TestNamespaceStaleConnection(t *testing.T) {
 	require.NotNil(t, client)
 }
 
-func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
+func TestNamespaceConnectionCache(t *testing.T) {
 	newClient := 0
 	var clientToReturn amqpwrap.AMQPClient
 	var err error
@@ -339,7 +339,7 @@ func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
 
 	err = errors.New("client error")
 
-	client, clientID, err := ns.updateClientWithoutLock(context.Background())
+	client, clientID, err := ns.GetAMQPClientImpl(context.Background())
 	require.Error(t, err, "client error")
 	require.Equal(t, uint64(0), clientID)
 	require.Nil(t, client)
@@ -348,7 +348,7 @@ func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
 	clientToReturn = &fakeAMQPClient{}
 	err = nil
 
-	client, clientID, err = ns.updateClientWithoutLock(context.Background())
+	client, clientID, err = ns.GetAMQPClientImpl(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, uint64(101+1), clientID)
 	require.Same(t, clientToReturn, client)
@@ -357,7 +357,7 @@ func TestNamespaceUpdateClientWithoutLock(t *testing.T) {
 	origClient := client
 	clientToReturn = &fakeAMQPClient{}
 
-	client, clientID, err = ns.updateClientWithoutLock(context.Background())
+	client, clientID, err = ns.GetAMQPClientImpl(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, uint64(101+1), clientID)
 	require.Same(t, origClient, client)

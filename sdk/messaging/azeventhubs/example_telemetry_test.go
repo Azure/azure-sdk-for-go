@@ -5,6 +5,7 @@ package azeventhubs_test
 
 import (
 	"context"
+	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2"
@@ -16,15 +17,17 @@ func ExampleTelemetryOptions() {
 	// Use providers that the application has configured with its exporters.
 	telemetry := azeventhubs.TelemetryOptions{
 		TracingProvider: azotel.NewTracingProvider(otel.GetTracerProvider(), nil),
-		LoggerProvider:  otel.GetLoggerProvider(),
-		MeterProvider:   otel.GetMeterProvider(),
+		EnableLogs:      true,
+		EnableMetrics:   true,
 	}
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(
 		os.Getenv("EVENTHUB_CONNECTION_STRING"), "my-hub", &azeventhubs.ProducerClientOptions{Telemetry: telemetry})
 	if err != nil {
-		panic(err)
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
-	if err := producer.Close(context.Background()); err != nil {
-		panic(err)
+	if err := producer.Close(context.TODO()); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
 	}
 }

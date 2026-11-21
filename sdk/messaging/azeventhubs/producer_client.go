@@ -170,15 +170,15 @@ type SendEventDataBatchOptions struct {
 // SendEventDataBatch sends an event data batch to Event Hubs.
 func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventDataBatchOptions) (err error) {
 	ctx, finish := pc.diagnostics.StartOperation(ctx, "send", tracing.SpanKindProducer)
-	var accepted int
-	defer func() { finish(accepted, err) }()
+	var eventCount int
+	defer func() { finish(eventCount, err) }()
 	amqpMessage, err := batch.toAMQPMessage()
 
 	if err != nil {
 		return err
 	}
 
-	eventCount := len(amqpMessage.Data)
+	eventCount = len(amqpMessage.Data)
 	partID := getPartitionID(batch.partitionID)
 
 	err = pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", partID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
@@ -188,9 +188,6 @@ func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDa
 		end(err)
 		return err
 	})
-	if err == nil {
-		accepted = eventCount
-	}
 	return internal.TransformError(err)
 }
 
@@ -297,7 +294,7 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 
 	client.namespace = tmpNS
 	if options != nil {
-		tmpNS.Diagnostics = internal.NewDiagnostics(tmpNS.FQDN, client.eventHub, options.Telemetry.TracingProvider, options.Telemetry.MeterProvider, options.Telemetry.LoggerProvider)
+		tmpNS.Diagnostics = options.Telemetry.diagnostics(tmpNS.FQDN, client.eventHub)
 	}
 	client.diagnostics = tmpNS.Diagnostics
 

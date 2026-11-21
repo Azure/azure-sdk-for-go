@@ -252,7 +252,7 @@ func newConsumerClient(args consumerClientArgs, options *ConsumerClientOptions) 
 	}
 
 	client.namespace = tempNS
-	tempNS.Diagnostics = internal.NewDiagnostics(tempNS.FQDN, client.eventHub, options.Telemetry.TracingProvider, options.Telemetry.MeterProvider, options.Telemetry.LoggerProvider)
+	tempNS.Diagnostics = options.Telemetry.diagnostics(tempNS.FQDN, client.eventHub)
 	client.links = internal.NewLinks[amqpwrap.RPCLink](tempNS, fmt.Sprintf("%s/$management", client.eventHub), nil, nil)
 
 	return client, nil

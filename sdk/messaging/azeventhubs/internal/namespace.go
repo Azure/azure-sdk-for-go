@@ -47,6 +47,8 @@ type (
 		// NOTE: exported only so it can be checked in a test
 		RetryOptions exported.RetryOptions
 
+		creation         creationGate
+		closeGeneration  uint64
 		clientMu         sync.RWMutex
 		client           amqpwrap.AMQPClient
 		negotiateClaimMu sync.Mutex
@@ -232,17 +234,16 @@ func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, 
 // Close closes the current cached client.
 func (ns *Namespace) Close(ctx context.Context, permanently bool) error {
 	ns.clientMu.Lock()
-	defer ns.clientMu.Unlock()
-
+	ns.closeGeneration++
 	if permanently {
 		ns.closedPermanently = true
 	}
+	client := ns.client
+	ns.client = nil
+	ns.clientMu.Unlock()
 
-	if ns.client != nil {
-		err := ns.client.Close()
-		ns.client = nil
-
-		if err != nil {
+	if client != nil {
+		if err := client.Close(); err != nil {
 			log.Writef(exported.EventConn, "Failed when closing AMQP connection: %s", err)
 		}
 	}
@@ -269,41 +270,31 @@ var ErrClientClosed = NewErrNonRetriable("client has been closed by user")
 // NOTE: cancelling the context only cancels the initialization of a new AMQP
 // connection - the previous connection is always closed.
 func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) error {
-	if err := ns.Check(); err != nil {
+	if err := ns.creation.enter(ctx); err != nil {
 		return err
 	}
-
+	defer ns.creation.leave()
 	ns.clientMu.Lock()
-	defer ns.clientMu.Unlock()
-
 	if ns.closedPermanently {
+		ns.clientMu.Unlock()
 		return ErrClientClosed
 	}
-
 	if ns.connID != theirConnID {
-		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d. Links will still be recovered.", ns.connID, theirConnID)
+		ns.clientMu.Unlock()
 		return nil
 	}
+	oldClient := ns.client
+	ns.client = nil
+	ns.clientMu.Unlock()
 
-	if ns.client != nil {
-		ns.Diagnostics.recordLifecycle(ctx, "connection", "invalidated")
-		oldClient := ns.client
-		ns.client = nil
-
+	if oldClient != nil {
 		if err := oldClient.Close(); err != nil {
-			// the error on close isn't critical, we don't need to exit or
-			// return it.
 			log.Writef(exported.EventConn, "Error closing old client: %s", err.Error())
 		}
+		ns.Diagnostics.recordLifecycle(ctx, "connection", "invalidated")
 	}
-
-	log.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
-
-	if _, _, err := ns.updateClientWithoutLock(ctx); err != nil {
-		return err
-	}
-
-	return nil
+	_, _, err := ns.getOrOpenClient(ctx)
+	return err
 }
 
 // negotiateClaimFn matches the signature for NegotiateClaim, and is used when we want to stub things out for tests.
@@ -437,44 +428,55 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 }
 
 func (ns *Namespace) GetAMQPClientImpl(ctx context.Context) (amqpwrap.AMQPClient, uint64, error) {
-	if err := ns.Check(); err != nil {
-		return nil, 0, err
-	}
-
-	ns.clientMu.Lock()
-	defer ns.clientMu.Unlock()
-
-	if ns.closedPermanently {
+	ns.clientMu.RLock()
+	client, id, closed := ns.client, ns.connID, ns.closedPermanently
+	ns.clientMu.RUnlock()
+	if closed {
 		return nil, 0, ErrClientClosed
 	}
-
-	return ns.updateClientWithoutLock(ctx)
+	if client != nil {
+		return client, id, nil
+	}
+	if err := ns.creation.enter(ctx); err != nil {
+		return nil, 0, err
+	}
+	defer ns.creation.leave()
+	return ns.getOrOpenClient(ctx)
 }
 
-// updateClientWithoutLock takes care of initializing a client (if needed)
-// and returns the initialized client and it's connection ID, or an error.
-func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQPClient, uint64, error) {
-	if ns.client != nil {
-		return ns.client, ns.connID, nil
+// getOrOpenClient runs under the creation gate. Close may retire the candidate
+// during setup, including when called by a synchronous telemetry processor.
+func (ns *Namespace) getOrOpenClient(ctx context.Context) (amqpwrap.AMQPClient, uint64, error) {
+	ns.clientMu.RLock()
+	client, id, generation, closed := ns.client, ns.connID, ns.closeGeneration, ns.closedPermanently
+	ns.clientMu.RUnlock()
+	if closed {
+		return nil, 0, ErrClientClosed
+	}
+	if client != nil {
+		return client, id, nil
 	}
 
 	connStart := time.Now()
-	log.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
-
-	newConnID := ns.connID + 1
+	log.Writef(exported.EventConn, "Creating new client, current rev: %d", id)
+	newConnID := id + 1
 	ctx, end := ns.Diagnostics.StartLifecycle(ctx, "connection", "open")
-	tempClient, err := ns.newClientFn(ctx, newConnID)
+	client, err := ns.newClientFn(ctx, newConnID)
 	end(err)
-
 	if err != nil {
 		return nil, 0, err
 	}
 
-	ns.connID = newConnID
-	ns.client = tempClient
-	log.Writef(exported.EventConn, "Client created, new rev: %d, took %dms", ns.connID, time.Since(connStart)/time.Millisecond)
-
-	return ns.client, ns.connID, err
+	ns.clientMu.Lock()
+	if ns.closeGeneration != generation {
+		ns.clientMu.Unlock()
+		_ = client.Close()
+		return nil, 0, ErrClientClosed
+	}
+	ns.connID, ns.client = newConnID, client
+	ns.clientMu.Unlock()
+	log.Writef(exported.EventConn, "Client created, new rev: %d, took %dms", newConnID, time.Since(connStart)/time.Millisecond)
+	return client, newConnID, nil
 }
 
 func (ns *Namespace) getWSSHostURI() string {

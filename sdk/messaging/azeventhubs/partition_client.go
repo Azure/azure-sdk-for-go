@@ -115,7 +115,14 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 
 	err = pc.links.Retry(ctx, EventConsumer, "ReceiveEvents", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) (err error) {
 		ctx, end := pc.diagnostics.StartAttempt(ctx, "EventHubs.receive.wait")
-		defer func() { end(err) }()
+		defer func() {
+			// A timeout can complete a partial batch that ReceiveEvents returns successfully.
+			if len(events) > 0 && internal.IsCancelError(err) {
+				end(nil)
+			} else {
+				end(err)
+			}
+		}()
 		events = nil
 
 		if prefetchDisabled {

@@ -4,6 +4,13 @@
 
 ### Features Added
 
+- Credentials whose options don't specify a cloud use the authority host of the well-known cloud
+  named by the environment variable `AZURE_ENVIRONMENT`, when `AZURE_AUTHORITY_HOST` isn't set.
+  Valid values are `AzureChina`, `AzureGovernment`, and `AzurePublic`. Values are case insensitive,
+  surrounding whitespace is ignored, and the names earlier Azure SDKs and the Azure CLI use for
+  these clouds, such as `AzureUSGovernmentCloud`, are also accepted. Credential constructors, including
+  `NewDefaultAzureCredential`, return an error when the variable has any other value.
+
 ### Breaking Changes
 
 ### Bugs Fixed

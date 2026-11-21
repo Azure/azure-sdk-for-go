@@ -227,6 +227,34 @@ func TestPipelineAudience(t *testing.T) {
 	}
 }
 
+func TestPipelineAudienceIgnoresEnvironment(t *testing.T) {
+	// arm.NewClient resolves the cloud named by the environment variable and passes it in the
+	// options. NewPipeline itself mustn't read the variable because a caller that determines its
+	// own endpoint would then send tokens for the named cloud to a different cloud's endpoint
+	for _, name := range []string{"AzureChina", "AzureGovernment", "invalid"} {
+		t.Setenv(shared.EnvAzureEnvironment, name)
+		srv, close := mock.NewTLSServer()
+		defer close()
+		srv.AppendResponse(mock.WithStatusCode(200))
+		opts := &armpolicy.ClientOptions{DisableRPRegistration: true}
+		opts.Transport = srv
+		audience := cloud.AzurePublic.Services[cloud.ResourceManager].Audience
+		getTokenCalled := false
+		cred := mockCredential{getTokenImpl: func(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+			getTokenCalled = true
+			require.Equal(t, []string{audience + "/.default"}, options.Scopes)
+			return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
+		}}
+		req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+		require.NoError(t, err)
+		pl, err := NewPipeline("test", "v0.1.0", cred, azruntime.PipelineOptions{}, opts)
+		require.NoError(t, err)
+		_, err = pl.Do(req)
+		require.NoError(t, err)
+		require.True(t, getTokenCalled, "mock credential's GetToken method wasn't called")
+	}
+}
+
 func TestPipelineWithIncompleteCloudConfig(t *testing.T) {
 	partialConfigs := []cloud.Configuration{
 		{Services: map[cloud.ServiceName]cloud.ServiceConfiguration{"...": {Endpoint: "..."}}},

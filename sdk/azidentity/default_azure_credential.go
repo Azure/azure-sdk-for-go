@@ -131,6 +131,15 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		return nil, fmt.Errorf("%s must be set when RequireAzureTokenCredentials is true. See https://aka.ms/azsdk/go/identity/docs#DefaultAzureCredential for more information", azureTokenCredentials)
 	}
 
+	// an invalid cloud name is a configuration error for the credentials that use an authority
+	// host. Return it here because the chain would otherwise treat those credentials as
+	// unavailable and try the next one, which could authenticate a different identity
+	if selected&(env|workloadIdentity) != 0 {
+		if err := validateEnvironment(options.Cloud); err != nil {
+			return nil, err
+		}
+	}
+
 	additionalTenants := options.AdditionallyAllowedTenants
 	if len(additionalTenants) == 0 {
 		if tenants := os.Getenv(azureAdditionallyAllowedTenants); tenants != "" {

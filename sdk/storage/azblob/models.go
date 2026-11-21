@@ -47,6 +47,9 @@ type DownloadBufferOptions = blob.DownloadBufferOptions
 // DownloadFileOptions identifies options used by the DownloadBuffer and DownloadFile functions.
 type DownloadFileOptions = blob.DownloadFileOptions
 
+// DownloadWriterAtOptions identifies options used by the DownloadWriterAt function.
+type DownloadWriterAtOptions = blob.DownloadWriterAtOptions
+
 // CPKInfo contains a group of parameters for client provided encryption key.
 type CPKInfo = blob.CPKInfo
 

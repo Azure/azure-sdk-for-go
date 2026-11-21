@@ -14,6 +14,14 @@ azcosmos/v2 options; dynamic-topology scenario ports and a topology-control clie
 scope. Check each scenario's backend requirements and Go implementation entry rather than
 assuming every blocker is cleared by changing the emulator revision.
 
+The Go fixture supports `hostedEmulatorGatewayV2` for `consistency.session-staleness`,
+`consistency.response-token-capture`, and `management.capabilities`. To run those tests, start
+isolated instances from the smoke and configuration-resilience configs with `gateway20Port: 0`
+added to every region, set the same endpoint variables used by CI, and set
+`AZURE_COSMOS_E2E_BACKEND=hostedEmulatorGatewayV2`. The consistency tests check the emulator's
+Gateway V2 request counter; advertising the protocol alone is not sufficient. CI's existing
+configs exercise Gateway V1.
+
 Do not hand-edit these JSON files. To refresh the pin:
 
 1. Update the revision above and re-copy `schema/`, `profiles/`, and `scenarios/` verbatim from

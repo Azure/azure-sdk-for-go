@@ -141,6 +141,20 @@ func TestValidateEmulatorCapabilitiesAcceptsSimulatedFidelity(t *testing.T) {
 	require.ErrorContains(t, validateEmulatorCapabilities(backend, capabilities), "does not match applicability")
 }
 
+func TestSelectedProfileUsesRequestedGateway(t *testing.T) {
+	t.Setenv("AZURE_COSMOS_E2E_BACKEND", emulatorGatewayV2)
+	profile := selectedProfile(t, "consistency.response-token-capture")
+	require.Equal(t, emulatorGatewayV2, profile.backendID)
+	require.Contains(t, profile.backend.Requires, "gatewayV2")
+	var capabilities emulatorCapabilities
+	capabilities.APIVersion = 1
+	capabilities.Protocols.GatewayV1 = true
+	capabilities.DataPlane = []string{"item", "query"}
+	require.ErrorContains(t, validateEmulatorCapabilities(profile.backend, capabilities), `required capability "gatewayV2"`)
+	capabilities.Protocols.GatewayV2 = true
+	require.NoError(t, validateEmulatorCapabilities(profile.backend, capabilities))
+}
+
 func TestValidateEmulatorAccountMatchesSelectedProfile(t *testing.T) {
 	profile, err := resolveFixtureProfile(loadFixtureTestCatalog(t).Profiles["configurationResilience"], "", "", "")
 	require.NoError(t, err)
@@ -167,8 +181,9 @@ func TestValidateEmulatorAccountMatchesSelectedProfile(t *testing.T) {
 
 func TestValidateEmulatorBackend(t *testing.T) {
 	require.NoError(t, validateEmulatorBackend(""))
-	require.NoError(t, validateEmulatorBackend(supportedEmulatorBackend))
-	require.ErrorContains(t, validateEmulatorBackend("hostedEmulatorGatewayV2"), "supports only")
+	require.NoError(t, validateEmulatorBackend(emulatorGatewayV1))
+	require.NoError(t, validateEmulatorBackend(emulatorGatewayV2))
+	require.ErrorContains(t, validateEmulatorBackend("unknown"), "not \"unknown\"")
 }
 
 func loadFixtureTestCatalog(t *testing.T) internale2e.Catalog {

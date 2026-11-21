@@ -24,6 +24,7 @@ func TestSessionStaleness(t *testing.T) {
 	endpoint, managementEndpoint, databaseID, containerID := requireProfileEmulator(t, profile)
 	require.NoError(t, validateEmulatorBackend(os.Getenv("AZURE_COSMOS_E2E_BACKEND")))
 	probeEmulatorCapabilities(t, profile, endpoint, managementEndpoint)
+	before := readGatewayRequests(t, managementEndpoint)
 	fx := newFixtureAt(t, endpoint, databaseID, containerID, "", &azcosmos.ClientOptions{
 		Routing:   azcosmos.PreferredRegions(azcosmos.RegionWestUS, azcosmos.RegionEastUS),
 		Operation: azcosmos.OperationOptions{SessionCapturingDisabled: to(true)},
@@ -62,6 +63,7 @@ func TestSessionStaleness(t *testing.T) {
 	require.NotNil(t, read.Diagnostics)
 	require.NotEmpty(t, read.Diagnostics.RegionsContacted)
 	require.Equal(t, string(azcosmos.RegionWestUS), read.Diagnostics.RegionsContacted[0])
+	assertGatewayRequests(t, profile, before, readGatewayRequests(t, managementEndpoint))
 }
 
 func TestResponseTokenCapture(t *testing.T) {
@@ -69,6 +71,7 @@ func TestResponseTokenCapture(t *testing.T) {
 	endpoint, managementEndpoint, databaseID, containerID := requireProfileEmulator(t, profile)
 	require.NoError(t, validateEmulatorBackend(os.Getenv("AZURE_COSMOS_E2E_BACKEND")))
 	probeEmulatorCapabilities(t, profile, endpoint, managementEndpoint)
+	before := readGatewayRequests(t, managementEndpoint)
 	writer := newFixtureAt(t, endpoint, databaseID, containerID, "", profile.clientOptions)
 	reader := newFixtureAt(t, endpoint, databaseID, containerID, "", &azcosmos.ClientOptions{
 		Routing: azcosmos.PreferredRegions(azcosmos.RegionWestUS, azcosmos.RegionEastUS),
@@ -115,6 +118,7 @@ func TestResponseTokenCapture(t *testing.T) {
 	require.NotNil(t, read.Diagnostics)
 	require.NotEmpty(t, read.Diagnostics.RegionsContacted)
 	require.Equal(t, string(azcosmos.RegionWestUS), read.Diagnostics.RegionsContacted[0])
+	assertGatewayRequests(t, profile, before, readGatewayRequests(t, managementEndpoint))
 }
 
 func setReplication(t *testing.T, managementEndpoint, action string) {

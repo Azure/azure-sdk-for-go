@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
@@ -1293,6 +1294,145 @@ func TestAdminClient_ruleWithDifferentXMLNamespaces(t *testing.T) {
 	require.Empty(t, listRulesResp.Rules)
 
 	require.False(t, pager.More())
+}
+
+type ruleResponsePolicy struct {
+	body string
+}
+
+func (p *ruleResponsePolicy) Do(req *policy.Request) (*http.Response, error) {
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Body:       io.NopCloser(strings.NewReader(p.body)),
+		Request:    req.Raw(),
+	}, nil
+}
+
+func TestNewRulePropertiesFromEnvelope_NilEnvelope(t *testing.T) {
+	client := &Client{}
+	props, err := client.newRulePropertiesFromEnvelope(nil)
+	require.EqualError(t, err, "invalid rule response: missing content")
+	require.Nil(t, props)
+}
+
+func TestAdminClient_RuleResponseMissingElements(t *testing.T) {
+	const entryStart = `<entry xmlns="http://www.w3.org/2005/Atom"><title>r1</title>`
+	const contentStart = `<content type="application/xml"><RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">`
+	const contentEnd = `<Name>r1</Name></RuleDescription></content>`
+	const trueFilter = `<Filter i:type="TrueFilter"/>`
+
+	testCases := []struct {
+		name        string
+		content     string
+		expected    RuleProperties
+		expectedErr string
+	}{
+		{
+			name:     "missingAction",
+			content:  contentStart + trueFilter + contentEnd,
+			expected: RuleProperties{Name: "r1", Filter: &TrueFilter{}},
+		},
+		{
+			name:     "emptyAction",
+			content:  contentStart + trueFilter + `<Action i:type="EmptyRuleAction"/>` + contentEnd,
+			expected: RuleProperties{Name: "r1", Filter: &TrueFilter{}},
+		},
+		{
+			name: "sqlFilterWithoutAction",
+			content: contentStart + `<Filter i:type="SqlFilter"><SqlExpression>color='red'</SqlExpression></Filter>` +
+				contentEnd,
+			expected: RuleProperties{Name: "r1", Filter: &SQLFilter{Expression: "color='red'"}},
+		},
+		{
+			name: "correlationFilterWithoutAction",
+			content: contentStart + `<Filter i:type="CorrelationFilter"><CorrelationId>c1</CorrelationId></Filter>` +
+				contentEnd,
+			expected: RuleProperties{Name: "r1", Filter: &CorrelationFilter{CorrelationID: to.Ptr("c1")}},
+		},
+		{
+			name: "sqlAction",
+			content: contentStart + trueFilter + `<Action i:type="SqlRuleAction"><SqlExpression>SET color='blue'</SqlExpression></Action>` +
+				contentEnd,
+			expected: RuleProperties{Name: "r1", Filter: &TrueFilter{}, Action: &SQLAction{Expression: "SET color='blue'"}},
+		},
+		{
+			name:        "missingFilter",
+			content:     contentStart + `<Action i:type="EmptyRuleAction"/>` + contentEnd,
+			expectedErr: "invalid rule response: missing filter",
+		},
+		{
+			name:        "missingContent",
+			expectedErr: "invalid rule response: missing content",
+		},
+		{
+			name:        "emptyContent",
+			content:     `<content/>`,
+			expectedErr: "invalid rule response: missing filter",
+		},
+		{
+			name:        "missingRuleDescription",
+			content:     `<content><Other/></content>`,
+			expectedErr: "invalid rule response: missing filter",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			for _, operation := range []string{"get", "create", "update", "list"} {
+				t.Run(operation, func(t *testing.T) {
+					body := entryStart + tc.content + `</entry>`
+					if operation == "list" {
+						body = `<feed xmlns="http://www.w3.org/2005/Atom">` + body + `</feed>`
+					}
+
+					client, err := NewClient("fake.servicebus.windows.net", fakeAPIVersionCredential{}, &ClientOptions{
+						ClientOptions: azcore.ClientOptions{
+							PerCallPolicies: []policy.Policy{&ruleResponsePolicy{body: body}},
+						},
+					})
+					require.NoError(t, err)
+
+					var props RuleProperties
+					switch operation {
+					case "get":
+						var resp *GetRuleResponse
+						resp, err = client.GetRule(context.Background(), "t1", "s1", "r1", nil)
+						if err == nil {
+							require.NotNil(t, resp)
+							props = resp.RuleProperties
+						}
+					case "create":
+						var resp CreateRuleResponse
+						resp, err = client.CreateRule(context.Background(), "t1", "s1", &CreateRuleOptions{
+							Name: to.Ptr("r1"), Filter: &TrueFilter{},
+						})
+						props = resp.RuleProperties
+					case "update":
+						var resp UpdateRuleResponse
+						resp, err = client.UpdateRule(context.Background(), "t1", "s1", RuleProperties{
+							Name: "r1", Filter: &TrueFilter{},
+						})
+						props = resp.RuleProperties
+					case "list":
+						var resp ListRulesResponse
+						resp, err = client.NewListRulesPager("t1", "s1", nil).NextPage(context.Background())
+						if err == nil {
+							require.Len(t, resp.Rules, 1)
+							props = resp.Rules[0]
+						}
+					}
+
+					if tc.expectedErr != "" {
+						require.EqualError(t, err, tc.expectedErr)
+						require.Empty(t, props)
+					} else {
+						require.NoError(t, err)
+						require.Equal(t, tc.expected, props)
+					}
+				})
+			}
+		})
+	}
 }
 
 func TestAdminClient_CreateRules(t *testing.T) {

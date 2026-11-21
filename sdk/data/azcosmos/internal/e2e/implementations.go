@@ -38,12 +38,12 @@ func buildImplementations() []Implementation {
 		{ScenarioID: "query.pagination-resume", Status: StatusActive, Test: "TestQueryPaginationResumesWithoutLossOrDuplication"},
 		{ScenarioID: "diagnostics.success-and-error", Status: StatusActive, Test: "TestDiagnosticsCoverSuccessAndError"},
 		{ScenarioID: "consistency.session-management", Status: StatusActive, Test: "TestSessionManagement"},
-		{ScenarioID: "consistency.session-staleness", Status: StatusActive, Test: "TestSessionStaleness"},
-		{ScenarioID: "consistency.response-token-capture", Status: StatusActive, Test: "TestResponseTokenCapture"},
-		{ScenarioID: "management.capabilities", Status: StatusActive, Test: "TestEmulatorCapabilities"},
 		{ScenarioID: "configuration.binary-routing", Status: StatusActive, Test: "TestBinaryEncodingAndRouting"},
 
 		// --- Blocked: missing Go product capability ---
+		{ScenarioID: "management.capabilities", Status: StatusBlocked, Reason: "TestEmulatorCapabilities covers hostedEmulatorGatewayV1, but the catalog also requires hostedEmulatorGatewayV2, which the Go fixture does not yet support."},
+		{ScenarioID: "consistency.session-staleness", Status: StatusBlocked, Reason: "TestSessionStaleness covers hostedEmulatorGatewayV1, but the catalog also applies to hostedEmulatorGatewayV2, which the Go fixture does not yet support."},
+		{ScenarioID: "consistency.response-token-capture", Status: StatusBlocked, Reason: "TestResponseTokenCapture covers hostedEmulatorGatewayV1, but the catalog also applies to hostedEmulatorGatewayV2, which the Go fixture does not yet support."},
 		{ScenarioID: "item.scalar-partition-keys", Status: StatusBlocked, Reason: "the pinned in-memory emulator's header parser (azure_data_cosmos_driver::in_memory_emulator::epk::json_to_pk_component) rejects any JSON-object-shaped partition-key component with \"partition key components must be scalar\" - including the driver's own \"{}\" wire encoding for an Undefined partition key - so the catalog's required undefined-key case cannot be exercised through any client against this emulator build, not just Go. A TestItemScalarPartitionKeysRemainDistinct test still exists exercising the other four kinds (string/numeric/boolean/null) as supplementary regression coverage, but is not registered as certification evidence for this scenario; bumping the emulator pin is a separate decision (see catalog/README.md)."},
 		// #27700 added azcosmos/v2's public database/container management API (Create/Read/Delete
 		// for both), but not Replace or a List/Query API for either resource; the catalog's

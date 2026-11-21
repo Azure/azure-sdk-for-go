@@ -429,6 +429,7 @@ func newSubscriptionEnvelope(props *SubscriptionProperties) (*atom.SubscriptionE
 		ForwardDeadLetteredMessagesTo:             props.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                              props.UserMetadata,
 		EnableBatchedOperations:                   props.EnableBatchedOperations,
+		Status:                                    (*atom.EntityStatus)(props.Status),
 		AutoDeleteOnIdle:                          props.AutoDeleteOnIdle,
 		DefaultRuleDescription:                    defaultRuleDescription,
 	}

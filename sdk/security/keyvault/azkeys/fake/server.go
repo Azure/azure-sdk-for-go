@@ -99,7 +99,7 @@ type Server struct {
 
 	// SecureUnwrapKey is the fake for method Client.SecureUnwrapKey
 	// HTTP status codes to indicate success: http.StatusOK
-	SecureUnwrapKey func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnWrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder)
+	SecureUnwrapKey func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnwrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder)
 
 	// SecureWrapKey is the fake for method Client.SecureWrapKey
 	// HTTP status codes to indicate success: http.StatusOK
@@ -835,7 +835,7 @@ func (s *ServerTransport) dispatchSecureUnwrapKey(req *http.Request) (*http.Resp
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[azkeys.SecureKeyUnWrapOperationParameters](req)
+	body, err := server.UnmarshalRequestAsJSON[azkeys.SecureKeyUnwrapOperationParameters](req)
 	if err != nil {
 		return nil, err
 	}

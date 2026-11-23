@@ -6,9 +6,11 @@ package azappconfig_test
 import (
 	"context"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2"
@@ -485,8 +487,8 @@ func ExampleClient_NewCheckSettingsPager_matchConditions() {
 	}
 
 	// Step 2: Use HEAD requests again with the ETags to check if anything changed.
-	// Pages that haven't changed will return 304 Not Modified (empty ETag in response).
-	// Pages that have changed will return 200 OK with a new ETag.
+	// A 304 Not Modified response can include the current ETag. Use the status
+	// to distinguish it from 200 OK, which indicates a changed or new page.
 	pager = client.NewCheckSettingsPager(azappconfig.SettingSelector{
 		KeyFilter: to.Ptr("*"),
 	}, &azappconfig.CheckSettingsOptions{
@@ -494,15 +496,16 @@ func ExampleClient_NewCheckSettingsPager_matchConditions() {
 	})
 
 	for pager.More() {
-		page, err := pager.NextPage(context.TODO())
+		var resp *http.Response
+		_, err := pager.NextPage(policy.WithCaptureResponse(context.TODO(), &resp))
 		if err != nil {
-			//  TODO: Update the following line with your application specific error handling logic
+			// TODO: Update the following line with your application specific error handling logic
 			log.Fatalf("ERROR: %s", err)
 		}
 
-		if page.ETag != nil {
+		if resp.StatusCode == http.StatusOK {
 			// This page has changed, reload with GET request if needed
-			log.Printf("Page changed, new ETag: %s", *page.ETag)
+			log.Print("Page changed")
 		}
 	}
 }

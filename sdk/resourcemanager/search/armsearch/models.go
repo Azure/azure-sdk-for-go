@@ -54,16 +54,6 @@ type AdminKeyResult struct {
 	SecondaryKey *string
 }
 
-// AzureActiveDirectoryApplicationCredentials - Describes the Azure Active Directory application credentials required to access
-// an Azure Key Vault.
-type AzureActiveDirectoryApplicationCredentials struct {
-	// The application (client) ID of an App Registration in the tenant.
-	ApplicationID *string
-
-	// An AAD client secret that was generated for the App Registration used to authenticate with Azure Key Vault.
-	ApplicationSecret *string
-}
-
 // CheckNameAvailabilityInput - Input of check name availability API.
 type CheckNameAvailabilityInput struct {
 	// REQUIRED; The search service name to validate. Search service names must only contain lowercase letters, digits or dashes,
@@ -91,28 +81,6 @@ type CheckNameAvailabilityOutput struct {
 	Reason *UnavailableNameReason
 }
 
-// DataIdentity - Abstract base type for data identities.
-type DataIdentity struct {
-	// REQUIRED; A URI fragment specifying the type of identity.
-	ODataType *string
-}
-
-// GetDataIdentity implements the DataIdentityClassification interface for type DataIdentity.
-func (d *DataIdentity) GetDataIdentity() *DataIdentity { return d }
-
-// DataNoneIdentity - Clears the identity property.
-type DataNoneIdentity struct {
-	// CONSTANT; Field has constant value "#Microsoft.Azure.Search.DataNoneIdentity", any specified value is ignored.
-	ODataType *string
-}
-
-// GetDataIdentity implements the DataIdentityClassification interface for type DataNoneIdentity.
-func (d *DataNoneIdentity) GetDataIdentity() *DataIdentity {
-	return &DataIdentity{
-		ODataType: d.ODataType,
-	}
-}
-
 // DataPlaneAADOrAPIKeyAuthOption - Indicates that either the API key or an access token from a Microsoft Entra ID tenant
 // can be used for authentication.
 type DataPlaneAADOrAPIKeyAuthOption struct {
@@ -130,27 +98,6 @@ type DataPlaneAuthOptions struct {
 	APIKeyOnly any
 }
 
-// DataUserAssignedIdentity - Specifies the user assigned identity to use.
-type DataUserAssignedIdentity struct {
-	// CONSTANT; Field has constant value "#Microsoft.Azure.Search.DataUserAssignedIdentity", any specified value is ignored.
-	ODataType *string
-
-	// REQUIRED; The fully qualified Azure resource Id of a user assigned managed identity typically in the form "/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId"
-	// that should have been assigned to the search service.
-	UserAssignedIdentity *string
-
-	// Optional for Multi-tenant User-Assigned Managed Identity CMK Support: The client id (as a UUID) of the multi-tenant App
-	// Registration that has been configured to federate with the userAssignedIdentity.
-	FederatedIdentityClientID *string
-}
-
-// GetDataIdentity implements the DataIdentityClassification interface for type DataUserAssignedIdentity.
-func (d *DataUserAssignedIdentity) GetDataIdentity() *DataIdentity {
-	return &DataIdentity{
-		ODataType: d.ODataType,
-	}
-}
-
 // EncryptionWithCmk - Describes a policy that determines how resources within the search service are to be encrypted with
 // customer managed keys.
 type EncryptionWithCmk struct {
@@ -158,18 +105,9 @@ type EncryptionWithCmk struct {
 	// key.
 	Enforcement *SearchEncryptionWithCmk
 
-	// Describes the customer-managed key configuration for encrypting the search service.
-	ServiceLevelEncryptionKey *ResourceEncryptionKey
-
 	// READ-ONLY; Returns the status of search service compliance with respect to non-CMK-encrypted objects. If a service has
 	// more than one unencrypted object, and enforcement is enabled, the service is marked as noncompliant.
 	EncryptionComplianceStatus *SearchEncryptionComplianceStatus
-}
-
-// FeatureOffering - Describes the availability of a specific feature in a region.
-type FeatureOffering struct {
-	// The name of the feature offered in this region.
-	Name *string
 }
 
 // IPRule - The IP restriction rule of the Azure AI Search service.
@@ -290,28 +228,6 @@ type NetworkSecurityProfile struct {
 
 	// Name of the profile
 	Name *string
-}
-
-// OfferingsByRegion - Describes the Azure AI Search features and SKUs available in a specific Azure region.
-type OfferingsByRegion struct {
-	// The list of features offered in this region.
-	Features []*FeatureOffering
-
-	// The name of the region.
-	RegionName *string
-
-	// The list of SKUs offered in this region.
-	SKUs []*SKUOffering
-}
-
-// OfferingsResult - Response containing the available Azure AI Search offerings, organized by region, along with the recommended
-// default region for creating new services.
-type OfferingsResult struct {
-	// READ-ONLY; The recommended default region for creating new Azure AI Search services.
-	DefaultRegion *string
-
-	// READ-ONLY; The list of Azure AI Search offerings by region.
-	Regions []*OfferingsByRegion
 }
 
 // Operation - REST API Operation
@@ -560,29 +476,6 @@ type ResourceAssociation struct {
 	Name *string
 }
 
-// ResourceEncryptionKey - A customer-managed encryption key in Azure Key Vault. Keys that you create and manage can be used
-// to encrypt or decrypt data-at-rest, such as indexes and synonym maps.
-type ResourceEncryptionKey struct {
-	// Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using managed identity
-	// instead.
-	AccessCredentials *AzureActiveDirectoryApplicationCredentials
-
-	// An explicit managed identity to use for this encryption key. If not specified and the access credentials property is null,
-	// the system-assigned managed identity is used. On update to the resource, if the explicit identity is unspecified, it remains
-	// unchanged. If "none" is specified, the value of this property is cleared.
-	Identity DataIdentityClassification
-
-	// The name of your Azure Key Vault key to be used to encrypt your data at rest.
-	KeyName *string
-
-	// The version of your Azure Key Vault key to be used to encrypt your data at rest.
-	KeyVersion *string
-
-	// The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your data at
-	// rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
-	VaultURI *string
-}
-
 // SKU - Defines the SKU of a search service, which determines billing rate and capacity limits.
 type SKU struct {
 	// The SKU of the search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas.
@@ -592,39 +485,6 @@ type SKU struct {
 	// 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions. 'serverless':
 	// Serverless tier with auto-scaling capabilities.
 	Name *SKUName
-}
-
-// SKULimits - Describes the limits associated with a SKU offering.
-type SKULimits struct {
-	// The maximum number of indexers available for this SKU.
-	Indexers *int32
-
-	// The maximum number of indexes available for this SKU.
-	Indexes *int32
-
-	// The maximum storage size in Gigabytes available for this SKU per partition.
-	PartitionStorageInGigabytes *float32
-
-	// The maximum vector storage size in Gigabytes available for this SKU per partition.
-	PartitionVectorStorageInGigabytes *float32
-
-	// The maximum number of partitions available for this SKU.
-	Partitions *int32
-
-	// The maximum number of replicas available for this SKU.
-	Replicas *int32
-
-	// The maximum number of search units available for this SKU.
-	SearchUnits *int32
-}
-
-// SKUOffering - Describes a SKU offering with its limits in a specific region.
-type SKUOffering struct {
-	// The limits associated with this SKU offered in this region.
-	Limits *SKULimits
-
-	// The SKU definition.
-	SKU *SKU
 }
 
 // Service - Describes an Azure AI Search service and its current state.
@@ -673,10 +533,6 @@ type ServiceProperties struct {
 	// Defines the options for how the data plane API of a search service authenticates requests. This cannot be set if 'disableLocalAuth'
 	// is set to true.
 	AuthOptions *DataPlaneAuthOptions
-
-	// Defines the level of reuse for the auto-generated domain name label for the search service (e.g. myservice-<uniqueId>.search.windows.net).
-	// If not specified, no auto-generated domain name label is created for the search service.
-	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope
 
 	// Configure this property to support the search service using either the Default Compute or Azure Confidential Compute.
 	ComputeType *ComputeType

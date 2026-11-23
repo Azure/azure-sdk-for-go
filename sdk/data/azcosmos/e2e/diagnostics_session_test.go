@@ -62,14 +62,10 @@ func TestDiagnosticsCoverSuccessAndError(t *testing.T) {
 // automatic session-token capture and exercising continuation-based queries alongside the
 // explicit token, and azcosmos/v2 has no public option to disable automatic session capture (see
 // [OperationOptions] and [ClientOptions]); only the narrower "explicit token honored" claim is
-// tested here.
-//
-// This also uses newRawFixture, not newFixture: the scenario's only declared profile,
-// configurationResilience, needs a two-region, replication-delayed account this fixture's single
-// pre-provisioned emulator account cannot provide, so newFixture's profile validation would
-// correctly reject it.
+// tested here. It uses the catalog profile to exercise the two-region fixture but remains
+// supplementary regression coverage, not certification evidence for the catalog scenario.
 func TestSessionTokenExplicitManagement(t *testing.T) {
-	fx := newRawFixture(t, "")
+	fx := newFixture(t, "consistency.session-management", "")
 	ctx := context.Background()
 	id := uniqueID(t)
 	pk := azcosmos.NewPartitionKeyString("A")

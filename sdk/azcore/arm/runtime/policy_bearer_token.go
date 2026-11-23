@@ -93,6 +93,9 @@ func (b *BearerTokenPolicy) onRequest(req *azpolicy.Request, authNZ func(azpolic
 		if err != nil {
 			return err
 		}
+		if auxTk.BindingCertificate != nil {
+			return fmt.Errorf("mTLS PoP doesn't support auxiliary tenant authentication")
+		}
 		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", shared.BearerTokenPrefix, auxTk.Token))
 	}
 	req.Raw().Header.Set(headerAuxiliaryAuthorization, strings.Join(auxTokens, ", "))

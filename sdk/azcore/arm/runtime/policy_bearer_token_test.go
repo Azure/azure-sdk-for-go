@@ -34,6 +34,21 @@ func TestBearerPolicy_MTLSPoPAuxiliaryTenants(t *testing.T) {
 		return nil
 	})
 	require.ErrorContains(t, err, "auxiliary tenant")
+
+	// a bearer primary token doesn't make a bound auxiliary token acceptable
+	b = NewBearerTokenPolicy(mockCredential{getTokenImpl: func(_ context.Context, opts azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
+		require.Equal(t, "other-tenant", opts.TenantID)
+		require.False(t, opts.EnableMTLSPoP, "auxiliary tokens are never requested with PoP")
+		return azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour), BindingCertificate: &tls.Certificate{}}, nil
+	}}, &armpolicy.BearerTokenOptions{AuxiliaryTenants: []string{"other-tenant"}, Scopes: []string{scope}})
+	req, err = runtime.NewRequest(context.Background(), http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	err = b.onRequest(req, func(azpolicy.TokenRequestOptions) error {
+		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tokenValue)
+		return nil
+	})
+	require.ErrorContains(t, err, "auxiliary tenant")
+	require.Empty(t, req.Raw().Header.Get(headerAuxiliaryAuthorization), "a bound auxiliary token must not be sent as a bearer token")
 }
 
 func TestBearerPolicy_MTLSPoP(t *testing.T) {

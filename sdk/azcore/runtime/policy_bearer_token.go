@@ -4,6 +4,8 @@
 package runtime
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/base64"
 	"errors"
 	"net/http"
@@ -51,17 +53,46 @@ func acquire(state acquiringResourceState) (newResource exported.AccessToken, ne
 		return exported.AccessToken{}, time.Time{}, err
 	}
 	expiration := tk.ExpiresOn
-	if cert := tk.BindingCertificate; cert != nil && cert.Leaf != nil && cert.Leaf.NotAfter.Before(expiration) {
-		expiration = cert.Leaf.NotAfter
+	if notAfter, ok := bindingCertificateNotAfter(tk.BindingCertificate); ok {
+		if notAfter.Before(expiration) {
+			expiration = notAfter
+		}
+		// Refresh before the certificate expires, as for the token. tk is this policy's copy, so the
+		// certificate's deadline is folded into its RefreshOn once here rather than parsed per request.
+		certRefresh := notAfter.Add(-5 * time.Minute)
+		tokenRefresh := tk.RefreshOn
+		if tokenRefresh.IsZero() {
+			tokenRefresh = tk.ExpiresOn.Add(-5 * time.Minute)
+		}
+		if certRefresh.Before(tokenRefresh) {
+			tk.RefreshOn = certRefresh
+		}
 	}
 	return tk, expiration, nil
 }
 
+// bindingCertificateNotAfter returns the expiry of cert's leaf. Leaf is optional, so when it's nil the
+// leaf DER is parsed without modifying the caller's certificate. An unparseable leaf reports false;
+// the handshake then fails on its own.
+func bindingCertificateNotAfter(cert *tls.Certificate) (time.Time, bool) {
+	if cert == nil {
+		return time.Time{}, false
+	}
+	if cert.Leaf != nil {
+		return cert.Leaf.NotAfter, true
+	}
+	if len(cert.Certificate) == 0 {
+		return time.Time{}, false
+	}
+	leaf, err := x509.ParseCertificate(cert.Certificate[0])
+	if err != nil {
+		return time.Time{}, false
+	}
+	return leaf.NotAfter, true
+}
+
 // shouldRefresh determines whether the token should be refreshed. It's a variable so tests can replace it.
 var shouldRefresh = func(tk exported.AccessToken, _ acquiringResourceState) bool {
-	if cert := tk.BindingCertificate; cert != nil && cert.Leaf != nil && cert.Leaf.NotAfter.Add(-5*time.Minute).Before(time.Now()) {
-		return true
-	}
 	if tk.RefreshOn.IsZero() {
 		return tk.ExpiresOn.Add(-5 * time.Minute).Before(time.Now())
 	}

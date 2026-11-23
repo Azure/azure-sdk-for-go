@@ -33,12 +33,15 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZC-7](#azc-7-separate-bearer-and-pop-token-caches) | azcore | Separate bearer and PoP token caches | — | By design |
 | [AZC-8](#azc-8-mtlspolicy-acts-as-a-transport-selector) | azcore | mtlsPolicy acts as a transport selector | P2 | Fixed |
 | [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Fixed |
+| [AZC-10](#azc-10-bound-auxiliary-tokens-are-sent-as-bearer-tokens) | azcore/arm | Bound auxiliary tokens are sent as bearer tokens | P2 | Fixed |
+| [AZC-11](#azc-11-certificate-expiry-is-ignored-without-a-parsed-leaf) | azcore | Certificate expiry is ignored without a parsed leaf | P2 | Fixed |
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
 | [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Fixed (unwrapping removed) |
 | [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Fixed (documented) |
 | [AZI-4](#azi-4-unreachable-and-redundant-checks-in-gettoken) | azidentity | Unreachable and redundant checks in GetToken | P2 | Fixed |
 | [AZI-5](#azi-5-designmd-ships-in-the-module) | azidentity | design.md ships in the module | P1 | Open |
 | [AZI-6](#azi-6-attestation-module-doesnt-isolate-native-code) | azidentity | Attestation module doesn't isolate native code | — | Won't fix |
+| [AZI-7](#azi-7-transient-keyguard-failure-selects-bearer-for-the-tokens-lifetime) | azidentity | Transient KeyGuard failure selects bearer for the token's lifetime | P2 | Deferred |
 | [KV-1](#kv-1-tenant-denial-detection-depends-on-error-text) | keyvault | Tenant-denial detection depends on error text | — | Won't fix |
 | [KV-2](#kv-2-extra-bearer-acquisition-after-tenant-denial) | keyvault | Extra bearer acquisition after tenant denial | — | Won't fix |
 | [KV-3](#kv-3-empty-tenant-id-shares-one-fallback-entry) | keyvault | Empty tenant ID shares one fallback entry | P2 | Not an issue |
@@ -368,6 +371,36 @@ Go's ARM pipeline would have sent the header with a bound token nobody asked for
 
 **Compatibility:** the new keyvault/internal already requires the new azcore. Released keyvault/internal versions never request PoP, so they behave the same with an azcore that no longer sets the header.
 
+### AZC-10: Bound auxiliary tokens are sent as bearer tokens
+
+**Priority:** P2 · **Status:** Fixed
+
+Found by Copilot code review on #28119.
+ARM's `onRequest` rejected auxiliary tenants only when the *primary* authorization was `mtls_pop`.
+A credential returning a bearer primary token and a bound auxiliary token got past that check, and the bound token went out in `x-ms-authorization-auxiliary` as `Bearer`, without its certificate.
+
+ARM never requests PoP for auxiliary tokens, so this needs a credential that returns a bound token nobody asked for. azcore's contract is that authorization follows the returned token, as for the primary token (see [AZC-3](#azc-3-arm-auxiliary-tenant-error-is-retriable)).
+
+**Fix ([arm/runtime/policy_bearer_token.go](../azcore/arm/runtime/policy_bearer_token.go)):** a non-nil `BindingCertificate` on any auxiliary token fails with the same error as a bound primary token, before the request is sent.
+It's non-retriable for the same reason as AZC-3.
+`TestBearerPolicy_MTLSPoPAuxiliaryTenants` now also covers a bearer primary token with a bound auxiliary token, and asserts the auxiliary header isn't set. It fails without the fix.
+
+### AZC-11: Certificate expiry is ignored without a parsed leaf
+
+**Priority:** P2 · **Status:** Fixed
+
+Found by Copilot code review on #28119.
+`acquire` capped a bound token's cache expiry at the certificate's `NotAfter`, and `shouldRefresh` refreshed 5 minutes before it, but only when `tls.Certificate.Leaf` was set.
+`Leaf` is optional. A credential returning only the DER chain skipped both checks, so a token whose certificate expired first stayed cached and failed every handshake until the token expired.
+MSAL always sets `Leaf` (`copyBindingCertificate`), so this affected only custom credentials.
+
+**Fix ([runtime/policy_bearer_token.go](../azcore/runtime/policy_bearer_token.go)):**
+
+- A new `bindingCertificateNotAfter` uses `Leaf` when set and otherwise parses the leaf DER. It never modifies the caller's certificate.
+  An unparseable leaf is ignored there; the handshake fails on its own, as before.
+- The parse runs once, in `acquire`. Rather than parsing in `shouldRefresh`, which runs on every request, `acquire` writes the certificate's refresh deadline (`NotAfter` − 5 minutes) into the cached copy's `RefreshOn` when it's earlier than the token's own refresh time. `shouldRefresh` no longer looks at the certificate.
+- `TestMTLSPoPCertificateExpiration` runs each case with `Leaf` and with only DER, using a real certificate, and asserts `Leaf` stays nil. The DER subtests fail without the fix.
+
 ---
 
 ## azidentity
@@ -511,6 +544,32 @@ They're compiled into every azidentity build whether or not the module is import
 **Reason:** this comes from MSAL's packaging, not this change.
 The module is an opt-in switch; it was never meant to isolate dependencies.
 The DLL is loaded only when an attested acquisition actually runs.
+
+### AZI-7: Transient KeyGuard failure selects bearer for the token's lifetime
+
+**Priority:** P2 · **Status:** Deferred ([AzureAD/microsoft-authentication-library-for-go#694](https://github.com/AzureAD/microsoft-authentication-library-for-go/issues/694))
+
+Found by Copilot code review on #28119.
+When PoP is requested, `managedIdentityClient.GetToken` binds only if `Capabilities().MaxSupportedBindingStrength >= MtlsBindingStrengthKeyGuard` ([managed_identity_client.go](managed_identity_client.go#L287)).
+In MSAL v1.11.0-beta.1, `bindingStrengthFor` (`imdsv2_capabilities.go`) reports a key-provider failure as `Software` with an `ErrorReason` and no error, and marks the result unsettled, so MSAL's own cache re-asks after 30 seconds.
+azidentity selects bearer. Key Vault's PoP token cache then keeps that bearer token until it's due for refresh, typically hours, even after KeyGuard recovers.
+
+**Why not fail instead, as the review suggested:** azidentity can't tell a transient failure from a permanent one.
+
+- A Windows host without VBS fails key creation, which `bindingKeyCreateError` (`keyprovider_windows.go:294`) wraps as `ErrCredentialGuardNotAvailable`.
+  `bindingStrengthFor` treats only `ErrMtlsNotSupportedForPlatform` as settled, so this permanent condition produces the same `Capabilities` as a briefly unavailable key storage provider.
+- MSAL documents that `ErrorReason` "is not a reliable signal that binding is unavailable" and sets it for settled cases too.
+- Failing on `Software` with an `ErrorReason` would therefore break every PoP-requesting call (Key Vault) on Windows hosts without VBS, which get bearer tokens today.
+
+MSAL already computes whether the result is settled (`bindingStrengthFor`'s third return); it just isn't exposed.
+
+**MSAL's initial response:** a host without VBS shouldn't advertise KeyGuard, and on an eligible host a key-creation failure should fail the flow rather than downgrade.
+That's the intended behavior, but beta.1 doesn't implement it. `Capabilities` reports `Software` for any key-provider failure, and `AcquireToken` with `WithMtlsPoPMinStrength(KeyGuard)` returns `ErrMinStrengthNotMet` in both cases, because `enforceMinStrength` derives its answer from `Capabilities` before a key is created.
+Tracked in [AzureAD/microsoft-authentication-library-for-go#694](https://github.com/AzureAD/microsoft-authentication-library-for-go/issues/694).
+
+**Resolution:** ask the MSAL owners to expose it, for example a `Capabilities` field saying the binding strength is settled, or a sentinel error distinguishing "can't bind on this host" from "couldn't determine".
+With that, azidentity could return an error for an unsettled result, or return bearer with a short `RefreshOn` so the next acquisition re-checks.
+Considered and not taken for now: capping `RefreshOn` (about 5 minutes) whenever discovery returns `Software` with an `ErrorReason`. It's safe, since it never fails a call that works today, but it relies on a field MSAL says isn't a reliable signal.
 
 ---
 

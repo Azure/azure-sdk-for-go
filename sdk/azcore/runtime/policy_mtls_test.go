@@ -6,6 +6,8 @@ package runtime
 import (
 	"context"
 	"crypto"
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
 	"crypto/x509"
@@ -621,27 +623,43 @@ func TestMTLSPoPCertificateExpiration(t *testing.T) {
 	now := time.Now()
 	req, err := NewRequest(context.Background(), http.MethodGet, "https://example.com")
 	require.NoError(t, err)
+	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	require.NoError(t, err)
 	for _, lifetime := range []time.Duration{time.Minute, 2 * time.Hour} {
-		t.Run(lifetime.String(), func(t *testing.T) {
-			tk := exported.AccessToken{
-				Token: tokenValue, ExpiresOn: now.Add(time.Hour), RefreshOn: now.Add(30 * time.Minute),
-				BindingCertificate: &tls.Certificate{Leaf: &x509.Certificate{NotAfter: now.Add(lifetime)}},
-			}
-			state := acquiringResourceState{
-				req: req,
-				p: &BearerTokenPolicy{cred: mockCredential{getTokenImpl: func(context.Context, policy.TokenRequestOptions) (exported.AccessToken, error) {
-					return tk, nil
-				}}},
-			}
-			got, expiration, err := acquire(state)
-			require.NoError(t, err)
-			expected := tk.ExpiresOn
-			if lifetime < time.Hour {
-				expected = tk.BindingCertificate.Leaf.NotAfter
-			}
-			assert.Equal(t, expected, expiration)
-			assert.Equal(t, tk.ExpiresOn, got.ExpiresOn)
-			assert.Equal(t, lifetime < 5*time.Minute, shouldRefresh(got, state))
-		})
+		template := &x509.Certificate{SerialNumber: big.NewInt(1), NotBefore: now.Add(-time.Hour), NotAfter: now.Add(lifetime)}
+		der, err := x509.CreateCertificate(rand.Reader, template, template, &key.PublicKey, key)
+		require.NoError(t, err)
+		leaf, err := x509.ParseCertificate(der)
+		require.NoError(t, err)
+		for name, cert := range map[string]*tls.Certificate{
+			"Leaf": {Leaf: leaf},
+			// Leaf is optional, so the expiry must also come from the DER
+			"DER": {Certificate: [][]byte{der}},
+		} {
+			t.Run(lifetime.String()+"/"+name, func(t *testing.T) {
+				tk := exported.AccessToken{
+					Token: tokenValue, ExpiresOn: now.Add(time.Hour), RefreshOn: now.Add(30 * time.Minute),
+					BindingCertificate: cert,
+				}
+				state := acquiringResourceState{
+					req: req,
+					p: &BearerTokenPolicy{cred: mockCredential{getTokenImpl: func(context.Context, policy.TokenRequestOptions) (exported.AccessToken, error) {
+						return tk, nil
+					}}},
+				}
+				got, expiration, err := acquire(state)
+				require.NoError(t, err)
+				expected := tk.ExpiresOn
+				if lifetime < time.Hour {
+					expected = leaf.NotAfter
+				}
+				assert.Equal(t, expected, expiration)
+				assert.Equal(t, tk.ExpiresOn, got.ExpiresOn)
+				assert.Equal(t, lifetime < 5*time.Minute, shouldRefresh(got, state))
+				if name == "DER" {
+					assert.Nil(t, cert.Leaf, "the caller's certificate must not be modified")
+				}
+			})
+		}
 	}
 }

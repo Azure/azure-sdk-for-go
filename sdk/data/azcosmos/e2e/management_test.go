@@ -47,12 +47,8 @@ func TestDatabaseContainerManagementAvailableOperations(t *testing.T) {
 			Paths: []string{"/pk"},
 		},
 	}
-	containerResp, err := database.CreateContainer(ctx, containerProps, nil)
-	require.NoError(t, err)
+	container, containerResp := createTestContainer(t, database, containerProps)
 	require.Equal(t, 201, containerResp.StatusCode)
-
-	container, err := database.NewContainer(t.Context(), containerID)
-	require.NoError(t, err)
 
 	readContainerResp, err := container.Read(ctx, nil)
 	require.NoError(t, err)

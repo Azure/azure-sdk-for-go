@@ -50,6 +50,7 @@ function fixture() {
       base: { repo: { id: 1 }, sha: nextSha, ref: "main" },
       head: { repo: { id: 2 }, sha },
       labels: [{ name: needed }],
+      draft: false, mergeable: true, mergeable_state: "clean",
     },
     events: [
       {
@@ -379,12 +380,14 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   ));
   const agent = config("GH_AW_SAFE_OUTPUTS_CONFIG");
   const publisher = config("GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG");
-  for (const handler of ["add_comment", "add_labels", "remove_labels"]) {
+  for (const handler of ["add_comment"]) {
     assert.equal(agent[handler].target, "${{ needs.validate_request.outputs.pr_number }}");
     assert.deepEqual(agent[handler], publisher[handler]);
   }
-  assert.deepEqual(agent.add_labels.allowed, ["mgmt-review-analyzed"]);
-  assert.deepEqual(agent.remove_labels.allowed, ["mgmt-review-in-progress"]);
+  for (const handler of ["add_labels", "remove_labels"]) {
+    assert.equal(agent[handler], undefined, "agents cannot change completion labels");
+    assert.equal(publisher[handler], undefined, "safe-output label actions cannot follow a failed comment");
+  }
   const safeOutputs = compiled.slice(compiled.indexOf("\n  safe_outputs:\n"));
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
   assert.match(safeOutputs, /needs:\n(?:      - [\w-]+\n)*      - provenance\n/);
@@ -429,6 +432,12 @@ test("compiled blocker reporting is independent of the agent and threat detectio
   assert.deepEqual([...dependencies.matchAll(/- ([\w-]+)/g)].map((match) => match[1]).sort(),
     ["provenance", "validate_request"]);
   assert.match(condition(report), /needs\.provenance\.outputs\.status != 'pass'/);
+  assert.match(condition(report), /!cancelled\(\)/);
+  const reportEligible = new Function("needs", "cancelled", `return ${condition(report)};`);
+  assert.equal(reportEligible({
+    validate_request: { outputs: { ready: "true" }, result: "success" },
+    provenance: { outputs: {}, result: "failure" },
+  }, () => false), true, "failed provenance setup without outputs still reports");
   assert.match(report, /publishProvenance/);
   assert.match(report, /ref: \$\{\{ github.sha \}\}/);
   assert.doesNotMatch(report, /needs\.(agent|activation|detection)|GH_AW_AGENT_OUTPUT|GH_AW_DETECTION/);
@@ -444,6 +453,31 @@ test("compiled blocker reporting is independent of the agent and threat detectio
   const reviewChecks = compiled.split("\n  review_checks:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
   assert.match(reviewChecks, /AZURE_DEVOPS_PAT: \$\{\{ secrets.AZURE_DEVOPS_PAT \}\}/);
   assert.equal(compiled.split("${{ secrets.AZURE_DEVOPS_PAT }}").length - 1, 1, "ADO credentials belong only to the trusted review step");
+});
+
+test("completion labels require successful safe outputs and a confirmed comment ID", () => {
+  const compiled = text("mgmt-review.lock.yml");
+  const complete = compiled.split("\n  review_complete:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.ok(complete);
+  assert.match(complete, /- safe_outputs/);
+  assert.match(complete, /completePublishedReview/);
+  assert.match(complete, /REVIEW_COMMENT_ID: \$\{\{ needs.safe_outputs.outputs.comment_id \}\}/);
+  let condition = complete.match(/^    if: ([^\n]*(?:\n      [^\n]+)*)/m)[1]
+    .replace(/^>\s*/, "").replace(/\n\s+/g, " ").trim();
+  if (condition.startsWith('"')) condition = JSON.parse(condition);
+  condition = condition.replace(/^\$\{\{\s*|\s*\}\}$/g, "");
+  assert.match(condition, /needs.safe_outputs.result == 'success'/);
+  assert.match(condition, /needs.safe_outputs.outputs.comment_id != ''/);
+  const eligible = new Function("needs", "success", `return ${condition};`);
+  const needs = { safe_outputs: { result: "success", outputs: { comment_id: "123" } },
+    detection: { result: "success", outputs: { detection_success: "true" } } };
+  assert.equal(eligible(needs, () => true), true);
+  needs.safe_outputs.outputs.comment_id = "";
+  assert.equal(eligible(needs, () => true), false, "skipped or cancelled comment creation leaves labels unchanged");
+  needs.safe_outputs = { result: "failure", outputs: { comment_id: "123" } };
+  assert.equal(eligible(needs, () => true), false, "failed publication leaves labels unchanged");
+  const agent = compiled.split("\n  agent:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.doesNotMatch(agent, /- review_complete/, "completion must not become an agent prerequisite");
 });
 
 test("reviewer can read current PR content without allowing other repositories", () => {
@@ -535,6 +569,12 @@ test("the actual safe-output guard cleans up rejected reviews without consuming 
     ["changed base SHA", (state) => state.pr.base.sha = "c".repeat(40)],
     ["retargeted base ref at the same SHA", (state) => state.pr.base.ref = "release"],
     ["closed PR", (state) => state.pr.state = "closed"],
+    ["returned to draft", (state) => state.pr.draft = true],
+    ["new merge block", (state) => state.pr.mergeable_state = "blocked"],
+    ["new merge conflict", (state) => state.pr.mergeable = false],
+    ["unknown mergeability", (state) => state.pr.mergeable_state = "unknown"],
+    ["unavailable mergeability", (state) => state.pr.mergeable = null],
+    ["unavailable draft state", (state) => delete state.pr.draft],
   ]) {
     await t.test(name, async () => {
       const state = fixture();

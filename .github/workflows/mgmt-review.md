@@ -143,7 +143,7 @@ jobs:
             });
   provenance_report:
     needs: [validate_request, provenance]
-    if: needs.validate_request.outputs.ready == 'true' && needs.provenance.outputs.status != 'pass'
+    if: "(!cancelled()) && needs.validate_request.outputs.ready == 'true' && needs.provenance.outputs.status != 'pass'"
     runs-on: ubuntu-slim
     timeout-minutes: 5
     permissions:
@@ -163,13 +163,47 @@ jobs:
           REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
           REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
           REVIEW_PROVENANCE: ${{ needs.provenance.outputs.result }}
+          REVIEW_PROVENANCE_JOB_RESULT: ${{ needs.provenance.result }}
         with:
           script: |
             const { publishProvenance } = require('./eng/tools/pr-review/generated-provenance.cjs');
             await publishProvenance({ github, context, core }, {
-              result: JSON.parse(process.env.REVIEW_PROVENANCE),
+              result: process.env.REVIEW_PROVENANCE ? JSON.parse(process.env.REVIEW_PROVENANCE) : null,
               prNumber: Number(process.env.REVIEW_PR_NUMBER),
               headSHA: process.env.REVIEW_HEAD_SHA,
+              jobResult: process.env.REVIEW_PROVENANCE_JOB_RESULT,
+            });
+  review_complete:
+    needs: [validate_request, provenance, safe_outputs]
+    if: needs.safe_outputs.result == 'success' && needs.safe_outputs.outputs.comment_id != ''
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout trusted review completion
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout: eng/tools/pr-review
+      - name: Complete published review
+        uses: actions/github-script@v9.0.0
+        env:
+          REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
+          REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
+          REVIEW_PROVENANCE: ${{ needs.provenance.outputs.result }}
+          REVIEW_COMMENT_ID: ${{ needs.safe_outputs.outputs.comment_id }}
+        with:
+          script: |
+            const { completePublishedReview } = require('./eng/tools/pr-review/review-output.cjs');
+            await completePublishedReview({ github, context, core }, {
+              provenance: JSON.parse(process.env.REVIEW_PROVENANCE),
+              prNumber: Number(process.env.REVIEW_PR_NUMBER),
+              headSHA: process.env.REVIEW_HEAD_SHA,
+              commentId: process.env.REVIEW_COMMENT_ID,
             });
   validate_request:
     if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
@@ -249,14 +283,14 @@ safe-outputs:
         script: |
           const { assertReviewCurrent } = require('./eng/tools/pr-review/generated-provenance.cjs');
           const result = JSON.parse(process.env.REVIEW_PROVENANCE);
-          await assertReviewCurrent({ github, context, core }, result,
-            Number(process.env.REVIEW_PR_NUMBER), process.env.REVIEW_HEAD_SHA);
           if (result.status !== 'pass') {
             throw new Error('Non-passing provenance must be published by the trusted reporter, not the agent.');
           }
           const { assertReviewResults, prepareAgentOutput } = require('./eng/tools/pr-review/review-output.cjs');
           const review = JSON.parse(process.env.REVIEW_CHECKS);
           assertReviewResults(review, result);
+          await assertReviewCurrent({ github, context, core }, result,
+            Number(process.env.REVIEW_PR_NUMBER), process.env.REVIEW_HEAD_SHA, review);
           const fs = require('node:fs');
           const output = JSON.parse(fs.readFileSync(process.env.GH_AW_AGENT_OUTPUT, 'utf8'));
           fs.writeFileSync(process.env.GH_AW_AGENT_OUTPUT, JSON.stringify(prepareAgentOutput(review, output)));
@@ -289,14 +323,6 @@ safe-outputs:
     issues: false
     discussions: false
     footer: false
-  add-labels:
-    allowed: [mgmt-review-analyzed]
-    max: 1
-    target: "${{ needs.validate_request.outputs.pr_number }}"
-  remove-labels:
-    allowed: [mgmt-review-in-progress]
-    max: 1
-    target: "${{ needs.validate_request.outputs.pr_number }}"
   messages:
     footer: "> ⚡ *Analyzed by [{workflow_name}]({run_url})*"
     run-started: "⚡ [{workflow_name}]({run_url}) is analyzing this PR for merge guidance..."
@@ -359,7 +385,7 @@ The checker uses complete GitHub API commit lists, per-commit file lists, and fu
 - **`manual-edits`**: the findings identify blocking non-automation edits.
 - **`unverifiable`**, missing, or invalid results: provenance could not be verified and manual review is required.
 
-The agent runs only for a `pass` result. A separate trusted job publishes non-passing results and updates completion labels directly, without running the agent or depending on its threat-detection outcome. Both publishing paths revalidate the PR head and the recorded base SHA/ref before publishing; stale reviews are rejected and their in-progress label is removed.
+The agent runs only for a `pass` result. A separate trusted job publishes non-passing results and updates completion labels directly, without running the agent or depending on its threat-detection outcome. It also reports provenance job failures that produce no result, such as checkout failures. Both publishing paths revalidate the PR head and the recorded base SHA/ref before publishing; stale reviews are rejected and their in-progress label is removed. Before publishing agent comments, the guard also rejects changed or unavailable draft and mergeability state.
 
 ### Step 4 — Review breaking-change approvals
 
@@ -443,7 +469,7 @@ Manual edits to generated files could not be verified: <actual verification fail
 
 Non-passing provenance is handled only by the trusted reporter, not the agent. If the changed-file list was incomplete, affected modules and onboarding requirements could not be fully determined.
 
-If the other deterministic checks are `unverifiable`, report their actual errors and request manual review. Do not post `## PR is ready to merge`. The trusted publisher verifies result identity, module completeness, and readiness blockers before processing comments.
+If the other deterministic checks are `unverifiable`, report their actual errors and request manual review. Do not claim readiness in a heading, plain text, or formatted text. The trusted publisher verifies result identity, module completeness, current readiness state, and readiness claims in the final rendered comment.
 
 **If all checks completed and nothing blocks** (Step 3 verified there are no manual edits to generated files, with no unverifiable generated-file provenance, unapproved breaking changes, or approval verification failures):
 
@@ -523,11 +549,11 @@ Rules:
 
 ### Final Step — Update Labels
 
-The trusted publisher queues the completion-label actions after the prepared comment, so these deterministic actions do not depend on the agent:
+The trusted `review_complete` job changes completion labels only after safe-output processing succeeds and returns a published comment ID. It verifies that the comment belongs to this PR and contains the review marker, then revalidates the PR head/base:
 
 1. Remove the `mgmt-review-in-progress` label.
 2. Add the `mgmt-review-analyzed` label.
 
-The agent should call only `add_comment`; do not call label tools. The trusted publisher validates exactly one comment and normalizes any permitted completion-label actions into the fixed sequence above.
+The agent must call only `add_comment`. The trusted publisher validates exactly one comment and rejects all other actions. Failed, skipped, or unconfirmed comment publication must not change completion labels.
 
 To re-run this workflow later, simply **re-apply the `mgmt-review-needed` label**. The trigger label is consumed at the start of each run, so there is no ambiguous lingering state.

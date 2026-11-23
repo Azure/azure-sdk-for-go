@@ -11,7 +11,8 @@ const { checkBreakingChanges, moduleVersion, breakingItems } = require("./breaki
 const { checkOnboarding, namespaceEvidence, releasePipeline, serviceToken } = require("./onboarding-review.cjs");
 const { devOpsReader, fetchSpecText, authorization } = require("./azure-devops-read.cjs");
 const { runReviewSteps } = require("./review-steps.cjs");
-const { assertReviewResults, assertAgentOutput, hasBlockers, formatReviewComment, prepareAgentOutput, publishReviewFailure } = require("./review-output.cjs");
+const { assertReviewResults, assertAgentOutput, hasBlockers, formatReviewComment, prepareAgentOutput,
+  publishReviewFailure, completePublishedReview } = require("./review-output.cjs");
 
 const headSHA = "a".repeat(40);
 const baseSHA = "b".repeat(40);
@@ -45,6 +46,10 @@ function fixture(first = false) {
     writes: [], reads: [], logs: [], adoCalls: [], fetched: [], pages: [],
     definitions: [{ id: 10, repository: { id: "Azure/azure-sdk-for-go", type: "GitHub" },
       process: { yamlFilename: `${path}/ci.yml` } }],
+    publishedComment: {
+      id: 123, issue_url: "https://api.github.com/repos/Azure/azure-sdk-for-go/issues/42",
+      body: "<!-- gh-aw-workflow-id: mgmt-review -->\nReview findings.",
+    },
   };
   const blobs = new Map();
   const core = {
@@ -64,6 +69,10 @@ function fixture(first = false) {
         removeLabel: async (value) => state.writes.push(value),
         createComment: async (value) => state.writes.push({ kind: "comment", ...value }),
         addLabels: async (value) => state.writes.push(value),
+        getComment: async ({ comment_id }) => {
+          assert.equal(comment_id, 123);
+          return { data: structuredClone(state.publishedComment) };
+        },
       },
       checks: {
         listForRef: async ({ page, per_page, ref, filter }) => {
@@ -431,7 +440,7 @@ test("unknown or blocked mergeability cannot produce merge-ready guidance", asyn
     const result = await state.run();
     assertReviewResults(result, state.provenance);
     assert.equal(hasBlockers(result), true);
-    assert.throws(() => prepareAgentOutput(result, { items: [{ body: "## PR is ready to merge" }] }), /readiness/);
+    assert.throws(() => prepareAgentOutput(result, { items: [{ type: "add_comment", body: "## PR is ready to merge" }] }), /readiness/);
   }
 });
 
@@ -527,17 +536,10 @@ test("malformed approval rows and missing onboarding evidence cannot be publishe
   assert.throws(() => assertReviewResults(missing, state.provenance), /incomplete or invalid/);
 });
 
-test("completion labels are scripted after the comment even if the agent omits or misorders them", async () => {
+test("the prepared output contains only the comment, never independent label actions", async () => {
   const review = await fixture().run();
-  for (const items of [
-    [{ type: "add_comment", body: "## PR is ready to merge" }],
-    [{ type: "add_labels", labels: ["mgmt-review-analyzed"] },
-      { type: "add_comment", body: "## PR is ready to merge" }],
-  ]) {
-    const result = prepareAgentOutput(review, { items });
-    assert.deepEqual(result.items.map((item) => item.type), ["add_comment", "remove_labels", "add_labels"]);
-    assert.deepEqual(result.items.slice(1).map((item) => item.labels), [["mgmt-review-in-progress"], ["mgmt-review-analyzed"]]);
-  }
+  const result = prepareAgentOutput(review, { items: [{ type: "add_comment", body: "## PR is ready to merge" }] });
+  assert.deepEqual(result.items.map((item) => item.type), ["add_comment"]);
 });
 
 test("missing comments and unrelated label actions cannot complete a review", async () => {
@@ -546,6 +548,8 @@ test("missing comments and unrelated label actions cannot complete a review", as
     [],
     [{ type: "add_comment", body: "one" }, { type: "add_comment", body: "two" }],
     [{ type: "add_comment", body: "review" }, { type: "remove_labels", labels: ["mgmt-review-needed"] }],
+    [{ type: "add_comment", body: "review" }, { type: "remove_labels", labels: ["mgmt-review-in-progress"] }],
+    [{ type: "add_labels", labels: ["mgmt-review-analyzed"] }, { type: "add_comment", body: "review" }],
   ]) {
     assert.throws(() => prepareAgentOutput(review, { items }), /exactly one comment/);
   }
@@ -583,4 +587,65 @@ test("a mismatched PR identity is rejected before module data is read", async ()
   assert.equal(result.status, "unverifiable");
   assert.match(result.errors[0], /identity changed/);
   assert.deepEqual(state.reads, []);
+});
+
+test("the final rendered comment rejects plain, formatted, indented, and marker-prefixed readiness claims", async () => {
+  const state = fixture();
+  state.specification = "";
+  const review = await state.run();
+  assert.equal(hasBlockers(review), true);
+  for (const body of [
+    "The PR is ready to merge.",
+    "## PR is **ready to merge**",
+    "   ## PR is ready to merge",
+    "<!-- gh-aw-workflow-id: mgmt-review -->## PR is ready to merge",
+    "PR is ready to <strong>merge</strong>.",
+    "The [PR](https://github.com/Azure/azure-sdk-for-go/pull/42) is ready to merge.",
+    "PR is ready\n to merge.",
+  ]) {
+    assert.throws(() => prepareAgentOutput(review, { items: [{ type: "add_comment", body }] }), /readiness/);
+  }
+  assert.doesNotThrow(() => prepareAgentOutput(review, {
+    items: [{ type: "add_comment", body: "The PR is **not** ready to merge." }],
+  }));
+});
+
+test("publication completion verifies the reported comment before changing labels", async () => {
+  const state = fixture();
+  await completePublishedReview(state.api, { provenance: state.provenance, prNumber: 42, headSHA, commentId: "123" });
+  assert.equal(state.writes.length, 2);
+  assert.equal(state.writes[0].name, "mgmt-review-in-progress");
+  assert.deepEqual(state.writes[1].labels, ["mgmt-review-analyzed"]);
+});
+
+test("failed, skipped, unrelated, or unreadable comment publication cannot apply completion labels", async () => {
+  for (const mutate of [
+    (state) => state.publishedComment.id++,
+    (state) => state.publishedComment.issue_url += "1",
+    (state) => state.publishedComment.body = "Unrelated comment.",
+    (state) => state.api.github.rest.issues.getComment = async () => { throw new Error("Comment read failed."); },
+  ]) {
+    const state = fixture();
+    mutate(state);
+    await assert.rejects(completePublishedReview(state.api, {
+      provenance: state.provenance, prNumber: 42, headSHA, commentId: "123",
+    }), /comment|Comment/);
+    assert.deepEqual(state.writes, []);
+  }
+  for (const commentId of [undefined, "", "0", "not-an-id"]) {
+    const state = fixture();
+    await assert.rejects(completePublishedReview(state.api, {
+      provenance: state.provenance, prNumber: 42, headSHA, commentId,
+    }), /successfully published/);
+    assert.deepEqual(state.writes, []);
+  }
+});
+
+test("completion rejects a changed PR even after its comment was published", async () => {
+  const state = fixture();
+  state.pr.head.sha = specSHA;
+  await assert.rejects(completePublishedReview(state.api, {
+    provenance: state.provenance, prNumber: 42, headSHA, commentId: "123",
+  }), /No review outputs/);
+  assert.deepEqual(state.writes.map((write) => write.name), ["mgmt-review-in-progress"]);
 });

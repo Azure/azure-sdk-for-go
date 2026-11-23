@@ -180,6 +180,18 @@ for (const [filePatterns, expected] of [
   });
 }
 
+test("basename patterns protect files inside hidden directories, including old rename paths", async () => {
+  const filenames = [".hidden/generated.go", "sdk/.hidden/generated.go", "sdk/.hidden/deep/generated.go"];
+  const state = fixture(filenames.map((filename) => ({ filename, before: source, after: `${source}\n` })));
+  assert.deepEqual((await state.run()).findings.map((finding) => finding.file), filenames);
+  const rename = fixture([{
+    filename: "docs/generated.txt", previous_filename: "sdk/.hidden/generated.go", status: "renamed",
+    before: source, after: source,
+  }]);
+  assert.equal((await rename.run()).status, "manual-edits");
+  assert.equal((await state.run({ filePatterns: ["sdk/.hidden/*.go"] })).findings.length, 1);
+});
+
 test("unselected files are skipped before fetching their contents", async () => {
   const state = fixture([
     { filename: "generated.yaml", before: source, after: `${source}\n` },
@@ -367,7 +379,7 @@ test("the actual workflow configures Go-only protected-file checking", async () 
 test("the actual trusted reporter publishes blockers and labels regardless of detection verdict", async (t) => {
   const workflow = path.resolve(__dirname, "..", "..", "..", ".github", "workflows", "mgmt-review.md");
   const source = readFileSync(workflow, "utf8").replace(/\r\n/g, "\n");
-  const step = source.split("      - name: Publish generated-file blockers\n")[1].split("\n  validate_request:")[0];
+  const step = source.split("      - name: Publish generated-file blockers\n")[1].split(/\n  [\w-]+:/)[0];
   assert.match(step, /REVIEW_PROVENANCE: \$\{\{ needs.provenance.outputs.result \}\}/);
   const script = step.split("          script: |\n")[1].split("\n").map((line) => line.slice(12)).join("\n");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
@@ -400,4 +412,22 @@ test("the actual trusted reporter publishes blockers and labels regardless of de
       });
     }
   }
+  await t.test("failed job without result", async () => {
+    const state = fixture();
+    await reporter(mockRequire, state.github, state.api.context, state.api.core, { env: {
+      REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: headSHA, REVIEW_PROVENANCE: "", REVIEW_PROVENANCE_JOB_RESULT: "failure",
+    } });
+    assert.match(state.writes[0].body, /provenance job ended failure without producing results/);
+    assert.match(state.writes[0].body, /not ready to merge/);
+    assert.equal(state.writes.length, 3);
+    assert.ok(state.errors.some((message) => message.includes("without producing results")));
+  });
+  await t.test("failed job still rejects a changed head", async () => {
+    const state = fixture();
+    state.pr.head.sha = parentSHA;
+    await assert.rejects(reporter(mockRequire, state.github, state.api.context, state.api.core, { env: {
+      REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: headSHA, REVIEW_PROVENANCE_JOB_RESULT: "failure",
+    } }), /No review outputs/);
+    assert.deepEqual(state.writes.map((write) => write.operation), ["remove-label"]);
+  });
 });

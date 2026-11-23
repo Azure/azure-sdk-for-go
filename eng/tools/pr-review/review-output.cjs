@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-const { assertReviewCurrent, publishReviewComment } = require("./generated-provenance.cjs");
+const { assertReviewCurrent, publishReviewComment, completeReview } = require("./generated-provenance.cjs");
 
 function validErrors(errors) {
   return Array.isArray(errors) && errors.every((error) => typeof error === "string" && error.length > 0);
@@ -90,9 +90,13 @@ function assertAgentOutput(review, output) {
   const visit = (value) => {
     if (!value || typeof value !== "object") return;
     for (const [key, child] of Object.entries(value)) {
-      if (key === "body" && typeof child === "string" && /(^|\n)#{1,6}\s+[^\n]*\bPR is ready to merge\b/i.test(child) &&
-          (blocked || review.onboarding.some((item) => !child.includes(`${item.path}/README.md`)))) {
-        throw new Error("The agent claimed merge readiness despite deterministic review blockers.");
+      if (key === "body" && typeof child === "string") {
+        const text = child.replace(/<!--[\s\S]*?-->/g, "").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+          .replace(/<[^>]*>/g, "").replace(/[\\`*_]/g, "").replace(/\s+/g, " ");
+        if (/\bPR is ready to merge\b/i.test(text) &&
+            (blocked || review.onboarding.some((item) => !child.includes(`${item.path}/README.md`)))) {
+          throw new Error("The agent claimed merge readiness despite deterministic review blockers.");
+        }
       }
       visit(child);
     }
@@ -156,23 +160,29 @@ function formatReviewComment(review, body = "") {
 }
 
 function prepareAgentOutput(review, output) {
-  assertAgentOutput(review, output);
   const items = Array.isArray(output) ? output : output?.items;
-  const labelNames = { remove_labels: "mgmt-review-in-progress", add_labels: "mgmt-review-analyzed" };
-  if (!Array.isArray(items) || items.filter((item) => item?.type === "add_comment").length !== 1 ||
-      items.some((item) => item?.type === "add_comment" ?
-        typeof item.body !== "string" || !item.body.trim() :
-        !Object.hasOwn(labelNames, item?.type) || !Array.isArray(item.labels) ||
-        item.labels.length !== 1 || item.labels[0] !== labelNames[item.type])) {
-    throw new Error("The agent must supply exactly one comment and only the permitted completion-label actions.");
+  if (!Array.isArray(items) || items.length !== 1 || items[0]?.type !== "add_comment" ||
+      typeof items[0].body !== "string" || !items[0].body.trim()) {
+    throw new Error("The agent must supply exactly one comment and no other actions.");
   }
-  const comment = items.find((item) => item.type === "add_comment");
-  const prepared = [
-    { ...comment, body: formatReviewComment(review, comment.body) },
-    { type: "remove_labels", labels: [labelNames.remove_labels] },
-    { type: "add_labels", labels: [labelNames.add_labels] },
-  ];
+  const prepared = [{ ...items[0], body: formatReviewComment(review, items[0].body) }];
+  assertAgentOutput(review, prepared);
   return Array.isArray(output) ? prepared : { ...output, items: prepared };
+}
+
+async function completePublishedReview(api, { provenance, prNumber, headSHA, commentId }) {
+  if (provenance.status !== "pass") throw new Error("Agent review completion requires passing provenance.");
+  const id = Number(commentId);
+  if (!Number.isSafeInteger(id) || id <= 0) throw new Error("No successfully published review comment ID was provided.");
+  const { data: comment } = await api.github.rest.issues.getComment({ ...api.context.repo, comment_id: id });
+  const { owner, repo } = api.context.repo;
+  const issueURL = `${api.context.apiUrl || "https://api.github.com"}/repos/${owner}/${repo}/issues/${prNumber}`;
+  if (comment.id !== id || comment.issue_url !== issueURL ||
+      typeof comment.body !== "string" || !comment.body.includes("<!-- gh-aw-workflow-id: mgmt-review -->")) {
+    throw new Error("The published comment does not match this management review.");
+  }
+  await assertReviewCurrent(api, provenance, prNumber, headSHA);
+  await completeReview(api, prNumber);
 }
 
 async function publishReviewFailure(api, { review, provenance, prNumber, headSHA, jobResult }) {
@@ -192,5 +202,6 @@ async function publishReviewFailure(api, { review, provenance, prNumber, headSHA
 }
 
 module.exports = {
-  assertReviewResults, assertAgentOutput, hasBlockers, ciFailuresBlock, formatReviewComment, prepareAgentOutput, publishReviewFailure,
+  assertReviewResults, assertAgentOutput, hasBlockers, ciFailuresBlock, formatReviewComment, prepareAgentOutput,
+  publishReviewFailure, completePublishedReview,
 };

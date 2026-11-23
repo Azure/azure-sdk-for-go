@@ -1,5 +1,5 @@
-# gh-aw-metadata: {"schema_version":"v4","frontmatter_hash":"abe21b430a1b8a692fb21d8506f23e5a42d9af6083fe0523dbd35f29a14da495","body_hash":"234ff536d788f887c4130090b7abce7c1ebd0261bc4e2cd3d289e8a47e92162a","compiler_version":"v1.0.1","agent_id":"copilot","detection_agent_id":"copilot","detection_agent_model":"gpt-5.6-sol","engine_versions":{"copilot":"1.0.103"}}
-# gh-aw-manifest: {"version":1,"secrets":["AZURE_DEVOPS_PAT","GH_AW_DEFAULT_OTLP_ENDPOINT","GH_AW_DEFAULT_OTLP_HEADERS","GH_AW_GITHUB_MCP_SERVER_TOKEN","GH_AW_GITHUB_TOKEN","GITHUB_TOKEN"],"actions":[{"repo":"actions/checkout","sha":"3d3c42e5aac5ba805825da76410c181273ba90b1","version":"v7.0.1"},{"repo":"actions/download-artifact","sha":"9000827ccba6bdab643e8b6fd33ac0654aef8333","version":"v8.0.2"},{"repo":"actions/github-script","sha":"373c709c69115d41ff229c7e5df9f8788daa9553","version":"v9"},{"repo":"actions/github-script","sha":"3a2844b7e9c422d3c10d287c895573f7108da1b3","version":"v9.0.0"},{"repo":"actions/github-script","sha":"d746ffe35508b1917358783b479e04febd2b8f71","version":"v9.0.0"},{"repo":"actions/setup-node","sha":"820762786026740c76f36085b0efc47a31fe5020","version":"v7.0.0"},{"repo":"actions/setup-node","sha":"949feb2413d6458794dcd2491c4babbbce0c15c1","version":"v7.1.0"},{"repo":"actions/upload-artifact","sha":"cf430e030ddbb5b0abf93d22962f4752f3646cd9","version":"v7.0.2"},{"repo":"github/gh-aw-actions/setup","sha":"221ba4f4319de6b8e809d1a15528b3ae6a818aa5","version":"v1.0.1"}],"containers":[{"image":"ghcr.io/github/gh-aw-firewall/agent:0.29.0","digest":"sha256:b14bd399376180b5649a9324be3b50fbfc82bfe8f0c80045840416b5a4e65b96","pinned_image":"ghcr.io/github/gh-aw-firewall/agent:0.29.0@sha256:b14bd399376180b5649a9324be3b50fbfc82bfe8f0c80045840416b5a4e65b96"},{"image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.29.0","digest":"sha256:baff00b856a4bdc93bce134928c70af3d3492f2e518757115042040674d56b0b","pinned_image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.29.0@sha256:baff00b856a4bdc93bce134928c70af3d3492f2e518757115042040674d56b0b"},{"image":"ghcr.io/github/gh-aw-firewall/squid:0.29.0","digest":"sha256:6e0cbf7f980beb78b5461563a8164f6439ca959bc93733d5a6b52972e523ed50","pinned_image":"ghcr.io/github/gh-aw-firewall/squid:0.29.0@sha256:6e0cbf7f980beb78b5461563a8164f6439ca959bc93733d5a6b52972e523ed50"},{"image":"ghcr.io/github/gh-aw-mcpg:v0.5.0","digest":"sha256:d3544a4222e7efeeeb38669d8a1af0c72691c55b8f6506b15aa5920f7f31b7bc","pinned_image":"ghcr.io/github/gh-aw-mcpg:v0.5.0@sha256:d3544a4222e7efeeeb38669d8a1af0c72691c55b8f6506b15aa5920f7f31b7bc"},{"image":"ghcr.io/github/gh-aw-node","digest":"sha256:2c2ea524e648b91c8333ce246e3838fcf5b19ac70e45baac1a51b9207299749f","pinned_image":"ghcr.io/github/gh-aw-node@sha256:2c2ea524e648b91c8333ce246e3838fcf5b19ac70e45baac1a51b9207299749f"},{"image":"ghcr.io/github/github-mcp-server:v2.0.3","digest":"sha256:250bc6ce70788207608ef74cef4397230ff2e8481218da74d6093e4bd9101132","pinned_image":"ghcr.io/github/github-mcp-server:v2.0.3@sha256:250bc6ce70788207608ef74cef4397230ff2e8481218da74d6093e4bd9101132"}],"mcp_servers":[{"name":"github","tools":["actions_get","actions_list","get_commit","get_file_contents","get_job_logs","get_latest_release","get_me","get_pull_request","get_pull_request_comments","get_pull_request_diff","get_pull_request_files","get_pull_request_review_comments","get_pull_request_reviews","get_pull_request_status","get_release_by_tag","get_tag","list_branches","list_commits","list_pull_requests","list_releases","list_starred_repositories","list_tags","pull_request_read","search_code","search_pull_requests","search_repositories"]},{"name":"safeoutputs","tools":["add_comment","add_labels","noop","remove_labels","report_incomplete","report_missing_data","report_missing_tool"]}],"threat_detection":{"mode":"enabled"},"admission":false}
+# gh-aw-metadata: {"schema_version":"v4","frontmatter_hash":"1c01dd57fa5ddddfd3012a2797c521fd08a9e5e4acabf994179c56a718540b27","body_hash":"0f5c3e2b85fa145429ed83801c52541782748a4bb177dba04d51b015ba9f3071","compiler_version":"v1.0.1","agent_id":"copilot","detection_agent_id":"copilot","detection_agent_model":"gpt-5.6-sol","engine_versions":{"copilot":"1.0.103"}}
+# gh-aw-manifest: {"version":1,"secrets":["AZURE_DEVOPS_PAT","GH_AW_DEFAULT_OTLP_ENDPOINT","GH_AW_DEFAULT_OTLP_HEADERS","GH_AW_GITHUB_MCP_SERVER_TOKEN","GH_AW_GITHUB_TOKEN","GITHUB_TOKEN"],"actions":[{"repo":"actions/checkout","sha":"3d3c42e5aac5ba805825da76410c181273ba90b1","version":"v7.0.1"},{"repo":"actions/download-artifact","sha":"9000827ccba6bdab643e8b6fd33ac0654aef8333","version":"v8.0.2"},{"repo":"actions/github-script","sha":"373c709c69115d41ff229c7e5df9f8788daa9553","version":"v9"},{"repo":"actions/github-script","sha":"3a2844b7e9c422d3c10d287c895573f7108da1b3","version":"v9.0.0"},{"repo":"actions/github-script","sha":"d746ffe35508b1917358783b479e04febd2b8f71","version":"v9.0.0"},{"repo":"actions/setup-node","sha":"820762786026740c76f36085b0efc47a31fe5020","version":"v7.0.0"},{"repo":"actions/setup-node","sha":"949feb2413d6458794dcd2491c4babbbce0c15c1","version":"v7.1.0"},{"repo":"actions/upload-artifact","sha":"cf430e030ddbb5b0abf93d22962f4752f3646cd9","version":"v7.0.2"},{"repo":"github/gh-aw-actions/setup","sha":"221ba4f4319de6b8e809d1a15528b3ae6a818aa5","version":"v1.0.1"}],"containers":[{"image":"ghcr.io/github/gh-aw-firewall/agent:0.29.0","digest":"sha256:b14bd399376180b5649a9324be3b50fbfc82bfe8f0c80045840416b5a4e65b96","pinned_image":"ghcr.io/github/gh-aw-firewall/agent:0.29.0@sha256:b14bd399376180b5649a9324be3b50fbfc82bfe8f0c80045840416b5a4e65b96"},{"image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.29.0","digest":"sha256:baff00b856a4bdc93bce134928c70af3d3492f2e518757115042040674d56b0b","pinned_image":"ghcr.io/github/gh-aw-firewall/api-proxy:0.29.0@sha256:baff00b856a4bdc93bce134928c70af3d3492f2e518757115042040674d56b0b"},{"image":"ghcr.io/github/gh-aw-firewall/squid:0.29.0","digest":"sha256:6e0cbf7f980beb78b5461563a8164f6439ca959bc93733d5a6b52972e523ed50","pinned_image":"ghcr.io/github/gh-aw-firewall/squid:0.29.0@sha256:6e0cbf7f980beb78b5461563a8164f6439ca959bc93733d5a6b52972e523ed50"},{"image":"ghcr.io/github/gh-aw-mcpg:v0.5.0","digest":"sha256:d3544a4222e7efeeeb38669d8a1af0c72691c55b8f6506b15aa5920f7f31b7bc","pinned_image":"ghcr.io/github/gh-aw-mcpg:v0.5.0@sha256:d3544a4222e7efeeeb38669d8a1af0c72691c55b8f6506b15aa5920f7f31b7bc"},{"image":"ghcr.io/github/gh-aw-node","digest":"sha256:2c2ea524e648b91c8333ce246e3838fcf5b19ac70e45baac1a51b9207299749f","pinned_image":"ghcr.io/github/gh-aw-node@sha256:2c2ea524e648b91c8333ce246e3838fcf5b19ac70e45baac1a51b9207299749f"},{"image":"ghcr.io/github/github-mcp-server:v2.0.3","digest":"sha256:250bc6ce70788207608ef74cef4397230ff2e8481218da74d6093e4bd9101132","pinned_image":"ghcr.io/github/github-mcp-server:v2.0.3@sha256:250bc6ce70788207608ef74cef4397230ff2e8481218da74d6093e4bd9101132"}],"mcp_servers":[{"name":"github","tools":["actions_get","actions_list","get_commit","get_file_contents","get_job_logs","get_latest_release","get_me","get_pull_request","get_pull_request_comments","get_pull_request_diff","get_pull_request_files","get_pull_request_review_comments","get_pull_request_reviews","get_pull_request_status","get_release_by_tag","get_tag","list_branches","list_commits","list_pull_requests","list_releases","list_starred_repositories","list_tags","pull_request_read","search_code","search_pull_requests","search_repositories"]},{"name":"safeoutputs","tools":["add_comment","noop","report_incomplete","report_missing_data","report_missing_tool"]}],"threat_detection":{"mode":"enabled"},"admission":false}
 # This file was automatically generated by gh-aw (v1.0.1). DO NOT EDIT. To debug this workflow, load the skill at https://github.com/github/gh-aw/blob/main/debug.md
 #
 #    ___                   _   _
@@ -317,7 +317,7 @@ jobs:
           GH_AW_NEEDS_VALIDATE_REQUEST_OUTPUTS_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
           GH_AW_NEEDS_VALIDATE_REQUEST_OUTPUTS_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
           GH_AW_PROMPT_CONTENT_0000: "<system>\n"
-          GH_AW_PROMPT_CONTENT_0001: "<safe-output-tools>\nTools: add_comment, add_labels, remove_labels, report_missing_tool, report_missing_data, noop(max:2)\n"
+          GH_AW_PROMPT_CONTENT_0001: "<safe-output-tools>\nTools: add_comment, report_missing_tool, report_missing_data, noop(max:2)\n"
           GH_AW_PROMPT_CONTENT_0002: "</safe-output-tools>\n"
           GH_AW_PROMPT_CONTENT_0003: "<github-context>\nThe following GitHub context information is available for this workflow:\n{{#if github.actor}}\n- **actor**: __GH_AW_GITHUB_ACTOR__\n{{/if}}\n{{#if github.repository}}\n- **repository**: __GH_AW_GITHUB_REPOSITORY__\n{{/if}}\n{{#if github.workspace}}\n- **workspace**: __GH_AW_GITHUB_WORKSPACE__\n{{/if}}\n{{#if github.event.issue.number || (github.aw.context.item_type == 'issue' && github.aw.context.item_number)}}\n- **issue-number**: #__GH_AW_EXPR_7C248226__\n{{/if}}\n{{#if github.event.discussion.number || (github.aw.context.item_type == 'discussion' && github.aw.context.item_number)}}\n- **discussion-number**: #__GH_AW_EXPR_C19C384F__\n{{/if}}\n{{#if github.event.pull_request.number || (github.aw.context.item_type == 'pull_request' && github.aw.context.item_number)}}\n- **pull-request-number**: #__GH_AW_EXPR_76DF9333__\n{{/if}}\n{{#if github.event.comment.id || github.aw.context.comment_id}}\n- **comment-id**: __GH_AW_EXPR_77C1A4D2__\n{{/if}}\n{{#if github.run_id}}\n- **workflow-run-id**: __GH_AW_GITHUB_RUN_ID__\n{{/if}}\n</github-context>\n\n"
           GH_AW_PROMPT_CONTENT_0004: "</system>\n"
@@ -634,7 +634,7 @@ jobs:
         env:
           GH_AW_FILE_ROOT: "${{ runner.temp }}/gh-aw"
           GH_AW_FILE_CONFIG: "{\"files\":[{\"path\":\"safeoutputs/config.json\",\"content_env\":\"GH_AW_SAFE_OUTPUTS_CONFIG\"}]}"
-          GH_AW_SAFE_OUTPUTS_CONFIG: "{\"add_comment\":{\"discussions\":false,\"footer\":false,\"hide_older_comments\":true,\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"add_labels\":{\"allowed\":[\"mgmt-review-analyzed\"],\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"create_report_incomplete_issue\":{},\"noop\":{\"max\":2,\"report-as-issue\":\"false\"},\"remove_labels\":{\"allowed\":[\"mgmt-review-in-progress\"],\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"report_incomplete\":{},\"report_missing_data\":{},\"report_missing_tool\":{}}"
+          GH_AW_SAFE_OUTPUTS_CONFIG: "{\"add_comment\":{\"discussions\":false,\"footer\":false,\"hide_older_comments\":true,\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"create_report_incomplete_issue\":{},\"noop\":{\"max\":2,\"report-as-issue\":\"false\"},\"report_incomplete\":{},\"report_missing_data\":{},\"report_missing_tool\":{}}"
         with:
           script: |
             const path = require('path');
@@ -648,9 +648,7 @@ jobs:
           GH_AW_TOOLS_META_JSON: |
             {
               "description_suffixes": {
-                "add_comment": " CONSTRAINTS: Maximum 1 comment(s) can be added. Target: ${GH_AW_NEEDS_VALIDATE_REQUEST_OUTPUTS_PR_NUMBER}. Supports reply_to_id for discussion threading.",
-                "add_labels": " CONSTRAINTS: Maximum 1 add_labels call(s) allowed. Maximum 10 label(s) per call. Only these labels are allowed: [\"mgmt-review-analyzed\"]. Target: ${GH_AW_NEEDS_VALIDATE_REQUEST_OUTPUTS_PR_NUMBER}.",
-                "remove_labels": " CONSTRAINTS: Maximum 1 label(s) can be removed. Only these labels can be removed: [mgmt-review-in-progress]. Target: ${GH_AW_NEEDS_VALIDATE_REQUEST_OUTPUTS_PR_NUMBER}."
+                "add_comment": " CONSTRAINTS: Maximum 1 comment(s) can be added. Target: ${GH_AW_NEEDS_VALIDATE_REQUEST_OUTPUTS_PR_NUMBER}. Supports reply_to_id for discussion threading."
               },
               "repo_params": {},
               "dynamic_tools": []
@@ -698,22 +696,6 @@ jobs:
                   }
                 }
               },
-              "add_labels": {
-                "defaultMax": 5,
-                "fields": {
-                  "item_number": {
-                    "issueNumberOrTemporaryId": true
-                  },
-                  "labels": {
-                    "required": true,
-                    "type": "array"
-                  },
-                  "repo": {
-                    "type": "string",
-                    "maxLength": 256
-                  }
-                }
-              },
               "noop": {
                 "defaultMax": 2,
                 "fields": {
@@ -722,22 +704,6 @@ jobs:
                     "type": "string",
                     "sanitize": true,
                     "maxLength": 65000
-                  }
-                }
-              },
-              "remove_labels": {
-                "defaultMax": 5,
-                "fields": {
-                  "item_number": {
-                    "issueNumberOrTemporaryId": true
-                  },
-                  "labels": {
-                    "required": true,
-                    "type": "array"
-                  },
-                  "repo": {
-                    "type": "string",
-                    "maxLength": 256
                   }
                 }
               },
@@ -1336,6 +1302,7 @@ jobs:
       - provenance_report
       - review_checks
       - review_checks_report
+      - review_complete
       - safe_outputs
       - validate_request
     if: >
@@ -1356,9 +1323,9 @@ jobs:
       cancel-in-progress: false
       queue: max
     env:
-      GH_AW_JOB_DISPLAY_NAMES: "{\"activation\":\"activation\",\"agent\":\"agent\",\"conclusion\":\"conclusion\",\"detection\":\"detection\",\"provenance\":\"provenance\",\"provenance_report\":\"provenance_report\",\"review_checks\":\"review_checks\",\"review_checks_report\":\"review_checks_report\",\"safe_outputs\":\"safe_outputs\",\"validate_request\":\"validate_request\"}"
-      GH_AW_JOB_RESULTS: "{\"activation\":{\"result\":\"${{ needs.activation.result }}\"},\"agent\":{\"result\":\"${{ needs.agent.result }}\"},\"detection\":{\"result\":\"${{ needs.detection.result }}\"},\"provenance\":{\"result\":\"${{ needs.provenance.result }}\"},\"provenance_report\":{\"result\":\"${{ needs.provenance_report.result }}\"},\"review_checks\":{\"result\":\"${{ needs.review_checks.result }}\"},\"review_checks_report\":{\"result\":\"${{ needs.review_checks_report.result }}\"},\"safe_outputs\":{\"result\":\"${{ needs.safe_outputs.result }}\"},\"validate_request\":{\"result\":\"${{ needs.validate_request.result }}\"}}"
-      GH_AW_JOB_TIMING_ELIGIBLE: "{\"activation\":true,\"agent\":true,\"conclusion\":true,\"detection\":true,\"provenance\":true,\"provenance_report\":true,\"review_checks\":true,\"review_checks_report\":true,\"safe_outputs\":true,\"validate_request\":true}"
+      GH_AW_JOB_DISPLAY_NAMES: "{\"activation\":\"activation\",\"agent\":\"agent\",\"conclusion\":\"conclusion\",\"detection\":\"detection\",\"provenance\":\"provenance\",\"provenance_report\":\"provenance_report\",\"review_checks\":\"review_checks\",\"review_checks_report\":\"review_checks_report\",\"review_complete\":\"review_complete\",\"safe_outputs\":\"safe_outputs\",\"validate_request\":\"validate_request\"}"
+      GH_AW_JOB_RESULTS: "{\"activation\":{\"result\":\"${{ needs.activation.result }}\"},\"agent\":{\"result\":\"${{ needs.agent.result }}\"},\"detection\":{\"result\":\"${{ needs.detection.result }}\"},\"provenance\":{\"result\":\"${{ needs.provenance.result }}\"},\"provenance_report\":{\"result\":\"${{ needs.provenance_report.result }}\"},\"review_checks\":{\"result\":\"${{ needs.review_checks.result }}\"},\"review_checks_report\":{\"result\":\"${{ needs.review_checks_report.result }}\"},\"review_complete\":{\"result\":\"${{ needs.review_complete.result }}\"},\"safe_outputs\":{\"result\":\"${{ needs.safe_outputs.result }}\"},\"validate_request\":{\"result\":\"${{ needs.validate_request.result }}\"}}"
+      GH_AW_JOB_TIMING_ELIGIBLE: "{\"activation\":true,\"agent\":true,\"conclusion\":true,\"detection\":true,\"provenance\":true,\"provenance_report\":true,\"review_checks\":true,\"review_checks_report\":true,\"review_complete\":true,\"safe_outputs\":true,\"validate_request\":true}"
       GH_AW_RUNTIME_FEATURES: ${{ vars.GH_AW_RUNTIME_FEATURES }}
     outputs:
       incomplete_count: ${{ steps.report_incomplete.outputs.incomplete_count }}
@@ -2087,7 +2054,7 @@ jobs:
     needs:
       - provenance
       - validate_request
-    if: needs.validate_request.outputs.ready == 'true' && needs.provenance.outputs.status != 'pass'
+    if: (!cancelled()) && needs.validate_request.outputs.ready == 'true' && needs.provenance.outputs.status != 'pass'
     runs-on: ubuntu-slim
     # Permissions for the provenance_report job (workflow permissions default to none).
     permissions:
@@ -2116,14 +2083,16 @@ jobs:
         env:
           REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
           REVIEW_PROVENANCE: ${{ needs.provenance.outputs.result }}
+          REVIEW_PROVENANCE_JOB_RESULT: ${{ needs.provenance.result }}
           REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
         with:
           script: |
             const { publishProvenance } = require('./eng/tools/pr-review/generated-provenance.cjs');
             await publishProvenance({ github, context, core }, {
-              result: JSON.parse(process.env.REVIEW_PROVENANCE),
+              result: process.env.REVIEW_PROVENANCE ? JSON.parse(process.env.REVIEW_PROVENANCE) : null,
               prNumber: Number(process.env.REVIEW_PR_NUMBER),
               headSHA: process.env.REVIEW_HEAD_SHA,
+              jobResult: process.env.REVIEW_PROVENANCE_JOB_RESULT,
             });
 
   review_checks:
@@ -2233,6 +2202,54 @@ jobs:
               prNumber: Number(process.env.REVIEW_PR_NUMBER),
               headSHA: process.env.REVIEW_HEAD_SHA,
               jobResult: process.env.REVIEW_CHECK_JOB_RESULT,
+            });
+
+  review_complete:
+    name: review_complete
+    needs:
+      - detection
+      - provenance
+      - safe_outputs
+      - validate_request
+    if: "${{ needs.detection.result == 'success' && needs.detection.outputs.detection_success == 'true' && (needs.safe_outputs.result == 'success' && needs.safe_outputs.outputs.comment_id != '') }}"
+    runs-on: ubuntu-slim
+    # Permissions for the review_complete job (workflow permissions default to none).
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    timeout-minutes: 5
+    steps:
+      - name: Configure GH_HOST for enterprise compatibility
+        id: ghes-host-config
+        shell: bash
+        run: | # zizmor: ignore[github-env] - GITHUB_SERVER_URL is set by GitHub Actions, not user input.
+          # Derive GH_HOST from GITHUB_SERVER_URL so the gh CLI targets the correct
+          # GitHub instance (GHES/GHEC). On github.com this is a harmless no-op.
+          GH_HOST="${GITHUB_SERVER_URL#https://}"
+          GH_HOST="${GH_HOST#http://}"
+          echo "GH_HOST=${GH_HOST}" >> "$GITHUB_ENV"
+      - name: Checkout trusted review completion
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+          sparse-checkout: eng/tools/pr-review
+      - name: Complete published review
+        uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71 # v9.0.0
+        env:
+          REVIEW_COMMENT_ID: ${{ needs.safe_outputs.outputs.comment_id }}
+          REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
+          REVIEW_PROVENANCE: ${{ needs.provenance.outputs.result }}
+          REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
+        with:
+          script: |
+            const { completePublishedReview } = require('./eng/tools/pr-review/review-output.cjs');
+            await completePublishedReview({ github, context, core }, {
+              provenance: JSON.parse(process.env.REVIEW_PROVENANCE),
+              prNumber: Number(process.env.REVIEW_PR_NUMBER),
+              headSHA: process.env.REVIEW_HEAD_SHA,
+              commentId: process.env.REVIEW_COMMENT_ID,
             });
 
   safe_outputs:
@@ -2346,14 +2363,14 @@ jobs:
           script: |
             const { assertReviewCurrent } = require('./eng/tools/pr-review/generated-provenance.cjs');
             const result = JSON.parse(process.env.REVIEW_PROVENANCE);
-            await assertReviewCurrent({ github, context, core }, result,
-              Number(process.env.REVIEW_PR_NUMBER), process.env.REVIEW_HEAD_SHA);
             if (result.status !== 'pass') {
               throw new Error('Non-passing provenance must be published by the trusted reporter, not the agent.');
             }
             const { assertReviewResults, prepareAgentOutput } = require('./eng/tools/pr-review/review-output.cjs');
             const review = JSON.parse(process.env.REVIEW_CHECKS);
             assertReviewResults(review, result);
+            await assertReviewCurrent({ github, context, core }, result,
+              Number(process.env.REVIEW_PR_NUMBER), process.env.REVIEW_HEAD_SHA, review);
             const fs = require('node:fs');
             const output = JSON.parse(fs.readFileSync(process.env.GH_AW_AGENT_OUTPUT, 'utf8'));
             fs.writeFileSync(process.env.GH_AW_AGENT_OUTPUT, JSON.stringify(prepareAgentOutput(review, output)));
@@ -2368,7 +2385,7 @@ jobs:
           GH_AW_ALLOWED_DOMAINS: "api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,dev.azure.com,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,ppa.launchpad.net,raw.githubusercontent.com,s.symcb.com,s.symcd.com,security.ubuntu.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com,www.googleapis.com"
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_API_URL: ${{ github.api_url }}
-          GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: "{\"add_comment\":{\"discussions\":false,\"footer\":false,\"hide_older_comments\":true,\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"add_labels\":{\"allowed\":[\"mgmt-review-analyzed\"],\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"create_report_incomplete_issue\":{},\"noop\":{\"max\":2,\"report-as-issue\":\"false\"},\"remove_labels\":{\"allowed\":[\"mgmt-review-in-progress\"],\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"report_incomplete\":{},\"report_missing_data\":{},\"report_missing_tool\":{}}"
+          GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: "{\"add_comment\":{\"discussions\":false,\"footer\":false,\"hide_older_comments\":true,\"max\":1,\"target\":\"${{ needs.validate_request.outputs.pr_number }}\"},\"create_report_incomplete_issue\":{},\"noop\":{\"max\":2,\"report-as-issue\":\"false\"},\"report_incomplete\":{},\"report_missing_data\":{},\"report_missing_tool\":{}}"
           GH_AW_GITHUB_TOKEN_SOURCE: ${{ secrets.GH_AW_GITHUB_TOKEN != '' && 'pat' || 'github_actions' }}
         with:
           github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}

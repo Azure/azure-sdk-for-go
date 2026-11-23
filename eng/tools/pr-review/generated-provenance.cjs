@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-const { matchesGlob } = require("node:path").posix;
+const { basename, matchesGlob } = require("node:path").posix;
 const { requireSHA, requireCount, blob, previousBlob } = require("./github-data.cjs");
 
 async function commitFiles(github, repo, sha) {
@@ -49,7 +49,6 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA, p
         filePatterns.some((pattern) => typeof pattern !== "string" || pattern.trim().length === 0)) {
       throw new Error("filePatterns must contain at least one non-empty filename glob.");
     }
-    const patterns = filePatterns.map((pattern) => pattern.includes("/") ? pattern : `**/${pattern}`);
     const repo = context.repo;
     const { data: pr } = await github.rest.pulls.get({ ...repo, pull_number: prNumber });
     if (pr.state !== "open" || pr.head.sha !== headSHA) throw new Error("The PR head changed or the PR closed.");
@@ -78,7 +77,8 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA, p
           throw new Error(`Incomplete file metadata in ${sha}.`);
         }
         if (![file.filename, file.previous_filename].some((name) =>
-          typeof name === "string" && patterns.some((pattern) => matchesGlob(name, pattern)))) continue;
+          typeof name === "string" && filePatterns.some((pattern) =>
+            matchesGlob(pattern.includes("/") ? name : basename(name), pattern)))) continue;
         if (!parent && file.status !== "added") throw new Error(`Missing parent for ${file.filename} in ${sha}.`);
         const before = file.status === "added" ? null :
           await previousBlob(github, repo, parent, file.previous_filename || file.filename);
@@ -155,18 +155,29 @@ async function removeInProgress({ github, context, core }, prNumber) {
   }
 }
 
-async function assertReviewCurrent(api, result, prNumber, headSHA) {
+async function assertReviewCurrent(api, result, prNumber, headSHA, readiness) {
   validateResult(result, prNumber, headSHA);
   const { data: pr } = await api.github.rest.pulls.get({ ...api.context.repo, pull_number: prNumber });
   if (pr.state !== "open" || pr.head.sha !== headSHA ||
-      (result.base_sha !== null && (pr.base?.sha !== result.base_sha || pr.base?.ref !== result.base_ref))) {
+      (result.base_sha !== null && (pr.base?.sha !== result.base_sha || pr.base?.ref !== result.base_ref)) ||
+      (readiness && (pr.draft !== false || typeof pr.mergeable !== "boolean" ||
+        typeof pr.mergeable_state !== "string" || pr.mergeable_state === "unknown" ||
+        pr.mergeable !== readiness.mergeable || pr.mergeable_state !== readiness.mergeable_state))) {
     await removeInProgress(api, prNumber);
-    throw new Error("The PR head or base changed or the PR closed during review. No review outputs were published; request a new review.");
+    throw new Error("The PR head, base, or readiness changed, readiness is unavailable, or the PR closed. No review outputs were published; request a new review.");
   }
   return pr;
 }
 
-async function publishProvenance(api, { result, prNumber, headSHA }) {
+async function publishProvenance(api, { result, prNumber, headSHA, jobResult }) {
+  if (!result) {
+    const message = `The trusted provenance job ended ${jobResult} without producing results. Inspect its workflow logs and request a fresh review.`;
+    api.core.error(message);
+    result = {
+      status: "unverifiable", pr_number: prNumber, head_sha: headSHA, base_sha: null, base_ref: null,
+      findings: [], errors: [message],
+    };
+  }
   await assertReviewCurrent(api, result, prNumber, headSHA);
   if (result.status === "pass") throw new Error("Passing provenance must use the normal review publisher.");
   await publishReviewComment(api, prNumber, renderProvenance(result));
@@ -176,10 +187,14 @@ async function publishReviewComment(api, prNumber, body) {
   await api.github.rest.issues.createComment({
     ...api.context.repo, issue_number: prNumber, body,
   });
+  await completeReview(api, prNumber);
+}
+
+async function completeReview(api, prNumber) {
   await removeInProgress(api, prNumber);
   await api.github.rest.issues.addLabels({
     ...api.context.repo, issue_number: prNumber, labels: ["mgmt-review-analyzed"],
   });
 }
 
-module.exports = { checkProvenance, assertReviewCurrent, publishProvenance, renderProvenance, publishReviewComment };
+module.exports = { checkProvenance, assertReviewCurrent, publishProvenance, renderProvenance, publishReviewComment, completeReview };

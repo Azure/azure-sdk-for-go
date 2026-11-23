@@ -148,8 +148,6 @@
 
 ### Other Changes
 
-* Updated the azcosmos/v2 E2E emulator fixtures and CI lane to validate selected account profiles
-  and routing settings against the pinned emulator.
 * Client-generated service-unavailable failures (substatus 20310, 20311, and 20312) from native
   driver v0.3.0 map to `CodeServiceUnavailable`. The driver synthesizes these 503s after a service
   failure that it could not route around.

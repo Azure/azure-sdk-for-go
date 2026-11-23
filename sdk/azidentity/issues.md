@@ -29,7 +29,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZC-3](#azc-3-arm-auxiliary-tenant-error-is-retriable) | azcore/arm | ARM auxiliary-tenant error is retriable | P2 | Not an issue |
 | [AZC-4](#azc-4-response-classifier-contract-is-implicit) | azcore/internal | Response classifier contract is implicit | P2 | Fixed |
 | [AZC-5](#azc-5-bound-401-retries-reuse-the-cached-token) | azcore/keyvault | Bound 401 retries reuse the cached token | — | By design |
-| [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) | azcore | Bound connection pools aren't shared across clients | P2 | Won't fix |
+| [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) | azcore | Bound connection pools aren't shared across clients | P2 | Fixed |
 | [AZC-7](#azc-7-separate-bearer-and-pop-token-caches) | azcore | Separate bearer and PoP token caches | — | By design |
 | [AZC-8](#azc-8-mtlspolicy-acts-as-a-transport-selector) | azcore | mtlsPolicy acts as a transport selector | P2 | Fixed |
 | [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Fixed |
@@ -248,13 +248,44 @@ It's treated as a transient service-side condition.
 
 ### AZC-6: Bound connection pools aren't shared across clients
 
-**Priority:** P2 · **Status:** Won't fix (for now)
+**Priority:** P2 · **Status:** Fixed
 
-Each pipeline has its own certificate client cache (formerly `mtlsPolicy`, now in `transportPolicy`), so separate Key Vault clients don't share bound connections, even when they share a base transport.
-With bearer tokens they share the base transport's pool.
+Each pipeline had its own certificate client cache (formerly `mtlsPolicy`, then in `transportPolicy`), so separate Key Vault clients didn't share bound connections, even when they shared a base transport.
+With bearer tokens they share the base transport's pool, by default azcore's process-wide `DefaultHTTPClient`.
 
-**Reason:** a process-wide cache keyed by base transport and certificate would add lifetime and eviction complexity for little demonstrated benefit.
-Revisit if bound connection counts become a problem.
+The cost:
+
+- each client paid its own TLS 1.2 handshake and renegotiation per certificate; each handshake calls `Sign`, which for KeyGuard keys runs inside VBS;
+- bound requests are HTTP/1.1 only, so they need one connection per concurrent request, which makes pooling matter more than for HTTP/2;
+- a discarded client's idle bound connections stayed open until `IdleConnTimeout` (90 s by default).
+
+The cache had been per pipeline since `mtlsPolicy` was introduced; [AZC-8](#azc-8-mtlspolicy-acts-as-a-transport-selector) didn't change this.
+
+**Fix:** [transport_mtls.go](../azcore/internal/exported/transport_mtls.go) replaces the per-pipeline cache with a process-wide cache of certificate-scoped *transports* (`mtlsTransports`). The connection pool lives in the transport, not the `http.Client`, so only the transport is shared.
+
+- **Key:** the base `*http.Transport`, held as a `weak.Pointer`, and then the leaf certificate's DER encoding, as in [AZC-1](#azc-1-mtls-client-cache-is-keyed-by-certificate-pointer).
+  Pipelines whose clients share a base transport share each certificate's pool, even when their `http.Client` settings differ.
+  Different base transports never share connections, because a derived transport inherits its base's proxy, dialer, and TLS trust.
+- **Lifetime:** when the first transport is derived from a base, `runtime.AddCleanup` registers a cleanup on the base. After the base is collected, the cleanup removes its entries and closes their idle connections.
+  The derived transport must not reference its base, or the base would never be collected. `Clone` copies only configuration, and `TLSNextProto` is replaced.
+  A caller-supplied hook, such as a `DialContext` closure that captures its own transport, would keep the base alive; the per-base bound still limits what's retained.
+  Linker-allocated bases, such as `http.DefaultTransport`, are never collected, which is correct because they live for the whole process.
+- **Bound and eviction:** still 8 certificates per base transport, but eviction now removes the least recently used entry rather than an arbitrary one, since one pipeline's rotation can now evict another's certificate.
+- **Per request:** `clientFor` builds a small `http.Client` wrapper for each bound request, preserving the pipeline's `Timeout` and `Jar` and rejecting redirects.
+  The wrapper isn't cached, so after an eviction no pipeline keeps a transport the cache no longer manages.
+  `transportPolicy` no longer has cache fields.
+- **Pay for play:** only `clientFor` reaches the cache, and only for a request whose `MTLSRequest.Certificate` is non-nil. Without bound tokens the cache is never initialized, and nothing is registered with the runtime.
+- **Unchanged:** the certificate and transport validation, the TLS configuration of derived transports, keying by leaf DER, and presenting the most recently acquired copy of a certificate.
+
+**Tests** ([transport_mtls_test.go](../azcore/internal/exported/transport_mtls_test.go)):
+
+- `TestTransportPolicyMTLSClient` compares transports rather than clients. Its rotation loop now keeps the original certificate in use, and asserts that the original survives and that the oldest rotations are the ones evicted.
+- New `TestTransportPolicyMTLSSharedAcrossPipelines`: two pipelines over one base transport, with different `http.Client` values, make one authenticated connection, and a third pipeline over a cloned base makes its own.
+  It fails if the cache key isn't shared.
+- New `TestTransportPolicyMTLSReleasesCollectedBase`: once a base transport is unreachable, `runtime.GC` leads to its entries being removed (stable across 50 runs).
+
+All of azcore, keyvault/internal, and azkeys/azcertificates `TestClientSignalsMTLSPoP` pass against local azcore. azsecrets `TestClientMTLSPoP` passes for `bound` and `bearer`. Its `tenant fallback` and `tenant transition` subtests fail identically without this change: the temporary module file used released azidentity, because the local MSAL checkout lacks the mTLS API.
+The race detector wasn't run; see [TEST-1](#test-1-race-detector-not-run).
 
 ### AZC-7: Separate bearer and PoP token caches
 
@@ -291,13 +322,13 @@ The policy costs a few tens of nanoseconds per request when no certificate is pr
 
 **Fix: the selection is folded into `transportPolicy`**, so one place chooses each request's client.
 
-- **[pipeline.go](../azcore/internal/exported/pipeline.go):** `transportPolicy` is now a pointer type holding the base transport and the certificate client cache.
+- **[pipeline.go](../azcore/internal/exported/pipeline.go):** `transportPolicy` is now a pointer type holding the base transport and, until [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) moved it to a process-wide cache, the certificate client cache.
   `Do` reads the `MTLSRequest` operation value:
   - with no certificate, it uses the base transport;
   - with one, it requires HTTPS and uses that certificate's client.
 
   Bound requests now also get the "received nil response" check, which the separate policy skipped.
-- **[transport_mtls.go](../azcore/internal/exported/transport_mtls.go):** new file holding the `MTLSRequest` operation value type (set by the bearer policy), the `mtlsClient` cache entry, and `transportPolicy.clientFor`.
+- **[transport_mtls.go](../azcore/internal/exported/transport_mtls.go):** new file holding the `MTLSRequest` operation value type (set by the bearer policy), the `mtlsClient` cache entry (since AZC-6, `mtlsTransport`), and `transportPolicy.clientFor`.
   The latter is the former `mtlsPolicy.client`, unchanged apart from using the already-defaulted pipeline transport as its base.
 - **runtime:** `policy_mtls.go` is deleted, `NewPipeline` no longer adds a separate policy, and the bearer policy sets `exported.MTLSRequest`.
 - **Placement:** the code went into `azcore/internal/exported` rather than a new internal package, to keep client selection with `transportPolicy`.
@@ -560,13 +591,14 @@ During review, the tests passed for azcore, sdk/internal, azidentity (through a 
 They weren't run with `-race`, because cgo wasn't available.
 The new code has concurrent state:
 
-- `transportPolicy`'s certificate client map;
+- the process-wide `mtlsTransports` cache in [transport_mtls.go](../azcore/internal/exported/transport_mtls.go), including its runtime cleanup;
 - `tenantTokenBindingCredential.bearerOnlyTenants`;
 - the two token caches;
 - `TestTenantTokenBindingCredential_Concurrent`.
 
 **Resolution:** run the race detector on a machine with cgo, or confirm CI does, for all of these modules:
 
+- `azcore/internal/exported/...`
 - `azcore/runtime/...`
 - `azcore/arm/runtime/...`
 - `azidentity/...`

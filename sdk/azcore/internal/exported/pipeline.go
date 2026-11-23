@@ -6,7 +6,6 @@ package exported
 import (
 	"errors"
 	"net/http"
-	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/sanitizer"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
@@ -47,10 +46,6 @@ type Transporter interface {
 // to a certificate (see MTLSRequest).
 type transportPolicy struct {
 	trans Transporter
-
-	muClients sync.Mutex
-	// clients is keyed by the leaf certificate's DER encoding; see clientFor for details
-	clients map[string]*mtlsClient
 }
 
 func (tp *transportPolicy) Do(req *Request) (*http.Response, error) {

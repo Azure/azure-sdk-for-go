@@ -6,8 +6,8 @@
 
 - Added `TokenRequestOptions.EnableMTLSPoP` and `AccessToken.BindingCertificate` for certificate-bound tokens.
 - Authentication policies automatically select bearer or mTLS PoP authorization from the returned token.
-  Bound requests use certificate-specific connection pools and fail explicitly when the transport can't
-  support binding; bearer requests retain the configured transport.
+  Bound requests use certificate-specific connection pools, shared by clients with the same transport,
+  and fail explicitly when the transport can't support binding; bearer requests retain the configured transport.
 - PoP-aware service authorization handlers signal support per token request. Credentials may return
   bearer tokens; acquisition or bound-transport failures don't trigger an automatic bearer fallback.
 

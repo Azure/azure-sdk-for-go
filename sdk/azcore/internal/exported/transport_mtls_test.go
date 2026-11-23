@@ -10,12 +10,17 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"io"
+	"maps"
 	"math/big"
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"runtime"
 	"sync/atomic"
 	"testing"
+	"time"
+	"weak"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/assert"
@@ -37,7 +42,7 @@ func TestTransportPolicyMTLSClient(t *testing.T) {
 	t.Cleanup(client.CloseIdleConnections)
 	cached, err := tp.clientFor(&cert)
 	require.NoError(t, err)
-	require.Same(t, client, cached)
+	require.Same(t, client.Transport, cached.Transport)
 	tr, ok := client.Transport.(*http.Transport)
 	require.True(t, ok)
 	got, err := tr.TLSClientConfig.GetClientCertificate(&tls.CertificateRequestInfo{AcceptableCAs: [][]byte{[]byte("unrelated CA")}})
@@ -51,22 +56,106 @@ func TestTransportPolicyMTLSClient(t *testing.T) {
 	copied := cert
 	shared, err := tp.clientFor(&copied)
 	require.NoError(t, err)
-	assert.Same(t, client, shared, "a new copy of the same certificate must share its connection pool")
+	assert.Same(t, client.Transport, shared.Transport, "a new copy of the same certificate must share its connection pool")
 	got, err = tr.TLSClientConfig.GetClientCertificate(&tls.CertificateRequestInfo{})
 	require.NoError(t, err)
 	assert.Same(t, &copied, got, "new handshakes must present the most recently acquired copy")
 	leaf, err := x509.ParseCertificate(cert.Certificate[0])
 	require.NoError(t, err)
+	var rotations []string
 	for i := range 10 {
 		leaf.SerialNumber = big.NewInt(int64(i + 1))
 		der, err := x509.CreateCertificate(rand.Reader, leaf, leaf, leaf.PublicKey, cert.PrivateKey)
 		require.NoError(t, err)
+		rotations = append(rotations, string(der))
 		rotated, err := tp.clientFor(&tls.Certificate{Certificate: [][]byte{der}, PrivateKey: cert.PrivateKey})
 		require.NoError(t, err)
 		t.Cleanup(rotated.CloseIdleConnections)
-		assert.NotSame(t, client, rotated, "rotation requires a separate connection pool")
+		assert.NotSame(t, client.Transport, rotated.Transport, "rotation requires a separate connection pool")
+		// keep the original certificate in use so eviction must choose among the rotations
+		_, err = tp.clientFor(&copied)
+		require.NoError(t, err)
 	}
-	assert.Len(t, tp.clients, 8)
+	cache := cachedMTLSTransports(baseTransport)
+	require.Len(t, cache, mtlsTransportsPerBase)
+	assert.Contains(t, cache, string(cert.Certificate[0]), "eviction must spare recently used certificates")
+	for i, der := range rotations {
+		_, ok := cache[der]
+		assert.Equal(t, i >= len(rotations)-mtlsTransportsPerBase+1, ok, "eviction must remove the least recently used certificates first")
+	}
+}
+
+func TestTransportPolicyMTLSSharedAcrossPipelines(t *testing.T) {
+	var conns, authenticated atomic.Int32
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(_ http.ResponseWriter, r *http.Request) {
+		if r.TLS != nil && len(r.TLS.PeerCertificates) > 0 {
+			authenticated.Add(1)
+		}
+	}))
+	server.Config.ConnState = func(_ net.Conn, state http.ConnState) {
+		if state == http.StateNew {
+			conns.Add(1)
+		}
+	}
+	server.TLS = &tls.Config{ClientAuth: tls.RequireAnyClientCert}
+	server.StartTLS()
+	defer server.Close()
+	cert := server.TLS.Certificates[0]
+	base := server.Client()
+	baseTransport, ok := base.Transport.(*http.Transport)
+	require.True(t, ok)
+	send := func(tp *transportPolicy) {
+		t.Helper()
+		req, err := NewRequest(context.Background(), http.MethodGet, server.URL)
+		require.NoError(t, err)
+		req.SetOperationValue(MTLSRequest{Certificate: &cert})
+		resp, err := tp.Do(req)
+		require.NoError(t, err)
+		_, err = io.Copy(io.Discard, resp.Body)
+		require.NoError(t, err)
+		require.NoError(t, resp.Body.Close())
+	}
+	send(&transportPolicy{trans: base})
+	send(&transportPolicy{trans: &http.Client{Transport: baseTransport, Timeout: time.Minute}})
+	assert.EqualValues(t, 2, authenticated.Load())
+	assert.EqualValues(t, 1, conns.Load(), "pipelines sharing a base transport must share its certificate-scoped pool")
+
+	other := &http.Client{Transport: baseTransport.Clone()}
+	send(&transportPolicy{trans: other})
+	assert.EqualValues(t, 3, authenticated.Load())
+	assert.EqualValues(t, 2, conns.Load(), "different base transports must not share connections")
+	for _, b := range []*http.Transport{baseTransport, other.Transport.(*http.Transport)} {
+		for _, d := range cachedMTLSTransports(b) {
+			d.tr.CloseIdleConnections()
+		}
+	}
+}
+
+func TestTransportPolicyMTLSReleasesCollectedBase(t *testing.T) {
+	server := httptest.NewTLSServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {}))
+	cert := server.TLS.Certificates[0]
+	server.Close()
+	key := func() weak.Pointer[http.Transport] {
+		base := &http.Transport{}
+		_, err := (&transportPolicy{trans: &http.Client{Transport: base}}).clientFor(&cert)
+		require.NoError(t, err)
+		require.Len(t, cachedMTLSTransports(base), 1)
+		return weak.Make(base)
+	}()
+	require.Eventually(t, func() bool {
+		runtime.GC()
+		mtlsTransports.mu.Lock()
+		defer mtlsTransports.mu.Unlock()
+		_, ok := mtlsTransports.bases[key]
+		return !ok
+	}, 10*time.Second, 10*time.Millisecond, "transports derived from a collected base transport must be released")
+}
+
+// cachedMTLSTransports returns a copy of the cached transports derived from base
+func cachedMTLSTransports(base *http.Transport) map[string]*mtlsTransport {
+	mtlsTransports.mu.Lock()
+	defer mtlsTransports.mu.Unlock()
+	return maps.Clone(mtlsTransports.bases[weak.Make(base)])
 }
 
 func TestTransportPolicyMTLSUnsupportedConfiguration(t *testing.T) {

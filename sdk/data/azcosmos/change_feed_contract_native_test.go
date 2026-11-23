@@ -15,6 +15,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -32,6 +33,8 @@ type changeFeedContractService struct {
 	headers       []http.Header
 	unexpected    []string
 	failureStatus int
+	routingReads  atomic.Int64
+	routingHook   func(http.ResponseWriter, *http.Request) bool
 }
 
 func newChangeFeedContractService(t *testing.T, ranges int, idleFirst bool) *changeFeedContractService {
@@ -79,6 +82,12 @@ func (s *changeFeedContractService) observed() []http.Header {
 	return headers
 }
 
+func (s *changeFeedContractService) setRoutingHook(hook func(http.ResponseWriter, *http.Request) bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.routingHook = hook
+}
+
 func changeFeedContractRangeID(header http.Header) string {
 	rangeID := header.Get("x-ms-documentdb-partitionkeyrangeid")
 	if separator := strings.LastIndexByte(rangeID, ','); separator >= 0 {
@@ -112,6 +121,13 @@ func (s *changeFeedContractService) serveHTTP(w http.ResponseWriter, r *http.Req
 			"continuousBackupEnabled":true,"writableLocations":[{"name":"East US","databaseAccountEndpoint":%q}],
 			"readableLocations":[{"name":"East US","databaseAccountEndpoint":%q}]}`, endpoint+"/", endpoint+"/")
 	case strings.HasSuffix(r.URL.Path, "/pkranges"):
+		s.routingReads.Add(1)
+		s.mu.Lock()
+		hook := s.routingHook
+		s.mu.Unlock()
+		if hook != nil && hook(w, r) {
+			return
+		}
 		w.Header().Set("ETag", "ranges-position")
 		if r.Header.Get("If-None-Match") == "ranges-position" {
 			w.WriteHeader(http.StatusNotModified)

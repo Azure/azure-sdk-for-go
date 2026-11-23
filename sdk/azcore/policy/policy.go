@@ -128,7 +128,7 @@ type RetryOptions struct {
 
 	// ShouldRetry evaluates if the retry policy should retry the request.
 	// When specified, the function overrides comparison against the list of
-	// HTTP status codes, service-specific response classification, and error checking within the retry policy. Context
+	// HTTP status codes and error checking within the retry policy. Context
 	// and NonRetriable errors remain evaluated before calling ShouldRetry.
 	// The *http.Response and error parameters are mutually exclusive, i.e.
 	// if one is nil, the other is not nil.

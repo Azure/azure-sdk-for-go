@@ -20,17 +20,15 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
 - `DefaultAzureCredential` delegates its initial IMDS discovery to MSAL under a one-second
   timeout, with retries disabled. Discovery now requires MSAL to detect an IMDS source rather
   than accepting any endpoint response. The timeout doesn't apply to subsequent token acquisition.
-
-### Other Changes
-
 - Added `AuthenticationFailure` methods to `AuthenticationFailedError` and `AuthenticationRequiredError`.
   Other Azure SDK modules use them to classify credential errors. They aren't intended for
   application use and aren't covered by this module's compatibility guarantees.
-- Removed the development-only local `azcore` replacement from this module's manifest.
-  Source-only preview validation uses application replacements or a temporary workspace.
+
 ## 1.15.0 (2026-10-14)
 
 ### Features Added

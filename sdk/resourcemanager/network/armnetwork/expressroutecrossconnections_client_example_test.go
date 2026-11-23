@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionCommitCircuitMigration.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionCommitCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginCommitCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginCommitCircuitMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionUpdate.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionUpdate.json
 func ExampleExpressRouteCrossConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionGetCircuitMigrationInfo.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionGetCircuitMigrationInfo.json
 func ExampleExpressRouteCrossConnectionsClient_BeginGetCircuitMigrationInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginGetCircuitMigrationInfo() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsArpTable.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionsArpTable.json
 func ExampleExpressRouteCrossConnectionsClient_BeginListArpTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -439,7 +439,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListArpTable() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsRouteTable.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionsRouteTable.json
 func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,7 +483,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionsRouteTableSummary.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionsRouteTableSummary.json
 func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTableSummary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -525,7 +525,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTableSummary() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionMigrateCircuit.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionMigrateCircuit.json
 func ExampleExpressRouteCrossConnectionsClient_BeginMigrateCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -696,7 +696,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginMigrateCircuit() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionPrepareCircuitMigration.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionPrepareCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginPrepareCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -867,7 +867,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginPrepareCircuitMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionRestoreBgpForCircuitMigration.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionRestoreBgpForCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginRestoreBgpForCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1038,7 +1038,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginRestoreBgpForCircuitMigratio
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionRollbackCircuitMigration.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionRollbackCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginRollbackCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1209,7 +1209,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginRollbackCircuitMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionShutDownBgpForCircuitMigration.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionShutDownBgpForCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginShutDownBgpForCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1380,7 +1380,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginShutDownBgpForCircuitMigrati
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionValidateCircuitMigration.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionValidateCircuitMigration.json
 func ExampleExpressRouteCrossConnectionsClient_BeginValidateCircuitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1421,7 +1421,7 @@ func ExampleExpressRouteCrossConnectionsClient_BeginValidateCircuitMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionGet.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionGet.json
 func ExampleExpressRouteCrossConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1464,7 +1464,7 @@ func ExampleExpressRouteCrossConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionListByResourceGroup.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionListByResourceGroup.json
 func ExampleExpressRouteCrossConnectionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1515,7 +1515,7 @@ func ExampleExpressRouteCrossConnectionsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionList.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionList.json
 func ExampleExpressRouteCrossConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1566,7 +1566,7 @@ func ExampleExpressRouteCrossConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCrossConnectionUpdateTags.json
+// Generated from example definition: 2026-05-01/ExpressRouteCrossConnectionUpdateTags.json
 func ExampleExpressRouteCrossConnectionsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

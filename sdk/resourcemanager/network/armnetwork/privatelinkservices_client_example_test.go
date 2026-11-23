@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/CheckPrivateLinkServiceVisibility.json
+// Generated from example definition: 2026-05-01/CheckPrivateLinkServiceVisibility.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibility() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/CheckPrivateLinkServiceVisibilityByResourceGroup.json
+// Generated from example definition: 2026-05-01/CheckPrivateLinkServiceVisibilityByResourceGroup.json
 func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByRe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceCreate.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceCreate.json
 func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceDelete.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceDelete.json
 func ExamplePrivateLinkServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExamplePrivateLinkServicesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceDeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceDeletePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceGet.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceGet.json
 func ExamplePrivateLinkServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExamplePrivateLinkServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceGetPrivateEndpointConnection.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceGetPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExamplePrivateLinkServicesClient_GetPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AutoApprovedPrivateLinkServicesResourceGroupGet.json
+// Generated from example definition: 2026-05-01/AutoApprovedPrivateLinkServicesResourceGroupGet.json
 func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +407,7 @@ func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesByRe
 	}
 }
 
-// Generated from example definition: 2026-03-01/AutoApprovedPrivateLinkServicesGet.json
+// Generated from example definition: 2026-05-01/AutoApprovedPrivateLinkServicesGet.json
 func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -447,7 +447,7 @@ func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPage
 	}
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceListAll.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceListAll.json
 func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -610,7 +610,7 @@ func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceList.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceList.json
 func ExamplePrivateLinkServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -771,7 +771,7 @@ func ExamplePrivateLinkServicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceListPrivateEndpointConnection.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceListPrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -828,7 +828,7 @@ func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/PrivateLinkServiceUpdatePrivateEndpointConnection.json
+// Generated from example definition: 2026-05-01/PrivateLinkServiceUpdatePrivateEndpointConnection.json
 func ExamplePrivateLinkServicesClient_UpdatePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

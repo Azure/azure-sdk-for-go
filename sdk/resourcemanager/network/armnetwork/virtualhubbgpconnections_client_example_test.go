@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VirtualRouterPeerListAdvertisedRoute.json
+// Generated from example definition: 2026-05-01/VirtualRouterPeerListAdvertisedRoute.json
 func ExampleVirtualHubBgpConnectionsClient_BeginListAdvertisedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListAdvertisedRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualRouterPeerListLearnedRoute.json
+// Generated from example definition: 2026-05-01/VirtualRouterPeerListLearnedRoute.json
 func ExampleVirtualHubBgpConnectionsClient_BeginListLearnedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListLearnedRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualHubBgpConnectionList.json
+// Generated from example definition: 2026-05-01/VirtualHubBgpConnectionList.json
 func ExampleVirtualHubBgpConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-01/NetworkWatcherConnectivityCheck.json
+// Generated from example definition: 2026-05-01/NetworkWatcherConnectivityCheck.json
 func ExampleWatchersClient_BeginCheckConnectivity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleWatchersClient_BeginCheckConnectivity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerCreate.json
+// Generated from example definition: 2026-05-01/NetworkWatcherConnectionAnalyzerCreate.json
 func ExampleWatchersClient_BeginConnectionAnalyzersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleWatchersClient_BeginConnectionAnalyzersCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerDelete.json
+// Generated from example definition: 2026-05-01/NetworkWatcherConnectionAnalyzerDelete.json
 func ExampleWatchersClient_BeginConnectionAnalyzersDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleWatchersClient_BeginConnectionAnalyzersDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerQuery.json
+// Generated from example definition: 2026-05-01/NetworkWatcherConnectionAnalyzerQuery.json
 func ExampleWatchersClient_BeginConnectionAnalyzersQuery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleWatchersClient_BeginConnectionAnalyzersQuery() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherDelete.json
+// Generated from example definition: 2026-05-01/NetworkWatcherDelete.json
 func ExampleWatchersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleWatchersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherAzureReachabilityReportGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherAzureReachabilityReportGet.json
 func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherFlowLogStatusQuery.json
+// Generated from example definition: 2026-05-01/NetworkWatcherFlowLogStatusQuery.json
 func ExampleWatchersClient_BeginGetFlowLogStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExampleWatchersClient_BeginGetFlowLogStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherNetworkConfigurationDiagnostic.json
+// Generated from example definition: 2026-05-01/NetworkWatcherNetworkConfigurationDiagnostic.json
 func ExampleWatchersClient_BeginGetNetworkConfigurationDiagnostic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +490,7 @@ func ExampleWatchersClient_BeginGetNetworkConfigurationDiagnostic() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherNextHopGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherNextHopGet.json
 func ExampleWatchersClient_BeginGetNextHop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,7 +526,7 @@ func ExampleWatchersClient_BeginGetNextHop() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherTroubleshootGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherTroubleshootGet.json
 func ExampleWatchersClient_BeginGetTroubleshooting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,7 +583,7 @@ func ExampleWatchersClient_BeginGetTroubleshooting() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherTroubleshootResultQuery.json
+// Generated from example definition: 2026-05-01/NetworkWatcherTroubleshootResultQuery.json
 func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +636,7 @@ func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherSecurityGroupViewGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherSecurityGroupViewGet.json
 func ExampleWatchersClient_BeginGetVMSecurityRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -726,7 +726,7 @@ func ExampleWatchersClient_BeginGetVMSecurityRules() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherAvailableProvidersListGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherAvailableProvidersListGet.json
 func ExampleWatchersClient_BeginListAvailableProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -782,7 +782,7 @@ func ExampleWatchersClient_BeginListAvailableProviders() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherFlowLogConfigure.json
+// Generated from example definition: 2026-05-01/NetworkWatcherFlowLogConfigure.json
 func ExampleWatchersClient_BeginSetFlowLogConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -836,7 +836,7 @@ func ExampleWatchersClient_BeginSetFlowLogConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherIpFlowVerify.json
+// Generated from example definition: 2026-05-01/NetworkWatcherIpFlowVerify.json
 func ExampleWatchersClient_BeginVerifyIPFlow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -874,7 +874,7 @@ func ExampleWatchersClient_BeginVerifyIPFlow() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherConnectionAnalyzerGet.json
 func ExampleWatchersClient_ConnectionAnalyzersGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -942,7 +942,7 @@ func ExampleWatchersClient_ConnectionAnalyzersGet() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerUpdateTags.json
+// Generated from example definition: 2026-05-01/NetworkWatcherConnectionAnalyzerUpdateTags.json
 func ExampleWatchersClient_ConnectionAnalyzersUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1019,7 +1019,7 @@ func ExampleWatchersClient_ConnectionAnalyzersUpdateTags() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherCreate.json
+// Generated from example definition: 2026-05-01/NetworkWatcherCreate.json
 func ExampleWatchersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1056,7 +1056,7 @@ func ExampleWatchersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherGet.json
 func ExampleWatchersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1090,7 +1090,7 @@ func ExampleWatchersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherTopologyGet.json
+// Generated from example definition: 2026-05-01/NetworkWatcherTopologyGet.json
 func ExampleWatchersClient_GetTopology() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1138,7 +1138,7 @@ func ExampleWatchersClient_GetTopology() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherConnectionAnalyzerList.json
+// Generated from example definition: 2026-05-01/NetworkWatcherConnectionAnalyzerList.json
 func ExampleWatchersClient_NewConnectionAnalyzersListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1261,7 +1261,7 @@ func ExampleWatchersClient_NewConnectionAnalyzersListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherListAll.json
+// Generated from example definition: 2026-05-01/NetworkWatcherListAll.json
 func ExampleWatchersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1316,7 +1316,7 @@ func ExampleWatchersClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherList.json
+// Generated from example definition: 2026-05-01/NetworkWatcherList.json
 func ExampleWatchersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1371,7 +1371,7 @@ func ExampleWatchersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkWatcherUpdateTags.json
+// Generated from example definition: 2026-05-01/NetworkWatcherUpdateTags.json
 func ExampleWatchersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

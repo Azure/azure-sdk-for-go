@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VirtualNetworkAppliances_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01/VirtualNetworkAppliances_CreateOrUpdate.json
 func ExampleVirtualNetworkAppliancesClient_BeginCreateOrUpdate_createVirtualNetworkAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleVirtualNetworkAppliancesClient_BeginCreateOrUpdate_createVirtualNetw
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkAppliances_CreateOrUpdate_WithCapacityProvider.json
+// Generated from example definition: 2026-05-01/VirtualNetworkAppliances_CreateOrUpdate_WithCapacityProvider.json
 func ExampleVirtualNetworkAppliancesClient_BeginCreateOrUpdate_createVirtualNetworkApplianceWithCapacityProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleVirtualNetworkAppliancesClient_BeginCreateOrUpdate_createVirtualNetw
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkAppliances_Delete.json
+// Generated from example definition: 2026-05-01/VirtualNetworkAppliances_Delete.json
 func ExampleVirtualNetworkAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleVirtualNetworkAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkAppliances_Get.json
+// Generated from example definition: 2026-05-01/VirtualNetworkAppliances_Get.json
 func ExampleVirtualNetworkAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleVirtualNetworkAppliancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkAppliances_ListBySubscription.json
+// Generated from example definition: 2026-05-01/VirtualNetworkAppliances_ListBySubscription.json
 func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkAppliances_List.json
+// Generated from example definition: 2026-05-01/VirtualNetworkAppliances_List.json
 func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +373,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkAppliances_UpdateTags.json
+// Generated from example definition: 2026-05-01/VirtualNetworkAppliances_UpdateTags.json
 func ExampleVirtualNetworkAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

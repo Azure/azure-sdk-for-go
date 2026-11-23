@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/LoadBalancerHealth.json
+// Generated from example definition: 2026-05-01/LoadBalancerHealth.json
 func ExampleLoadBalancerLoadBalancingRulesClient_BeginHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleLoadBalancerLoadBalancingRulesClient_BeginHealth() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerLoadBalancingRuleGet.json
+// Generated from example definition: 2026-05-01/LoadBalancerLoadBalancingRuleGet.json
 func ExampleLoadBalancerLoadBalancingRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleLoadBalancerLoadBalancingRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerLoadBalancingRuleList.json
+// Generated from example definition: 2026-05-01/LoadBalancerLoadBalancingRuleList.json
 func ExampleLoadBalancerLoadBalancingRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

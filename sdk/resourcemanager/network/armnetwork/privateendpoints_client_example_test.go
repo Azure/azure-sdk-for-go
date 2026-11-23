@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/PrivateEndpointCreate.json
+// Generated from example definition: 2026-05-01/PrivateEndpointCreate.json
 func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpoint() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointCreateForManualApproval.json
+// Generated from example definition: 2026-05-01/PrivateEndpointCreateForManualApproval.json
 func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWithManualApprovalConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWith
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointCreateWithASG.json
+// Generated from example definition: 2026-05-01/PrivateEndpointCreateWithASG.json
 func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWithApplicationSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +350,7 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWith
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointDelete.json
+// Generated from example definition: 2026-05-01/PrivateEndpointDelete.json
 func ExamplePrivateEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +376,7 @@ func ExamplePrivateEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointGet.json
+// Generated from example definition: 2026-05-01/PrivateEndpointGet.json
 func ExamplePrivateEndpointsClient_Get_getPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,7 +469,7 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpoint() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointGetForManualApproval.json
+// Generated from example definition: 2026-05-01/PrivateEndpointGetForManualApproval.json
 func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithManualApprovalConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +554,7 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithManualApprovalConne
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointGetWithASG.json
+// Generated from example definition: 2026-05-01/PrivateEndpointGetWithASG.json
 func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithApplicationSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -631,7 +631,7 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithApplicationSecurity
 	// }
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointListAll.json
+// Generated from example definition: 2026-05-01/PrivateEndpointListAll.json
 func ExamplePrivateEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,7 +871,7 @@ func ExamplePrivateEndpointsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/PrivateEndpointList.json
+// Generated from example definition: 2026-05-01/PrivateEndpointList.json
 func ExamplePrivateEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

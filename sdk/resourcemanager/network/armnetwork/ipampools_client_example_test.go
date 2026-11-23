@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/IpamPools_Create.json
+// Generated from example definition: 2026-05-01/IpamPools_Create.json
 func ExampleIpamPoolsClient_BeginCreate_ipamPoolsCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleIpamPoolsClient_BeginCreate_ipamPoolsCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_CreateWithAllocationBounds.json
+// Generated from example definition: 2026-05-01/IpamPools_CreateWithAllocationBounds.json
 func ExampleIpamPoolsClient_BeginCreate_createUpdateThePoolResourceWithAllocationSizeBounds() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleIpamPoolsClient_BeginCreate_createUpdateThePoolResourceWithAllocatio
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_Delete.json
+// Generated from example definition: 2026-05-01/IpamPools_Delete.json
 func ExampleIpamPoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleIpamPoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_Get.json
+// Generated from example definition: 2026-05-01/IpamPools_Get.json
 func ExampleIpamPoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleIpamPoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_GetPoolUsage.json
+// Generated from example definition: 2026-05-01/IpamPools_GetPoolUsage.json
 func ExampleIpamPoolsClient_GetPoolUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleIpamPoolsClient_GetPoolUsage() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_ListAssociatedResources.json
+// Generated from example definition: 2026-05-01/IpamPools_ListAssociatedResources.json
 func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,7 +333,7 @@ func ExampleIpamPoolsClient_NewListAssociatedResourcesPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_List.json
+// Generated from example definition: 2026-05-01/IpamPools_List.json
 func ExampleIpamPoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +393,7 @@ func ExampleIpamPoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_Update.json
+// Generated from example definition: 2026-05-01/IpamPools_Update.json
 func ExampleIpamPoolsClient_Update_ipamPoolsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,7 +443,7 @@ func ExampleIpamPoolsClient_Update_ipamPoolsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_UpdateAllocationBounds.json
+// Generated from example definition: 2026-05-01/IpamPools_UpdateAllocationBounds.json
 func ExampleIpamPoolsClient_Update_updateTheAllocationSizeBoundsOnAPoolResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +495,7 @@ func ExampleIpamPoolsClient_Update_updateTheAllocationSizeBoundsOnAPoolResource(
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpamPools_UpdateClearAllocationBounds.json
+// Generated from example definition: 2026-05-01/IpamPools_UpdateClearAllocationBounds.json
 func ExampleIpamPoolsClient_Update_clearTheAllocationSizeBoundsOnAPoolResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

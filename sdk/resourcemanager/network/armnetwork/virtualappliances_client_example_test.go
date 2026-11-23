@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceAbortMigration.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceAbortMigration.json
 func ExampleVirtualAppliancesClient_BeginAbortMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleVirtualAppliancesClient_BeginAbortMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceCommitMigration.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceCommitMigration.json
 func ExampleVirtualAppliancesClient_BeginCommitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleVirtualAppliancesClient_BeginCommitMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualAppliancePut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualAppliancePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSaaSPut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceSaaSPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtual
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVhubDualStackPut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVhubDualStackPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubForIPv4AndIpv6() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,7 +505,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubFor
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVhubIPv4Put.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVhubIPv4Put.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubForIPv4() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -754,7 +754,151 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVirtualHubFor
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVhubSourceIPProtocolPut.json
+func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createOrUpdateAManagedNvaInAVirtualHubWithSourceIPProtocolLoadDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginCreateOrUpdate(ctx, "rg1", "nva-vhub", armnetwork.VirtualAppliance{
+		Location: to.Ptr("West US"),
+		Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+			NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
+				BundledScaleUnit:   to.Ptr("1"),
+				MarketPlaceVersion: to.Ptr("12.1"),
+				Vendor:             to.Ptr("Cisco SDWAN"),
+			},
+			VirtualHub: &armnetwork.SubResource{
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
+			},
+			AddressFamily: []*armnetwork.IPVersion{
+				to.Ptr(armnetwork.IPVersionIPv4),
+			},
+			VirtualApplianceAsn: to.Ptr[int64](10000),
+			LoadBalancerConfiguration: &armnetwork.VirtualApplianceLoadBalancerConfiguration{
+				LoadDistribution:     to.Ptr(armnetwork.NetworkVirtualApplianceLoadDistributionSourceIPProtocol),
+				IdleTimeoutInMinutes: to.Ptr[int32](15),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientCreateOrUpdateResponse{
+	// 	VirtualAppliance: armnetwork.VirtualAppliance{
+	// 		Name: to.Ptr("nva-vhub"),
+	// 		Type: to.Ptr("Microsoft.Network/networkVirtualAppliances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva-vhub"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+	// 			NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
+	// 				BundledScaleUnit: to.Ptr("1"),
+	// 				MarketPlaceVersion: to.Ptr("12.1"),
+	// 				Vendor: to.Ptr("Cisco SDWAN"),
+	// 			},
+	// 			VirtualHub: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
+	// 			},
+	// 			AddressFamily: []*armnetwork.IPVersion{
+	// 				to.Ptr(armnetwork.IPVersionIPv4),
+	// 			},
+	// 			VirtualApplianceAsn: to.Ptr[int64](10000),
+	// 			LoadBalancerConfiguration: &armnetwork.VirtualApplianceLoadBalancerConfiguration{
+	// 				LoadDistribution: to.Ptr(armnetwork.NetworkVirtualApplianceLoadDistributionSourceIPProtocol),
+	// 				IdleTimeoutInMinutes: to.Ptr[int32](15),
+	// 			},
+	// 			PrivateIPAddress: to.Ptr("192.168.12.11"),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVhubSourceIPPut.json
+func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createOrUpdateAManagedNvaInAVirtualHubWithSourceIPLoadDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginCreateOrUpdate(ctx, "rg1", "nva-vhub", armnetwork.VirtualAppliance{
+		Location: to.Ptr("West US"),
+		Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+			NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
+				BundledScaleUnit:   to.Ptr("1"),
+				MarketPlaceVersion: to.Ptr("12.1"),
+				Vendor:             to.Ptr("Cisco SDWAN"),
+			},
+			VirtualHub: &armnetwork.SubResource{
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
+			},
+			AddressFamily: []*armnetwork.IPVersion{
+				to.Ptr(armnetwork.IPVersionIPv4),
+			},
+			VirtualApplianceAsn: to.Ptr[int64](10000),
+			LoadBalancerConfiguration: &armnetwork.VirtualApplianceLoadBalancerConfiguration{
+				LoadDistribution:     to.Ptr(armnetwork.NetworkVirtualApplianceLoadDistributionSourceIP),
+				IdleTimeoutInMinutes: to.Ptr[int32](15),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientCreateOrUpdateResponse{
+	// 	VirtualAppliance: armnetwork.VirtualAppliance{
+	// 		Name: to.Ptr("nva-vhub"),
+	// 		Type: to.Ptr("Microsoft.Network/networkVirtualAppliances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva-vhub"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+	// 			NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
+	// 				BundledScaleUnit: to.Ptr("1"),
+	// 				MarketPlaceVersion: to.Ptr("12.1"),
+	// 				Vendor: to.Ptr("Cisco SDWAN"),
+	// 			},
+	// 			VirtualHub: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
+	// 			},
+	// 			AddressFamily: []*armnetwork.IPVersion{
+	// 				to.Ptr(armnetwork.IPVersionIPv4),
+	// 			},
+	// 			VirtualApplianceAsn: to.Ptr[int64](10000),
+	// 			LoadBalancerConfiguration: &armnetwork.VirtualApplianceLoadBalancerConfiguration{
+	// 				LoadDistribution: to.Ptr(armnetwork.NetworkVirtualApplianceLoadDistributionSourceIP),
+	// 				IdleTimeoutInMinutes: to.Ptr[int32](15),
+	// 			},
+	// 			PrivateIPAddress: to.Ptr("192.168.12.11"),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPrivateNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -946,7 +1090,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1138,7 +1282,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetBasicPut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetBasicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1298,7 +1442,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetDualStackPut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetDualStackPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4AndIpv6() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1471,7 +1615,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4An
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetIPv4Put.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetIPv4Put.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1637,7 +1781,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetForIpv4()
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetIngressPut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetIngressPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingInternetIngress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1807,7 +1951,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingNetworkProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2079,7 +2223,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceDelete.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceDelete.json
 func ExampleVirtualAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2105,7 +2249,7 @@ func ExampleVirtualAppliancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceExecuteMigration.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceExecuteMigration.json
 func ExampleVirtualAppliancesClient_BeginExecuteMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2130,7 +2274,7 @@ func ExampleVirtualAppliancesClient_BeginExecuteMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceBootDiagnostics.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceBootDiagnostics.json
 func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2163,7 +2307,7 @@ func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualAppliancePrepareMigration.json
+// Generated from example definition: 2026-05-01/NetworkVirtualAppliancePrepareMigration.json
 func ExampleVirtualAppliancesClient_BeginPrepareMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2188,7 +2332,7 @@ func ExampleVirtualAppliancesClient_BeginPrepareMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSpecificReimage.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceSpecificReimage.json
 func ExampleVirtualAppliancesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2219,7 +2363,7 @@ func ExampleVirtualAppliancesClient_BeginReimage() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceEmptyRestart.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceEmptyRestart.json
 func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplianceVMSInVMScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2249,7 +2393,7 @@ func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplian
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceSpecificRestart.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceSpecificRestart.json
 func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualApplianceVMSInVMScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2281,7 +2425,7 @@ func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualAp
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceGet.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2480,7 +2624,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualAppliance() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVhubDualStackGet.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVhubDualStackGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVirtualHubWithDualStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2583,7 +2727,103 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVirtualHubWi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceVnetDualStackGet.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVhubSourceIPGet.json
+func ExampleVirtualAppliancesClient_Get_getAManagedNvaInAVirtualHubWithSourceIPLoadDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualAppliancesClient().Get(ctx, "rg1", "nva-vhub", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientGetResponse{
+	// 	VirtualAppliance: armnetwork.VirtualAppliance{
+	// 		Name: to.Ptr("nva-vhub"),
+	// 		Type: to.Ptr("Microsoft.Network/networkVirtualAppliances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva-vhub"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+	// 			NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
+	// 				BundledScaleUnit: to.Ptr("1"),
+	// 				MarketPlaceVersion: to.Ptr("12.1"),
+	// 				Vendor: to.Ptr("Cisco SDWAN"),
+	// 			},
+	// 			VirtualHub: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
+	// 			},
+	// 			AddressFamily: []*armnetwork.IPVersion{
+	// 				to.Ptr(armnetwork.IPVersionIPv4),
+	// 			},
+	// 			VirtualApplianceAsn: to.Ptr[int64](10000),
+	// 			LoadBalancerConfiguration: &armnetwork.VirtualApplianceLoadBalancerConfiguration{
+	// 				LoadDistribution: to.Ptr(armnetwork.NetworkVirtualApplianceLoadDistributionSourceIP),
+	// 				IdleTimeoutInMinutes: to.Ptr[int32](15),
+	// 			},
+	// 			PrivateIPAddress: to.Ptr("192.168.12.11"),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVhubSourceIPProtocolGet.json
+func ExampleVirtualAppliancesClient_Get_getAManagedNvaInAVirtualHubWithSourceIPProtocolLoadDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualAppliancesClient().Get(ctx, "rg1", "nva-vhub", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualAppliancesClientGetResponse{
+	// 	VirtualAppliance: armnetwork.VirtualAppliance{
+	// 		Name: to.Ptr("nva-vhub"),
+	// 		Type: to.Ptr("Microsoft.Network/networkVirtualAppliances"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkVirtualAppliances/nva-vhub"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armnetwork.VirtualAppliancePropertiesFormat{
+	// 			NvaSKU: &armnetwork.VirtualApplianceSKUProperties{
+	// 				BundledScaleUnit: to.Ptr("1"),
+	// 				MarketPlaceVersion: to.Ptr("12.1"),
+	// 				Vendor: to.Ptr("Cisco SDWAN"),
+	// 			},
+	// 			VirtualHub: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"),
+	// 			},
+	// 			AddressFamily: []*armnetwork.IPVersion{
+	// 				to.Ptr(armnetwork.IPVersionIPv4),
+	// 			},
+	// 			VirtualApplianceAsn: to.Ptr[int64](10000),
+	// 			LoadBalancerConfiguration: &armnetwork.VirtualApplianceLoadBalancerConfiguration{
+	// 				LoadDistribution: to.Ptr(armnetwork.NetworkVirtualApplianceLoadDistributionSourceIPProtocol),
+	// 				IdleTimeoutInMinutes: to.Ptr[int32](15),
+	// 			},
+	// 			PrivateIPAddress: to.Ptr("192.168.12.11"),
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceVnetDualStackGet.json
 func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVNetWithDualStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2703,7 +2943,7 @@ func ExampleVirtualAppliancesClient_Get_getNetworkVirtualApplianceInVNetWithDual
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceListByResourceGroup.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceListByResourceGroup.json
 func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2870,7 +3110,7 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceListBySubscription.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceListBySubscription.json
 func ExampleVirtualAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3037,7 +3277,7 @@ func ExampleVirtualAppliancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkVirtualApplianceUpdateTags.json
+// Generated from example definition: 2026-05-01/NetworkVirtualApplianceUpdateTags.json
 func ExampleVirtualAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

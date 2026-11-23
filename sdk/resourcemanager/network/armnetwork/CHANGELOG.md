@@ -1,5 +1,18 @@
 # Release History
 
+## 12.2.0 (2026-11-18)
+### Features Added
+
+- New enum type `ApplicationGatewayDeploymentTier` with values `ApplicationGatewayDeploymentTierAccelerated`, `ApplicationGatewayDeploymentTierElastic`, `ApplicationGatewayDeploymentTierNetworkIsolated`, `ApplicationGatewayDeploymentTierStandard`
+- New enum type `NetworkVirtualApplianceLoadDistribution` with values `NetworkVirtualApplianceLoadDistributionDefault`, `NetworkVirtualApplianceLoadDistributionSourceIP`, `NetworkVirtualApplianceLoadDistributionSourceIPProtocol`
+- New struct `VirtualApplianceLoadBalancerConfiguration`
+- New field `DeploymentTier`, `EnableConfidentialCompute` in struct `ApplicationGatewayPropertiesFormat`
+- New field `TCPIdleTimeoutInMinutes` in struct `AzureFirewallPropertiesFormat`
+- New field `LoadBalancerConfiguration` in struct `InboundSecurityRules`
+- New field `NetworkAdapterIndex` in struct `InterfacePropertiesFormat`
+- New field `LoadBalancerConfiguration` in struct `VirtualAppliancePropertiesFormat`
+
+
 ## 12.1.0 (2026-10-13)
 ### Features Added
 

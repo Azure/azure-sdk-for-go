@@ -6,7 +6,7 @@ package armnetwork
 
 const (
 	version20181001 string = "2018-10-01"
-	version20260301 string = "2026-03-01"
+	version20260501 string = "2026-05-01"
 )
 
 // Access - Access to be allowed or denied.
@@ -386,6 +386,30 @@ func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewa
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus502,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus503,
 		ApplicationGatewayCustomErrorStatusCodeHTTPStatus504,
+	}
+}
+
+// ApplicationGatewayDeploymentTier - Deployment tier of the Application Gateway.
+type ApplicationGatewayDeploymentTier string
+
+const (
+	// ApplicationGatewayDeploymentTierAccelerated - Accelerated deployment type.
+	ApplicationGatewayDeploymentTierAccelerated ApplicationGatewayDeploymentTier = "Accelerated"
+	// ApplicationGatewayDeploymentTierElastic - Accelerated deployment type with reserved capacity and vertical scaling.
+	ApplicationGatewayDeploymentTierElastic ApplicationGatewayDeploymentTier = "Elastic"
+	// ApplicationGatewayDeploymentTierNetworkIsolated - Management NIC deployment type.
+	ApplicationGatewayDeploymentTierNetworkIsolated ApplicationGatewayDeploymentTier = "NetworkIsolated"
+	// ApplicationGatewayDeploymentTierStandard - Default deployment type.
+	ApplicationGatewayDeploymentTierStandard ApplicationGatewayDeploymentTier = "Standard"
+)
+
+// PossibleApplicationGatewayDeploymentTierValues returns the possible values for the ApplicationGatewayDeploymentTier const type.
+func PossibleApplicationGatewayDeploymentTierValues() []ApplicationGatewayDeploymentTier {
+	return []ApplicationGatewayDeploymentTier{
+		ApplicationGatewayDeploymentTierAccelerated,
+		ApplicationGatewayDeploymentTierElastic,
+		ApplicationGatewayDeploymentTierNetworkIsolated,
+		ApplicationGatewayDeploymentTierStandard,
 	}
 }
 
@@ -4109,6 +4133,31 @@ func PossibleNetworkProtocolValues() []NetworkProtocol {
 		NetworkProtocolICMP,
 		NetworkProtocolTCP,
 		NetworkProtocolUDP,
+	}
+}
+
+// NetworkVirtualApplianceLoadDistribution - The load distribution policy for a managed Network Virtual Appliance load-balancing
+// rule.
+type NetworkVirtualApplianceLoadDistribution string
+
+const (
+	// NetworkVirtualApplianceLoadDistributionDefault - Distributes traffic using a five-tuple hash of source IP, destination
+	// IP, source port, destination port, and protocol.
+	NetworkVirtualApplianceLoadDistributionDefault NetworkVirtualApplianceLoadDistribution = "Default"
+	// NetworkVirtualApplianceLoadDistributionSourceIP - Distributes traffic using a two-tuple hash of source IP and destination
+	// IP.
+	NetworkVirtualApplianceLoadDistributionSourceIP NetworkVirtualApplianceLoadDistribution = "SourceIP"
+	// NetworkVirtualApplianceLoadDistributionSourceIPProtocol - Distributes traffic using a three-tuple hash of source IP, destination
+	// IP, and protocol.
+	NetworkVirtualApplianceLoadDistributionSourceIPProtocol NetworkVirtualApplianceLoadDistribution = "SourceIPProtocol"
+)
+
+// PossibleNetworkVirtualApplianceLoadDistributionValues returns the possible values for the NetworkVirtualApplianceLoadDistribution const type.
+func PossibleNetworkVirtualApplianceLoadDistributionValues() []NetworkVirtualApplianceLoadDistribution {
+	return []NetworkVirtualApplianceLoadDistribution{
+		NetworkVirtualApplianceLoadDistributionDefault,
+		NetworkVirtualApplianceLoadDistributionSourceIP,
+		NetworkVirtualApplianceLoadDistributionSourceIPProtocol,
 	}
 }
 

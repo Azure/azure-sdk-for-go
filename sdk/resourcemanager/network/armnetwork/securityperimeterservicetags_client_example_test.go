@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/NspServiceTagsList.json
+// Generated from example definition: 2026-05-01/NspServiceTagsList.json
 func ExampleSecurityPerimeterServiceTagsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

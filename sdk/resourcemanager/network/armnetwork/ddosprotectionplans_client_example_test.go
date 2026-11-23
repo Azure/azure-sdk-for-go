@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/DdosProtectionPlanCreate.json
+// Generated from example definition: 2026-05-01/DdosProtectionPlanCreate.json
 func ExampleDdosProtectionPlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleDdosProtectionPlansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DdosProtectionPlanDelete.json
+// Generated from example definition: 2026-05-01/DdosProtectionPlanDelete.json
 func ExampleDdosProtectionPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleDdosProtectionPlansClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DdosProtectionPlanGet.json
+// Generated from example definition: 2026-05-01/DdosProtectionPlanGet.json
 func ExampleDdosProtectionPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleDdosProtectionPlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DdosProtectionPlanList.json
+// Generated from example definition: 2026-05-01/DdosProtectionPlanList.json
 func ExampleDdosProtectionPlansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleDdosProtectionPlansClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/DdosProtectionPlanListAll.json
+// Generated from example definition: 2026-05-01/DdosProtectionPlanListAll.json
 func ExampleDdosProtectionPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExampleDdosProtectionPlansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/DdosProtectionPlanUpdateTags.json
+// Generated from example definition: 2026-05-01/DdosProtectionPlanUpdateTags.json
 func ExampleDdosProtectionPlansClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

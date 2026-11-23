@@ -426,7 +426,7 @@ Connections an evicted transport opens therefore close within the timeout once i
 
 ### AZI-1: DAC IMDS probe performs binding-strength discovery
 
-**Priority:** P1 · **Status:** Deferred (raise with MSAL owners)
+**Priority:** P1 · **Status:** Deferred ([AzureAD/microsoft-authentication-library-for-go#695](https://github.com/AzureAD/microsoft-authentication-library-for-go/issues/695))
 
 `DefaultAzureCredential`'s first IMDS probe now calls MSAL's `Capabilities()`
 ([managed_identity_client.go](managed_identity_client.go#L244)).
@@ -442,11 +442,13 @@ Discovery also works out the binding strength. What that costs depends on the ho
 
 All of this runs under the same 1-second `imdsProbeTimeout`.
 A timeout makes DAC skip managed identity and move to the next credential.
+The timeout doesn't cover key provisioning, though: `bindingStrengthFor` calls `getOrCreateKey`, which takes no context and can wait up to `bindingKeyLockTimeout` (10 seconds) for the cross-process key lock, plus the time to create the VBS key. So on an IMDSv2 Windows host the probe can block for well over a second. `Capabilities` then sees the expired context, returns an error, and caches nothing, so DAC reports a working managed identity as unavailable, and the key has been created anyway.
 
 **Decision:** rely on `Capabilities()`, which MSAL documents as intended for credential chains.
-Ask the MSAL owners for an option to discover only the source and skip the binding-strength work.
+Ask the MSAL owners for an option to discover only the source and skip the binding-strength work, and for key provisioning to honor the context's deadline.
 If they add it, use it when attestation isn't registered.
-Copilot code review raised this again on #28119 (source-only discovery for the probe); the decision is unchanged.
+Tracked in [AzureAD/microsoft-authentication-library-for-go#695](https://github.com/AzureAD/microsoft-authentication-library-for-go/issues/695).
+Copilot code review raised this again on #28119 (source-only discovery for the probe, plus the deadline gap above); the decision is unchanged. A regression test for DAC without the import on an IMDSv2-capable host should come with the fix.
 
 ### AZI-2: Error unwrapping is a new public behavior
 

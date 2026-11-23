@@ -186,3 +186,12 @@ func translateFeedRanges(completion *C.cosmos_completion_t, result *completionRe
 	}
 	result.feedRanges = ranges
 }
+
+func bindNativeFeedRange(value FeedRange, request C.cosmos_operation_request_t, release func()) (C.cosmos_operation_request_t, func(), C.cosmos_status_code_t) {
+	handle, status := parseNativeFeedRange(value.serialized)
+	request.feed_range = handle
+	return request, func() {
+		C.cosmos_feed_range_free(handle)
+		release()
+	}, status
+}

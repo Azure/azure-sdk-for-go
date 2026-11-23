@@ -118,18 +118,17 @@ type changeFeedRequest struct {
 	containerID   string
 	partitionKey  PartitionKey
 	fullContainer bool
+	feedRange     FeedRange
 	startFrom     ChangeFeedStartFrom
 	options       ChangeFeedOptions
 }
 
 func newChangeFeedRequest(scope FeedScope, startFrom ChangeFeedStartFrom, options *ChangeFeedOptions) (changeFeedRequest, error) {
 	req := changeFeedRequest{
-		partitionKey: scope.partitionKey, fullContainer: scope.fullContainer, startFrom: startFrom,
+		partitionKey: scope.partitionKey, fullContainer: scope.fullContainer, feedRange: scope.feedRange, startFrom: startFrom,
 	}
-	if !scope.fullContainer {
-		if err := validateItemArguments(scope.partitionKey); err != nil {
-			return req, err
-		}
+	if err := scope.validate(); err != nil {
+		return req, err
 	}
 	switch startFrom.kind {
 	case 1, 2:

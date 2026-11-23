@@ -29,6 +29,21 @@ func TestFeedRangeInvalidValues(t *testing.T) {
 	require.False(t, ok)
 	require.ErrorContains(t, err, "zero value")
 
+	container := newTestContainer(t)
+	require.NoError(t, container.database.client.Close())
+	ctx, cancel := context.WithCancel(t.Context())
+	cancel()
+	scope := NewFeedScopeForFeedRange(zero)
+	query := container.NewQueryItemsPager[map[string]any](NewQuery("SELECT * FROM c"), scope, nil)
+	defer func() { require.NoError(t, query.Close()) }()
+	page, err := query.NextPage(ctx)
+	require.Zero(t, page)
+	require.ErrorContains(t, err, "feed range")
+	feed := container.NewChangeFeedPager(scope, NewChangeFeedStartFromBeginning(), nil)
+	defer func() { require.NoError(t, feed.Close()) }()
+	changes, err := feed.NextPage(ctx)
+	require.Zero(t, changes)
+	require.ErrorContains(t, err, "feed range")
 }
 
 func TestFeedRangeDiscoveryLifetimeOrdering(t *testing.T) {

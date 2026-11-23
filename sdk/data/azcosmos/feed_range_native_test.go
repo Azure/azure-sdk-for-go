@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"sync"
@@ -103,6 +104,22 @@ func TestNativeFeedRangeDiscoveryAndPartitionKeyOwnership(t *testing.T) {
 		require.NoError(t, err, "values must outlive the discovery client")
 		require.Equal(t, value.MinInclusive(), parsed.MinInclusive())
 	}
+}
+
+func TestNativeFeedRangeQueryBinding(t *testing.T) {
+	value, err := NewFeedRange("20", "40")
+	require.NoError(t, err)
+	req, err := newQueryRequest(NewQuery("SELECT * FROM c"), NewFeedScopeForFeedRange(value), nil)
+	require.NoError(t, err)
+	native, err := inspectNativeFullQuery(&req)
+	require.NoError(t, err)
+	require.False(t, native.full, "a sub-partition query must carry its explicit native interval")
+	require.Equal(t, value, req.feedRange)
+	feed, err := newChangeFeedRequest(NewFeedScopeForFeedRange(value), NewChangeFeedStartFromBeginning(), nil)
+	require.NoError(t, err)
+	nativeFeed, err := inspectNativeFullChangeFeed(&feed)
+	require.NoError(t, err)
+	require.False(t, nativeFeed.full, "a sub-partition change feed must never become full-container")
 }
 
 func TestNativeFeedRangeDiscoveryCancellationDrainsLateList(t *testing.T) {
@@ -242,6 +259,164 @@ func TestNativeFeedRangeColdTopologyFailure(t *testing.T) {
 	require.Equal(t, http.StatusServiceUnavailable, cosmosErr.StatusCode)
 	require.Equal(t, 20305, cosmosErr.SubStatus)
 	require.Greater(t, service.routingReads.Load(), int64(0))
+}
+
+func TestNativeFeedRangeChangeFeedIsolationAndResume(t *testing.T) {
+	service := newChangeFeedContractService(t, 2, false)
+	service.rangeItems = true
+	container := service.container(t, "items")
+	discovered, err := container.GetFeedRanges(t.Context(), nil)
+	require.NoError(t, err)
+	seen := map[string]bool{}
+	for _, value := range discovered.FeedRanges {
+		scope := NewFeedScopeForFeedRange(value)
+		pager := container.NewChangeFeedPager(scope, NewChangeFeedStartFromBeginning(), nil)
+		page, err := pager.NextPage(t.Context())
+		require.NoError(t, err)
+		require.Len(t, page.Items, 1)
+		var item struct {
+			Current struct {
+				ID string `json:"id"`
+			} `json:"current"`
+		}
+		require.NoError(t, json.Unmarshal(page.Items[0], &item))
+		require.False(t, seen[item.Current.ID], "disjoint range workers must not repeat items")
+		seen[item.Current.ID] = true
+		token, err := pager.ContinuationToken(t.Context())
+		require.NoError(t, err)
+		require.NoError(t, pager.Close())
+		parsed, err := ParseFeedRange(value.String())
+		require.NoError(t, err)
+		resumed := service.container(t, "items").NewChangeFeedPager(NewFeedScopeForFeedRange(parsed),
+			NewChangeFeedStartFromNow(), &ChangeFeedOptions{Feed: FeedOptions{ContinuationToken: token}})
+		page, err = resumed.NextPage(t.Context())
+		require.NoError(t, err)
+		require.Empty(t, page.Items, "a per-range checkpoint must resume after its delivered item")
+		require.NoError(t, resumed.Close())
+	}
+	require.Equal(t, map[string]bool{"range-0": true, "range-1": true}, seen)
+	for _, header := range service.observed() {
+		id := changeFeedContractRangeID(header)
+		require.Contains(t, []string{"0", "1"}, id)
+		if header.Get("x-ms-start-epk") != "" || header.Get("x-ms-end-epk") != "" {
+			require.Equal(t, "80", map[string]string{"0": header.Get("x-ms-end-epk"), "1": header.Get("x-ms-start-epk")}[id])
+		}
+	}
+}
+
+func TestNativeFeedRangeQueryIsolation(t *testing.T) {
+	service := newChangeFeedContractService(t, 2, false)
+	service.rangeItems = true
+	container := service.container(t, "items")
+	discovered, err := container.GetFeedRanges(t.Context(), nil)
+	require.NoError(t, err)
+	seen := map[string]bool{}
+	for _, value := range discovered.FeedRanges {
+		pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), NewFeedScopeForFeedRange(value), nil)
+		for pager.More() {
+			page, err := pager.NextPage(t.Context())
+			require.NoError(t, err)
+			for _, body := range page.Items {
+				var item struct {
+					Current struct {
+						ID string `json:"id"`
+					} `json:"current"`
+				}
+				require.NoError(t, json.Unmarshal(body, &item))
+				require.False(t, seen[item.Current.ID], "disjoint range queries must not repeat items")
+				seen[item.Current.ID] = true
+			}
+		}
+		require.NoError(t, pager.Close())
+	}
+	require.Equal(t, map[string]bool{"range-0": true, "range-1": true}, seen)
+}
+
+func TestNativeFeedRangeCheckpointAcrossSplit(t *testing.T) {
+	for _, freshClient := range []bool{false, true} {
+		t.Run(fmt.Sprintf("fresh-client-%t", freshClient), func(t *testing.T) {
+			service := newChangeFeedContractService(t, 1, false)
+			service.splitChildren, service.rangeItems = true, true
+			container := service.container(t, "items")
+			discovered, err := container.GetFeedRanges(t.Context(), nil)
+			require.NoError(t, err)
+			require.Len(t, discovered.FeedRanges, 1)
+			scope := NewFeedScopeForFeedRange(discovered.FeedRanges[0])
+			pager := container.NewChangeFeedPager(scope, NewChangeFeedStartFromBeginning(), nil)
+			page, err := pager.NextPage(t.Context())
+			require.NoError(t, err)
+			require.Equal(t, [][]byte{[]byte(`{"current":{"id":"range-parent"}}`)}, page.Items)
+			token, err := pager.ContinuationToken(t.Context())
+			require.NoError(t, err)
+			require.NoError(t, pager.Close())
+			service.mu.Lock()
+			service.ranges = 2
+			service.mu.Unlock()
+			if freshClient {
+				require.NoError(t, container.database.client.Close())
+				container = service.container(t, "items")
+			}
+			resumed := container.NewChangeFeedPager(scope, NewChangeFeedStartFromNow(),
+				&ChangeFeedOptions{Feed: FeedOptions{ContinuationToken: token}})
+			defer func() { require.NoError(t, resumed.Close()) }()
+			var items []string
+			for range 6 {
+				page, err := resumed.NextPage(t.Context())
+				require.NoError(t, err)
+				for _, body := range page.Items {
+					var item struct {
+						Current struct {
+							ID string `json:"id"`
+						} `json:"current"`
+					}
+					require.NoError(t, json.Unmarshal(body, &item))
+					items = append(items, item.Current.ID)
+				}
+				if len(items) >= 2 {
+					break
+				}
+			}
+			require.ElementsMatch(t, []string{"range-left", "range-right"}, items,
+				"the native planner must remap the checkpoint without duplicate parent data or missing children")
+		})
+	}
+}
+
+func TestNativeFeedRangeSubpartitionNeverWidens(t *testing.T) {
+	for _, maximum := range []string{"40", "20"} {
+		for _, changeFeed := range []bool{false, true} {
+			t.Run(fmt.Sprintf("max-%s/change-feed-%t", maximum, changeFeed), func(t *testing.T) {
+				service := newChangeFeedContractService(t, 1, false)
+				container := service.container(t, "items")
+				value, err := NewFeedRange("20", maximum)
+				require.NoError(t, err)
+				scope := NewFeedScopeForFeedRange(value)
+				if changeFeed {
+					pager := container.NewChangeFeedPager(scope, NewChangeFeedStartFromBeginning(), nil)
+					defer func() { require.NoError(t, pager.Close()) }()
+					_, err = pager.NextPage(t.Context())
+				} else {
+					pager := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), scope, nil)
+					defer func() { require.NoError(t, pager.Close()) }()
+					_, err = pager.NextPage(t.Context())
+				}
+				if err != nil {
+					var cosmosErr *Error
+					require.ErrorAs(t, err, &cosmosErr)
+					require.Contains(t, []int{20302, 20305, 20353}, cosmosErr.SubStatus, "unsupported scopes must have an explicit native range/topology/validation rejection")
+					require.False(t, cosmosErr.FromWire)
+					require.Empty(t, service.observed(), "reject unsupported scopes before reading data")
+					return
+				}
+				headers := service.observed()
+				require.NotEmpty(t, headers)
+				for _, header := range headers {
+					require.Equal(t, "20", header.Get("x-ms-start-epk"), "a sub-partition request must retain its lower bound")
+					require.Equal(t, maximum, header.Get("x-ms-end-epk"), "a sub-partition request must retain its upper bound")
+				}
+			})
+		}
+	}
 }
 
 func TestNativeFeedRangeDiscoveryConcurrentClose(t *testing.T) {

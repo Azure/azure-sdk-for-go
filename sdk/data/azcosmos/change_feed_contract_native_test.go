@@ -35,6 +35,7 @@ type changeFeedContractService struct {
 	failureStatus int
 	routingReads  atomic.Int64
 	routingHook   func(http.ResponseWriter, *http.Request) bool
+	splitChildren bool
 }
 
 func newChangeFeedContractService(t *testing.T, ranges int, idleFirst bool) *changeFeedContractService {
@@ -128,25 +129,36 @@ func (s *changeFeedContractService) serveHTTP(w http.ResponseWriter, r *http.Req
 		if hook != nil && hook(w, r) {
 			return
 		}
-		w.Header().Set("ETag", "ranges-position")
-		if r.Header.Get("If-None-Match") == "ranges-position" {
+		s.mu.Lock()
+		count, splitChildren, boundary := s.ranges, s.splitChildren, s.rangeBoundary
+		s.mu.Unlock()
+		position := fmt.Sprintf("ranges-position-%d", count)
+		w.Header().Set("ETag", position)
+		if r.Header.Get("If-None-Match") == position {
 			w.WriteHeader(http.StatusNotModified)
 			return
 		}
-		ranges := []map[string]string{{"id": "0", "minInclusive": "", "maxExclusive": "FF"}}
-		if s.ranges == 2 {
-			boundary := "80"
-			if s.rangeBoundary != "" {
-				boundary = s.rangeBoundary
+		ranges := []map[string]any{{"id": "0", "minInclusive": "", "maxExclusive": "FF"}}
+		if splitChildren {
+			ranges[0]["id"] = "parent"
+		}
+		if count == 2 {
+			if boundary == "" {
+				boundary = "80"
 			}
 			ranges[0]["maxExclusive"] = boundary
-			ranges = append(ranges, map[string]string{"id": "1", "minInclusive": boundary, "maxExclusive": "FF"})
+			ranges = append(ranges, map[string]any{"id": "1", "minInclusive": boundary, "maxExclusive": "FF"})
+			if splitChildren {
+				ranges[0]["id"], ranges[0]["parents"] = "left", []string{"parent"}
+				ranges[1]["id"], ranges[1]["parents"] = "right", []string{"parent"}
+			}
 		}
 		_ = json.NewEncoder(w).Encode(map[string]any{"PartitionKeyRanges": ranges})
 	case strings.HasSuffix(r.URL.Path, "/docs"):
 		s.mu.Lock()
 		s.headers = append(s.headers, r.Header.Clone())
 		failureStatus := s.failureStatus
+		splitChildren, count := s.splitChildren, s.ranges
 		s.mu.Unlock()
 		if failureStatus != 0 {
 			w.Header().Set("ETag", "failed-position")
@@ -160,6 +172,12 @@ func (s *changeFeedContractService) serveHTTP(w http.ResponseWriter, r *http.Req
 			return
 		}
 		rangeID := r.Header.Get("x-ms-documentdb-partitionkeyrangeid")
+		if splitChildren && count == 2 && changeFeedContractRangeID(r.Header) == "parent" {
+			w.Header().Set("x-ms-substatus", "1002")
+			w.WriteHeader(http.StatusGone)
+			_, _ = fmt.Fprint(w, `{"code":"Gone","message":"synthetic physical range split"}`)
+			return
+		}
 		if s.rangeItems {
 			rangeID = changeFeedContractRangeID(r.Header)
 			position := "position-" + rangeID

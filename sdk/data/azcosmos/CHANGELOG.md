@@ -15,6 +15,8 @@
   operations ([PR 28094](https://github.com/Azure/azure-sdk-for-go/pull/28094)).
 * Added preview-only feed-range discovery, serialization, and relations, requiring an unpublished
   native extension ([PR 28094](https://github.com/Azure/azure-sdk-for-go/pull/28094)).
+* Added preview-only range-scoped query and change-feed reads
+  ([PR 28094](https://github.com/Azure/azure-sdk-for-go/pull/28094)).
 * Added `ContainerClient.NewReadManyItemsPager[T]` for reading many items by `ItemIdentity`
   (ID and partition key, including hierarchical prefixes), with an optional filter predicate.
   Duplicate identities are deduplicated, missing items are omitted, and result order is unspecified.

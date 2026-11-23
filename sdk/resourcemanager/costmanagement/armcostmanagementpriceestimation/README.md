@@ -1,6 +1,6 @@
-# Azure Cost Management Price Estimation Module for Go
+# Azure Costmanagement Module for Go
 
-The `armcostmanagementpriceestimation` module provides operations for working with Azure Cost Management Price Estimation.
+The `armcostmanagementpriceestimation` module provides operations for working with Azure Costmanagement.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/costmanagement/armcostmanagementpriceestimation)
 
@@ -15,7 +15,7 @@ The `armcostmanagementpriceestimation` module provides operations for working wi
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Cost Management Price Estimation module:
+Install the Azure Costmanagement module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagementpriceestimation
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armc
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Cost Management Price Estimation.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Costmanagement.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Cost Management Price Estimation module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Costmanagement module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcostmanagementpriceestimation.NewClientFactory(<subscription ID>, cred, nil)

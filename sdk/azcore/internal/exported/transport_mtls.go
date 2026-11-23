@@ -11,6 +11,7 @@ import (
 	"runtime"
 	"sync"
 	"sync/atomic"
+	"time"
 	"weak"
 )
 
@@ -23,6 +24,10 @@ type MTLSRequest struct {
 // mtlsTransportsPerBase bounds the certificate-scoped transports derived from one base transport, so
 // certificate rotation doesn't accumulate connection pools
 const mtlsTransportsPerBase = 8
+
+// mtlsIdleConnTimeout is the idle timeout of derived transports whose base has none. It's a variable so
+// tests can shorten it.
+var mtlsIdleConnTimeout = 90 * time.Second
 
 // mtlsTransport is a certificate-scoped transport and the most recently acquired copy of its certificate
 type mtlsTransport struct {
@@ -171,6 +176,14 @@ func newMTLSTransport(base *http.Transport) (*mtlsTransport, error) {
 	tr.TLSNextProto = map[string]func(string, *tls.Conn) http.RoundTripper{}
 	tr.Protocols = new(http.Protocols)
 	tr.Protocols.SetHTTP1(true)
+	// Eviction closes a transport's idle connections, but a request that selected the transport just
+	// before eviction can still open one and return it to the pool afterward, where nothing would close
+	// it. Tracking in-flight requests can't prevent this, because net/http may return a connection to
+	// the pool after the response body's Close returns. A finite idle timeout ensures such connections
+	// close, after which the transport and its certificate can be collected.
+	if tr.IdleConnTimeout <= 0 {
+		tr.IdleConnTimeout = mtlsIdleConnTimeout
+	}
 	return entry, nil
 }
 

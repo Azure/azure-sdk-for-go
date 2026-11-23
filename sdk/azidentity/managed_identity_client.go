@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 	"time"
 
@@ -102,6 +103,13 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 		options = &ManagedIdentityCredentialOptions{}
 	}
 	cp := options.ClientOptions
+	// NewMtlsClient builds pipelines from these options after construction, so they mustn't share
+	// slices the caller can modify
+	cp.PerCallPolicies = slices.Clone(cp.PerCallPolicies)
+	cp.PerRetryPolicies = slices.Clone(cp.PerRetryPolicies)
+	cp.Logging.AllowedHeaders = slices.Clone(cp.Logging.AllowedHeaders)
+	cp.Logging.AllowedQueryParams = slices.Clone(cp.Logging.AllowedQueryParams)
+	cp.Retry.StatusCodes = slices.Clone(cp.Retry.StatusCodes)
 	c := managedIdentityClient{
 		attestationAvailable: attestation.Registered,
 		disableMTLSPoP:       options.DisableMTLSPoP,

@@ -151,6 +151,53 @@ func TestTransportPolicyMTLSReleasesCollectedBase(t *testing.T) {
 	}, 10*time.Second, 10*time.Millisecond, "transports derived from a collected base transport must be released")
 }
 
+func TestTransportPolicyMTLSEvictedDuringRequest(t *testing.T) {
+	before := mtlsIdleConnTimeout
+	mtlsIdleConnTimeout = 50 * time.Millisecond
+	t.Cleanup(func() { mtlsIdleConnTimeout = before })
+	var closed atomic.Int32
+	server := httptest.NewUnstartedServer(http.HandlerFunc(func(http.ResponseWriter, *http.Request) {}))
+	server.Config.ConnState = func(_ net.Conn, state http.ConnState) {
+		if state == http.StateClosed {
+			closed.Add(1)
+		}
+	}
+	server.StartTLS()
+	defer server.Close()
+	cert := server.TLS.Certificates[0]
+	// httptest's client transport has no idle timeout, so without one on the derived transport,
+	// a connection opened after eviction would stay open
+	base := server.Client()
+	baseTransport, ok := base.Transport.(*http.Transport)
+	require.True(t, ok)
+	require.Zero(t, baseTransport.IdleConnTimeout)
+	client, err := (&transportPolicy{trans: base}).clientFor(&cert)
+	require.NoError(t, err)
+
+	// evict the selected transport before the request is sent
+	leaf, err := x509.ParseCertificate(cert.Certificate[0])
+	require.NoError(t, err)
+	for i := range mtlsTransportsPerBase {
+		leaf.SerialNumber = big.NewInt(int64(i + 1))
+		der, err := x509.CreateCertificate(rand.Reader, leaf, leaf, leaf.PublicKey, cert.PrivateKey)
+		require.NoError(t, err)
+		_, err = mtlsTransportFor(baseTransport, &tls.Certificate{Certificate: [][]byte{der}, PrivateKey: cert.PrivateKey})
+		require.NoError(t, err)
+	}
+	require.NotContains(t, cachedMTLSTransports(baseTransport), string(cert.Certificate[0]))
+
+	resp, err := client.Get(server.URL)
+	require.NoError(t, err)
+	_, err = io.Copy(io.Discard, resp.Body)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+	require.Eventually(t, func() bool { return closed.Load() == 1 }, 5*time.Second, 10*time.Millisecond,
+		"a connection an evicted transport opens must close once idle")
+	for _, d := range cachedMTLSTransports(baseTransport) {
+		d.tr.CloseIdleConnections()
+	}
+}
+
 // cachedMTLSTransports returns a copy of the cached transports derived from base
 func cachedMTLSTransports(base *http.Transport) map[string]*mtlsTransport {
 	mtlsTransports.mu.Lock()

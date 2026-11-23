@@ -305,14 +305,19 @@ func TestManagedIdentityClient_MTLSFactory(t *testing.T) {
 	defer server.Close()
 	base := server.Client()
 	var policyCalls int
-	c, err := newManagedIdentityClient(&ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{
+	opts := &ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{
 		Transport: base,
 		PerCallPolicies: []policy.Policy{managedIdentityTestPolicy{do: func(req *policy.Request) {
 			policyCalls++
 			req.Raw().Header.Set("Test-Policy", "present")
 		}}},
-	}})
+	}}
+	c, err := newManagedIdentityClient(opts)
 	require.NoError(t, err)
+	// modifying the caller's options after construction must not affect pipelines built later
+	opts.PerCallPolicies[0] = managedIdentityTestPolicy{do: func(req *policy.Request) {
+		req.Raw().Header.Set("Test-Policy", "replaced")
+	}}
 	first, err := c.NewMtlsClient()
 	require.NoError(t, err)
 	second, err := c.NewMtlsClient()

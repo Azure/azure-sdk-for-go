@@ -35,6 +35,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZC-9](#azc-9-x-ms-tokenboundauth-is-set-in-azcore-rather-than-per-service) | azcore | x-ms-tokenboundauth is set in azcore rather than per service | P2 | Fixed |
 | [AZC-10](#azc-10-bound-auxiliary-tokens-are-sent-as-bearer-tokens) | azcore/arm | Bound auxiliary tokens are sent as bearer tokens | P2 | Fixed |
 | [AZC-11](#azc-11-certificate-expiry-is-ignored-without-a-parsed-leaf) | azcore | Certificate expiry is ignored without a parsed leaf | P2 | Fixed |
+| [AZC-12](#azc-12-evicted-transports-can-keep-connections-open) | azcore | Evicted transports can keep connections open | P1 | Fixed |
 | [AZI-1](#azi-1-dac-imds-probe-performs-binding-strength-discovery) | azidentity | DAC IMDS probe performs binding-strength discovery | P1 | Deferred |
 | [AZI-2](#azi-2-error-unwrapping-is-a-new-public-behavior) | azidentity | Error unwrapping is a new public behavior | P1 | Fixed (unwrapping removed) |
 | [AZI-3](#azi-3-attestation-activation-is-process-wide) | azidentity | Attestation activation is process-wide | P2 | Fixed (documented) |
@@ -42,6 +43,7 @@ Each entry records the problem, the evidence, a proposed resolution, and its sta
 | [AZI-5](#azi-5-designmd-ships-in-the-module) | azidentity | design.md ships in the module | P1 | Open |
 | [AZI-6](#azi-6-attestation-module-doesnt-isolate-native-code) | azidentity | Attestation module doesn't isolate native code | — | Won't fix |
 | [AZI-7](#azi-7-transient-keyguard-failure-selects-bearer-for-the-tokens-lifetime) | azidentity | Transient KeyGuard failure selects bearer for the token's lifetime | P2 | Deferred |
+| [AZI-8](#azi-8-retained-client-options-share-the-callers-slices) | azidentity | Retained client options share the caller's slices | P2 | Fixed |
 | [KV-1](#kv-1-tenant-denial-detection-depends-on-error-text) | keyvault | Tenant-denial detection depends on error text | — | Won't fix |
 | [KV-2](#kv-2-extra-bearer-acquisition-after-tenant-denial) | keyvault | Extra bearer acquisition after tenant denial | — | Won't fix |
 | [KV-3](#kv-3-empty-tenant-id-shares-one-fallback-entry) | keyvault | Empty tenant ID shares one fallback entry | P2 | Not an issue |
@@ -401,6 +403,23 @@ MSAL always sets `Leaf` (`copyBindingCertificate`), so this affected only custom
 - The parse runs once, in `acquire`. Rather than parsing in `shouldRefresh`, which runs on every request, `acquire` writes the certificate's refresh deadline (`NotAfter` − 5 minutes) into the cached copy's `RefreshOn` when it's earlier than the token's own refresh time. `shouldRefresh` no longer looks at the certificate.
 - `TestMTLSPoPCertificateExpiration` runs each case with `Leaf` and with only DER, using a real certificate, and asserts `Leaf` stays nil. The DER subtests fail without the fix.
 
+### AZC-12: Evicted transports can keep connections open
+
+**Priority:** P1 · **Status:** Fixed
+
+Found by Copilot code review on #28119.
+A request can get a certificate's transport from the cache and, before sending, have another request evict it.
+Eviction calls `CloseIdleConnections`, but that doesn't stop later use: the first request opens a connection and returns it to the evicted transport's idle pool, which nothing manages any more.
+If the base transport has no `IdleConnTimeout`, as with a plain `&http.Transport{}`, the connection stays open until the server closes it. It keeps the transport, the certificate, and its signer (for KeyGuard, OS key handles) alive, beyond the 8-entry limit.
+azcore's default transport sets a 90-second timeout, so the default configuration was already limited. The per-pipeline cache before [AZC-6](#azc-6-bound-connection-pools-arent-shared-across-clients) had the same race.
+
+**Considered and rejected: tracking in-flight requests**, as the review suggested, and retiring an evicted transport after its last response body finishes.
+net/http doesn't guarantee the connection is back in the pool by then. When a body is closed before EOF, `persistConn.readLoop` unblocks the caller's `Close`, then drains the rest of the body and returns the connection to the pool (`transport.go`, `errClosedEarly` case). So a close hook can run before the connection it's meant to close is idle.
+
+**Fix ([transport_mtls.go](../azcore/internal/exported/transport_mtls.go)):** a derived transport whose base has no idle timeout gets one (`mtlsIdleConnTimeout`, 90 seconds, matching azcore's default). A caller's own positive timeout is kept.
+Connections an evicted transport opens therefore close within the timeout once idle, after which the transport and certificate can be collected.
+**Test:** `TestTransportPolicyMTLSEvictedDuringRequest` gets a client, evicts its transport, sends a request through it, and asserts the server sees the connection close. It shortens the timeout to 50 ms. Without the fix the connection never closes; the test passed 20 runs in a row.
+
 ---
 
 ## azidentity
@@ -427,6 +446,7 @@ A timeout makes DAC skip managed identity and move to the next credential.
 **Decision:** rely on `Capabilities()`, which MSAL documents as intended for credential chains.
 Ask the MSAL owners for an option to discover only the source and skip the binding-strength work.
 If they add it, use it when attestation isn't registered.
+Copilot code review raised this again on #28119 (source-only discovery for the probe); the decision is unchanged.
 
 ### AZI-2: Error unwrapping is a new public behavior
 
@@ -570,6 +590,18 @@ Tracked in [AzureAD/microsoft-authentication-library-for-go#694](https://github.
 **Resolution:** ask the MSAL owners to expose it, for example a `Capabilities` field saying the binding strength is settled, or a sentinel error distinguishing "can't bind on this host" from "couldn't determine".
 With that, azidentity could return an error for an unsettled result, or return bearer with a short `RefreshOn` so the next acquisition re-checks.
 Considered and not taken for now: capping `RefreshOn` (about 5 minutes) whenever discovery returns `Software` with an `ErrorReason`. It's safe, since it never fails a call that works today, but it relies on a field MSAL says isn't a reliable signal.
+
+### AZI-8: Retained client options share the caller's slices
+
+**Priority:** P2 · **Status:** Fixed
+
+Found by Copilot code review on #28119.
+`newManagedIdentityClient` keeps a copy of the caller's `ClientOptions`, and `NewMtlsClient` builds a new pipeline from it each time MSAL needs an mTLS client, long after construction.
+The copy still shared the caller's slices, so changing a policy in the caller's options after construction changed later mTLS pipelines but not the original one. The [configuration guideline](https://azure.github.io/azure-sdk/golang_introduction.html#configuration) says clients must not be affected by later changes to their options.
+
+**Fix ([managed_identity_client.go](managed_identity_client.go)):** the constructor clones every slice the pipeline reads (`PerCallPolicies`, `PerRetryPolicies`, `Logging.AllowedHeaders`, `Logging.AllowedQueryParams`, `Retry.StatusCodes`) before building either pipeline, so both use the values from construction time.
+`slices.Clone` keeps nil slices nil, so the defaulting of IMDS retry status codes is unchanged.
+**Test:** `TestManagedIdentityClient_MTLSFactory` replaces the caller's per-call policy after construction and asserts mTLS pipelines still run the original. It fails without the fix.
 
 ---
 

@@ -565,6 +565,127 @@ func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
 	// }
 }
 
+// Generated from example definition: 2026-05-01/VmssNetworkInterfaceIpConfigGetForvmssNetwork.json
+func ExampleInterfacesClient_GetVirtualMachineScaleSetIPConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInterfacesClient().GetVirtualMachineScaleSetIPConfiguration(ctx, "rg1", "vmss1", "2", "nic1", "ip1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse{
+	// 	InterfaceIPConfiguration: armnetwork.InterfaceIPConfiguration{
+	// 		Name: to.Ptr("ip1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/2/networkInterfaces/nic1/ipConfigurations/ip1"),
+	// 		Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			PrivateIPAddress: to.Ptr("10.0.0.6"),
+	// 			PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 			Subnet: &armnetwork.Subnet{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			},
+	// 			Primary: to.Ptr(true),
+	// 			PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+	// 			LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
+	// 				},
+	// 			},
+	// 			LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
+	// 				{
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.2"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01/VmssNetworkInterfaceGetForvmssNetwork.json
+func ExampleInterfacesClient_GetVirtualMachineScaleSetNetworkInterface() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewInterfacesClient().GetVirtualMachineScaleSetNetworkInterface(ctx, "rg1", "vmss1", "1", "nic1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse{
+	// 	Interface: armnetwork.Interface{
+	// 		Name: to.Ptr("nic1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1"),
+	// 		Properties: &armnetwork.InterfacePropertiesFormat{
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("ip1"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1"),
+	// 					Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PrivateIPAddress: to.Ptr("10.0.0.5"),
+	// 						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+	// 						PublicIPAddress: &armnetwork.PublicIPAddress{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1"),
+	// 						},
+	// 						Subnet: &armnetwork.Subnet{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 						},
+	// 						Primary: to.Ptr(true),
+	// 						PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+	// 						LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
+	// 							},
+	// 						},
+	// 						LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
+	// 							{
+	// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.1"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			DNSSettings: &armnetwork.InterfaceDNSSettings{
+	// 				DNSServers: []*string{
+	// 				},
+	// 				AppliedDNSServers: []*string{
+	// 				},
+	// 				InternalDomainNameSuffix: to.Ptr("dns.cdmx.internal.cloudapp.net"),
+	// 			},
+	// 			MacAddress: to.Ptr("00-00-00-00-00-00"),
+	// 			EnableAcceleratedNetworking: to.Ptr(false),
+	// 			EnableIPForwarding: to.Ptr(false),
+	// 			NetworkSecurityGroup: &armnetwork.SecurityGroup{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
+	// 			},
+	// 			Primary: to.Ptr(true),
+	// 			VirtualMachine: &armnetwork.SubResource{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01/NetworkInterfaceListAll.json
 func ExampleInterfacesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1015,6 +1136,282 @@ func ExampleInterfacesClient_NewListPager() {
 		// 					},
 		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 		// 					VnetEncryptionSupported: to.Ptr(false),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01/VmssNetworkInterfaceIpConfigListForvmssNetwork.json
+func ExampleInterfacesClient_NewListVirtualMachineScaleSetIPConfigurationsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewInterfacesClient().NewListVirtualMachineScaleSetIPConfigurationsPager("rg1", "vmss1", "2", "nic1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse{
+		// 	InterfaceIPConfigurationListResult: armnetwork.InterfaceIPConfigurationListResult{
+		// 		Value: []*armnetwork.InterfaceIPConfiguration{
+		// 			{
+		// 				Name: to.Ptr("ip1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/2/networkInterfaces/nic1/ipConfigurations/ip1"),
+		// 				Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					PrivateIPAddress: to.Ptr("10.0.0.6"),
+		// 					PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 					Subnet: &armnetwork.Subnet{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 					},
+		// 					Primary: to.Ptr(true),
+		// 					PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 					LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
+		// 						},
+		// 					},
+		// 					LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.2"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01/VmssNetworkInterfaceListForvmssNetwork.json
+func ExampleInterfacesClient_NewListVirtualMachineScaleSetNetworkInterfacesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewInterfacesClient().NewListVirtualMachineScaleSetNetworkInterfacesPager("rg1", "vmss1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse{
+		// 	InterfaceListResult: armnetwork.InterfaceListResult{
+		// 		Value: []*armnetwork.Interface{
+		// 			{
+		// 				Name: to.Ptr("nic1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/0/networkInterfaces/nic1"),
+		// 				Properties: &armnetwork.InterfacePropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("ip1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip1"),
+		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								PrivateIPAddress: to.Ptr("10.0.0.4"),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								PublicIPAddress: &armnetwork.PublicIPAddress{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/0/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1"),
+		// 								},
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 								},
+		// 								Primary: to.Ptr(true),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
+		// 									},
+		// 								},
+		// 								LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.0"),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					DNSSettings: &armnetwork.InterfaceDNSSettings{
+		// 						DNSServers: []*string{
+		// 						},
+		// 						AppliedDNSServers: []*string{
+		// 						},
+		// 						InternalDomainNameSuffix: to.Ptr("ruw4wz3grewudjsyzrxj44pxod.cdmx.internal.cloudapp.net"),
+		// 					},
+		// 					MacAddress: to.Ptr("00-00-00-00-00-00"),
+		// 					EnableAcceleratedNetworking: to.Ptr(false),
+		// 					EnableIPForwarding: to.Ptr(false),
+		// 					NetworkSecurityGroup: &armnetwork.SecurityGroup{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
+		// 					},
+		// 					Primary: to.Ptr(true),
+		// 					VirtualMachine: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/0"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("nic1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1"),
+		// 				Properties: &armnetwork.InterfacePropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("ip1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1"),
+		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								PrivateIPAddress: to.Ptr("10.0.0.5"),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								PublicIPAddress: &armnetwork.PublicIPAddress{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1"),
+		// 								},
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 								},
+		// 								Primary: to.Ptr(true),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
+		// 									},
+		// 								},
+		// 								LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.1"),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					DNSSettings: &armnetwork.InterfaceDNSSettings{
+		// 						DNSServers: []*string{
+		// 						},
+		// 						AppliedDNSServers: []*string{
+		// 						},
+		// 						InternalDomainNameSuffix: to.Ptr("ruw4wz3grewudjsyzrxj44pxod.cdmx.internal.cloudapp.net"),
+		// 					},
+		// 					MacAddress: to.Ptr("00-00-00-00-00-00"),
+		// 					EnableAcceleratedNetworking: to.Ptr(false),
+		// 					EnableIPForwarding: to.Ptr(false),
+		// 					NetworkSecurityGroup: &armnetwork.SecurityGroup{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
+		// 					},
+		// 					Primary: to.Ptr(true),
+		// 					VirtualMachine: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01/VmssVmNetworkInterfaceListForvmssNetwork.json
+func ExampleInterfacesClient_NewListVirtualMachineScaleSetVMNetworkInterfacesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewInterfacesClient().NewListVirtualMachineScaleSetVMNetworkInterfacesPager("rg1", "vmss1", "1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetwork.InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse{
+		// 	InterfaceListResult: armnetwork.InterfaceListResult{
+		// 		Value: []*armnetwork.Interface{
+		// 			{
+		// 				Name: to.Ptr("nic1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1"),
+		// 				Properties: &armnetwork.InterfacePropertiesFormat{
+		// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 					IPConfigurations: []*armnetwork.InterfaceIPConfiguration{
+		// 						{
+		// 							Name: to.Ptr("ip1"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1"),
+		// 							Properties: &armnetwork.InterfaceIPConfigurationPropertiesFormat{
+		// 								ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+		// 								PrivateIPAddress: to.Ptr("10.0.0.5"),
+		// 								PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
+		// 								PublicIPAddress: &armnetwork.PublicIPAddress{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1/networkInterfaces/nic1/ipConfigurations/ip1/publicIPAddresses/pub1"),
+		// 								},
+		// 								Subnet: &armnetwork.Subnet{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+		// 								},
+		// 								Primary: to.Ptr(true),
+		// 								PrivateIPAddressVersion: to.Ptr(armnetwork.IPVersionIPv4),
+		// 								LoadBalancerBackendAddressPools: []*armnetwork.BackendAddressPool{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/backendAddressPools/addressPool1"),
+		// 									},
+		// 								},
+		// 								LoadBalancerInboundNatRules: []*armnetwork.InboundNatRule{
+		// 									{
+		// 										ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/inboundNatRules/natPool1.1"),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					DNSSettings: &armnetwork.InterfaceDNSSettings{
+		// 						DNSServers: []*string{
+		// 						},
+		// 						AppliedDNSServers: []*string{
+		// 						},
+		// 						InternalDomainNameSuffix: to.Ptr("ruw4wz3grewudjsyzrxj44pxod.cdmx.internal.cloudapp.net"),
+		// 					},
+		// 					MacAddress: to.Ptr("00-00-00-00-00-00"),
+		// 					EnableAcceleratedNetworking: to.Ptr(false),
+		// 					EnableIPForwarding: to.Ptr(false),
+		// 					NetworkSecurityGroup: &armnetwork.SecurityGroup{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
+		// 					},
+		// 					Primary: to.Ptr(true),
+		// 					VirtualMachine: &armnetwork.SubResource{
+		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines/1"),
+		// 					},
 		// 				},
 		// 			},
 		// 		},

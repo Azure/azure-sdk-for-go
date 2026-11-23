@@ -1,5 +1,9 @@
 # Release History
 
+## 12.2.1 (2026-11-23)
+### Other Changes
+
+
 ## 12.2.0 (2026-11-18)
 ### Features Added
 

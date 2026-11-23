@@ -14,7 +14,7 @@ import (
 )
 
 // Generated from example definition: 2026-09-01/MongoClusters_Create.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterWithDefaultPremiumSSDv2StorageAndStringValuedTags() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDbClusterWithDefaultPremiumSsDv2StorageAndStringValuedTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,7 +127,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterWit
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_CreateGeoReplica.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDBClusterResourceFromASourceResource() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDbClusterResourceFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -213,7 +213,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDBClu
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_CreateGeoReplica_CMK.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDbClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -341,7 +341,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDBClu
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_CreatePITR.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterResourceFromAPointInTimeRestore() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDbClusterResourceFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -425,7 +425,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterRes
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_CreatePITR_CMK.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDbClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -549,7 +549,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterRes
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_CreatePITR_EntraAuth.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIDAuthenticationModeEnabled() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDbClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIdAuthenticationModeEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -631,7 +631,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterRes
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_Create_CMK.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewDocumentDBClusterResourceWithCustomerManagedKeyEncryption() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewDocumentDbClusterResourceWithCustomerManagedKeyEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -768,7 +768,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewDocumentDBCluster
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_Create_SSDv2.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewDocumentDBClusterResourceWithPremiumSSDv2Storage() {
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewDocumentDbClusterResourceWithPremiumSsDv2Storage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -895,7 +895,7 @@ func ExampleMongoClustersClient_BeginDelete() {
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_ForcePromoteReplica.json
-func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDBClusterResourceToAPrimaryRole() {
+func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDbClusterResourceToAPrimaryRole() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -919,7 +919,7 @@ func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDBClusterRe
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PlannedPromoteReplica.json
-func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDBClusterResourceToAPrimaryRoleWaitingForTheReplicaToCatchUpBeforePromoting() {
+func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDbClusterResourceToAPrimaryRoleWaitingForTheReplicaToCatchUpBeforePromoting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -943,7 +943,7 @@ func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDBClusterRe
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchCMK.json
-func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionKeyOnADocumentDBClusterResource() {
+func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionKeyOnADocumentDbClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1085,7 +1085,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionK
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchDataApi.json
-func ExampleMongoClustersClient_BeginUpdate_enablesDataAPIOnADocumentDBClusterResource() {
+func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnADocumentDbClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1283,7 +1283,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchDiskSize.json
-func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnADocumentDBClusterResource() {
+func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnADocumentDbClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1368,7 +1368,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnADocumentDBClust
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchEnableEntraIDAuth.json
-func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIDAuthentication() {
+func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIdAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1457,7 +1457,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchNetworkBypassMode.json
-func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAnAzureDocumentDBClusterResourceToAllowTheAzureCosmosDBServiceToBypassNetworkRestrictions() {
+func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAnAzureDocumentDbClusterResourceToAllowTheAzureCosmosDbServiceToBypassNetworkRestrictions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1541,7 +1541,7 @@ func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAnAzureDoc
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchPrivateNetworkAccess.json
-func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnADocumentDBClusterResourceWithAPrivateEndpointConnection() {
+func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnADocumentDbClusterResourceWithAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1650,7 +1650,7 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnADocume
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchSSDv2.json
-func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSSDv2SizeOnADocumentDBClusterResource() {
+func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnADocumentDbClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1736,7 +1736,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSSDv2SizeOnADocumen
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_PatchTags.json
-func ExampleMongoClustersClient_BeginUpdate_updatesStringValuedResourceTagsWithoutChangingTheExistingPremiumSSDStorageType() {
+func ExampleMongoClustersClient_BeginUpdate_updatesStringValuedResourceTagsWithoutChangingTheExistingPremiumSsdStorageType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1870,7 +1870,7 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_Update.json
-func ExampleMongoClustersClient_BeginUpdate_updatesADocumentDBClusterResource() {
+func ExampleMongoClustersClient_BeginUpdate_updatesADocumentDbClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1980,7 +1980,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesADocumentDBClusterResource() 
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_NameAvailability.json
-func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheDocumentDBClusterNameIsAvailableForUse() {
+func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheDocumentDbClusterNameIsAvailableForUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2008,7 +2008,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheDocume
 }
 
 // Generated from example definition: 2026-09-01/MongoClusters_NameAvailability_AlreadyExists.json
-func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheDocumentDBClusterNameIsAlreadyInUse() {
+func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheDocumentDbClusterNameIsAlreadyInUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

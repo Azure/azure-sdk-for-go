@@ -19,7 +19,7 @@ import (
 // NodeTypeSKUsClient contains the methods for the NodeTypeSKUs group.
 // Don't use this type directly, use NewNodeTypeSKUsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-09-01-preview
 type NodeTypeSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -106,7 +106,7 @@ func (client *NodeTypeSKUsClient) listCreateRequest(ctx context.Context, resourc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20260901Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

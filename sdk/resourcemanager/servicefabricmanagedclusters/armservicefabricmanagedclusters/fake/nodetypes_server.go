@@ -45,6 +45,10 @@ type NodeTypesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginReimage func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.NodeTypeActionParameters, options *armservicefabricmanagedclusters.NodeTypesClientBeginReimageOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageResponse], errResp azfake.ErrorResponder)
 
+	// BeginReimageAllDisks is the fake for method NodeTypesClient.BeginReimageAllDisks
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginReimageAllDisks func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.ReimageAllDisksParameters, options *armservicefabricmanagedclusters.NodeTypesClientBeginReimageAllDisksOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageAllDisksResponse], errResp azfake.ErrorResponder)
+
 	// BeginRestart is the fake for method NodeTypesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRestart func(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters armservicefabricmanagedclusters.NodeTypeActionParameters, options *armservicefabricmanagedclusters.NodeTypesClientBeginRestartOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse], errResp azfake.ErrorResponder)
@@ -94,6 +98,7 @@ func NewNodeTypesServerTransport(srv *NodeTypesServer) *NodeTypesServerTransport
 		beginDeleteNode:               newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientDeleteNodeResponse]](),
 		beginRedeploy:                 newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRedeployResponse]](),
 		beginReimage:                  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageResponse]](),
+		beginReimageAllDisks:          newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageAllDisksResponse]](),
 		beginRestart:                  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse]](),
 		beginStart:                    newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartResponse]](),
 		beginStartFaultSimulation:     newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartFaultSimulationResponse]](),
@@ -114,6 +119,7 @@ type NodeTypesServerTransport struct {
 	beginDeleteNode               *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientDeleteNodeResponse]]
 	beginRedeploy                 *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRedeployResponse]]
 	beginReimage                  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageResponse]]
+	beginReimageAllDisks          *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientReimageAllDisksResponse]]
 	beginRestart                  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientRestartResponse]]
 	beginStart                    *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartResponse]]
 	beginStartFaultSimulation     *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.NodeTypesClientStartFaultSimulationResponse]]
@@ -156,6 +162,8 @@ func (n *NodeTypesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = n.dispatchBeginRedeploy(req)
 			case "NodeTypesClient.BeginReimage":
 				res.resp, res.err = n.dispatchBeginReimage(req)
+			case "NodeTypesClient.BeginReimageAllDisks":
+				res.resp, res.err = n.dispatchBeginReimageAllDisks(req)
 			case "NodeTypesClient.BeginRestart":
 				res.resp, res.err = n.dispatchBeginRestart(req)
 			case "NodeTypesClient.BeginStart":
@@ -493,6 +501,58 @@ func (n *NodeTypesServerTransport) dispatchBeginReimage(req *http.Request) (*htt
 	}
 	if !server.PollerResponderMore(beginReimage) {
 		n.beginReimage.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NodeTypesServerTransport) dispatchBeginReimageAllDisks(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginReimageAllDisks == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReimageAllDisks not implemented")}
+	}
+	beginReimageAllDisks := n.beginReimageAllDisks.get(req)
+	if beginReimageAllDisks == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/nodeTypes/(?P<nodeTypeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reimageAllDisks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.ReimageAllDisksParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		nodeTypeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("nodeTypeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginReimageAllDisks(req.Context(), resourceGroupNameParam, clusterNameParam, nodeTypeNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReimageAllDisks = &respr
+		n.beginReimageAllDisks.add(req, beginReimageAllDisks)
+	}
+
+	resp, err := server.PollerResponderNext(beginReimageAllDisks, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		n.beginReimageAllDisks.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReimageAllDisks) {
+		n.beginReimageAllDisks.remove(req)
 	}
 
 	return resp, nil

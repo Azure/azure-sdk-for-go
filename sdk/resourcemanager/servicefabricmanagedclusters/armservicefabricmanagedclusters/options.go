@@ -284,6 +284,13 @@ type NodeTypesClientBeginRedeployOptions struct {
 	ResumeToken string
 }
 
+// NodeTypesClientBeginReimageAllDisksOptions contains the optional parameters for the NodeTypesClient.BeginReimageAllDisks
+// method.
+type NodeTypesClientBeginReimageAllDisksOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // NodeTypesClientBeginReimageOptions contains the optional parameters for the NodeTypesClient.BeginReimage method.
 type NodeTypesClientBeginReimageOptions struct {
 	// Resumes the long-running operation from the provided token.

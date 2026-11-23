@@ -5,7 +5,7 @@
 package armservicefabricmanagedclusters
 
 const (
-	version20260501Preview string = "2026-05-01-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // Access - The network traffic is allowed or denied.
@@ -23,6 +23,27 @@ func PossibleAccessValues() []Access {
 	return []Access{
 		AccessAllow,
 		AccessDeny,
+	}
+}
+
+// AllocationStrategy - Specifies the allocation strategy for VM sizes in a sku profile.
+type AllocationStrategy string
+
+const (
+	// AllocationStrategyCapacityOptimized - VMs are allocated to optimize capacity availability across the specified sizes.
+	AllocationStrategyCapacityOptimized AllocationStrategy = "CapacityOptimized"
+	// AllocationStrategyLowestPrice - VMs are allocated using the lowest-priced available size.
+	AllocationStrategyLowestPrice AllocationStrategy = "LowestPrice"
+	// AllocationStrategyPrioritized - VMs are allocated according to the rank assigned to each VM size.
+	AllocationStrategyPrioritized AllocationStrategy = "Prioritized"
+)
+
+// PossibleAllocationStrategyValues returns the possible values for the AllocationStrategy const type.
+func PossibleAllocationStrategyValues() []AllocationStrategy {
+	return []AllocationStrategy{
+		AllocationStrategyCapacityOptimized,
+		AllocationStrategyLowestPrice,
+		AllocationStrategyPrioritized,
 	}
 }
 
@@ -176,6 +197,27 @@ func PossibleDirectionValues() []Direction {
 	return []Direction{
 		DirectionInbound,
 		DirectionOutbound,
+	}
+}
+
+// DiskCachingType - Specifies the caching requirements for a managed disk. Consistent with Azure VM disk caching conventions.
+type DiskCachingType string
+
+const (
+	// DiskCachingTypeNone - No caching.
+	DiskCachingTypeNone DiskCachingType = "None"
+	// DiskCachingTypeReadOnly - Read-only caching.
+	DiskCachingTypeReadOnly DiskCachingType = "ReadOnly"
+	// DiskCachingTypeReadWrite - Read-write caching.
+	DiskCachingTypeReadWrite DiskCachingType = "ReadWrite"
+)
+
+// PossibleDiskCachingTypeValues returns the possible values for the DiskCachingType const type.
+func PossibleDiskCachingTypeValues() []DiskCachingType {
+	return []DiskCachingType{
+		DiskCachingTypeNone,
+		DiskCachingTypeReadOnly,
+		DiskCachingTypeReadWrite,
 	}
 }
 

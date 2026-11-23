@@ -2669,9 +2669,13 @@ func (n NodeTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "applicationPorts", n.ApplicationPorts)
 	populate(objectMap, "capacities", n.Capacities)
 	populate(objectMap, "computerNamePrefix", n.ComputerNamePrefix)
+	populate(objectMap, "dataDiskCaching", n.DataDiskCaching)
+	populate(objectMap, "dataDiskIOPSReadWrite", n.DataDiskIOPSReadWrite)
 	populate(objectMap, "dataDiskLetter", n.DataDiskLetter)
+	populate(objectMap, "dataDiskMBpsReadWrite", n.DataDiskMBpsReadWrite)
 	populate(objectMap, "dataDiskSizeGB", n.DataDiskSizeGB)
 	populate(objectMap, "dataDiskType", n.DataDiskType)
+	populate(objectMap, "dataDiskWriteAcceleratorEnabled", n.DataDiskWriteAcceleratorEnabled)
 	populate(objectMap, "dscpConfigurationId", n.DscpConfigurationID)
 	populate(objectMap, "enableAcceleratedNetworking", n.EnableAcceleratedNetworking)
 	populate(objectMap, "enableEncryptionAtHost", n.EnableEncryptionAtHost)
@@ -2694,6 +2698,7 @@ func (n NodeTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "placementProperties", n.PlacementProperties)
 	populate(objectMap, "provisioningState", n.ProvisioningState)
 	populate(objectMap, "proxyAgentSettings", n.ProxyAgentSettings)
+	populate(objectMap, "skuProfile", n.SKUProfile)
 	populate(objectMap, "scaleInPolicy", n.ScaleInPolicy)
 	populate(objectMap, "secureBootEnabled", n.SecureBootEnabled)
 	populate(objectMap, "securityEncryptionType", n.SecurityEncryptionType)
@@ -2747,14 +2752,26 @@ func (n *NodeTypeProperties) UnmarshalJSON(data []byte) error {
 		case "computerNamePrefix":
 			err = unpopulate(val, "ComputerNamePrefix", &n.ComputerNamePrefix)
 			delete(rawMsg, key)
+		case "dataDiskCaching":
+			err = unpopulate(val, "DataDiskCaching", &n.DataDiskCaching)
+			delete(rawMsg, key)
+		case "dataDiskIOPSReadWrite":
+			err = unpopulate(val, "DataDiskIOPSReadWrite", &n.DataDiskIOPSReadWrite)
+			delete(rawMsg, key)
 		case "dataDiskLetter":
 			err = unpopulate(val, "DataDiskLetter", &n.DataDiskLetter)
+			delete(rawMsg, key)
+		case "dataDiskMBpsReadWrite":
+			err = unpopulate(val, "DataDiskMBpsReadWrite", &n.DataDiskMBpsReadWrite)
 			delete(rawMsg, key)
 		case "dataDiskSizeGB":
 			err = unpopulate(val, "DataDiskSizeGB", &n.DataDiskSizeGB)
 			delete(rawMsg, key)
 		case "dataDiskType":
 			err = unpopulate(val, "DataDiskType", &n.DataDiskType)
+			delete(rawMsg, key)
+		case "dataDiskWriteAcceleratorEnabled":
+			err = unpopulate(val, "DataDiskWriteAcceleratorEnabled", &n.DataDiskWriteAcceleratorEnabled)
 			delete(rawMsg, key)
 		case "dscpConfigurationId":
 			err = unpopulate(val, "DscpConfigurationID", &n.DscpConfigurationID)
@@ -2821,6 +2838,9 @@ func (n *NodeTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "proxyAgentSettings":
 			err = unpopulate(val, "ProxyAgentSettings", &n.ProxyAgentSettings)
+			delete(rawMsg, key)
+		case "skuProfile":
+			err = unpopulate(val, "SKUProfile", &n.SKUProfile)
 			delete(rawMsg, key)
 		case "scaleInPolicy":
 			err = unpopulate(val, "ScaleInPolicy", &n.ScaleInPolicy)
@@ -3227,6 +3247,37 @@ func (p *ProxyAgentSettings) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ReimageAllDisksParameters.
+func (r ReimageAllDisksParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "force", r.Force)
+	populate(objectMap, "nodes", r.Nodes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ReimageAllDisksParameters.
+func (r *ReimageAllDisksParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "force":
+			err = unpopulate(val, "Force", &r.Force)
+			delete(rawMsg, key)
+		case "nodes":
+			err = unpopulate(val, "Nodes", &r.Nodes)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ResourceAzStatus.
 func (r ResourceAzStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3620,6 +3671,68 @@ func (s *SKU) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "name":
 			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKUProfile.
+func (s SKUProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "allocationStrategy", s.AllocationStrategy)
+	populate(objectMap, "vmSizes", s.VMSizes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SKUProfile.
+func (s *SKUProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "allocationStrategy":
+			err = unpopulate(val, "AllocationStrategy", &s.AllocationStrategy)
+			delete(rawMsg, key)
+		case "vmSizes":
+			err = unpopulate(val, "VMSizes", &s.VMSizes)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SKUProfileVMSize.
+func (s SKUProfileVMSize) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "rank", s.Rank)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SKUProfileVMSize.
+func (s *SKUProfileVMSize) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		case "rank":
+			err = unpopulate(val, "Rank", &s.Rank)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5008,10 +5121,14 @@ func (v *VaultSecretGroup) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VmssDataDisk.
 func (v VmssDataDisk) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "caching", v.Caching)
+	populate(objectMap, "diskIOPSReadWrite", v.DiskIOPSReadWrite)
 	populate(objectMap, "diskLetter", v.DiskLetter)
+	populate(objectMap, "diskMBpsReadWrite", v.DiskMBpsReadWrite)
 	populate(objectMap, "diskSizeGB", v.DiskSizeGB)
 	populate(objectMap, "diskType", v.DiskType)
 	populate(objectMap, "lun", v.Lun)
+	populate(objectMap, "writeAcceleratorEnabled", v.WriteAcceleratorEnabled)
 	return json.Marshal(objectMap)
 }
 
@@ -5024,8 +5141,17 @@ func (v *VmssDataDisk) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "caching":
+			err = unpopulate(val, "Caching", &v.Caching)
+			delete(rawMsg, key)
+		case "diskIOPSReadWrite":
+			err = unpopulate(val, "DiskIOPSReadWrite", &v.DiskIOPSReadWrite)
+			delete(rawMsg, key)
 		case "diskLetter":
 			err = unpopulate(val, "DiskLetter", &v.DiskLetter)
+			delete(rawMsg, key)
+		case "diskMBpsReadWrite":
+			err = unpopulate(val, "DiskMBpsReadWrite", &v.DiskMBpsReadWrite)
 			delete(rawMsg, key)
 		case "diskSizeGB":
 			err = unpopulate(val, "DiskSizeGB", &v.DiskSizeGB)
@@ -5035,6 +5161,9 @@ func (v *VmssDataDisk) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "lun":
 			err = unpopulate(val, "Lun", &v.Lun)
+			delete(rawMsg, key)
+		case "writeAcceleratorEnabled":
+			err = unpopulate(val, "WriteAcceleratorEnabled", &v.WriteAcceleratorEnabled)
 			delete(rawMsg, key)
 		}
 		if err != nil {

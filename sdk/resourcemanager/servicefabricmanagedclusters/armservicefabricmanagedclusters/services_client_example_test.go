@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ServicePutOperation_example_max.json
+// Generated from example definition: 2026-09-01-preview/ServicePutOperation_example_max.json
 func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMaximumParameters(
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ServicePutOperation_example_min.json
+// Generated from example definition: 2026-09-01-preview/ServicePutOperation_example_min.json
 func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_putAServiceWithMinimumParameters(
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceDeleteOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ServiceDeleteOperation_example.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceActionRestartReplica_example.json
+// Generated from example definition: 2026-09-01-preview/ServiceActionRestartReplica_example.json
 func ExampleServicesClient_BeginRestartReplica() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleServicesClient_BeginRestartReplica() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceGetOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ServiceGetOperation_example.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ServiceListOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ServiceListOperation_example.json
 func ExampleServicesClient_NewListByApplicationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +352,7 @@ func ExampleServicesClient_NewListByApplicationsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ServicePatchOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ServicePatchOperation_example.json
 func ExampleServicesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // OperationResultsClient contains the methods for the OperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-09-01-preview
 type OperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +89,7 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

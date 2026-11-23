@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ManagedApplyMaintenanceWindowPost_example.json
+// Generated from example definition: 2026-09-01-preview/ManagedApplyMaintenanceWindowPost_example.json
 func ExampleManagedApplyMaintenanceWindowClient_Post() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

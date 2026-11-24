@@ -55,15 +55,8 @@ func TestDiagnosticsCoverSuccessAndError(t *testing.T) {
 	})
 }
 
-// TestSessionTokenExplicitManagement is a supplementary regression test for consistency.session-
-// management: a write's own response token, passed explicitly on a subsequent read's SessionToken
-// option, is honored by that read. It is not registered as certification evidence for that
-// scenario (see internal/e2e.Implementations) because the catalog also requires disabling
-// automatic session-token capture and exercising continuation-based queries alongside the
-// explicit token, and azcosmos/v2 has no public option to disable automatic session capture (see
-// [OperationOptions] and [ClientOptions]); only the narrower "explicit token honored" claim is
-// tested here. It uses the catalog profile to exercise the two-region fixture but remains
-// supplementary regression coverage, not certification evidence for the catalog scenario.
+// TestSessionTokenExplicitManagement supplements the full session-management scenario with
+// a basic explicit-token round trip using the catalog's two-region fixture.
 func TestSessionTokenExplicitManagement(t *testing.T) {
 	fx := newFixture(t, "consistency.session-management", "")
 	ctx := context.Background()

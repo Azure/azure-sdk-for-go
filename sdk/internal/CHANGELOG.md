@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* The default HTTP transport now configures HTTP/2 health checks using `http.Transport.HTTP2` instead of the deprecated `golang.org/x/net/http2.ConfigureTransports`.
+
 ## 1.13.0 (2026-09-30)
 
 ### Features Added

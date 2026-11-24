@@ -4,6 +4,7 @@
 package mock
 
 import (
+	"crypto/tls"
 	"errors"
 	"io"
 	"net/http"
@@ -11,7 +12,6 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
-	"golang.org/x/net/http2"
 )
 
 func TestStaticResponse(t *testing.T) {
@@ -264,11 +264,8 @@ func TestComplexResponseTLS(t *testing.T) {
 }
 
 func TestTLSServerConfig(t *testing.T) {
-	cfg := &http.Server{}
-	if err := http2.ConfigureServer(cfg, new(http2.Server)); err != nil {
-		t.Fatal(err)
-	}
-	srv, close := NewTLSServer(WithTLSConfig(cfg.TLSConfig))
+	cfg := &tls.Config{NextProtos: []string{"h2", "http/1.1"}}
+	srv, close := NewTLSServer(WithTLSConfig(cfg))
 	defer close()
 	const body = "this is the response body"
 	srv.AppendResponse(

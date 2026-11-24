@@ -14,6 +14,7 @@ import "C"
 import (
 	"context"
 	"errors"
+	"unsafe"
 )
 
 func feedRangeSupportError() error { return nil }
@@ -69,6 +70,7 @@ func copyNativeFeedRange(handle *C.cosmos_feed_range_t) (FeedRange, error) {
 	}
 	defer C.cosmos_string_free(info.min_inclusive)
 	defer C.cosmos_string_free(info.max_exclusive)
+	defer C.cosmos_string_free(info.serialized)
 	return FeedRange{
 		serialized: C.GoString(serialized), minInclusive: C.GoString(info.min_inclusive),
 		maxExclusive: C.GoString(info.max_exclusive), logical: info.is_logical_partition != 0,
@@ -154,35 +156,61 @@ func (c *ContainerClient) getFeedRangeForPartitionKey(ctx context.Context, parti
 	return FeedRangeResponse{Response: setup, FeedRange: result}, nil
 }
 
+func copyFeedRangeEntries(count uintptr, read func(int) (FeedRange, error)) ([]FeedRange, error) {
+	maxInt := uint64(int(^uint(0) >> 1))
+	if uint64(count) > maxInt/uint64(unsafe.Sizeof(FeedRange{})) {
+		return nil, errors.New("azcosmos: invalid native feed range count")
+	}
+	ranges := make([]FeedRange, int(count))
+	for i := range ranges {
+		value, err := read(i)
+		if err != nil {
+			return nil, err
+		}
+		ranges[i] = value
+	}
+	return ranges, nil
+}
+
 func translateFeedRanges(completion *C.cosmos_completion_t, result *completionResult) {
 	list := C.cosmos_completion_take_feed_ranges(completion)
+	defer C.cosmos_feed_range_list_free(list)
 	if list == nil {
 		return
 	}
-	defer C.cosmos_feed_range_list_free(list)
 	if result.err != nil {
 		return
 	}
-	length := C.cosmos_feed_range_list_len(list)
-	if uint64(length) > uint64(int(^uint(0)>>1)) {
+	count := list.count
+	maxInt := uint64(int(^uint(0) >> 1))
+	if uint64(count) > maxInt/uint64(unsafe.Sizeof(C.cosmos_feed_range_info_t{})) {
 		result.err = setupChargeError(errors.New("azcosmos: invalid native feed range count"), result.response.Response, "copying feed ranges")
 		return
 	}
-	ranges := make([]FeedRange, int(length))
-	for i := range ranges {
-		var handle *C.cosmos_feed_range_t
-		status := C.cosmos_feed_range_list_get(list, C.uintptr_t(i), &handle)
-		if status != 0 {
-			result.err = setupChargeError(statusError(status, nil, "reading feed range list"), result.response.Response, "copying feed ranges")
-			return
+	length := int(count)
+	if length > 0 && list.ranges == nil {
+		result.err = setupChargeError(errors.New("azcosmos: native feed range list has a nil array"), result.response.Response, "copying feed ranges")
+		return
+	}
+	// List entries and strings are borrowed until list_free below, so copy every value first.
+	var entries []C.cosmos_feed_range_info_t
+	if length > 0 {
+		entries = unsafe.Slice(list.ranges, length)
+	}
+	ranges, err := copyFeedRangeEntries(uintptr(count), func(i int) (FeedRange, error) {
+		info := &entries[i]
+		value := FeedRange{
+			serialized: C.GoString(info.serialized), minInclusive: C.GoString(info.min_inclusive),
+			maxExclusive: C.GoString(info.max_exclusive), logical: info.is_logical_partition != 0,
 		}
-		value, err := copyNativeFeedRange(handle)
-		C.cosmos_feed_range_free(handle)
-		if err != nil {
-			result.err = setupChargeError(err, result.response.Response, "copying feed ranges")
-			return
+		if value.serialized == "" {
+			return FeedRange{}, errors.New("azcosmos: native feed range has no serialized value")
 		}
-		ranges[i] = value
+		return value, nil
+	})
+	if err != nil {
+		result.err = setupChargeError(err, result.response.Response, "copying feed ranges")
+		return
 	}
 	result.feedRanges = ranges
 }

@@ -1034,11 +1034,6 @@ typedef struct cosmos_driver_options_t cosmos_driver_options_t;
 typedef struct cosmos_feed_range_t cosmos_feed_range_t;
 
 /**
- * Owned discovery result. Free with [`cosmos_feed_range_list_free()`].
- */
-typedef struct cosmos_feed_range_list_t cosmos_feed_range_list_t;
-
-/**
  * The C ABI handle for an in-flight (or just-completed) operation
  * (`cosmos_operation_handle_t`).
  *
@@ -1226,6 +1221,50 @@ typedef struct cosmos_bytes_t {
    */
   uintptr_t len;
 } cosmos_bytes_t;
+
+/**
+ * Feed-range bounds, logical partition-key identity, and bounds-only serialization.
+ *
+ * In a [`FeedRangeListHandle`], strings are borrowed and freed with the list.
+ * From [`cosmos_feed_range_inspect()`], all three strings are independently owned:
+ * free each with `cosmos_string_free`. Do not modify the strings.
+ */
+typedef struct cosmos_feed_range_info_t {
+  /**
+   * NUL-terminated hexadecimal inclusive minimum, including the empty minimum.
+   */
+  char *min_inclusive;
+  /**
+   * NUL-terminated hexadecimal exclusive maximum; equal bounds denote one EPK.
+   */
+  char *max_exclusive;
+  /**
+   * 1 if the handle retains logical partition-key identity; otherwise 0.
+   */
+  uint8_t is_logical_partition;
+  /**
+   * NUL-terminated canonical serialization for [`cosmos_feed_range_parse()`].
+   * Preserves bounds only, not logical partition-key identity or continuation state.
+   */
+  char *serialized;
+} cosmos_feed_range_info_t;
+
+/**
+ * Rust-owned discovery result with a contiguous array of range information.
+ *
+ * The array and its strings are read-only and valid until [`cosmos_feed_range_list_free()`].
+ * Copy every needed string before freeing the list; do not free entries or strings separately.
+ */
+typedef struct cosmos_feed_range_list_t {
+  /**
+   * Borrowed entries, or NULL when `count` is zero.
+   */
+  const struct cosmos_feed_range_info_t *ranges;
+  /**
+   * Number of entries addressable from `ranges`.
+   */
+  uintptr_t count;
+} cosmos_feed_range_list_t;
 
 /**
  * Payload half of the [`CosmosValue`] tagged union. Only the field selected
@@ -2319,27 +2358,6 @@ typedef struct cosmos_driver_options_config_v2_t {
 } cosmos_driver_options_config_v2_t;
 
 /**
- * Owned feed-range bounds and logical partition-key identity.
- *
- * Free each string independently with `cosmos_string_free`. Neither string
- * borrows from the range handle; no separate result-record free is needed.
- */
-typedef struct cosmos_feed_range_info_t {
-  /**
-   * Owned hexadecimal inclusive minimum, including the empty minimum.
-   */
-  char *min_inclusive;
-  /**
-   * Owned hexadecimal exclusive maximum.
-   */
-  char *max_exclusive;
-  /**
-   * 1 if the handle retains logical partition-key identity; otherwise 0.
-   */
-  uint8_t is_logical_partition;
-} cosmos_feed_range_info_t;
-
-/**
  * The driver's effective-bound subset and overlap results, encoded as 0 or 1.
  */
 typedef struct cosmos_feed_range_relation_t {
@@ -2586,7 +2604,9 @@ void cosmos_bytes_free(struct cosmos_bytes_t bytes);
 /**
  * Detaches an owned discovery list once; returns NULL for other or already-detached completions.
  *
- * Free the result with `cosmos_feed_range_list_free`. The list outlives the completion.
+ * The list, its contiguous entries, and their strings outlive the completion.
+ * Read `ranges` and `count` directly; an empty list has NULL `ranges` and zero `count`.
+ * Copy all needed strings before freeing the list with `cosmos_feed_range_list_free`.
  */
 struct cosmos_feed_range_list_t *cosmos_completion_take_feed_ranges(struct cosmos_completion_t *completion);
 
@@ -3164,19 +3184,10 @@ struct cosmos_fault_injection_result_t cosmos_fault_injection_result_default(voi
 struct cosmos_fault_injection_rule_t cosmos_fault_injection_rule_default(void);
 
 /**
- * Returns the number of ranges, or zero for NULL.
- */
-uintptr_t cosmos_feed_range_list_len(const struct cosmos_feed_range_list_t *list);
-
-/**
- * Copies one range into an independent handle; an invalid index returns an invalid-option status.
- */
-cosmos_status_code_t cosmos_feed_range_list_get(const struct cosmos_feed_range_list_t *list,
-                                                uintptr_t index,
-                                                struct cosmos_feed_range_t **out);
-
-/**
- * Frees a discovery list without invalidating previously copied range handles. NULL is a no-op.
+ * Frees a discovery list, its entries, and all referenced strings. NULL is a no-op.
+ *
+ * `list` must be an unmodified list returned by `cosmos_completion_take_feed_ranges`
+ * that has not already been freed. Any pointers into it become invalid.
  */
 void cosmos_feed_range_list_free(struct cosmos_feed_range_list_t *list);
 
@@ -3198,15 +3209,17 @@ cosmos_status_code_t cosmos_feed_range_parse(struct cosmos_string_view_t seriali
                                              struct cosmos_feed_range_t **out);
 
 /**
- * Serializes effective bounds as base64 JSON. Free the owned string with `cosmos_string_free`.
+ * Serializes effective bounds as base64 JSON, setting `*out` to NULL on failure.
+ * Free the owned string with `cosmos_string_free`.
  */
 cosmos_status_code_t cosmos_feed_range_serialize(const struct cosmos_feed_range_t *range,
                                                  char **out);
 
 /**
- * Returns owned bounds and logical identity. Zeroes the output on failure.
+ * Returns owned bounds, logical identity, and serialization. Zeroes the output on failure.
  *
  * `out` must point to writable, aligned storage for one [`CosmosFeedRangeInfo`].
+ * All three strings outlive the range handle; free them with `cosmos_string_free`.
  * Free any previous strings before reusing the output storage.
  */
 cosmos_status_code_t cosmos_feed_range_inspect(const struct cosmos_feed_range_t *range,

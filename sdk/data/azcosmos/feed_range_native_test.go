@@ -105,6 +105,13 @@ func TestNativeFeedRangeDiscoveryAndPartitionKeyOwnership(t *testing.T) {
 	}
 }
 
+func TestNativeFeedRangeListCopyEmpty(t *testing.T) {
+	discovered, err := copyFeedRangeEntries(0, nil)
+	require.NoError(t, err)
+	require.NotNil(t, discovered)
+	require.Empty(t, discovered)
+}
+
 func TestNativeFeedRangeDiscoveryCancellationDrainsLateList(t *testing.T) {
 	service := newChangeFeedContractService(t, 2, false)
 	container := service.container(t, "items")

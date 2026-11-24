@@ -142,6 +142,8 @@ func TestRunnerWritesOperationSizes(t *testing.T) {
 			require.NoError(t, runner.operationResults.WriteJSON(resultsFilePath))
 			raw, err := os.ReadFile(resultsFilePath)
 			require.NoError(t, err)
+			require.Contains(t, string(raw), `"Time":`)
+			require.Contains(t, string(raw), `"Size":`)
 			var rows []operationResult
 			require.NoError(t, json.Unmarshal(raw, &rows))
 			require.Len(t, rows, 2)

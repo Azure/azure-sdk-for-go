@@ -1,0 +1,33 @@
+{
+  "version": "0.2",
+  "ignorePaths": [
+    "region_proximity.go",
+    "go.sum"
+  ],
+  "words": [
+    "azlog",
+    "cbindgen",
+    "EASTUS",
+    "Emptyf",
+    "Equalf",
+    "enableaadauthentication",
+    "gofmt",
+    "itemdb",
+    "Lenf",
+    "LINUXVMIMAGE",
+    "myaccount",
+    "Nilf",
+    "noexplorer",
+    "nohup",
+    "noui",
+    "testin",
+    "tlsv",
+    "Truef",
+    "USDOD",
+    "USGOV",
+    "USSTG",
+    "WINDOWSVMIMAGE",
+    "Writef",
+    "Wtle"
+  ]
+}

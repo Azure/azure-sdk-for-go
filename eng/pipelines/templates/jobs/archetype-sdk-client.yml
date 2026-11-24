@@ -17,6 +17,12 @@ parameters:
   - name: LicenseCheck
     type: boolean
     default: true
+  - name: AnalysisGoVersion
+    type: string
+    default: '$(GO_VERSION_LATEST)'
+  - name: LintVersion
+    type: string
+    default: $(GoLintCLIVersion)
   - name: EnvVars
     type: object
     default: {}
@@ -76,6 +82,9 @@ parameters:
   - name: AdditionalStages
     type: object
     default: []
+  - name: AdditionalNetworkIsolationPolicies
+    type: object
+    default: []
   - name: oneESTemplateTag
     type: string
     default: release
@@ -101,6 +110,7 @@ extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
+    AdditionalNetworkIsolationPolicies: ${{ parameters.AdditionalNetworkIsolationPolicies }}
     stages:
       - ${{ if and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual')) }}:
           - stage: NoOp
@@ -199,7 +209,7 @@ extends:
 
               - task: GoTool@0
                 inputs:
-                  version: '$(GO_VERSION_LATEST)'
+                  version: ${{ parameters.AnalysisGoVersion }}
                 displayName: "Select Go Version"
 
               - template: /eng/pipelines/templates/steps/create-go-workspace.yml
@@ -207,7 +217,7 @@ extends:
               - template: /eng/pipelines/templates/steps/analyze.yml
                 parameters:
                   ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                  LintVersion: $(GoLintCLIVersion)
+                  LintVersion: ${{ parameters.LintVersion }}
                   NonShipping: ${{ parameters.NonShipping }}
                   LicenseCheck: ${{ parameters.LicenseCheck }}
                   IsSdkLibrary: ${{ parameters.IsSdkLibrary }}

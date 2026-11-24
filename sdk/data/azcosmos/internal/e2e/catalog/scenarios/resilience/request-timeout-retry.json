@@ -1,0 +1,45 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "resilience.request-timeout-retry",
+    "title": "Request timeout retries honor the failover budget",
+    "requirement": "An injected HTTP 408 response fails over to a converged replica when budget remains and is returned without retry when the failover budget is zero.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/multi_write_tests/cosmos_multi_write_retry_policies.rs",
+            "test": "timeout"
+        }
+    ],
+    "profiles": [
+        "configurationResilience"
+    ],
+    "tags": [
+        "resilience",
+        "requestTimeout",
+        "faultInjection"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario intentionally injects a request-timeout response."
+        }
+    }
+}

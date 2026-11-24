@@ -1,0 +1,83 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
+
+package azcosmos
+
+// cSpell:ignore azsdk rustc
+
+import (
+	"net/http"
+	"net/http/httptest"
+	"regexp"
+	"strings"
+	"sync"
+	"testing"
+
+	"github.com/stretchr/testify/require"
+)
+
+func TestNativeUserAgentOnWire(t *testing.T) {
+	for _, tt := range []struct {
+		name          string
+		applicationID string
+		shared        bool
+	}{
+		{name: "empty"},
+		{name: "application", applicationID: "orders"},
+		{name: "24 characters", applicationID: strings.Repeat("a", 24)},
+		{name: "25 characters", applicationID: strings.Repeat("a", 25)},
+		{name: "shared empty", shared: true},
+		{name: "shared application", applicationID: "orders", shared: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var mu sync.Mutex
+			var agents []string
+			server := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.UserAgent() == "" {
+					// The capability probe is not a Cosmos service request.
+					w.WriteHeader(http.StatusOK)
+					return
+				}
+				mu.Lock()
+				agents = append(agents, r.UserAgent())
+				mu.Unlock()
+				w.WriteHeader(http.StatusUnauthorized)
+			}))
+			// The native capability probe negotiates both protocols before fetching the account.
+			server.Config.Protocols = new(http.Protocols)
+			server.Config.Protocols.SetHTTP1(true)
+			server.Config.Protocols.SetUnencryptedHTTP2(true)
+			server.Start()
+			defer server.Close()
+
+			credential, err := NewKeyCredential(emulatorKey)
+			require.NoError(t, err)
+			options := &ClientOptions{}
+			if tt.shared || tt.applicationID != "" {
+				shared, err := NewRuntime(&RuntimeOptions{ApplicationID: tt.applicationID})
+				require.NoError(t, err)
+				t.Cleanup(func() { require.NoError(t, shared.Close()) })
+				options.Runtime = shared
+			}
+			client, err := newTestClientWithKey(server.URL, credential, options)
+			require.NoError(t, err)
+			defer func() { require.NoError(t, client.Close()) }()
+
+			require.Error(t, client.initialize(t.Context()))
+
+			mu.Lock()
+			defer mu.Unlock()
+			require.NotEmpty(t, agents, "native driver sent no observed service request")
+			suffixPattern := ""
+			if tt.applicationID != "" {
+				suffixPattern = ` ` + regexp.QuoteMeta(tt.applicationID)
+			}
+			prefix := regexp.QuoteMeta("azsdk-go-azcosmos/" + strings.TrimPrefix(serviceLibVersion, "v"))
+			for _, agent := range agents {
+				require.Regexp(t, `^`+prefix+` \(drv=[^;()]+; [^;()]+; [^;()]+; [^;()]+; ft=[^;()]+\)`+suffixPattern+`$`, agent)
+			}
+		})
+	}
+}

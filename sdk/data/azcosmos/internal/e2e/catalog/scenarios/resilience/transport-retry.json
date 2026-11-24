@@ -1,0 +1,45 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "resilience.transport-retry",
+  "title": "Retryable response timeouts preserve read results",
+  "requirement": "A bounded injected response timeout is retried for a read and diagnostics retain transport failure and successful terminal attempts.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/multi_write_tests/cosmos_multi_write_fault_injection.rs",
+      "test": "reads_are_retried_on_response_timeout"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "resilience",
+    "transportRetry",
+    "faultInjection"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "notApplicable",
+      "fidelity": "none",
+      "reason": "The scenario intentionally injects a synthetic transport timeout."
+    }
+  }
+}

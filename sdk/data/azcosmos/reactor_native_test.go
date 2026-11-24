@@ -1,0 +1,285 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
+
+package azcosmos
+
+import (
+	"context"
+	"runtime/cgo"
+	"sync"
+	"testing"
+	"time"
+	"unsafe"
+
+	"github.com/stretchr/testify/require"
+)
+
+func TestAbandonedCompletionDoesNotRetainResults(t *testing.T) {
+	for range 100 {
+		pending := &pendingOperation{result: make(chan completionResult, 1)}
+		var wg sync.WaitGroup
+		wg.Add(2)
+		go func() {
+			defer wg.Done()
+			pending.deliver(completionResult{body: []byte("late")})
+		}()
+		go func() {
+			defer wg.Done()
+			// abandon() hands back whatever it atomically claimed instead of releasing it, since
+			// callers that actually got a real result from it must not discard it as part of
+			// cancellation. A caller that truly doesn't want it, like this one, releases it.
+			if result, ok := pending.abandon(); ok {
+				result.release()
+			}
+		}()
+		wg.Wait()
+		require.Empty(t, pending.result)
+	}
+}
+
+// TestAbandonReturnsAResultDeliveredBeforeIt guards against treating an already-completed
+// operation as cancelled: if deliver() wins the race and buffers a result before abandon() runs,
+// abandon() must hand that result back rather than silently releasing it, so awaitCompletion can
+// still report the operation's real outcome instead of a synthesized cancellation.
+func TestAbandonReturnsAResultDeliveredBeforeIt(t *testing.T) {
+	pending := &pendingOperation{result: make(chan completionResult, 1)}
+	pending.deliver(completionResult{body: []byte("already completed")})
+
+	result, ok := pending.abandon()
+
+	require.True(t, ok, "abandon must report a result was already buffered")
+	require.Equal(t, []byte("already completed"), result.body)
+
+	// A subsequent deliver, as if the reactor raced abandon(), must not block or retain anything:
+	// abandon() has already marked the operation closed.
+	pending.deliver(completionResult{body: []byte("too late")})
+	require.Empty(t, pending.result)
+}
+
+func TestAbandonReportsNothingBufferedWhenNoResultArrivedYet(t *testing.T) {
+	pending := &pendingOperation{result: make(chan completionResult, 1)}
+
+	result, ok := pending.abandon()
+
+	require.False(t, ok)
+	require.Zero(t, result)
+}
+
+func TestAbandonedNativeDeliverySignalsCleanup(t *testing.T) {
+	pending := &pendingOperation{
+		result:    make(chan completionResult, 1),
+		delivered: make(chan struct{}),
+	}
+	_, buffered := pending.abandon()
+	require.False(t, buffered)
+	select {
+	case <-pending.delivered:
+		t.Fatal("abandonment must not signal native completion")
+	default:
+	}
+	pending.deliver(completionResult{body: []byte("late completion")})
+	select {
+	case <-pending.delivered:
+	default:
+		t.Fatal("native delivery must unblock resource cleanup")
+	}
+	require.Empty(t, pending.result)
+	require.NotPanics(t, func() { pending.deliver(completionResult{}) })
+}
+
+// The reactor owns a completion queue and a goroutine blocked in C. These cover its lifetime
+// without a service, which the emulator tests cannot: they need an account to talk to, and a leak
+// or a hang here would show up there as a timeout rather than as itself.
+
+func TestReactorStartsAndStops(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
+	require.NoError(t, err)
+	require.NotNil(t, r.queue)
+
+	r.close()
+	require.Nil(t, r.queue, "close must not leave a dangling queue")
+	require.Nil(t, r.batch, "close must not leave a dangling batch")
+}
+
+func TestReactorCompletionBatchAllocationFailure(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	allocate := allocateCompletionBatch
+	t.Cleanup(func() { allocateCompletionBatch = allocate })
+	allocateCompletionBatch = func() unsafe.Pointer { return nil }
+	r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
+	require.Nil(t, r, "allocation failure must not start a reactor")
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, CodeClientError, cosmosErr.Code)
+	require.Equal(t, "azcosmos: allocating the completion batch", cosmosErr.Message)
+
+	allocateCompletionBatch = allocate
+	r, err = newReactor(d.runtime, DiagnosticsVerbosityDefault)
+	require.NoError(t, err, "a failed construction must leave the runtime usable")
+	r.close()
+}
+
+func TestReactorCCompletionBatchReuse(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	started, resume := make(chan struct{}), make(chan struct{})
+	var once sync.Once
+	r, err := newReactorWithWait(d.runtime, 0, func() {
+		once.Do(func() {
+			close(started)
+			<-resume
+		})
+	}, DiagnosticsVerbosityDefault)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		close(resume)
+		r.close()
+	})
+	<-started
+	require.Len(t, r.batch, completionBatch)
+	for i := range r.batch {
+		require.Zero(t, r.batch[i], "calloc must initialize every slot")
+	}
+
+	wrongType := cgo.NewHandle("not an operation")
+	defer wrongType.Delete()
+	deleted := cgo.NewHandle(&pendingOperation{})
+	deleted.Delete()
+	for i, cookie := range []uintptr{0, uintptr(deleted), uintptr(wrongType)} {
+		cleared, release := dispatchSyntheticCompletionInSlot(r, &r.batch[i], cookie, 200, "unclaimed")
+		release()
+		require.False(t, cleared, "unclaimed slots must remain available to native cleanup")
+	}
+
+	for i := range completionBatch * 3 {
+		pending, cookie := handoffPending(t)
+		slot := &r.batch[i%completionBatch]
+		cleared, release := dispatchSyntheticCompletionInSlot(r, slot, cookie, 201, `{"id":"one"}`)
+		defer release()
+		require.True(t, cleared)
+		result := <-pending.result
+		result = result.prepare()
+		require.Equal(t, 201, result.response.StatusCode)
+		require.JSONEq(t, `{"id":"one"}`, string(result.body))
+	}
+
+	pending, cookie := handoffPending(t)
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	_, err = awaitOperationResult(ctx, pending)
+	require.ErrorIs(t, err, context.Canceled)
+	cleared, release := dispatchSyntheticCompletionInSlot(r, &r.batch[0], cookie, 200, "late")
+	release()
+	require.True(t, cleared)
+	require.Empty(t, pending.result, "late delivery must release the moved completion")
+	select {
+	case <-pending.delivered:
+	default:
+		t.Fatal("late delivery did not signal cleanup")
+	}
+}
+
+// close has to be safe to call more than once, because the driver's close path calls it and a
+// caller may already have.
+func TestReactorCloseIsIdempotent(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
+	require.NoError(t, err)
+
+	r.close()
+	require.NotPanics(t, r.close)
+	require.NotPanics(t, (*reactor)(nil).close, "a nil reactor is what an unopened driver has")
+}
+
+// Repeated cycles catch a queue or goroutine that close forgets to release, which a single cycle
+// would not. Each iteration also outlives at least one wait timeout, so the loop is exercised
+// rather than only started and stopped.
+func TestReactorLifecycleIsRepeatable(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	for range 10 {
+		r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
+		require.NoError(t, err)
+		r.close()
+	}
+}
+
+// close must return rather than block, even while the loop is parked in the C wait call. Shutting
+// the queue down is what wakes it; without that this would take a full wait timeout per close.
+func TestReactorCloseDoesNotWaitOutTheTimeout(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	waitStarted := make(chan struct{})
+	var waitStartedOnce sync.Once
+	r, err := newReactorWithWait(d.runtime, 10_000, func() {
+		waitStartedOnce.Do(func() { close(waitStarted) })
+	}, DiagnosticsVerbosityDefault)
+	require.NoError(t, err)
+	<-waitStarted
+
+	done := make(chan struct{})
+	go func() {
+		r.close()
+		close(done)
+	}()
+
+	select {
+	case <-done:
+	case <-time.After(time.Second):
+		t.Fatal("close blocked; the queue shutdown did not wake the wait call")
+	}
+}
+
+// A queue cannot be created without a runtime, and reporting that as an error rather than
+// returning a nil reactor is what keeps the failure at construction.
+func TestReactorRequiresARuntime(t *testing.T) {
+	_, err := newReactor(nil, DiagnosticsVerbosityDefault)
+	require.Error(t, err)
+
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, CodeClientError, cosmosErr.Code)
+}
+
+// TestReactorStoresEveryDiagnosticsVerbosity walks every DiagnosticsVerbosity constant, verifying
+// newReactor stores exactly the value it was given rather than normalizing or dropping it: deliver
+// reads this field on every completion, so a wrong value here would misroute every operation's
+// diagnostics rendering for the reactor's whole lifetime.
+func TestReactorStoresEveryDiagnosticsVerbosity(t *testing.T) {
+	for _, verbosity := range []DiagnosticsVerbosity{
+		DiagnosticsVerbosityDefault,
+		DiagnosticsVerbositySummary,
+		DiagnosticsVerbosityDetailed,
+		DiagnosticsVerbosity(99), // not one callers can construct via ClientOptions.validate, but the reactor must not panic or silently coerce it.
+	} {
+		t.Run(verbosity.String(), func(t *testing.T) {
+			d := &nativeDriver{}
+			require.NoError(t, d.buildRuntime())
+			t.Cleanup(func() { _ = d.close() })
+
+			r, err := newReactor(d.runtime, verbosity)
+			require.NoError(t, err)
+			t.Cleanup(r.close)
+
+			require.Equal(t, verbosity, r.verbosity)
+		})
+	}
+}

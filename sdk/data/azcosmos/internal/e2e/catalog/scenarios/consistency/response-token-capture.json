@@ -1,0 +1,49 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "consistency.response-token-capture",
+    "title": "Response tokens survive consistency changes",
+    "requirement": "An eligible response session token is captured independently of the operation's effective consistency, and a later Session operation automatically resolves and enforces that token.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/session_token.rs",
+            "test": "eventual_read_response_is_captured_for_later_session_read"
+        }
+    ],
+    "profiles": [
+        "configurationResilience"
+    ],
+    "tags": [
+        "consistency",
+        "session",
+        "capture"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Replication pause makes the later Session read prove that the earlier Eventual response populated the automatic token cache.",
+            "requires": [
+                "item",
+                "query"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Replication pause makes the later Session read prove that the earlier Eventual response populated the automatic token cache.",
+            "requires": [
+                "item",
+                "query",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "A deterministic stale-replica read requires hosted-emulator replication control."
+        }
+    }
+}

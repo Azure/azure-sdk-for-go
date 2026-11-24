@@ -1,0 +1,641 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
+
+// cSpell:ignore gocritic
+
+package azcosmos
+
+/*
+#include <stdlib.h>
+#include <string.h>
+#include "azurecosmosdriver.h"
+
+static cosmos_value_t cosmos_test_string_value(const char *value) {
+	cosmos_value_t out = {0};
+	out.kind = COSMOS_VALUE_KIND_STRING;
+	out.payload.string_value = value;
+	return out;
+}
+
+static cosmos_value_t cosmos_test_i64_value(int64_t value) {
+	cosmos_value_t out = {0};
+	out.kind = COSMOS_VALUE_KIND_I64;
+	out.payload.i64_value = value;
+	return out;
+}
+
+static cosmos_value_t cosmos_test_f64_value(double value) {
+	cosmos_value_t out = {0};
+	out.kind = COSMOS_VALUE_KIND_F64;
+	out.payload.f64_value = value;
+	return out;
+}
+
+static cosmos_status_code_t cosmos_test_status_roundtrip(cosmos_status_code_t status) {
+	return status;
+}
+
+static int cosmos_test_status_http(cosmos_status_code_t status) {
+	return COSMOS_STATUS_HTTP(status);
+}
+
+static int cosmos_test_status_sub(cosmos_status_code_t status) {
+	return COSMOS_STATUS_SUB(status);
+}
+*/
+import "C"
+
+import (
+	"sync/atomic"
+	"time"
+	"unsafe"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+)
+
+// completionResult carries an exclusively owned native record until the waiting caller prepares
+// its Go-owned response. Prepared results contain no borrowed native data.
+type completionResult struct {
+	native           *ownedCompletion
+	response         ItemResponse
+	body             []byte
+	err              error
+	cancelled        bool
+	httpStatus       int
+	retryAfter       time.Duration
+	fromWire         bool
+	nextContinuation string
+
+	// driver and container are detached from the completion rather than copied, because they are
+	// handles and not data. A get_or_create completion carries the first and a resolve_container
+	// completion the second; every other completion carries neither.
+	//
+	// Detaching transfers ownership, so whoever ends up with this result owns them, and release
+	// is what closes that loop when nobody does.
+	driver    *C.cosmos_driver_t
+	container *C.cosmos_container_ref_t
+}
+
+// release frees native backing and handles when a result is discarded instead of returned.
+func (r completionResult) release() {
+	if r.native != nil {
+		r.native.release()
+	}
+	// Freeing is a no-op on NULL, so the common case of a result carrying neither is free.
+	C.cosmos_driver_free(r.driver)
+	C.cosmos_container_ref_free(r.container)
+}
+
+// ownedCompletion never points into the reusable poll batch. Keep the C-only record in its own
+// allocation so passing it to C cannot expose Go-pointer-bearing bookkeeping.
+type ownedCompletion struct {
+	record    *C.cosmos_completion_t
+	verbosity DiagnosticsVerbosity
+}
+
+func moveCompletion(source *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
+	record := new(C.cosmos_completion_t)
+	*record = *source
+	*source = C.cosmos_completion_t{}
+	return completionResult{native: &ownedCompletion{record: record, verbosity: verbosity}}
+}
+
+func (c *ownedCompletion) release() {
+	C.cosmos_completion_queue_free_completions(c.record, 1)
+	*c.record = C.cosmos_completion_t{}
+}
+
+func (r completionResult) prepare() completionResult {
+	if r.native == nil {
+		return r
+	}
+	defer r.native.release()
+	return translateCompletion(r.native.record, r.native.verbosity)
+}
+
+// translateCompletion copies a completion into Go memory.
+//
+// Everything it reads is borrowed until the caller frees the completion after preparation,
+// so every string and byte slice is copied rather than referenced.
+func translateCompletion(completion *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
+	result := translateCompletionOutcome(completion, verbosity)
+
+	// Detach before freeing the completion, since a handle left on it would be reclaimed with
+	// its backing. Both return NULL when the completion carries nothing.
+	result.driver = C.cosmos_completion_take_driver(completion)
+	result.container = C.cosmos_completion_take_container(completion)
+	return result
+}
+
+// copyDiagnosticsForCompletion is a seam over copyDiagnostics. translateCompletionOutcome calls it
+// rather than copyDiagnostics directly so tests can substitute a fake (diagnostics, error) pair,
+// since cosmos_diagnostics_t is an opaque native handle tests cannot hand-construct and a real
+// copy failure can only be forced by actual OOM.
+var copyDiagnosticsForCompletion = copyDiagnostics
+
+// translateCompletionOutcome copies the data half of a completion, leaving the handles to
+// translateCompletion.
+func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity DiagnosticsVerbosity) completionResult {
+	headers := readCompletionHeaders(completion)
+	var trackingID PatchTrackingID
+	if id := C.cosmos_completion_patch_tracking_id(completion); id != nil {
+		trackingID = PatchTrackingID(C.GoString(id))
+	}
+	diagnostics, diagnosticsErr := copyDiagnosticsForCompletion(completion.diagnostics, verbosity)
+	subStatus := headers.subStatus
+	if completion.outcome != C.COSMOS_COMPLETION_OUTCOME_OK {
+		if _, packed := unpackStatus(completion.status); packed != 0 {
+			subStatus = packed
+		}
+	}
+	if diagnostics != nil {
+		diagnostics.StatusCode = int(completion.http_status_code)
+		diagnostics.SubStatus = subStatus
+		diagnostics.initializeJSON(verbosity)
+	}
+
+	response := ItemResponse{
+		Response: Response{
+			Diagnostics:   diagnostics,
+			RequestCharge: headers.requestCharge,
+			ActivityID:    headers.activityID,
+			StatusCode:    int(completion.http_status_code),
+			SubStatus:     subStatus,
+		},
+		ETag:            headers.etag,
+		SessionToken:    headers.sessionToken,
+		PatchTrackingID: trackingID,
+	}
+	if diagnostics != nil {
+		response.AttemptCount = diagnostics.AttemptCount
+	}
+
+	// Diagnostics are optional and never change whether the operation itself succeeded.
+	// copyDiagnostics is best effort: diagnostics carries whatever sections it managed to copy, so
+	// a copy failure here is logged rather than reported as an operation failure, and the OK and
+	// CANCELLED cases below fall through with the real result plus whatever diagnostics could be
+	// recovered. Only the already-failing default case below folds it into the operation error,
+	// since there is no successful result it could mask.
+	if diagnosticsErr != nil {
+		log.Writef(EventDiagnostics, "azcosmos: copying operation diagnostics: %s", diagnosticsErr)
+	}
+
+	switch completion.outcome {
+	case C.COSMOS_COMPLETION_OUTCOME_OK:
+		return completionResult{
+			response:         response,
+			body:             copyCompletionBody(completion),
+			httpStatus:       int(completion.http_status_code),
+			retryAfter:       headers.retryAfter,
+			fromWire:         completion.is_from_wire == 1,
+			nextContinuation: C.GoString(completion.next_continuation),
+		}
+
+	case C.COSMOS_COMPLETION_OUTCOME_CANCELLED:
+		return completionResult{
+			cancelled: true,
+			err: &Error{
+				Code:            CodeOperationCancelled,
+				Message:         "azcosmos: the operation was cancelled",
+				RequestCharge:   headers.requestCharge,
+				ActivityID:      headers.activityID,
+				AttemptCount:    response.AttemptCount,
+				Diagnostics:     diagnostics,
+				PatchTrackingID: trackingID,
+				StatusCode:      response.StatusCode,
+				SubStatus:       response.SubStatus,
+				SessionToken:    headers.sessionToken,
+				ETag:            headers.etag,
+				RetryAfter:      headers.retryAfter,
+				FromWire:        completion.is_from_wire == 1,
+				Body:            copyCompletionBody(completion),
+			},
+		}
+
+	default:
+		// ERROR, and UNKNOWN, which the driver documents as a state the host should treat as a
+		// failure rather than assume anything about.
+		operationErr := completionError(completion, headers, diagnostics)
+		operationErr.PatchTrackingID = trackingID
+		if diagnosticsErr != nil {
+			operationErr.Message += "; " + diagnosticsErr.Error()
+		}
+		return completionResult{err: operationErr}
+	}
+}
+
+// completionError builds the [Error] for a failed completion.
+func completionError(completion *C.cosmos_completion_t, headers completionHeaders, diagnostics *Diagnostics) *Error {
+	httpStatus := int(completion.http_status_code)
+	fromWire := completion.is_from_wire == 1
+
+	// The completion's status is packed, unlike the sync out_error paths. Its sub-status is the
+	// authoritative one; the header carries the same value but only when the service sent it.
+	_, packedSubStatus := unpackStatus(completion.status)
+	subStatus := packedSubStatus
+	if subStatus == 0 {
+		subStatus = headers.subStatus
+	}
+
+	err := &Error{
+		Code:          codeForRichError(fromWire, httpStatus, subStatus),
+		Diagnostics:   diagnostics,
+		StatusCode:    httpStatus,
+		SubStatus:     subStatus,
+		RequestCharge: headers.requestCharge,
+		ActivityID:    headers.activityID,
+		SessionToken:  headers.sessionToken,
+		ETag:          headers.etag,
+		RetryAfter:    headers.retryAfter,
+		FromWire:      fromWire,
+		Body:          copyCompletionBody(completion),
+	}
+	if diagnostics != nil {
+		err.AttemptCount = diagnostics.AttemptCount
+	}
+	if completion.message != nil {
+		err.Message = C.GoString(completion.message)
+	}
+	return err
+}
+
+// copyCompletionBody copies the completion's body into Go memory, or returns nil when there is
+// none. The driver reclaims the buffer when the completion is freed.
+func copyCompletionBody(completion *C.cosmos_completion_t) []byte {
+	if completion.body == nil || completion.body_len == 0 {
+		return nil
+	}
+	return C.GoBytes(unsafe.Pointer(completion.body), C.int(completion.body_len))
+}
+
+// completionHeaders is the subset of a completion's response headers this package surfaces.
+type completionHeaders struct {
+	requestCharge float64
+	activityID    string
+	sessionToken  SessionToken
+	etag          azcore.ETag
+	subStatus     int
+	retryAfter    time.Duration
+	indexMetrics  string
+	queryMetrics  string
+}
+
+// readCompletionHeaders pulls the headers this package surfaces out of a completion.
+//
+// The driver reports headers as a typed array rather than as struct fields, so each is identified
+// by its id and carries a tagged value. Reading them by id rather than by position is what keeps
+// this correct as the driver adds headers.
+func readCompletionHeaders(completion *C.cosmos_completion_t) completionHeaders {
+	var headers completionHeaders
+	if completion.headers == nil || completion.headers_len == 0 {
+		return headers
+	}
+
+	all := unsafe.Slice(completion.headers, int(completion.headers_len))
+	for i := range all {
+		header := &all[i]
+		switch header.id {
+		case C.COSMOS_HEADER_ID_INDEX_METRICS:
+			headers.indexMetrics = headerString(&header.value)
+		case C.COSMOS_HEADER_ID_QUERY_METRICS:
+			headers.queryMetrics = headerString(&header.value)
+		case C.COSMOS_HEADER_ID_REQUEST_CHARGE:
+			headers.requestCharge = headerFloat(&header.value)
+		case C.COSMOS_HEADER_ID_ACTIVITY_ID:
+			headers.activityID = headerString(&header.value)
+		case C.COSMOS_HEADER_ID_SESSION_TOKEN:
+			headers.sessionToken = SessionToken(headerString(&header.value))
+		case C.COSMOS_HEADER_ID_ETAG:
+			headers.etag = azcore.ETag(headerString(&header.value))
+		case C.COSMOS_HEADER_ID_SUB_STATUS:
+			headers.subStatus = normalizeSubStatus(int32(headerInt(&header.value)))
+		case C.COSMOS_HEADER_ID_RETRY_AFTER_MS:
+			if ms := headerInt(&header.value); ms > 0 {
+				headers.retryAfter = durationMillis(uint64(ms))
+			}
+		}
+	}
+	return headers
+}
+
+// The three header accessors below each read the payload for one Go type. A header's value is a
+// tagged union, and the driver is free to report a numeric header as any of its numeric kinds, so
+// each accessor accepts every kind it can convert without loss rather than assuming one.
+
+// headerString reads a string-valued header, or "" when the value is not a string.
+func headerString(value *C.cosmos_value_t) string {
+	if value.kind != C.COSMOS_VALUE_KIND_STRING {
+		return ""
+	}
+	// The union's first member is the string pointer.
+	ptr := *(**C.char)(unsafe.Pointer(&value.payload))
+	if ptr == nil {
+		return ""
+	}
+	return C.GoString(ptr)
+}
+
+// headerFloat reads a numeric header as a float64.
+func headerFloat(value *C.cosmos_value_t) float64 {
+	switch value.kind {
+	case C.COSMOS_VALUE_KIND_F64:
+		return float64(*(*C.double)(unsafe.Pointer(&value.payload)))
+	case C.COSMOS_VALUE_KIND_I64:
+		return float64(*(*C.int64_t)(unsafe.Pointer(&value.payload)))
+	case C.COSMOS_VALUE_KIND_U64:
+		return float64(*(*C.uint64_t)(unsafe.Pointer(&value.payload)))
+	default:
+		return 0
+	}
+}
+
+// headerInt reads a numeric header as an int64.
+func headerInt(value *C.cosmos_value_t) int64 {
+	switch value.kind {
+	case C.COSMOS_VALUE_KIND_I64:
+		return int64(*(*C.int64_t)(unsafe.Pointer(&value.payload)))
+	case C.COSMOS_VALUE_KIND_U64:
+		return int64(*(*C.uint64_t)(unsafe.Pointer(&value.payload)))
+	case C.COSMOS_VALUE_KIND_F64:
+		return int64(*(*C.double)(unsafe.Pointer(&value.payload)))
+	default:
+		return 0
+	}
+}
+
+// syntheticThrottledCompletion builds and translates a C-owned completion for native tests. Every
+// borrowed buffer is freed before it returns, so assertions also prove the translator copied out.
+func syntheticThrottledCompletion(packedSubStatus int) *Error {
+	result := syntheticCompletionWithHeaders(C.COSMOS_COMPLETION_OUTCOME_ERROR, 429, packedSubStatus,
+		[]byte(`{"code":"TooManyRequests","message":"slow down"}`))
+	return result.err.(*Error)
+}
+
+func syntheticBatchCompletion(body []byte, httpStatus int) completionResult {
+	return syntheticCompletionWithHeaders(C.COSMOS_COMPLETION_OUTCOME_OK, httpStatus, 0, body)
+}
+
+func syntheticCompletionWithHeaders(outcome C.cosmos_completion_outcome_t, httpStatus, packedSubStatus int, body []byte) completionResult {
+	return syntheticErrorMappingCompletion(outcome, uint32(httpStatus)<<16|uint32(packedSubStatus),
+		httpStatus, 3200, true, body)
+}
+
+// syntheticErrorMappingCompletion poisons C-owned buffers after translation, before freeing them.
+// This makes ownership assertions deterministic rather than relying on freed memory staying intact.
+func syntheticErrorMappingCompletion(outcome C.cosmos_completion_outcome_t, bits uint32, httpStatus, headerSubStatus int, fromWire bool, body []byte) completionResult {
+	var allocations []unsafe.Pointer
+	cString := func(value string) *C.char {
+		ptr := C.CString(value)
+		allocations = append(allocations, unsafe.Pointer(ptr))
+		return ptr
+	}
+
+	defer func() {
+		for _, allocation := range allocations {
+			bytes := unsafe.Slice((*byte)(allocation), int(C.strlen((*C.char)(allocation))))
+			for i := range bytes {
+				bytes[i] = 'x'
+			}
+			C.free(allocation)
+		}
+	}()
+
+	const headerCount = 6
+	headerMemory := C.malloc(C.size_t(headerCount) * C.size_t(unsafe.Sizeof(C.cosmos_response_header_t{})))
+	defer C.free(headerMemory)
+	headers := unsafe.Slice((*C.cosmos_response_header_t)(headerMemory), headerCount)
+	headers[0] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_REQUEST_CHARGE,
+		value: C.cosmos_test_f64_value(4.5),
+	}
+	headers[1] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_ACTIVITY_ID,
+		value: C.cosmos_test_string_value(cString("activity-123")),
+	}
+	headers[2] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_SESSION_TOKEN,
+		value: C.cosmos_test_string_value(cString("1:2")),
+	}
+	headers[3] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_ETAG,
+		value: C.cosmos_test_string_value(cString("\"etag\"")),
+	}
+	headers[4] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_SUB_STATUS,
+		value: C.cosmos_test_i64_value(C.int64_t(headerSubStatus)),
+	}
+	headers[5] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_RETRY_AFTER_MS,
+		value: C.cosmos_test_i64_value(125),
+	}
+
+	bodyMemory := C.CBytes(body)
+	defer func() {
+		bytes := unsafe.Slice((*byte)(bodyMemory), len(body))
+		for i := range bytes {
+			bytes[i] = 'x'
+		}
+		C.free(bodyMemory)
+	}()
+
+	completion := (*C.cosmos_completion_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_completion_t{}))))
+	defer C.free(unsafe.Pointer(completion))
+	*completion = C.cosmos_completion_t{
+		outcome:          outcome,
+		status:           C.cosmos_status_code_t(bits),
+		http_status_code: C.uint16_t(httpStatus),
+		message:          cString("Request rate is large."),
+		headers:          (*C.cosmos_response_header_t)(headerMemory),
+		headers_len:      headerCount,
+		body:             (*C.uint8_t)(bodyMemory),
+		body_len:         C.uintptr_t(len(body)),
+	}
+	if fromWire {
+		completion.is_from_wire = 1
+	}
+	return moveCompletion(completion, DiagnosticsVerbosityDefault).prepare()
+}
+
+// nativeMappingCompletion keeps cgo types out of the table-driven tests.
+func nativeMappingCompletion(bits uint32, httpStatus, headerSubStatus int, fromWire, cancelled bool, body []byte) completionResult {
+	outcome := C.cosmos_completion_outcome_t(C.COSMOS_COMPLETION_OUTCOME_ERROR)
+	if cancelled {
+		outcome = C.COSMOS_COMPLETION_OUTCOME_CANCELLED
+	}
+	return syntheticErrorMappingCompletion(outcome, bits, httpStatus, headerSubStatus, fromWire, body)
+}
+
+func nativeStatusBits(bits uint32) (uint32, int64, int, int, int) {
+	status := C.cosmos_test_status_roundtrip(C.cosmos_status_code_t(bits))
+	httpStatus, subStatus := unpackStatus(status)
+	return uint32(status), int64(status), int(unsafe.Sizeof(status)), httpStatus, subStatus
+}
+
+func nativeStatusMacroParts(bits uint32) (int, int) {
+	status := C.cosmos_status_code_t(bits)
+	return int(C.cosmos_test_status_http(status)), int(C.cosmos_test_status_sub(status))
+}
+
+// syntheticOutcome mirrors cosmos_completion_outcome_t without exposing the cgo type to tests, so
+// tests exercising translateCompletionOutcome's outcome branches never need to construct cgo
+// types themselves.
+type syntheticOutcome int
+
+const (
+	syntheticOutcomeOK syntheticOutcome = iota
+	syntheticOutcomeCancelled
+	syntheticOutcomeError
+)
+
+// syntheticCompletionResult builds a minimal C-owned completion for the given outcome and HTTP
+// status and translates it at DiagnosticsVerbosityDefault. Tests use it to exercise
+// translateCompletionOutcome's outcome branches, including interaction with diagnostics copying,
+// without constructing cgo types.
+func syntheticCompletionResult(outcome syntheticOutcome, httpStatus int, fromWire bool) completionResult {
+	return syntheticCompletionResultWithVerbosity(outcome, httpStatus, fromWire, DiagnosticsVerbosityDefault)
+}
+
+// syntheticCompletionResultWithVerbosity is syntheticCompletionResult with an explicit
+// DiagnosticsVerbosity, for tests verifying that the verbosity passed to translateCompletionOutcome
+// reaches copyDiagnosticsForCompletion unchanged.
+func syntheticCompletionResultWithVerbosity(
+	outcome syntheticOutcome,
+	httpStatus int,
+	fromWire bool,
+	verbosity DiagnosticsVerbosity,
+) completionResult {
+	var cOutcome C.cosmos_completion_outcome_t
+	switch outcome {
+	case syntheticOutcomeOK:
+		cOutcome = C.COSMOS_COMPLETION_OUTCOME_OK
+	case syntheticOutcomeCancelled:
+		cOutcome = C.COSMOS_COMPLETION_OUTCOME_CANCELLED
+	default:
+		cOutcome = C.COSMOS_COMPLETION_OUTCOME_ERROR
+	}
+	completion := C.cosmos_completion_t{
+		outcome:          cOutcome,
+		http_status_code: C.uint16_t(httpStatus),
+	}
+	if fromWire {
+		completion.is_from_wire = 1
+	}
+	return moveCompletion(&completion, verbosity).prepare()
+}
+
+// stubCopyDiagnosticsForCompletion installs a fake copyDiagnosticsForCompletion and returns a
+// function that restores the original. Defined here rather than in a _test.go file so tests never
+// need to name cosmos_diagnostics_t, the cgo parameter type copyDiagnosticsForCompletion takes.
+func stubCopyDiagnosticsForCompletion(diagnostics *Diagnostics, err error) (restore func()) {
+	restore, _ = stubCopyDiagnosticsForCompletionCapturing(diagnostics, err)
+	return restore
+}
+
+// stubCopyDiagnosticsForCompletionCapturing is stubCopyDiagnosticsForCompletion, additionally
+// recording every DiagnosticsVerbosity the stub is called with, in call order. Tests use it to
+// verify which verbosity reaches the copy seam without constructing cgo types.
+func stubCopyDiagnosticsForCompletionCapturing(diagnostics *Diagnostics, err error) (restore func(), seen *[]DiagnosticsVerbosity) {
+	original := copyDiagnosticsForCompletion
+	captured := &[]DiagnosticsVerbosity{}
+	copyDiagnosticsForCompletion = func(_ *C.cosmos_diagnostics_t, verbosity DiagnosticsVerbosity) (*Diagnostics, error) {
+		*captured = append(*captured, verbosity)
+		return diagnostics, err
+	}
+	return func() { copyDiagnosticsForCompletion = original }, captured
+}
+
+func syntheticSessionCompletion() ItemResponse {
+	token := C.CString("0:-1#43")
+	defer C.free(unsafe.Pointer(token))
+	header := (*C.cosmos_response_header_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_response_header_t{}))))
+	defer C.free(unsafe.Pointer(header))
+	*header = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_SESSION_TOKEN,
+		value: C.cosmos_test_string_value(token),
+	}
+	completion := C.cosmos_completion_t{
+		outcome:          C.COSMOS_COMPLETION_OUTCOME_OK,
+		http_status_code: 200,
+		headers:          header,
+		headers_len:      1,
+	}
+	return moveCompletion(&completion, DiagnosticsVerbosityDefault).prepare().response
+}
+
+// dispatchSyntheticCompletion borrows C buffers, not Rust backing. The caller must keep them
+// alive until preparation finishes; real backing and side handles are exercised by emulator tests.
+func dispatchSyntheticCompletion(r *reactor, cookie uintptr, status int, body string) (bool, func()) {
+	var source C.cosmos_completion_t
+	return dispatchSyntheticCompletionInSlot(r, &source, cookie, status, body)
+}
+
+func dispatchSyntheticCompletionInSlot(r *reactor, source *C.cosmos_completion_t, cookie uintptr, status int, body string) (bool, func()) {
+	var memory unsafe.Pointer
+	if body != "" {
+		memory = C.CBytes([]byte(body))
+	}
+	*source = C.cosmos_completion_t{
+		outcome: C.COSMOS_COMPLETION_OUTCOME_OK, user_data: C.intptr_t(cookie),
+		http_status_code: C.uint16_t(status), body: (*C.uint8_t)(memory), body_len: C.uintptr_t(len(body)),
+	}
+	r.deliver(source)
+	cleared := *source == (C.cosmos_completion_t{})
+	// Reusing the slot must not change the record handed to the caller.
+	source.http_status_code = 599
+	C.cosmos_completion_queue_free_completions(source, 1)
+	return cleared, func() { C.free(memory) }
+}
+
+func stubBlockingDiagnosticsCopy(started chan<- struct{}, resume <-chan struct{}) func() {
+	original := copyDiagnosticsForCompletion
+	var first atomic.Bool
+	copyDiagnosticsForCompletion = func(d *C.cosmos_diagnostics_t, verbosity DiagnosticsVerbosity) (*Diagnostics, error) {
+		if first.CompareAndSwap(false, true) {
+			close(started)
+			<-resume
+		}
+		return original(d, verbosity)
+	}
+	return func() { copyDiagnosticsForCompletion = original }
+}
+
+// captureHandleCompletionForTest obtains real Rust backing and an owned side handle on an isolated
+// queue. It frees the reusable poll slot before returning the moved record to the test.
+func (d *nativeDriver) captureHandleCompletionForTest(driver bool, databaseID, containerID string) (completionResult, error) {
+	options := C.cosmos_completion_queue_options_t{include_error_details: C.bool(true)}
+	queue := C.cosmos_completion_queue_create(d.runtime, &options)
+	if queue == nil {
+		return completionResult{}, &Error{Code: CodeClientError, Message: "creating test completion queue"}
+	}
+	defer C.cosmos_completion_queue_free(queue)
+	var preError C.cosmos_status_code_t
+	var op *C.cosmos_operation_handle_t
+	if driver {
+		driverOptions, err := d.buildDriverOptions()
+		if err != nil {
+			return completionResult{}, err
+		}
+		defer C.cosmos_driver_options_free(driverOptions)
+		op = C.cosmos_driver_get_or_create_submit(d.runtime, d.account, driverOptions, queue, 0, &preError)
+	} else {
+		database, freeDatabase := toNativeString(databaseID)
+		defer C.free(freeDatabase)
+		container, freeContainer := toNativeString(containerID)
+		defer C.free(freeContainer)
+		op = C.cosmos_driver_resolve_container_submit(d.driver, database, container, queue, 0, &preError)
+	}
+	if op == nil {
+		return completionResult{}, &Error{Code: CodeClientError, Message: "submitting test handle completion"}
+	}
+	defer C.cosmos_operation_handle_free(op)
+	var source C.cosmos_completion_t
+	if C.cosmos_completion_queue_wait(queue, &source, 1, 10_000) != 1 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		return completionResult{}, &Error{Code: CodeClientError, Message: "waiting for test handle completion"}
+	}
+	result := moveCompletion(&source, d.reactor.verbosity)
+	C.cosmos_completion_queue_free_completions(&source, 1) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	return result, nil
+}

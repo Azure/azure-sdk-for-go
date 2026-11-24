@@ -30,6 +30,22 @@ type LongTermRetentionManagedInstanceBackupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *armsql.LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse], errResp azfake.ErrorResponder)
 
+	// BeginLockTimeBasedImmutabilityByResourceGroup is the fake for method LongTermRetentionManagedInstanceBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginLockTimeBasedImmutabilityByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *armsql.LongTermRetentionManagedInstanceBackupsClientBeginLockTimeBasedImmutabilityByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// BeginRemoveLegalHoldImmutabilityByResourceGroup is the fake for method LongTermRetentionManagedInstanceBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRemoveLegalHoldImmutabilityByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *armsql.LongTermRetentionManagedInstanceBackupsClientBeginRemoveLegalHoldImmutabilityByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// BeginRemoveTimeBasedImmutabilityByResourceGroup is the fake for method LongTermRetentionManagedInstanceBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRemoveTimeBasedImmutabilityByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *armsql.LongTermRetentionManagedInstanceBackupsClientBeginRemoveTimeBasedImmutabilityByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// BeginSetLegalHoldImmutabilityByResourceGroup is the fake for method LongTermRetentionManagedInstanceBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginSetLegalHoldImmutabilityByResourceGroup func(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, backupName string, options *armsql.LongTermRetentionManagedInstanceBackupsClientBeginSetLegalHoldImmutabilityByResourceGroupOptions) (resp azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method LongTermRetentionManagedInstanceBackupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, locationName string, managedInstanceName string, databaseName string, backupName string, options *armsql.LongTermRetentionManagedInstanceBackupsClientGetOptions) (resp azfake.Responder[armsql.LongTermRetentionManagedInstanceBackupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -68,30 +84,38 @@ type LongTermRetentionManagedInstanceBackupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLongTermRetentionManagedInstanceBackupsServerTransport(srv *LongTermRetentionManagedInstanceBackupsServer) *LongTermRetentionManagedInstanceBackupsServerTransport {
 	return &LongTermRetentionManagedInstanceBackupsServerTransport{
-		srv:                                 srv,
-		beginDelete:                         newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteResponse]](),
-		beginDeleteByResourceGroup:          newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse]](),
-		newListByDatabasePager:              newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]](),
-		newListByInstancePager:              newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]](),
-		newListByLocationPager:              newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]](),
-		newListByResourceGroupDatabasePager: newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]](),
-		newListByResourceGroupInstancePager: newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]](),
-		newListByResourceGroupLocationPager: newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]](),
+		srv:                        srv,
+		beginDelete:                newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteResponse]](),
+		beginDeleteByResourceGroup: newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse]](),
+		beginLockTimeBasedImmutabilityByResourceGroup:   newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]](),
+		beginRemoveLegalHoldImmutabilityByResourceGroup: newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse]](),
+		beginRemoveTimeBasedImmutabilityByResourceGroup: newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse]](),
+		beginSetLegalHoldImmutabilityByResourceGroup:    newTracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]](),
+		newListByDatabasePager:                          newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]](),
+		newListByInstancePager:                          newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]](),
+		newListByLocationPager:                          newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]](),
+		newListByResourceGroupDatabasePager:             newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]](),
+		newListByResourceGroupInstancePager:             newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]](),
+		newListByResourceGroupLocationPager:             newTracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]](),
 	}
 }
 
 // LongTermRetentionManagedInstanceBackupsServerTransport connects instances of armsql.LongTermRetentionManagedInstanceBackupsClient to instances of LongTermRetentionManagedInstanceBackupsServer.
 // Don't use this type directly, use NewLongTermRetentionManagedInstanceBackupsServerTransport instead.
 type LongTermRetentionManagedInstanceBackupsServerTransport struct {
-	srv                                 *LongTermRetentionManagedInstanceBackupsServer
-	beginDelete                         *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteResponse]]
-	beginDeleteByResourceGroup          *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse]]
-	newListByDatabasePager              *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]]
-	newListByInstancePager              *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]]
-	newListByLocationPager              *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]]
-	newListByResourceGroupDatabasePager *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]]
-	newListByResourceGroupInstancePager *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]]
-	newListByResourceGroupLocationPager *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]]
+	srv                                             *LongTermRetentionManagedInstanceBackupsServer
+	beginDelete                                     *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteResponse]]
+	beginDeleteByResourceGroup                      *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientDeleteByResourceGroupResponse]]
+	beginLockTimeBasedImmutabilityByResourceGroup   *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse]]
+	beginRemoveLegalHoldImmutabilityByResourceGroup *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse]]
+	beginRemoveTimeBasedImmutabilityByResourceGroup *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse]]
+	beginSetLegalHoldImmutabilityByResourceGroup    *tracker[azfake.PollerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse]]
+	newListByDatabasePager                          *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]]
+	newListByInstancePager                          *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]]
+	newListByLocationPager                          *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]]
+	newListByResourceGroupDatabasePager             *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]]
+	newListByResourceGroupInstancePager             *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]]
+	newListByResourceGroupLocationPager             *tracker[azfake.PagerResponder[armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]]
 }
 
 // Do implements the policy.Transporter interface for LongTermRetentionManagedInstanceBackupsServerTransport.
@@ -119,6 +143,14 @@ func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchToMetho
 				res.resp, res.err = l.dispatchBeginDelete(req)
 			case "LongTermRetentionManagedInstanceBackupsClient.BeginDeleteByResourceGroup":
 				res.resp, res.err = l.dispatchBeginDeleteByResourceGroup(req)
+			case "LongTermRetentionManagedInstanceBackupsClient.BeginLockTimeBasedImmutabilityByResourceGroup":
+				res.resp, res.err = l.dispatchBeginLockTimeBasedImmutabilityByResourceGroup(req)
+			case "LongTermRetentionManagedInstanceBackupsClient.BeginRemoveLegalHoldImmutabilityByResourceGroup":
+				res.resp, res.err = l.dispatchBeginRemoveLegalHoldImmutabilityByResourceGroup(req)
+			case "LongTermRetentionManagedInstanceBackupsClient.BeginRemoveTimeBasedImmutabilityByResourceGroup":
+				res.resp, res.err = l.dispatchBeginRemoveTimeBasedImmutabilityByResourceGroup(req)
+			case "LongTermRetentionManagedInstanceBackupsClient.BeginSetLegalHoldImmutabilityByResourceGroup":
+				res.resp, res.err = l.dispatchBeginSetLegalHoldImmutabilityByResourceGroup(req)
 			case "LongTermRetentionManagedInstanceBackupsClient.Get":
 				res.resp, res.err = l.dispatchGet(req)
 			case "LongTermRetentionManagedInstanceBackupsClient.GetByResourceGroup":
@@ -254,6 +286,230 @@ func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchBeginDe
 	}
 	if !server.PollerResponderMore(beginDeleteByResourceGroup) {
 		l.beginDeleteByResourceGroup.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchBeginLockTimeBasedImmutabilityByResourceGroup(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginLockTimeBasedImmutabilityByResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginLockTimeBasedImmutabilityByResourceGroup not implemented")}
+	}
+	beginLockTimeBasedImmutabilityByResourceGroup := l.beginLockTimeBasedImmutabilityByResourceGroup.get(req)
+	if beginLockTimeBasedImmutabilityByResourceGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstanceBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/lockTimeBasedImmutability`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginLockTimeBasedImmutabilityByResourceGroup(req.Context(), resourceGroupNameParam, locationNameParam, managedInstanceNameParam, databaseNameParam, backupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginLockTimeBasedImmutabilityByResourceGroup = &respr
+		l.beginLockTimeBasedImmutabilityByResourceGroup.add(req, beginLockTimeBasedImmutabilityByResourceGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginLockTimeBasedImmutabilityByResourceGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginLockTimeBasedImmutabilityByResourceGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginLockTimeBasedImmutabilityByResourceGroup) {
+		l.beginLockTimeBasedImmutabilityByResourceGroup.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchBeginRemoveLegalHoldImmutabilityByResourceGroup(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginRemoveLegalHoldImmutabilityByResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveLegalHoldImmutabilityByResourceGroup not implemented")}
+	}
+	beginRemoveLegalHoldImmutabilityByResourceGroup := l.beginRemoveLegalHoldImmutabilityByResourceGroup.get(req)
+	if beginRemoveLegalHoldImmutabilityByResourceGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstanceBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeLegalHoldImmutability`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginRemoveLegalHoldImmutabilityByResourceGroup(req.Context(), resourceGroupNameParam, locationNameParam, managedInstanceNameParam, databaseNameParam, backupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRemoveLegalHoldImmutabilityByResourceGroup = &respr
+		l.beginRemoveLegalHoldImmutabilityByResourceGroup.add(req, beginRemoveLegalHoldImmutabilityByResourceGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginRemoveLegalHoldImmutabilityByResourceGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginRemoveLegalHoldImmutabilityByResourceGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRemoveLegalHoldImmutabilityByResourceGroup) {
+		l.beginRemoveLegalHoldImmutabilityByResourceGroup.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchBeginRemoveTimeBasedImmutabilityByResourceGroup(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginRemoveTimeBasedImmutabilityByResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveTimeBasedImmutabilityByResourceGroup not implemented")}
+	}
+	beginRemoveTimeBasedImmutabilityByResourceGroup := l.beginRemoveTimeBasedImmutabilityByResourceGroup.get(req)
+	if beginRemoveTimeBasedImmutabilityByResourceGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstanceBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removeTimeBasedImmutability`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginRemoveTimeBasedImmutabilityByResourceGroup(req.Context(), resourceGroupNameParam, locationNameParam, managedInstanceNameParam, databaseNameParam, backupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRemoveTimeBasedImmutabilityByResourceGroup = &respr
+		l.beginRemoveTimeBasedImmutabilityByResourceGroup.add(req, beginRemoveTimeBasedImmutabilityByResourceGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginRemoveTimeBasedImmutabilityByResourceGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginRemoveTimeBasedImmutabilityByResourceGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRemoveTimeBasedImmutabilityByResourceGroup) {
+		l.beginRemoveTimeBasedImmutabilityByResourceGroup.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchBeginSetLegalHoldImmutabilityByResourceGroup(req *http.Request) (*http.Response, error) {
+	if l.srv.BeginSetLegalHoldImmutabilityByResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSetLegalHoldImmutabilityByResourceGroup not implemented")}
+	}
+	beginSetLegalHoldImmutabilityByResourceGroup := l.beginSetLegalHoldImmutabilityByResourceGroup.get(req)
+	if beginSetLegalHoldImmutabilityByResourceGroup == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/locations/(?P<locationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionDatabases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/longTermRetentionManagedInstanceBackups/(?P<backupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setLegalHoldImmutability`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
+		if err != nil {
+			return nil, err
+		}
+		managedInstanceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedInstanceName")])
+		if err != nil {
+			return nil, err
+		}
+		databaseNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("databaseName")])
+		if err != nil {
+			return nil, err
+		}
+		backupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("backupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := l.srv.BeginSetLegalHoldImmutabilityByResourceGroup(req.Context(), resourceGroupNameParam, locationNameParam, managedInstanceNameParam, databaseNameParam, backupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSetLegalHoldImmutabilityByResourceGroup = &respr
+		l.beginSetLegalHoldImmutabilityByResourceGroup.add(req, beginSetLegalHoldImmutabilityByResourceGroup)
+	}
+
+	resp, err := server.PollerResponderNext(beginSetLegalHoldImmutabilityByResourceGroup, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		l.beginSetLegalHoldImmutabilityByResourceGroup.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSetLegalHoldImmutabilityByResourceGroup) {
+		l.beginSetLegalHoldImmutabilityByResourceGroup.remove(req)
 	}
 
 	return resp, nil

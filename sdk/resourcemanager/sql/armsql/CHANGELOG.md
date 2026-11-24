@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.10 (2026-11-09)
+## 2.0.0-beta.10 (2026-11-24)
 ### Features Added
 
 - New function `*ClientFactory.NewManagedInstanceLongTermRetentionBackupsClient() *ManagedInstanceLongTermRetentionBackupsClient`

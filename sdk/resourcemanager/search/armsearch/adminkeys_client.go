@@ -19,7 +19,7 @@ import (
 // AdminKeysClient contains the methods for the AdminKeys group.
 // Don't use this type directly, use NewAdminKeysClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-11-01
 type AdminKeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *AdminKeysClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AdminKeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -86,7 +87,7 @@ func (client *AdminKeysClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
@@ -127,7 +128,8 @@ func (client *AdminKeysClient) Regenerate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AdminKeysClientRegenerateResponse{}, err
 	}
-	return client.regenerateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateCreateRequest creates the Regenerate request.
@@ -154,7 +156,7 @@ func (client *AdminKeysClient) regenerateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {

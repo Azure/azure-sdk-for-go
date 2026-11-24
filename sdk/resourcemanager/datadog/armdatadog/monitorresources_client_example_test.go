@@ -12,32 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-26-preview/Monitors_LatestLinkedSaaS.json
-func ExampleMonitorResourcesClient_LatestLinkedSaaS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatadog.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMonitorResourcesClient().LatestLinkedSaaS(ctx, "myResourceGroup", "myMonitor", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatadog.MonitorResourcesClientLatestLinkedSaaSResponse{
-	// 	LatestLinkedSaaSResponse: armdatadog.LatestLinkedSaaSResponse{
-	// 		IsHiddenSaaS: to.Ptr(false),
-	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.SaaS/resources/saas-resource-001"),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-12-26-preview/Monitors_LinkSaaS.json
 func ExampleMonitorResourcesClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -90,6 +64,32 @@ func ExampleMonitorResourcesClient_BeginLinkSaaS() {
 	// 		Tags: map[string]*string{
 	// 			"Environment": to.Ptr("Dev"),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-26-preview/Monitors_LatestLinkedSaaS.json
+func ExampleMonitorResourcesClient_LatestLinkedSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatadog.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMonitorResourcesClient().LatestLinkedSaaS(ctx, "myResourceGroup", "myMonitor", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatadog.MonitorResourcesClientLatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armdatadog.LatestLinkedSaaSResponse{
+	// 		IsHiddenSaaS: to.Ptr(false),
+	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.SaaS/resources/saas-resource-001"),
 	// 	},
 	// }
 }

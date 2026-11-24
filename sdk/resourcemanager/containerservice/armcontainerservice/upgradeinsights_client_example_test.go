@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_AgentPool.json
+// Generated from example definition: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_AgentPool.json
 func ExampleUpgradeInsightsClient_Generate_generateASingleAgentPoolKubernetesVersionUpgradeInsight() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleUpgradeInsightsClient_Generate_generateASingleAgentPoolKubernetesVer
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlane.json
+// Generated from example definition: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlane.json
 func ExampleUpgradeInsightsClient_Generate_generateAControlPlaneUpgradeInsight() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleUpgradeInsightsClient_Generate_generateAControlPlaneUpgradeInsight()
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlaneAndAgentPools.json
+// Generated from example definition: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_ControlPlaneAndAgentPools.json
 func ExampleUpgradeInsightsClient_Generate_generateACombinedControlPlaneAndAgentPoolsUpgradeInsight() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExampleUpgradeInsightsClient_Generate_generateACombinedControlPlaneAndAgent
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImage.json
+// Generated from example definition: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImage.json
 func ExampleUpgradeInsightsClient_Generate_generateANodeOSImageUpgradeInsight() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleUpgradeInsightsClient_Generate_generateANodeOSImageUpgradeInsight() 
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImageLatest.json
+// Generated from example definition: 2026-09-02-preview/ManagedClustersGenerateUpgradeInsights_NodeImageLatest.json
 func ExampleUpgradeInsightsClient_Generate_generateANodeOSImageUpgradeInsightUsingTheLatestAvailableImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleUpgradeInsightsClient_Generate_generateANodeOSImageUpgradeInsightUsi
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/ManagedClustersGetUpgradeInsight.json
+// Generated from example definition: 2026-09-02-preview/ManagedClustersGetUpgradeInsight.json
 func ExampleUpgradeInsightsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -435,7 +435,7 @@ func ExampleUpgradeInsightsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/ManagedClustersListUpgradeInsights.json
+// Generated from example definition: 2026-09-02-preview/ManagedClustersListUpgradeInsights.json
 func ExampleUpgradeInsightsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

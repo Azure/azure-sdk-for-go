@@ -67,7 +67,7 @@ func (client *FeaturesClient) BeginDisable(ctx context.Context, location string,
 	}
 }
 
-// Disable - Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
+// disable - Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FeaturesClient) disable(ctx context.Context, location string, featureName string, options *FeaturesClientBeginDisableOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *FeaturesClient) disable(ctx context.Context, location string, feat
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// disableCreateRequest creates the Disable request.
+// disableCreateRequest creates the disable request.
 func (client *FeaturesClient) disableCreateRequest(ctx context.Context, location string, featureName string, _ *FeaturesClientBeginDisableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features/{featureName}/disable"
 	if client.subscriptionID == "" {
@@ -138,7 +139,7 @@ func (client *FeaturesClient) BeginEnable(ctx context.Context, location string, 
 	}
 }
 
-// Enable - Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
+// enable - Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FeaturesClient) enable(ctx context.Context, location string, featureName string, options *FeaturesClientBeginEnableOptions) (*http.Response, error) {
 	var err error
@@ -155,12 +156,13 @@ func (client *FeaturesClient) enable(ctx context.Context, location string, featu
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// enableCreateRequest creates the Enable request.
+// enableCreateRequest creates the enable request.
 func (client *FeaturesClient) enableCreateRequest(ctx context.Context, location string, featureName string, options *FeaturesClientBeginEnableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features/{featureName}/enable"
 	if client.subscriptionID == "" {
@@ -212,7 +214,8 @@ func (client *FeaturesClient) Get(ctx context.Context, location string, featureN
 	if err != nil {
 		return FeaturesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

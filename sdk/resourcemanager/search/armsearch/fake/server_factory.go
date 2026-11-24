@@ -24,9 +24,6 @@ type ServerFactory struct {
 	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
 	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
 
-	// OfferingsServer contains the fakes for client OfferingsClient
-	OfferingsServer OfferingsServer
-
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -66,7 +63,6 @@ type ServerFactoryTransport struct {
 	trAdminKeysServer                              *AdminKeysServerTransport
 	trManagementServer                             *ManagementServerTransport
 	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
-	trOfferingsServer                              *OfferingsServerTransport
 	trOperationsServer                             *OperationsServerTransport
 	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
@@ -81,7 +77,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	client := method[:strings.Index(method, ".")]
@@ -100,9 +96,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
 		})
 		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
-	case "OfferingsClient":
-		initServer(&s.trMu, &s.trOfferingsServer, func() *OfferingsServerTransport { return NewOfferingsServerTransport(&s.srv.OfferingsServer) })
-		resp, err = s.trOfferingsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

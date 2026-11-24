@@ -7,6 +7,7 @@ package fake
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
+	"net/url"
 	"reflect"
 	"strings"
 	"sync"
@@ -21,7 +22,7 @@ type nonRetriableError struct {
 	error
 }
 
-func (nonRetriableError) NonRetriable() {
+func (*nonRetriableError) NonRetriable() {
 	// marker method
 }
 
@@ -49,13 +50,6 @@ func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error)
 		return nil, err
 	}
 	return &t, nil
-}
-
-func splitHelper(s, sep string) []string {
-	if s == "" {
-		return nil
-	}
-	return strings.Split(s, sep)
 }
 
 func newTracker[T any]() *tracker[T] {
@@ -88,4 +82,61 @@ func (p *tracker[T]) remove(req *http.Request) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	delete(p.items, server.SanitizePagerPollerPath(req.URL.Path))
+}
+
+func splitURIQuery(value string) []string {
+	if value == "" {
+		return []string{}
+	}
+	return strings.Split(value, ",")
+}
+
+func parseURIArray[T any](values []string, unescape bool, parse func(string) (T, error)) ([]T, error) {
+	if values == nil {
+		return nil, nil
+	}
+	result := make([]T, len(values))
+	for i, value := range values {
+		if unescape {
+			var err error
+			value, err = url.PathUnescape(value)
+			if err != nil {
+				return nil, err
+			}
+		}
+		parsed, err := parse(value)
+		if err != nil {
+			return nil, err
+		}
+		result[i] = parsed
+	}
+	return result, nil
+}
+
+func parseRawURIQuery(query string) (url.Values, error) {
+	result := url.Values{}
+	for _, part := range strings.Split(query, "&") {
+		if part == "" {
+			continue
+		}
+		key, value, _ := strings.Cut(part, "=")
+		key, err := url.QueryUnescape(key)
+		if err != nil {
+			return nil, err
+		}
+		result.Add(key, value)
+	}
+	return result, nil
+}
+
+func parseURIQueryArray[T any](value string, parse func(string) (T, error)) ([]T, error) {
+	parts := splitURIQuery(value)
+	for i, part := range parts {
+		decoded, err := url.QueryUnescape(part)
+		if err != nil {
+			return nil, err
+		}
+		parts[i] = decoded
+	}
+	return parseURIArray(parts, false, parse)
 }

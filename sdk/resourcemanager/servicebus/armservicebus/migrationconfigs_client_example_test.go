@@ -12,29 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationCompleteMigration.json
-func ExampleMigrationConfigsClient_CompleteMigration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicebus.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationConfigsClient().CompleteMigration(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicebus.MigrationConfigsClientCompleteMigrationResponse{
-	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
 func ExampleMigrationConfigsClient_BeginCreateAndStartMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +54,29 @@ func ExampleMigrationConfigsClient_BeginCreateAndStartMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationDelete.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationCompleteMigration.json
+func ExampleMigrationConfigsClient_CompleteMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicebus.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationConfigsClient().CompleteMigration(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicebus.MigrationConfigsClientCompleteMigrationResponse{
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationDelete.json
 func ExampleMigrationConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleMigrationConfigsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationGet.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationGet.json
 func ExampleMigrationConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleMigrationConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationList.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationList.json
 func ExampleMigrationConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleMigrationConfigsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationRevert.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationRevert.json
 func ExampleMigrationConfigsClient_Revert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

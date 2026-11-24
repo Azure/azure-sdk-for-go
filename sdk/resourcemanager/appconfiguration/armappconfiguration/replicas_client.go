@@ -68,7 +68,7 @@ func (client *ReplicasClient) BeginCreate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Create - Creates a replica with the specified parameters.
+// create - Creates a replica with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReplicasClient) create(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, replicaCreationParameters Replica, options *ReplicasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ReplicasClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReplicasClient) createCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, replicaCreationParameters Replica, _ *ReplicasClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
@@ -147,7 +148,7 @@ func (client *ReplicasClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes a replica.
+// deleteOperation - Deletes a replica.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReplicasClient) deleteOperation(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, options *ReplicasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,12 +165,13 @@ func (client *ReplicasClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, _ *ReplicasClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}"
 	if client.subscriptionID == "" {
@@ -218,7 +220,8 @@ func (client *ReplicasClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ReplicasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

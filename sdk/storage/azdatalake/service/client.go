@@ -60,8 +60,13 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	options.PerCallPolicies = perCallPolicies
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
+		// sessions apply only to the requests this client sends to the blob endpoint
+		Session: conOptions.Session,
 	}
-	blobSvcClient, _ := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
+	blobSvcClient, err := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
+	if err != nil {
+		return nil, err
+	}
 	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(svcClient), nil

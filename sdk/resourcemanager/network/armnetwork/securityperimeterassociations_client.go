@@ -20,7 +20,7 @@ import (
 // SecurityPerimeterAssociationsClient contains the methods for the SecurityPerimeterAssociations group.
 // Don't use this type directly, use NewSecurityPerimeterAssociationsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type SecurityPerimeterAssociationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,8 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -116,7 +117,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -135,7 +136,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdateCreateRequest(c
 //     method.
 func (client *SecurityPerimeterAssociationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterAssociationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, associationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, associationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,9 +151,9 @@ func (client *SecurityPerimeterAssociationsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// delete - Deletes an NSP association resource.
+// deleteOperation - Deletes an NSP association resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimeterAssociationsClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimeterAssociationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimeterAssociationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -167,7 +168,8 @@ func (client *SecurityPerimeterAssociationsClient) delete(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -196,7 +198,7 @@ func (client *SecurityPerimeterAssociationsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -222,7 +224,8 @@ func (client *SecurityPerimeterAssociationsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return SecurityPerimeterAssociationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -249,7 +252,7 @@ func (client *SecurityPerimeterAssociationsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -331,7 +334,7 @@ func (client *SecurityPerimeterAssociationsClient) listCreateRequest(ctx context
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -372,7 +375,8 @@ func (client *SecurityPerimeterAssociationsClient) Reconcile(ctx context.Context
 	if err != nil {
 		return SecurityPerimeterAssociationsClientReconcileResponse{}, err
 	}
-	return client.reconcileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.reconcileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // reconcileCreateRequest creates the Reconcile request.
@@ -399,7 +403,7 @@ func (client *SecurityPerimeterAssociationsClient) reconcileCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

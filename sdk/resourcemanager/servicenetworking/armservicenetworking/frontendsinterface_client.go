@@ -70,7 +70,7 @@ func (client *FrontendsInterfaceClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create a Frontend
+// createOrUpdate - Create a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FrontendsInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, resource Frontend, options *FrontendsInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *FrontendsInterfaceClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FrontendsInterfaceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, resource Frontend, _ *FrontendsInterfaceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *FrontendsInterfaceClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a Frontend
+// deleteOperation - Delete a Frontend
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FrontendsInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, options *FrontendsInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *FrontendsInterfaceClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FrontendsInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, frontendName string, _ *FrontendsInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}"
 	if client.subscriptionID == "" {
@@ -221,7 +223,8 @@ func (client *FrontendsInterfaceClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return FrontendsInterfaceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -365,7 +368,8 @@ func (client *FrontendsInterfaceClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return FrontendsInterfaceClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

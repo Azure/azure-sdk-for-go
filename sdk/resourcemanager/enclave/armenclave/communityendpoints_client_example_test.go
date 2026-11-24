@@ -110,60 +110,6 @@ func ExampleCommunityEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_Get.json
-func ExampleCommunityEndpointsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCommunityEndpointsClient().Get(ctx, "rgopenapi", "TestMyCommunity", "TestMyCommunityEndpoint", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armenclave.CommunityEndpointsClientGetResponse{
-	// 	CommunityEndpointResource: armenclave.CommunityEndpointResource{
-	// 		Properties: &armenclave.CommunityEndpointProperties{
-	// 			RuleCollection: []*armenclave.CommunityEndpointDestinationRule{
-	// 				{
-	// 					DestinationType: to.Ptr(armenclave.DestinationTypeFQDN),
-	// 					Destination: to.Ptr("foo.example.com"),
-	// 					Ports: to.Ptr("443"),
-	// 					Protocols: []*armenclave.CommunityEndpointProtocol{
-	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
-	// 					},
-	// 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
-	// 				},
-	// 			},
-	// 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
-	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"sampletag": to.Ptr("samplevalue"),
-	// 		},
-	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity/communityendpoints/TestMyCommunityEndpoint"),
-	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
-	// 		Type: to.Ptr("Microsoft.Mission/communities/communityendpoints"),
-	// 		SystemData: &armenclave.SystemData{
-	// 			CreatedBy: to.Ptr("myAlias"),
-	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("myAlias"),
-	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-04-01/CommunityEndpoints_HandleApprovalCreation.json
 func ExampleCommunityEndpointsClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -223,6 +169,136 @@ func ExampleCommunityEndpointsClient_BeginHandleApprovalDeletion() {
 	// res = armenclave.CommunityEndpointsClientHandleApprovalDeletionResponse{
 	// 	ApprovalActionResponse: armenclave.ApprovalActionResponse{
 	// 		Message: to.Ptr("Approval state change handled successfully."),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Update.json
+func ExampleCommunityEndpointsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCommunityEndpointsClient().BeginUpdate(ctx, "rgopenapi", "TestMyCommunity", "TestMyCommunityEndpoint", armenclave.CommunityEndpointPatchModel{
+		Tags: map[string]*string{
+			"sampletag": to.Ptr("samplevalue"),
+		},
+		Properties: &armenclave.CommunityEndpointPatchProperties{
+			RuleCollection: []*armenclave.CommunityEndpointDestinationRule{
+				{
+					DestinationType: to.Ptr(armenclave.DestinationTypeFQDN),
+					Destination:     to.Ptr("foo.example.com"),
+					Ports:           to.Ptr("443"),
+					Protocols: []*armenclave.CommunityEndpointProtocol{
+						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
+					},
+					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+				},
+			},
+			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armenclave.CommunityEndpointsClientUpdateResponse{
+	// 	CommunityEndpointResource: armenclave.CommunityEndpointResource{
+	// 		Properties: &armenclave.CommunityEndpointProperties{
+	// 			RuleCollection: []*armenclave.CommunityEndpointDestinationRule{
+	// 				{
+	// 					DestinationType: to.Ptr(armenclave.DestinationTypeFQDN),
+	// 					Destination: to.Ptr("foo.example.com"),
+	// 					Ports: to.Ptr("443"),
+	// 					Protocols: []*armenclave.CommunityEndpointProtocol{
+	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
+	// 					},
+	// 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 				},
+	// 			},
+	// 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
+	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"sampletag": to.Ptr("samplevalue"),
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity/communityendpoints/TestMyCommunityEndpoint"),
+	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
+	// 		Type: to.Ptr("Microsoft.Mission/communities/communityendpoints"),
+	// 		SystemData: &armenclave.SystemData{
+	// 			CreatedBy: to.Ptr("myAlias"),
+	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("myAlias"),
+	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/CommunityEndpoints_Get.json
+func ExampleCommunityEndpointsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCommunityEndpointsClient().Get(ctx, "rgopenapi", "TestMyCommunity", "TestMyCommunityEndpoint", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armenclave.CommunityEndpointsClientGetResponse{
+	// 	CommunityEndpointResource: armenclave.CommunityEndpointResource{
+	// 		Properties: &armenclave.CommunityEndpointProperties{
+	// 			RuleCollection: []*armenclave.CommunityEndpointDestinationRule{
+	// 				{
+	// 					DestinationType: to.Ptr(armenclave.DestinationTypeFQDN),
+	// 					Destination: to.Ptr("foo.example.com"),
+	// 					Ports: to.Ptr("443"),
+	// 					Protocols: []*armenclave.CommunityEndpointProtocol{
+	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
+	// 					},
+	// 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 				},
+	// 			},
+	// 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
+	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"sampletag": to.Ptr("samplevalue"),
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity/communityendpoints/TestMyCommunityEndpoint"),
+	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
+	// 		Type: to.Ptr("Microsoft.Mission/communities/communityendpoints"),
+	// 		SystemData: &armenclave.SystemData{
+	// 			CreatedBy: to.Ptr("myAlias"),
+	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("myAlias"),
+	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 		},
 	// 	},
 	// }
 }
@@ -353,80 +429,4 @@ func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-04-01/CommunityEndpoints_Update.json
-func ExampleCommunityEndpointsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCommunityEndpointsClient().BeginUpdate(ctx, "rgopenapi", "TestMyCommunity", "TestMyCommunityEndpoint", armenclave.CommunityEndpointPatchModel{
-		Tags: map[string]*string{
-			"sampletag": to.Ptr("samplevalue"),
-		},
-		Properties: &armenclave.CommunityEndpointPatchProperties{
-			RuleCollection: []*armenclave.CommunityEndpointDestinationRule{
-				{
-					DestinationType: to.Ptr(armenclave.DestinationTypeFQDN),
-					Destination:     to.Ptr("foo.example.com"),
-					Ports:           to.Ptr("443"),
-					Protocols: []*armenclave.CommunityEndpointProtocol{
-						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
-					},
-					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
-				},
-			},
-			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armenclave.CommunityEndpointsClientUpdateResponse{
-	// 	CommunityEndpointResource: armenclave.CommunityEndpointResource{
-	// 		Properties: &armenclave.CommunityEndpointProperties{
-	// 			RuleCollection: []*armenclave.CommunityEndpointDestinationRule{
-	// 				{
-	// 					DestinationType: to.Ptr(armenclave.DestinationTypeFQDN),
-	// 					Destination: to.Ptr("foo.example.com"),
-	// 					Ports: to.Ptr("443"),
-	// 					Protocols: []*armenclave.CommunityEndpointProtocol{
-	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
-	// 					},
-	// 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
-	// 				},
-	// 			},
-	// 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
-	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"sampletag": to.Ptr("samplevalue"),
-	// 		},
-	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity/communityendpoints/TestMyCommunityEndpoint"),
-	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
-	// 		Type: to.Ptr("Microsoft.Mission/communities/communityendpoints"),
-	// 		SystemData: &armenclave.SystemData{
-	// 			CreatedBy: to.Ptr("myAlias"),
-	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("myAlias"),
-	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

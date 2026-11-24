@@ -64,7 +64,8 @@ func (client *AlertsClient) Get(ctx context.Context, deviceName string, name str
 	if err != nil {
 		return AlertsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

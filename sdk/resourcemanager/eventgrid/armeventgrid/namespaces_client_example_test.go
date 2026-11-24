@@ -93,175 +93,6 @@ func ExampleNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_Get.json
-func ExampleNamespacesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNamespacesClient().Get(ctx, "examplerg", "exampleNamespaceName1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.NamespacesClientGetResponse{
-	// 	Namespace: armeventgrid.Namespace{
-	// 		Name: to.Ptr("exampleNamespaceName1"),
-	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces"),
-	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armeventgrid.NamespaceProperties{
-	// 			ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateSucceeded),
-	// 			TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
-	// 				Hostname: to.Ptr("exampleNamespaceName1.westus-1.mqtt.eventgrid-int.azure.net"),
-	// 				RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
-	// 				State: to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 			"key3": to.Ptr("value3"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15-preview/Namespaces_ListByResourceGroup.json
-func ExampleNamespacesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewNamespacesClient().NewListByResourceGroupPager("examplerg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventgrid.NamespacesClientListByResourceGroupResponse{
-		// 	NamespacesListResult: armeventgrid.NamespacesListResult{
-		// 		NextLink: to.Ptr("https://xyz.net/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/namespaces?2025-04-01-preview&%24skiptoken=7ZjtaqQwFIbvRWp%2f1dHJ6GgHypK1yro707F%2bdOn%2bUxPdMJhIkmqh9N43cYfeg6CE%2bB45mI%2bHlxz9MCh%2bl0dCL8I4fBi%2fo7woc%2bNg%2fJVyEAfbrgZiIda1jKENx4K98QaLzUQoYpOwCJUbiqUt3mrRcDJIwqiwkRt4%2b30VWMAFgeVW%2b8YKdq5v3e99Dzn3bR14W3vgbCQIc2H3pOFMsFZu8Iip7DhBtmQDacQ3PfqoctRrH4ADgLV1rK1nDRyPBE%2b3N%2bKixmQXTB9Mrzb92gRgDtXd3FW6B3WWPGrt49F5fYS%2ffP7SJxf4dZk7pBvYZYVK2ypRZKFSwFEyyV%2b01Co6K7X3PE%2bnPIexigKl4lQnwy7SL%2bxgeIIlDKGcTslrB6cu5SZoJ6dpwziCbqqC8ll1QQtDeqp5k81zbFTPK9rh67znhfSEXkO9DNV0Vl%2b9fz2MYy19pJuHbm%2fUnqlNMu6uEMFKcdEU83NZ%2fAijpyKDx9WSC7fk9wz%2bSY4z0tWWi7alPiGjMjun0Qpy0SAjqEud9ZTUBc5ya53%2fFFcrLh4izBO4Ylw0xrm80YZcWS7%2bG%2fInTOGTrnVWTy7Yk593RsV72HUcd5XEqND%2fShRRmJ2Mz38%3d"),
-		// 		Value: []*armeventgrid.Namespace{
-		// 			{
-		// 				Name: to.Ptr("exampleNamespaceName1"),
-		// 				Type: to.Ptr("Microsoft.EventGrid/namespaces"),
-		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armeventgrid.NamespaceProperties{
-		// 					ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateSucceeded),
-		// 					TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
-		// 						Hostname: to.Ptr("exampleNamespaceName1.westus-1.mqtt.eventgrid-int.azure.net"),
-		// 						RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
-		// 						State: to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 					"key3": to.Ptr("value3"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/Namespaces_ListBySubscription.json
-func ExampleNamespacesClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewNamespacesClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventgrid.NamespacesClientListBySubscriptionResponse{
-		// 	NamespacesListResult: armeventgrid.NamespacesListResult{
-		// 		NextLink: to.Ptr("https://xyz.net/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/providers/microsoft.eventgrid/namespaces?2025-04-01-preview&%24skiptoken=7ZjtaqQwFIbvRWp%2f1dHJ6GgHypK1yro707F%2bdOn%2bUxPdMJhIkmqh9N43cYfeg6CE%2bB45mI%2bHlxz9MCh%2bl0dCL8I4fBi%2fo7woc%2bNg%2fJVyEAfbrgZiIda1jKENx4K98QaLzUQoYpOwCJUbiqUt3mrRcDJIwqiwkRt4%2b30VWMAFgeVW%2b8YKdq5v3e99Dzn3bR14W3vgbCQIc2H3pOFMsFZu8Iip7DhBtmQDacQ3PfqoctRrH4ADgLV1rK1nDRyPBE%2b3N%2bKixmQXTB9Mrzb92gRgDtXd3FW6B3WWPGrt49F5fYS%2ffP7SJxf4dZk7pBvYZYVK2ypRZKFSwFEyyV%2b01Co6K7X3PE%2bnPIexigKl4lQnwy7SL%2bxgeIIlDKGcTslrB6cu5SZoJ6dpwziCbqqC8ll1QQtDeqp5k81zbFTPK9rh67znhfSEXkO9DNV0Vl%2b9fz2MYy19pJuHbm%2fUnqlNMu6uEMFKcdEU83NZ%2fAijpyKDx9WSC7fk9wz%2bSY4z0tWWi7alPiGjMjun0Qpy0SAjqEud9ZTUBc5ya53%2fFFcrLh4izBO4Ylw0xrm80YZcWS7%2bG%2fInTOGTrnVWTy7Yk593RsV72HUcd5XEqND%2fShRRmJ2Mz38%3d"),
-		// 		Value: []*armeventgrid.Namespace{
-		// 			{
-		// 				Name: to.Ptr("exampleNamespaceName1"),
-		// 				Type: to.Ptr("Microsoft.EventGrid/namespaces"),
-		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armeventgrid.NamespaceProperties{
-		// 					ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateSucceeded),
-		// 					TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
-		// 						Hostname: to.Ptr("exampleNamespaceName1.westus-1.mqtt.eventgrid-int.azure.net"),
-		// 						RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
-		// 						State: to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 					"key3": to.Ptr("value3"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-07-15-preview/Namespaces_ListSharedAccessKeys.json
-func ExampleNamespacesClient_ListSharedAccessKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNamespacesClient().ListSharedAccessKeys(ctx, "examplerg", "exampleNamespaceName1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.NamespacesClientListSharedAccessKeysResponse{
-	// 	NamespaceSharedAccessKeys: armeventgrid.NamespaceSharedAccessKeys{
-	// 		Key1: to.Ptr("testKey1Value"),
-	// 		Key2: to.Ptr("testKey2Value"),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-07-15-preview/Namespaces_RegenerateKey.json
 func ExampleNamespacesClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -388,4 +219,173 @@ func ExampleNamespacesClient_BeginValidateCustomDomainOwnership() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-07-15-preview/Namespaces_Get.json
+func ExampleNamespacesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNamespacesClient().Get(ctx, "examplerg", "exampleNamespaceName1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.NamespacesClientGetResponse{
+	// 	Namespace: armeventgrid.Namespace{
+	// 		Name: to.Ptr("exampleNamespaceName1"),
+	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces"),
+	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armeventgrid.NamespaceProperties{
+	// 			ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateSucceeded),
+	// 			TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
+	// 				Hostname: to.Ptr("exampleNamespaceName1.westus-1.mqtt.eventgrid-int.azure.net"),
+	// 				RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
+	// 				State: to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 			"key3": to.Ptr("value3"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-15-preview/Namespaces_ListSharedAccessKeys.json
+func ExampleNamespacesClient_ListSharedAccessKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNamespacesClient().ListSharedAccessKeys(ctx, "examplerg", "exampleNamespaceName1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.NamespacesClientListSharedAccessKeysResponse{
+	// 	NamespaceSharedAccessKeys: armeventgrid.NamespaceSharedAccessKeys{
+	// 		Key1: to.Ptr("testKey1Value"),
+	// 		Key2: to.Ptr("testKey2Value"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-15-preview/Namespaces_ListByResourceGroup.json
+func ExampleNamespacesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNamespacesClient().NewListByResourceGroupPager("examplerg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventgrid.NamespacesClientListByResourceGroupResponse{
+		// 	NamespacesListResult: armeventgrid.NamespacesListResult{
+		// 		NextLink: to.Ptr("https://xyz.net/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/microsoft.eventgrid/namespaces?2025-04-01-preview&%24skiptoken=7ZjtaqQwFIbvRWp%2f1dHJ6GgHypK1yro707F%2bdOn%2bUxPdMJhIkmqh9N43cYfeg6CE%2bB45mI%2bHlxz9MCh%2bl0dCL8I4fBi%2fo7woc%2bNg%2fJVyEAfbrgZiIda1jKENx4K98QaLzUQoYpOwCJUbiqUt3mrRcDJIwqiwkRt4%2b30VWMAFgeVW%2b8YKdq5v3e99Dzn3bR14W3vgbCQIc2H3pOFMsFZu8Iip7DhBtmQDacQ3PfqoctRrH4ADgLV1rK1nDRyPBE%2b3N%2bKixmQXTB9Mrzb92gRgDtXd3FW6B3WWPGrt49F5fYS%2ffP7SJxf4dZk7pBvYZYVK2ypRZKFSwFEyyV%2b01Co6K7X3PE%2bnPIexigKl4lQnwy7SL%2bxgeIIlDKGcTslrB6cu5SZoJ6dpwziCbqqC8ll1QQtDeqp5k81zbFTPK9rh67znhfSEXkO9DNV0Vl%2b9fz2MYy19pJuHbm%2fUnqlNMu6uEMFKcdEU83NZ%2fAijpyKDx9WSC7fk9wz%2bSY4z0tWWi7alPiGjMjun0Qpy0SAjqEud9ZTUBc5ya53%2fFFcrLh4izBO4Ylw0xrm80YZcWS7%2bG%2fInTOGTrnVWTy7Yk593RsV72HUcd5XEqND%2fShRRmJ2Mz38%3d"),
+		// 		Value: []*armeventgrid.Namespace{
+		// 			{
+		// 				Name: to.Ptr("exampleNamespaceName1"),
+		// 				Type: to.Ptr("Microsoft.EventGrid/namespaces"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armeventgrid.NamespaceProperties{
+		// 					ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateSucceeded),
+		// 					TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
+		// 						Hostname: to.Ptr("exampleNamespaceName1.westus-1.mqtt.eventgrid-int.azure.net"),
+		// 						RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
+		// 						State: to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 					"key3": to.Ptr("value3"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-07-15-preview/Namespaces_ListBySubscription.json
+func ExampleNamespacesClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNamespacesClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventgrid.NamespacesClientListBySubscriptionResponse{
+		// 	NamespacesListResult: armeventgrid.NamespacesListResult{
+		// 		NextLink: to.Ptr("https://xyz.net/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/providers/microsoft.eventgrid/namespaces?2025-04-01-preview&%24skiptoken=7ZjtaqQwFIbvRWp%2f1dHJ6GgHypK1yro707F%2bdOn%2bUxPdMJhIkmqh9N43cYfeg6CE%2bB45mI%2bHlxz9MCh%2bl0dCL8I4fBi%2fo7woc%2bNg%2fJVyEAfbrgZiIda1jKENx4K98QaLzUQoYpOwCJUbiqUt3mrRcDJIwqiwkRt4%2b30VWMAFgeVW%2b8YKdq5v3e99Dzn3bR14W3vgbCQIc2H3pOFMsFZu8Iip7DhBtmQDacQ3PfqoctRrH4ADgLV1rK1nDRyPBE%2b3N%2bKixmQXTB9Mrzb92gRgDtXd3FW6B3WWPGrt49F5fYS%2ffP7SJxf4dZk7pBvYZYVK2ypRZKFSwFEyyV%2b01Co6K7X3PE%2bnPIexigKl4lQnwy7SL%2bxgeIIlDKGcTslrB6cu5SZoJ6dpwziCbqqC8ll1QQtDeqp5k81zbFTPK9rh67znhfSEXkO9DNV0Vl%2b9fz2MYy19pJuHbm%2fUnqlNMu6uEMFKcdEU83NZ%2fAijpyKDx9WSC7fk9wz%2bSY4z0tWWi7alPiGjMjun0Qpy0SAjqEud9ZTUBc5ya53%2fFFcrLh4izBO4Ylw0xrm80YZcWS7%2bG%2fInTOGTrnVWTy7Yk593RsV72HUcd5XEqND%2fShRRmJ2Mz38%3d"),
+		// 		Value: []*armeventgrid.Namespace{
+		// 			{
+		// 				Name: to.Ptr("exampleNamespaceName1"),
+		// 				Type: to.Ptr("Microsoft.EventGrid/namespaces"),
+		// 				ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/exampleNamespaceName1"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armeventgrid.NamespaceProperties{
+		// 					ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateSucceeded),
+		// 					TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
+		// 						Hostname: to.Ptr("exampleNamespaceName1.westus-1.mqtt.eventgrid-int.azure.net"),
+		// 						RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
+		// 						State: to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 					"key3": to.Ptr("value3"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

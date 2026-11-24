@@ -20,7 +20,7 @@ import (
 // StaticCidrsClient contains the methods for the StaticCidrs group.
 // Don't use this type directly, use NewStaticCidrsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type StaticCidrsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -56,7 +56,7 @@ func NewStaticCidrsClient(subscriptionID string, credential azcore.TokenCredenti
 //   - options - StaticCidrsClientBeginDeleteOptions contains the optional parameters for the StaticCidrsClient.BeginDelete method.
 func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*runtime.Poller[StaticCidrsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,11 +71,11 @@ func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Delete the Static CIDR resource.
+// deleteOperation - Delete the Static CIDR resource.
 //
 // Delete the Static CIDR resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StaticCidrsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *StaticCidrsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StaticCidrsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -90,7 +90,8 @@ func (client *StaticCidrsClient) delete(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -123,7 +124,7 @@ func (client *StaticCidrsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -151,7 +152,8 @@ func (client *StaticCidrsClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return StaticCidrsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -182,7 +184,7 @@ func (client *StaticCidrsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -227,7 +229,8 @@ func (client *StaticCidrsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return StaticCidrsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -258,7 +261,7 @@ func (client *StaticCidrsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,7 +343,7 @@ func (client *StaticCidrsClient) listCreateRequest(ctx context.Context, resource
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		if options != nil && options.Skip != nil {
 			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
 		}

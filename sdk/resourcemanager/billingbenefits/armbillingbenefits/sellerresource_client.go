@@ -54,7 +54,8 @@ func (client *SellerResourceClient) List(ctx context.Context, body SellerResourc
 	if err != nil {
 		return SellerResourceClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

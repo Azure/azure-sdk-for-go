@@ -20,7 +20,7 @@ import (
 // VerifierWorkspacesClient contains the methods for the VerifierWorkspaces group.
 // Don't use this type directly, use NewVerifierWorkspacesClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type VerifierWorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -56,7 +56,7 @@ func NewVerifierWorkspacesClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *VerifierWorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*runtime.Poller[VerifierWorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, workspaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,11 +71,11 @@ func (client *VerifierWorkspacesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes Verifier Workspace.
+// deleteOperation - Deletes Verifier Workspace.
 //
 // Deletes Verifier Workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VerifierWorkspacesClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VerifierWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VerifierWorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -90,7 +90,8 @@ func (client *VerifierWorkspacesClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -119,7 +120,7 @@ func (client *VerifierWorkspacesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -151,7 +152,8 @@ func (client *VerifierWorkspacesClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return VerifierWorkspacesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -178,7 +180,7 @@ func (client *VerifierWorkspacesClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -225,7 +227,8 @@ func (client *VerifierWorkspacesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return VerifierWorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -252,7 +255,7 @@ func (client *VerifierWorkspacesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +333,7 @@ func (client *VerifierWorkspacesClient) listCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		if options != nil && options.Skip != nil {
 			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
 		}
@@ -388,7 +391,8 @@ func (client *VerifierWorkspacesClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return VerifierWorkspacesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -415,7 +419,7 @@ func (client *VerifierWorkspacesClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

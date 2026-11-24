@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VpnGatewayPut.json
+// Generated from example definition: 2026-05-01/VpnGatewayPut.json
 func ExampleVPNGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,7 +259,7 @@ func ExampleVPNGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayDelete.json
+// Generated from example definition: 2026-05-01/VpnGatewayDelete.json
 func ExampleVPNGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleVPNGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayReset.json
+// Generated from example definition: 2026-05-01/VpnGatewayReset.json
 func ExampleVPNGatewaysClient_BeginReset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +407,7 @@ func ExampleVPNGatewaysClient_BeginReset() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayStartPacketCapture.json
+// Generated from example definition: 2026-05-01/VpnGatewayStartPacketCapture.json
 func ExampleVPNGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVpnGatewayWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,7 +434,7 @@ func ExampleVPNGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVpnGat
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayStartPacketCaptureFilterData.json
+// Generated from example definition: 2026-05-01/VpnGatewayStartPacketCaptureFilterData.json
 func ExampleVPNGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVpnGatewayWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -464,7 +464,7 @@ func ExampleVPNGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVpnGat
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayStopPacketCapture.json
+// Generated from example definition: 2026-05-01/VpnGatewayStopPacketCapture.json
 func ExampleVPNGatewaysClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -494,7 +494,7 @@ func ExampleVPNGatewaysClient_BeginStopPacketCapture() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayUpdateTags.json
+// Generated from example definition: 2026-05-01/VpnGatewayUpdateTags.json
 func ExampleVPNGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +623,7 @@ func ExampleVPNGatewaysClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayGet.json
+// Generated from example definition: 2026-05-01/VpnGatewayGet.json
 func ExampleVPNGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -841,7 +841,7 @@ func ExampleVPNGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayListByResourceGroup.json
+// Generated from example definition: 2026-05-01/VpnGatewayListByResourceGroup.json
 func ExampleVPNGatewaysClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1140,7 +1140,7 @@ func ExampleVPNGatewaysClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VpnGatewayList.json
+// Generated from example definition: 2026-05-01/VpnGatewayList.json
 func ExampleVPNGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

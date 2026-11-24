@@ -17,10 +17,10 @@ func (c Connection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "host", c.Host)
 	populate(objectMap, "path_prefix", c.PathPrefix)
-	populateByteArray(objectMap, "server_ca_certificates", c.ServerCaCertificates, func() any {
-		encodedValue := make([]string, len(c.ServerCaCertificates))
-		for i := 0; i < len(c.ServerCaCertificates); i++ {
-			encodedValue[i] = runtime.EncodeByteArray(c.ServerCaCertificates[i], runtime.Base64StdFormat)
+	populateByteArray(objectMap, "server_ca_certificates", c.ServerCACertificates, func() any {
+		encodedValue := make([]string, len(c.ServerCACertificates))
+		for i := 0; i < len(c.ServerCACertificates); i++ {
+			encodedValue[i] = runtime.EncodeByteArray(c.ServerCACertificates[i], runtime.Base64StdFormat)
 		}
 		return encodedValue
 	})
@@ -32,7 +32,7 @@ func (c Connection) MarshalJSON() ([]byte, error) {
 func (c *Connection) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -45,11 +45,11 @@ func (c *Connection) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "server_ca_certificates":
 			var encodedValue []string
-			err = unpopulate(val, "ServerCaCertificates", &encodedValue)
+			err = unpopulate(val, "ServerCACertificates", &encodedValue)
 			if err == nil && len(encodedValue) > 0 {
-				c.ServerCaCertificates = make([][]byte, len(encodedValue))
+				c.ServerCACertificates = make([][]byte, len(encodedValue))
 				for i := 0; i < len(encodedValue) && err == nil; i++ {
-					err = runtime.DecodeByteArray(encodedValue[i], &c.ServerCaCertificates[i], runtime.Base64StdFormat)
+					err = runtime.DecodeByteArray(encodedValue[i], &c.ServerCACertificates[i], runtime.Base64StdFormat)
 				}
 			}
 			delete(rawMsg, key)
@@ -58,7 +58,7 @@ func (c *Connection) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
 		}
 	}
 	return nil
@@ -67,10 +67,10 @@ func (c *Connection) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ProxyClientCertificateInfo.
 func (p ProxyClientCertificateInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateByteArray(objectMap, "ca_certificates", p.CaCertificates, func() any {
-		encodedValue := make([]string, len(p.CaCertificates))
-		for i := 0; i < len(p.CaCertificates); i++ {
-			encodedValue[i] = runtime.EncodeByteArray(p.CaCertificates[i], runtime.Base64StdFormat)
+	populateByteArray(objectMap, "ca_certificates", p.CACertificates, func() any {
+		encodedValue := make([]string, len(p.CACertificates))
+		for i := 0; i < len(p.CACertificates); i++ {
+			encodedValue[i] = runtime.EncodeByteArray(p.CACertificates[i], runtime.Base64StdFormat)
 		}
 		return encodedValue
 	})
@@ -82,18 +82,18 @@ func (p ProxyClientCertificateInfo) MarshalJSON() ([]byte, error) {
 func (p *ProxyClientCertificateInfo) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "ca_certificates":
 			var encodedValue []string
-			err = unpopulate(val, "CaCertificates", &encodedValue)
+			err = unpopulate(val, "CACertificates", &encodedValue)
 			if err == nil && len(encodedValue) > 0 {
-				p.CaCertificates = make([][]byte, len(encodedValue))
+				p.CACertificates = make([][]byte, len(encodedValue))
 				for i := 0; i < len(encodedValue) && err == nil; i++ {
-					err = runtime.DecodeByteArray(encodedValue[i], &p.CaCertificates[i], runtime.Base64StdFormat)
+					err = runtime.DecodeByteArray(encodedValue[i], &p.CACertificates[i], runtime.Base64StdFormat)
 				}
 			}
 			delete(rawMsg, key)
@@ -102,7 +102,7 @@ func (p *ProxyClientCertificateInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
 		}
 	}
 	return nil
@@ -112,8 +112,8 @@ func (p *ProxyClientCertificateInfo) UnmarshalJSON(data []byte) error {
 func (p ProxyInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "api_version", p.APIVersion)
-	populate(objectMap, "ekm_product", p.EkmProduct)
-	populate(objectMap, "ekm_vendor", p.EkmVendor)
+	populate(objectMap, "ekm_product", p.EKMProduct)
+	populate(objectMap, "ekm_vendor", p.EKMVendor)
 	populate(objectMap, "proxy_name", p.ProxyName)
 	populate(objectMap, "proxy_vendor", p.ProxyVendor)
 	return json.Marshal(objectMap)
@@ -123,7 +123,7 @@ func (p ProxyInfo) MarshalJSON() ([]byte, error) {
 func (p *ProxyInfo) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -132,10 +132,10 @@ func (p *ProxyInfo) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "APIVersion", &p.APIVersion)
 			delete(rawMsg, key)
 		case "ekm_product":
-			err = unpopulate(val, "EkmProduct", &p.EkmProduct)
+			err = unpopulate(val, "EKMProduct", &p.EKMProduct)
 			delete(rawMsg, key)
 		case "ekm_vendor":
-			err = unpopulate(val, "EkmVendor", &p.EkmVendor)
+			err = unpopulate(val, "EKMVendor", &p.EKMVendor)
 			delete(rawMsg, key)
 		case "proxy_name":
 			err = unpopulate(val, "ProxyName", &p.ProxyName)
@@ -145,7 +145,7 @@ func (p *ProxyInfo) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+			return fmt.Errorf("unmarshalling type %T: %s", p, err.Error())
 		}
 	}
 	return nil
@@ -176,7 +176,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }

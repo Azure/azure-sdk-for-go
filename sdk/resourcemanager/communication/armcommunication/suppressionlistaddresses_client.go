@@ -70,7 +70,8 @@ func (client *SuppressionListAddressesClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return SuppressionListAddressesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -153,7 +154,8 @@ func (client *SuppressionListAddressesClient) Delete(ctx context.Context, resour
 		return SuppressionListAddressesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SuppressionListAddressesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SuppressionListAddressesClientDeleteResponse{}, err
 	}
 	return SuppressionListAddressesClientDeleteResponse{}, nil
 }
@@ -220,7 +222,8 @@ func (client *SuppressionListAddressesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return SuppressionListAddressesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

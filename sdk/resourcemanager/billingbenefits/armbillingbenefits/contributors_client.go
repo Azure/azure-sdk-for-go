@@ -65,7 +65,8 @@ func (client *ContributorsClient) GetFromPrimary(ctx context.Context, resourceGr
 	if err != nil {
 		return ContributorsClientGetFromPrimaryResponse{}, err
 	}
-	return client.getFromPrimaryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFromPrimaryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFromPrimaryCreateRequest creates the GetFromPrimary request.

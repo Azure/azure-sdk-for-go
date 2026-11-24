@@ -63,7 +63,8 @@ func (client *InformationalOperationsClient) GetLimits(ctx context.Context, loca
 	if err != nil {
 		return InformationalOperationsClientGetLimitsResponse{}, err
 	}
-	return client.getLimitsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLimitsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLimitsCreateRequest creates the GetLimits request.
@@ -120,7 +121,8 @@ func (client *InformationalOperationsClient) GetProvisioningRecommendation(ctx c
 	if err != nil {
 		return InformationalOperationsClientGetProvisioningRecommendationResponse{}, err
 	}
-	return client.getProvisioningRecommendationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getProvisioningRecommendationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getProvisioningRecommendationCreateRequest creates the GetProvisioningRecommendation request.
@@ -180,7 +182,8 @@ func (client *InformationalOperationsClient) GetUsageData(ctx context.Context, l
 	if err != nil {
 		return InformationalOperationsClientGetUsageDataResponse{}, err
 	}
-	return client.getUsageDataHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getUsageDataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getUsageDataCreateRequest creates the GetUsageData request.

@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // ArcDeploymentsServer is a fake server for instances of the armcognitiveservices.ArcDeploymentsClient type.
@@ -70,7 +71,7 @@ func (a *ArcDeploymentsServerTransport) Do(req *http.Request) (*http.Response, e
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -176,6 +177,7 @@ func (a *ArcDeploymentsServerTransport) dispatchBeginDelete(req *http.Request) (
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -188,7 +190,17 @@ func (a *ArcDeploymentsServerTransport) dispatchBeginDelete(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, deploymentNameParam, nil)
+		forceParam, err := parseOptional(qp.Get("force"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armcognitiveservices.ArcDeploymentsClientBeginDeleteOptions
+		if forceParam != nil {
+			options = &armcognitiveservices.ArcDeploymentsClientBeginDeleteOptions{
+				Force: forceParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, deploymentNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

@@ -68,7 +68,8 @@ func (client *DataCollectionRulesClient) Create(ctx context.Context, resourceGro
 	if err != nil {
 		return DataCollectionRulesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -136,7 +137,8 @@ func (client *DataCollectionRulesClient) Delete(ctx context.Context, resourceGro
 		return DataCollectionRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DataCollectionRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataCollectionRulesClientDeleteResponse{}, err
 	}
 	return DataCollectionRulesClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *DataCollectionRulesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataCollectionRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -397,7 +400,8 @@ func (client *DataCollectionRulesClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return DataCollectionRulesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

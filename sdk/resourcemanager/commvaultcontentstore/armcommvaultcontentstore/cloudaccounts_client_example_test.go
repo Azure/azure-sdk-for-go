@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-09-30/CloudAccounts_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// }
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateMinimumSetCcaCreateWithRoleAssignments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +328,7 @@ func ExampleCloudAccountsClient_BeginCreateOrUpdate_cloudAccountsCreateOrUpdateM
 	// }
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_Delete_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +349,7 @@ func ExampleCloudAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_LinkSaaS_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -425,7 +425,7 @@ func ExampleCloudAccountsClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_Update_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,11 +436,11 @@ func ExampleCloudAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCloudAccountsClient().BeginUpdate(ctx, "rgcommvault", "sample-cloudAccountName", armcommvaultcontentstore.CloudAccount{
-		Properties: &armcommvaultcontentstore.CloudAccountProperties{
-			Marketplace: &armcommvaultcontentstore.MarketplaceDetails{
+	poller, err := clientFactory.NewCloudAccountsClient().BeginUpdate(ctx, "rgcommvault", "sample-cloudAccountName", armcommvaultcontentstore.CloudAccountUpdate{
+		Properties: &armcommvaultcontentstore.CloudAccountUpdateProperties{
+			Marketplace: &armcommvaultcontentstore.CloudAccountMarketplaceUpdate{
 				SubscriptionID: to.Ptr("bojdg"),
-				OfferDetails: &armcommvaultcontentstore.OfferDetails{
+				OfferDetails: &armcommvaultcontentstore.CloudAccountOfferDetailsUpdate{
 					PublisherID: to.Ptr("loowntsnvoynhzto"),
 					OfferID:     to.Ptr("ysmwsuakhwvkosz"),
 					PlanID:      to.Ptr("iskbkfpr"),
@@ -449,7 +449,7 @@ func ExampleCloudAccountsClient_BeginUpdate() {
 					TermID:      to.Ptr("qoebjvpjc"),
 				},
 			},
-			User: &armcommvaultcontentstore.UserDetails{
+			User: &armcommvaultcontentstore.CloudAccountUserUpdate{
 				FirstName:    to.Ptr("dudsiomjk"),
 				LastName:     to.Ptr("szqupklkgojwozjo"),
 				EmailAddress: to.Ptr("user@example.com"),
@@ -467,7 +467,7 @@ func ExampleCloudAccountsClient_BeginUpdate() {
 				State:       to.Ptr("WA"),
 			},
 		},
-		Identity: &armcommvaultcontentstore.ManagedServiceIdentity{
+		Identity: &armcommvaultcontentstore.CloudAccountIdentityUpdate{
 			Type:                   to.Ptr(armcommvaultcontentstore.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armcommvaultcontentstore.UserAssignedIdentity{},
 		},
@@ -544,7 +544,7 @@ func ExampleCloudAccountsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_Get_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -613,7 +613,7 @@ func ExampleCloudAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_LatestLinkedSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_LatestLinkedSaaS_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_LatestLinkedSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -639,7 +639,7 @@ func ExampleCloudAccountsClient_LatestLinkedSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -718,7 +718,7 @@ func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByR
 	}
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByResourceGroupMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -753,7 +753,7 @@ func ExampleCloudAccountsClient_NewListByResourceGroupPager_cloudAccountsListByR
 	}
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_ListBySubscription_MaximumSet_Gen.json
 func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySubscriptionMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -832,7 +832,7 @@ func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySu
 	}
 }
 
-// Generated from example definition: 2026-09-30/CloudAccounts_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-11-03/CloudAccounts_ListBySubscription_MinimumSet_Gen.json
 func ExampleCloudAccountsClient_NewListBySubscriptionPager_cloudAccountsListBySubscriptionMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

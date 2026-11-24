@@ -65,7 +65,8 @@ func (client *ReevaluateClient) Recommendation(ctx context.Context, resourceGrou
 	if err != nil {
 		return ReevaluateClientRecommendationResponse{}, err
 	}
-	return client.recommendationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.recommendationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // recommendationCreateRequest creates the Recommendation request.

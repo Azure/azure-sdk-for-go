@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayUpdate.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayUpdate.json
 func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetworkGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkScalableGatewayUpdate.json
+// Generated from example definition: 2026-05-01/VirtualNetworkScalableGatewayUpdate.json
 func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetworkScalableGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,7 +387,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayDelete.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayDelete.json
 func ExampleVirtualNetworkGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -413,7 +413,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewaysDisconnectP2sVpnConnections.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewaysDisconnectP2sVpnConnections.json
 func ExampleVirtualNetworkGatewaysClient_BeginDisconnectVirtualNetworkGatewayVPNConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginDisconnectVirtualNetworkGatewayVPN
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGenerateVpnProfile.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGenerateVpnProfile.json
 func ExampleVirtualNetworkGatewaysClient_BeginGenerateVPNProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +471,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGenerateVPNProfile() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGenerateVpnClientPackage.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGenerateVpnClientPackage.json
 func ExampleVirtualNetworkGatewaysClient_BeginGeneratevpnclientpackage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -498,7 +498,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGeneratevpnclientpackage() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetAdvertisedRoutes.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetAdvertisedRoutes.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetAdvertisedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -526,7 +526,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetAdvertisedRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetBGPPeerStatus.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetBGPPeerStatus.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetBgpPeerStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +554,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetBgpPeerStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetEffectiveRoutes.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetEffectiveRoutes.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetEffectiveRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,7 +592,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetEffectiveRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetFailoverAllTestsDetails.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetFailoverAllTestsDetails.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverAllTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,7 +620,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverAllTestDetails() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -648,7 +648,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayLearnedRoutes.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayLearnedRoutes.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetLearnedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +676,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetLearnedRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetResiliencyInformation.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetResiliencyInformation.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetResiliencyInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -705,7 +705,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetResiliencyInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetRoutesInformation.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetRoutesInformation.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetRoutesInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -734,7 +734,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetRoutesInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetVPNProfilePackageURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -761,7 +761,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetVPNProfilePackageURL() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientConnectionHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -819,7 +819,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientConnectionHealth() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientIPSecParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -855,7 +855,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientIPSecParameters() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayAbortMigration.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayAbortMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokeAbortMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +876,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokeAbortMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayCommitMigration.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayCommitMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokeCommitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -897,7 +897,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokeCommitMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayExecuteMigration.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayExecuteMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokeExecuteMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -918,7 +918,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokeExecuteMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayPrepareMigration.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayPrepareMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokePrepareMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -942,7 +942,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokePrepareMigration() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayReset.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayReset.json
 func ExampleVirtualNetworkGatewaysClient_BeginReset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1033,7 +1033,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginReset() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayResetVpnClientSharedKey.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayResetVpnClientSharedKey.json
 func ExampleVirtualNetworkGatewaysClient_BeginResetVPNClientSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1059,7 +1059,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginResetVPNClientSharedKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
 func ExampleVirtualNetworkGatewaysClient_BeginSetVpnclientIPSecParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1104,7 +1104,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginSetVpnclientIPSecParameters() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStartSiteFailoverSimulation.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayStartSiteFailoverSimulation.json
 func ExampleVirtualNetworkGatewaysClient_BeginStartExpressRouteSiteFailoverSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1131,7 +1131,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStartExpressRouteSiteFailoverSimul
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStartPacketCapture.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayStartPacketCapture.json
 func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1158,7 +1158,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCapt
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStartPacketCaptureFilterData.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayStartPacketCaptureFilterData.json
 func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1188,7 +1188,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCapt
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStopSiteFailoverSimulation.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayStopSiteFailoverSimulation.json
 func ExampleVirtualNetworkGatewaysClient_BeginStopExpressRouteSiteFailoverSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1230,7 +1230,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStopExpressRouteSiteFailoverSimula
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayStopPacketCapture.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayStopPacketCapture.json
 func ExampleVirtualNetworkGatewaysClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1259,7 +1259,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStopPacketCapture() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayUpdateTags.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayUpdateTags.json
 func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1367,7 +1367,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayGet.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayGet.json
 func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1526,7 +1526,7 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkScalableGatewayGet.json
+// Generated from example definition: 2026-05-01/VirtualNetworkScalableGatewayGet.json
 func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1599,7 +1599,7 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() 
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
+// Generated from example definition: 2026-05-01/AllVirtualNetworkGatewayRadiusServerSecretsList.json
 func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1633,7 +1633,7 @@ func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewaysListConnections.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewaysListConnections.json
 func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1691,7 +1691,7 @@ func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayList.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayList.json
 func ExampleVirtualNetworkGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1946,7 +1946,7 @@ func ExampleVirtualNetworkGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewaySupportedVpnDevice.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewaySupportedVpnDevice.json
 func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1969,7 +1969,7 @@ func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
 func ExampleVirtualNetworkGatewaysClient_VPNDeviceConfigurationScript() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

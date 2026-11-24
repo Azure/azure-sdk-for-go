@@ -65,7 +65,8 @@ func (client *ContentPackageClient) Install(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ContentPackageClientInstallResponse{}, err
 	}
-	return client.installHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.installHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // installCreateRequest creates the Install request.
@@ -136,7 +137,8 @@ func (client *ContentPackageClient) Uninstall(ctx context.Context, resourceGroup
 		return ContentPackageClientUninstallResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ContentPackageClientUninstallResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ContentPackageClientUninstallResponse{}, err
 	}
 	return ContentPackageClientUninstallResponse{}, nil
 }

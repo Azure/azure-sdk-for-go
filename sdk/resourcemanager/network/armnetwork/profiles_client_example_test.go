@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/NetworkProfileDelete.json
+// Generated from example definition: 2026-05-01/NetworkProfileDelete.json
 func ExampleProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkProfileCreateConfigOnly.json
+// Generated from example definition: 2026-05-01/NetworkProfileCreateConfigOnly.json
 func ExampleProfilesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleProfilesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkProfileGetConfigOnly.json
+// Generated from example definition: 2026-05-01/NetworkProfileGetConfigOnly.json
 func ExampleProfilesClient_Get_getNetworkProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleProfilesClient_Get_getNetworkProfile() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkProfileGetWithContainerNic.json
+// Generated from example definition: 2026-05-01/NetworkProfileGetWithContainerNic.json
 func ExampleProfilesClient_Get_getNetworkProfileWithContainerNetworkInterfaces() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +433,7 @@ func ExampleProfilesClient_Get_getNetworkProfileWithContainerNetworkInterfaces()
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkProfileListAll.json
+// Generated from example definition: 2026-05-01/NetworkProfileListAll.json
 func ExampleProfilesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,7 +536,7 @@ func ExampleProfilesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkProfileList.json
+// Generated from example definition: 2026-05-01/NetworkProfileList.json
 func ExampleProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkProfileUpdateTags.json
+// Generated from example definition: 2026-05-01/NetworkProfileUpdateTags.json
 func ExampleProfilesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

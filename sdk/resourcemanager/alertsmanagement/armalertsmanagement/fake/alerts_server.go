@@ -31,14 +31,6 @@ type AlertsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ChangeStateTenant func(ctx context.Context, alertID string, newState armalertsmanagement.AlertState, options *armalertsmanagement.AlertsClientChangeStateTenantOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientChangeStateTenantResponse], errResp azfake.ErrorResponder)
 
-	// NewGetAllPager is the fake for method AlertsClient.NewGetAllPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAllPager func(options *armalertsmanagement.AlertsClientGetAllOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllResponse])
-
-	// NewGetAllTenantPager is the fake for method AlertsClient.NewGetAllTenantPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAllTenantPager func(options *armalertsmanagement.AlertsClientGetAllTenantOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllTenantResponse])
-
 	// GetByID is the fake for method AlertsClient.GetByID
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByID func(ctx context.Context, alertID string, options *armalertsmanagement.AlertsClientGetByIDOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientGetByIDResponse], errResp azfake.ErrorResponder)
@@ -46,10 +38,6 @@ type AlertsServer struct {
 	// GetByIDTenant is the fake for method AlertsClient.GetByIDTenant
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByIDTenant func(ctx context.Context, alertID string, options *armalertsmanagement.AlertsClientGetByIDTenantOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientGetByIDTenantResponse], errResp azfake.ErrorResponder)
-
-	// NewGetEnrichmentsPager is the fake for method AlertsClient.NewGetEnrichmentsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetEnrichmentsPager func(alertID string, options *armalertsmanagement.AlertsClientGetEnrichmentsOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetEnrichmentsResponse])
 
 	// GetHistory is the fake for method AlertsClient.GetHistory
 	// HTTP status codes to indicate success: http.StatusOK
@@ -66,6 +54,18 @@ type AlertsServer struct {
 	// MetaData is the fake for method AlertsClient.MetaData
 	// HTTP status codes to indicate success: http.StatusOK
 	MetaData func(ctx context.Context, identifier armalertsmanagement.Identifier, options *armalertsmanagement.AlertsClientMetaDataOptions) (resp azfake.Responder[armalertsmanagement.AlertsClientMetaDataResponse], errResp azfake.ErrorResponder)
+
+	// NewGetAllPager is the fake for method AlertsClient.NewGetAllPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetAllPager func(options *armalertsmanagement.AlertsClientGetAllOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllResponse])
+
+	// NewGetAllTenantPager is the fake for method AlertsClient.NewGetAllTenantPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetAllTenantPager func(options *armalertsmanagement.AlertsClientGetAllTenantOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetAllTenantResponse])
+
+	// NewGetEnrichmentsPager is the fake for method AlertsClient.NewGetEnrichmentsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetEnrichmentsPager func(alertID string, options *armalertsmanagement.AlertsClientGetEnrichmentsOptions) (resp azfake.PagerResponder[armalertsmanagement.AlertsClientGetEnrichmentsResponse])
 }
 
 // NewAlertsServerTransport creates a new instance of AlertsServerTransport with the provided implementation.
@@ -94,7 +94,7 @@ func (a *AlertsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -114,16 +114,10 @@ func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = a.dispatchChangeState(req)
 			case "AlertsClient.ChangeStateTenant":
 				res.resp, res.err = a.dispatchChangeStateTenant(req)
-			case "AlertsClient.NewGetAllPager":
-				res.resp, res.err = a.dispatchNewGetAllPager(req)
-			case "AlertsClient.NewGetAllTenantPager":
-				res.resp, res.err = a.dispatchNewGetAllTenantPager(req)
 			case "AlertsClient.GetByID":
 				res.resp, res.err = a.dispatchGetByID(req)
 			case "AlertsClient.GetByIDTenant":
 				res.resp, res.err = a.dispatchGetByIDTenant(req)
-			case "AlertsClient.NewGetEnrichmentsPager":
-				res.resp, res.err = a.dispatchNewGetEnrichmentsPager(req)
 			case "AlertsClient.GetHistory":
 				res.resp, res.err = a.dispatchGetHistory(req)
 			case "AlertsClient.GetHistoryTenant":
@@ -132,6 +126,12 @@ func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = a.dispatchGetSummary(req)
 			case "AlertsClient.MetaData":
 				res.resp, res.err = a.dispatchMetaData(req)
+			case "AlertsClient.NewGetAllPager":
+				res.resp, res.err = a.dispatchNewGetAllPager(req)
+			case "AlertsClient.NewGetAllTenantPager":
+				res.resp, res.err = a.dispatchNewGetAllTenantPager(req)
+			case "AlertsClient.NewGetEnrichmentsPager":
+				res.resp, res.err = a.dispatchNewGetEnrichmentsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -228,176 +228,6 @@ func (a *AlertsServerTransport) dispatchChangeStateTenant(req *http.Request) (*h
 	return resp, nil
 }
 
-func (a *AlertsServerTransport) dispatchNewGetAllPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewGetAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetAllPager not implemented")}
-	}
-	newGetAllPager := a.newGetAllPager.get(req)
-	if newGetAllPager == nil {
-		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		targetResourceParam := getOptional(qp.Get("targetResource"))
-		targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
-		targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
-		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
-		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
-		severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
-		alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
-		alertRuleParam := getOptional(qp.Get("alertRule"))
-		smartGroupIDParam := getOptional(qp.Get("smartGroupId"))
-		includeContextParam, err := parseOptional(qp.Get("includeContext"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		includeEgressConfigParam, err := parseOptional(qp.Get("includeEgressConfig"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(qp.Get("sortBy")))
-		sortOrderParam := getOptional(armalertsmanagement.SortOrder(qp.Get("sortOrder")))
-		selectParam := getOptional(qp.Get("select"))
-		timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
-		customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
-		var options *armalertsmanagement.AlertsClientGetAllOptions
-		if targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || smartGroupIDParam != nil || includeContextParam != nil || includeEgressConfigParam != nil || pageCountParam != nil || sortByParam != nil || sortOrderParam != nil || selectParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
-			options = &armalertsmanagement.AlertsClientGetAllOptions{
-				TargetResource:      targetResourceParam,
-				TargetResourceType:  targetResourceTypeParam,
-				TargetResourceGroup: targetResourceGroupParam,
-				MonitorService:      monitorServiceParam,
-				MonitorCondition:    monitorConditionParam,
-				Severity:            severityParam,
-				AlertState:          alertStateParam,
-				AlertRule:           alertRuleParam,
-				SmartGroupID:        smartGroupIDParam,
-				IncludeContext:      includeContextParam,
-				IncludeEgressConfig: includeEgressConfigParam,
-				PageCount:           pageCountParam,
-				SortBy:              sortByParam,
-				SortOrder:           sortOrderParam,
-				Select:              selectParam,
-				TimeRange:           timeRangeParam,
-				CustomTimeRange:     customTimeRangeParam,
-			}
-		}
-		resp := a.srv.NewGetAllPager(options)
-		newGetAllPager = &resp
-		a.newGetAllPager.add(req, newGetAllPager)
-		server.PagerResponderInjectNextLinks(newGetAllPager, req, func(page *armalertsmanagement.AlertsClientGetAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newGetAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetAllPager) {
-		a.newGetAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AlertsServerTransport) dispatchNewGetAllTenantPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewGetAllTenantPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetAllTenantPager not implemented")}
-	}
-	newGetAllTenantPager := a.newGetAllTenantPager.get(req)
-	if newGetAllTenantPager == nil {
-		qp := req.URL.Query()
-		targetResourceParam := getOptional(qp.Get("targetResource"))
-		targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
-		targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
-		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
-		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
-		severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
-		alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
-		alertRuleParam := getOptional(qp.Get("alertRule"))
-		smartGroupIDParam := getOptional(qp.Get("smartGroupId"))
-		includeContextParam, err := parseOptional(qp.Get("includeContext"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		includeEgressConfigParam, err := parseOptional(qp.Get("includeEgressConfig"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(qp.Get("sortBy")))
-		sortOrderParam := getOptional(armalertsmanagement.SortOrder(qp.Get("sortOrder")))
-		selectParam := getOptional(qp.Get("select"))
-		timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
-		customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
-		var options *armalertsmanagement.AlertsClientGetAllTenantOptions
-		if targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || smartGroupIDParam != nil || includeContextParam != nil || includeEgressConfigParam != nil || pageCountParam != nil || sortByParam != nil || sortOrderParam != nil || selectParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
-			options = &armalertsmanagement.AlertsClientGetAllTenantOptions{
-				TargetResource:      targetResourceParam,
-				TargetResourceType:  targetResourceTypeParam,
-				TargetResourceGroup: targetResourceGroupParam,
-				MonitorService:      monitorServiceParam,
-				MonitorCondition:    monitorConditionParam,
-				Severity:            severityParam,
-				AlertState:          alertStateParam,
-				AlertRule:           alertRuleParam,
-				SmartGroupID:        smartGroupIDParam,
-				IncludeContext:      includeContextParam,
-				IncludeEgressConfig: includeEgressConfigParam,
-				PageCount:           pageCountParam,
-				SortBy:              sortByParam,
-				SortOrder:           sortOrderParam,
-				Select:              selectParam,
-				TimeRange:           timeRangeParam,
-				CustomTimeRange:     customTimeRangeParam,
-			}
-		}
-		resp := a.srv.NewGetAllTenantPager(options)
-		newGetAllTenantPager = &resp
-		a.newGetAllTenantPager.add(req, newGetAllTenantPager)
-		server.PagerResponderInjectNextLinks(newGetAllTenantPager, req, func(page *armalertsmanagement.AlertsClientGetAllTenantResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetAllTenantPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newGetAllTenantPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetAllTenantPager) {
-		a.newGetAllTenantPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AlertsServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
 	if a.srv.GetByID == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
@@ -452,43 +282,6 @@ func (a *AlertsServerTransport) dispatchGetByIDTenant(req *http.Request) (*http.
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AlertsServerTransport) dispatchNewGetEnrichmentsPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewGetEnrichmentsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetEnrichmentsPager not implemented")}
-	}
-	newGetEnrichmentsPager := a.newGetEnrichmentsPager.get(req)
-	if newGetEnrichmentsPager == nil {
-		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enrichments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewGetEnrichmentsPager(alertIDParam, nil)
-		newGetEnrichmentsPager = &resp
-		a.newGetEnrichmentsPager.add(req, newGetEnrichmentsPager)
-		server.PagerResponderInjectNextLinks(newGetEnrichmentsPager, req, func(page *armalertsmanagement.AlertsClientGetEnrichmentsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetEnrichmentsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newGetEnrichmentsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetEnrichmentsPager) {
-		a.newGetEnrichmentsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -623,6 +416,207 @@ func (a *AlertsServerTransport) dispatchMetaData(req *http.Request) (*http.Respo
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertsMetaData, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchNewGetAllPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewGetAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetAllPager not implemented")}
+	}
+	newGetAllPager := a.newGetAllPager.get(req)
+	if newGetAllPager == nil {
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		targetResourceParam := getOptional(qp.Get("targetResource"))
+		targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
+		targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
+		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
+		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
+		severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
+		alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
+		alertRuleParam := getOptional(qp.Get("alertRule"))
+		smartGroupIDParam := getOptional(qp.Get("smartGroupId"))
+		includeContextParam, err := parseOptional(qp.Get("includeContext"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		includeEgressConfigParam, err := parseOptional(qp.Get("includeEgressConfig"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(qp.Get("sortBy")))
+		sortOrderParam := getOptional(armalertsmanagement.SortOrder(qp.Get("sortOrder")))
+		selectParam := getOptional(qp.Get("select"))
+		timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
+		customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
+		var options *armalertsmanagement.AlertsClientGetAllOptions
+		if targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || smartGroupIDParam != nil || includeContextParam != nil || includeEgressConfigParam != nil || pageCountParam != nil || sortByParam != nil || sortOrderParam != nil || selectParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
+			options = &armalertsmanagement.AlertsClientGetAllOptions{
+				TargetResource:      targetResourceParam,
+				TargetResourceType:  targetResourceTypeParam,
+				TargetResourceGroup: targetResourceGroupParam,
+				MonitorService:      monitorServiceParam,
+				MonitorCondition:    monitorConditionParam,
+				Severity:            severityParam,
+				AlertState:          alertStateParam,
+				AlertRule:           alertRuleParam,
+				SmartGroupID:        smartGroupIDParam,
+				IncludeContext:      includeContextParam,
+				IncludeEgressConfig: includeEgressConfigParam,
+				PageCount:           pageCountParam,
+				SortBy:              sortByParam,
+				SortOrder:           sortOrderParam,
+				Select:              selectParam,
+				TimeRange:           timeRangeParam,
+				CustomTimeRange:     customTimeRangeParam,
+			}
+		}
+		resp := a.srv.NewGetAllPager(options)
+		newGetAllPager = &resp
+		a.newGetAllPager.add(req, newGetAllPager)
+		server.PagerResponderInjectNextLinks(newGetAllPager, req, func(page *armalertsmanagement.AlertsClientGetAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newGetAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetAllPager) {
+		a.newGetAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchNewGetAllTenantPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewGetAllTenantPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetAllTenantPager not implemented")}
+	}
+	newGetAllTenantPager := a.newGetAllTenantPager.get(req)
+	if newGetAllTenantPager == nil {
+		qp := req.URL.Query()
+		targetResourceParam := getOptional(qp.Get("targetResource"))
+		targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
+		targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
+		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
+		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
+		severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
+		alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
+		alertRuleParam := getOptional(qp.Get("alertRule"))
+		smartGroupIDParam := getOptional(qp.Get("smartGroupId"))
+		includeContextParam, err := parseOptional(qp.Get("includeContext"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		includeEgressConfigParam, err := parseOptional(qp.Get("includeEgressConfig"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(qp.Get("sortBy")))
+		sortOrderParam := getOptional(armalertsmanagement.SortOrder(qp.Get("sortOrder")))
+		selectParam := getOptional(qp.Get("select"))
+		timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
+		customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
+		var options *armalertsmanagement.AlertsClientGetAllTenantOptions
+		if targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || smartGroupIDParam != nil || includeContextParam != nil || includeEgressConfigParam != nil || pageCountParam != nil || sortByParam != nil || sortOrderParam != nil || selectParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
+			options = &armalertsmanagement.AlertsClientGetAllTenantOptions{
+				TargetResource:      targetResourceParam,
+				TargetResourceType:  targetResourceTypeParam,
+				TargetResourceGroup: targetResourceGroupParam,
+				MonitorService:      monitorServiceParam,
+				MonitorCondition:    monitorConditionParam,
+				Severity:            severityParam,
+				AlertState:          alertStateParam,
+				AlertRule:           alertRuleParam,
+				SmartGroupID:        smartGroupIDParam,
+				IncludeContext:      includeContextParam,
+				IncludeEgressConfig: includeEgressConfigParam,
+				PageCount:           pageCountParam,
+				SortBy:              sortByParam,
+				SortOrder:           sortOrderParam,
+				Select:              selectParam,
+				TimeRange:           timeRangeParam,
+				CustomTimeRange:     customTimeRangeParam,
+			}
+		}
+		resp := a.srv.NewGetAllTenantPager(options)
+		newGetAllTenantPager = &resp
+		a.newGetAllTenantPager.add(req, newGetAllTenantPager)
+		server.PagerResponderInjectNextLinks(newGetAllTenantPager, req, func(page *armalertsmanagement.AlertsClientGetAllTenantResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetAllTenantPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newGetAllTenantPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetAllTenantPager) {
+		a.newGetAllTenantPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AlertsServerTransport) dispatchNewGetEnrichmentsPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewGetEnrichmentsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetEnrichmentsPager not implemented")}
+	}
+	newGetEnrichmentsPager := a.newGetEnrichmentsPager.get(req)
+	if newGetEnrichmentsPager == nil {
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AlertsManagement/alerts/(?P<alertId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enrichments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		alertIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("alertId")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewGetEnrichmentsPager(alertIDParam, nil)
+		newGetEnrichmentsPager = &resp
+		a.newGetEnrichmentsPager.add(req, newGetEnrichmentsPager)
+		server.PagerResponderInjectNextLinks(newGetEnrichmentsPager, req, func(page *armalertsmanagement.AlertsClientGetEnrichmentsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetEnrichmentsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newGetEnrichmentsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetEnrichmentsPager) {
+		a.newGetEnrichmentsPager.remove(req)
 	}
 	return resp, nil
 }

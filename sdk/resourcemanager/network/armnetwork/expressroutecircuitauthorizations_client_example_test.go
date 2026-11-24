@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitAuthorizationCreate.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitAuthorizationCreate.json
 func ExampleExpressRouteCircuitAuthorizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitAuthorizationDelete.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitAuthorizationDelete.json
 func ExampleExpressRouteCircuitAuthorizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitAuthorizationGet.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitAuthorizationGet.json
 func ExampleExpressRouteCircuitAuthorizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitAuthorizationListKeys.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitAuthorizationListKeys.json
 func ExampleExpressRouteCircuitAuthorizationsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitAuthorizationList.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitAuthorizationList.json
 func ExampleExpressRouteCircuitAuthorizationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

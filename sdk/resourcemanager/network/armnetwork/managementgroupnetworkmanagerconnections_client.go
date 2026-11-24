@@ -20,7 +20,7 @@ import (
 // ManagementGroupNetworkManagerConnectionsClient contains the methods for the ManagementGroupNetworkManagerConnections group.
 // Don't use this type directly, use NewManagementGroupNetworkManagerConnectionsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type ManagementGroupNetworkManagerConnectionsClient struct {
 	internal *arm.Client
 }
@@ -60,7 +60,8 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ManagementGroupNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -79,7 +80,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -122,7 +123,8 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) Delete(ctx context
 		return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
 	return ManagementGroupNetworkManagerConnectionsClientDeleteResponse{}, nil
 }
@@ -143,7 +145,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -168,7 +170,8 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) Get(ctx context.Co
 	if err != nil {
 		return ManagementGroupNetworkManagerConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -187,7 +190,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +263,7 @@ func (client *ManagementGroupNetworkManagerConnectionsClient) listCreateRequest(
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -19,7 +19,7 @@ import (
 // ServiceGatewaysClient contains the methods for the ServiceGateways group.
 // Don't use this type directly, use NewServiceGatewaysClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type ServiceGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -85,7 +85,8 @@ func (client *ServiceGatewaysClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -110,7 +111,7 @@ func (client *ServiceGatewaysClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +129,7 @@ func (client *ServiceGatewaysClient) createOrUpdateCreateRequest(ctx context.Con
 //     method.
 func (client *ServiceGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*runtime.Poller[ServiceGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, serviceGatewayName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceGatewayName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *ServiceGatewaysClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Deletes the specified service gateway.
+// deleteOperation - Deletes the specified service gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServiceGatewaysClient) delete(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ServiceGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceGatewaysClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *ServiceGatewaysClient) delete(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -185,7 +187,7 @@ func (client *ServiceGatewaysClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -209,7 +211,8 @@ func (client *ServiceGatewaysClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ServiceGatewaysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -232,7 +235,7 @@ func (client *ServiceGatewaysClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -308,7 +311,7 @@ func (client *ServiceGatewaysClient) getAddressLocationsCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -385,7 +388,7 @@ func (client *ServiceGatewaysClient) getServicesCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -452,7 +455,7 @@ func (client *ServiceGatewaysClient) listAllCreateRequest(ctx context.Context, n
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -524,7 +527,7 @@ func (client *ServiceGatewaysClient) listCreateRequest(ctx context.Context, reso
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -569,7 +572,8 @@ func (client *ServiceGatewaysClient) UpdateAddressLocations(ctx context.Context,
 	if err != nil {
 		return ServiceGatewaysClientUpdateAddressLocationsResponse{}, err
 	}
-	return client.updateAddressLocationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAddressLocationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAddressLocationsCreateRequest creates the UpdateAddressLocations request.
@@ -592,7 +596,7 @@ func (client *ServiceGatewaysClient) updateAddressLocationsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -638,7 +642,8 @@ func (client *ServiceGatewaysClient) UpdateServices(ctx context.Context, resourc
 	if err != nil {
 		return ServiceGatewaysClientUpdateServicesResponse{}, err
 	}
-	return client.updateServicesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateServicesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateServicesCreateRequest creates the UpdateServices request.
@@ -661,7 +666,7 @@ func (client *ServiceGatewaysClient) updateServicesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -704,7 +709,8 @@ func (client *ServiceGatewaysClient) UpdateTags(ctx context.Context, resourceGro
 	if err != nil {
 		return ServiceGatewaysClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -727,7 +733,7 @@ func (client *ServiceGatewaysClient) updateTagsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -63,7 +63,8 @@ func (client *MetricsClient) List(ctx context.Context, resourceURI string, optio
 	if err != nil {
 		return MetricsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -151,7 +152,8 @@ func (client *MetricsClient) ListAtSubscriptionScope(ctx context.Context, region
 	if err != nil {
 		return MetricsClientListAtSubscriptionScopeResponse{}, err
 	}
-	return client.listAtSubscriptionScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAtSubscriptionScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAtSubscriptionScopeCreateRequest creates the ListAtSubscriptionScope request.
@@ -241,7 +243,8 @@ func (client *MetricsClient) ListAtSubscriptionScopePost(ctx context.Context, re
 	if err != nil {
 		return MetricsClientListAtSubscriptionScopePostResponse{}, err
 	}
-	return client.listAtSubscriptionScopePostHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAtSubscriptionScopePostHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAtSubscriptionScopePostCreateRequest creates the ListAtSubscriptionScopePost request.

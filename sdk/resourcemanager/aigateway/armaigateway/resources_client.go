@@ -85,7 +85,8 @@ func (client *ResourcesClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *ResourcesClient) createOrUpdateCreateRequest(ctx context.Context, 
 //   - options - ResourcesClientBeginDeleteOptions contains the optional parameters for the ResourcesClient.BeginDelete method.
 func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, aiGatewayName string, ifMatch string, options *ResourcesClientBeginDeleteOptions) (*runtime.Poller[ResourcesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, aiGatewayName, ifMatch, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, aiGatewayName, ifMatch, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Delete a AiGatewayResource
+// deleteOperation - Delete a AiGatewayResource
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ResourcesClient) delete(ctx context.Context, resourceGroupName string, aiGatewayName string, ifMatch string, options *ResourcesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, aiGatewayName string, ifMatch string, options *ResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ResourcesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *ResourcesClient) delete(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -232,7 +234,8 @@ func (client *ResourcesClient) update(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -287,7 +290,8 @@ func (client *ResourcesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return ResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

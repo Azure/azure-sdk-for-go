@@ -1704,6 +1704,12 @@ type ApplicationGatewayPropertiesFormat struct {
 	// Custom error configurations of the application gateway resource.
 	CustomErrorConfigurations []*ApplicationGatewayCustomError
 
+	// Deployment tier of the application gateway resource. Only valid on Standard_v2 and WAF_v2 SKUs.
+	DeploymentTier *ApplicationGatewayDeploymentTier
+
+	// Whether Confidential Compute is enabled on the application gateway resource.
+	EnableConfidentialCompute *bool
+
 	// Whether FIPS is enabled on the application gateway resource.
 	EnableFips *bool
 
@@ -3105,6 +3111,9 @@ type AzureFirewallPropertiesFormat struct {
 
 	// The Azure Firewall Resource SKU.
 	SKU *AzureFirewallSKU
+
+	// The TCP idle timeout for the Azure Firewall, in minutes. Valid values range from 4 to 64, inclusive.
+	TCPIdleTimeoutInMinutes *int32
 
 	// The operation mode for Threat Intelligence.
 	ThreatIntelMode *AzureFirewallThreatIntelMode
@@ -9126,6 +9135,11 @@ type InboundSecurityRules struct {
 	// NVA port ranges to be opened up. One can provide a range of ports. Allowed port value between 0 and 65535.
 	DestinationPortRanges []*string
 
+	// Configuration of the Internet Ingress load-balancing rule for a managed Network Virtual Appliance. Supported only when
+	// the enclosing ruleType is Permanent; supplying this configuration for AutoExpire rules is rejected with HTTP 400 Bad Request.
+	// When omitted on create or update, Default distribution and a 5-minute idle timeout are used.
+	LoadBalancerConfiguration *VirtualApplianceLoadBalancerConfiguration
+
 	// Name of the rule.
 	Name *string
 
@@ -9425,6 +9439,9 @@ type InterfacePropertiesFormat struct {
 
 	// Migration phase of Network Interface resource.
 	MigrationPhase *NetworkInterfaceMigrationPhase
+
+	// The index of the physical network adapter.
+	NetworkAdapterIndex *int32
 
 	// The reference to the NetworkSecurityGroup resource.
 	NetworkSecurityGroup *SecurityGroup
@@ -16482,6 +16499,19 @@ type VirtualApplianceListResult struct {
 	NextLink *string
 }
 
+// VirtualApplianceLoadBalancerConfiguration - Load balancer settings shared by managed Network Virtual Appliances and their
+// Permanent inbound security rules.
+type VirtualApplianceLoadBalancerConfiguration struct {
+	// The idle timeout of the load-balancing rule, in minutes. When omitted, the managed NVA platform default of 5 minutes is
+	// used. Values outside 4 through 100 are rejected with HTTP 400 InvalidParameter.
+	IdleTimeoutInMinutes *int32
+
+	// The load distribution policy. Default uses a five-tuple hash of source IP, destination IP, source port, destination port,
+	// and protocol. SourceIP uses a two-tuple hash of source IP and destination IP. SourceIPProtocol uses a three-tuple hash
+	// of source IP, destination IP, and protocol. When omitted, Default is used.
+	LoadDistribution *NetworkVirtualApplianceLoadDistribution
+}
+
 // VirtualApplianceMigrationStatus - The migration status of a Network Virtual Appliance.
 type VirtualApplianceMigrationStatus struct {
 	// The current phase of the migration workflow (for example, Prepare, Execute, Commit, or Abort).
@@ -16574,6 +16604,11 @@ type VirtualAppliancePropertiesFormat struct {
 
 	// List of Resource Uri of Public IPs for Internet Ingress Scenario.
 	InternetIngressPublicIPs []*InternetIngressPublicIPsProperties
+
+	// Configuration of the internal load balancer for a managed Network Virtual Appliance in a virtual hub or virtual network.
+	// Not applicable to partner-managed load balancers on SaaS NVAs. When omitted on create or update, Default distribution and
+	// a 5-minute idle timeout are used.
+	LoadBalancerConfiguration *VirtualApplianceLoadBalancerConfiguration
 
 	// Network Profile containing configurations for Public and Private NIC.
 	NetworkProfile *VirtualAppliancePropertiesFormatNetworkProfile

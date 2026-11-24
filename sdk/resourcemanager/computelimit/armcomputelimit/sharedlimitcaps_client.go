@@ -65,7 +65,8 @@ func (client *SharedLimitCapsClient) CreateOrUpdate(ctx context.Context, locatio
 	if err != nil {
 		return SharedLimitCapsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *SharedLimitCapsClient) Delete(ctx context.Context, location string
 		return SharedLimitCapsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SharedLimitCapsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SharedLimitCapsClientDeleteResponse{}, err
 	}
 	return SharedLimitCapsClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *SharedLimitCapsClient) Get(ctx context.Context, location string, v
 	if err != nil {
 		return SharedLimitCapsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -315,7 +318,8 @@ func (client *SharedLimitCapsClient) SetMemberCapOverrides(ctx context.Context, 
 	if err != nil {
 		return SharedLimitCapsClientSetMemberCapOverridesResponse{}, err
 	}
-	return client.setMemberCapOverridesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setMemberCapOverridesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setMemberCapOverridesCreateRequest creates the SetMemberCapOverrides request.

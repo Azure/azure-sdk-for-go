@@ -66,7 +66,8 @@ func (client *IntelligencePacksClient) Disable(ctx context.Context, resourceGrou
 		return IntelligencePacksClientDisableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return IntelligencePacksClientDisableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IntelligencePacksClientDisableResponse{}, err
 	}
 	return IntelligencePacksClientDisableResponse{}, nil
 }
@@ -122,7 +123,8 @@ func (client *IntelligencePacksClient) Enable(ctx context.Context, resourceGroup
 		return IntelligencePacksClientEnableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return IntelligencePacksClientEnableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IntelligencePacksClientEnableResponse{}, err
 	}
 	return IntelligencePacksClientEnableResponse{}, nil
 }
@@ -175,7 +177,8 @@ func (client *IntelligencePacksClient) List(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return IntelligencePacksClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

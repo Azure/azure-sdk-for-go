@@ -68,7 +68,8 @@ func (client *ReplicationAlertSettingsClient) Create(ctx context.Context, resour
 	if err != nil {
 		return ReplicationAlertSettingsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -140,7 +141,8 @@ func (client *ReplicationAlertSettingsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return ReplicationAlertSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

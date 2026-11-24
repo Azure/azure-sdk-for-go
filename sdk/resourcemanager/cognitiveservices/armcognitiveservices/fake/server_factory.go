@@ -21,6 +21,9 @@ type ServerFactory struct {
 	// AccountConnectionsServer contains the fakes for client AccountConnectionsClient
 	AccountConnectionsServer AccountConnectionsServer
 
+	// AccountCostControlsServer contains the fakes for client AccountCostControlsClient
+	AccountCostControlsServer AccountCostControlsServer
+
 	// AccountsServer contains the fakes for client AccountsClient
 	AccountsServer AccountsServer
 
@@ -36,6 +39,9 @@ type ServerFactory struct {
 	// ArcDeploymentsServer contains the fakes for client ArcDeploymentsClient
 	ArcDeploymentsServer ArcDeploymentsServer
 
+	// AttachedAKSClustersServer contains the fakes for client AttachedAKSClustersClient
+	AttachedAKSClustersServer AttachedAKSClustersServer
+
 	// CommitmentPlansServer contains the fakes for client CommitmentPlansClient
 	CommitmentPlansServer CommitmentPlansServer
 
@@ -47,9 +53,6 @@ type ServerFactory struct {
 
 	// ComputesServer contains the fakes for client ComputesClient
 	ComputesServer ComputesServer
-
-	// CostControlsServer contains the fakes for client CostControlsClient
-	CostControlsServer CostControlsServer
 
 	// DefenderForAISettingsServer contains the fakes for client DefenderForAISettingsClient
 	DefenderForAISettingsServer DefenderForAISettingsServer
@@ -113,6 +116,9 @@ type ServerFactory struct {
 
 	// ProjectConnectionsServer contains the fakes for client ProjectConnectionsClient
 	ProjectConnectionsServer ProjectConnectionsServer
+
+	// ProjectCostControlsServer contains the fakes for client ProjectCostControlsClient
+	ProjectCostControlsServer ProjectCostControlsServer
 
 	// ProjectsServer contains the fakes for client ProjectsClient
 	ProjectsServer ProjectsServer
@@ -182,16 +188,17 @@ type ServerFactoryTransport struct {
 	trMu                                           sync.Mutex
 	trAccountCapabilityHostsServer                 *AccountCapabilityHostsServerTransport
 	trAccountConnectionsServer                     *AccountConnectionsServerTransport
+	trAccountCostControlsServer                    *AccountCostControlsServerTransport
 	trAccountsServer                               *AccountsServerTransport
 	trAdapterDeploymentsServer                     *AdapterDeploymentsServerTransport
 	trAgentApplicationsServer                      *AgentApplicationsServerTransport
 	trAgentDeploymentsServer                       *AgentDeploymentsServerTransport
 	trArcDeploymentsServer                         *ArcDeploymentsServerTransport
+	trAttachedAKSClustersServer                    *AttachedAKSClustersServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
 	trComputeOperationsServer                      *ComputeOperationsServerTransport
 	trComputesServer                               *ComputesServerTransport
-	trCostControlsServer                           *CostControlsServerTransport
 	trDefenderForAISettingsServer                  *DefenderForAISettingsServerTransport
 	trDeletedAccountsServer                        *DeletedAccountsServerTransport
 	trDeploymentsServer                            *DeploymentsServerTransport
@@ -213,6 +220,7 @@ type ServerFactoryTransport struct {
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trProjectCapabilityHostsServer                 *ProjectCapabilityHostsServerTransport
 	trProjectConnectionsServer                     *ProjectConnectionsServerTransport
+	trProjectCostControlsServer                    *ProjectCostControlsServerTransport
 	trProjectsServer                               *ProjectsServerTransport
 	trQuotaTiersServer                             *QuotaTiersServerTransport
 	trRaiBindingsServer                            *RaiBindingsServerTransport
@@ -237,7 +245,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	client := method[:strings.Index(method, ".")]
@@ -255,6 +263,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAccountConnectionsServerTransport(&s.srv.AccountConnectionsServer)
 		})
 		resp, err = s.trAccountConnectionsServer.Do(req)
+	case "AccountCostControlsClient":
+		initServer(&s.trMu, &s.trAccountCostControlsServer, func() *AccountCostControlsServerTransport {
+			return NewAccountCostControlsServerTransport(&s.srv.AccountCostControlsServer)
+		})
+		resp, err = s.trAccountCostControlsServer.Do(req)
 	case "AccountsClient":
 		initServer(&s.trMu, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
@@ -278,6 +291,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewArcDeploymentsServerTransport(&s.srv.ArcDeploymentsServer)
 		})
 		resp, err = s.trArcDeploymentsServer.Do(req)
+	case "AttachedAKSClustersClient":
+		initServer(&s.trMu, &s.trAttachedAKSClustersServer, func() *AttachedAKSClustersServerTransport {
+			return NewAttachedAKSClustersServerTransport(&s.srv.AttachedAKSClustersServer)
+		})
+		resp, err = s.trAttachedAKSClustersServer.Do(req)
 	case "CommitmentPlansClient":
 		initServer(&s.trMu, &s.trCommitmentPlansServer, func() *CommitmentPlansServerTransport {
 			return NewCommitmentPlansServerTransport(&s.srv.CommitmentPlansServer)
@@ -296,9 +314,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ComputesClient":
 		initServer(&s.trMu, &s.trComputesServer, func() *ComputesServerTransport { return NewComputesServerTransport(&s.srv.ComputesServer) })
 		resp, err = s.trComputesServer.Do(req)
-	case "CostControlsClient":
-		initServer(&s.trMu, &s.trCostControlsServer, func() *CostControlsServerTransport { return NewCostControlsServerTransport(&s.srv.CostControlsServer) })
-		resp, err = s.trCostControlsServer.Do(req)
 	case "DefenderForAISettingsClient":
 		initServer(&s.trMu, &s.trDefenderForAISettingsServer, func() *DefenderForAISettingsServerTransport {
 			return NewDefenderForAISettingsServerTransport(&s.srv.DefenderForAISettingsServer)
@@ -394,6 +409,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProjectConnectionsServerTransport(&s.srv.ProjectConnectionsServer)
 		})
 		resp, err = s.trProjectConnectionsServer.Do(req)
+	case "ProjectCostControlsClient":
+		initServer(&s.trMu, &s.trProjectCostControlsServer, func() *ProjectCostControlsServerTransport {
+			return NewProjectCostControlsServerTransport(&s.srv.ProjectCostControlsServer)
+		})
+		resp, err = s.trProjectCostControlsServer.Do(req)
 	case "ProjectsClient":
 		initServer(&s.trMu, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ServiceEndpointPolicyCreate.json
+// Generated from example definition: 2026-05-01/ServiceEndpointPolicyCreate.json
 func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpointPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ServiceEndpointPolicyCreateWithDefinition.json
+// Generated from example definition: 2026-05-01/ServiceEndpointPolicyCreateWithDefinition.json
 func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpointPolicyWithDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ServiceEndpointPolicyDelete.json
+// Generated from example definition: 2026-05-01/ServiceEndpointPolicyDelete.json
 func ExampleServiceEndpointPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleServiceEndpointPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ServiceEndpointPolicyGet.json
+// Generated from example definition: 2026-05-01/ServiceEndpointPolicyGet.json
 func ExampleServiceEndpointPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleServiceEndpointPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ServiceEndpointPolicyList.json
+// Generated from example definition: 2026-05-01/ServiceEndpointPolicyList.json
 func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ServiceEndpointPolicyListAll.json
+// Generated from example definition: 2026-05-01/ServiceEndpointPolicyListAll.json
 func ExampleServiceEndpointPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -368,7 +368,7 @@ func ExampleServiceEndpointPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ServiceEndpointPolicyUpdateTags.json
+// Generated from example definition: 2026-05-01/ServiceEndpointPolicyUpdateTags.json
 func ExampleServiceEndpointPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

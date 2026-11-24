@@ -69,7 +69,8 @@ func (client *ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return ObjectReplicationPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,7 +144,8 @@ func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resou
 		return ObjectReplicationPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ObjectReplicationPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ObjectReplicationPoliciesClientDeleteResponse{}, err
 	}
 	return ObjectReplicationPoliciesClientDeleteResponse{}, nil
 }
@@ -201,7 +203,8 @@ func (client *ObjectReplicationPoliciesClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ObjectReplicationPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

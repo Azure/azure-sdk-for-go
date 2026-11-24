@@ -64,7 +64,8 @@ func (client *KeysClient) ListByAutomationAccount(ctx context.Context, resourceG
 	if err != nil {
 		return KeysClientListByAutomationAccountResponse{}, err
 	}
-	return client.listByAutomationAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByAutomationAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.

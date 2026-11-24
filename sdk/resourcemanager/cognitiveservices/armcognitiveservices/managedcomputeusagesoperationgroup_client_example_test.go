@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/ListManagedComputeUsages.json
+// Generated from example definition: 2026-11-15-preview/ListManagedComputeUsages.json
 func ExampleManagedComputeUsagesOperationGroupClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,14 @@ func ExampleManagedComputeUsagesOperationGroupClient_NewListPager() {
 		// 	ManagedComputeUsageListResult: armcognitiveservices.ManagedComputeUsageListResult{
 		// 		Value: []*armcognitiveservices.ManagedComputeUsage{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/locations/eastus/managedComputeUsages/ManagedCompute.Global.H100_80GB"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.CognitiveServices/locations/eastus/managedComputeUsages/ManagedCompute.DataZone.H100_80GB.US"),
 		// 				Name: &armcognitiveservices.MetricName{
-		// 					Value: to.Ptr("ManagedCompute.Global.H100_80GB"),
-		// 					LocalizedValue: to.Ptr("H100_80GB Managed Compute Quota"),
+		// 					Value: to.Ptr("ManagedCompute.DataZone.H100_80GB"),
+		// 					LocalizedValue: to.Ptr("H100_80GB Managed Compute Quota (US Data Zone)"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.CognitiveServices/locations/managedComputeUsages"),
-		// 				OfferScope: to.Ptr("Global"),
+		// 				OfferScope: to.Ptr("DataZone"),
+		// 				ScopeID: to.Ptr("US"),
 		// 				CurrentValue: to.Ptr[float64](8),
 		// 				Limit: to.Ptr[float64](300),
 		// 				Unit: to.Ptr(armcognitiveservices.UnitType("AcceleratorCount")),

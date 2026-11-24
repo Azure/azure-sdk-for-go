@@ -65,7 +65,8 @@ func (client *CheckNameAvailabilityClient) Post(ctx context.Context, location st
 	if err != nil {
 		return CheckNameAvailabilityClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.

@@ -19,7 +19,7 @@ import (
 // UpgradeInsightsClient - Operations for the stored upgrade insights of a managed cluster.
 // Don't use this type directly, use NewUpgradeInsightsClient() instead.
 //
-// Generated from API version 2026-08-02-preview
+// Generated from API version 2026-09-02-preview
 type UpgradeInsightsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,8 @@ func (client *UpgradeInsightsClient) Generate(ctx context.Context, resourceGroup
 	if err != nil {
 		return UpgradeInsightsClientGenerateResponse{}, err
 	}
-	return client.generateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateCreateRequest creates the Generate request.
@@ -94,7 +95,7 @@ func (client *UpgradeInsightsClient) generateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -140,7 +141,8 @@ func (client *UpgradeInsightsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return UpgradeInsightsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -167,7 +169,7 @@ func (client *UpgradeInsightsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +247,7 @@ func (client *UpgradeInsightsClient) listCreateRequest(ctx context.Context, reso
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

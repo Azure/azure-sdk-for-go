@@ -93,6 +93,15 @@ type CloudAccount struct {
 	Type *string
 }
 
+// CloudAccountIdentityUpdate - Managed service identity (system assigned and/or user assigned identities)
+type CloudAccountIdentityUpdate struct {
+	// The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+}
+
 // CloudAccountListResult - The response of a CloudAccount list operation.
 type CloudAccountListResult struct {
 	// REQUIRED; The CloudAccount items on this page
@@ -100,6 +109,39 @@ type CloudAccountListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// CloudAccountMarketplaceUpdate - Marketplace details that can be updated on a Commvault Cloud Account.
+type CloudAccountMarketplaceUpdate struct {
+	// Offer details for the marketplace that is selected by the user
+	OfferDetails *CloudAccountOfferDetailsUpdate
+
+	// Marketplace SaaS Resource Id
+	SaasResourceID *string
+
+	// Azure subscription id for the the marketplace offer is purchased from
+	SubscriptionID *string
+}
+
+// CloudAccountOfferDetailsUpdate - Marketplace offer details that can be updated on a Commvault Cloud Account.
+type CloudAccountOfferDetailsUpdate struct {
+	// Offer Id for the marketplace offer
+	OfferID *string
+
+	// Plan Id for the marketplace offer
+	PlanID *string
+
+	// Plan Name for the marketplace offer
+	PlanName *string
+
+	// Publisher Id for the marketplace offer
+	PublisherID *string
+
+	// Plan Display Name for the marketplace offer
+	TermID *string
+
+	// Plan Display Name for the marketplace offer
+	TermUnit *string
 }
 
 // CloudAccountProperties - Properties specific to Commvault Cloud Account resource
@@ -121,6 +163,48 @@ type CloudAccountProperties struct {
 
 	// READ-ONLY; SSO URL for the Commvault Cloud Account
 	SsoURL *string
+}
+
+// CloudAccountUpdate - The type used for update operations of the CloudAccount.
+type CloudAccountUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *CloudAccountIdentityUpdate
+
+	// The resource-specific properties for this resource.
+	Properties *CloudAccountUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// CloudAccountUpdateProperties - The updatable properties of the CloudAccount.
+type CloudAccountUpdateProperties struct {
+	// Optional company details for the cloud account
+	Company *CompanyProfile
+
+	// Marketplace details of the resource.
+	Marketplace *CloudAccountMarketplaceUpdate
+
+	// Details of the user.
+	User *CloudAccountUserUpdate
+}
+
+// CloudAccountUserUpdate - User details that can be updated on a Commvault Cloud Account.
+type CloudAccountUserUpdate struct {
+	// Email address of the user
+	EmailAddress *string
+
+	// First name of the user
+	FirstName *string
+
+	// Last name of the user
+	LastName *string
+
+	// User's phone number
+	PhoneNumber *string
+
+	// User's principal name
+	Upn *string
 }
 
 // CommvaultPlan - A Commvault Plan Resource

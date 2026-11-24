@@ -121,6 +121,95 @@ func ExampleMonitoredSubscriptionsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2024-04-24/MonitoredSubscriptions_Update.json
+func ExampleMonitoredSubscriptionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginUpdate(ctx, "myResourceGroup", "myMonitor", armdynatrace.MonitoredSubscriptionProperties{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdynatrace.MonitoredSubscriptionsClientUpdateResponse{
+	// 	MonitoredSubscriptionProperties: armdynatrace.MonitoredSubscriptionProperties{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Dynatrace.Observability/monitors/monitoredSubscriptions"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor/monitoredSubscriptions/default"),
+	// 		Properties: &armdynatrace.SubscriptionList{
+	// 			MonitoredSubscriptionList: []*armdynatrace.MonitoredSubscription{
+	// 				{
+	// 					Status: to.Ptr(armdynatrace.StatusActive),
+	// 					SubscriptionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
+	// 					TagRules: &armdynatrace.MonitoringTagRulesProperties{
+	// 						LogRules: &armdynatrace.LogRules{
+	// 							FilteringTags: []*armdynatrace.FilteringTag{
+	// 								{
+	// 									Name: to.Ptr("Environment"),
+	// 									Action: to.Ptr(armdynatrace.TagActionInclude),
+	// 									Value: to.Ptr("Prod"),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("Environment"),
+	// 									Action: to.Ptr(armdynatrace.TagActionExclude),
+	// 									Value: to.Ptr("Dev"),
+	// 								},
+	// 							},
+	// 							SendAADLogs: to.Ptr(armdynatrace.SendAADLogsStatusDisabled),
+	// 							SendActivityLogs: to.Ptr(armdynatrace.SendActivityLogsStatusEnabled),
+	// 							SendSubscriptionLogs: to.Ptr(armdynatrace.SendSubscriptionLogsStatusEnabled),
+	// 						},
+	// 						MetricRules: &armdynatrace.MetricRules{
+	// 							FilteringTags: []*armdynatrace.FilteringTag{
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				{
+	// 					Status: to.Ptr(armdynatrace.StatusFailed),
+	// 					SubscriptionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001"),
+	// 					TagRules: &armdynatrace.MonitoringTagRulesProperties{
+	// 						LogRules: &armdynatrace.LogRules{
+	// 							FilteringTags: []*armdynatrace.FilteringTag{
+	// 								{
+	// 									Name: to.Ptr("Environment"),
+	// 									Action: to.Ptr(armdynatrace.TagActionInclude),
+	// 									Value: to.Ptr("Prod"),
+	// 								},
+	// 								{
+	// 									Name: to.Ptr("Environment"),
+	// 									Action: to.Ptr(armdynatrace.TagActionExclude),
+	// 									Value: to.Ptr("Dev"),
+	// 								},
+	// 							},
+	// 							SendAADLogs: to.Ptr(armdynatrace.SendAADLogsStatusDisabled),
+	// 							SendActivityLogs: to.Ptr(armdynatrace.SendActivityLogsStatusEnabled),
+	// 							SendSubscriptionLogs: to.Ptr(armdynatrace.SendSubscriptionLogsStatusEnabled),
+	// 						},
+	// 						MetricRules: &armdynatrace.MetricRules{
+	// 							FilteringTags: []*armdynatrace.FilteringTag{
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2024-04-24/MonitoredSubscriptions_Get.json
 func ExampleMonitoredSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -298,93 +387,4 @@ func ExampleMonitoredSubscriptionsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2024-04-24/MonitoredSubscriptions_Update.json
-func ExampleMonitoredSubscriptionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginUpdate(ctx, "myResourceGroup", "myMonitor", armdynatrace.MonitoredSubscriptionProperties{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdynatrace.MonitoredSubscriptionsClientUpdateResponse{
-	// 	MonitoredSubscriptionProperties: armdynatrace.MonitoredSubscriptionProperties{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Dynatrace.Observability/monitors/monitoredSubscriptions"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor/monitoredSubscriptions/default"),
-	// 		Properties: &armdynatrace.SubscriptionList{
-	// 			MonitoredSubscriptionList: []*armdynatrace.MonitoredSubscription{
-	// 				{
-	// 					Status: to.Ptr(armdynatrace.StatusActive),
-	// 					SubscriptionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000"),
-	// 					TagRules: &armdynatrace.MonitoringTagRulesProperties{
-	// 						LogRules: &armdynatrace.LogRules{
-	// 							FilteringTags: []*armdynatrace.FilteringTag{
-	// 								{
-	// 									Name: to.Ptr("Environment"),
-	// 									Action: to.Ptr(armdynatrace.TagActionInclude),
-	// 									Value: to.Ptr("Prod"),
-	// 								},
-	// 								{
-	// 									Name: to.Ptr("Environment"),
-	// 									Action: to.Ptr(armdynatrace.TagActionExclude),
-	// 									Value: to.Ptr("Dev"),
-	// 								},
-	// 							},
-	// 							SendAADLogs: to.Ptr(armdynatrace.SendAADLogsStatusDisabled),
-	// 							SendActivityLogs: to.Ptr(armdynatrace.SendActivityLogsStatusEnabled),
-	// 							SendSubscriptionLogs: to.Ptr(armdynatrace.SendSubscriptionLogsStatusEnabled),
-	// 						},
-	// 						MetricRules: &armdynatrace.MetricRules{
-	// 							FilteringTags: []*armdynatrace.FilteringTag{
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				{
-	// 					Status: to.Ptr(armdynatrace.StatusFailed),
-	// 					SubscriptionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001"),
-	// 					TagRules: &armdynatrace.MonitoringTagRulesProperties{
-	// 						LogRules: &armdynatrace.LogRules{
-	// 							FilteringTags: []*armdynatrace.FilteringTag{
-	// 								{
-	// 									Name: to.Ptr("Environment"),
-	// 									Action: to.Ptr(armdynatrace.TagActionInclude),
-	// 									Value: to.Ptr("Prod"),
-	// 								},
-	// 								{
-	// 									Name: to.Ptr("Environment"),
-	// 									Action: to.Ptr(armdynatrace.TagActionExclude),
-	// 									Value: to.Ptr("Dev"),
-	// 								},
-	// 							},
-	// 							SendAADLogs: to.Ptr(armdynatrace.SendAADLogsStatusDisabled),
-	// 							SendActivityLogs: to.Ptr(armdynatrace.SendActivityLogsStatusEnabled),
-	// 							SendSubscriptionLogs: to.Ptr(armdynatrace.SendSubscriptionLogsStatusEnabled),
-	// 						},
-	// 						MetricRules: &armdynatrace.MetricRules{
-	// 							FilteringTags: []*armdynatrace.FilteringTag{
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

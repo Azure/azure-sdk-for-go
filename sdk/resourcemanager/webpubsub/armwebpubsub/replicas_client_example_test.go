@@ -79,6 +79,94 @@ func ExampleReplicasClient_BeginCreateOrUpdate() {
 	// }
 }
 
+// Generated from example definition: 2025-01-01-preview/WebPubSubReplicas_Restart.json
+func ExampleReplicasClient_BeginRestart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armwebpubsub.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicasClient().BeginRestart(ctx, "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-01-01-preview/WebPubSubReplicas_Update.json
+func ExampleReplicasClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armwebpubsub.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicasClient().BeginUpdate(ctx, "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", armwebpubsub.Replica{
+		Location: to.Ptr("eastus"),
+		Properties: &armwebpubsub.ReplicaProperties{
+			ResourceStopped: to.Ptr("false"),
+		},
+		SKU: &armwebpubsub.ResourceSKU{
+			Name:     to.Ptr("Premium_P1"),
+			Capacity: to.Ptr[int32](1),
+			Tier:     to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armwebpubsub.ReplicasClientUpdateResponse{
+	// 	Replica: armwebpubsub.Replica{
+	// 		Name: to.Ptr("myWebPubSubService-eastus"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/replicas/myWebPubSubService-eastus"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armwebpubsub.ReplicaProperties{
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 			RegionEndpointEnabled: to.Ptr("Enabled"),
+	// 			ResourceStopped: to.Ptr("false"),
+	// 		},
+	// 		SKU: &armwebpubsub.ResourceSKU{
+	// 			Name: to.Ptr("Premium_P1"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Size: to.Ptr("P1"),
+	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+	// 		},
+	// 		SystemData: &armwebpubsub.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-01-01-preview/WebPubSubReplicas_Delete.json
 func ExampleReplicasClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -208,92 +296,4 @@ func ExampleReplicasClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-01-01-preview/WebPubSubReplicas_Restart.json
-func ExampleReplicasClient_BeginRestart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armwebpubsub.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicasClient().BeginRestart(ctx, "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-01-01-preview/WebPubSubReplicas_Update.json
-func ExampleReplicasClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armwebpubsub.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicasClient().BeginUpdate(ctx, "myResourceGroup", "myWebPubSubService", "myWebPubSubService-eastus", armwebpubsub.Replica{
-		Location: to.Ptr("eastus"),
-		Properties: &armwebpubsub.ReplicaProperties{
-			ResourceStopped: to.Ptr("false"),
-		},
-		SKU: &armwebpubsub.ResourceSKU{
-			Name:     to.Ptr("Premium_P1"),
-			Capacity: to.Ptr[int32](1),
-			Tier:     to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armwebpubsub.ReplicasClientUpdateResponse{
-	// 	Replica: armwebpubsub.Replica{
-	// 		Name: to.Ptr("myWebPubSubService-eastus"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/replicas/myWebPubSubService-eastus"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armwebpubsub.ReplicaProperties{
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
-	// 			RegionEndpointEnabled: to.Ptr("Enabled"),
-	// 			ResourceStopped: to.Ptr("false"),
-	// 		},
-	// 		SKU: &armwebpubsub.ResourceSKU{
-	// 			Name: to.Ptr("Premium_P1"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Size: to.Ptr("P1"),
-	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
-	// 		},
-	// 		SystemData: &armwebpubsub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 		},
-	// 	},
-	// }
 }

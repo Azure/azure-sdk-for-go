@@ -64,7 +64,8 @@ func (client *ScheduledActionOperationStatusClient) Get(ctx context.Context, loc
 	if err != nil {
 		return ScheduledActionOperationStatusClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

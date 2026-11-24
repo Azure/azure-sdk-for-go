@@ -135,6 +135,89 @@ func ExampleNetworkAnchorsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-06-01/NetworkAnchors_Update_MaximumSet_Gen.json
+func ExampleNetworkAnchorsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkAnchorsClient().BeginUpdate(ctx, "rgopenapi", "resource1", armoracledatabase.NetworkAnchorUpdate{
+		Zones: []*string{
+			to.Ptr("example"),
+		},
+		Tags: map[string]*string{
+			"key2518": to.Ptr("example"),
+		},
+		Properties: &armoracledatabase.NetworkAnchorUpdateProperties{
+			OciBackupCidrBlock:                   to.Ptr("zll"),
+			IsOracleToAzureDNSZoneSyncEnabled:    to.Ptr(true),
+			IsOracleDNSListeningEndpointEnabled:  to.Ptr(true),
+			IsOracleDNSForwardingEndpointEnabled: to.Ptr(true),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoracledatabase.NetworkAnchorsClientUpdateResponse{
+	// 	NetworkAnchor: armoracledatabase.NetworkAnchor{
+	// 		Properties: &armoracledatabase.NetworkAnchorProperties{
+	// 			ResourceAnchorID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resourceAnchors/anchor1"),
+	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
+	// 			CidrBlock: to.Ptr("ehm"),
+	// 			OciVcnID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 			OciVcnDNSLabel: to.Ptr("example"),
+	// 			OciSubnetID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
+	// 			OciBackupCidrBlock: to.Ptr("example"),
+	// 			IsOracleToAzureDNSZoneSyncEnabled: to.Ptr(true),
+	// 			IsOracleDNSListeningEndpointEnabled: to.Ptr(true),
+	// 			IsOracleDNSForwardingEndpointEnabled: to.Ptr(true),
+	// 			DNSListeningEndpointIPAddress: to.Ptr("example"),
+	// 			DNSForwardingEndpointIPAddress: to.Ptr("example"),
+	// 			DNSForwardingRulesURL: to.Ptr("https://example.com"),
+	// 			DNSListeningEndpointNsgRulesURL: to.Ptr("wmjxzjkoktq"),
+	// 			DNSForwardingEndpointNsgRulesURL: to.Ptr("https://example.com"),
+	// 			ProximityPlacementGroup: &armoracledatabase.ProximityPlacementGroup{
+	// 				ProximityPlacementGroupID: to.Ptr("example"),
+	// 				ProximityAnchorID: to.Ptr("example"),
+	// 				EntityTypeIntendedToUse: to.Ptr(armoracledatabase.ProximityPlacementGroupEntityTypeCloudExadataInfrastructure),
+	// 			},
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("zznbkklaih"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key6589": to.Ptr("mcg"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+	// 		Name: to.Ptr("adg"),
+	// 		Type: to.Ptr("Oracle.Database/resource"),
+	// 		SystemData: &armoracledatabase.SystemData{
+	// 			CreatedBy: to.Ptr("ns"),
+	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("example"),
+	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-06-01/NetworkAnchors_Get_MaximumSet_Gen.json
 func ExampleNetworkAnchorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -351,87 +434,4 @@ func ExampleNetworkAnchorsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-01/NetworkAnchors_Update_MaximumSet_Gen.json
-func ExampleNetworkAnchorsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoracledatabase.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkAnchorsClient().BeginUpdate(ctx, "rgopenapi", "resource1", armoracledatabase.NetworkAnchorUpdate{
-		Zones: []*string{
-			to.Ptr("example"),
-		},
-		Tags: map[string]*string{
-			"key2518": to.Ptr("example"),
-		},
-		Properties: &armoracledatabase.NetworkAnchorUpdateProperties{
-			OciBackupCidrBlock:                   to.Ptr("zll"),
-			IsOracleToAzureDNSZoneSyncEnabled:    to.Ptr(true),
-			IsOracleDNSListeningEndpointEnabled:  to.Ptr(true),
-			IsOracleDNSForwardingEndpointEnabled: to.Ptr(true),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armoracledatabase.NetworkAnchorsClientUpdateResponse{
-	// 	NetworkAnchor: armoracledatabase.NetworkAnchor{
-	// 		Properties: &armoracledatabase.NetworkAnchorProperties{
-	// 			ResourceAnchorID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resourceAnchors/anchor1"),
-	// 			ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
-	// 			VnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
-	// 			CidrBlock: to.Ptr("ehm"),
-	// 			OciVcnID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
-	// 			OciVcnDNSLabel: to.Ptr("example"),
-	// 			OciSubnetID: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
-	// 			OciBackupCidrBlock: to.Ptr("example"),
-	// 			IsOracleToAzureDNSZoneSyncEnabled: to.Ptr(true),
-	// 			IsOracleDNSListeningEndpointEnabled: to.Ptr(true),
-	// 			IsOracleDNSForwardingEndpointEnabled: to.Ptr(true),
-	// 			DNSListeningEndpointIPAddress: to.Ptr("example"),
-	// 			DNSForwardingEndpointIPAddress: to.Ptr("example"),
-	// 			DNSForwardingRulesURL: to.Ptr("https://example.com"),
-	// 			DNSListeningEndpointNsgRulesURL: to.Ptr("wmjxzjkoktq"),
-	// 			DNSForwardingEndpointNsgRulesURL: to.Ptr("https://example.com"),
-	// 			ProximityPlacementGroup: &armoracledatabase.ProximityPlacementGroup{
-	// 				ProximityPlacementGroupID: to.Ptr("example"),
-	// 				ProximityAnchorID: to.Ptr("example"),
-	// 				EntityTypeIntendedToUse: to.Ptr(armoracledatabase.ProximityPlacementGroupEntityTypeCloudExadataInfrastructure),
-	// 			},
-	// 		},
-	// 		Zones: []*string{
-	// 			to.Ptr("zznbkklaih"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key6589": to.Ptr("mcg"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
-	// 		Name: to.Ptr("adg"),
-	// 		Type: to.Ptr("Oracle.Database/resource"),
-	// 		SystemData: &armoracledatabase.SystemData{
-	// 			CreatedBy: to.Ptr("ns"),
-	// 			CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("example"),
-	// 			LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 28, 21, 47, 8, 141000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

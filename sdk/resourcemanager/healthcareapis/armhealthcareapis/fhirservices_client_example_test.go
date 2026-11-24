@@ -215,6 +215,47 @@ func ExampleFhirServicesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-04-01-preview/fhirservices/FhirServices_Patch.json
+func ExampleFhirServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFhirServicesClient().BeginUpdate(ctx, "testRG", "fhirservice1", "workspace1", armhealthcareapis.FhirServicePatchResource{
+		Tags: map[string]*string{
+			"tagKey": to.Ptr("tagValue"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armhealthcareapis.FhirServicesClientUpdateResponse{
+	// 	FhirService: armhealthcareapis.FhirService{
+	// 		Name: to.Ptr("fhirservice1"),
+	// 		Type: to.Ptr("Microsoft.HealthcareApis/workspaces/fhirservices"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/fhirservices/fhirservice1"),
+	// 		Properties: &armhealthcareapis.FhirServiceProperties{
+	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tagKey": to.Ptr("tagValue"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-04-01-preview/fhirservices/FhirServices_Get.json
 func ExampleFhirServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -349,45 +390,4 @@ func ExampleFhirServicesClient_NewListByWorkspacePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-04-01-preview/fhirservices/FhirServices_Patch.json
-func ExampleFhirServicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armhealthcareapis.NewClientFactory("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewFhirServicesClient().BeginUpdate(ctx, "testRG", "fhirservice1", "workspace1", armhealthcareapis.FhirServicePatchResource{
-		Tags: map[string]*string{
-			"tagKey": to.Ptr("tagValue"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhealthcareapis.FhirServicesClientUpdateResponse{
-	// 	FhirService: armhealthcareapis.FhirService{
-	// 		Name: to.Ptr("fhirservice1"),
-	// 		Type: to.Ptr("Microsoft.HealthcareApis/workspaces/fhirservices"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/testRG/providers/Microsoft.HealthcareApis/workspaces/workspace1/fhirservices/fhirservice1"),
-	// 		Properties: &armhealthcareapis.FhirServiceProperties{
-	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tagKey": to.Ptr("tagValue"),
-	// 		},
-	// 	},
-	// }
 }

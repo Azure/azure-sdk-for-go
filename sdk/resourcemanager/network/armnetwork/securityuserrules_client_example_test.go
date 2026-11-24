@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/NetworkManagerSecurityUserRuleDelete.json
+// Generated from example definition: 2026-05-01/NetworkManagerSecurityUserRuleDelete.json
 func ExampleSecurityUserRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleSecurityUserRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerSecurityUserRulePut.json
+// Generated from example definition: 2026-05-01/NetworkManagerSecurityUserRulePut.json
 func ExampleSecurityUserRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleSecurityUserRulesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerSecurityUserRuleGet.json
+// Generated from example definition: 2026-05-01/NetworkManagerSecurityUserRuleGet.json
 func ExampleSecurityUserRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleSecurityUserRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerSecurityUserRuleList.json
+// Generated from example definition: 2026-05-01/NetworkManagerSecurityUserRuleList.json
 func ExampleSecurityUserRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

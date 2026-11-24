@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/IpAllocationCreate.json
+// Generated from example definition: 2026-05-01/IpAllocationCreate.json
 func ExampleIPAllocationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleIPAllocationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpAllocationDelete.json
+// Generated from example definition: 2026-05-01/IpAllocationDelete.json
 func ExampleIPAllocationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleIPAllocationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpAllocationGet.json
+// Generated from example definition: 2026-05-01/IpAllocationGet.json
 func ExampleIPAllocationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleIPAllocationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/IpAllocationListByResourceGroup.json
+// Generated from example definition: 2026-05-01/IpAllocationListByResourceGroup.json
 func ExampleIPAllocationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleIPAllocationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/IpAllocationList.json
+// Generated from example definition: 2026-05-01/IpAllocationList.json
 func ExampleIPAllocationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +241,7 @@ func ExampleIPAllocationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/IpAllocationUpdateTags.json
+// Generated from example definition: 2026-05-01/IpAllocationUpdateTags.json
 func ExampleIPAllocationsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

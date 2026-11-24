@@ -20,7 +20,7 @@ import (
 // IpamPoolsClient contains the methods for the IpamPools group.
 // Don't use this type directly, use NewIpamPoolsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type IpamPoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,8 @@ func (client *IpamPoolsClient) create(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -119,7 +120,7 @@ func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -142,7 +143,7 @@ func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resource
 //   - options - IpamPoolsClientBeginDeleteOptions contains the optional parameters for the IpamPoolsClient.BeginDelete method.
 func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*runtime.Poller[IpamPoolsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, poolName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +158,11 @@ func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Delete the Pool resource.
+// deleteOperation - Delete the Pool resource.
 //
 // Delete the Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IpamPoolsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IpamPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IpamPoolsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -176,7 +177,8 @@ func (client *IpamPoolsClient) delete(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -205,7 +207,7 @@ func (client *IpamPoolsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -235,7 +237,8 @@ func (client *IpamPoolsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return IpamPoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -262,7 +265,7 @@ func (client *IpamPoolsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,7 +305,8 @@ func (client *IpamPoolsClient) GetPoolUsage(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return IpamPoolsClientGetPoolUsageResponse{}, err
 	}
-	return client.getPoolUsageHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPoolUsageHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPoolUsageCreateRequest creates the GetPoolUsage request.
@@ -329,7 +333,7 @@ func (client *IpamPoolsClient) getPoolUsageCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -412,7 +416,7 @@ func (client *IpamPoolsClient) listAssociatedResourcesCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -490,7 +494,7 @@ func (client *IpamPoolsClient) listCreateRequest(ctx context.Context, resourceGr
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		if options != nil && options.Skip != nil {
 			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
 		}
@@ -547,7 +551,8 @@ func (client *IpamPoolsClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return IpamPoolsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -574,7 +579,7 @@ func (client *IpamPoolsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

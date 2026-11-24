@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationDelete.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingConfigurationDelete.json
 func ExampleManagerRoutingConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleManagerRoutingConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationPut.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingConfigurationPut.json
 func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleManagerRoutingConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationGet.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingConfigurationGet.json
 func ExampleManagerRoutingConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleManagerRoutingConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingConfigurationList.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingConfigurationList.json
 func ExampleManagerRoutingConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

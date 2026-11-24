@@ -19,7 +19,7 @@ import (
 // ExpressRouteLagsClient contains the methods for the ExpressRouteLags group.
 // Don't use this type directly, use NewExpressRouteLagsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type ExpressRouteLagsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -85,7 +85,8 @@ func (client *ExpressRouteLagsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -110,7 +111,7 @@ func (client *ExpressRouteLagsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +129,7 @@ func (client *ExpressRouteLagsClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteLagsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRouteLagName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteLagName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Deletes the specified ExpressRouteLag resource.
+// deleteOperation - Deletes the specified ExpressRouteLag resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteLagsClient) delete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteLagsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteLagsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *ExpressRouteLagsClient) delete(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -185,7 +187,7 @@ func (client *ExpressRouteLagsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -211,7 +213,8 @@ func (client *ExpressRouteLagsClient) GenerateLoa(ctx context.Context, resourceG
 	if err != nil {
 		return ExpressRouteLagsClientGenerateLoaResponse{}, err
 	}
-	return client.generateLoaHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateLoaHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateLoaCreateRequest creates the GenerateLoa request.
@@ -234,7 +237,7 @@ func (client *ExpressRouteLagsClient) generateLoaCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -275,7 +278,8 @@ func (client *ExpressRouteLagsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ExpressRouteLagsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -298,7 +302,7 @@ func (client *ExpressRouteLagsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,7 +341,8 @@ func (client *ExpressRouteLagsClient) LinksGet(ctx context.Context, resourceGrou
 	if err != nil {
 		return ExpressRouteLagsClientLinksGetResponse{}, err
 	}
-	return client.linksGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.linksGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // linksGetCreateRequest creates the LinksGet request.
@@ -364,7 +369,7 @@ func (client *ExpressRouteLagsClient) linksGetCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -404,7 +409,8 @@ func (client *ExpressRouteLagsClient) MembersGet(ctx context.Context, resourceGr
 	if err != nil {
 		return ExpressRouteLagsClientMembersGetResponse{}, err
 	}
-	return client.membersGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.membersGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // membersGetCreateRequest creates the MembersGet request.
@@ -435,7 +441,7 @@ func (client *ExpressRouteLagsClient) membersGetCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -511,7 +517,7 @@ func (client *ExpressRouteLagsClient) linksListCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -583,7 +589,7 @@ func (client *ExpressRouteLagsClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -650,7 +656,7 @@ func (client *ExpressRouteLagsClient) listCreateRequest(ctx context.Context, nex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -732,7 +738,7 @@ func (client *ExpressRouteLagsClient) membersListCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -771,7 +777,8 @@ func (client *ExpressRouteLagsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ExpressRouteLagsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -794,7 +801,7 @@ func (client *ExpressRouteLagsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

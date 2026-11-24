@@ -1012,317 +1012,6 @@ func ExampleNodeTypesClient_BeginDeleteNode() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypeGetOperation_example.json
-func ExampleNodeTypesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNodeTypesClient().Get(ctx, "resRg", "myCluster", "FE", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicefabricmanagedclusters.NodeTypesClientGetResponse{
-	// 	NodeType: armservicefabricmanagedclusters.NodeType{
-	// 		Name: to.Ptr("FE"),
-	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/FE"),
-	// 		Properties: &armservicefabricmanagedclusters.NodeTypeProperties{
-	// 			Capacities: map[string]*string{
-	// 			},
-	// 			DataDiskSizeGB: to.Ptr[int32](100),
-	// 			DataDiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypeStandardSSDLRS),
-	// 			IsPrimary: to.Ptr(true),
-	// 			IsStateless: to.Ptr(false),
-	// 			PlacementProperties: map[string]*string{
-	// 			},
-	// 			VMImageOffer: to.Ptr("WindowsServer"),
-	// 			VMImagePublisher: to.Ptr("MicrosoftWindowsServer"),
-	// 			VMImageSKU: to.Ptr("2016-Datacenter"),
-	// 			VMImageVersion: to.Ptr("latest"),
-	// 			VMInstanceCount: to.Ptr[int32](5),
-	// 			VMSecrets: []*armservicefabricmanagedclusters.VaultSecretGroup{
-	// 				{
-	// 					SourceVault: &armservicefabricmanagedclusters.SubResource{
-	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.KeyVault/vaults/myVault"),
-	// 					},
-	// 					VaultCertificates: []*armservicefabricmanagedclusters.VaultCertificate{
-	// 						{
-	// 							CertificateStore: to.Ptr("My"),
-	// 							CertificateURL: to.Ptr("https://myVault.vault.azure.net:443/secrets/myCert/ef1a31d39e1f46bca33def54b6cda54c"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			VMSize: to.Ptr("Standard_D2"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
-func ExampleNodeTypesClient_GetFaultSimulation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNodeTypesClient().GetFaultSimulation(ctx, "resRg", "myCluster", "BE", armservicefabricmanagedclusters.FaultSimulationIDContent{
-		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicefabricmanagedclusters.NodeTypesClientGetFaultSimulationResponse{
-	// 	FaultSimulation: armservicefabricmanagedclusters.FaultSimulation{
-	// 		EndTime: to.Ptr(time.Time{}),
-	// 		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-	// 		StartTime: to.Ptr(time.Date(2024, time.November, 21, 18, 11, 11, 347174200, time.UTC)),
-	// 		Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-	// 		Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
-	// 			OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
-	// 			NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
-	// 				{
-	// 					OperationID: to.Ptr("714f0003-80d8-464a-a019-69e6bf89ed4c"),
-	// 					NodeTypeName: to.Ptr("BE"),
-	// 					OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-	// 					Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-	// 				},
-	// 			},
-	// 			Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
-	// 				Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-	// 					ExpirationTime: to.Ptr(time.Time{}),
-	// 				},
-	// 				FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
-	// 				Force: to.Ptr(false),
-	// 				Zones: []*string{
-	// 					to.Ptr("2"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/NodeTypeListOperation_example.json
-func ExampleNodeTypesClient_NewListByManagedClustersPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewNodeTypesClient().NewListByManagedClustersPager("resRg", "myCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersResponse{
-		// 	NodeTypeListResult: armservicefabricmanagedclusters.NodeTypeListResult{
-		// 		NextLink: to.Ptr("http://examplelink.com"),
-		// 		Value: []*armservicefabricmanagedclusters.NodeType{
-		// 			{
-		// 				Name: to.Ptr("FE"),
-		// 				Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/FE"),
-		// 				Properties: &armservicefabricmanagedclusters.NodeTypeProperties{
-		// 					Capacities: map[string]*string{
-		// 					},
-		// 					DataDiskSizeGB: to.Ptr[int32](100),
-		// 					DataDiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypeStandardSSDLRS),
-		// 					IsPrimary: to.Ptr(true),
-		// 					IsStateless: to.Ptr(false),
-		// 					PlacementProperties: map[string]*string{
-		// 					},
-		// 					VMImageOffer: to.Ptr("WindowsServer"),
-		// 					VMImagePublisher: to.Ptr("MicrosoftWindowsServer"),
-		// 					VMImageSKU: to.Ptr("2016-Datacenter"),
-		// 					VMImageVersion: to.Ptr("latest"),
-		// 					VMInstanceCount: to.Ptr[int32](5),
-		// 					VMSize: to.Ptr("Standard_D2"),
-		// 				},
-		// 				SKU: &armservicefabricmanagedclusters.NodeTypeSKU{
-		// 					Name: to.Ptr("Standard_P0"),
-		// 					Capacity: to.Ptr[int32](5),
-		// 					Tier: to.Ptr("Standard"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("BE"),
-		// 				Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
-		// 				Properties: &armservicefabricmanagedclusters.NodeTypeProperties{
-		// 					Capacities: map[string]*string{
-		// 					},
-		// 					DataDiskSizeGB: to.Ptr[int32](200),
-		// 					DataDiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypePremiumLRS),
-		// 					IsPrimary: to.Ptr(false),
-		// 					IsStateless: to.Ptr(false),
-		// 					PlacementProperties: map[string]*string{
-		// 					},
-		// 					VMExtensions: []*armservicefabricmanagedclusters.VMSSExtension{
-		// 						{
-		// 							Name: to.Ptr("Microsoft.Azure.Geneva.GenevaMonitoring"),
-		// 							Properties: &armservicefabricmanagedclusters.VMSSExtensionProperties{
-		// 								Type: to.Ptr("GenevaMonitoring"),
-		// 								AutoUpgradeMinorVersion: to.Ptr(true),
-		// 								Publisher: to.Ptr("Microsoft.Azure.Geneva"),
-		// 								Settings: map[string]any{
-		// 								},
-		// 								TypeHandlerVersion: to.Ptr("2.0"),
-		// 							},
-		// 						},
-		// 					},
-		// 					VMImageOffer: to.Ptr("WindowsServer"),
-		// 					VMImagePublisher: to.Ptr("MicrosoftWindowsServer"),
-		// 					VMImageSKU: to.Ptr("2016-Datacenter-Server-Core"),
-		// 					VMImageVersion: to.Ptr("latest"),
-		// 					VMInstanceCount: to.Ptr[int32](10),
-		// 					VMSecrets: []*armservicefabricmanagedclusters.VaultSecretGroup{
-		// 						{
-		// 							SourceVault: &armservicefabricmanagedclusters.SubResource{
-		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.KeyVault/vaults/myVault"),
-		// 							},
-		// 							VaultCertificates: []*armservicefabricmanagedclusters.VaultCertificate{
-		// 								{
-		// 									CertificateStore: to.Ptr("My"),
-		// 									CertificateURL: to.Ptr("https://myVault.vault.azure.net:443/secrets/myCert/ef1a31d39e1f46bca33def54b6cda54c"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					VMSize: to.Ptr("Standard_DS3"),
-		// 				},
-		// 				SKU: &armservicefabricmanagedclusters.NodeTypeSKU{
-		// 					Name: to.Ptr("Standard_S0"),
-		// 					Capacity: to.Ptr[int32](10),
-		// 					Tier: to.Ptr("Standard"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
-func ExampleNodeTypesClient_NewListFaultSimulationPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewNodeTypesClient().NewListFaultSimulationPager("resRg", "myCluster", "BE", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationResponse{
-		// 	FaultSimulationListResult: armservicefabricmanagedclusters.FaultSimulationListResult{
-		// 		Value: []*armservicefabricmanagedclusters.FaultSimulation{
-		// 			{
-		// 				EndTime: to.Ptr(time.Time{}),
-		// 				SimulationID: to.Ptr("1bb61ba9-8a41-4d73-b5f0-7fc93b1edfe3"),
-		// 				StartTime: to.Ptr(time.Date(2024, time.November, 21, 21, 27, 55, 445267500, time.UTC)),
-		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
-		// 					OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
-		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
-		// 						{
-		// 							OperationID: to.Ptr("bff10003-af96-465c-b849-99c18e1f4af6"),
-		// 							NodeTypeName: to.Ptr("BE"),
-		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-		// 						},
-		// 					},
-		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
-		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-		// 							ExpirationTime: to.Ptr(time.Time{}),
-		// 						},
-		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
-		// 						Force: to.Ptr(false),
-		// 						Zones: []*string{
-		// 							to.Ptr("3"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				EndTime: to.Ptr(time.Date(2024, time.November, 21, 21, 24, 13, 82339000, time.UTC)),
-		// 				SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-		// 				StartTime: to.Ptr(time.Date(2024, time.November, 21, 18, 11, 11, 347174200, time.UTC)),
-		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
-		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
-		// 					OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
-		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
-		// 						{
-		// 							OperationID: to.Ptr("391d0003-0d46-474c-9839-cbc345938704"),
-		// 							NodeTypeName: to.Ptr("BE"),
-		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
-		// 						},
-		// 					},
-		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
-		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-		// 							ExpirationTime: to.Ptr(time.Time{}),
-		// 						},
-		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
-		// 						Force: to.Ptr(false),
-		// 						Zones: []*string{
-		// 							to.Ptr("2"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-05-01-preview/RedeployNodes_UD_example.json
 func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1712,4 +1401,315 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeType() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/NodeTypeGetOperation_example.json
+func ExampleNodeTypesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNodeTypesClient().Get(ctx, "resRg", "myCluster", "FE", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicefabricmanagedclusters.NodeTypesClientGetResponse{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
+	// 		Name: to.Ptr("FE"),
+	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/FE"),
+	// 		Properties: &armservicefabricmanagedclusters.NodeTypeProperties{
+	// 			Capacities: map[string]*string{
+	// 			},
+	// 			DataDiskSizeGB: to.Ptr[int32](100),
+	// 			DataDiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypeStandardSSDLRS),
+	// 			IsPrimary: to.Ptr(true),
+	// 			IsStateless: to.Ptr(false),
+	// 			PlacementProperties: map[string]*string{
+	// 			},
+	// 			VMImageOffer: to.Ptr("WindowsServer"),
+	// 			VMImagePublisher: to.Ptr("MicrosoftWindowsServer"),
+	// 			VMImageSKU: to.Ptr("2016-Datacenter"),
+	// 			VMImageVersion: to.Ptr("latest"),
+	// 			VMInstanceCount: to.Ptr[int32](5),
+	// 			VMSecrets: []*armservicefabricmanagedclusters.VaultSecretGroup{
+	// 				{
+	// 					SourceVault: &armservicefabricmanagedclusters.SubResource{
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.KeyVault/vaults/myVault"),
+	// 					},
+	// 					VaultCertificates: []*armservicefabricmanagedclusters.VaultCertificate{
+	// 						{
+	// 							CertificateStore: to.Ptr("My"),
+	// 							CertificateURL: to.Ptr("https://myVault.vault.azure.net:443/secrets/myCert/ef1a31d39e1f46bca33def54b6cda54c"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			VMSize: to.Ptr("Standard_D2"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
+func ExampleNodeTypesClient_GetFaultSimulation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNodeTypesClient().GetFaultSimulation(ctx, "resRg", "myCluster", "BE", armservicefabricmanagedclusters.FaultSimulationIDContent{
+		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicefabricmanagedclusters.NodeTypesClientGetFaultSimulationResponse{
+	// 	FaultSimulation: armservicefabricmanagedclusters.FaultSimulation{
+	// 		EndTime: to.Ptr(time.Time{}),
+	// 		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
+	// 		StartTime: to.Ptr(time.Date(2024, time.November, 21, 18, 11, 11, 347174200, time.UTC)),
+	// 		Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+	// 		Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
+	// 			OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
+	// 			NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
+	// 				{
+	// 					OperationID: to.Ptr("714f0003-80d8-464a-a019-69e6bf89ed4c"),
+	// 					NodeTypeName: to.Ptr("BE"),
+	// 					OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
+	// 					Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+	// 				},
+	// 			},
+	// 			Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
+	// 				Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
+	// 					ExpirationTime: to.Ptr(time.Time{}),
+	// 				},
+	// 				FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
+	// 				Force: to.Ptr(false),
+	// 				Zones: []*string{
+	// 					to.Ptr("2"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/NodeTypeListOperation_example.json
+func ExampleNodeTypesClient_NewListByManagedClustersPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNodeTypesClient().NewListByManagedClustersPager("resRg", "myCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armservicefabricmanagedclusters.NodeTypesClientListByManagedClustersResponse{
+		// 	NodeTypeListResult: armservicefabricmanagedclusters.NodeTypeListResult{
+		// 		NextLink: to.Ptr("http://examplelink.com"),
+		// 		Value: []*armservicefabricmanagedclusters.NodeType{
+		// 			{
+		// 				Name: to.Ptr("FE"),
+		// 				Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/FE"),
+		// 				Properties: &armservicefabricmanagedclusters.NodeTypeProperties{
+		// 					Capacities: map[string]*string{
+		// 					},
+		// 					DataDiskSizeGB: to.Ptr[int32](100),
+		// 					DataDiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypeStandardSSDLRS),
+		// 					IsPrimary: to.Ptr(true),
+		// 					IsStateless: to.Ptr(false),
+		// 					PlacementProperties: map[string]*string{
+		// 					},
+		// 					VMImageOffer: to.Ptr("WindowsServer"),
+		// 					VMImagePublisher: to.Ptr("MicrosoftWindowsServer"),
+		// 					VMImageSKU: to.Ptr("2016-Datacenter"),
+		// 					VMImageVersion: to.Ptr("latest"),
+		// 					VMInstanceCount: to.Ptr[int32](5),
+		// 					VMSize: to.Ptr("Standard_D2"),
+		// 				},
+		// 				SKU: &armservicefabricmanagedclusters.NodeTypeSKU{
+		// 					Name: to.Ptr("Standard_P0"),
+		// 					Capacity: to.Ptr[int32](5),
+		// 					Tier: to.Ptr("Standard"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("BE"),
+		// 				Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
+		// 				Properties: &armservicefabricmanagedclusters.NodeTypeProperties{
+		// 					Capacities: map[string]*string{
+		// 					},
+		// 					DataDiskSizeGB: to.Ptr[int32](200),
+		// 					DataDiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypePremiumLRS),
+		// 					IsPrimary: to.Ptr(false),
+		// 					IsStateless: to.Ptr(false),
+		// 					PlacementProperties: map[string]*string{
+		// 					},
+		// 					VMExtensions: []*armservicefabricmanagedclusters.VMSSExtension{
+		// 						{
+		// 							Name: to.Ptr("Microsoft.Azure.Geneva.GenevaMonitoring"),
+		// 							Properties: &armservicefabricmanagedclusters.VMSSExtensionProperties{
+		// 								Type: to.Ptr("GenevaMonitoring"),
+		// 								AutoUpgradeMinorVersion: to.Ptr(true),
+		// 								Publisher: to.Ptr("Microsoft.Azure.Geneva"),
+		// 								Settings: map[string]any{
+		// 								},
+		// 								TypeHandlerVersion: to.Ptr("2.0"),
+		// 							},
+		// 						},
+		// 					},
+		// 					VMImageOffer: to.Ptr("WindowsServer"),
+		// 					VMImagePublisher: to.Ptr("MicrosoftWindowsServer"),
+		// 					VMImageSKU: to.Ptr("2016-Datacenter-Server-Core"),
+		// 					VMImageVersion: to.Ptr("latest"),
+		// 					VMInstanceCount: to.Ptr[int32](10),
+		// 					VMSecrets: []*armservicefabricmanagedclusters.VaultSecretGroup{
+		// 						{
+		// 							SourceVault: &armservicefabricmanagedclusters.SubResource{
+		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.KeyVault/vaults/myVault"),
+		// 							},
+		// 							VaultCertificates: []*armservicefabricmanagedclusters.VaultCertificate{
+		// 								{
+		// 									CertificateStore: to.Ptr("My"),
+		// 									CertificateURL: to.Ptr("https://myVault.vault.azure.net:443/secrets/myCert/ef1a31d39e1f46bca33def54b6cda54c"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					VMSize: to.Ptr("Standard_DS3"),
+		// 				},
+		// 				SKU: &armservicefabricmanagedclusters.NodeTypeSKU{
+		// 					Name: to.Ptr("Standard_S0"),
+		// 					Capacity: to.Ptr[int32](10),
+		// 					Tier: to.Ptr("Standard"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
+func ExampleNodeTypesClient_NewListFaultSimulationPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNodeTypesClient().NewListFaultSimulationPager("resRg", "myCluster", "BE", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationResponse{
+		// 	FaultSimulationListResult: armservicefabricmanagedclusters.FaultSimulationListResult{
+		// 		Value: []*armservicefabricmanagedclusters.FaultSimulation{
+		// 			{
+		// 				EndTime: to.Ptr(time.Time{}),
+		// 				SimulationID: to.Ptr("1bb61ba9-8a41-4d73-b5f0-7fc93b1edfe3"),
+		// 				StartTime: to.Ptr(time.Date(2024, time.November, 21, 21, 27, 55, 445267500, time.UTC)),
+		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
+		// 					OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
+		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
+		// 						{
+		// 							OperationID: to.Ptr("bff10003-af96-465c-b849-99c18e1f4af6"),
+		// 							NodeTypeName: to.Ptr("BE"),
+		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
+		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+		// 						},
+		// 					},
+		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
+		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
+		// 							ExpirationTime: to.Ptr(time.Time{}),
+		// 						},
+		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
+		// 						Force: to.Ptr(false),
+		// 						Zones: []*string{
+		// 							to.Ptr("3"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				EndTime: to.Ptr(time.Date(2024, time.November, 21, 21, 24, 13, 82339000, time.UTC)),
+		// 				SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
+		// 				StartTime: to.Ptr(time.Date(2024, time.November, 21, 18, 11, 11, 347174200, time.UTC)),
+		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
+		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
+		// 					OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
+		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
+		// 						{
+		// 							OperationID: to.Ptr("391d0003-0d46-474c-9839-cbc345938704"),
+		// 							NodeTypeName: to.Ptr("BE"),
+		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
+		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
+		// 						},
+		// 					},
+		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
+		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
+		// 							ExpirationTime: to.Ptr(time.Time{}),
+		// 						},
+		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
+		// 						Force: to.Ptr(false),
+		// 						Zones: []*string{
+		// 							to.Ptr("2"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

@@ -65,7 +65,8 @@ func (client *ChannelsClient) Create(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ChannelsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -135,7 +136,8 @@ func (client *ChannelsClient) Delete(ctx context.Context, resourceGroupName stri
 		return ChannelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ChannelsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ChannelsClientDeleteResponse{}, err
 	}
 	return ChannelsClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *ChannelsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ChannelsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -230,6 +233,72 @@ func (client *ChannelsClient) getHandleResponse(resp *http.Response, successCode
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
 		return ChannelsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListWithKeys - Lists a Channel registration for a Bot Service including secrets
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the Bot resource.
+//   - channelName - The name of the Channel resource.
+//   - options - ChannelsClientListWithKeysOptions contains the optional parameters for the ChannelsClient.ListWithKeys method.
+func (client *ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, options *ChannelsClientListWithKeysOptions) (ChannelsClientListWithKeysResponse, error) {
+	var err error
+	const operationName = "ChannelsClient.ListWithKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listWithKeysCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
+	if err != nil {
+		return ChannelsClientListWithKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ChannelsClientListWithKeysResponse{}, err
+	}
+	resp, err := client.listWithKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listWithKeysCreateRequest creates the ListWithKeys request.
+func (client *ChannelsClient) listWithKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, _ *ChannelsClientListWithKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}/listChannelWithKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if channelName == "" {
+		return nil, errors.New("parameter channelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{channelName}", url.PathEscape(string(channelName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listWithKeysHandleResponse handles the ListWithKeys response.
+func (client *ChannelsClient) listWithKeysHandleResponse(resp *http.Response, successCodes ...int) (ChannelsClientListWithKeysResponse, error) {
+	result := ChannelsClientListWithKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListChannelWithKeysResponse); err != nil {
+		return ChannelsClientListWithKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -311,71 +380,6 @@ func (client *ChannelsClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListWithKeys - Lists a Channel registration for a Bot Service including secrets
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the Bot resource.
-//   - channelName - The name of the Channel resource.
-//   - options - ChannelsClientListWithKeysOptions contains the optional parameters for the ChannelsClient.ListWithKeys method.
-func (client *ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, options *ChannelsClientListWithKeysOptions) (ChannelsClientListWithKeysResponse, error) {
-	var err error
-	const operationName = "ChannelsClient.ListWithKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listWithKeysCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
-	if err != nil {
-		return ChannelsClientListWithKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ChannelsClientListWithKeysResponse{}, err
-	}
-	return client.listWithKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listWithKeysCreateRequest creates the ListWithKeys request.
-func (client *ChannelsClient) listWithKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, _ *ChannelsClientListWithKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}/listChannelWithKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if channelName == "" {
-		return nil, errors.New("parameter channelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{channelName}", url.PathEscape(string(channelName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230915Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listWithKeysHandleResponse handles the ListWithKeys response.
-func (client *ChannelsClient) listWithKeysHandleResponse(resp *http.Response, successCodes ...int) (ChannelsClientListWithKeysResponse, error) {
-	result := ChannelsClientListWithKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListChannelWithKeysResponse); err != nil {
-		return ChannelsClientListWithKeysResponse{}, err
-	}
-	return result, nil
-}
-
 // Update - Updates a Channel registration for a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -397,7 +401,8 @@ func (client *ChannelsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ChannelsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

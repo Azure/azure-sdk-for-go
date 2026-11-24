@@ -67,7 +67,8 @@ func (client *PlatformWorkloadIdentityRoleSetClient) Get(ctx context.Context, lo
 	if err != nil {
 		return PlatformWorkloadIdentityRoleSetClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

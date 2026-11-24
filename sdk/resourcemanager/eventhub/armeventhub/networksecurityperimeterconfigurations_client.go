@@ -19,7 +19,7 @@ import (
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-07-01-preview
 type NetworkSecurityPerimeterConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginCreateOrUpdate(
 	}
 }
 
-// CreateOrUpdate - Refreshes any information about the association.
+// createOrUpdate - Refreshes any information about the association.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdate(ctx c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, resourceAssociationName string, _ *NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkSecurityPerimeterConfigurations/{resourceAssociationName}/reconcile"
 	if client.subscriptionID == "" {
@@ -114,7 +115,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) createOrUpdateCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -140,7 +141,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) GetResourceAssociati
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
 	}
-	return client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getResourceAssociationNameCreateRequest creates the GetResourceAssociationName request.
@@ -167,7 +169,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

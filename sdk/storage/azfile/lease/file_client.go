@@ -58,9 +58,18 @@ func (f *FileClient) getClientOptions() *base.ClientOptions {
 	return base.GetClientOptions((*base.Client[generated.FileClient])(f.fileClient))
 }
 
+// checkAddressing returns an error if the underlying file client addresses the file by its file ID, which lease
+// operations do not support.
+func (f *FileClient) checkAddressing(operation string) error {
+	return base.CheckAddressing(f.fileClient.URL(), "lease.FileClient."+operation, base.PathOnly)
+}
+
 // Acquire operation can be used to request a new lease.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
 func (f *FileClient) Acquire(ctx context.Context, options *FileAcquireOptions) (FileAcquireResponse, error) {
+	if err := f.checkAddressing("Acquire"); err != nil {
+		return FileAcquireResponse{}, err
+	}
 	opts := options.format(f.LeaseID(), f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().AcquireLease(ctx, opts)
 }
@@ -68,6 +77,9 @@ func (f *FileClient) Acquire(ctx context.Context, options *FileAcquireOptions) (
 // Break operation can be used to break the lease, if the file has an active lease. Once a lease is broken, it cannot be renewed.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
 func (f *FileClient) Break(ctx context.Context, options *FileBreakOptions) (FileBreakResponse, error) {
+	if err := f.checkAddressing("Break"); err != nil {
+		return FileBreakResponse{}, err
+	}
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().BreakLease(ctx, opts)
 }
@@ -75,6 +87,9 @@ func (f *FileClient) Break(ctx context.Context, options *FileBreakOptions) (File
 // Change operation can be used to change the lease ID of an active lease.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
 func (f *FileClient) Change(ctx context.Context, proposedLeaseID string, options *FileChangeOptions) (FileChangeResponse, error) {
+	if err := f.checkAddressing("Change"); err != nil {
+		return FileChangeResponse{}, err
+	}
 	if f.LeaseID() == nil {
 		return FileChangeResponse{}, errors.New("leaseID cannot be nil")
 	}
@@ -93,6 +108,9 @@ func (f *FileClient) Change(ctx context.Context, proposedLeaseID string, options
 // Release operation can be used to free the lease if it is no longer needed so that another client may immediately acquire a lease against the file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/lease-file.
 func (f *FileClient) Release(ctx context.Context, options *FileReleaseOptions) (FileReleaseResponse, error) {
+	if err := f.checkAddressing("Release"); err != nil {
+		return FileReleaseResponse{}, err
+	}
 	if f.LeaseID() == nil {
 		return FileReleaseResponse{}, errors.New("leaseID cannot be nil")
 	}

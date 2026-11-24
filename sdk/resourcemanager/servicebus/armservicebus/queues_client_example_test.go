@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueCreate.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueCreate.json
 func ExampleQueuesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleQueuesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleCreate.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleCreate.json
 func ExampleQueuesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleQueuesClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueDelete.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueDelete.json
 func ExampleQueuesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleQueuesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleDelete.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleDelete.json
 func ExampleQueuesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleQueuesClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueGet.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueGet.json
 func ExampleQueuesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleQueuesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleGet.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleGet.json
 func ExampleQueuesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,36 @@ func ExampleQueuesClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleListAll.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleListKey.json
+func ExampleQueuesClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicebus.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewQueuesClient().ListKeys(ctx, "ArunMonocle", "sdk-namespace-7982", "sdk-Queues-2317", "sdk-AuthRules-5800", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicebus.QueuesClientListKeysResponse{
+	// 	AccessKeys: armservicebus.AccessKeys{
+	// 		KeyName: to.Ptr("sdk-AuthRules-5800"),
+	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-7982.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-Queues-2317"),
+	// 		PrimaryKey: to.Ptr("############################################"),
+	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-7982.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-Queues-2317"),
+	// 		SecondaryKey: to.Ptr("############################################"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleListAll.json
 func ExampleQueuesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +296,7 @@ func ExampleQueuesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueListByNameSpace.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueListByNameSpace.json
 func ExampleQueuesClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,36 +351,7 @@ func ExampleQueuesClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleListKey.json
-func ExampleQueuesClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicebus.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewQueuesClient().ListKeys(ctx, "ArunMonocle", "sdk-namespace-7982", "sdk-Queues-2317", "sdk-AuthRules-5800", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicebus.QueuesClientListKeysResponse{
-	// 	AccessKeys: armservicebus.AccessKeys{
-	// 		KeyName: to.Ptr("sdk-AuthRules-5800"),
-	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-7982.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-Queues-2317"),
-	// 		PrimaryKey: to.Ptr("############################################"),
-	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-7982.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-Queues-2317"),
-	// 		SecondaryKey: to.Ptr("############################################"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleRegenerateKey.json
 func ExampleQueuesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterPut.json
+// Generated from example definition: 2026-07-01-preview/Clusters/ClusterPut.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterDelete.json
+// Generated from example definition: 2026-07-01-preview/Clusters/ClusterDelete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,217 +94,7 @@ func ExampleClustersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterGet.json
-func ExampleClustersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().Get(ctx, "myResourceGroup", "testCluster", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.ClustersClientGetResponse{
-	// 	Cluster: armeventhub.Cluster{
-	// 		Name: to.Ptr("testCluster"),
-	// 		Type: to.Ptr("Microsoft.EventHub/Clusters"),
-	// 		ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/myResourceGroup/providers/Microsoft.EventHub/clusters/testCluster"),
-	// 		Location: to.Ptr("South Central US"),
-	// 		Properties: &armeventhub.ClusterProperties{
-	// 			CreatedAt: to.Ptr("2017-05-24T23:23:27.877Z"),
-	// 			MetricID: to.Ptr("SN6-008"),
-	// 			PlatformCapabilities: &armeventhub.PlatformCapabilities{
-	// 				ConfidentialCompute: &armeventhub.ConfidentialCompute{
-	// 					Mode: to.Ptr(armeventhub.ModeDisabled),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armeventhub.ProvisioningStateSucceeded),
-	// 			UpdatedAt: to.Ptr("2017-05-24T23:23:27.877Z"),
-	// 		},
-	// 		SKU: &armeventhub.ClusterSKU{
-	// 			Name: to.Ptr(armeventhub.ClusterSKUNameDedicated),
-	// 			Capacity: to.Ptr[int32](4),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"tag1": to.Ptr("value1"),
-	// 			"tag2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/Clusters/ListAvailableClustersGet.json
-func ExampleClustersClient_ListAvailableClusterRegion() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().ListAvailableClusterRegion(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.ClustersClientListAvailableClusterRegionResponse{
-	// 	AvailableClustersList: armeventhub.AvailableClustersList{
-	// 		Value: []*armeventhub.AvailableCluster{
-	// 			{
-	// 				Location: to.Ptr("westus"),
-	// 			},
-	// 			{
-	// 				Location: to.Ptr("eastus"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/Clusters/ClustersListByResourceGroup.json
-func ExampleClustersClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventhub.ClustersClientListByResourceGroupResponse{
-		// 	ClusterListResult: armeventhub.ClusterListResult{
-		// 		Value: []*armeventhub.Cluster{
-		// 			{
-		// 				Name: to.Ptr("testCluster"),
-		// 				Type: to.Ptr("Microsoft.EventHub/Clusters"),
-		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/clusters/testCluster"),
-		// 				Location: to.Ptr("South Central US"),
-		// 				Properties: &armeventhub.ClusterProperties{
-		// 					CreatedAt: to.Ptr("2016-09-13T23:17:25.24Z"),
-		// 					MetricID: to.Ptr("SN6-008"),
-		// 					UpdatedAt: to.Ptr("2016-09-13T23:17:28.223Z"),
-		// 				},
-		// 				SKU: &armeventhub.ClusterSKU{
-		// 					Name: to.Ptr(armeventhub.ClusterSKUNameDedicated),
-		// 					Capacity: to.Ptr[int32](4),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01-preview/Clusters/ClustersListBySubscription.json
-func ExampleClustersClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventhub.ClustersClientListBySubscriptionResponse{
-		// 	ClusterListResult: armeventhub.ClusterListResult{
-		// 		Value: []*armeventhub.Cluster{
-		// 			{
-		// 				Name: to.Ptr("testCluster"),
-		// 				Type: to.Ptr("Microsoft.EventHub/Clusters"),
-		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/clusters/testCluster"),
-		// 				Location: to.Ptr("South Central US"),
-		// 				Properties: &armeventhub.ClusterProperties{
-		// 					CreatedAt: to.Ptr("2016-09-13T23:17:25.24Z"),
-		// 					MetricID: to.Ptr("SN6-008"),
-		// 					UpdatedAt: to.Ptr("2016-09-13T23:17:28.223Z"),
-		// 				},
-		// 				SKU: &armeventhub.ClusterSKU{
-		// 					Name: to.Ptr(armeventhub.ClusterSKUNameDedicated),
-		// 					Capacity: to.Ptr[int32](4),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01-preview/Clusters/ListNamespacesInClusterGet.json
-func ExampleClustersClient_ListNamespaces() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().ListNamespaces(ctx, "myResourceGroup", "testCluster", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.ClustersClientListNamespacesResponse{
-	// 	EHNamespaceIDListResult: armeventhub.EHNamespaceIDListResult{
-	// 		Value: []*armeventhub.EHNamespaceIDContainer{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/namespaces/rrama-int7-ns1"),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/namespaces/rrama-ehns2-int7"),
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-ServiceBus-SouthCentralUS/providers/Microsoft.EventHub/namespaces/db3-rrama-foo1"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterPatch.json
+// Generated from example definition: 2026-07-01-preview/Clusters/ClusterPatch.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,4 +144,214 @@ func ExampleClustersClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/Clusters/ClusterGet.json
+func ExampleClustersClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Get(ctx, "myResourceGroup", "testCluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.ClustersClientGetResponse{
+	// 	Cluster: armeventhub.Cluster{
+	// 		Name: to.Ptr("testCluster"),
+	// 		Type: to.Ptr("Microsoft.EventHub/Clusters"),
+	// 		ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/myResourceGroup/providers/Microsoft.EventHub/clusters/testCluster"),
+	// 		Location: to.Ptr("South Central US"),
+	// 		Properties: &armeventhub.ClusterProperties{
+	// 			CreatedAt: to.Ptr("2017-05-24T23:23:27.877Z"),
+	// 			MetricID: to.Ptr("SN6-008"),
+	// 			PlatformCapabilities: &armeventhub.PlatformCapabilities{
+	// 				ConfidentialCompute: &armeventhub.ConfidentialCompute{
+	// 					Mode: to.Ptr(armeventhub.ModeDisabled),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armeventhub.ProvisioningStateSucceeded),
+	// 			UpdatedAt: to.Ptr("2017-05-24T23:23:27.877Z"),
+	// 		},
+	// 		SKU: &armeventhub.ClusterSKU{
+	// 			Name: to.Ptr(armeventhub.ClusterSKUNameDedicated),
+	// 			Capacity: to.Ptr[int32](4),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/Clusters/ListAvailableClustersGet.json
+func ExampleClustersClient_ListAvailableClusterRegion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().ListAvailableClusterRegion(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.ClustersClientListAvailableClusterRegionResponse{
+	// 	AvailableClustersList: armeventhub.AvailableClustersList{
+	// 		Value: []*armeventhub.AvailableCluster{
+	// 			{
+	// 				Location: to.Ptr("westus"),
+	// 			},
+	// 			{
+	// 				Location: to.Ptr("eastus"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/Clusters/ListNamespacesInClusterGet.json
+func ExampleClustersClient_ListNamespaces() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().ListNamespaces(ctx, "myResourceGroup", "testCluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.ClustersClientListNamespacesResponse{
+	// 	EHNamespaceIDListResult: armeventhub.EHNamespaceIDListResult{
+	// 		Value: []*armeventhub.EHNamespaceIDContainer{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/namespaces/rrama-int7-ns1"),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/namespaces/rrama-ehns2-int7"),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-ServiceBus-SouthCentralUS/providers/Microsoft.EventHub/namespaces/db3-rrama-foo1"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/Clusters/ClustersListByResourceGroup.json
+func ExampleClustersClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventhub.ClustersClientListByResourceGroupResponse{
+		// 	ClusterListResult: armeventhub.ClusterListResult{
+		// 		Value: []*armeventhub.Cluster{
+		// 			{
+		// 				Name: to.Ptr("testCluster"),
+		// 				Type: to.Ptr("Microsoft.EventHub/Clusters"),
+		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/clusters/testCluster"),
+		// 				Location: to.Ptr("South Central US"),
+		// 				Properties: &armeventhub.ClusterProperties{
+		// 					CreatedAt: to.Ptr("2016-09-13T23:17:25.24Z"),
+		// 					MetricID: to.Ptr("SN6-008"),
+		// 					UpdatedAt: to.Ptr("2016-09-13T23:17:28.223Z"),
+		// 				},
+		// 				SKU: &armeventhub.ClusterSKU{
+		// 					Name: to.Ptr(armeventhub.ClusterSKUNameDedicated),
+		// 					Capacity: to.Ptr[int32](4),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/Clusters/ClustersListBySubscription.json
+func ExampleClustersClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventhub.ClustersClientListBySubscriptionResponse{
+		// 	ClusterListResult: armeventhub.ClusterListResult{
+		// 		Value: []*armeventhub.Cluster{
+		// 			{
+		// 				Name: to.Ptr("testCluster"),
+		// 				Type: to.Ptr("Microsoft.EventHub/Clusters"),
+		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/Default-EventHub-SouthCentralUS/providers/Microsoft.EventHub/clusters/testCluster"),
+		// 				Location: to.Ptr("South Central US"),
+		// 				Properties: &armeventhub.ClusterProperties{
+		// 					CreatedAt: to.Ptr("2016-09-13T23:17:25.24Z"),
+		// 					MetricID: to.Ptr("SN6-008"),
+		// 					UpdatedAt: to.Ptr("2016-09-13T23:17:28.223Z"),
+		// 				},
+		// 				SKU: &armeventhub.ClusterSKU{
+		// 					Name: to.Ptr(armeventhub.ClusterSKUNameDedicated),
+		// 					Capacity: to.Ptr[int32](4),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

@@ -19,7 +19,7 @@ import (
 // ConnectionPoliciesClient contains the methods for the ConnectionPolicies group.
 // Don't use this type directly, use NewConnectionPoliciesClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type ConnectionPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,8 @@ func (client *ConnectionPoliciesClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -116,7 +117,7 @@ func (client *ConnectionPoliciesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -136,7 +137,7 @@ func (client *ConnectionPoliciesClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *ConnectionPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, options *ConnectionPoliciesClientBeginDeleteOptions) (*runtime.Poller[ConnectionPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualHubName, connectionPolicyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, connectionPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +152,9 @@ func (client *ConnectionPoliciesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes a ConnectionPolicy.
+// deleteOperation - Deletes a ConnectionPolicy.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectionPoliciesClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, options *ConnectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ConnectionPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionPolicyName string, options *ConnectionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectionPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,7 +169,8 @@ func (client *ConnectionPoliciesClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -197,7 +199,7 @@ func (client *ConnectionPoliciesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -223,7 +225,8 @@ func (client *ConnectionPoliciesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ConnectionPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -250,7 +253,7 @@ func (client *ConnectionPoliciesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +329,7 @@ func (client *ConnectionPoliciesClient) listCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -20,7 +20,7 @@ import (
 // SecurityPerimeterLinksClient contains the methods for the SecurityPerimeterLinks group.
 // Don't use this type directly, use NewSecurityPerimeterLinksClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type SecurityPerimeterLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -54,7 +54,7 @@ func NewSecurityPerimeterLinksClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *SecurityPerimeterLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *SecurityPerimeterLinksClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterLinksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, linkName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, linkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,9 +69,9 @@ func (client *SecurityPerimeterLinksClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Deletes an NSP Link resource.
+// deleteOperation - Deletes an NSP Link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimeterLinksClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *SecurityPerimeterLinksClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimeterLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkName string, options *SecurityPerimeterLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimeterLinksClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -86,7 +86,8 @@ func (client *SecurityPerimeterLinksClient) delete(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -115,7 +116,7 @@ func (client *SecurityPerimeterLinksClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -142,7 +143,8 @@ func (client *SecurityPerimeterLinksClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return SecurityPerimeterLinksClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -169,7 +171,7 @@ func (client *SecurityPerimeterLinksClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -212,7 +214,8 @@ func (client *SecurityPerimeterLinksClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return SecurityPerimeterLinksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -239,7 +242,7 @@ func (client *SecurityPerimeterLinksClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +324,7 @@ func (client *SecurityPerimeterLinksClient) listCreateRequest(ctx context.Contex
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

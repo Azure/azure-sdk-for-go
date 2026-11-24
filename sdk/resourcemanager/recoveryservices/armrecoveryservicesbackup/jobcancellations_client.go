@@ -65,7 +65,8 @@ func (client *JobCancellationsClient) Trigger(ctx context.Context, vaultName str
 		return JobCancellationsClientTriggerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return JobCancellationsClientTriggerResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobCancellationsClientTriggerResponse{}, err
 	}
 	return JobCancellationsClientTriggerResponse{}, nil
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/CreateOrUpdateAdapterDeployment.json
+// Generated from example definition: 2026-11-15-preview/CreateOrUpdateAdapterDeployment.json
 func ExampleAdapterDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleAdapterDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/DeleteAdapterDeployment.json
+// Generated from example definition: 2026-11-15-preview/DeleteAdapterDeployment.json
 func ExampleAdapterDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleAdapterDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/GetAdapterDeployment.json
+// Generated from example definition: 2026-11-15-preview/GetAdapterDeployment.json
 func ExampleAdapterDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleAdapterDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListAdapterDeployments.json
+// Generated from example definition: 2026-11-15-preview/ListAdapterDeployments.json
 func ExampleAdapterDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

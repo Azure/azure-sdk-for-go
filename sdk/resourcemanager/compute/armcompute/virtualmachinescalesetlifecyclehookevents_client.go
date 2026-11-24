@@ -66,7 +66,8 @@ func (client *VirtualMachineScaleSetLifeCycleHookEventsClient) Get(ctx context.C
 	if err != nil {
 		return VirtualMachineScaleSetLifeCycleHookEventsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -210,7 +211,8 @@ func (client *VirtualMachineScaleSetLifeCycleHookEventsClient) Update(ctx contex
 	if err != nil {
 		return VirtualMachineScaleSetLifeCycleHookEventsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

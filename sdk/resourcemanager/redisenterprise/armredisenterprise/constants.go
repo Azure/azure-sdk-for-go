@@ -5,7 +5,7 @@
 package armredisenterprise
 
 const (
-	version20260901 string = "2026-09-01"
+	version20261001Preview string = "2026-10-01-preview"
 )
 
 // AccessKeyType - Which access key to regenerate.

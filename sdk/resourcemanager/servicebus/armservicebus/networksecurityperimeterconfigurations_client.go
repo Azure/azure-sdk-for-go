@@ -19,7 +19,7 @@ import (
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-07-01-preview
 type NetworkSecurityPerimeterConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,7 +65,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) GetResourceAssociati
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
 	}
-	return client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getResourceAssociationNameCreateRequest creates the GetResourceAssociationName request.
@@ -92,7 +93,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -132,7 +133,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) Reconcile(ctx contex
 		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, err
 	}
 	return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, nil
 }
@@ -161,7 +163,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

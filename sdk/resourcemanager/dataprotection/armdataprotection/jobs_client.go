@@ -64,7 +64,8 @@ func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, vau
 	if err != nil {
 		return JobsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

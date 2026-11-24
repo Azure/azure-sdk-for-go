@@ -79,6 +79,49 @@ func ExampleEmailServicesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-09-01/emailServices/update.json
+func ExampleEmailServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEmailServicesClient().BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResourceUpdate{
+		Tags: map[string]*string{
+			"newTag": to.Ptr("newVal"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommunication.EmailServicesClientUpdateResponse{
+	// 	EmailServiceResource: armcommunication.EmailServiceResource{
+	// 		Name: to.Ptr("MyEmailServiceResource"),
+	// 		Type: to.Ptr("Microsoft.Communication/EmailServices"),
+	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/EmailServices/MyEmailServiceResource"),
+	// 		Location: to.Ptr("Global"),
+	// 		Properties: &armcommunication.EmailServiceProperties{
+	// 			DataLocation: to.Ptr("United States"),
+	// 			ProvisioningState: to.Ptr(armcommunication.EmailServicesProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"newTag": to.Ptr("newVal"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-09-01/emailServices/get.json
 func ExampleEmailServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -107,6 +150,32 @@ func ExampleEmailServicesClient_Get() {
 	// 			DataLocation: to.Ptr("United States"),
 	// 			ProvisioningState: to.Ptr(armcommunication.EmailServicesProvisioningStateRunning),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/emailServices/getVerifiedExchangeOnlineDomains.json
+func ExampleEmailServicesClient_ListVerifiedExchangeOnlineDomains() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEmailServicesClient().ListVerifiedExchangeOnlineDomains(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommunication.EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{
+	// 	StringArray: []*string{
+	// 		to.Ptr("example.com"),
+	// 		to.Ptr("contoso.com"),
 	// 	},
 	// }
 }
@@ -191,73 +260,4 @@ func ExampleEmailServicesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-09-01/emailServices/getVerifiedExchangeOnlineDomains.json
-func ExampleEmailServicesClient_ListVerifiedExchangeOnlineDomains() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEmailServicesClient().ListVerifiedExchangeOnlineDomains(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommunication.EmailServicesClientListVerifiedExchangeOnlineDomainsResponse{
-	// 	StringArray: []*string{
-	// 		to.Ptr("example.com"),
-	// 		to.Ptr("contoso.com"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/emailServices/update.json
-func ExampleEmailServicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEmailServicesClient().BeginUpdate(ctx, "MyResourceGroup", "MyEmailServiceResource", armcommunication.EmailServiceResourceUpdate{
-		Tags: map[string]*string{
-			"newTag": to.Ptr("newVal"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommunication.EmailServicesClientUpdateResponse{
-	// 	EmailServiceResource: armcommunication.EmailServiceResource{
-	// 		Name: to.Ptr("MyEmailServiceResource"),
-	// 		Type: to.Ptr("Microsoft.Communication/EmailServices"),
-	// 		ID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyResourceGroup/providers/Microsoft.Communication/EmailServices/MyEmailServiceResource"),
-	// 		Location: to.Ptr("Global"),
-	// 		Properties: &armcommunication.EmailServiceProperties{
-	// 			DataLocation: to.Ptr("United States"),
-	// 			ProvisioningState: to.Ptr(armcommunication.EmailServicesProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"newTag": to.Ptr("newVal"),
-	// 		},
-	// 	},
-	// }
 }

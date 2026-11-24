@@ -66,7 +66,8 @@ func (client *MemberCapOverridesClient) CreateOrUpdate(ctx context.Context, loca
 	if err != nil {
 		return MemberCapOverridesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *MemberCapOverridesClient) Delete(ctx context.Context, location str
 		return MemberCapOverridesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return MemberCapOverridesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return MemberCapOverridesClientDeleteResponse{}, err
 	}
 	return MemberCapOverridesClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *MemberCapOverridesClient) Get(ctx context.Context, location string
 	if err != nil {
 		return MemberCapOverridesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

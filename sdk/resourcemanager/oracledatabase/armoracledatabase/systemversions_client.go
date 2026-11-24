@@ -63,7 +63,8 @@ func (client *SystemVersionsClient) Get(ctx context.Context, location string, sy
 	if err != nil {
 		return SystemVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

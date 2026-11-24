@@ -66,7 +66,8 @@ func (client *ManagedClusterVersionClient) Get(ctx context.Context, location str
 	if err != nil {
 		return ManagedClusterVersionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -130,7 +131,8 @@ func (client *ManagedClusterVersionClient) GetByEnvironment(ctx context.Context,
 	if err != nil {
 		return ManagedClusterVersionClientGetByEnvironmentResponse{}, err
 	}
-	return client.getByEnvironmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByEnvironmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByEnvironmentCreateRequest creates the GetByEnvironment request.
@@ -196,7 +198,8 @@ func (client *ManagedClusterVersionClient) List(ctx context.Context, location st
 	if err != nil {
 		return ManagedClusterVersionClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -255,7 +258,8 @@ func (client *ManagedClusterVersionClient) ListByEnvironment(ctx context.Context
 	if err != nil {
 		return ManagedClusterVersionClientListByEnvironmentResponse{}, err
 	}
-	return client.listByEnvironmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByEnvironmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByEnvironmentCreateRequest creates the ListByEnvironment request.

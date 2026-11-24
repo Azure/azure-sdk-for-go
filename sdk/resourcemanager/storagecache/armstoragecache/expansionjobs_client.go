@@ -71,7 +71,7 @@ func (client *ExpansionJobsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create or update an expansion job.
+// createOrUpdate - Create or update an expansion job.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpansionJobsClient) createOrUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJob, options *ExpansionJobsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,12 +88,13 @@ func (client *ExpansionJobsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExpansionJobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJob, _ *ExpansionJobsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
 	if client.subscriptionID == "" {
@@ -151,7 +152,7 @@ func (client *ExpansionJobsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Schedules an expansion job for deletion.
+// deleteOperation - Schedules an expansion job for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExpansionJobsClient) deleteOperation(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, options *ExpansionJobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -168,12 +169,13 @@ func (client *ExpansionJobsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExpansionJobsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, _ *ExpansionJobsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
 	if client.subscriptionID == "" {
@@ -202,6 +204,90 @@ func (client *ExpansionJobsClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
+// BeginUpdate - Update an expansion job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - expansionJobName - Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
+//   - expansionJob - Object containing the user-selectable properties of the expansion job. If read-only properties are included,
+//     they must match the existing values of those properties.
+//   - options - ExpansionJobsClientBeginUpdateOptions contains the optional parameters for the ExpansionJobsClient.BeginUpdate
+//     method.
+func (client *ExpansionJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, options *ExpansionJobsClientBeginUpdateOptions) (*runtime.Poller[ExpansionJobsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpansionJobsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpansionJobsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an expansion job instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ExpansionJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, options *ExpansionJobsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ExpansionJobsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ExpansionJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, _ *ExpansionJobsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if amlFilesystemName == "" {
+		return nil, errors.New("parameter amlFilesystemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
+	if expansionJobName == "" {
+		return nil, errors.New("parameter expansionJobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{expansionJobName}", url.PathEscape(expansionJobName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, expansionJob); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Returns an expansion job.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -222,7 +308,8 @@ func (client *ExpansionJobsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ExpansionJobsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -342,87 +429,4 @@ func (client *ExpansionJobsClient) listByAmlFilesystemHandleResponse(resp *http.
 		return ExpansionJobsClientListByAmlFilesystemResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an expansion job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - amlFilesystemName - Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - expansionJobName - Name for the expansion job. Allows alphanumerics, underscores, and hyphens. Start and end with alphanumeric.
-//   - expansionJob - Object containing the user-selectable properties of the expansion job. If read-only properties are included,
-//     they must match the existing values of those properties.
-//   - options - ExpansionJobsClientBeginUpdateOptions contains the optional parameters for the ExpansionJobsClient.BeginUpdate
-//     method.
-func (client *ExpansionJobsClient) BeginUpdate(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, options *ExpansionJobsClientBeginUpdateOptions) (*runtime.Poller[ExpansionJobsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExpansionJobsClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExpansionJobsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an expansion job instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpansionJobsClient) update(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, options *ExpansionJobsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ExpansionJobsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, amlFilesystemName, expansionJobName, expansionJob, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ExpansionJobsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, expansionJobName string, expansionJob ExpansionJobUpdate, _ *ExpansionJobsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/expansionJobs/{expansionJobName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if amlFilesystemName == "" {
-		return nil, errors.New("parameter amlFilesystemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	if expansionJobName == "" {
-		return nil, errors.New("parameter expansionJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{expansionJobName}", url.PathEscape(expansionJobName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, expansionJob); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

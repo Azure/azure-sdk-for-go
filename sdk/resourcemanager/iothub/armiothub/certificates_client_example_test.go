@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01-preview/CreateOrReplace_Certificates_With_CertificateAuthorityResourceId.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_Certificates_With_CertificateAuthorityResourceId.json
 func ExampleCertificatesClient_CreateOrUpdate_createOrReplaceCertificatesWithCertificateAuthorityResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrReplaceCertificatesWithCer
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_certificatescreateorupdate.json
+// Generated from example definition: 2026-11-01/iothub_certificatescreateorupdate.json
 func ExampleCertificatesClient_CreateOrUpdate_certificatesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleCertificatesClient_CreateOrUpdate_certificatesCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_certificatesdelete.json
+// Generated from example definition: 2026-11-01/iothub_certificatesdelete.json
 func ExampleCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleCertificatesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_generateverificationcode.json
+// Generated from example definition: 2026-11-01/iothub_generateverificationcode.json
 func ExampleCertificatesClient_GenerateVerificationCode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleCertificatesClient_GenerateVerificationCode() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_getcertificate.json
+// Generated from example definition: 2026-11-01/iothub_getcertificate.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_listcertificates.json
+// Generated from example definition: 2026-11-01/iothub_listcertificates.json
 func ExampleCertificatesClient_ListByIotHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleCertificatesClient_ListByIotHub() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_certverify.json
+// Generated from example definition: 2026-11-01/iothub_certverify.json
 func ExampleCertificatesClient_Verify() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

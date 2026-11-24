@@ -65,7 +65,8 @@ func (client *DeploymentWafPoliciesClient) Analysis(ctx context.Context, resourc
 	if err != nil {
 		return DeploymentWafPoliciesClientAnalysisResponse{}, err
 	}
-	return client.analysisHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.analysisHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // analysisCreateRequest creates the Analysis request.

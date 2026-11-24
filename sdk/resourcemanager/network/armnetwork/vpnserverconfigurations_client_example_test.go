@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VpnServerConfigurationPut.json
+// Generated from example definition: 2026-05-01/VpnServerConfigurationPut.json
 func ExampleVPNServerConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleVPNServerConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnServerConfigurationDelete.json
+// Generated from example definition: 2026-05-01/VpnServerConfigurationDelete.json
 func ExampleVPNServerConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleVPNServerConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnServerConfigurationGet.json
+// Generated from example definition: 2026-05-01/VpnServerConfigurationGet.json
 func ExampleVPNServerConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +375,7 @@ func ExampleVPNServerConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AllVpnServerConfigurationRadiusServerSecretsList.json
+// Generated from example definition: 2026-05-01/AllVpnServerConfigurationRadiusServerSecretsList.json
 func ExampleVPNServerConfigurationsClient_ListRadiusSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleVPNServerConfigurationsClient_ListRadiusSecrets() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VpnServerConfigurationListByResourceGroup.json
+// Generated from example definition: 2026-05-01/VpnServerConfigurationListByResourceGroup.json
 func ExampleVPNServerConfigurationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -634,7 +634,7 @@ func ExampleVPNServerConfigurationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VpnServerConfigurationList.json
+// Generated from example definition: 2026-05-01/VpnServerConfigurationList.json
 func ExampleVPNServerConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -864,7 +864,7 @@ func ExampleVPNServerConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VpnServerConfigurationUpdateTags.json
+// Generated from example definition: 2026-05-01/VpnServerConfigurationUpdateTags.json
 func ExampleVPNServerConfigurationsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

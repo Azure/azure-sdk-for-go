@@ -63,7 +63,8 @@ func (client *QnAMakerEndpointKeysClient) Get(ctx context.Context, parameters Qn
 	if err != nil {
 		return QnAMakerEndpointKeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

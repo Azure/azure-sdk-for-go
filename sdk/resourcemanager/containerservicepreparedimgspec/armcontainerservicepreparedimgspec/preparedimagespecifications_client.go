@@ -69,7 +69,7 @@ func (client *PreparedImageSpecificationsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Create or update a prepared image specification resource with a client-provided version. Created versions
+// createOrUpdate - Create or update a prepared image specification resource with a client-provided version. Created versions
 // are immutable; provide a different properties.version value to create a new version.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PreparedImageSpecificationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, resource PreparedImageSpecification, options *PreparedImageSpecificationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -87,12 +87,13 @@ func (client *PreparedImageSpecificationsClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PreparedImageSpecificationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, resource PreparedImageSpecification, options *PreparedImageSpecificationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}"
 	if client.subscriptionID == "" {
@@ -151,7 +152,7 @@ func (client *PreparedImageSpecificationsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Delete a prepared image specification. This operation will be blocked if the resource is in use.
+// deleteOperation - Delete a prepared image specification. This operation will be blocked if the resource is in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PreparedImageSpecificationsClient) deleteOperation(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, options *PreparedImageSpecificationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -168,12 +169,13 @@ func (client *PreparedImageSpecificationsClient) deleteOperation(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PreparedImageSpecificationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, options *PreparedImageSpecificationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}"
 	if client.subscriptionID == "" {
@@ -226,7 +228,7 @@ func (client *PreparedImageSpecificationsClient) BeginDeleteVersion(ctx context.
 	}
 }
 
-// DeleteVersion - Delete a prepared image specification version. This operation will be blocked if the prepared image specification
+// deleteVersion - Delete a prepared image specification version. This operation will be blocked if the prepared image specification
 // version is in use.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PreparedImageSpecificationsClient) deleteVersion(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, version string, options *PreparedImageSpecificationsClientBeginDeleteVersionOptions) (*http.Response, error) {
@@ -244,12 +246,13 @@ func (client *PreparedImageSpecificationsClient) deleteVersion(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteVersionCreateRequest creates the DeleteVersion request.
+// deleteVersionCreateRequest creates the deleteVersion request.
 func (client *PreparedImageSpecificationsClient) deleteVersionCreateRequest(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, version string, options *PreparedImageSpecificationsClientBeginDeleteVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -301,7 +304,8 @@ func (client *PreparedImageSpecificationsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return PreparedImageSpecificationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -363,7 +367,8 @@ func (client *PreparedImageSpecificationsClient) GetVersion(ctx context.Context,
 	if err != nil {
 		return PreparedImageSpecificationsClientGetVersionResponse{}, err
 	}
-	return client.getVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVersionCreateRequest creates the GetVersion request.
@@ -645,7 +650,8 @@ func (client *PreparedImageSpecificationsClient) Update(ctx context.Context, res
 	if err != nil {
 		return PreparedImageSpecificationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

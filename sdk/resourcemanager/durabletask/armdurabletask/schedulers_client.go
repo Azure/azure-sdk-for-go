@@ -85,7 +85,8 @@ func (client *SchedulersClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *SchedulersClient) createOrUpdatePrivateEndpointConnection(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -240,7 +242,8 @@ func (client *SchedulersClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -311,7 +314,8 @@ func (client *SchedulersClient) deletePrivateEndpointConnection(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -385,7 +389,8 @@ func (client *SchedulersClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -462,7 +467,8 @@ func (client *SchedulersClient) updatePrivateEndpointConnection(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -520,7 +526,8 @@ func (client *SchedulersClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SchedulersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -582,7 +589,8 @@ func (client *SchedulersClient) GetPrivateEndpointConnection(ctx context.Context
 	if err != nil {
 		return SchedulersClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	return client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
@@ -648,7 +656,8 @@ func (client *SchedulersClient) GetPrivateLink(ctx context.Context, resourceGrou
 	if err != nil {
 		return SchedulersClientGetPrivateLinkResponse{}, err
 	}
-	return client.getPrivateLinkHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkCreateRequest creates the GetPrivateLink request.
@@ -1006,7 +1015,8 @@ func (client *SchedulersClient) Restart(ctx context.Context, resourceGroupName s
 		return SchedulersClientRestartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return SchedulersClientRestartResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SchedulersClientRestartResponse{}, err
 	}
 	return SchedulersClientRestartResponse{}, nil
 }

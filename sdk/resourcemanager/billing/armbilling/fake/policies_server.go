@@ -62,10 +62,10 @@ type PoliciesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPoliciesServerTransport(srv *PoliciesServer) *PoliciesServerTransport {
 	return &PoliciesServerTransport{
-		srv:                                           srv,
-		beginCreateOrUpdateByBillingAccount:           newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingAccountResponse]](),
-		beginCreateOrUpdateByBillingProfile:           newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingProfileResponse]](),
-		beginCreateOrUpdateByCustomer:                 newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerResponse]](),
+		srv:                                 srv,
+		beginCreateOrUpdateByBillingAccount: newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingAccountResponse]](),
+		beginCreateOrUpdateByBillingProfile: newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByBillingProfileResponse]](),
+		beginCreateOrUpdateByCustomer:       newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerResponse]](),
 		beginCreateOrUpdateByCustomerAtBillingAccount: newTracker[azfake.PollerResponder[armbilling.PoliciesClientCreateOrUpdateByCustomerAtBillingAccountResponse]](),
 	}
 }
@@ -85,7 +85,7 @@ func (p *PoliciesServerTransport) Do(req *http.Request) (*http.Response, error) 
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return p.dispatchToMethodFake(req, method)

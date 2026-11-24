@@ -66,7 +66,8 @@ func (client *DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return DataExportsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *DataExportsClient) Delete(ctx context.Context, resourceGroupName s
 		return DataExportsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
-		return DataExportsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataExportsClientDeleteResponse{}, err
 	}
 	return DataExportsClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *DataExportsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return DataExportsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

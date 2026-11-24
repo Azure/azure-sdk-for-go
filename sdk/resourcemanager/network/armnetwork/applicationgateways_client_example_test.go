@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayBackendHealthGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayBackendHealthGet.json
 func ExampleApplicationGatewaysClient_BeginBackendHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleApplicationGatewaysClient_BeginBackendHealth() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayBackendHealthTest.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayBackendHealthTest.json
 func ExampleApplicationGatewaysClient_BeginBackendHealthOnDemand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleApplicationGatewaysClient_BeginBackendHealthOnDemand() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayCreate.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayCreate.json
 func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createApplicationGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,6 +253,7 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createApplicationGatew
 					},
 				},
 			},
+			EnableConfidentialCompute: to.Ptr(true),
 			EntraJWTValidationConfigs: []*armnetwork.ApplicationGatewayEntraJWTValidationConfig{
 				{
 					Name: to.Ptr("entraJWTValidationConfig1"),
@@ -604,6 +605,7 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createApplicationGatew
 	// 					},
 	// 				},
 	// 			},
+	// 			EnableConfidentialCompute: to.Ptr(true),
 	// 			EntraJWTValidationConfigs: []*armnetwork.ApplicationGatewayEntraJWTValidationConfig{
 	// 				{
 	// 					Name: to.Ptr("entraJWTValidationConfig1"),
@@ -856,7 +858,7 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createApplicationGatew
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayCreateBasicV2.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayCreateBasicV2.json
 func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createBasicV2ApplicationGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1393,7 +1395,7 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createBasicV2Applicati
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayCreateBasicWafV2.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayCreateBasicWafV2.json
 func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createBasicWafV2ApplicationGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1964,7 +1966,7 @@ func ExampleApplicationGatewaysClient_BeginCreateOrUpdate_createBasicWafV2Applic
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayDelete.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayDelete.json
 func ExampleApplicationGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1990,7 +1992,7 @@ func ExampleApplicationGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayStart.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayStart.json
 func ExampleApplicationGatewaysClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2016,7 +2018,7 @@ func ExampleApplicationGatewaysClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayStop.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayStop.json
 func ExampleApplicationGatewaysClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2042,7 +2044,7 @@ func ExampleApplicationGatewaysClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayGet.json
 func ExampleApplicationGatewaysClient_Get_getApplicationGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2168,6 +2170,7 @@ func ExampleApplicationGatewaysClient_Get_getApplicationGateway() {
 	// 					},
 	// 				},
 	// 			},
+	// 			EnableConfidentialCompute: to.Ptr(false),
 	// 			EntraJWTValidationConfigs: []*armnetwork.ApplicationGatewayEntraJWTValidationConfig{
 	// 				{
 	// 					Name: to.Ptr("entraJWTValidationConfig1"),
@@ -2557,7 +2560,7 @@ func ExampleApplicationGatewaysClient_Get_getApplicationGateway() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayGetBasicV2.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayGetBasicV2.json
 func ExampleApplicationGatewaysClient_Get_getBasicV2ApplicationGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2980,7 +2983,7 @@ func ExampleApplicationGatewaysClient_Get_getBasicV2ApplicationGateway() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayGetBasicWafV2.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayGetBasicWafV2.json
 func ExampleApplicationGatewaysClient_Get_getBasicWafV2ApplicationGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3406,7 +3409,7 @@ func ExampleApplicationGatewaysClient_Get_getBasicWafV2ApplicationGateway() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayAvailableSslOptionsPredefinedPolicyGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayAvailableSslOptionsPredefinedPolicyGet.json
 func ExampleApplicationGatewaysClient_GetSSLPredefinedPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3465,7 +3468,7 @@ func ExampleApplicationGatewaysClient_GetSSLPredefinedPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayAvailableRequestHeadersGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayAvailableRequestHeadersGet.json
 func ExampleApplicationGatewaysClient_ListAvailableRequestHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3487,7 +3490,7 @@ func ExampleApplicationGatewaysClient_ListAvailableRequestHeaders() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayAvailableResponseHeadersGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayAvailableResponseHeadersGet.json
 func ExampleApplicationGatewaysClient_ListAvailableResponseHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3512,7 +3515,7 @@ func ExampleApplicationGatewaysClient_ListAvailableResponseHeaders() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayAvailableSslOptionsGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayAvailableSslOptionsGet.json
 func ExampleApplicationGatewaysClient_ListAvailableSSLOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3588,7 +3591,7 @@ func ExampleApplicationGatewaysClient_ListAvailableSSLOptions() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayAvailableServerVariablesGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayAvailableServerVariablesGet.json
 func ExampleApplicationGatewaysClient_ListAvailableServerVariables() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3613,7 +3616,7 @@ func ExampleApplicationGatewaysClient_ListAvailableServerVariables() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayAvailableWafRuleSetsGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayAvailableWafRuleSetsGet.json
 func ExampleApplicationGatewaysClient_ListAvailableWafRuleSets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3671,7 +3674,7 @@ func ExampleApplicationGatewaysClient_ListAvailableWafRuleSets() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayListAll.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayListAll.json
 func ExampleApplicationGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4103,7 +4106,7 @@ func ExampleApplicationGatewaysClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayAvailableSslOptionsPredefinedPoliciesGet.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayAvailableSslOptionsPredefinedPoliciesGet.json
 func ExampleApplicationGatewaysClient_NewListAvailableSSLPredefinedPoliciesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4221,7 +4224,7 @@ func ExampleApplicationGatewaysClient_NewListAvailableSSLPredefinedPoliciesPager
 	}
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayList.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayList.json
 func ExampleApplicationGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4653,7 +4656,7 @@ func ExampleApplicationGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ApplicationGatewayUpdateTags.json
+// Generated from example definition: 2026-05-01/ApplicationGatewayUpdateTags.json
 func ExampleApplicationGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

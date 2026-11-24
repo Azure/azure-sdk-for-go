@@ -66,7 +66,8 @@ func (client *ManagedEnvironmentsDiagnosticsClient) GetRoot(ctx context.Context,
 	if err != nil {
 		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err
 	}
-	return client.getRootHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRootHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRootCreateRequest creates the GetRoot request.

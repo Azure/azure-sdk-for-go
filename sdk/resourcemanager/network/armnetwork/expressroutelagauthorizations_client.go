@@ -19,7 +19,7 @@ import (
 // ExpressRouteLagAuthorizationsClient contains the methods for the ExpressRouteLagAuthorizations group.
 // Don't use this type directly, use NewExpressRouteLagAuthorizationsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type ExpressRouteLagAuthorizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,8 @@ func (client *ExpressRouteLagAuthorizationsClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -116,7 +117,7 @@ func (client *ExpressRouteLagAuthorizationsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -135,7 +136,7 @@ func (client *ExpressRouteLagAuthorizationsClient) createOrUpdateCreateRequest(c
 //     method.
 func (client *ExpressRouteLagAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteLagName string, authorizationName string, options *ExpressRouteLagAuthorizationsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteLagAuthorizationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRouteLagName, authorizationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteLagName, authorizationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,9 +151,9 @@ func (client *ExpressRouteLagAuthorizationsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// delete - Deletes the specified authorization from the specified express route LAG.
+// deleteOperation - Deletes the specified authorization from the specified express route LAG.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteLagAuthorizationsClient) delete(ctx context.Context, resourceGroupName string, expressRouteLagName string, authorizationName string, options *ExpressRouteLagAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteLagAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteLagName string, authorizationName string, options *ExpressRouteLagAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteLagAuthorizationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -167,7 +168,8 @@ func (client *ExpressRouteLagAuthorizationsClient) delete(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -196,7 +198,7 @@ func (client *ExpressRouteLagAuthorizationsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -222,7 +224,8 @@ func (client *ExpressRouteLagAuthorizationsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ExpressRouteLagAuthorizationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -249,7 +252,7 @@ func (client *ExpressRouteLagAuthorizationsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -288,7 +291,8 @@ func (client *ExpressRouteLagAuthorizationsClient) ListKeys(ctx context.Context,
 	if err != nil {
 		return ExpressRouteLagAuthorizationsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -315,7 +319,7 @@ func (client *ExpressRouteLagAuthorizationsClient) listKeysCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -391,7 +395,7 @@ func (client *ExpressRouteLagAuthorizationsClient) listCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

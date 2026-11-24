@@ -63,7 +63,8 @@ func (client *GenerateGCPTemplateClient) Post(ctx context.Context, generateGCPTe
 	if err != nil {
 		return GenerateGCPTemplateClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.

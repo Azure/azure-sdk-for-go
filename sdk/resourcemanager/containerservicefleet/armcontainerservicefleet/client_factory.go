@@ -96,6 +96,14 @@ func (c *ClientFactory) NewGatesClient() *GatesClient {
 	}
 }
 
+// NewIdentityBindingProfilesClient creates a new instance of IdentityBindingProfilesClient.
+func (c *ClientFactory) NewIdentityBindingProfilesClient() *IdentityBindingProfilesClient {
+	return &IdentityBindingProfilesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

@@ -84,7 +84,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) cancel(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -156,7 +157,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) startExtensionUpgrade
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -228,7 +230,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) startOSUpgrade(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -278,7 +281,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatest(ctx context
 	if err != nil {
 		return VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse{}, err
 	}
-	return client.getLatestHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLatestHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLatestCreateRequest creates the GetLatest request.

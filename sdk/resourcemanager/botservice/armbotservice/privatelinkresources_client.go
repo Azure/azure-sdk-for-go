@@ -64,7 +64,8 @@ func (client *PrivateLinkResourcesClient) ListByBotResource(ctx context.Context,
 	if err != nil {
 		return PrivateLinkResourcesClientListByBotResourceResponse{}, err
 	}
-	return client.listByBotResourceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByBotResourceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByBotResourceCreateRequest creates the ListByBotResource request.

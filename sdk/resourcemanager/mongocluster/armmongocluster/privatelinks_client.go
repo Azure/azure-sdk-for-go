@@ -19,7 +19,7 @@ import (
 // PrivateLinksClient contains the methods for the PrivateLinks group.
 // Don't use this type directly, use NewPrivateLinksClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-09-01
 type PrivateLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,7 +46,7 @@ func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListByMongoClusterPager - list private links on the given resource
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - PrivateLinksClientListByMongoClusterOptions contains the optional parameters for the PrivateLinksClient.NewListByMongoClusterPager
 //     method.
 func (client *PrivateLinksClient) NewListByMongoClusterPager(resourceGroupName string, mongoClusterName string, options *PrivateLinksClientListByMongoClusterOptions) *runtime.Pager[PrivateLinksClientListByMongoClusterResponse] {
@@ -102,7 +102,7 @@ func (client *PrivateLinksClient) listByMongoClusterCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

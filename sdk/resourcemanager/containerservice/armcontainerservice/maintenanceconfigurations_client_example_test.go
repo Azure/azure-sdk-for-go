@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-08-02-preview/MaintenanceConfigurationsCreate_LinkedMaintenanceWindow.json
+// Generated from example definition: 2026-09-02-preview/MaintenanceConfigurationsCreate_LinkedMaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createALinkedMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createALinkedMaintena
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+// Generated from example definition: 2026-09-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenanceConfigurationWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	// 	MaintenanceConfiguration: armcontainerservice.MaintenanceConfiguration{
 	// 		Name: to.Ptr("aksManagedAutoUpgradeSchedule"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/maintenanceConfigurations"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedAutoUpgradeSchedule"),
 	// 		Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 	// 			MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 	// 				DurationHours: to.Ptr[int32](10),
@@ -157,7 +157,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate_createUpdateMaintenan
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+// Generated from example definition: 2026-09-02-preview/MaintenanceConfigurationsDelete_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/MaintenanceConfigurationsGet_LinkedMaintenanceWindow.json
+// Generated from example definition: 2026-09-02-preview/MaintenanceConfigurationsGet_LinkedMaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get_getALinkedMaintenanceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +234,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getALinkedMaintenanceConfigurati
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
+// Generated from example definition: 2026-09-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfiguredWithMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfi
 	// res = armcontainerservice.MaintenanceConfigurationsClientGetResponse{
 	// 	MaintenanceConfiguration: armcontainerservice.MaintenanceConfiguration{
 	// 		Name: to.Ptr("aksManagedNodeOSUpgradeSchedule"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedNodeOSUpgradeSchedule"),
 	// 		Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 	// 			MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 	// 				DurationHours: to.Ptr[int32](4),
@@ -291,7 +291,7 @@ func ExampleMaintenanceConfigurationsClient_Get_getMaintenanceConfigurationConfi
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
+// Generated from example definition: 2026-09-02-preview/MaintenanceConfigurationsList_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,7 +318,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 		// 		Value: []*armcontainerservice.MaintenanceConfiguration{
 		// 			{
 		// 				Name: to.Ptr("aksManagedNodeOSUpgradeSchedule"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedNodeOSUpgradeSchedule"),
 		// 				Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 		// 					MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 		// 						DurationHours: to.Ptr[int32](10),
@@ -335,7 +335,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("aksManagedAutoUpgradeSchedule"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/default"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/maintenanceConfigurations/aksManagedAutoUpgradeSchedule"),
 		// 				Properties: &armcontainerservice.MaintenanceConfigurationProperties{
 		// 					MaintenanceWindow: &armcontainerservice.MaintenanceWindow{
 		// 						DurationHours: to.Ptr[int32](5),

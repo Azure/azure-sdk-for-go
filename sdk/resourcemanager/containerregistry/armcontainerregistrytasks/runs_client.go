@@ -66,7 +66,8 @@ func (client *RunsClient) Cancel(ctx context.Context, resourceGroupName string, 
 		return RunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RunsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RunsClientCancelResponse{}, err
 	}
 	return RunsClientCancelResponse{}, nil
 }
@@ -120,7 +121,8 @@ func (client *RunsClient) Get(ctx context.Context, resourceGroupName string, reg
 	if err != nil {
 		return RunsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -185,7 +187,8 @@ func (client *RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RunsClientGetLogSasURLResponse{}, err
 	}
-	return client.getLogSasURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogSasURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogSasURLCreateRequest creates the GetLogSasURL request.
@@ -333,7 +336,8 @@ func (client *RunsClient) Update(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return RunsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

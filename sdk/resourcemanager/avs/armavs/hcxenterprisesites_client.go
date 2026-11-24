@@ -66,7 +66,8 @@ func (client *HcxEnterpriseSitesClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return HcxEnterpriseSitesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *HcxEnterpriseSitesClient) Delete(ctx context.Context, resourceGrou
 		return HcxEnterpriseSitesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return HcxEnterpriseSitesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HcxEnterpriseSitesClientDeleteResponse{}, err
 	}
 	return HcxEnterpriseSitesClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *HcxEnterpriseSitesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return HcxEnterpriseSitesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

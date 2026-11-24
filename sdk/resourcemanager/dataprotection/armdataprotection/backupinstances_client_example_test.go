@@ -1061,422 +1061,6 @@ func ExampleBackupInstancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance.json
-func ExampleBackupInstancesClient_Get_getBackupInstance() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientGetResponse{
-	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
-	// 		Name: to.Ptr("harshitbi2"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
-	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
-	// 		Properties: &armdataprotection.BackupInstance{
-	// 			DataSourceInfo: &armdataprotection.Datasource{
-	// 				DatasourceType: to.Ptr("OssDB"),
-	// 				ObjectType: to.Ptr("Datasource"),
-	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-	// 				ResourceLocation: to.Ptr(""),
-	// 				ResourceName: to.Ptr("testdb"),
-	// 				ResourceType: to.Ptr("OssDB"),
-	// 				ResourceURI: to.Ptr(""),
-	// 			},
-	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-	// 				DatasourceType: to.Ptr("OssDB"),
-	// 				ObjectType: to.Ptr("DatasourceSet"),
-	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-	// 				ResourceLocation: to.Ptr(""),
-	// 				ResourceName: to.Ptr("viveksipgtest"),
-	// 				ResourceType: to.Ptr("OssDB"),
-	// 				ResourceURI: to.Ptr(""),
-	// 			},
-	// 			FriendlyName: to.Ptr("harshitbi2"),
-	// 			IdentityDetails: &armdataprotection.IdentityDetails{
-	// 				UseSystemAssignedIdentity: to.Ptr(false),
-	// 				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
-	// 			},
-	// 			ObjectType: to.Ptr("BackupInstance"),
-	// 			PolicyInfo: &armdataprotection.PolicyInfo{
-	// 				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
-	// 				PolicyVersion: to.Ptr("3.2"),
-	// 			},
-	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
-	// 				Status: to.Ptr(armdataprotection.Status("NotProtected")),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Provisioning"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
-func ExampleBackupInstancesClient_Get_getBackupInstanceWithAdlsBlobBackupAutoProtection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "adlsrg", "adlsvault", "adlsbackupinstance", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientGetResponse{
-	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
-	// 		Name: to.Ptr("adlsbackupinstance"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
-	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/adlsbackupinstance"),
-	// 		Properties: &armdataprotection.BackupInstance{
-	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
-	// 			DataSourceInfo: &armdataprotection.Datasource{
-	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
-	// 				ObjectType: to.Ptr("Datasource"),
-	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 				ResourceLocation: to.Ptr("centraluseuap"),
-	// 				ResourceName: to.Ptr("adlsstorageaccount"),
-	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 			},
-	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
-	// 				ObjectType: to.Ptr("DatasourceSet"),
-	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 				ResourceLocation: to.Ptr("centraluseuap"),
-	// 				ResourceName: to.Ptr("adlsstorageaccount"),
-	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 			},
-	// 			FriendlyName: to.Ptr("adlsbackupinstance"),
-	// 			ObjectType: to.Ptr("BackupInstance"),
-	// 			PolicyInfo: &armdataprotection.PolicyInfo{
-	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy"),
-	// 				PolicyParameters: &armdataprotection.PolicyParameters{
-	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
-	// 						&armdataprotection.AdlsBlobBackupDatasourceParametersForAutoProtection{
-	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
-	// 								Enabled: to.Ptr(true),
-	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
-	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
-	// 									{
-	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
-	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
-	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
-	// 										Pattern: to.Ptr("temp-"),
-	// 									},
-	// 									{
-	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
-	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
-	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
-	// 										Pattern: to.Ptr("test-"),
-	// 									},
-	// 								},
-	// 							},
-	// 							ObjectType: to.Ptr("AdlsBlobBackupDatasourceParametersForAutoProtection"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
-	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
-func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "adlsrg", "adlsvault", "adlsbackupinstance", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientGetResponse{
-	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
-	// 		Name: to.Ptr("adlsbackupinstance"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
-	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/adlsbackupinstance"),
-	// 		Properties: &armdataprotection.BackupInstance{
-	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
-	// 			DataSourceInfo: &armdataprotection.Datasource{
-	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
-	// 				ObjectType: to.Ptr("Datasource"),
-	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 				ResourceLocation: to.Ptr("centraluseuap"),
-	// 				ResourceName: to.Ptr("adls5blbcentraluseuap2"),
-	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 			},
-	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
-	// 				ObjectType: to.Ptr("DatasourceSet"),
-	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 				ResourceLocation: to.Ptr("centraluseuap"),
-	// 				ResourceName: to.Ptr("adls5blbcentraluseuap2"),
-	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
-	// 			},
-	// 			FriendlyName: to.Ptr("adlsbackupinstance"),
-	// 			ObjectType: to.Ptr("BackupInstance"),
-	// 			PolicyInfo: &armdataprotection.PolicyInfo{
-	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy"),
-	// 				PolicyParameters: &armdataprotection.PolicyParameters{
-	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
-	// 						&armdataprotection.AdlsBlobBackupDatasourceParameters{
-	// 							ContainersList: []*string{
-	// 								to.Ptr("container1"),
-	// 								to.Ptr("container2"),
-	// 							},
-	// 							ObjectType: to.Ptr("AdlsBlobBackupDatasourceParameters"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
-	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
-func ExampleBackupInstancesClient_Get_getBackupInstanceWithBlobBackupAutoProtection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "blobrg", "blobvault", "blobbackupinstance", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientGetResponse{
-	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
-	// 		Name: to.Ptr("blobbackupinstance"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
-	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupInstances/blobbackupinstance"),
-	// 		Properties: &armdataprotection.BackupInstance{
-	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
-	// 			DataSourceInfo: &armdataprotection.Datasource{
-	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
-	// 				ObjectType: to.Ptr("Datasource"),
-	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
-	// 				ResourceLocation: to.Ptr("centraluseuap"),
-	// 				ResourceName: to.Ptr("blobstorageaccount"),
-	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
-	// 			},
-	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
-	// 				ObjectType: to.Ptr("DatasourceSet"),
-	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
-	// 				ResourceLocation: to.Ptr("centraluseuap"),
-	// 				ResourceName: to.Ptr("blobstorageaccount"),
-	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
-	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
-	// 			},
-	// 			FriendlyName: to.Ptr("blobbackupinstance"),
-	// 			ObjectType: to.Ptr("BackupInstance"),
-	// 			PolicyInfo: &armdataprotection.PolicyInfo{
-	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupPolicies/blobpolicy"),
-	// 				PolicyParameters: &armdataprotection.PolicyParameters{
-	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
-	// 						&armdataprotection.BlobBackupDatasourceParametersForAutoProtection{
-	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
-	// 								Enabled: to.Ptr(true),
-	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
-	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
-	// 									{
-	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
-	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
-	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
-	// 										Pattern: to.Ptr("temp-"),
-	// 									},
-	// 									{
-	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
-	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
-	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
-	// 										Pattern: to.Ptr("test-"),
-	// 									},
-	// 								},
-	// 							},
-	// 							ObjectType: to.Ptr("BlobBackupDatasourceParametersForAutoProtection"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
-	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
-func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewBackupInstancesClient().GetBackupInstanceOperationResult(ctx, "SampleResourceGroup", "swaggerExample", "testInstance1", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstancesClientGetBackupInstanceOperationResultResponse{
-	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
-	// 		Name: to.Ptr("testInstance1"),
-	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
-	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/swaggerExample/backupInstances/testInstance1"),
-	// 		Properties: &armdataprotection.BackupInstance{
-	// 			DataSourceInfo: &armdataprotection.Datasource{
-	// 				DatasourceType: to.Ptr("OssDB"),
-	// 				ObjectType: to.Ptr("Datasource"),
-	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-	// 				ResourceLocation: to.Ptr(""),
-	// 				ResourceName: to.Ptr("testdb"),
-	// 				ResourceType: to.Ptr("OssDB"),
-	// 				ResourceURI: to.Ptr(""),
-	// 			},
-	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
-	// 				DatasourceType: to.Ptr("OssDB"),
-	// 				ObjectType: to.Ptr("DatasourceSet"),
-	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-	// 				ResourceLocation: to.Ptr(""),
-	// 				ResourceName: to.Ptr("viveksipgtest"),
-	// 				ResourceType: to.Ptr("OssDB"),
-	// 				ResourceURI: to.Ptr(""),
-	// 			},
-	// 			FriendlyName: to.Ptr("testInstance1"),
-	// 			ObjectType: to.Ptr("BackupInstance"),
-	// 			PolicyInfo: &armdataprotection.PolicyInfo{
-	// 				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/swaggerExample/backupPolicies/PratikPolicy1"),
-	// 				PolicyVersion: to.Ptr("3.2"),
-	// 			},
-	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
-	// 				Status: to.Ptr(armdataprotection.StatusConfiguringProtection),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Provisioned"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/BackupInstanceOperations/ListBackupInstances.json
-func ExampleBackupInstancesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewBackupInstancesClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdataprotection.BackupInstancesClientListResponse{
-		// 	BackupInstanceResourceList: armdataprotection.BackupInstanceResourceList{
-		// 		Value: []*armdataprotection.BackupInstanceResource{
-		// 			{
-		// 				Name: to.Ptr("harshitbi2"),
-		// 				Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
-		// 				ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
-		// 				Properties: &armdataprotection.BackupInstance{
-		// 					DataSourceInfo: &armdataprotection.Datasource{
-		// 						DatasourceType: to.Ptr("OssDB"),
-		// 						ObjectType: to.Ptr("Datasource"),
-		// 						ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
-		// 						ResourceLocation: to.Ptr(""),
-		// 						ResourceName: to.Ptr("testdb"),
-		// 						ResourceType: to.Ptr("OssDB"),
-		// 						ResourceURI: to.Ptr(""),
-		// 					},
-		// 					DataSourceSetInfo: &armdataprotection.DatasourceSet{
-		// 						DatasourceType: to.Ptr("OssDB"),
-		// 						ObjectType: to.Ptr("DatasourceSet"),
-		// 						ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
-		// 						ResourceLocation: to.Ptr(""),
-		// 						ResourceName: to.Ptr("viveksipgtest"),
-		// 						ResourceType: to.Ptr("OssDB"),
-		// 						ResourceURI: to.Ptr(""),
-		// 					},
-		// 					FriendlyName: to.Ptr("harshitbi2"),
-		// 					ObjectType: to.Ptr("BackupInstance"),
-		// 					PolicyInfo: &armdataprotection.PolicyInfo{
-		// 						PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
-		// 						PolicyVersion: to.Ptr("3.2"),
-		// 					},
-		// 					ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
-		// 						Status: to.Ptr(armdataprotection.Status("NotProtected")),
-		// 					},
-		// 					ProvisioningState: to.Ptr("Provisioning"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-07-01/BackupInstanceOperations/ResumeBackups.json
 func ExampleBackupInstancesClient_BeginResumeBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2278,4 +1862,420 @@ func ExampleBackupInstancesClient_BeginValidateForRestore() {
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance.json
+func ExampleBackupInstancesClient_Get_getBackupInstance() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientGetResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("harshitbi2"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("OssDB"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+	// 				ResourceLocation: to.Ptr(""),
+	// 				ResourceName: to.Ptr("testdb"),
+	// 				ResourceType: to.Ptr("OssDB"),
+	// 				ResourceURI: to.Ptr(""),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("OssDB"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+	// 				ResourceLocation: to.Ptr(""),
+	// 				ResourceName: to.Ptr("viveksipgtest"),
+	// 				ResourceType: to.Ptr("OssDB"),
+	// 				ResourceURI: to.Ptr(""),
+	// 			},
+	// 			FriendlyName: to.Ptr("harshitbi2"),
+	// 			IdentityDetails: &armdataprotection.IdentityDetails{
+	// 				UseSystemAssignedIdentity: to.Ptr(false),
+	// 				UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
+	// 			},
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
+	// 				PolicyVersion: to.Ptr("3.2"),
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.Status("NotProtected")),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Provisioning"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
+func ExampleBackupInstancesClient_Get_getBackupInstanceWithAdlsBlobBackupAutoProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "adlsrg", "adlsvault", "adlsbackupinstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientGetResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("adlsbackupinstance"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/adlsbackupinstance"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adlsstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adlsstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			FriendlyName: to.Ptr("adlsbackupinstance"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.AdlsBlobBackupDatasourceParametersForAutoProtection{
+	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+	// 								Enabled: to.Ptr(true),
+	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("temp-"),
+	// 									},
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("test-"),
+	// 									},
+	// 								},
+	// 							},
+	// 							ObjectType: to.Ptr("AdlsBlobBackupDatasourceParametersForAutoProtection"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
+func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "adlsrg", "adlsvault", "adlsbackupinstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientGetResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("adlsbackupinstance"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/adlsbackupinstance"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adls5blbcentraluseuap2"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adls5blbcentraluseuap2"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			FriendlyName: to.Ptr("adlsbackupinstance"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.AdlsBlobBackupDatasourceParameters{
+	// 							ContainersList: []*string{
+	// 								to.Ptr("container1"),
+	// 								to.Ptr("container2"),
+	// 							},
+	// 							ObjectType: to.Ptr("AdlsBlobBackupDatasourceParameters"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
+func ExampleBackupInstancesClient_Get_getBackupInstanceWithBlobBackupAutoProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "blobrg", "blobvault", "blobbackupinstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientGetResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("blobbackupinstance"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupInstances/blobbackupinstance"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("blobstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("blobstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 			},
+	// 			FriendlyName: to.Ptr("blobbackupinstance"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupPolicies/blobpolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.BlobBackupDatasourceParametersForAutoProtection{
+	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+	// 								Enabled: to.Ptr(true),
+	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("temp-"),
+	// 									},
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("test-"),
+	// 									},
+	// 								},
+	// 							},
+	// 							ObjectType: to.Ptr("BlobBackupDatasourceParametersForAutoProtection"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupInstancesClient().GetBackupInstanceOperationResult(ctx, "SampleResourceGroup", "swaggerExample", "testInstance1", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientGetBackupInstanceOperationResultResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("testInstance1"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/swaggerExample/backupInstances/testInstance1"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("OssDB"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+	// 				ResourceLocation: to.Ptr(""),
+	// 				ResourceName: to.Ptr("testdb"),
+	// 				ResourceType: to.Ptr("OssDB"),
+	// 				ResourceURI: to.Ptr(""),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("OssDB"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+	// 				ResourceLocation: to.Ptr(""),
+	// 				ResourceName: to.Ptr("viveksipgtest"),
+	// 				ResourceType: to.Ptr("OssDB"),
+	// 				ResourceURI: to.Ptr(""),
+	// 			},
+	// 			FriendlyName: to.Ptr("testInstance1"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/swaggerExample/backupPolicies/PratikPolicy1"),
+	// 				PolicyVersion: to.Ptr("3.2"),
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.StatusConfiguringProtection),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Provisioned"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/BackupInstanceOperations/ListBackupInstances.json
+func ExampleBackupInstancesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewBackupInstancesClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdataprotection.BackupInstancesClientListResponse{
+		// 	BackupInstanceResourceList: armdataprotection.BackupInstanceResourceList{
+		// 		Value: []*armdataprotection.BackupInstanceResource{
+		// 			{
+		// 				Name: to.Ptr("harshitbi2"),
+		// 				Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+		// 				ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
+		// 				Properties: &armdataprotection.BackupInstance{
+		// 					DataSourceInfo: &armdataprotection.Datasource{
+		// 						DatasourceType: to.Ptr("OssDB"),
+		// 						ObjectType: to.Ptr("Datasource"),
+		// 						ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+		// 						ResourceLocation: to.Ptr(""),
+		// 						ResourceName: to.Ptr("testdb"),
+		// 						ResourceType: to.Ptr("OssDB"),
+		// 						ResourceURI: to.Ptr(""),
+		// 					},
+		// 					DataSourceSetInfo: &armdataprotection.DatasourceSet{
+		// 						DatasourceType: to.Ptr("OssDB"),
+		// 						ObjectType: to.Ptr("DatasourceSet"),
+		// 						ResourceID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+		// 						ResourceLocation: to.Ptr(""),
+		// 						ResourceName: to.Ptr("viveksipgtest"),
+		// 						ResourceType: to.Ptr("OssDB"),
+		// 						ResourceURI: to.Ptr(""),
+		// 					},
+		// 					FriendlyName: to.Ptr("harshitbi2"),
+		// 					ObjectType: to.Ptr("BackupInstance"),
+		// 					PolicyInfo: &armdataprotection.PolicyInfo{
+		// 						PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
+		// 						PolicyVersion: to.Ptr("3.2"),
+		// 					},
+		// 					ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+		// 						Status: to.Ptr(armdataprotection.Status("NotProtected")),
+		// 					},
+		// 					ProvisioningState: to.Ptr("Provisioning"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

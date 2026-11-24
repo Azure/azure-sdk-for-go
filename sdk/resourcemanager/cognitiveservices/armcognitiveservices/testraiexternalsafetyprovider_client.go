@@ -19,7 +19,7 @@ import (
 // TestRaiExternalSafetyProviderClient contains the methods for the TestRaiExternalSafetyProvider group.
 // Don't use this type directly, use NewTestRaiExternalSafetyProviderClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-15-preview
 type TestRaiExternalSafetyProviderClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,8 @@ func (client *TestRaiExternalSafetyProviderClient) CreateOrUpdate(ctx context.Co
 	if err != nil {
 		return TestRaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -93,7 +94,7 @@ func (client *TestRaiExternalSafetyProviderClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

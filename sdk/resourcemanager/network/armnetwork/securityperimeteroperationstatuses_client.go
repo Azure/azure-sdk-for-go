@@ -19,7 +19,7 @@ import (
 // SecurityPerimeterOperationStatusesClient contains the methods for the SecurityPerimeterOperationStatuses group.
 // Don't use this type directly, use NewSecurityPerimeterOperationStatusesClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type SecurityPerimeterOperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *SecurityPerimeterOperationStatusesClient) Get(ctx context.Context,
 	if err != nil {
 		return SecurityPerimeterOperationStatusesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -87,7 +88,7 @@ func (client *SecurityPerimeterOperationStatusesClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

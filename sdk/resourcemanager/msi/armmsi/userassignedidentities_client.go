@@ -65,7 +65,8 @@ func (client *UserAssignedIdentitiesClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return UserAssignedIdentitiesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *UserAssignedIdentitiesClient) Delete(ctx context.Context, resource
 		return UserAssignedIdentitiesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return UserAssignedIdentitiesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return UserAssignedIdentitiesClientDeleteResponse{}, err
 	}
 	return UserAssignedIdentitiesClientDeleteResponse{}, nil
 }
@@ -181,7 +183,8 @@ func (client *UserAssignedIdentitiesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return UserAssignedIdentitiesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -382,7 +385,8 @@ func (client *UserAssignedIdentitiesClient) Update(ctx context.Context, resource
 	if err != nil {
 		return UserAssignedIdentitiesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

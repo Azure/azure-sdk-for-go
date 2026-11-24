@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/AvailablePrivateEndpointTypesResourceGroupGet.json
+// Generated from example definition: 2026-05-01/AvailablePrivateEndpointTypesResourceGroupGet.json
 func ExampleAvailablePrivateEndpointTypesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleAvailablePrivateEndpointTypesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AvailablePrivateEndpointTypesGet.json
+// Generated from example definition: 2026-05-01/AvailablePrivateEndpointTypesGet.json
 func ExampleAvailablePrivateEndpointTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

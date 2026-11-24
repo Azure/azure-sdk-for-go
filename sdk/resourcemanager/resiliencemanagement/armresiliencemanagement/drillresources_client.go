@@ -59,7 +59,8 @@ func (client *DrillResourcesClient) Get(ctx context.Context, serviceGroupName st
 	if err != nil {
 		return DrillResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

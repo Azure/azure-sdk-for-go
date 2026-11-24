@@ -67,7 +67,8 @@ func (client *AIModelsClient) CalculateCost(ctx context.Context, location string
 	if err != nil {
 		return AIModelsClientCalculateCostResponse{}, err
 	}
-	return client.calculateCostHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.calculateCostHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // calculateCostCreateRequest creates the CalculateCost request.
@@ -130,7 +131,8 @@ func (client *AIModelsClient) Get(ctx context.Context, location string, aiModelN
 	if err != nil {
 		return AIModelsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

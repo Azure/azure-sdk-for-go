@@ -65,7 +65,8 @@ func (client *ProductSettingsClient) Delete(ctx context.Context, resourceGroupNa
 		return ProductSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ProductSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProductSettingsClientDeleteResponse{}, err
 	}
 	return ProductSettingsClientDeleteResponse{}, nil
 }
@@ -119,7 +120,8 @@ func (client *ProductSettingsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ProductSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -262,7 +264,8 @@ func (client *ProductSettingsClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ProductSettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

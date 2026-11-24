@@ -65,7 +65,8 @@ func (client *EnterprisePoliciesClient) CreateOrUpdate(ctx context.Context, ente
 	if err != nil {
 		return EnterprisePoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *EnterprisePoliciesClient) Delete(ctx context.Context, resourceGrou
 		return EnterprisePoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EnterprisePoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EnterprisePoliciesClientDeleteResponse{}, err
 	}
 	return EnterprisePoliciesClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *EnterprisePoliciesClient) Get(ctx context.Context, enterprisePolic
 	if err != nil {
 		return EnterprisePoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -381,7 +384,8 @@ func (client *EnterprisePoliciesClient) Update(ctx context.Context, enterprisePo
 	if err != nil {
 		return EnterprisePoliciesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

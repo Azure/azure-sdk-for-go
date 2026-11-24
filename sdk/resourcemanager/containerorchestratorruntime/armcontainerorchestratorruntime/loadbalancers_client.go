@@ -63,7 +63,7 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a LoadBalancer
+// createOrUpdate - Create a LoadBalancer
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *LoadBalancersClient) createOrUpdate(ctx context.Context, resourceURI string, loadBalancerName string, resource LoadBalancer, options *LoadBalancersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -80,12 +80,13 @@ func (client *LoadBalancersClient) createOrUpdate(ctx context.Context, resourceU
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, loadBalancerName string, resource LoadBalancer, _ *LoadBalancersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}"
 	if resourceURI == "" {
@@ -131,7 +132,8 @@ func (client *LoadBalancersClient) Delete(ctx context.Context, resourceURI strin
 		return LoadBalancersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return LoadBalancersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return LoadBalancersClientDeleteResponse{}, err
 	}
 	return LoadBalancersClientDeleteResponse{}, nil
 }
@@ -176,7 +178,8 @@ func (client *LoadBalancersClient) Get(ctx context.Context, resourceURI string, 
 	if err != nil {
 		return LoadBalancersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

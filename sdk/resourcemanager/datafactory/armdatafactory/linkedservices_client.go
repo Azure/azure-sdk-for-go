@@ -66,7 +66,8 @@ func (client *LinkedServicesClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *LinkedServicesClient) Delete(ctx context.Context, resourceGroupNam
 		return LinkedServicesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return LinkedServicesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return LinkedServicesClientDeleteResponse{}, err
 	}
 	return LinkedServicesClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return LinkedServicesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

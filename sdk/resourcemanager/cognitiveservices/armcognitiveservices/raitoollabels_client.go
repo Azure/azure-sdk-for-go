@@ -19,7 +19,7 @@ import (
 // RaiToolLabelsClient contains the methods for the RaiToolLabels group.
 // Don't use this type directly, use NewRaiToolLabelsClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-15-preview
 type RaiToolLabelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -53,7 +53,7 @@ func NewRaiToolLabelsClient(subscriptionID string, credential azcore.TokenCreden
 //     method.
 func (client *RaiToolLabelsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*runtime.Poller[RaiToolLabelsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiToolConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +68,9 @@ func (client *RaiToolLabelsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified RAI Tool Label associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiToolLabelsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiToolLabelsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiToolLabelsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -85,7 +85,8 @@ func (client *RaiToolLabelsClient) delete(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -114,7 +115,7 @@ func (client *RaiToolLabelsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -141,7 +142,8 @@ func (client *RaiToolLabelsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return RaiToolLabelsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -168,7 +170,7 @@ func (client *RaiToolLabelsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -210,7 +212,8 @@ func (client *RaiToolLabelsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RaiToolLabelsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -237,7 +240,7 @@ func (client *RaiToolLabelsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -312,7 +315,7 @@ func (client *RaiToolLabelsClient) listCreateRequest(ctx context.Context, resour
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -63,7 +63,8 @@ func (client *SecurityPINsClient) Get(ctx context.Context, vaultName string, res
 	if err != nil {
 		return SecurityPINsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

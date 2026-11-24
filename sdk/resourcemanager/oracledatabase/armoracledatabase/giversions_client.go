@@ -63,7 +63,8 @@ func (client *GiVersionsClient) Get(ctx context.Context, location string, givers
 	if err != nil {
 		return GiVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -65,7 +65,8 @@ func (client *TasksClient) Create(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TasksClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -135,7 +136,8 @@ func (client *TasksClient) Delete(ctx context.Context, resourceGroupName string,
 		return TasksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TasksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TasksClientDeleteResponse{}, err
 	}
 	return TasksClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *TasksClient) Get(ctx context.Context, resourceGroupName string, re
 	if err != nil {
 		return TasksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -254,7 +257,8 @@ func (client *TasksClient) GetDetails(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return TasksClientGetDetailsResponse{}, err
 	}
-	return client.getDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
@@ -396,7 +400,8 @@ func (client *TasksClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TasksClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

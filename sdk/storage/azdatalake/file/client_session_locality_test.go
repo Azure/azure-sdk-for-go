@@ -1,0 +1,642 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package file_test
+
+import (
+	"bytes"
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"strconv"
+	"strings"
+	"sync"
+	"testing"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
+	"github.com/stretchr/testify/require"
+)
+
+// These tests run DataLake clients against a fake account that serves both the DFS and the blob
+// endpoint, and assert on what reached the wire: which endpoint each request went to and how it
+// was authenticated. They port the behavior covered by the .NET STG105 DataLake
+// SessionAuthenticationTests and DataLakeFileClientDataLocalityTests.
+
+const (
+	dlAccount    = "dlaccount"
+	dlDFSHost    = dlAccount + ".dfs.core.windows.net"
+	dlBlobHost   = dlAccount + ".blob.core.windows.net"
+	dlDFSService = "https://" + dlDFSHost + "/"
+	dlLayoutHost = "locality0.blob.core.windows.net"
+	dlFileSize   = 300
+	dlSessionKey = "ZmFrZWtleQ==" // base64 "fakekey"
+	dlETag       = `"dl-etag"`
+)
+
+type dlTokenCredential struct{}
+
+func (dlTokenCredential) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{Token: "fake-bearer", ExpiresOn: time.Now().Add(time.Hour)}, nil
+}
+
+// dlRequest is one request as it reached the wire, other than Create Session.
+type dlRequest struct {
+	method     string
+	urlHost    string
+	hostHeader string
+	path       string
+	comp       string
+	scheme     string
+	token      string
+	ifMatch    string
+	rangeHdr   string
+}
+
+// dlAccountFake serves the DFS and blob endpoints of one account.
+type dlAccountFake struct {
+	mu sync.Mutex
+	// createSessions counts Create Session requests per file system (container), and records the
+	// host they were sent to.
+	createSessions     map[string]int
+	createSessionHosts []string
+	requests           []dlRequest
+
+	// downloadHint, when true, adds x-ms-download-hint: layout to Get Blob responses.
+	downloadHint bool
+	// layoutPages are the Get Layout pages, served in order by marker.
+	layoutPages []string
+	// layoutErrorStatus and layoutErrorCode, when set, fail every Get Layout request.
+	layoutErrorStatus int
+	layoutErrorCode   string
+	// rejectSession, when set, returns 401 for a session-authenticated request it selects.
+	rejectSession func(r dlRequest) bool
+	// failFirstRoutedRead makes the body of the first Get Blob sent to the layout endpoint fail
+	// part way through.
+	failFirstRoutedRead bool
+	routedReads         int
+}
+
+func newDLAccount() *dlAccountFake {
+	return &dlAccountFake{createSessions: map[string]int{}}
+}
+
+func (a *dlAccountFake) Do(req *http.Request) (*http.Response, error) {
+	q := req.URL.Query()
+	container, _, _ := strings.Cut(strings.TrimPrefix(req.URL.Path, "/"), "/")
+
+	if req.Method == http.MethodPost && q.Get("comp") == "session" {
+		a.mu.Lock()
+		a.createSessions[container]++
+		n := a.createSessions[container]
+		a.createSessionHosts = append(a.createSessionHosts, req.URL.Host)
+		a.mu.Unlock()
+		body := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><CreateSessionResult><Credentials><SessionKey>%s</SessionKey>`+
+			`<SessionToken>%s-%d</SessionToken></Credentials><Expiration>%s</Expiration></CreateSessionResult>`,
+			dlSessionKey, container, n, time.Now().Add(time.Hour).UTC().Format(time.RFC1123))
+		return dlResponse(req, http.StatusCreated, http.Header{}, []byte(body)), nil
+	}
+
+	r := dlRequest{
+		method:     req.Method,
+		urlHost:    req.URL.Host,
+		hostHeader: req.Host,
+		path:       req.URL.Path,
+		comp:       q.Get("comp"),
+		ifMatch:    req.Header.Get("If-Match"),
+		rangeHdr:   firstNonEmpty(req.Header.Get("x-ms-range"), headerRaw(req.Header, "x-ms-range")),
+	}
+	auth := req.Header.Get("Authorization")
+	r.scheme, _, _ = strings.Cut(auth, " ")
+	if r.scheme == "Session" {
+		_, cred, _ := strings.Cut(auth, " ")
+		r.token, _, _ = strings.Cut(cred, ":")
+	}
+	a.mu.Lock()
+	a.requests = append(a.requests, r)
+	reject := a.rejectSession
+	a.mu.Unlock()
+
+	if reject != nil && r.scheme == "Session" && reject(r) {
+		return dlResponse(req, http.StatusUnauthorized, http.Header{}, []byte("<Error><Code>InvalidAuthenticationInfo</Code></Error>")), nil
+	}
+
+	h := http.Header{}
+	h.Set("ETag", dlETag)
+	h.Set("Last-Modified", time.Now().UTC().Format(http.TimeFormat))
+	switch {
+	case req.Method == http.MethodGet && r.comp == "layout":
+		return a.layoutResponse(req, q.Get("marker")), nil
+	case req.Method == http.MethodGet && r.comp == "":
+		return a.readResponse(req, r), nil
+	case req.Method == http.MethodHead:
+		h.Set("Content-Length", strconv.Itoa(dlFileSize))
+		h.Set("x-ms-resource-type", "file")
+		return dlResponse(req, http.StatusOK, h, nil), nil
+	case req.Method == http.MethodPut:
+		return dlResponse(req, http.StatusCreated, h, nil), nil
+	case req.Method == http.MethodPatch && q.Get("action") == "flush":
+		return dlResponse(req, http.StatusOK, h, nil), nil
+	case req.Method == http.MethodPatch:
+		return dlResponse(req, http.StatusAccepted, h, nil), nil
+	case req.Method == http.MethodDelete:
+		return dlResponse(req, http.StatusOK, h, nil), nil
+	}
+	return dlResponse(req, http.StatusOK, h, nil), nil
+}
+
+func (a *dlAccountFake) readResponse(req *http.Request, r dlRequest) *http.Response {
+	start, end := int64(0), int64(dlFileSize-1)
+	if r.rangeHdr != "" {
+		_, _ = fmt.Sscanf(r.rangeHdr, "bytes=%d-%d", &start, &end)
+		if end >= dlFileSize {
+			end = dlFileSize - 1
+		}
+	}
+	data := bytes.Repeat([]byte{'d'}, int(end-start+1))
+	h := http.Header{}
+	h.Set("ETag", dlETag)
+	h.Set("Content-Length", strconv.Itoa(len(data)))
+	h.Set("Content-Range", fmt.Sprintf("bytes %d-%d/%d", start, end, dlFileSize))
+	if a.downloadHint {
+		h.Set("x-ms-download-hint", "layout")
+	}
+	a.mu.Lock()
+	if req.URL.Host == dlLayoutHost {
+		a.routedReads++
+	}
+	failThis := a.failFirstRoutedRead && req.URL.Host == dlLayoutHost && a.routedReads == 1
+	a.mu.Unlock()
+	resp := dlResponse(req, http.StatusPartialContent, h, data)
+	if failThis {
+		resp.Body = &failingBody{data: data[:len(data)/2]}
+	}
+	return resp
+}
+
+func (a *dlAccountFake) layoutResponse(req *http.Request, marker string) *http.Response {
+	if a.layoutErrorStatus != 0 {
+		h := http.Header{}
+		h.Set("x-ms-error-code", a.layoutErrorCode)
+		return dlResponse(req, a.layoutErrorStatus, h, []byte("<Error><Code>"+a.layoutErrorCode+"</Code></Error>"))
+	}
+	i := 0
+	if marker != "" {
+		i, _ = strconv.Atoi(strings.TrimPrefix(marker, "m"))
+	}
+	h := http.Header{}
+	h.Set("ETag", dlETag)
+	h.Set("x-ms-blob-content-length", strconv.Itoa(dlFileSize))
+	h.Set("x-ms-blob-content-type", "application/octet-stream")
+	if i >= len(a.layoutPages) {
+		return dlResponse(req, http.StatusOK, h, []byte(`<BlobLayout></BlobLayout>`))
+	}
+	return dlResponse(req, http.StatusOK, h, []byte(a.layoutPages[i]))
+}
+
+// layoutPage is a Get Layout page with one range per endpoint host.
+func layoutPage(nextMarker string, ranges ...[3]int64) string {
+	var b strings.Builder
+	b.WriteString(`<BlobLayout><Endpoints><Endpoint Index="0" Value="https://` + dlLayoutHost + `"/></Endpoints><Ranges>`)
+	for _, r := range ranges {
+		fmt.Fprintf(&b, `<Range Start="%d" End="%d" EndpointIndex="%d"/>`, r[0], r[1], r[2])
+	}
+	b.WriteString(`</Ranges>`)
+	if nextMarker != "" {
+		b.WriteString(`<NextMarker>` + nextMarker + `</NextMarker>`)
+	}
+	b.WriteString(`</BlobLayout>`)
+	return b.String()
+}
+
+func (a *dlAccountFake) snapshot() ([]dlRequest, map[string]int) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	counts := map[string]int{}
+	for k, v := range a.createSessions {
+		counts[k] = v
+	}
+	return append([]dlRequest(nil), a.requests...), counts
+}
+
+func (a *dlAccountFake) last() dlRequest {
+	reqs, _ := a.snapshot()
+	return reqs[len(reqs)-1]
+}
+
+type failingBody struct {
+	data []byte
+	read bool
+}
+
+func (b *failingBody) Read(p []byte) (int, error) {
+	if b.read {
+		return 0, errors.New("connection reset")
+	}
+	b.read = true
+	return copy(p, b.data), nil
+}
+
+func (b *failingBody) Close() error { return nil }
+
+func dlResponse(req *http.Request, status int, h http.Header, body []byte) *http.Response {
+	if body == nil {
+		body = []byte{}
+	}
+	return &http.Response{Request: req, StatusCode: status, Status: http.StatusText(status), Header: h, Body: io.NopCloser(bytes.NewReader(body))}
+}
+
+func headerRaw(h http.Header, key string) string {
+	if v := h[key]; len(v) > 0 {
+		return v[0]
+	}
+	return ""
+}
+
+func firstNonEmpty(a, b string) string {
+	if a != "" {
+		return a
+	}
+	return b
+}
+
+func dlClientOptions(a *dlAccountFake) azcore.ClientOptions {
+	return azcore.ClientOptions{Transport: a, Retry: policy.RetryOptions{MaxRetries: -1}}
+}
+
+func newDLFileClient(t *testing.T, a *dlAccountFake, path string, session azdatalake.SessionOptions) *file.Client {
+	t.Helper()
+	c, err := file.NewClient(dlDFSService+path, dlTokenCredential{}, &file.ClientOptions{
+		ClientOptions: azcore.ClientOptions{Transport: a, Retry: policy.RetryOptions{MaxRetries: -1}},
+		Session:       session,
+	})
+	require.NoError(t, err)
+	return c
+}
+
+func readAll(t *testing.T, c *file.Client, opts *file.DownloadStreamOptions) {
+	t.Helper()
+	resp, err := c.DownloadStream(context.Background(), opts)
+	require.NoError(t, err)
+	_, err = io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	require.NoError(t, resp.Body.Close())
+}
+
+var enabled = azdatalake.SessionOptions{Enabled: to.Ptr(true)}
+
+// ---- Session ---------------------------------------------------------------------------------
+
+func TestDataLakeFileReadUsesSession(t *testing.T) {
+	a := newDLAccount()
+	c := newDLFileClient(t, a, "fs/dir/file.txt", enabled)
+
+	readAll(t, c, nil)
+
+	r := a.last()
+	require.Equal(t, http.MethodGet, r.method)
+	require.Equal(t, dlBlobHost, r.urlHost, "file reads go to the blob endpoint")
+	require.Equal(t, "Session", r.scheme)
+	_, sessions := a.snapshot()
+	require.Equal(t, map[string]int{"fs": 1}, sessions, "one session for the file system")
+	require.Equal(t, []string{dlBlobHost}, a.createSessionHosts, "Create Session is sent to the blob endpoint")
+}
+
+func TestDataLakeSessionDefaultAndDisabledUseBearer(t *testing.T) {
+	for name, enabled := range map[string]*bool{"Nil": nil, "False": to.Ptr(false)} {
+		t.Run(name, func(t *testing.T) {
+			a := newDLAccount()
+			c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{Enabled: enabled})
+			readAll(t, c, nil)
+			require.Equal(t, "Bearer", a.last().scheme)
+			_, sessions := a.snapshot()
+			require.Empty(t, sessions)
+		})
+	}
+}
+
+// Requests to the DFS endpoint (create, append, flush, delete) and every blob request other than
+// a file read stay on the bearer token, even with sessions enabled.
+func TestDataLakeOnlyFileReadsUseSession(t *testing.T) {
+	a := newDLAccount()
+	c := newDLFileClient(t, a, "fs/file.txt", enabled)
+	ctx := context.Background()
+
+	_, err := c.Create(ctx, nil)
+	require.NoError(t, err)
+	_, err = c.AppendData(ctx, 0, streamingBody("hello"), nil)
+	require.NoError(t, err)
+	_, err = c.FlushData(ctx, 5, nil)
+	require.NoError(t, err)
+	_, _ = c.GetProperties(ctx, nil)
+	readAll(t, c, nil)
+	_, err = c.Delete(ctx, nil)
+	require.NoError(t, err)
+
+	reqs, sessions := a.snapshot()
+	for _, r := range reqs {
+		isRead := r.method == http.MethodGet && r.comp == "" && r.urlHost == dlBlobHost
+		if isRead {
+			require.Equal(t, "Session", r.scheme, "file read")
+			continue
+		}
+		require.Equal(t, "Bearer", r.scheme, "%s %s on %s must use the bearer token", r.method, r.path, r.urlHost)
+		if r.urlHost == dlDFSHost {
+			require.NotEqual(t, "Session", r.scheme, "the DFS endpoint never uses sessions")
+		}
+	}
+	require.Equal(t, map[string]int{"fs": 1}, sessions)
+}
+
+func TestDataLakeSessionIgnoredForSharedKeyAndSAS(t *testing.T) {
+	a := newDLAccount()
+	cred, err := azdatalake.NewSharedKeyCredential(dlAccount, dlSessionKey)
+	require.NoError(t, err)
+	opts := &file.ClientOptions{ClientOptions: dlClientOptions(a), Session: enabled}
+
+	sk, err := file.NewClientWithSharedKeyCredential(dlDFSService+"fs/file.txt", cred, opts)
+	require.NoError(t, err, "shared key clients ignore session options")
+	readAll(t, sk, nil)
+	require.Equal(t, "SharedKey", a.last().scheme)
+
+	sas, err := file.NewClientWithNoCredential(dlDFSService+"fs/file.txt?sv=2026-12-06&sig=x", &file.ClientOptions{ClientOptions: dlClientOptions(a), Session: enabled})
+	require.NoError(t, err, "SAS clients ignore session options")
+	readAll(t, sas, nil)
+	require.Equal(t, "", a.last().scheme)
+
+	_, sessions := a.snapshot()
+	require.Empty(t, sessions)
+}
+
+// Clients derived through the service and file system clients share their pipeline, and with it the
+// session cache. directory.Client.NewFileClient and NewSubdirectoryClient construct a new blob
+// client, so each of those has a session cache of its own.
+func TestDataLakeImplicitProviderSharedAcrossDerivedClients(t *testing.T) {
+	a := newDLAccount()
+	svc, err := service.NewClient(dlDFSService, dlTokenCredential{}, &service.ClientOptions{ClientOptions: dlClientOptions(a), Session: enabled})
+	require.NoError(t, err)
+
+	fs := svc.NewFileSystemClient("fs")
+	readAll(t, fs.NewFileClient("a.txt"), nil)
+	readAll(t, fs.NewFileClient("b.txt"), nil)
+	dir := fs.NewDirectoryClient("dir")
+	nested, err := dir.NewFileClient("c.txt")
+	require.NoError(t, err)
+	readAll(t, nested, nil)
+	sub, err := dir.NewSubdirectoryClient("sub")
+	require.NoError(t, err)
+	deeper, err := sub.NewFileClient("d.txt")
+	require.NoError(t, err)
+	readAll(t, deeper, nil)
+
+	readAll(t, svc.NewFileSystemClient("other").NewFileClient("e.txt"), nil)
+
+	_, sessions := a.snapshot()
+	require.Equal(t, map[string]int{"fs": 3, "other": 1}, sessions,
+		"a.txt and b.txt share the service client's session; c.txt and d.txt come from directory-derived clients with their own; file systems have their own")
+}
+
+func TestDataLakeImplicitProvidersNotSharedAcrossIndependentClients(t *testing.T) {
+	a := newDLAccount()
+	readAll(t, newDLFileClient(t, a, "fs/a.txt", enabled), nil)
+	readAll(t, newDLFileClient(t, a, "fs/b.txt", enabled), nil)
+	_, sessions := a.snapshot()
+	require.Equal(t, map[string]int{"fs": 2}, sessions)
+	require.Equal(t, []string{dlBlobHost, dlBlobHost}, a.createSessionHosts, "sessions are created at the blob endpoint, not the DFS endpoint")
+}
+
+func TestDataLakeConcurrentColdReadsCreateOneSession(t *testing.T) {
+	a := newDLAccount()
+	c := newDLFileClient(t, a, "fs/file.txt", enabled)
+	var wg sync.WaitGroup
+	for range 20 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			readAll(t, c, nil)
+		}()
+	}
+	wg.Wait()
+	_, sessions := a.snapshot()
+	require.Equal(t, map[string]int{"fs": 1}, sessions)
+}
+
+func TestDataLakeUnauthorizedSessionFallsBackThenReacquires(t *testing.T) {
+	a := newDLAccount()
+	a.rejectSession = func(r dlRequest) bool { return r.token == "fs-1" }
+	c := newDLFileClient(t, a, "fs/file.txt", enabled)
+
+	readAll(t, c, nil)
+	reqs, sessions := a.snapshot()
+	require.Equal(t, "Session", reqs[len(reqs)-2].scheme)
+	require.Equal(t, "Bearer", reqs[len(reqs)-1].scheme, "the rejected read is sent again with the bearer token")
+	require.Equal(t, map[string]int{"fs": 1}, sessions)
+
+	readAll(t, c, nil)
+	r := a.last()
+	require.Equal(t, "Session", r.scheme)
+	require.Equal(t, "fs-2", r.token, "the next read uses a new session")
+}
+
+func TestDataLakeSessionAccountName(t *testing.T) {
+	a := newDLAccount()
+	opts := func(s azdatalake.SessionOptions) *file.ClientOptions {
+		return &file.ClientOptions{ClientOptions: dlClientOptions(a), Session: s}
+	}
+
+	_, err := file.NewClient("https://files.contoso.com/fs/file.txt?sig=secret", dlTokenCredential{}, opts(enabled))
+	require.Error(t, err, "explicitly enabled sessions need an account name")
+	require.NotContains(t, err.Error(), "secret")
+
+	_, err = file.NewClient("https://files.contoso.com/fs/file.txt", dlTokenCredential{}, opts(azdatalake.SessionOptions{}))
+	require.NoError(t, err, "the nil default never fails construction")
+
+	c, err := file.NewClient("https://files.contoso.com/fs/file.txt", dlTokenCredential{},
+		opts(azdatalake.SessionOptions{Enabled: to.Ptr(true), AccountName: dlAccount}))
+	require.NoError(t, err)
+	readAll(t, c, nil)
+	require.Equal(t, "Session", a.last().scheme)
+}
+
+// ---- Data locality ---------------------------------------------------------------------------
+
+// Leaving LayoutAwareRouting nil, the default, or setting it to false never fetches a layout or
+// routes by one, even when the service sends the layout download hint.
+func TestDataLakeManagedDownloadRoutingDefaultDisabled(t *testing.T) {
+	for name, routing := range map[string]*bool{"Nil": nil, "False": to.Ptr(false)} {
+		t.Run(name, func(t *testing.T) {
+			a := newDLAccount()
+			a.downloadHint = true
+			a.layoutPages = []string{layoutPage("", [3]int64{0, 299, 0})}
+			c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+
+			_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{
+				ChunkSize: 100, LayoutAwareRouting: routing,
+			})
+			require.NoError(t, err)
+			tmp, err := os.CreateTemp(t.TempDir(), "dl")
+			require.NoError(t, err)
+			defer func() { require.NoError(t, tmp.Close()) }()
+			_, err = c.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{
+				ChunkSize: 100, LayoutAwareRouting: routing,
+			})
+			require.NoError(t, err)
+
+			reqs, _ := a.snapshot()
+			for _, r := range reqs {
+				require.NotEqual(t, "layout", r.comp, "no layout is fetched unless routing is true")
+				require.NotEqual(t, dlLayoutHost, r.urlHost, "no read is routed unless routing is true")
+			}
+		})
+	}
+}
+
+func TestDataLakeManagedDownloadRoutingEnabled(t *testing.T) {
+	for _, tt := range []struct {
+		name     string
+		download func(t *testing.T, c *file.Client) error
+	}{
+		{"DownloadBuffer", func(t *testing.T, c *file.Client) error {
+			_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{
+				ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: to.Ptr(true),
+			})
+			return err
+		}},
+		{"DownloadFile", func(t *testing.T, c *file.Client) error {
+			tmp, err := os.CreateTemp(t.TempDir(), "dl")
+			require.NoError(t, err)
+			defer func() { require.NoError(t, tmp.Close()) }()
+			_, err = c.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{
+				ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: to.Ptr(true),
+			})
+			return err
+		}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			a := newDLAccount()
+			a.downloadHint = true
+			a.layoutPages = []string{layoutPage("", [3]int64{100, 299, 0})}
+			c := newDLFileClient(t, a, "fs/file.txt", enabled)
+
+			require.NoError(t, tt.download(t, c))
+
+			reqs, _ := a.snapshot()
+			var layoutCalls, routed, initial int
+			for _, r := range reqs {
+				switch {
+				case r.comp == "layout":
+					layoutCalls++
+					require.Equal(t, "bytes=100-299", r.rangeHdr, "only the remaining range is enumerated")
+					require.Equal(t, dlETag, r.ifMatch, "the layout is pinned to the initial read's ETag")
+					require.Equal(t, "Bearer", r.scheme, "Get Layout is not session-eligible")
+				case r.method == http.MethodGet && r.urlHost == dlLayoutHost:
+					routed++
+					require.Equal(t, dlBlobHost, r.hostHeader)
+					require.Equal(t, "Session", r.scheme, "routed chunks still use the session")
+					require.Equal(t, dlETag, r.ifMatch)
+				case r.method == http.MethodGet:
+					initial++
+				}
+			}
+			require.Equal(t, 1, layoutCalls)
+			require.Equal(t, 2, routed, "the chunks after the initial read are routed")
+			require.Equal(t, 1, initial)
+			_, sessions := a.snapshot()
+			require.Equal(t, map[string]int{"fs": 1}, sessions)
+			require.Equal(t, []string{dlBlobHost}, a.createSessionHosts, "the session for a routed chunk is created at the account endpoint")
+		})
+	}
+}
+
+// A file whose layout the service can't provide, for example because Data Locality isn't enabled
+// for the account, is downloaded in full from the blob endpoint, asking for the layout only once.
+func TestDataLakeManagedDownloadLayoutUnavailableFallsBack(t *testing.T) {
+	a := newDLAccount()
+	a.downloadHint = true
+	a.layoutErrorStatus, a.layoutErrorCode = http.StatusBadRequest, "FeatureNotEnabled"
+	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+
+	buf := make([]byte, dlFileSize)
+	n, err := c.DownloadBuffer(context.Background(), buf, &file.DownloadBufferOptions{
+		ChunkSize: 100, LayoutAwareRouting: to.Ptr(true),
+	})
+	require.NoError(t, err)
+	require.Equal(t, int64(dlFileSize), n)
+	require.Equal(t, bytes.Repeat([]byte{'d'}, dlFileSize), buf)
+
+	reqs, _ := a.snapshot()
+	var layoutCalls, reads int
+	for _, r := range reqs {
+		switch {
+		case r.comp == "layout":
+			layoutCalls++
+		case r.method == http.MethodGet:
+			reads++
+			require.Equal(t, dlBlobHost, r.urlHost, "every read uses the configured endpoint")
+			if r.rangeHdr != "bytes=0-99" {
+				require.Equal(t, dlETag, r.ifMatch, "reads after the initial one are pinned to its ETag")
+			}
+		}
+	}
+	require.Equal(t, 1, layoutCalls, "the unavailable layout is cached for the rest of the download")
+	require.Equal(t, 3, reads, "the initial read plus the two remaining chunks")
+}
+
+// A Get Layout failure that isn't about the layout being unavailable fails the download.
+func TestDataLakeManagedDownloadLayoutAuthorizationErrorFails(t *testing.T) {
+	a := newDLAccount()
+	a.downloadHint = true
+	a.layoutErrorStatus, a.layoutErrorCode = http.StatusForbidden, "AuthorizationPermissionMismatch"
+	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+
+	_, err := c.DownloadBuffer(context.Background(), make([]byte, dlFileSize), &file.DownloadBufferOptions{
+		ChunkSize: 100, LayoutAwareRouting: to.Ptr(true),
+	})
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, http.StatusForbidden, respErr.StatusCode)
+}
+
+// A routed chunk whose read fails part way through is retried on the same layout endpoint.
+func TestDataLakeManagedDownloadRetryStaysOnLayoutEndpoint(t *testing.T) {
+	a := newDLAccount()
+	a.downloadHint = true
+	a.failFirstRoutedRead = true
+	a.layoutPages = []string{layoutPage("", [3]int64{100, 299, 0})}
+	c := newDLFileClient(t, a, "fs/file.txt", azdatalake.SessionOptions{})
+
+	buf := make([]byte, dlFileSize)
+	_, err := c.DownloadBuffer(context.Background(), buf, &file.DownloadBufferOptions{
+		ChunkSize: 100, Concurrency: 1, LayoutAwareRouting: to.Ptr(true),
+		RetryReaderOptionsPerChunk: &file.RetryReaderOptions{MaxRetries: 2},
+	})
+	require.NoError(t, err)
+	require.Equal(t, bytes.Repeat([]byte{'d'}, dlFileSize), buf)
+
+	reqs, _ := a.snapshot()
+	var routed int
+	for _, r := range reqs {
+		if r.method == http.MethodGet && r.comp == "" && r.rangeHdr != "bytes=0-99" {
+			routed++
+			require.Equal(t, dlLayoutHost, r.urlHost, "every read after the initial one, including the retry, is routed")
+			require.Equal(t, dlBlobHost, r.hostHeader)
+		}
+	}
+	require.Equal(t, 3, routed, "two routed chunks and the retry of the first")
+}
+
+func streamingBody(s string) *readSeekNopCloser {
+	return &readSeekNopCloser{Reader: bytes.NewReader([]byte(s))}
+}
+
+type readSeekNopCloser struct{ *bytes.Reader }
+
+func (readSeekNopCloser) Close() error { return nil }

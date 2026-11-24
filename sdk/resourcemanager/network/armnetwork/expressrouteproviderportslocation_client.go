@@ -19,7 +19,7 @@ import (
 // ExpressRouteProviderPortsLocationClient contains the methods for the ExpressRouteProviderPortsLocation group.
 // Don't use this type directly, use NewExpressRouteProviderPortsLocationClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type ExpressRouteProviderPortsLocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,7 +62,8 @@ func (client *ExpressRouteProviderPortsLocationClient) List(ctx context.Context,
 	if err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -80,7 +81,7 @@ func (client *ExpressRouteProviderPortsLocationClient) listCreateRequest(ctx con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

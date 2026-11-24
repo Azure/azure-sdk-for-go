@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-09-30/SaaSOperationGroup_ActivateResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/SaaSOperationGroup_ActivateResource_MaximumSet_Gen.json
 func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupActivateResourceMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupAct
 	// }
 }
 
-// Generated from example definition: 2026-09-30/SaaSOperationGroup_ActivateResource_MinimumSet_Gen.json
+// Generated from example definition: 2026-11-03/SaaSOperationGroup_ActivateResource_MinimumSet_Gen.json
 func ExampleSaaSOperationGroupClient_BeginActivateResource_saaSOperationGroupActivateResourceMaximumSetGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

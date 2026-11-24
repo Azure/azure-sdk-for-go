@@ -61,7 +61,8 @@ func (client *ReservationOrdersClient) GetByBillingAccount(ctx context.Context, 
 	if err != nil {
 		return ReservationOrdersClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.

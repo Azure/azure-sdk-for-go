@@ -22,10 +22,6 @@ import (
 
 // OrderItemsServer is a fake server for instances of the armedgeorder.OrderItemsClient type.
 type OrderItemsServer struct {
-	// Cancel is the fake for method OrderItemsClient.Cancel
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Cancel func(ctx context.Context, resourceGroupName string, orderItemName string, cancellationReason armedgeorder.CancellationReason, options *armedgeorder.OrderItemsClientCancelOptions) (resp azfake.Responder[armedgeorder.OrderItemsClientCancelResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreate is the fake for method OrderItemsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, resourceGroupName string, orderItemName string, orderItemResource armedgeorder.OrderItemResource, options *armedgeorder.OrderItemsClientBeginCreateOptions) (resp azfake.PollerResponder[armedgeorder.OrderItemsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -33,6 +29,18 @@ type OrderItemsServer struct {
 	// BeginDelete is the fake for method OrderItemsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, orderItemName string, options *armedgeorder.OrderItemsClientBeginDeleteOptions) (resp azfake.PollerResponder[armedgeorder.OrderItemsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginReturn is the fake for method OrderItemsClient.BeginReturn
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginReturn func(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails armedgeorder.ReturnOrderItemDetails, options *armedgeorder.OrderItemsClientBeginReturnOptions) (resp azfake.PollerResponder[armedgeorder.OrderItemsClientReturnResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method OrderItemsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter armedgeorder.OrderItemUpdateParameter, options *armedgeorder.OrderItemsClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeorder.OrderItemsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Cancel is the fake for method OrderItemsClient.Cancel
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	Cancel func(ctx context.Context, resourceGroupName string, orderItemName string, cancellationReason armedgeorder.CancellationReason, options *armedgeorder.OrderItemsClientCancelOptions) (resp azfake.Responder[armedgeorder.OrderItemsClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method OrderItemsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -45,14 +53,6 @@ type OrderItemsServer struct {
 	// NewListBySubscriptionPager is the fake for method OrderItemsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armedgeorder.OrderItemsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armedgeorder.OrderItemsClientListBySubscriptionResponse])
-
-	// BeginReturn is the fake for method OrderItemsClient.BeginReturn
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReturn func(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails armedgeorder.ReturnOrderItemDetails, options *armedgeorder.OrderItemsClientBeginReturnOptions) (resp azfake.PollerResponder[armedgeorder.OrderItemsClientReturnResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method OrderItemsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter armedgeorder.OrderItemUpdateParameter, options *armedgeorder.OrderItemsClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeorder.OrderItemsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOrderItemsServerTransport creates a new instance of OrderItemsServerTransport with the provided implementation.
@@ -63,10 +63,10 @@ func NewOrderItemsServerTransport(srv *OrderItemsServer) *OrderItemsServerTransp
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armedgeorder.OrderItemsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armedgeorder.OrderItemsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListBySubscriptionResponse]](),
 		beginReturn:                 newTracker[azfake.PollerResponder[armedgeorder.OrderItemsClientReturnResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armedgeorder.OrderItemsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -76,10 +76,10 @@ type OrderItemsServerTransport struct {
 	srv                         *OrderItemsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armedgeorder.OrderItemsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armedgeorder.OrderItemsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListBySubscriptionResponse]]
 	beginReturn                 *tracker[azfake.PollerResponder[armedgeorder.OrderItemsClientReturnResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armedgeorder.OrderItemsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armedgeorder.OrderItemsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for OrderItemsServerTransport.
@@ -87,7 +87,7 @@ func (o *OrderItemsServerTransport) Do(req *http.Request) (*http.Response, error
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return o.dispatchToMethodFake(req, method)
@@ -103,22 +103,22 @@ func (o *OrderItemsServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "OrderItemsClient.Cancel":
-				res.resp, res.err = o.dispatchCancel(req)
 			case "OrderItemsClient.BeginCreate":
 				res.resp, res.err = o.dispatchBeginCreate(req)
 			case "OrderItemsClient.BeginDelete":
 				res.resp, res.err = o.dispatchBeginDelete(req)
+			case "OrderItemsClient.BeginReturn":
+				res.resp, res.err = o.dispatchBeginReturn(req)
+			case "OrderItemsClient.BeginUpdate":
+				res.resp, res.err = o.dispatchBeginUpdate(req)
+			case "OrderItemsClient.Cancel":
+				res.resp, res.err = o.dispatchCancel(req)
 			case "OrderItemsClient.Get":
 				res.resp, res.err = o.dispatchGet(req)
 			case "OrderItemsClient.NewListByResourceGroupPager":
 				res.resp, res.err = o.dispatchNewListByResourceGroupPager(req)
 			case "OrderItemsClient.NewListBySubscriptionPager":
 				res.resp, res.err = o.dispatchNewListBySubscriptionPager(req)
-			case "OrderItemsClient.BeginReturn":
-				res.resp, res.err = o.dispatchBeginReturn(req)
-			case "OrderItemsClient.BeginUpdate":
-				res.resp, res.err = o.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -133,43 +133,6 @@ func (o *OrderItemsServerTransport) dispatchToMethodFake(req *http.Request, meth
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (o *OrderItemsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
-	if o.srv.Cancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armedgeorder.CancellationReason](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	orderItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("orderItemName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := o.srv.Cancel(req.Context(), resourceGroupNameParam, orderItemNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (o *OrderItemsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -261,163 +224,6 @@ func (o *OrderItemsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		o.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (o *OrderItemsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if o.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	qp := req.URL.Query()
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	orderItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("orderItemName")])
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(qp.Get("$expand"))
-	var options *armedgeorder.OrderItemsClientGetOptions
-	if expandParam != nil {
-		options = &armedgeorder.OrderItemsClientGetOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := o.srv.Get(req.Context(), resourceGroupNameParam, orderItemNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OrderItemResource, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (o *OrderItemsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := o.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(qp.Get("$expand"))
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armedgeorder.OrderItemsClientListByResourceGroupOptions
-		if filterParam != nil || expandParam != nil || skipTokenParam != nil || topParam != nil {
-			options = &armedgeorder.OrderItemsClientListByResourceGroupOptions{
-				Filter:    filterParam,
-				Expand:    expandParam,
-				SkipToken: skipTokenParam,
-				Top:       topParam,
-			}
-		}
-		resp := o.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		o.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armedgeorder.OrderItemsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		o.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (o *OrderItemsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if o.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		expandParam := getOptional(qp.Get("$expand"))
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armedgeorder.OrderItemsClientListBySubscriptionOptions
-		if filterParam != nil || expandParam != nil || skipTokenParam != nil || topParam != nil {
-			options = &armedgeorder.OrderItemsClientListBySubscriptionOptions{
-				Filter:    filterParam,
-				Expand:    expandParam,
-				SkipToken: skipTokenParam,
-				Top:       topParam,
-			}
-		}
-		resp := o.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		o.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armedgeorder.OrderItemsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		o.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		o.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -521,6 +327,194 @@ func (o *OrderItemsServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		o.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (o *OrderItemsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if o.srv.Cancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armedgeorder.CancellationReason](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	orderItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("orderItemName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := o.srv.Cancel(req.Context(), resourceGroupNameParam, orderItemNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OrderItemsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if o.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems/(?P<orderItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	orderItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("orderItemName")])
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(qp.Get("$expand"))
+	var options *armedgeorder.OrderItemsClientGetOptions
+	if expandParam != nil {
+		options = &armedgeorder.OrderItemsClientGetOptions{
+			Expand: expandParam,
+		}
+	}
+	respr, errRespr := o.srv.Get(req.Context(), resourceGroupNameParam, orderItemNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OrderItemResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (o *OrderItemsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := o.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armedgeorder.OrderItemsClientListByResourceGroupOptions
+		if filterParam != nil || expandParam != nil || skipTokenParam != nil || topParam != nil {
+			options = &armedgeorder.OrderItemsClientListByResourceGroupOptions{
+				Filter:    filterParam,
+				Expand:    expandParam,
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := o.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		o.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armedgeorder.OrderItemsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		o.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (o *OrderItemsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if o.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := o.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/orderItems`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		expandParam := getOptional(qp.Get("$expand"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armedgeorder.OrderItemsClientListBySubscriptionOptions
+		if filterParam != nil || expandParam != nil || skipTokenParam != nil || topParam != nil {
+			options = &armedgeorder.OrderItemsClientListBySubscriptionOptions{
+				Filter:    filterParam,
+				Expand:    expandParam,
+				SkipToken: skipTokenParam,
+				Top:       topParam,
+			}
+		}
+		resp := o.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		o.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armedgeorder.OrderItemsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		o.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		o.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreate.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreate.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateGatewayLoadBalancerConsumer.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateGatewayLoadBalancerConsumer.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerConsumerConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithOneBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -705,7 +705,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewayLoadBalancerProviderConfiguredWithTwoBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -945,7 +945,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateGlobalTier.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateGlobalTier.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobalTierAndOneRegionalLoadBalancerInItsBackendPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1157,7 +1157,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobal
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateStandardSku.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateStandardSku.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStandardSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1387,7 +1387,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStanda
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateWithAdvancedMode.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateWithAdvancedMode.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithAdvancedMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1575,7 +1575,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithAdvanc
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateWithInboundNatPool.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateWithInboundNatPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboundNatPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1710,7 +1710,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboun
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateWithOutboundRules.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateWithOutboundRules.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutboundRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1988,7 +1988,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutbou
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateWithSyncModePropertyOnPool.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateWithSyncModePropertyOnPool.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithSyncModePropertyOnPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2226,7 +2226,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithSyncMo
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerCreateWithZones.json
+// Generated from example definition: 2026-05-01/LoadBalancerCreateWithZones.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFrontendIPInZone1() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2461,7 +2461,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFronte
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerDelete.json
+// Generated from example definition: 2026-05-01/LoadBalancerDelete.json
 func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2487,7 +2487,7 @@ func ExampleLoadBalancersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/QueryInboundNatRulePortMapping.json
+// Generated from example definition: 2026-05-01/QueryInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2525,7 +2525,7 @@ func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancersSwapPublicIpAddresses.json
+// Generated from example definition: 2026-05-01/LoadBalancersSwapPublicIpAddresses.json
 func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2570,7 +2570,7 @@ func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerGet.json
+// Generated from example definition: 2026-05-01/LoadBalancerGet.json
 func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2722,7 +2722,7 @@ func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerGetInboundNatRulePortMapping.json
+// Generated from example definition: 2026-05-01/LoadBalancerGetInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2896,7 +2896,7 @@ func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerGetReduced.json
+// Generated from example definition: 2026-05-01/LoadBalancerGetReduced.json
 func ExampleLoadBalancersClient_Get_getLoadBalancerReduced() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2943,7 +2943,7 @@ func ExampleLoadBalancersClient_Get_getLoadBalancerReduced() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/MigrateLoadBalancerToIPBased.json
+// Generated from example definition: 2026-05-01/MigrateLoadBalancerToIPBased.json
 func ExampleLoadBalancersClient_MigrateToIPBased() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2977,7 +2977,7 @@ func ExampleLoadBalancersClient_MigrateToIPBased() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerListAll.json
+// Generated from example definition: 2026-05-01/LoadBalancerListAll.json
 func ExampleLoadBalancersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3162,7 +3162,7 @@ func ExampleLoadBalancersClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerList.json
+// Generated from example definition: 2026-05-01/LoadBalancerList.json
 func ExampleLoadBalancersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3347,7 +3347,7 @@ func ExampleLoadBalancersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/LoadBalancerUpdateTags.json
+// Generated from example definition: 2026-05-01/LoadBalancerUpdateTags.json
 func ExampleLoadBalancersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

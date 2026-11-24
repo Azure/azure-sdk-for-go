@@ -48,6 +48,14 @@ func (c *ClientFactory) NewAccountConnectionsClient() *AccountConnectionsClient 
 	}
 }
 
+// NewAccountCostControlsClient creates a new instance of AccountCostControlsClient.
+func (c *ClientFactory) NewAccountCostControlsClient() *AccountCostControlsClient {
+	return &AccountCostControlsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAccountsClient creates a new instance of AccountsClient.
 func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	return &AccountsClient{
@@ -88,6 +96,14 @@ func (c *ClientFactory) NewArcDeploymentsClient() *ArcDeploymentsClient {
 	}
 }
 
+// NewAttachedAKSClustersClient creates a new instance of AttachedAKSClustersClient.
+func (c *ClientFactory) NewAttachedAKSClustersClient() *AttachedAKSClustersClient {
+	return &AttachedAKSClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCommitmentPlansClient creates a new instance of CommitmentPlansClient.
 func (c *ClientFactory) NewCommitmentPlansClient() *CommitmentPlansClient {
 	return &CommitmentPlansClient{
@@ -115,14 +131,6 @@ func (c *ClientFactory) NewComputeOperationsClient() *ComputeOperationsClient {
 // NewComputesClient creates a new instance of ComputesClient.
 func (c *ClientFactory) NewComputesClient() *ComputesClient {
 	return &ComputesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewCostControlsClient creates a new instance of CostControlsClient.
-func (c *ClientFactory) NewCostControlsClient() *CostControlsClient {
-	return &CostControlsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -290,6 +298,14 @@ func (c *ClientFactory) NewProjectCapabilityHostsClient() *ProjectCapabilityHost
 // NewProjectConnectionsClient creates a new instance of ProjectConnectionsClient.
 func (c *ClientFactory) NewProjectConnectionsClient() *ProjectConnectionsClient {
 	return &ProjectConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewProjectCostControlsClient creates a new instance of ProjectCostControlsClient.
+func (c *ClientFactory) NewProjectCostControlsClient() *ProjectCostControlsClient {
+	return &ProjectCostControlsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

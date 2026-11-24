@@ -65,7 +65,8 @@ func (client *FeatureSupportClient) Validate(ctx context.Context, azureRegion st
 	if err != nil {
 		return FeatureSupportClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

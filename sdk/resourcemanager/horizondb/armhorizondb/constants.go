@@ -1050,6 +1050,8 @@ const (
 	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
 	// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating - The resource is being updated.
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -1060,6 +1062,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateInProgress,
 		ProvisioningStateProvisioning,
 		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
 	}
 }
 

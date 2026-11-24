@@ -63,7 +63,8 @@ func (client *SaaSOperationGroupClient) ActivateResource(ctx context.Context, bo
 	if err != nil {
 		return SaaSOperationGroupClientActivateResourceResponse{}, err
 	}
-	return client.activateResourceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.activateResourceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // activateResourceCreateRequest creates the ActivateResource request.

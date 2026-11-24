@@ -59,7 +59,8 @@ func (client *RoleDefinitionClient) GetByBillingAccount(ctx context.Context, bil
 	if err != nil {
 		return RoleDefinitionClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -118,7 +119,8 @@ func (client *RoleDefinitionClient) GetByBillingProfile(ctx context.Context, bil
 	if err != nil {
 		return RoleDefinitionClientGetByBillingProfileResponse{}, err
 	}
-	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
@@ -182,7 +184,8 @@ func (client *RoleDefinitionClient) GetByCustomer(ctx context.Context, billingAc
 	if err != nil {
 		return RoleDefinitionClientGetByCustomerResponse{}, err
 	}
-	return client.getByCustomerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByCustomerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByCustomerCreateRequest creates the GetByCustomer request.
@@ -249,7 +252,8 @@ func (client *RoleDefinitionClient) GetByDepartment(ctx context.Context, billing
 	if err != nil {
 		return RoleDefinitionClientGetByDepartmentResponse{}, err
 	}
-	return client.getByDepartmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByDepartmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByDepartmentCreateRequest creates the GetByDepartment request.
@@ -312,7 +316,8 @@ func (client *RoleDefinitionClient) GetByEnrollmentAccount(ctx context.Context, 
 	if err != nil {
 		return RoleDefinitionClientGetByEnrollmentAccountResponse{}, err
 	}
-	return client.getByEnrollmentAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByEnrollmentAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByEnrollmentAccountCreateRequest creates the GetByEnrollmentAccount request.
@@ -376,7 +381,8 @@ func (client *RoleDefinitionClient) GetByInvoiceSection(ctx context.Context, bil
 	if err != nil {
 		return RoleDefinitionClientGetByInvoiceSectionResponse{}, err
 	}
-	return client.getByInvoiceSectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByInvoiceSectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByInvoiceSectionCreateRequest creates the GetByInvoiceSection request.

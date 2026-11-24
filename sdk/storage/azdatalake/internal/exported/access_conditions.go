@@ -72,13 +72,13 @@ func FormatPathAccessConditions(p *AccessConditions) (*generated.LeaseAccessCond
 		p.ModifiedAccessConditions = &ModifiedAccessConditions{}
 	}
 	return &generated.LeaseAccessConditions{
-			LeaseID: p.LeaseAccessConditions.LeaseID,
-		}, &generated.ModifiedAccessConditions{
-			IfMatch:           p.ModifiedAccessConditions.IfMatch,
-			IfNoneMatch:       p.ModifiedAccessConditions.IfNoneMatch,
-			IfModifiedSince:   p.ModifiedAccessConditions.IfModifiedSince,
-			IfUnmodifiedSince: p.ModifiedAccessConditions.IfUnmodifiedSince,
-		}
+		LeaseID: p.LeaseAccessConditions.LeaseID,
+	}, &generated.ModifiedAccessConditions{
+		IfMatch:           p.ModifiedAccessConditions.IfMatch,
+		IfNoneMatch:       p.ModifiedAccessConditions.IfNoneMatch,
+		IfModifiedSince:   p.ModifiedAccessConditions.IfModifiedSince,
+		IfUnmodifiedSince: p.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // FormatBlobAccessConditions formats PathAccessConditions into blob's LeaseAccessConditions and ModifiedAccessConditions.

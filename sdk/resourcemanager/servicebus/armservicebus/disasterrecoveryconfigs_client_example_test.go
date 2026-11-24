@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBEHAliasBreakPairing.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBEHAliasBreakPairing.json
 func ExampleDisasterRecoveryConfigsClient_BreakPairing() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleDisasterRecoveryConfigsClient_BreakPairing() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasCheckNameAvailability.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasCheckNameAvailability.json
 func ExampleDisasterRecoveryConfigsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleDisasterRecoveryConfigsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasCreate.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasCreate.json
 func ExampleDisasterRecoveryConfigsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleDisasterRecoveryConfigsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasDelete.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasDelete.json
 func ExampleDisasterRecoveryConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleDisasterRecoveryConfigsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasFailOver.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasFailOver.json
 func ExampleDisasterRecoveryConfigsClient_FailOver() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleDisasterRecoveryConfigsClient_FailOver() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasGet.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasGet.json
 func ExampleDisasterRecoveryConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleDisasterRecoveryConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasAuthorizationRuleGet.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasAuthorizationRuleGet.json
 func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,8 +211,8 @@ func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasList.json
-func ExampleDisasterRecoveryConfigsClient_NewListPager() {
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasAuthorizationRuleListKey.json
+func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -222,37 +222,25 @@ func ExampleDisasterRecoveryConfigsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDisasterRecoveryConfigsClient().NewListPager("ardsouzatestRG", "sdk-Namespace-8860", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armservicebus.DisasterRecoveryConfigsClientListResponse{
-		// 	ArmDisasterRecoveryListResult: armservicebus.ArmDisasterRecoveryListResult{
-		// 		Value: []*armservicebus.ArmDisasterRecovery{
-		// 			{
-		// 				Name: to.Ptr("sdk-DisasterRecovery-3814"),
-		// 				Type: to.Ptr("Microsoft.ServiceBus/Namespaces/DisasterRecoveryConfig"),
-		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ardsouzatestRG/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-8860/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
-		// 				Properties: &armservicebus.ArmDisasterRecoveryProperties{
-		// 					PartnerNamespace: to.Ptr("sdk-Namespace-37"),
-		// 					ProvisioningState: to.Ptr(armservicebus.ProvisioningStateDRAccepted),
-		// 					Role: to.Ptr(armservicebus.RoleDisasterRecoveryPrimary),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewDisasterRecoveryConfigsClient().ListKeys(ctx, "exampleResourceGroup", "sdk-Namespace-2702", "sdk-DisasterRecovery-4047", "sdk-Authrules-1746", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicebus.DisasterRecoveryConfigsClientListKeysResponse{
+	// 	AccessKeys: armservicebus.AccessKeys{
+	// 		AliasPrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
+	// 		AliasSecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
+	// 		KeyName: to.Ptr("sdk-Authrules-1746"),
+	// 		PrimaryKey: to.Ptr("############################################"),
+	// 		SecondaryKey: to.Ptr("############################################"),
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasAuthorizationRuleListAll.json
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasAuthorizationRuleListAll.json
 func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,8 +316,8 @@ func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/SBAliasAuthorizationRuleListKey.json
-func ExampleDisasterRecoveryConfigsClient_ListKeys() {
+// Generated from example definition: 2026-07-01-preview/disasterRecoveryConfigs/SBAliasList.json
+func ExampleDisasterRecoveryConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -339,20 +327,32 @@ func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDisasterRecoveryConfigsClient().ListKeys(ctx, "exampleResourceGroup", "sdk-Namespace-2702", "sdk-DisasterRecovery-4047", "sdk-Authrules-1746", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewDisasterRecoveryConfigsClient().NewListPager("ardsouzatestRG", "sdk-Namespace-8860", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armservicebus.DisasterRecoveryConfigsClientListResponse{
+		// 	ArmDisasterRecoveryListResult: armservicebus.ArmDisasterRecoveryListResult{
+		// 		Value: []*armservicebus.ArmDisasterRecovery{
+		// 			{
+		// 				Name: to.Ptr("sdk-DisasterRecovery-3814"),
+		// 				Type: to.Ptr("Microsoft.ServiceBus/Namespaces/DisasterRecoveryConfig"),
+		// 				ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ardsouzatestRG/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-8860/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
+		// 				Properties: &armservicebus.ArmDisasterRecoveryProperties{
+		// 					PartnerNamespace: to.Ptr("sdk-Namespace-37"),
+		// 					ProvisioningState: to.Ptr(armservicebus.ProvisioningStateDRAccepted),
+		// 					Role: to.Ptr(armservicebus.RoleDisasterRecoveryPrimary),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicebus.DisasterRecoveryConfigsClientListKeysResponse{
-	// 	AccessKeys: armservicebus.AccessKeys{
-	// 		AliasPrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
-	// 		AliasSecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
-	// 		KeyName: to.Ptr("sdk-Authrules-1746"),
-	// 		PrimaryKey: to.Ptr("############################################"),
-	// 		SecondaryKey: to.Ptr("############################################"),
-	// 	},
-	// }
 }

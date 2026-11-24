@@ -53,7 +53,8 @@ func (client *OperationsClient) List(ctx context.Context, options *OperationsCli
 	if err != nil {
 		return OperationsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

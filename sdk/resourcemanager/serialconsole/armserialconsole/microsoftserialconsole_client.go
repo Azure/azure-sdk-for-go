@@ -66,7 +66,8 @@ func (client *MicrosoftSerialConsoleClient) DisableConsole(ctx context.Context, 
 	if err != nil {
 		return MicrosoftSerialConsoleClientDisableConsoleResponse{}, err
 	}
-	return client.disableConsoleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.disableConsoleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // disableConsoleCreateRequest creates the DisableConsole request.
@@ -124,7 +125,8 @@ func (client *MicrosoftSerialConsoleClient) EnableConsole(ctx context.Context, d
 	if err != nil {
 		return MicrosoftSerialConsoleClientEnableConsoleResponse{}, err
 	}
-	return client.enableConsoleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.enableConsoleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // enableConsoleCreateRequest creates the EnableConsole request.
@@ -182,7 +184,8 @@ func (client *MicrosoftSerialConsoleClient) GetConsoleStatus(ctx context.Context
 	if err != nil {
 		return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, err
 	}
-	return client.getConsoleStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getConsoleStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getConsoleStatusCreateRequest creates the GetConsoleStatus request.
@@ -237,7 +240,8 @@ func (client *MicrosoftSerialConsoleClient) ListOperations(ctx context.Context, 
 	if err != nil {
 		return MicrosoftSerialConsoleClientListOperationsResponse{}, err
 	}
-	return client.listOperationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listOperationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listOperationsCreateRequest creates the ListOperations request.

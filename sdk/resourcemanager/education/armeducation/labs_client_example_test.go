@@ -215,6 +215,110 @@ func ExampleLabsClient_Get_labIncludeBudget() {
 	// }
 }
 
+// Generated from example definition: 2021-12-01-preview/LabList.json
+func ExampleLabsClient_NewListAllPager_labList() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeducation.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLabsClient().NewListAllPager("{billingAccountName}", "{billingProfileName}", &armeducation.LabsClientListAllOptions{
+		IncludeBudget: to.Ptr(false)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeducation.LabsClientListAllResponse{
+		// 	LabListResult: armeducation.LabListResult{
+		// 		Value: []*armeducation.LabDetails{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Education/Labs"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default"),
+		// 				Properties: &armeducation.LabProperties{
+		// 					Description: to.Ptr("example lab description"),
+		// 					BudgetPerStudent: &armeducation.Amount{
+		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float32](100),
+		// 					},
+		// 					DisplayName: to.Ptr("example lab"),
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 21, 25, 56, 838000000, time.UTC)),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.December, 9, 21, 25, 56, 838000000, time.UTC)),
+		// 					Status: to.Ptr(armeducation.LabStatusActive),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2021-12-01-preview/LabListIncludeBudget.json
+func ExampleLabsClient_NewListAllPager_labListIncludeBudget() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeducation.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLabsClient().NewListAllPager("{billingAccountName}", "{billingProfileName}", &armeducation.LabsClientListAllOptions{
+		IncludeBudget: to.Ptr(true)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeducation.LabsClientListAllResponse{
+		// 	LabListResult: armeducation.LabListResult{
+		// 		Value: []*armeducation.LabDetails{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Education/Labs"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default"),
+		// 				Properties: &armeducation.LabProperties{
+		// 					Description: to.Ptr("example lab description"),
+		// 					BudgetPerStudent: &armeducation.Amount{
+		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float32](100),
+		// 					},
+		// 					DisplayName: to.Ptr("example lab"),
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 21, 25, 56, 838000000, time.UTC)),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.December, 9, 21, 25, 56, 838000000, time.UTC)),
+		// 					Status: to.Ptr(armeducation.LabStatusActive),
+		// 					TotalAllocatedBudget: &armeducation.Amount{
+		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float32](500),
+		// 					},
+		// 					TotalBudget: &armeducation.Amount{
+		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float32](500),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2021-12-01-preview/LabListWithInvoiceSectionName.json
 func ExampleLabsClient_NewListPager_labListWithInvoiceSectionName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -316,110 +420,6 @@ func ExampleLabsClient_NewListPager_labListWithInvoiceSectionNameIncludeBudget()
 		// 						Value: to.Ptr[float32](500),
 		// 					},
 		// 					TotalAllocatedBudget: &armeducation.Amount{
-		// 						Currency: to.Ptr("USD"),
-		// 						Value: to.Ptr[float32](500),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2021-12-01-preview/LabList.json
-func ExampleLabsClient_NewListAllPager_labList() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeducation.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewLabsClient().NewListAllPager("{billingAccountName}", "{billingProfileName}", &armeducation.LabsClientListAllOptions{
-		IncludeBudget: to.Ptr(false)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeducation.LabsClientListAllResponse{
-		// 	LabListResult: armeducation.LabListResult{
-		// 		Value: []*armeducation.LabDetails{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Education/Labs"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default"),
-		// 				Properties: &armeducation.LabProperties{
-		// 					Description: to.Ptr("example lab description"),
-		// 					BudgetPerStudent: &armeducation.Amount{
-		// 						Currency: to.Ptr("USD"),
-		// 						Value: to.Ptr[float32](100),
-		// 					},
-		// 					DisplayName: to.Ptr("example lab"),
-		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 21, 25, 56, 838000000, time.UTC)),
-		// 					ExpirationDate: to.Ptr(time.Date(2021, time.December, 9, 21, 25, 56, 838000000, time.UTC)),
-		// 					Status: to.Ptr(armeducation.LabStatusActive),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2021-12-01-preview/LabListIncludeBudget.json
-func ExampleLabsClient_NewListAllPager_labListIncludeBudget() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeducation.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewLabsClient().NewListAllPager("{billingAccountName}", "{billingProfileName}", &armeducation.LabsClientListAllOptions{
-		IncludeBudget: to.Ptr(true)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeducation.LabsClientListAllResponse{
-		// 	LabListResult: armeducation.LabListResult{
-		// 		Value: []*armeducation.LabDetails{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Education/Labs"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/providers/Microsoft.Education/labs/default"),
-		// 				Properties: &armeducation.LabProperties{
-		// 					Description: to.Ptr("example lab description"),
-		// 					BudgetPerStudent: &armeducation.Amount{
-		// 						Currency: to.Ptr("USD"),
-		// 						Value: to.Ptr[float32](100),
-		// 					},
-		// 					DisplayName: to.Ptr("example lab"),
-		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 21, 25, 56, 838000000, time.UTC)),
-		// 					ExpirationDate: to.Ptr(time.Date(2021, time.December, 9, 21, 25, 56, 838000000, time.UTC)),
-		// 					Status: to.Ptr(armeducation.LabStatusActive),
-		// 					TotalAllocatedBudget: &armeducation.Amount{
-		// 						Currency: to.Ptr("USD"),
-		// 						Value: to.Ptr[float32](500),
-		// 					},
-		// 					TotalBudget: &armeducation.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](500),
 		// 					},

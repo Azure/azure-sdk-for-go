@@ -97,6 +97,59 @@ func ExampleOutboundEndpointsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-10-01-preview/OutboundEndpoint_Patch.json
+func ExampleOutboundEndpointsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdnsresolver.NewClientFactory("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOutboundEndpointsClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", armdnsresolver.OutboundEndpointPatch{
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdnsresolver.OutboundEndpointsClientUpdateResponse{
+	// 	OutboundEndpoint: armdnsresolver.OutboundEndpoint{
+	// 		Name: to.Ptr("sampleOutboundEndpoint"),
+	// 		Type: to.Ptr("Microsoft.Network/dnsResolvers/outboundEndpoints"),
+	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/outboundEndpoints/sampleOutboundEndpoint"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armdnsresolver.OutboundEndpointProperties{
+	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningState("Succecced")),
+	// 			ResourceGUID: to.Ptr("b4d35f41-0c70-4ec7-bb3e-0cd9f8b7e4be"),
+	// 			Subnet: &armdnsresolver.SubResource{
+	// 				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"),
+	// 			},
+	// 		},
+	// 		SystemData: &armdnsresolver.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-10-01-preview/OutboundEndpoint_Get.json
 func ExampleOutboundEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -218,57 +271,4 @@ func ExampleOutboundEndpointsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-10-01-preview/OutboundEndpoint_Patch.json
-func ExampleOutboundEndpointsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdnsresolver.NewClientFactory("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewOutboundEndpointsClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", "sampleOutboundEndpoint", armdnsresolver.OutboundEndpointPatch{
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.OutboundEndpointsClientUpdateResponse{
-	// 	OutboundEndpoint: armdnsresolver.OutboundEndpoint{
-	// 		Name: to.Ptr("sampleOutboundEndpoint"),
-	// 		Type: to.Ptr("Microsoft.Network/dnsResolvers/outboundEndpoints"),
-	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/outboundEndpoints/sampleOutboundEndpoint"),
-	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.OutboundEndpointProperties{
-	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningState("Succecced")),
-	// 			ResourceGUID: to.Ptr("b4d35f41-0c70-4ec7-bb3e-0cd9f8b7e4be"),
-	// 			Subnet: &armdnsresolver.SubResource{
-	// 				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"),
-	// 			},
-	// 		},
-	// 		SystemData: &armdnsresolver.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 		},
-	// 	},
-	// }
 }

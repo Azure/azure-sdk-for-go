@@ -67,7 +67,8 @@ func (client *PartnerConfigurationsClient) AuthorizePartner(ctx context.Context,
 	if err != nil {
 		return PartnerConfigurationsClientAuthorizePartnerResponse{}, err
 	}
-	return client.authorizePartnerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.authorizePartnerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // authorizePartnerCreateRequest creates the AuthorizePartner request.
@@ -133,7 +134,7 @@ func (client *PartnerConfigurationsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create or update a partner configuration.
+// createOrUpdate - Create or update a partner configuration.
 //
 // Synchronously creates or updates a partner configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -152,12 +153,13 @@ func (client *PartnerConfigurationsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PartnerConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerConfigurationInfo PartnerConfiguration, _ *PartnerConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default"
 	if client.subscriptionID == "" {
@@ -207,7 +209,7 @@ func (client *PartnerConfigurationsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete a partner configuration.
+// deleteOperation - Delete a partner configuration.
 //
 // Delete existing partner configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -226,12 +228,13 @@ func (client *PartnerConfigurationsClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PartnerConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, _ *PartnerConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default"
 	if client.subscriptionID == "" {
@@ -249,6 +252,82 @@ func (client *PartnerConfigurationsClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Update a partner configuration.
+//
+// Synchronously updates a partner configuration with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - partnerConfigurationUpdateParameters - Partner configuration update information.
+//   - options - PartnerConfigurationsClientBeginUpdateOptions contains the optional parameters for the PartnerConfigurationsClient.BeginUpdate
+//     method.
+func (client *PartnerConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters PartnerConfigurationUpdateParameters, options *PartnerConfigurationsClientBeginUpdateOptions) (*runtime.Poller[PartnerConfigurationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, partnerConfigurationUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PartnerConfigurationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PartnerConfigurationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a partner configuration.
+//
+// Synchronously updates a partner configuration with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PartnerConfigurationsClient) update(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters PartnerConfigurationUpdateParameters, options *PartnerConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PartnerConfigurationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, partnerConfigurationUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *PartnerConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters PartnerConfigurationUpdateParameters, _ *PartnerConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, partnerConfigurationUpdateParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -273,7 +352,8 @@ func (client *PartnerConfigurationsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return PartnerConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -481,7 +561,8 @@ func (client *PartnerConfigurationsClient) UnauthorizePartner(ctx context.Contex
 	if err != nil {
 		return PartnerConfigurationsClientUnauthorizePartnerResponse{}, err
 	}
-	return client.unauthorizePartnerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.unauthorizePartnerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // unauthorizePartnerCreateRequest creates the UnauthorizePartner request.
@@ -520,79 +601,4 @@ func (client *PartnerConfigurationsClient) unauthorizePartnerHandleResponse(resp
 		return PartnerConfigurationsClientUnauthorizePartnerResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a partner configuration.
-//
-// Synchronously updates a partner configuration with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - partnerConfigurationUpdateParameters - Partner configuration update information.
-//   - options - PartnerConfigurationsClientBeginUpdateOptions contains the optional parameters for the PartnerConfigurationsClient.BeginUpdate
-//     method.
-func (client *PartnerConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters PartnerConfigurationUpdateParameters, options *PartnerConfigurationsClientBeginUpdateOptions) (*runtime.Poller[PartnerConfigurationsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, partnerConfigurationUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PartnerConfigurationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PartnerConfigurationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a partner configuration.
-//
-// Synchronously updates a partner configuration with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerConfigurationsClient) update(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters PartnerConfigurationUpdateParameters, options *PartnerConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PartnerConfigurationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, partnerConfigurationUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PartnerConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters PartnerConfigurationUpdateParameters, _ *PartnerConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, partnerConfigurationUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

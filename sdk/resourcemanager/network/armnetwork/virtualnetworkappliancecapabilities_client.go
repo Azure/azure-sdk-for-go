@@ -19,7 +19,7 @@ import (
 // VirtualNetworkApplianceCapabilitiesClient contains the methods for the VirtualNetworkApplianceCapabilities group.
 // Don't use this type directly, use NewVirtualNetworkApplianceCapabilitiesClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-05-01
 type VirtualNetworkApplianceCapabilitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -86,7 +86,8 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) createOrUpdate(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -115,7 +116,7 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) createOrUpdateCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -134,7 +135,7 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) createOrUpdateCreateReq
 //     method.
 func (client *VirtualNetworkApplianceCapabilitiesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, capabilityName string, options *VirtualNetworkApplianceCapabilitiesClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworkApplianceCapabilitiesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualNetworkApplianceName, capabilityName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkApplianceName, capabilityName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +150,9 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) BeginDelete(ctx context
 	}
 }
 
-// delete - Deletes the specified capability of a virtual network appliance.
+// deleteOperation - Deletes the specified capability of a virtual network appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualNetworkApplianceCapabilitiesClient) delete(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, capabilityName string, options *VirtualNetworkApplianceCapabilitiesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualNetworkApplianceCapabilitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, capabilityName string, options *VirtualNetworkApplianceCapabilitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkApplianceCapabilitiesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) delete(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -195,7 +197,7 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) deleteCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -221,7 +223,8 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) Get(ctx context.Context
 	if err != nil {
 		return VirtualNetworkApplianceCapabilitiesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -248,7 +251,7 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) getCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +327,7 @@ func (client *VirtualNetworkApplianceCapabilitiesClient) listCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

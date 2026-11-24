@@ -62,7 +62,7 @@ func (client *PrefixListGlobalRulestackClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Create a PrefixListGlobalRulestackResource
+// createOrUpdate - Create a PrefixListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrefixListGlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, name string, resource PrefixListGlobalRulestackResource, options *PrefixListGlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *PrefixListGlobalRulestackClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PrefixListGlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, name string, resource PrefixListGlobalRulestackResource, _ *PrefixListGlobalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/prefixlists/{name}"
 	if globalRulestackName == "" {
@@ -133,7 +134,7 @@ func (client *PrefixListGlobalRulestackClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Delete a PrefixListGlobalRulestackResource
+// deleteOperation - Delete a PrefixListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrefixListGlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, name string, options *PrefixListGlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -150,12 +151,13 @@ func (client *PrefixListGlobalRulestackClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrefixListGlobalRulestackClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, name string, _ *PrefixListGlobalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/prefixlists/{name}"
 	if globalRulestackName == "" {
@@ -196,7 +198,8 @@ func (client *PrefixListGlobalRulestackClient) Get(ctx context.Context, globalRu
 	if err != nil {
 		return PrefixListGlobalRulestackClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

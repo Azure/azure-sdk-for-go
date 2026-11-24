@@ -19,7 +19,7 @@ import (
 // AdapterDeploymentsClient contains the methods for the AdapterDeployments group.
 // Don't use this type directly, use NewAdapterDeploymentsClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-15-preview
 type AdapterDeploymentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -103,7 +103,8 @@ func (client *AdapterDeploymentsClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -132,7 +133,7 @@ func (client *AdapterDeploymentsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -157,7 +158,7 @@ func (client *AdapterDeploymentsClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *AdapterDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*runtime.Poller[AdapterDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, adapterDeploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, adapterDeploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -172,9 +173,9 @@ func (client *AdapterDeploymentsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Drains requests and deletes an adapter deployment and its serving snapshot.
+// deleteOperation - Drains requests and deletes an adapter deployment and its serving snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AdapterDeploymentsClient) delete(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AdapterDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdapterDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -189,7 +190,8 @@ func (client *AdapterDeploymentsClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -218,7 +220,7 @@ func (client *AdapterDeploymentsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -246,7 +248,8 @@ func (client *AdapterDeploymentsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AdapterDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -273,7 +276,7 @@ func (client *AdapterDeploymentsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261115Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -352,7 +355,7 @@ func (client *AdapterDeploymentsClient) listCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -62,7 +62,8 @@ func (client *StudentsClient) CreateOrUpdate(ctx context.Context, billingAccount
 	if err != nil {
 		return StudentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -133,7 +134,8 @@ func (client *StudentsClient) Delete(ctx context.Context, billingAccountName str
 		return StudentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StudentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StudentsClientDeleteResponse{}, err
 	}
 	return StudentsClientDeleteResponse{}, nil
 }
@@ -188,7 +190,8 @@ func (client *StudentsClient) Get(ctx context.Context, billingAccountName string
 	if err != nil {
 		return StudentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

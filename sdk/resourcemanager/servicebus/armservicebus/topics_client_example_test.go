@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicCreate.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicCreate.json
 func ExampleTopicsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleTopicsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleCreate.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicAuthorizationRuleCreate.json
 func ExampleTopicsClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleTopicsClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicDelete.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicDelete.json
 func ExampleTopicsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleTopicsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleDelete.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicAuthorizationRuleDelete.json
 func ExampleTopicsClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleTopicsClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicGet.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicGet.json
 func ExampleTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleGet.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicAuthorizationRuleGet.json
 func ExampleTopicsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,36 @@ func ExampleTopicsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleListAll.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicAuthorizationRuleListKey.json
+func ExampleTopicsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicebus.NewClientFactory("e2f361f0-3b27-4503-a9cc-21cfba380093", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTopicsClient().ListKeys(ctx, "Default-ServiceBus-WestUS", "sdk-Namespace8408", "sdk-Topics2075", "sdk-Authrules5067", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicebus.TopicsClientListKeysResponse{
+	// 	AccessKeys: armservicebus.AccessKeys{
+	// 		KeyName: to.Ptr("sdk-AuthRules-4310"),
+	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-6261.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-4310;SharedAccessKey=#############################################;EntityPath=sdk-Topics-1984"),
+	// 		PrimaryKey: to.Ptr("#############################################"),
+	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-6261.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-4310;SharedAccessKey=#############################################;EntityPath=sdk-Topics-1984"),
+	// 		SecondaryKey: to.Ptr("#############################################"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicAuthorizationRuleListAll.json
 func ExampleTopicsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +294,7 @@ func ExampleTopicsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicListByNameSpace.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicListByNameSpace.json
 func ExampleTopicsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,36 +348,7 @@ func ExampleTopicsClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleListKey.json
-func ExampleTopicsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicebus.NewClientFactory("e2f361f0-3b27-4503-a9cc-21cfba380093", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewTopicsClient().ListKeys(ctx, "Default-ServiceBus-WestUS", "sdk-Namespace8408", "sdk-Topics2075", "sdk-Authrules5067", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicebus.TopicsClientListKeysResponse{
-	// 	AccessKeys: armservicebus.AccessKeys{
-	// 		KeyName: to.Ptr("sdk-AuthRules-4310"),
-	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-6261.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-4310;SharedAccessKey=#############################################;EntityPath=sdk-Topics-1984"),
-	// 		PrimaryKey: to.Ptr("#############################################"),
-	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-6261.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-4310;SharedAccessKey=#############################################;EntityPath=sdk-Topics-1984"),
-	// 		SecondaryKey: to.Ptr("#############################################"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-07-01-preview/Topics/SBTopicAuthorizationRuleRegenerateKey.json
 func ExampleTopicsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -68,7 +68,7 @@ func (client *FileSystemsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Create a FileSystemResource
+// createOrUpdate - Create a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FileSystemsClient) createOrUpdate(ctx context.Context, resourceGroupName string, fileSystemName string, resource FileSystemResource, options *FileSystemsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *FileSystemsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FileSystemsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fileSystemName string, resource FileSystemResource, _ *FileSystemsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}"
 	if client.subscriptionID == "" {
@@ -142,7 +143,7 @@ func (client *FileSystemsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete a FileSystemResource
+// deleteOperation - Delete a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FileSystemsClient) deleteOperation(ctx context.Context, resourceGroupName string, fileSystemName string, options *FileSystemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -159,12 +160,13 @@ func (client *FileSystemsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FileSystemsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fileSystemName string, _ *FileSystemsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Qumulo.Storage/fileSystems/{fileSystemName}"
 	if client.subscriptionID == "" {
@@ -208,7 +210,8 @@ func (client *FileSystemsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return FileSystemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -408,7 +411,8 @@ func (client *FileSystemsClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return FileSystemsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

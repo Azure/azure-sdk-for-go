@@ -68,7 +68,8 @@ func (client *ScheduledEventsClient) Acknowledge(ctx context.Context, resourceGr
 	if err != nil {
 		return ScheduledEventsClientAcknowledgeResponse{}, err
 	}
-	return client.acknowledgeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.acknowledgeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // acknowledgeCreateRequest creates the Acknowledge request.
@@ -141,7 +142,8 @@ func (client *ScheduledEventsClient) AcknowledgeList(ctx context.Context, resour
 	if err != nil {
 		return ScheduledEventsClientAcknowledgeListResponse{}, err
 	}
-	return client.acknowledgeListHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.acknowledgeListHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // acknowledgeListCreateRequest creates the AcknowledgeList request.

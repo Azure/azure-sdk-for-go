@@ -69,7 +69,7 @@ func (client *SchemaVersionsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update a Schema Version Resource
+// createOrUpdate - Create or update a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemaVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, resource SchemaVersion, options *SchemaVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *SchemaVersionsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SchemaVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, resource SchemaVersion, _ *SchemaVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *SchemaVersionsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a Schema Version Resource
+// deleteOperation - Delete a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemaVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, options *SchemaVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *SchemaVersionsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SchemaVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, schemaVersionName string, _ *SchemaVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/versions/{schemaVersionName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *SchemaVersionsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return SchemaVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -363,7 +366,8 @@ func (client *SchemaVersionsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SchemaVersionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -603,6 +603,59 @@ type BlobClientGetAccountInfoOptions struct {
 	Timeout *int32
 }
 
+// BlobClientGetLayoutOptions contains the optional parameters for the BlobClient.GetLayout method.
+type BlobClientGetLayoutOptions struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// The algorithm used to produce the encryption key hash. Must be provided if the encryption key is provided.
+	EncryptionAlgorithm *EncryptionAlgorithmType
+
+	// Specifies the encryption key to use to encrypt the data provided in the request.
+	EncryptionKey *string
+
+	// The SHA-256 hash of the provided encryption key. Must be provided if the encryption key is provided.
+	EncryptionKeySHA256 *string
+
+	// Specify this value to operate only on a blob with a matching Etag value.
+	IfMatch *azcore.ETag
+
+	// Specify this value to operate only on a blob if it has been modified since the specified date-time.
+	IfModifiedSince *time.Time
+
+	// Specify this value to operate only on a blob with a non-matching Etag value.
+	IfNoneMatch *azcore.ETag
+
+	// Specifies a SQL-like where clause on blob tags to operate only on a blob with matching tags.
+	IfTags *string
+
+	// Specify this value to operate only on a blob if it has not been modified since the specified date-time.
+	IfUnmodifiedSince *time.Time
+
+	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+	LeaseID *string
+
+	// An opaque string value that identifies the portion of the result set to return with this operation.
+	Marker *string
+
+	// Specifies the maximum number of resources to return. If the request does not specify maxresults, or specifies a value greater
+	// than 5000, the server will return up to 5000 items.
+	Maxresults *int32
+
+	// Specifies the range of the blob to operate on.
+	Range *string
+
+	// Specifies the snapshot of the blob.
+	Snapshot *string
+
+	// The timeout parameter is expressed in seconds. For more information, see <a href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+
+	// Specifies the version ID of the blob.
+	VersionID *string
+}
+
 // BlobClientGetPropertiesOptions contains the optional parameters for the BlobClient.GetProperties method.
 type BlobClientGetPropertiesOptions struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
@@ -1522,6 +1575,16 @@ type ContainerClientCreateOptions struct {
 
 	// Whether to prevent encryption scope override.
 	PreventEncryptionScopeOverride *bool
+
+	// The timeout parameter is expressed in seconds. For more information, see <a href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+}
+
+// ContainerClientCreateSessionOptions contains the optional parameters for the ContainerClient.CreateSession method.
+type ContainerClientCreateSessionOptions struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\">Setting
 	// Timeouts for Blob Service Operations.</a>

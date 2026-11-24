@@ -63,7 +63,8 @@ func (client *ProtectionPolicyOperationResultsClient) Get(ctx context.Context, v
 	if err != nil {
 		return ProtectionPolicyOperationResultsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

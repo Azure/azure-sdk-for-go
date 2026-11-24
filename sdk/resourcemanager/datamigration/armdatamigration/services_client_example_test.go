@@ -12,6 +12,181 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-09-01-preview/Services_CreateOrUpdate.json
+func ExampleServicesClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "DmsSdkRg", "DmsSdkService", armdatamigration.Service{
+		Location: to.Ptr("southcentralus"),
+		Properties: &armdatamigration.ServiceProperties{
+			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
+		},
+		SKU: &armdatamigration.ServiceSKU{
+			Name: to.Ptr("Basic_1vCore"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.ServicesClientCreateOrUpdateResponse{
+	// 	Service: armdatamigration.Service{
+	// 		Name: to.Ptr("DmsSdkService"),
+	// 		Type: to.Ptr("Microsoft.DataMigration/services"),
+	// 		Etag: to.Ptr("9QuK/U0GvTJpjIrlOzITXVy68+bmmQ3bFkHudLxmkUw="),
+	// 		ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService"),
+	// 		Location: to.Ptr("southcentralus"),
+	// 		Properties: &armdatamigration.ServiceProperties{
+	// 			ProvisioningState: to.Ptr(armdatamigration.ServiceProvisioningStateAccepted),
+	// 			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
+	// 		},
+	// 		SKU: &armdatamigration.ServiceSKU{
+	// 			Name: to.Ptr("Basic_1vCore"),
+	// 			Size: to.Ptr("1 vCore"),
+	// 			Tier: to.Ptr("Basic"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01-preview/Services_Delete.json
+func ExampleServicesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginDelete(ctx, "DmsSdkRg", "DmsSdkService", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.ServicesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-09-01-preview/Services_Start.json
+func ExampleServicesClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginStart(ctx, "DmsSdkRg", "DmsSdkService", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.ServicesClientStartResponse{
+	// }
+}
+
+// Generated from example definition: 2025-09-01-preview/Services_Stop.json
+func ExampleServicesClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginStop(ctx, "DmsSdkRg", "DmsSdkService", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.ServicesClientStopResponse{
+	// }
+}
+
+// Generated from example definition: 2025-09-01-preview/Services_Update.json
+func ExampleServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginUpdate(ctx, "DmsSdkRg", "DmsSdkService", armdatamigration.Service{
+		Location: to.Ptr("southcentralus"),
+		Properties: &armdatamigration.ServiceProperties{
+			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.ServicesClientUpdateResponse{
+	// 	Service: armdatamigration.Service{
+	// 		Name: to.Ptr("DmsSdkService"),
+	// 		Type: to.Ptr("Microsoft.DataMigration/services"),
+	// 		Etag: to.Ptr("9QuK/U0GvTJpjIrlOzITXVy68+bmmQ3bFkHudLxmkUw="),
+	// 		ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService"),
+	// 		Location: to.Ptr("southcentralus"),
+	// 		Properties: &armdatamigration.ServiceProperties{
+	// 			ProvisioningState: to.Ptr(armdatamigration.ServiceProvisioningStateAccepted),
+	// 			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
+	// 		},
+	// 		SKU: &armdatamigration.ServiceSKU{
+	// 			Name: to.Ptr("Basic_1vCore"),
+	// 			Size: to.Ptr("1 vCore"),
+	// 			Tier: to.Ptr("Basic"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-09-01-preview/Services_CheckChildrenNameAvailability.json
 func ExampleServicesClient_CheckChildrenNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -119,82 +294,6 @@ func ExampleServicesClient_CheckStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Services_CreateOrUpdate.json
-func ExampleServicesClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "DmsSdkRg", "DmsSdkService", armdatamigration.Service{
-		Location: to.Ptr("southcentralus"),
-		Properties: &armdatamigration.ServiceProperties{
-			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
-		},
-		SKU: &armdatamigration.ServiceSKU{
-			Name: to.Ptr("Basic_1vCore"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.ServicesClientCreateOrUpdateResponse{
-	// 	Service: armdatamigration.Service{
-	// 		Name: to.Ptr("DmsSdkService"),
-	// 		Type: to.Ptr("Microsoft.DataMigration/services"),
-	// 		Etag: to.Ptr("9QuK/U0GvTJpjIrlOzITXVy68+bmmQ3bFkHudLxmkUw="),
-	// 		ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService"),
-	// 		Location: to.Ptr("southcentralus"),
-	// 		Properties: &armdatamigration.ServiceProperties{
-	// 			ProvisioningState: to.Ptr(armdatamigration.ServiceProvisioningStateAccepted),
-	// 			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
-	// 		},
-	// 		SKU: &armdatamigration.ServiceSKU{
-	// 			Name: to.Ptr("Basic_1vCore"),
-	// 			Size: to.Ptr("1 vCore"),
-	// 			Tier: to.Ptr("Basic"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01-preview/Services_Delete.json
-func ExampleServicesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginDelete(ctx, "DmsSdkRg", "DmsSdkService", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.ServicesClientDeleteResponse{
-	// }
-}
-
 // Generated from example definition: 2025-09-01-preview/Services_Get.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -232,59 +331,6 @@ func ExampleServicesClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-09-01-preview/Services_List.json
-func ExampleServicesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServicesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdatamigration.ServicesClientListResponse{
-		// 	ServiceList: armdatamigration.ServiceList{
-		// 		Value: []*armdatamigration.Service{
-		// 			{
-		// 				Name: to.Ptr("DmsSdkService1"),
-		// 				Type: to.Ptr("Microsoft.DataMigration/services"),
-		// 				ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg1/providers/Microsoft.DataMigration/services/DmsSdkService1"),
-		// 				Location: to.Ptr("southcentralus"),
-		// 				SKU: &armdatamigration.ServiceSKU{
-		// 					Name: to.Ptr("GeneralPurpose_4vCores"),
-		// 					Size: to.Ptr("4 vCores"),
-		// 					Tier: to.Ptr("General Purpose"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("DmsSdkService2"),
-		// 				Type: to.Ptr("Microsoft.DataMigration/services"),
-		// 				ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg2/providers/Microsoft.DataMigration/services/DmsSdkService2"),
-		// 				Location: to.Ptr("centralus"),
-		// 				SKU: &armdatamigration.ServiceSKU{
-		// 					Name: to.Ptr("Basic_2vCores"),
-		// 					Size: to.Ptr("2 vCores"),
-		// 					Tier: to.Ptr("Basic"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-09-01-preview/Services_ListByResourceGroup.json
@@ -340,6 +386,59 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
+// Generated from example definition: 2025-09-01-preview/Services_List.json
+func ExampleServicesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServicesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdatamigration.ServicesClientListResponse{
+		// 	ServiceList: armdatamigration.ServiceList{
+		// 		Value: []*armdatamigration.Service{
+		// 			{
+		// 				Name: to.Ptr("DmsSdkService1"),
+		// 				Type: to.Ptr("Microsoft.DataMigration/services"),
+		// 				ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg1/providers/Microsoft.DataMigration/services/DmsSdkService1"),
+		// 				Location: to.Ptr("southcentralus"),
+		// 				SKU: &armdatamigration.ServiceSKU{
+		// 					Name: to.Ptr("GeneralPurpose_4vCores"),
+		// 					Size: to.Ptr("4 vCores"),
+		// 					Tier: to.Ptr("General Purpose"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("DmsSdkService2"),
+		// 				Type: to.Ptr("Microsoft.DataMigration/services"),
+		// 				ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg2/providers/Microsoft.DataMigration/services/DmsSdkService2"),
+		// 				Location: to.Ptr("centralus"),
+		// 				SKU: &armdatamigration.ServiceSKU{
+		// 					Name: to.Ptr("Basic_2vCores"),
+		// 					Size: to.Ptr("2 vCores"),
+		// 					Tier: to.Ptr("Basic"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2025-09-01-preview/Services_ListSkus.json
 func ExampleServicesClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -377,103 +476,4 @@ func ExampleServicesClient_NewListSKUsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-09-01-preview/Services_Start.json
-func ExampleServicesClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginStart(ctx, "DmsSdkRg", "DmsSdkService", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.ServicesClientStartResponse{
-	// }
-}
-
-// Generated from example definition: 2025-09-01-preview/Services_Stop.json
-func ExampleServicesClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginStop(ctx, "DmsSdkRg", "DmsSdkService", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.ServicesClientStopResponse{
-	// }
-}
-
-// Generated from example definition: 2025-09-01-preview/Services_Update.json
-func ExampleServicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("fc04246f-04c5-437e-ac5e-206a19e7193f", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginUpdate(ctx, "DmsSdkRg", "DmsSdkService", armdatamigration.Service{
-		Location: to.Ptr("southcentralus"),
-		Properties: &armdatamigration.ServiceProperties{
-			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.ServicesClientUpdateResponse{
-	// 	Service: armdatamigration.Service{
-	// 		Name: to.Ptr("DmsSdkService"),
-	// 		Type: to.Ptr("Microsoft.DataMigration/services"),
-	// 		Etag: to.Ptr("9QuK/U0GvTJpjIrlOzITXVy68+bmmQ3bFkHudLxmkUw="),
-	// 		ID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkRg/providers/Microsoft.DataMigration/services/DmsSdkService"),
-	// 		Location: to.Ptr("southcentralus"),
-	// 		Properties: &armdatamigration.ServiceProperties{
-	// 			ProvisioningState: to.Ptr(armdatamigration.ServiceProvisioningStateAccepted),
-	// 			VirtualSubnetID: to.Ptr("/subscriptions/fc04246f-04c5-437e-ac5e-206a19e7193f/resourceGroups/DmsSdkTestNetwork/providers/Microsoft.Network/virtualNetworks/DmsSdkTestNetwork/subnets/default"),
-	// 		},
-	// 		SKU: &armdatamigration.ServiceSKU{
-	// 			Name: to.Ptr("Basic_1vCore"),
-	// 			Size: to.Ptr("1 vCore"),
-	// 			Tier: to.Ptr("Basic"),
-	// 		},
-	// 	},
-	// }
 }

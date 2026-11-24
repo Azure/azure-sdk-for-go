@@ -44,74 +44,6 @@ func NewManagedEnvironmentsClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// CheckMigrationEligibility - Checks whether a Managed Environment can be migrated to a target mode.
-//
-// Checks whether a Managed Environment can be migrated to a target mode.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Environment.
-//   - body - The migration eligibility check request.
-//   - options - ManagedEnvironmentsClientCheckMigrationEligibilityOptions contains the optional parameters for the ManagedEnvironmentsClient.CheckMigrationEligibility
-//     method.
-func (client *ManagedEnvironmentsClient) CheckMigrationEligibility(ctx context.Context, resourceGroupName string, environmentName string, body CheckMigrationEligibilityRequest, options *ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (ManagedEnvironmentsClientCheckMigrationEligibilityResponse, error) {
-	var err error
-	const operationName = "ManagedEnvironmentsClient.CheckMigrationEligibility"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.checkMigrationEligibilityCreateRequest(ctx, resourceGroupName, environmentName, body, options)
-	if err != nil {
-		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
-	}
-	return client.checkMigrationEligibilityHandleResponse(httpResp, http.StatusOK)
-}
-
-// checkMigrationEligibilityCreateRequest creates the CheckMigrationEligibility request.
-func (client *ManagedEnvironmentsClient) checkMigrationEligibilityCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, body CheckMigrationEligibilityRequest, _ *ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/checkMigrationEligibility"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// checkMigrationEligibilityHandleResponse handles the CheckMigrationEligibility response.
-func (client *ManagedEnvironmentsClient) checkMigrationEligibilityHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsClientCheckMigrationEligibilityResponse, error) {
-	result := ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CheckMigrationEligibilityResponse); err != nil {
-		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginCreateOrUpdate - Creates or updates a Managed Environment.
 //
 // Creates or updates a Managed Environment used to host container apps.
@@ -138,7 +70,7 @@ func (client *ManagedEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Managed Environment.
+// createOrUpdate - Creates or updates a Managed Environment.
 //
 // Creates or updates a Managed Environment used to host container apps.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -157,12 +89,13 @@ func (client *ManagedEnvironmentsClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope ManagedEnvironment, _ *ManagedEnvironmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}"
 	if client.subscriptionID == "" {
@@ -217,7 +150,7 @@ func (client *ManagedEnvironmentsClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a Managed Environment.
+// deleteOperation - Delete a Managed Environment.
 //
 // Delete a Managed Environment if it does not have any container apps.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -236,12 +169,13 @@ func (client *ManagedEnvironmentsClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *ManagedEnvironmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}"
 	if client.subscriptionID == "" {
@@ -266,6 +200,156 @@ func (client *ManagedEnvironmentsClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
+// BeginUpdate - Update Managed Environment's properties.
+//
+// Patches a Managed Environment using JSON Merge Patch
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Environment.
+//   - environmentEnvelope - Configuration details of the Environment.
+//   - options - ManagedEnvironmentsClientBeginUpdateOptions contains the optional parameters for the ManagedEnvironmentsClient.BeginUpdate
+//     method.
+func (client *ManagedEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope ManagedEnvironment, options *ManagedEnvironmentsClientBeginUpdateOptions) (*runtime.Poller[ManagedEnvironmentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, environmentName, environmentEnvelope, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedEnvironmentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedEnvironmentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update Managed Environment's properties.
+//
+// Patches a Managed Environment using JSON Merge Patch
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedEnvironmentsClient) update(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope ManagedEnvironment, options *ManagedEnvironmentsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedEnvironmentsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, environmentName, environmentEnvelope, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ManagedEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope ManagedEnvironment, _ *ManagedEnvironmentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if environmentName == "" {
+		return nil, errors.New("parameter environmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, environmentEnvelope); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// CheckMigrationEligibility - Checks whether a Managed Environment can be migrated to a target mode.
+//
+// Checks whether a Managed Environment can be migrated to a target mode.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Environment.
+//   - body - The migration eligibility check request.
+//   - options - ManagedEnvironmentsClientCheckMigrationEligibilityOptions contains the optional parameters for the ManagedEnvironmentsClient.CheckMigrationEligibility
+//     method.
+func (client *ManagedEnvironmentsClient) CheckMigrationEligibility(ctx context.Context, resourceGroupName string, environmentName string, body CheckMigrationEligibilityRequest, options *ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (ManagedEnvironmentsClientCheckMigrationEligibilityResponse, error) {
+	var err error
+	const operationName = "ManagedEnvironmentsClient.CheckMigrationEligibility"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkMigrationEligibilityCreateRequest(ctx, resourceGroupName, environmentName, body, options)
+	if err != nil {
+		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
+	}
+	resp, err := client.checkMigrationEligibilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// checkMigrationEligibilityCreateRequest creates the CheckMigrationEligibility request.
+func (client *ManagedEnvironmentsClient) checkMigrationEligibilityCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, body CheckMigrationEligibilityRequest, _ *ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/checkMigrationEligibility"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if environmentName == "" {
+		return nil, errors.New("parameter environmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkMigrationEligibilityHandleResponse handles the CheckMigrationEligibility response.
+func (client *ManagedEnvironmentsClient) checkMigrationEligibilityHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsClientCheckMigrationEligibilityResponse, error) {
+	result := ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckMigrationEligibilityResponse); err != nil {
+		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Get the properties of a Managed Environment.
 //
 // Get the properties of a Managed Environment used to host container apps.
@@ -287,7 +371,8 @@ func (client *ManagedEnvironmentsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ManagedEnvironmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -350,7 +435,8 @@ func (client *ManagedEnvironmentsClient) GetAuthToken(ctx context.Context, resou
 	if err != nil {
 		return ManagedEnvironmentsClientGetAuthTokenResponse{}, err
 	}
-	return client.getAuthTokenHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthTokenHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthTokenCreateRequest creates the GetAuthToken request.
@@ -611,84 +697,4 @@ func (client *ManagedEnvironmentsClient) listWorkloadProfileStatesHandleResponse
 		return ManagedEnvironmentsClientListWorkloadProfileStatesResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update Managed Environment's properties.
-//
-// Patches a Managed Environment using JSON Merge Patch
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Environment.
-//   - environmentEnvelope - Configuration details of the Environment.
-//   - options - ManagedEnvironmentsClientBeginUpdateOptions contains the optional parameters for the ManagedEnvironmentsClient.BeginUpdate
-//     method.
-func (client *ManagedEnvironmentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope ManagedEnvironment, options *ManagedEnvironmentsClientBeginUpdateOptions) (*runtime.Poller[ManagedEnvironmentsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, environmentName, environmentEnvelope, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedEnvironmentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedEnvironmentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update Managed Environment's properties.
-//
-// Patches a Managed Environment using JSON Merge Patch
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedEnvironmentsClient) update(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope ManagedEnvironment, options *ManagedEnvironmentsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedEnvironmentsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, environmentName, environmentEnvelope, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ManagedEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope ManagedEnvironment, _ *ManagedEnvironmentsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, environmentEnvelope); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"regexp"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -35,7 +36,7 @@ func TestCostControlLifecycle(t *testing.T) {
 	addCostControlSanitizers(t, subscriptionID, resourceGroupName, accountName)
 
 	credential, options := testutil.GetCredAndClientOptions(t)
-	client, err := armcognitiveservices.NewCostControlsClient(subscriptionID, credential, options)
+	client, err := armcognitiveservices.NewAccountCostControlsClient(subscriptionID, credential, options)
 	require.NoError(t, err)
 
 	ctx := context.Background()
@@ -50,20 +51,41 @@ func TestCostControlLifecycle(t *testing.T) {
 		}
 	})
 
-	costControl := newCostControl("SDK Cost Control lifecycle", 25)
-	costControl.Properties.Rules[0].Thresholds = nil
+	costControl := newCostControl(25)
+	startDate := time.Now().UTC()
+	startDate = time.Date(startDate.Year(), startDate.Month(), 1, 0, 0, 0, 0, time.UTC)
+	if variables := recording.GetVariables(t); variables != nil {
+		if recordedDate, ok := variables["costControlStartDate"]; ok {
+			dateString, ok := recordedDate.(string)
+			require.True(t, ok, "recorded start date must be a string")
+			startDate, err = time.Parse(time.RFC3339, dateString)
+			require.NoError(t, err)
+		} else {
+			variables["costControlStartDate"] = startDate.Format(time.RFC3339)
+		}
+	}
+	costControl.Properties.TimePeriod.StartDate = ptr(startDate)
+	costControl.Properties.TimePeriod.EndDate = ptr(startDate.AddDate(1, 0, 0))
+	costControl.Properties.Notifications = nil
+	costControl.Properties.ProviderProperties = nil
 	createdResponse, err := client.CreateOrUpdate(ctx, resourceGroupName, accountName, lifecycleControlName,
 		costControl,
-		&armcognitiveservices.CostControlsClientCreateOrUpdateOptions{IfNoneMatch: ptr("*")})
+		&armcognitiveservices.AccountCostControlsClientCreateOrUpdateOptions{IfNoneMatch: ptr("*")})
 	require.NoError(t, err)
 	created = true
 	require.Equal(t, lifecycleControlName, *createdResponse.Name)
-	require.Empty(t, createdResponse.Properties.Rules[0].Thresholds)
+	require.Empty(t, createdResponse.Properties.Notifications)
+	if createdResponse.Properties.ProviderProperties != nil {
+		require.Empty(t, createdResponse.Properties.ProviderProperties.Actions)
+	}
+	exists, err := client.CheckExistence(ctx, resourceGroupName, accountName, lifecycleControlName, nil)
+	require.NoError(t, err)
+	require.True(t, exists.Success)
 
 	fetched, err := client.Get(ctx, resourceGroupName, accountName, lifecycleControlName, nil)
 	require.NoError(t, err)
 	require.NotNil(t, fetched.Etag)
-	require.Equal(t, float64(25), *fetched.Properties.Rules[0].Amount)
+	require.Equal(t, float64(25), *fetched.Properties.Amount)
 
 	found := false
 	pager := client.NewListPager(resourceGroupName, accountName, nil)
@@ -82,29 +104,30 @@ func TestCostControlLifecycle(t *testing.T) {
 	}
 	require.True(t, found)
 
-	updatedRule := newRule(50)
-	updatedRule.Thresholds = nil
 	updated, err := client.Update(ctx, resourceGroupName, accountName, lifecycleControlName,
 		armcognitiveservices.CostControlPatch{Properties: &armcognitiveservices.CostControlPatchProperties{
-			DisplayName: ptr("SDK Cost Control lifecycle updated"),
-			Rules:       []*armcognitiveservices.CostControlRule{updatedRule},
-		}}, &armcognitiveservices.CostControlsClientUpdateOptions{IfMatch: fetched.Etag})
+			Amount: ptr(50.0),
+		}}, &armcognitiveservices.AccountCostControlsClientUpdateOptions{IfMatch: ptr(string(*fetched.Etag))})
 	require.NoError(t, err)
-	require.Equal(t, "SDK Cost Control lifecycle updated", *updated.Properties.DisplayName)
-	require.Equal(t, float64(50), *updated.Properties.Rules[0].Amount)
-	require.Empty(t, updated.Properties.Rules[0].Thresholds)
+	require.Equal(t, float64(50), *updated.Properties.Amount)
+	require.Empty(t, updated.Properties.Notifications)
+	if updated.Properties.ProviderProperties != nil {
+		require.Empty(t, updated.Properties.ProviderProperties.Actions)
+	}
 
 	fetchedAfterUpdate, err := client.Get(ctx, resourceGroupName, accountName, lifecycleControlName, nil)
 	require.NoError(t, err)
 	require.NotNil(t, fetchedAfterUpdate.Etag)
-	require.Equal(t, float64(50), *fetchedAfterUpdate.Properties.Rules[0].Amount)
+	require.Equal(t, float64(50), *fetchedAfterUpdate.Properties.Amount)
 
 	_, err = client.Delete(ctx, resourceGroupName, accountName, lifecycleControlName,
-		&armcognitiveservices.CostControlsClientDeleteOptions{IfMatch: fetchedAfterUpdate.Etag})
+		&armcognitiveservices.AccountCostControlsClientDeleteOptions{IfMatch: ptr(string(*fetchedAfterUpdate.Etag))})
 	require.NoError(t, err)
 	created = false
 
 	_, err = client.Get(ctx, resourceGroupName, accountName, lifecycleControlName, nil)
+	require.True(t, isResponseStatus(err, http.StatusNotFound), "expected 404, got %v", err)
+	_, err = client.CheckExistence(ctx, resourceGroupName, accountName, lifecycleControlName, nil)
 	require.True(t, isResponseStatus(err, http.StatusNotFound), "expected 404, got %v", err)
 }
 

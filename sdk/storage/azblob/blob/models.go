@@ -28,14 +28,14 @@ const (
 	// ExpectContinueModeApplyOnThrottle indicates that Expect-Continue will not be applied
 	// until specific errors are encountered from the service, at which point it will be
 	// applied for a fixed window of time after the last triggering error. This is the default.
-	ExpectContinueModeApplyOnThrottle = exported.ExpectContinueModeApplyOnThrottle
+	ExpectContinueModeApplyOnThrottle ExpectContinueMode = exported.ExpectContinueModeApplyOnThrottle
 
 	// ExpectContinueModeOn indicates Expect-Continue will be applied regardless of recent
 	// error status. The ContentLengthThreshold option still applies.
-	ExpectContinueModeOn = exported.ExpectContinueModeOn
+	ExpectContinueModeOn ExpectContinueMode = exported.ExpectContinueModeOn
 
 	// ExpectContinueModeOff indicates Expect-Continue will never be applied.
-	ExpectContinueModeOff = exported.ExpectContinueModeOff
+	ExpectContinueModeOff ExpectContinueMode = exported.ExpectContinueModeOff
 )
 
 // ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"
@@ -100,6 +100,11 @@ type DownloadStreamOptions struct {
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
+
+	// layoutEndpoint routes this read to the storage endpoint the blob's layout serves its range
+	// from. Only managed downloads set it; when empty, the request is sent to the client's
+	// configured endpoint.
+	layoutEndpoint string
 }
 
 func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
@@ -146,6 +151,10 @@ func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
 
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block. The default, nil, currently resolves to disabled.
+	LayoutAwareRouting *bool
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -173,6 +182,15 @@ type downloadOptions struct {
 	TransactionalValidation TransferValidationType
 }
 
+// layoutAwareRoutingEnabled reports whether layout aware routing should be attempted. Only an
+// explicit true turns it on: nil, the default, currently resolves to disabled.
+func (o *downloadOptions) layoutAwareRoutingEnabled() bool {
+	if o == nil || o.LayoutAwareRouting == nil {
+		return false
+	}
+	return *o.LayoutAwareRouting
+}
+
 func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContentMD5 *bool) *DownloadStreamOptions {
 	if o == nil {
 		return nil
@@ -187,8 +205,28 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 	}
 }
 
+func (o *downloadOptions) getBlobLayoutOptions() *getLayoutOptions {
+	if o == nil {
+		return nil
+	}
+	return &getLayoutOptions{
+		Range:            o.Range,
+		AccessConditions: o.AccessConditions,
+		CPKInfo:          o.CPKInfo,
+	}
+}
+
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block, based on the blob's layout. It is a performance optimization only: the data
+	// downloaded is the same either way. When true and the initial read carries the layout download
+	// hint, the layout of the remaining range is fetched and cached (with automatic background
+	// refresh), and each remaining range is read from the endpoint that serves it. When false, every
+	// read goes to the client's configured endpoint. The default, nil, leaves the decision to the
+	// client library, which may change it in a future release; currently it resolves to disabled.
+	LayoutAwareRouting *bool
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -220,6 +258,15 @@ type DownloadBufferOptions struct {
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block, based on the blob's layout. It is a performance optimization only: the data
+	// downloaded is the same either way. When true and the initial read carries the layout download
+	// hint, the layout of the remaining range is fetched and cached (with automatic background
+	// refresh), and each remaining range is read from the endpoint that serves it. When false, every
+	// read goes to the client's configured endpoint. The default, nil, leaves the decision to the
+	// client library, which may change it in a future release; currently it resolves to disabled.
+	LayoutAwareRouting *bool
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -821,3 +868,47 @@ type GetAccountInfoOptions struct {
 func (o *GetAccountInfoOptions) format() *generated.BlobClientGetAccountInfoOptions {
 	return nil
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// getLayoutOptions contains the optional parameters for the Get Blob Layout operation.
+type getLayoutOptions struct {
+	Marker           *string
+	MaxResults       *int32
+	Range            HTTPRange
+	AccessConditions *AccessConditions
+	CPKInfo          *CPKInfo
+}
+
+func (o *getLayoutOptions) format() *generated.BlobClientGetLayoutOptions {
+	if o == nil {
+		return nil
+	}
+
+	opts := &generated.BlobClientGetLayoutOptions{
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Range:      exported.FormatHTTPRange(o.Range),
+	}
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
+		}
+	}
+	if o.CPKInfo != nil {
+		opts.EncryptionAlgorithm = o.CPKInfo.EncryptionAlgorithm
+		opts.EncryptionKey = o.CPKInfo.EncryptionKey
+		opts.EncryptionKeySHA256 = o.CPKInfo.EncryptionKeySHA256
+	}
+
+	return opts
+}
+
+// ---------------------------------------------------------------------------------------------------------------------

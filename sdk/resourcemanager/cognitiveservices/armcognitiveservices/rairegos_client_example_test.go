@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/PutRaiRego.json
+// Generated from example definition: 2026-11-15-preview/PutRaiRego.json
 func ExampleRaiRegosClient_CreateOrUpdate_createAReusableRegoArtifact() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleRaiRegosClient_CreateOrUpdate_createAReusableRegoArtifact() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/UpdateRaiRego.json
+// Generated from example definition: 2026-11-15-preview/UpdateRaiRego.json
 func ExampleRaiRegosClient_CreateOrUpdate_replaceAReusableRegoArtifactConditionally() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleRaiRegosClient_CreateOrUpdate_replaceAReusableRegoArtifactConditiona
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/DeleteRaiRego.json
+// Generated from example definition: 2026-11-15-preview/DeleteRaiRego.json
 func ExampleRaiRegosClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleRaiRegosClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetRaiRego.json
+// Generated from example definition: 2026-11-15-preview/GetRaiRego.json
 func ExampleRaiRegosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleRaiRegosClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListRaiRegos.json
+// Generated from example definition: 2026-11-15-preview/ListRaiRegos.json
 func ExampleRaiRegosClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleRaiRegosClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiRegos?api-version=2026-09-15-preview&%24top=10&%24skiptoken=aW5wdXQtZ3VhcmQ="),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiRegos?api-version=2026-11-15-preview&%24top=10&%24skiptoken=aW5wdXQtZ3VhcmQ="),
 		// 	},
 		// }
 	}

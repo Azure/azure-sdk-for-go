@@ -58,7 +58,8 @@ func (client *PaymentMethodsClient) DeleteByUser(ctx context.Context, paymentMet
 		return PaymentMethodsClientDeleteByUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PaymentMethodsClientDeleteByUserResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PaymentMethodsClientDeleteByUserResponse{}, err
 	}
 	return PaymentMethodsClientDeleteByUserResponse{}, nil
 }
@@ -101,7 +102,8 @@ func (client *PaymentMethodsClient) GetByBillingAccount(ctx context.Context, bil
 	if err != nil {
 		return PaymentMethodsClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -160,7 +162,8 @@ func (client *PaymentMethodsClient) GetByBillingProfile(ctx context.Context, bil
 	if err != nil {
 		return PaymentMethodsClientGetByBillingProfileResponse{}, err
 	}
-	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
@@ -220,7 +223,8 @@ func (client *PaymentMethodsClient) GetByUser(ctx context.Context, paymentMethod
 	if err != nil {
 		return PaymentMethodsClientGetByUserResponse{}, err
 	}
-	return client.getByUserHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByUserHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByUserCreateRequest creates the GetByUser request.

@@ -19,7 +19,7 @@ import (
 // ConfigurationClient contains the methods for the Configuration group.
 // Don't use this type directly, use NewConfigurationClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-07-01-preview
 type ConfigurationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *ConfigurationClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ConfigurationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -87,7 +88,7 @@ func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -126,7 +127,8 @@ func (client *ConfigurationClient) Patch(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ConfigurationClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
@@ -149,7 +151,7 @@ func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -59,7 +59,8 @@ func (client *SettingsClient) CreateOrUpdateByScope(ctx context.Context, scope s
 	if err != nil {
 		return SettingsClientCreateOrUpdateByScopeResponse{}, err
 	}
-	return client.createOrUpdateByScopeHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateByScopeHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateByScopeCreateRequest creates the CreateOrUpdateByScope request.
@@ -120,7 +121,8 @@ func (client *SettingsClient) DeleteByScope(ctx context.Context, scope string, t
 		return SettingsClientDeleteByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SettingsClientDeleteByScopeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SettingsClientDeleteByScopeResponse{}, err
 	}
 	return SettingsClientDeleteByScopeResponse{}, nil
 }
@@ -165,7 +167,8 @@ func (client *SettingsClient) GetByScope(ctx context.Context, scope string, type
 	if err != nil {
 		return SettingsClientGetByScopeResponse{}, err
 	}
-	return client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
@@ -220,7 +223,8 @@ func (client *SettingsClient) List(ctx context.Context, scope string, options *S
 	if err != nil {
 		return SettingsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

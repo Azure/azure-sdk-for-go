@@ -39,6 +39,86 @@ func NewReservationTransactionsClient(credential azcore.TokenCredential, options
 	return client, nil
 }
 
+// NewListByBillingProfilePager - List of transactions for reserved instances on billing profile scope. The refund transactions
+// are posted along with its purchase transaction (i.e. in the purchase billing month). For example, The refund is requested
+// in May 2021. This refund transaction will have event date as May 2021 but the billing month as April 2020 when the reservation
+// purchase was made. Note: ARM has a payload size limit of 12MB, so currently callers get 400 when the response size exceeds
+// the ARM limit. In such cases, API call should be made with smaller date ranges.
+//   - billingAccountID - BillingAccount ID
+//   - billingProfileID - Azure Billing Profile ID.
+//   - options - ReservationTransactionsClientListByBillingProfileOptions contains the optional parameters for the ReservationTransactionsClient.NewListByBillingProfilePager
+//     method.
+func (client *ReservationTransactionsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, options *ReservationTransactionsClientListByBillingProfileOptions) *runtime.Pager[ReservationTransactionsClientListByBillingProfileResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ReservationTransactionsClientListByBillingProfileResponse]{
+		More: func(page ReservationTransactionsClientListByBillingProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ReservationTransactionsClientListByBillingProfileResponse) (ReservationTransactionsClientListByBillingProfileResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationTransactionsClient.NewListByBillingProfilePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, nextLink, options)
+			if err != nil {
+				return ReservationTransactionsClientListByBillingProfileResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationTransactionsClientListByBillingProfileResponse{}, err
+			}
+			return client.listByBillingProfileHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByBillingProfileCreateRequest creates the ListByBillingProfile request.
+func (client *ReservationTransactionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, nextLink string, options *ReservationTransactionsClientListByBillingProfileOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/reservationTransactions"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		if billingProfileID == "" {
+			return nil, errors.New("parameter billingProfileID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByBillingProfileHandleResponse handles the ListByBillingProfile response.
+func (client *ReservationTransactionsClient) listByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (ReservationTransactionsClientListByBillingProfileResponse, error) {
+	result := ReservationTransactionsClientListByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ModernReservationTransactionsListResult); err != nil {
+		return ReservationTransactionsClientListByBillingProfileResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - List of transactions for reserved instances on billing account scope. Note: The refund transactions are
 // posted along with its purchase transaction (i.e. in the purchase billing month). For example, The refund is requested in
 // May 2021. This refund transaction will have event date as May 2021 but the billing month as April 2020 when the reservation
@@ -116,86 +196,6 @@ func (client *ReservationTransactionsClient) listHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationTransactionsListResult); err != nil {
 		return ReservationTransactionsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByBillingProfilePager - List of transactions for reserved instances on billing profile scope. The refund transactions
-// are posted along with its purchase transaction (i.e. in the purchase billing month). For example, The refund is requested
-// in May 2021. This refund transaction will have event date as May 2021 but the billing month as April 2020 when the reservation
-// purchase was made. Note: ARM has a payload size limit of 12MB, so currently callers get 400 when the response size exceeds
-// the ARM limit. In such cases, API call should be made with smaller date ranges.
-//   - billingAccountID - BillingAccount ID
-//   - billingProfileID - Azure Billing Profile ID.
-//   - options - ReservationTransactionsClientListByBillingProfileOptions contains the optional parameters for the ReservationTransactionsClient.NewListByBillingProfilePager
-//     method.
-func (client *ReservationTransactionsClient) NewListByBillingProfilePager(billingAccountID string, billingProfileID string, options *ReservationTransactionsClientListByBillingProfileOptions) *runtime.Pager[ReservationTransactionsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReservationTransactionsClientListByBillingProfileResponse]{
-		More: func(page ReservationTransactionsClientListByBillingProfileResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ReservationTransactionsClientListByBillingProfileResponse) (ReservationTransactionsClientListByBillingProfileResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ReservationTransactionsClient.NewListByBillingProfilePager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listByBillingProfileCreateRequest(ctx, billingAccountID, billingProfileID, nextLink, options)
-			if err != nil {
-				return ReservationTransactionsClientListByBillingProfileResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReservationTransactionsClientListByBillingProfileResponse{}, err
-			}
-			return client.listByBillingProfileHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByBillingProfileCreateRequest creates the ListByBillingProfile request.
-func (client *ReservationTransactionsClient) listByBillingProfileCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, nextLink string, options *ReservationTransactionsClientListByBillingProfileOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/reservationTransactions"
-		if billingAccountID == "" {
-			return nil, errors.New("parameter billingAccountID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-		if billingProfileID == "" {
-			return nil, errors.New("parameter billingProfileID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listByBillingProfileHandleResponse handles the ListByBillingProfile response.
-func (client *ReservationTransactionsClient) listByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (ReservationTransactionsClientListByBillingProfileResponse, error) {
-	result := ReservationTransactionsClientListByBillingProfileResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ModernReservationTransactionsListResult); err != nil {
-		return ReservationTransactionsClientListByBillingProfileResponse{}, err
 	}
 	return result, nil
 }

@@ -6,11 +6,10 @@ package armhybridconnectivity_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
+	"log"
 )
 
 // Generated from example definition: 2027-01-01/GenerateGcpTemplate_Post_MaximumSet_Gen.json

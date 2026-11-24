@@ -367,6 +367,8 @@ func TestManagedIdentityClient_MTLSFactoryCleanup(t *testing.T) {
 	c := &managedIdentityClient{clientOptions: azcore.ClientOptions{Transport: base}}
 	child, err := c.NewMtlsClient()
 	require.NoError(t, err)
+	child.CloseIdleConnections()
+	assert.Zero(t, baseTransport.closed, "an unconfigured child must not close the caller's pool")
 	childTransport := &managedIdentityIdleTransport{}
 	require.NoError(t, child.ConfigureClient(func(got *http.Client) (*http.Client, error) {
 		require.Same(t, base, got)
@@ -376,6 +378,12 @@ func TestManagedIdentityClient_MTLSFactoryCleanup(t *testing.T) {
 	c.CloseIdleConnections()
 	assert.Equal(t, 1, childTransport.closed)
 	assert.Zero(t, baseTransport.closed, "MSAL cleanup must never close the caller's pool")
+
+	unchanged, err := c.NewMtlsClient()
+	require.NoError(t, err)
+	require.NoError(t, unchanged.ConfigureClient(func(got *http.Client) (*http.Client, error) { return got, nil }))
+	unchanged.CloseIdleConnections()
+	assert.Zero(t, baseTransport.closed, "an augmentation returning the base unchanged must not make it closable")
 }
 
 type managedIdentityIdleTransport struct {

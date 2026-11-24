@@ -51,9 +51,11 @@ type managedIdentityClient struct {
 	// configure the transport. MSAL applies certificate pinning and the redirect policy via
 	// ConfigureClient, preserving the azcore pipeline's middleware. Its client field holds the
 	// caller-supplied base until ConfigureClient replaces it with the augmented client.
-	configurableClient   configurableClient
-	clientOptions        azcore.ClientOptions
-	mtlsChild            bool
+	configurableClient configurableClient
+	clientOptions      azcore.ClientOptions
+	// ownsClient is true when ConfigureClient installed a client MSAL built, rather than a caller's base
+	// client that other code may share. Only an owned client's idle connections may be closed.
+	ownsClient           bool
 	attestationAvailable func() bool
 	disableMTLSPoP       bool
 }
@@ -189,7 +191,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 }
 
 func (c *managedIdentityClient) CloseIdleConnections() {
-	if c.mtlsChild && c.configurableClient.client != nil {
+	if c.ownsClient {
 		c.configurableClient.client.CloseIdleConnections()
 	}
 }
@@ -197,7 +199,7 @@ func (c *managedIdentityClient) CloseIdleConnections() {
 // NewMtlsClient gives MSAL a certificate-scoped pipeline without changing the shared
 // acquisition pipeline or the caller's transport.
 func (c *managedIdentityClient) NewMtlsClient() (managedidentity.ClientConfigurer, error) {
-	child := &managedIdentityClient{mtlsChild: true}
+	child := &managedIdentityClient{}
 	cp := c.clientOptions
 	if cp.Transport != nil {
 		base, ok := cp.Transport.(*http.Client)
@@ -236,6 +238,7 @@ func (c *managedIdentityClient) ConfigureClient(augment func(*http.Client) (*htt
 		return err
 	}
 	c.configurableClient.client = client
+	c.ownsClient = client != nil && client != base
 	return nil
 }
 

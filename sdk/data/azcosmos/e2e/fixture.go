@@ -12,9 +12,10 @@
 // Scope and known limitations of this port (see internal/e2e's implementation map for the exact
 // per-scenario reasons): fixtures translate the sessionSingleRegion and sessionTwoRegionsDelayed
 // account profiles, sdkDefault runtime/client settings, and proximity/preferred-region routing.
-// Active status certifies only the selected profile, not every profile a scenario declares. Other
-// axis definitions, including dynamicTopology, fail configuration validation rather than
-// silently running against a different emulator setup.
+// Active status certifies only the selected profile, not every profile a scenario declares.
+// Gateway V2 selection is supported only for the session-staleness, response-token-capture, and
+// capabilities scenarios. Other axis definitions, including dynamicTopology, fail configuration
+// validation rather than silently running against a different emulator setup.
 package e2e
 
 import (
@@ -96,7 +97,19 @@ func selectedProfile(t *testing.T, scenarioID string) fixtureProfile {
 		os.Getenv("AZURE_COSMOS_E2E_CLIENT"),
 	)
 	require.NoErrorf(t, err, "profile %q is not supported by the Go emulator fixture", profileID)
-	resolved.backend = scenario.Backends.HostedEmulatorGatewayV1
+	backend := os.Getenv("AZURE_COSMOS_E2E_BACKEND")
+	if backend == emulatorGatewayV2 {
+		switch scenarioID {
+		case "consistency.session-staleness", "consistency.response-token-capture", "management.capabilities":
+		default:
+			t.Skipf("scenario %q has not been verified with %s", scenarioID, backend)
+		}
+		resolved.backend = scenario.Backends.HostedEmulatorGatewayV2
+		resolved.backendID = emulatorGatewayV2
+	} else {
+		resolved.backend = scenario.Backends.HostedEmulatorGatewayV1
+		resolved.backendID = emulatorGatewayV1
+	}
 	resolved.scenarioID = scenarioID
 	return resolved
 }
@@ -110,7 +123,8 @@ const (
 	supportedTwoRegionDelayedAccountID = "sessionTwoRegionsDelayed"
 	supportedDefaultRuntimeID          = "sdkDefault"
 	supportedDefaultClientID           = "sdkDefault"
-	supportedEmulatorBackend           = "hostedEmulatorGatewayV1"
+	emulatorGatewayV1                  = "hostedEmulatorGatewayV1"
+	emulatorGatewayV2                  = "hostedEmulatorGatewayV2"
 )
 
 type fixtureProfile struct {
@@ -123,6 +137,7 @@ type fixtureProfile struct {
 	managementEndpointEnv string
 	clientOptions         *azcosmos.ClientOptions
 	backend               internale2e.Backend
+	backendID             string
 	scenarioID            string
 }
 
@@ -377,20 +392,22 @@ func requireProfileEmulator(t *testing.T, profile fixtureProfile) (endpoint, man
 }
 
 func validateEmulatorBackend(backend string) error {
-	if backend != "" && backend != supportedEmulatorBackend {
-		return fmt.Errorf("the Go emulator fixture supports only %q, not %q", supportedEmulatorBackend, backend)
+	if backend != "" && backend != emulatorGatewayV1 && backend != emulatorGatewayV2 {
+		return fmt.Errorf("the Go emulator fixture supports %q and %q, not %q", emulatorGatewayV1, emulatorGatewayV2, backend)
 	}
 	return nil
 }
 
 type emulatorCapabilities struct {
-	APIVersion int `json:"apiVersion"`
-	Protocols  struct {
+	APIVersion      int    `json:"apiVersion"`
+	EmulatorVersion string `json:"emulatorVersion"`
+	Protocols       struct {
 		GatewayV1 bool `json:"gatewayV1"`
 		GatewayV2 bool `json:"gatewayV2"`
 	} `json:"protocols"`
 	DataPlane         []string `json:"dataPlane"`
 	ManagementActions []string `json:"managementActions"`
+	Limitations       []string `json:"limitations"`
 }
 
 func probeEmulatorCapabilities(t *testing.T, profile fixtureProfile, endpoint, managementEndpoint string) {
@@ -402,6 +419,28 @@ func probeEmulatorCapabilities(t *testing.T, profile fixtureProfile, endpoint, m
 	var account emulatorAccount
 	require.NoError(t, readManagementDocument(t, managementEndpoint, "account", &account))
 	require.NoError(t, validateEmulatorAccount(profile, endpoint, account))
+}
+
+type emulatorGatewayRequests struct {
+	Gateway   uint64 `json:"gatewayRequests"`
+	GatewayV2 uint64 `json:"gateway20Requests"`
+}
+
+func readGatewayRequests(t *testing.T, managementEndpoint string) emulatorGatewayRequests {
+	t.Helper()
+	var requests emulatorGatewayRequests
+	require.NoError(t, readManagementDocument(t, managementEndpoint, "health", &requests))
+	return requests
+}
+
+func assertGatewayRequests(t *testing.T, profile fixtureProfile, before, after emulatorGatewayRequests) {
+	t.Helper()
+	if profile.backendID == emulatorGatewayV2 {
+		require.Greater(t, after.GatewayV2, before.GatewayV2, "scenario must use Gateway V2")
+	} else {
+		require.Greater(t, after.Gateway, before.Gateway, "scenario must use Gateway V1")
+		require.Equal(t, before.GatewayV2, after.GatewayV2, "Gateway V1 scenario must not use Gateway V2")
+	}
 }
 
 func readManagementDocument(t *testing.T, managementEndpoint, path string, target any) error {
@@ -462,16 +501,19 @@ func validateEmulatorCapabilities(backend internale2e.Backend, capabilities emul
 	if capabilities.APIVersion != 1 {
 		return fmt.Errorf("unsupported emulator capabilities API version %d", capabilities.APIVersion)
 	}
-	if backend.Applicability != internale2e.ApplicabilityRequired && backend.Applicability != internale2e.ApplicabilitySupported {
+	if backend.Applicability != internale2e.ApplicabilityRequired && backend.Applicability != internale2e.ApplicabilitySupported && backend.Applicability != internale2e.ApplicabilitySimulated {
 		return fmt.Errorf("selected hosted emulator backend applicability is %q", backend.Applicability)
 	}
-	if backend.Fidelity != "full" {
-		return fmt.Errorf("selected hosted emulator backend fidelity is %q, not full", backend.Fidelity)
+	if (backend.Applicability == internale2e.ApplicabilitySimulated && backend.Fidelity != "simulated") ||
+		(backend.Applicability != internale2e.ApplicabilitySimulated && backend.Fidelity != "full") {
+		return fmt.Errorf("selected hosted emulator backend fidelity %q does not match applicability %q", backend.Fidelity, backend.Applicability)
 	}
 	if !capabilities.Protocols.GatewayV1 {
 		return fmt.Errorf("selected hostedEmulatorGatewayV1 backend is not available")
 	}
 	available := make(map[string]bool, len(capabilities.DataPlane)+len(capabilities.ManagementActions)+2)
+	// A successfully decoded versioned document establishes the capabilities endpoint itself.
+	available["capabilities"] = true
 	for _, capability := range capabilities.DataPlane {
 		available[capability] = true
 	}

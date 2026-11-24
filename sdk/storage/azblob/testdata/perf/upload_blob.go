@@ -118,6 +118,7 @@ type uploadPerfTest struct {
 
 // NewPerfTest is called once per goroutine
 func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	options.SizeBytes = g.size
 	u := &uploadPerfTest{
 		uploadTestGlobal: g,
 		PerfTestOptions:  *options,

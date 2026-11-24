@@ -93,6 +93,7 @@ func TestUploadHarnessLifecycle(t *testing.T) {
 	options := perf.PerfTestOptions{Name: "worker"}
 	worker, err := global.NewPerfTest(context.Background(), &options)
 	require.NoError(t, err)
+	require.Equal(t, int64(4), options.SizeBytes)
 	require.NoError(t, worker.Run(context.Background()))
 	require.NoError(t, worker.Cleanup(context.Background()))
 	require.NoError(t, global.GlobalCleanup(context.Background()))
@@ -128,6 +129,7 @@ func TestDownloadHarnessLifecycle(t *testing.T) {
 	options := perf.PerfTestOptions{Name: "worker"}
 	worker, err := global.NewPerfTest(context.Background(), &options)
 	require.NoError(t, err)
+	require.Equal(t, int64(4), options.SizeBytes)
 	require.NoError(t, worker.Run(context.Background()))
 	require.NoError(t, worker.Cleanup(context.Background()))
 	require.NoError(t, global.GlobalCleanup(context.Background()))
@@ -148,6 +150,7 @@ func TestListHarnessLifecycleAndPageSize(t *testing.T) {
 	options := perf.PerfTestOptions{Name: "worker"}
 	worker, err := global.NewPerfTest(context.Background(), &options)
 	require.NoError(t, err)
+	require.Zero(t, options.SizeBytes)
 	require.NoError(t, worker.Run(context.Background()))
 	require.NoError(t, worker.Cleanup(context.Background()))
 	require.NoError(t, global.GlobalCleanup(context.Background()))

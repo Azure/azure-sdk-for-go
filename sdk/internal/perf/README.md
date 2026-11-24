@@ -41,6 +41,12 @@ shown live in the status line (`CPU`, `Memory(MiB)`) and as
 Latency percentile collection retains a bounded sample across all workers to
 avoid memory growth during long, high-throughput runs.
 
+Per-operation JSON results include `Time` (latency in milliseconds) and `Size`,
+the payload size in bytes reported by
+each worker through `PerfTestOptions.SizeBytes`. Blob upload and download tests
+report their configured `--size` for every transfer method. Tests without a
+payload size, such as blob listing, report zero.
+
 ## Testing the azblob Performance Tests
 
 The following examples exercise upload, download, and list operations while

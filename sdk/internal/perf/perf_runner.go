@@ -781,7 +781,7 @@ func (r *perfRunner) runTestForDuration(parent context.Context, p PerfTest, opts
 			localLatency.Add(operationDuration)
 			localCallType.Add("operation", operationDuration)
 			if resultsFilePath != "" && enableOperationLatency {
-				localResults.Add(r.name, operationDuration, 0)
+				localResults.Add(r.name, operationDuration, opts.SizeBytes)
 			}
 		}
 

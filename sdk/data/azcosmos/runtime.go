@@ -33,6 +33,8 @@ type Runtime struct {
 	native  *nativeRuntime
 	clients int
 	closed  bool
+	// Legacy management submissions cannot add typed throughput without replacing custom headers.
+	hasCustomHeaders bool
 }
 
 var globalRuntime struct {
@@ -75,7 +77,7 @@ func NewRuntime(options *RuntimeOptions) (*Runtime, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Runtime{native: native}, nil
+	return &Runtime{native: native, hasCustomHeaders: len(config.Operation.CustomHeaders) > 0}, nil
 }
 
 // Close releases the owner's runtime reference and prevents new client attachments.

@@ -13,12 +13,58 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
+
+func ExampleContainerClient_GetFeedRanges() {
+	container, closeClient := exampleContainer()
+	defer closeClient()
+	ctx := context.TODO()
+	discovered, err := container.GetFeedRanges(ctx, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	var workers sync.WaitGroup
+	type checkpoint struct {
+		feedRange azcosmos.FeedRange
+		token     string
+		err       error
+	}
+	completed := make(chan checkpoint, len(discovered.FeedRanges))
+	for _, feedRange := range discovered.FeedRanges {
+		workers.Go(func() {
+			token, err := func() (token string, err error) {
+				scope := azcosmos.NewFeedScopeForFeedRange(feedRange)
+				pager := container.NewChangeFeedPager(scope, azcosmos.NewChangeFeedStartFromBeginning(), nil)
+				defer func() { err = errors.Join(err, pager.Close()) }()
+				page, err := pager.NextPage(ctx)
+				if err != nil {
+					return "", err
+				}
+				log.Printf("process %d envelopes for one range", len(page.Items))
+				return pager.ContinuationToken(ctx)
+			}()
+			completed <- checkpoint{feedRange: feedRange, token: token, err: err}
+		})
+	}
+	workers.Wait()
+	close(completed)
+	checkpoints := make(map[string]string)
+	for result := range completed {
+		if result.err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", result.err)
+		}
+		// Replace this in-memory store with durable application storage.
+		checkpoints[result.feedRange.String()] = result.token
+	}
+}
 
 type catalogItem struct {
 	ID           string `json:"id"`
@@ -274,7 +320,9 @@ func ExampleClient_CreateDatabase() {
 
 	databaseResponse, err := client.CreateDatabase(context.TODO(), azcosmos.DatabaseProperties{
 		ID: "catalog",
-	}, nil)
+	}, &azcosmos.CreateDatabaseOptions{
+		Throughput: &azcosmos.ThroughputProperties{ManualThroughput: to.Ptr(uint64(400))},
+	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -300,10 +348,44 @@ func ExampleClient_CreateDatabase() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if _, err := container.Read(context.TODO(), nil); err != nil {
+	read, err := container.Read(context.TODO(), nil)
+	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
+	read.ContainerProperties.DefaultTimeToLive = to.Ptr(int32(3600))
+	if _, err := container.Replace(context.TODO(), read.ContainerProperties, &azcosmos.ReplaceContainerOptions{
+		IfMatchETag: read.ContainerProperties.ETag,
+	}); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	pager := database.NewQueryContainersPager(azcosmos.NewQuery("SELECT * FROM c"), nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+		log.Printf("discovered %d containers", len(page.Items))
+	}
+	if err := pager.Close(); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	poller, err := database.BeginReplaceThroughput(context.TODO(), azcosmos.ThroughputProperties{
+		ManualThroughput: to.Ptr(uint64(600)),
+	}, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	changed, err := poller.PollUntilDone(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	log.Printf("updated shared throughput to %d RU/s", *changed.ThroughputProperties.ManualThroughput)
 	if _, err := container.Delete(context.TODO(), nil); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)

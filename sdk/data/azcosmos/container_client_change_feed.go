@@ -11,8 +11,9 @@ import (
 
 // NewChangeFeedPager reads changes for an explicit scope and initial position.
 // Construction performs no I/O; NextPage reports argument errors. Nil options use LatestVersion.
-// Use a complete partition key or a full-container scope. Hierarchical partition key prefixes
+// Use a complete partition key, explicit feed range or full-container scope. Hierarchical key prefixes
 // have not been verified against the live service for change-feed reads.
+// Unsupported feed ranges fail explicitly rather than widening to physical partitions.
 // Defer Close. Empty and HTTP 304 pages remain usable; callers choose when to poll again.
 func (c *ContainerClient) NewChangeFeedPager(scope FeedScope, startFrom ChangeFeedStartFrom, options *ChangeFeedOptions) *ChangeFeedPager {
 	req, err := newChangeFeedRequest(scope, startFrom, options)

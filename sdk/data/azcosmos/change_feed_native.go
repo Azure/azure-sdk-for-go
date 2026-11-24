@@ -20,7 +20,7 @@ import (
 
 func (c *Client) openChangeFeed(ctx context.Context, req *changeFeedRequest) (changeFeedCursor, Response, error) {
 	driver, container, setup, err := c.resolveFeedScope(ctx, req.databaseID, req.containerID,
-		req.partitionKey, req.fullContainer, req.options.Operation)
+		req.partitionKey, req.fullContainer || req.feedRange.serialized != "", req.options.Operation)
 	if err != nil {
 		return nil, setup, err
 	}
@@ -40,8 +40,11 @@ func (c *Client) openChangeFeed(ctx context.Context, req *changeFeedRequest) (ch
 func buildNativeChangeFeedRequest(req *changeFeedRequest, container *C.cosmos_container_ref_t) (C.cosmos_cursor_request_t, func(), C.cosmos_status_code_t) {
 	var request C.cosmos_cursor_request_t
 	C.cosmos_cursor_request_init(&request) //nolint:gocritic // dupSubExpr targets cgo-generated code.
-	common, freeCommon, status := buildNativeFeedRequest(req.partitionKey, req.fullContainer,
+	common, freeCommon, status := buildNativeFeedRequest(req.partitionKey, req.fullContainer || req.feedRange.serialized != "",
 		req.options.Feed, req.options.SessionToken, req.options.Operation, container)
+	if status == 0 && req.feedRange.serialized != "" {
+		common, freeCommon, status = bindNativeFeedRange(req.feedRange, common, freeCommon)
+	}
 	request.operation = common
 	request.change_feed_mode = 1
 	if req.options.Mode == ChangeFeedModeAllVersionsAndDeletes {

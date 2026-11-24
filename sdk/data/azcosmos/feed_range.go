@@ -50,6 +50,7 @@ func (r FeedRange) MaxExclusive() string { return r.maxExclusive }
 
 // IsLogicalPartition reports the native range discriminator.
 // Public FeedRange values are normalized to persistable EPK ranges and return false.
+// Use NewFeedScopeForPartitionKey when logical-key identity is required for routing.
 func (r FeedRange) IsLogicalPartition() bool { return r.logical }
 
 // IsSubsetOf reports whether the native driver considers r contained in other.
@@ -123,7 +124,7 @@ func (c *ContainerClient) GetFeedRanges(ctx context.Context, options *GetFeedRan
 
 // GetFeedRangeForPartitionKey constructs a range using the container's native key definition.
 // Complete keys and hierarchical prefixes are normalized to persistable EPK bounds.
-// Use the original partition key when logical-key identity is required for reads.
+// Use NewFeedScopeForPartitionKey to preserve logical-key identity for reads.
 func (c *ContainerClient) GetFeedRangeForPartitionKey(ctx context.Context, partitionKey PartitionKey) (FeedRangeResponse, error) {
 	if err := validateItemArguments(partitionKey); err != nil {
 		return FeedRangeResponse{}, err

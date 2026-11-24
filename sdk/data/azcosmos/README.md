@@ -573,23 +573,48 @@ exactly-once delivery.
 
 ### Feed ranges (unpublished native extension)
 
-Feed-range discovery requires an unpublished native extension. The default build pins published
-native v0.3.0 and returns a prerequisite error for these APIs. The `azcosmos_native_preview`
-build tag is a local integration path requiring a matching generated header and platform library.
+Feed-range bindings are under development for [#28056](https://github.com/Azure/azure-sdk-for-go/issues/28056)
+and require the additive native contract in
+[Azure/azure-sdk-for-rust#5606](https://github.com/Azure/azure-sdk-for-rust/issues/5606).
+**The default build still pins published native v0.3.0 and cannot execute these APIs.**
+It returns an explicit prerequisite error instead of silently reading the full container.
+The `azcosmos_native_preview` build tag is only a local integration path and must be linked
+against the matching generated header and platform library. It is not a release-ready fallback.
 
 `ContainerClient.GetFeedRanges(ctx, options)` returns copied `FeedRange` values in native order.
 `ForceRefresh` is forwarded to the driver's routing-map cache; Go owns no topology cache.
-A failed forced refresh can return cached success
-([Azure/azure-sdk-for-rust#5637](https://github.com/Azure/azure-sdk-for-rust/issues/5637)).
-`NewFeedRange(minInclusive, maxExclusive)` validates explicit EPK bounds through native code.
-`GetFeedRangeForPartitionKey` uses the container's partition definition and returns setup-read
-metadata. Equal-bound point subset and overlap comparisons inherit native limitations
+With a warm cache, a failed forced refresh can return cached success rather than the refresh
+error ([Azure/azure-sdk-for-rust#5637](https://github.com/Azure/azure-sdk-for-rust/issues/5637)).
+`NewFeedRange(minInclusive, maxExclusive)` validates explicit half-open EPK bounds through
+native code. `GetFeedRangeForPartitionKey` uses the container's partition definition and returns
+setup-read metadata. Bounds inspection, subset and overlap checks use native semantics.
+Equal-bound point subset/overlap comparisons inherit native boundary limitations
 ([Azure/azure-sdk-for-rust#5638](https://github.com/Azure/azure-sdk-for-rust/issues/5638)).
+Neither limitation is corrected or reimplemented in Go.
 
-`FeedRange.String()` and `ParseFeedRange` use the driver's opaque representation, which preserves
-EPK bounds, not logical partition-key identity. Equal bounds denote one EPK, not an empty interval.
-The copied values own no native handles and remain valid after the discovery client is closed.
-Range-scoped query and change-feed reads are not available in this layer.
+`FeedRange.String()` and `ParseFeedRange` use the driver's stable opaque representation.
+That format preserves bounds, **not logical partition-key identity**: all public range values,
+including those constructed from a key, are normalized to EPK scope. Equal bounds denote one EPK,
+not an empty interval. For logical-key routing use `NewFeedScopeForPartitionKey` with the original
+partition key instead. Go values own no native handles
+and remain valid after the discovery client is closed.
+
+Use `NewFeedScopeForFeedRange` with the existing query or change-feed pager. Save each range
+with its own continuation token, container, mode, and original start; do not substitute a
+physical partition ID or apply one worker's token to every range. Routing, checkpoint compatibility,
+split and merge recovery belong to the native planner. Unsupported sub-partition intervals must
+fail explicitly, never widen. The current native build rejects equal-bound EPK point scopes
+before data I/O (query 500/20302, change feed 503/20305); use logical-key scope for point partitions.
+Scripted checkpoint tests cover both same-client split recovery and fresh-client child-range
+resumption, but scripted and local native checks are not live split/merge evidence.
+The compiling `ExampleContainerClient_GetFeedRanges` assigns one change-feed reader per range.
+
+Feed-range scopes extend the change-feed reader landed in
+[#27709](https://github.com/Azure/azure-sdk-for-go/pull/27709), retaining its typed helpers,
+tests, and checkpoint guidance.
+Before enabling the default path, publish matching macOS arm64 and Linux amd64 native modules,
+generated header and checksums with source provenance, then update both Go module pins,
+`nativeDriverVersion`, and compatibility checks together.
 
 ### Running the end-to-end tests
 

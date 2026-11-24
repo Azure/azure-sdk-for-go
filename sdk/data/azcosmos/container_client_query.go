@@ -229,20 +229,19 @@ type queryRequest struct {
 	body          []byte
 	partitionKey  PartitionKey
 	fullContainer bool
+	feedRange     FeedRange
 	options       QueryOptions
 }
 
 func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (queryRequest, error) {
-	req := queryRequest{partitionKey: scope.partitionKey, fullContainer: scope.fullContainer}
+	req := queryRequest{partitionKey: scope.partitionKey, fullContainer: scope.fullContainer, feedRange: scope.feedRange}
 	var err error
 	req.body, err = query.body()
 	if err != nil {
 		return req, err
 	}
-	if !scope.fullContainer {
-		if err := validateItemArguments(scope.partitionKey); err != nil {
-			return req, err
-		}
+	if err := scope.validate(); err != nil {
+		return req, err
 	}
 	if options != nil {
 		req.options = *options

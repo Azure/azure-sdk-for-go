@@ -25,7 +25,7 @@ func (c *Client) queryContext(ctx context.Context, options OperationOptions) (co
 
 func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor, Response, error) {
 	driver, container, setup, err := c.resolveFeedScope(ctx, req.databaseID, req.containerID,
-		req.partitionKey, req.fullContainer, req.options.Operation)
+		req.partitionKey, req.fullContainer || req.feedRange.serialized != "", req.options.Operation)
 	if err != nil {
 		return nil, setup, err
 	}
@@ -96,8 +96,11 @@ func (result completionResult) queryPage(setup Response) (queryPage, error) {
 }
 
 func buildNativeQueryRequest(req *queryRequest, options OperationOptions, container *C.cosmos_container_ref_t) (C.cosmos_operation_request_t, func(), C.cosmos_status_code_t) {
-	request, freeFeed, status := buildNativeFeedRequest(req.partitionKey, req.fullContainer,
+	request, freeFeed, status := buildNativeFeedRequest(req.partitionKey, req.fullContainer || req.feedRange.serialized != "",
 		req.options.Feed, req.options.SessionToken, options, container)
+	if status == 0 && req.feedRange.serialized != "" {
+		request, freeFeed, status = bindNativeFeedRange(req.feedRange, request, freeFeed)
+	}
 	if status != 0 {
 		return request, freeFeed, status
 	}

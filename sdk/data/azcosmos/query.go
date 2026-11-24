@@ -63,6 +63,24 @@ func (q Query) body() ([]byte, error) {
 type FeedScope struct {
 	partitionKey  PartitionKey
 	fullContainer bool
+	feedRange     FeedRange
+	rangeScope    bool
+}
+
+// NewFeedScopeForFeedRange targets exactly the supplied effective-partition-key interval.
+// Unsupported sub-partition scopes return a native error, never a widened read.
+func NewFeedScopeForFeedRange(feedRange FeedRange) FeedScope {
+	return FeedScope{feedRange: feedRange, rangeScope: true}
+}
+
+func (s FeedScope) validate() error {
+	if s.rangeScope {
+		return s.feedRange.validate()
+	}
+	if !s.fullContainer {
+		return validateItemArguments(s.partitionKey)
+	}
+	return nil
 }
 
 // NewFeedScopeForPartitionKey targets one logical partition or a hierarchical key prefix.

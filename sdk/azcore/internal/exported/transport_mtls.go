@@ -103,22 +103,30 @@ func mtlsTransportFor(base *http.Transport, cert *tls.Certificate) (*http.Transp
 	// key handle after a previous one was closed. New handshakes therefore present the most recently
 	// acquired copy, while established connections, already authenticated, remain in the pool.
 	leaf := cert.Certificate[0]
+	// equal for the same base transport, without keeping it reachable
 	key := weak.Make(base)
 	c := &mtlsTransports
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.tick++
+
+	// derived is nil the first time base is used; reading a nil map is safe and simply misses
 	derived := c.bases[key]
 	if t := derived[string(leaf)]; t != nil {
+		// cache hit: present this copy on new handshakes and mark the entry recently used
 		t.cert.Store(cert)
 		t.lastUsed = c.tick
 		return t.tr, nil
 	}
+
+	// cache miss: derive a transport for this certificate
 	entry, err := newMTLSTransport(base)
 	if err != nil {
 		return nil, err
 	}
+
 	if derived == nil {
+		// first certificate for this base: create its map and remove the map when base is collected
 		derived = map[string]*mtlsTransport{}
 		if c.bases == nil {
 			c.bases = map[weak.Pointer[http.Transport]]map[string]*mtlsTransport{}
@@ -127,7 +135,9 @@ func mtlsTransportFor(base *http.Transport, cert *tls.Certificate) (*http.Transp
 		// arg must not reference base, or base would never be collected
 		runtime.AddCleanup(base, removeMTLSTransports, key)
 	}
+
 	if len(derived) >= mtlsTransportsPerBase {
+		// at capacity: evict the least recently used entry and close its idle connections
 		var lru string
 		var oldest *mtlsTransport
 		for k, t := range derived {
@@ -138,6 +148,8 @@ func mtlsTransportFor(base *http.Transport, cert *tls.Certificate) (*http.Transp
 		oldest.tr.CloseIdleConnections()
 		delete(derived, lru)
 	}
+
+	// store the certificate before publishing the entry, since GetClientCertificate reads it
 	entry.cert.Store(cert)
 	entry.lastUsed = c.tick
 	derived[string(leaf)] = entry

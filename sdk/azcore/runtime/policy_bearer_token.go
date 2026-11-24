@@ -31,6 +31,9 @@ import (
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
 	mainResource *temporal.Resource[exported.AccessToken, acquiringResourceState]
+	// mtlsResource caches the token acquired for requests whose TokenRequestOptions set EnableMTLSPoP.
+	// The token may be bound or, when the credential can't bind, bearer. It's kept separate from
+	// mainResource so a request that didn't set EnableMTLSPoP never receives a cached bound token.
 	mtlsResource *temporal.Resource[exported.AccessToken, acquiringResourceState]
 	// the following fields are read-only
 	authzHandler policy.AuthorizationHandler

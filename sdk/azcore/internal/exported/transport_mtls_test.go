@@ -232,6 +232,9 @@ func TestTransportPolicyMTLSUnsupportedConfiguration(t *testing.T) {
 	_, err = (&transportPolicy{trans: srv}).Do(req)
 	require.ErrorContains(t, err, "HTTPS", "bound requests must require HTTPS independently of the client preference")
 	require.Zero(t, srv.Requests())
+	req.Raw().URL.Scheme = "HTTPS"
+	_, err = (&transportPolicy{trans: srv}).Do(req)
+	require.ErrorContains(t, err, "*http.Client", "the scheme check must be case-insensitive")
 	_, err = (&transportPolicy{}).clientFor(&tls.Certificate{})
 	require.ErrorContains(t, err, "private key")
 	_, err = (&transportPolicy{}).clientFor(nil)

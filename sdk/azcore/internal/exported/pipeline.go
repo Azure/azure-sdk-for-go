@@ -6,6 +6,7 @@ package exported
 import (
 	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/sanitizer"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
@@ -55,7 +56,7 @@ func (tp *transportPolicy) Do(req *Request) (*http.Response, error) {
 	trans := tp.trans
 	var mtls MTLSRequest
 	if req.OperationValue(&mtls) && mtls.Certificate != nil {
-		if req.Raw().URL.Scheme != "https" {
+		if !strings.EqualFold(req.Raw().URL.Scheme, "https") {
 			return nil, errorinfo.NonRetriableError(errors.New("mTLS PoP requires HTTPS"))
 		}
 		client, err := tp.clientFor(mtls.Certificate)

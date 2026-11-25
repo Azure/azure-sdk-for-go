@@ -5,7 +5,7 @@
 package armdataprotection
 
 const (
-	version20260701 string = "2026-07-01"
+	version20260831Preview string = "2026-08-31-preview"
 )
 
 type AKSVolumeTypes string
@@ -863,6 +863,24 @@ func PossibleValidationTypeValues() []ValidationType {
 	return []ValidationType{
 		ValidationTypeDeepValidation,
 		ValidationTypeShallowValidation,
+	}
+}
+
+// VaultMappingState - State of a cross-tenant vault mapping.
+type VaultMappingState string
+
+const (
+	// VaultMappingStateActive - The cross-tenant vault mapping is active.
+	VaultMappingStateActive VaultMappingState = "Active"
+	// VaultMappingStateInactive - The cross-tenant vault mapping is inactive.
+	VaultMappingStateInactive VaultMappingState = "Inactive"
+)
+
+// PossibleVaultMappingStateValues returns the possible values for the VaultMappingState const type.
+func PossibleVaultMappingStateValues() []VaultMappingState {
+	return []VaultMappingState{
+		VaultMappingStateActive,
+		VaultMappingStateInactive,
 	}
 }
 

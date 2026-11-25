@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/EmergingIssues_Get.json
+// Generated from example definition: 2026-07-01/EmergingIssues_Get.json
 func ExampleEmergingIssuesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleEmergingIssuesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/EmergingIssues_List.json
+// Generated from example definition: 2026-07-01/EmergingIssues_List.json
 func ExampleEmergingIssuesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

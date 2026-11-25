@@ -102,6 +102,10 @@ type PerfTestOptions struct {
 	// Name is the name of an individual test
 	Name string
 
+	// SizeBytes is the payload size in bytes per operation. Tests that do not
+	// transfer a payload leave this at zero.
+	SizeBytes int64
+
 	// parallelIndex is the index of the goroutine
 	parallelIndex int
 

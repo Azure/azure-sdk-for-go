@@ -56,10 +56,13 @@ func TestUploadMethods(t *testing.T) {
 	for _, method := range []string{"single", "buffer", "stream"} {
 		t.Run(method, func(t *testing.T) {
 			transport := &transferTransport{}
-			client := newTransferContainer(t, transport)
+			installHarnessFactory(t, transport)
 			global := &uploadTestGlobal{size: 4, payload: []byte("data"), randomSeed: []byte("data")}
-			test := &uploadPerfTest{uploadTestGlobal: global, blobClient: client.NewBlockBlobClient("blob")}
 			uploadMethod = method
+			options := perf.PerfTestOptions{Name: "worker"}
+			test, err := global.NewPerfTest(context.Background(), &options)
+			require.NoError(t, err)
+			require.Equal(t, int64(4), options.SizeBytes)
 
 			require.NoError(t, test.Run(context.Background()))
 			require.Positive(t, transport.calls.Load())
@@ -81,15 +84,14 @@ func TestDownloadMethods(t *testing.T) {
 	for _, method := range []string{"stream", "buffer"} {
 		t.Run(method, func(t *testing.T) {
 			transport := &transferTransport{}
-			client := newTransferContainer(t, transport)
+			installHarnessFactory(t, transport)
 			global := &downloadTestGlobal{size: 4}
-			test := &downloadPerfTest{
-				downloadTestGlobal: global,
-				PerfTestOptions:    perf.PerfTestOptions{},
-				blobClient:         client.NewBlockBlobClient("blob").BlobClient(),
-				buffer:             make([]byte, 4),
-			}
 			downloadMethod = method
+			options := perf.PerfTestOptions{Name: "worker"}
+			worker, err := global.NewPerfTest(context.Background(), &options)
+			require.NoError(t, err)
+			require.Equal(t, int64(4), options.SizeBytes)
+			test := worker.(*downloadPerfTest)
 
 			require.NoError(t, test.Run(context.Background()))
 			require.Positive(t, transport.calls.Load())

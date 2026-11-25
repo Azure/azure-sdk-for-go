@@ -27,8 +27,8 @@ var operationResultsSeed int64
 type operationResult struct {
 	Timestamp time.Time `json:"timestamp"`
 	Operation string    `json:"operation"`
-	LatencyMs float64   `json:"latencyMs"`
-	SizeBytes int64     `json:"sizeBytes"`
+	LatencyMs float64   `json:"Time"`
+	SizeBytes int64     `json:"Size"`
 }
 
 type operationResultsCollector struct {

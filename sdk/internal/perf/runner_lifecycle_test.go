@@ -5,7 +5,11 @@ package perf
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -115,6 +119,40 @@ func TestRunnerAggregatesIterations(t *testing.T) {
 	elapsed := time.Duration(atomic.LoadInt64((*int64)(&runner.allOptions.opts[0].runElapsed)))
 	runner.allOptions.mu.Unlock()
 	require.GreaterOrEqual(t, elapsed, 1900*time.Millisecond)
+}
+
+func TestRunnerWritesOperationSizes(t *testing.T) {
+	for _, size := range []int64{0, 10240, 5 * 1024 * 1024 * 1024} {
+		t.Run(fmt.Sprint(size), func(t *testing.T) {
+			configureRunnerTest(t)
+			enableOperationLatency = true
+			resultsFilePath = filepath.Join(t.TempDir(), "results.json")
+			runner := newLifecycleRunner(&lifecycleGlobal{})
+			options := newPerfTestOptions("worker")
+			options.SizeBytes = size
+			worker := &lifecycleTest{global: &lifecycleGlobal{}}
+			runner.tests = []PerfTest{worker}
+			runner.allOptions.opts = []*PerfTestOptions{&options}
+			tokens := make(chan struct{}, 2)
+			tokens <- struct{}{}
+			tokens <- struct{}{}
+			close(tokens)
+
+			require.NoError(t, runner.runWorkerPhase(context.Background(), worker, 0, false, tokens))
+			require.NoError(t, runner.operationResults.WriteJSON(resultsFilePath))
+			raw, err := os.ReadFile(resultsFilePath)
+			require.NoError(t, err)
+			require.Contains(t, string(raw), `"Time":`)
+			require.Contains(t, string(raw), `"Size":`)
+			var rows []operationResult
+			require.NoError(t, json.Unmarshal(raw, &rows))
+			require.Len(t, rows, 2)
+			for _, row := range rows {
+				require.Equal(t, "LifecycleTest", row.Operation)
+				require.Equal(t, size, row.SizeBytes)
+			}
+		})
+	}
 }
 
 func TestRunnerReturnsWorkerErrorAndCleansUp(t *testing.T) {

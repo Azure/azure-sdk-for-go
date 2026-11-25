@@ -109,6 +109,7 @@ type downloadPerfTest struct {
 
 // NewPerfTest is called once per goroutine
 func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTestOptions) (perf.PerfTest, error) {
+	options.SizeBytes = int64(g.size)
 	d := &downloadPerfTest{
 		downloadTestGlobal: g,
 		PerfTestOptions:    *options,

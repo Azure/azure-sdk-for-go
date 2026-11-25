@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-02/SbomComponents_ListByFirmware_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/SbomComponents_ListByFirmware_MaximumSet_Gen.json
 func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirmwareMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirm
 	}
 }
 
-// Generated from example definition: 2025-08-02/SbomComponents_ListByFirmware_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/SbomComponents_ListByFirmware_MinimumSet_Gen.json
 func ExampleSbomComponentsClient_NewListByFirmwarePager_sbomComponentsListByFirmwareMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

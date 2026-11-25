@@ -103,6 +103,14 @@ func (c *ClientFactory) NewSummariesClient() *SummariesClient {
 	}
 }
 
+// NewUnsafeFunctionCallsClient creates a new instance of UnsafeFunctionCallsClient.
+func (c *ClientFactory) NewUnsafeFunctionCallsClient() *UnsafeFunctionCallsClient {
+	return &UnsafeFunctionCallsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewUsageMetricsClient creates a new instance of UsageMetricsClient.
 func (c *ClientFactory) NewUsageMetricsClient() *UsageMetricsClient {
 	return &UsageMetricsClient{

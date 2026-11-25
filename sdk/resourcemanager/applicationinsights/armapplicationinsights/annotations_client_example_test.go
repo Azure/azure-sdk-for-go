@@ -20,14 +20,14 @@ func ExampleAnnotationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewAnnotationsClient().Create(ctx, "my-resource-group", "my-component", armapplicationinsights.Annotation{
 		AnnotationName: to.Ptr("TestAnnotation"),
 		Category:       to.Ptr("Text"),
-		EventTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657Z"); return t }()),
+		EventTime:      to.Ptr(time.Date(2018, time.January, 31, 13, 41, 38, 657000000, time.UTC)),
 		ID:             to.Ptr("444e2c08-274a-4bbb-a89e-d77bb720f44a"),
 		Properties:     to.Ptr("{\"Comments\":\"Testing\",\"Label\":\"Success\"}"),
 	}, nil)
@@ -42,7 +42,7 @@ func ExampleAnnotationsClient_Create() {
 	// 		{
 	// 			AnnotationName: to.Ptr("TestAnnotation"),
 	// 			Category: to.Ptr("Text"),
-	// 			EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657+00:00"); return t}()),
+	// 			EventTime: to.Ptr(time.Date(2018, time.January, 31, 13, 41, 38, 657000000, time.UTC)),
 	// 			ID: to.Ptr("444e2c08-274a-4bbb-a89e-d77bb720f44a"),
 	// 			Properties: to.Ptr("{\"Comments\":\"Testing\",\"Label\":\"Success\"}"),
 	// 		},
@@ -57,7 +57,7 @@ func ExampleAnnotationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -79,7 +79,7 @@ func ExampleAnnotationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -95,7 +95,7 @@ func ExampleAnnotationsClient_Get() {
 	// 		{
 	// 			AnnotationName: to.Ptr("TestAnnotation"),
 	// 			Category: to.Ptr("Text"),
-	// 			EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657+00:00"); return t}()),
+	// 			EventTime: to.Ptr(time.Date(2018, time.January, 31, 13, 41, 38, 657000000, time.UTC)),
 	// 			ID: to.Ptr("444e2c08-274a-4bbb-a89e-d77bb720f44a"),
 	// 			Properties: to.Ptr("{\"Comments\":\"Testing\",\"Label\":\"Success\"}"),
 	// 		},
@@ -110,7 +110,7 @@ func ExampleAnnotationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armapplicationinsights.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armapplicationinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -131,14 +131,14 @@ func ExampleAnnotationsClient_NewListPager() {
 		// 			{
 		// 				AnnotationName: to.Ptr("InsightsPortal-20180126-1"),
 		// 				Category: to.Ptr("Deployment"),
-		// 				EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-29T20:30:31+00:00"); return t}()),
+		// 				EventTime: to.Ptr(time.Date(2018, time.January, 29, 20, 30, 31, 0, time.UTC)),
 		// 				ID: to.Ptr("4de4524f-fca5-44a8-b7e6-a67d5107796e"),
 		// 				Properties: to.Ptr("{\"ReleaseDefinitionName\":\"InsightsPortal-PPEProd-KeyVault\",\"ReleaseRequestedFor\":\"6a970e9b-6220-47f3-a78c-b8be97506698\",\"TeamFoundationCollectionUri\":\"https://mseng.visualstudio.com/\",\"BuildNumber\":\"20180126.1\",\"ReleaseDescription\":\"Triggered by InsightsPortal_master_PROD1_vNext 20180126.1.\",\"ReleaseId\":\"31075\",\"ReleaseWebUrl\":\"https://mseng.visualstudio.com/96a62c4a-58c2-4dbb-94b6-5979ebc7f2af/_release?releaseId=31075\\u0026_a=release-summary\",\"SourceBranch\":\"refs/heads/master\",\"BuildRepositoryProvider\":\"TfsGit\",\"ReleaseEnvironmentName\":\"AIMON VIP SWAP\",\"BuildRepositoryName\":\"InsightsPortal\",\"ReleaseName\":\"InsightsPortal-20180126-1\"}"),
 		// 			},
 		// 			{
 		// 				AnnotationName: to.Ptr("InsightsPortal-20180125-1"),
 		// 				Category: to.Ptr("Deployment"),
-		// 				EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-29T20:38:35+00:00"); return t}()),
+		// 				EventTime: to.Ptr(time.Date(2018, time.January, 29, 20, 38, 35, 0, time.UTC)),
 		// 				ID: to.Ptr("9a82214f-8f98-4699-b5bc-cad6101ed223"),
 		// 				Properties: to.Ptr("{\"ReleaseDefinitionName\":\"InsightsPortal-PPEProd-KeyVault\",\"ReleaseRequestedFor\":\"6a970e9b-6220-47f3-a78c-b8be97506698\",\"TeamFoundationCollectionUri\":\"https://mseng.visualstudio.com/\",\"BuildNumber\":\"20180125.1\",\"ReleaseDescription\":\"Triggered by InsightsPortal_master_PROD1_vNext 20180125.1.\",\"ReleaseId\":\"31035\",\"ReleaseWebUrl\":\"https://mseng.visualstudio.com/96a62c4a-58c2-4dbb-94b6-5979ebc7f2af/_release?releaseId=31035\\u0026_a=release-summary\",\"SourceBranch\":\"refs/heads/master\",\"BuildRepositoryProvider\":\"TfsGit\",\"ReleaseEnvironmentName\":\"Prod VIP Swap \",\"BuildRepositoryName\":\"InsightsPortal\",\"ReleaseName\":\"InsightsPortal-20180125-1\"}"),
 		// 			},

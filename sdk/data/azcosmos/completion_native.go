@@ -68,6 +68,7 @@ type completionResult struct {
 	retryAfter          time.Duration
 	fromWire            bool
 	nextContinuation    string
+	feedRanges          []FeedRange
 	offerReplacePending bool
 
 	// driver and container are detached from the completion rather than copied, because they are
@@ -128,6 +129,7 @@ func translateCompletion(completion *C.cosmos_completion_t, verbosity Diagnostic
 	// its backing. Both return NULL when the completion carries nothing.
 	result.driver = C.cosmos_completion_take_driver(completion)
 	result.container = C.cosmos_completion_take_container(completion)
+	translateFeedRanges(completion, &result)
 	return result
 }
 

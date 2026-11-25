@@ -571,6 +571,26 @@ position used originally. Keep the last saved checkpoint if a page fetch fails a
 to open a new pager. A checkpoint does not acknowledge application processing or guarantee
 exactly-once delivery.
 
+### Feed ranges (unpublished native extension)
+
+Feed-range discovery requires an unpublished native extension. The default build pins published
+native v0.3.0 and returns a prerequisite error for these APIs. The `azcosmos_native_preview`
+build tag is a local integration path requiring a matching generated header and platform library.
+
+`ContainerClient.GetFeedRanges(ctx, options)` returns copied `FeedRange` values in native order.
+`ForceRefresh` is forwarded to the driver's routing-map cache; Go owns no topology cache.
+A failed forced refresh can return cached success
+([Azure/azure-sdk-for-rust#5637](https://github.com/Azure/azure-sdk-for-rust/issues/5637)).
+`NewFeedRange(minInclusive, maxExclusive)` validates explicit EPK bounds through native code.
+`GetFeedRangeForPartitionKey` uses the container's partition definition and returns setup-read
+metadata. Equal-bound point subset and overlap comparisons inherit native limitations
+([Azure/azure-sdk-for-rust#5638](https://github.com/Azure/azure-sdk-for-rust/issues/5638)).
+
+`FeedRange.String()` and `ParseFeedRange` use the driver's opaque representation, which preserves
+EPK bounds, not logical partition-key identity. Equal bounds denote one EPK, not an empty interval.
+The copied values own no native handles and remain valid after the discovery client is closed.
+Range-scoped query and change-feed reads are not available in this layer.
+
 ### Running the end-to-end tests
 
 The tests in `emulator_test.go`, `diagnostics_emulator_test.go`, `change_feed_emulator_test.go`,

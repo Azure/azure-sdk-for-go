@@ -37,38 +37,38 @@ type PartitionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ZkpRollupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ZkpRollupsClient.BeginCreateOrUpdate
+// ZKPRollupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ZKPRollupsClient.BeginCreateOrUpdate
 // method.
-type ZkpRollupsClientBeginCreateOrUpdateOptions struct {
+type ZKPRollupsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ZkpRollupsClientBeginDeleteOptions contains the optional parameters for the ZkpRollupsClient.BeginDelete method.
-type ZkpRollupsClientBeginDeleteOptions struct {
+// ZKPRollupsClientBeginDeleteOptions contains the optional parameters for the ZKPRollupsClient.BeginDelete method.
+type ZKPRollupsClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ZkpRollupsClientBeginUpdateOptions contains the optional parameters for the ZkpRollupsClient.BeginUpdate method.
-type ZkpRollupsClientBeginUpdateOptions struct {
+// ZKPRollupsClientBeginUpdateOptions contains the optional parameters for the ZKPRollupsClient.BeginUpdate method.
+type ZKPRollupsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ZkpRollupsClientGetOptions contains the optional parameters for the ZkpRollupsClient.Get method.
-type ZkpRollupsClientGetOptions struct {
+// ZKPRollupsClientGetOptions contains the optional parameters for the ZKPRollupsClient.Get method.
+type ZKPRollupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ZkpRollupsClientListByResourceGroupOptions contains the optional parameters for the ZkpRollupsClient.NewListByResourceGroupPager
+// ZKPRollupsClientListByResourceGroupOptions contains the optional parameters for the ZKPRollupsClient.NewListByResourceGroupPager
 // method.
-type ZkpRollupsClientListByResourceGroupOptions struct {
+type ZKPRollupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ZkpRollupsClientListBySubscriptionOptions contains the optional parameters for the ZkpRollupsClient.NewListBySubscriptionPager
+// ZKPRollupsClientListBySubscriptionOptions contains the optional parameters for the ZKPRollupsClient.NewListBySubscriptionPager
 // method.
-type ZkpRollupsClientListBySubscriptionOptions struct {
+type ZKPRollupsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }

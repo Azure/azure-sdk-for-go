@@ -39,37 +39,37 @@ type PartitionsClientUpdateResponse struct {
 	Partition
 }
 
-// ZkpRollupsClientCreateOrUpdateResponse contains the response from method ZkpRollupsClient.BeginCreateOrUpdate.
-type ZkpRollupsClientCreateOrUpdateResponse struct {
+// ZKPRollupsClientCreateOrUpdateResponse contains the response from method ZKPRollupsClient.BeginCreateOrUpdate.
+type ZKPRollupsClientCreateOrUpdateResponse struct {
 	// A DigitalAssets ZKP rollup resource.
-	ZkpRollup
+	ZKPRollup
 }
 
-// ZkpRollupsClientDeleteResponse contains the response from method ZkpRollupsClient.BeginDelete.
-type ZkpRollupsClientDeleteResponse struct {
+// ZKPRollupsClientDeleteResponse contains the response from method ZKPRollupsClient.BeginDelete.
+type ZKPRollupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ZkpRollupsClientGetResponse contains the response from method ZkpRollupsClient.Get.
-type ZkpRollupsClientGetResponse struct {
+// ZKPRollupsClientGetResponse contains the response from method ZKPRollupsClient.Get.
+type ZKPRollupsClientGetResponse struct {
 	// A DigitalAssets ZKP rollup resource.
-	ZkpRollup
+	ZKPRollup
 }
 
-// ZkpRollupsClientListByResourceGroupResponse contains the response from method ZkpRollupsClient.NewListByResourceGroupPager.
-type ZkpRollupsClientListByResourceGroupResponse struct {
+// ZKPRollupsClientListByResourceGroupResponse contains the response from method ZKPRollupsClient.NewListByResourceGroupPager.
+type ZKPRollupsClientListByResourceGroupResponse struct {
 	// The response of a ZkpRollup list operation.
 	ZkpRollupListResult
 }
 
-// ZkpRollupsClientListBySubscriptionResponse contains the response from method ZkpRollupsClient.NewListBySubscriptionPager.
-type ZkpRollupsClientListBySubscriptionResponse struct {
+// ZKPRollupsClientListBySubscriptionResponse contains the response from method ZKPRollupsClient.NewListBySubscriptionPager.
+type ZKPRollupsClientListBySubscriptionResponse struct {
 	// The response of a ZkpRollup list operation.
 	ZkpRollupListResult
 }
 
-// ZkpRollupsClientUpdateResponse contains the response from method ZkpRollupsClient.BeginUpdate.
-type ZkpRollupsClientUpdateResponse struct {
+// ZKPRollupsClientUpdateResponse contains the response from method ZKPRollupsClient.BeginUpdate.
+type ZKPRollupsClientUpdateResponse struct {
 	// A DigitalAssets ZKP rollup resource.
-	ZkpRollup
+	ZKPRollup
 }

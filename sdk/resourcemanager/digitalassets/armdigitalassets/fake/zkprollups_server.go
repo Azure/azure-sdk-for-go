@@ -19,60 +19,60 @@ import (
 	"slices"
 )
 
-// ZkpRollupsServer is a fake server for instances of the armdigitalassets.ZkpRollupsClient type.
-type ZkpRollupsServer struct {
-	// BeginCreateOrUpdate is the fake for method ZkpRollupsClient.BeginCreateOrUpdate
+// ZKPRollupsServer is a fake server for instances of the armdigitalassets.ZKPRollupsClient type.
+type ZKPRollupsServer struct {
+	// BeginCreateOrUpdate is the fake for method ZKPRollupsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, zkpRollupName string, resource armdigitalassets.ZkpRollup, options *armdigitalassets.ZkpRollupsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdigitalassets.ZkpRollupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, zkpRollupName string, resource armdigitalassets.ZKPRollup, options *armdigitalassets.ZKPRollupsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdigitalassets.ZKPRollupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method ZkpRollupsClient.BeginDelete
+	// BeginDelete is the fake for method ZKPRollupsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, zkpRollupName string, options *armdigitalassets.ZkpRollupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdigitalassets.ZkpRollupsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, zkpRollupName string, options *armdigitalassets.ZKPRollupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdigitalassets.ZKPRollupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method ZkpRollupsClient.BeginUpdate
+	// BeginUpdate is the fake for method ZKPRollupsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, zkpRollupName string, properties armdigitalassets.ZkpRollupUpdate, options *armdigitalassets.ZkpRollupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdigitalassets.ZkpRollupsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, zkpRollupName string, properties armdigitalassets.ZKPRollupUpdate, options *armdigitalassets.ZKPRollupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdigitalassets.ZKPRollupsClientUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ZkpRollupsClient.Get
+	// Get is the fake for method ZKPRollupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, zkpRollupName string, options *armdigitalassets.ZkpRollupsClientGetOptions) (resp azfake.Responder[armdigitalassets.ZkpRollupsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, zkpRollupName string, options *armdigitalassets.ZKPRollupsClientGetOptions) (resp azfake.Responder[armdigitalassets.ZKPRollupsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method ZkpRollupsClient.NewListByResourceGroupPager
+	// NewListByResourceGroupPager is the fake for method ZKPRollupsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armdigitalassets.ZkpRollupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdigitalassets.ZkpRollupsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armdigitalassets.ZKPRollupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdigitalassets.ZKPRollupsClientListByResourceGroupResponse])
 
-	// NewListBySubscriptionPager is the fake for method ZkpRollupsClient.NewListBySubscriptionPager
+	// NewListBySubscriptionPager is the fake for method ZKPRollupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armdigitalassets.ZkpRollupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdigitalassets.ZkpRollupsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager func(options *armdigitalassets.ZKPRollupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdigitalassets.ZKPRollupsClientListBySubscriptionResponse])
 }
 
-// NewZkpRollupsServerTransport creates a new instance of ZkpRollupsServerTransport with the provided implementation.
-// The returned ZkpRollupsServerTransport instance is connected to an instance of armdigitalassets.ZkpRollupsClient via the
+// NewZKPRollupsServerTransport creates a new instance of ZKPRollupsServerTransport with the provided implementation.
+// The returned ZKPRollupsServerTransport instance is connected to an instance of armdigitalassets.ZKPRollupsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewZkpRollupsServerTransport(srv *ZkpRollupsServer) *ZkpRollupsServerTransport {
-	return &ZkpRollupsServerTransport{
+func NewZKPRollupsServerTransport(srv *ZKPRollupsServer) *ZKPRollupsServerTransport {
+	return &ZKPRollupsServerTransport{
 		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdigitalassets.ZkpRollupsClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armdigitalassets.ZkpRollupsClientDeleteResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdigitalassets.ZkpRollupsClientUpdateResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdigitalassets.ZkpRollupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdigitalassets.ZkpRollupsClientListBySubscriptionResponse]](),
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdigitalassets.ZKPRollupsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armdigitalassets.ZKPRollupsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdigitalassets.ZKPRollupsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdigitalassets.ZKPRollupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdigitalassets.ZKPRollupsClientListBySubscriptionResponse]](),
 	}
 }
 
-// ZkpRollupsServerTransport connects instances of armdigitalassets.ZkpRollupsClient to instances of ZkpRollupsServer.
-// Don't use this type directly, use NewZkpRollupsServerTransport instead.
-type ZkpRollupsServerTransport struct {
-	srv                         *ZkpRollupsServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdigitalassets.ZkpRollupsClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armdigitalassets.ZkpRollupsClientDeleteResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdigitalassets.ZkpRollupsClientUpdateResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdigitalassets.ZkpRollupsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdigitalassets.ZkpRollupsClientListBySubscriptionResponse]]
+// ZKPRollupsServerTransport connects instances of armdigitalassets.ZKPRollupsClient to instances of ZKPRollupsServer.
+// Don't use this type directly, use NewZKPRollupsServerTransport instead.
+type ZKPRollupsServerTransport struct {
+	srv                         *ZKPRollupsServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdigitalassets.ZKPRollupsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armdigitalassets.ZKPRollupsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdigitalassets.ZKPRollupsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdigitalassets.ZKPRollupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdigitalassets.ZKPRollupsClientListBySubscriptionResponse]]
 }
 
-// Do implements the policy.Transporter interface for ZkpRollupsServerTransport.
-func (z *ZkpRollupsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ZKPRollupsServerTransport.
+func (z *ZKPRollupsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -82,7 +82,7 @@ func (z *ZkpRollupsServerTransport) Do(req *http.Request) (*http.Response, error
 	return z.dispatchToMethodFake(req, method)
 }
 
-func (z *ZkpRollupsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (z *ZKPRollupsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -92,17 +92,17 @@ func (z *ZkpRollupsServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "ZkpRollupsClient.BeginCreateOrUpdate":
+			case "ZKPRollupsClient.BeginCreateOrUpdate":
 				res.resp, res.err = z.dispatchBeginCreateOrUpdate(req)
-			case "ZkpRollupsClient.BeginDelete":
+			case "ZKPRollupsClient.BeginDelete":
 				res.resp, res.err = z.dispatchBeginDelete(req)
-			case "ZkpRollupsClient.BeginUpdate":
+			case "ZKPRollupsClient.BeginUpdate":
 				res.resp, res.err = z.dispatchBeginUpdate(req)
-			case "ZkpRollupsClient.Get":
+			case "ZKPRollupsClient.Get":
 				res.resp, res.err = z.dispatchGet(req)
-			case "ZkpRollupsClient.NewListByResourceGroupPager":
+			case "ZKPRollupsClient.NewListByResourceGroupPager":
 				res.resp, res.err = z.dispatchNewListByResourceGroupPager(req)
-			case "ZkpRollupsClient.NewListBySubscriptionPager":
+			case "ZKPRollupsClient.NewListBySubscriptionPager":
 				res.resp, res.err = z.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -120,7 +120,7 @@ func (z *ZkpRollupsServerTransport) dispatchToMethodFake(req *http.Request, meth
 	}
 }
 
-func (z *ZkpRollupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (z *ZKPRollupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if z.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
@@ -132,7 +132,7 @@ func (z *ZkpRollupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdigitalassets.ZkpRollup](req)
+		body, err := server.UnmarshalRequestAsJSON[armdigitalassets.ZKPRollup](req)
 		if err != nil {
 			return nil, err
 		}
@@ -168,7 +168,7 @@ func (z *ZkpRollupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 	return resp, nil
 }
 
-func (z *ZkpRollupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (z *ZKPRollupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if z.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
@@ -212,7 +212,7 @@ func (z *ZkpRollupsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (z *ZkpRollupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+func (z *ZKPRollupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if z.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
@@ -224,7 +224,7 @@ func (z *ZkpRollupsServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdigitalassets.ZkpRollupUpdate](req)
+		body, err := server.UnmarshalRequestAsJSON[armdigitalassets.ZKPRollupUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -260,7 +260,7 @@ func (z *ZkpRollupsServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (z *ZkpRollupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (z *ZKPRollupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if z.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -286,14 +286,14 @@ func (z *ZkpRollupsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ZkpRollup, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ZKPRollup, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (z *ZkpRollupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+func (z *ZKPRollupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if z.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
@@ -312,7 +312,7 @@ func (z *ZkpRollupsServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		resp := z.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		z.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdigitalassets.ZkpRollupsClientListByResourceGroupResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdigitalassets.ZKPRollupsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -330,7 +330,7 @@ func (z *ZkpRollupsServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	return resp, nil
 }
 
-func (z *ZkpRollupsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+func (z *ZKPRollupsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if z.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
@@ -345,7 +345,7 @@ func (z *ZkpRollupsServerTransport) dispatchNewListBySubscriptionPager(req *http
 		resp := z.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		z.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdigitalassets.ZkpRollupsClientListBySubscriptionResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armdigitalassets.ZKPRollupsClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -363,7 +363,7 @@ func (z *ZkpRollupsServerTransport) dispatchNewListBySubscriptionPager(req *http
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ZkpRollupsServerTransport
+// set this to conditionally intercept incoming requests to ZKPRollupsServerTransport
 var zkpRollupsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

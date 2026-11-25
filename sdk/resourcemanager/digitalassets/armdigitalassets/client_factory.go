@@ -47,9 +47,9 @@ func (c *ClientFactory) NewPartitionsClient() *PartitionsClient {
 	}
 }
 
-// NewZkpRollupsClient creates a new instance of ZkpRollupsClient.
-func (c *ClientFactory) NewZkpRollupsClient() *ZkpRollupsClient {
-	return &ZkpRollupsClient{
+// NewZKPRollupsClient creates a new instance of ZKPRollupsClient.
+func (c *ClientFactory) NewZKPRollupsClient() *ZKPRollupsClient {
+	return &ZKPRollupsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

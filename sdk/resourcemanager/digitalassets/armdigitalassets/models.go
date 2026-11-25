@@ -165,8 +165,8 @@ type UserAssignedIdentity struct {
 	PrincipalID *string
 }
 
-// ZkpRollup - A DigitalAssets ZKP rollup resource.
-type ZkpRollup struct {
+// ZKPRollup - A DigitalAssets ZKP rollup resource.
+type ZKPRollup struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
@@ -174,7 +174,7 @@ type ZkpRollup struct {
 	Identity *ManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
-	Properties *ZkpRollupProperties
+	Properties *ZKPRollupProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -192,9 +192,9 @@ type ZkpRollup struct {
 	Type *string
 }
 
-// ZkpRollupIdentityUpdate - Partial managed-identity update. Omitted attachments remain; object entries add or retain an
+// ZKPRollupIdentityUpdate - Partial managed-identity update. Omitted attachments remain; object entries add or retain an
 // identity and null entries remove it. The selected Key Vault identity must remain attached.
-type ZkpRollupIdentityUpdate struct {
+type ZKPRollupIdentityUpdate struct {
 	// The type of managed identity assigned to this resource.
 	Type *ManagedServiceIdentityType
 
@@ -202,17 +202,8 @@ type ZkpRollupIdentityUpdate struct {
 	UserAssignedIdentities map[string]*UserAssignedIdentity
 }
 
-// ZkpRollupListResult - The response of a ZkpRollup list operation.
-type ZkpRollupListResult struct {
-	// REQUIRED; The ZkpRollup items on this page
-	Value []*ZkpRollup
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ZkpRollupPatchProperties - Properties that may be updated via PATCH on a ZkpRollup.
-type ZkpRollupPatchProperties struct {
+// ZKPRollupPatchProperties - Properties that may be updated via PATCH on a ZkpRollup.
+type ZKPRollupPatchProperties struct {
 	// Replacement boot-node public key on the same ledger. Omission preserves the current value.
 	BootNodeID *string
 
@@ -230,8 +221,8 @@ type ZkpRollupPatchProperties struct {
 	TokenOwnerAccounts []*string
 }
 
-// ZkpRollupProperties - Details of the DigitalAssets ZkpRollup.
-type ZkpRollupProperties struct {
+// ZKPRollupProperties - Details of the DigitalAssets ZkpRollup.
+type ZKPRollupProperties struct {
 	// REQUIRED; Enode id (public key) of the customer's L2 Besu boot node. Required on PUT. Updates reconcile the existing partition
 	// and must remain on the same ledger.
 	BootNodeID *string
@@ -291,15 +282,24 @@ type ZkpRollupProperties struct {
 	ServiceVPNPublicIP *string
 }
 
-// ZkpRollupUpdate - Rollup update payload. Omitted fields are preserved. Configuration changes may restart partition containers;
+// ZKPRollupUpdate - Rollup update payload. Omitted fields are preserved. Configuration changes may restart partition containers;
 // tags and identity-only changes complete synchronously.
-type ZkpRollupUpdate struct {
+type ZKPRollupUpdate struct {
 	// Managed-identity attachment changes.
-	Identity *ZkpRollupIdentityUpdate
+	Identity *ZKPRollupIdentityUpdate
 
 	// Mutable rollup configuration fields.
-	Properties *ZkpRollupPatchProperties
+	Properties *ZKPRollupPatchProperties
 
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// ZkpRollupListResult - The response of a ZkpRollup list operation.
+type ZkpRollupListResult struct {
+	// REQUIRED; The ZkpRollup items on this page
+	Value []*ZKPRollup
+
+	// The link to the next page of items
+	NextLink *string
 }

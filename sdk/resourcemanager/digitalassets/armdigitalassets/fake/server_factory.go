@@ -21,8 +21,8 @@ type ServerFactory struct {
 	// PartitionsServer contains the fakes for client PartitionsClient
 	PartitionsServer PartitionsServer
 
-	// ZkpRollupsServer contains the fakes for client ZkpRollupsClient
-	ZkpRollupsServer ZkpRollupsServer
+	// ZKPRollupsServer contains the fakes for client ZKPRollupsClient
+	ZKPRollupsServer ZKPRollupsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -41,7 +41,7 @@ type ServerFactoryTransport struct {
 	trMu               sync.Mutex
 	trOperationsServer *OperationsServerTransport
 	trPartitionsServer *PartitionsServerTransport
-	trZkpRollupsServer *ZkpRollupsServerTransport
+	trZKPRollupsServer *ZKPRollupsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -63,9 +63,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PartitionsClient":
 		initServer(&s.trMu, &s.trPartitionsServer, func() *PartitionsServerTransport { return NewPartitionsServerTransport(&s.srv.PartitionsServer) })
 		resp, err = s.trPartitionsServer.Do(req)
-	case "ZkpRollupsClient":
-		initServer(&s.trMu, &s.trZkpRollupsServer, func() *ZkpRollupsServerTransport { return NewZkpRollupsServerTransport(&s.srv.ZkpRollupsServer) })
-		resp, err = s.trZkpRollupsServer.Do(req)
+	case "ZKPRollupsClient":
+		initServer(&s.trMu, &s.trZKPRollupsServer, func() *ZKPRollupsServerTransport { return NewZKPRollupsServerTransport(&s.srv.ZKPRollupsServer) })
+		resp, err = s.trZKPRollupsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

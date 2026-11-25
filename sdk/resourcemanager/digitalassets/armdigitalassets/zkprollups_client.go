@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// ZkpRollupsClient contains the methods for the ZkpRollups group.
-// Don't use this type directly, use NewZkpRollupsClient() instead.
+// ZKPRollupsClient contains the methods for the ZKPRollups group.
+// Don't use this type directly, use NewZKPRollupsClient() instead.
 //
 // Generated from API version 2025-09-01-preview
-type ZkpRollupsClient struct {
+type ZKPRollupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewZkpRollupsClient creates a new instance of ZkpRollupsClient with the specified values.
+// NewZKPRollupsClient creates a new instance of ZKPRollupsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewZkpRollupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ZkpRollupsClient, error) {
+func NewZKPRollupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ZKPRollupsClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewZkpRollupsClient(subscriptionID string, credential azcore.TokenCredentia
 	if err != nil {
 		return nil, err
 	}
-	client := &ZkpRollupsClient{
+	client := &ZKPRollupsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -49,20 +49,20 @@ func NewZkpRollupsClient(subscriptionID string, credential azcore.TokenCredentia
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zkpRollupName - The name of the ZKP rollup resource.
 //   - resource - Resource create parameters.
-//   - options - ZkpRollupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ZkpRollupsClient.BeginCreateOrUpdate
+//   - options - ZKPRollupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ZKPRollupsClient.BeginCreateOrUpdate
 //     method.
-func (client *ZkpRollupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, zkpRollupName string, resource ZkpRollup, options *ZkpRollupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ZkpRollupsClientCreateOrUpdateResponse], error) {
+func (client *ZKPRollupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, zkpRollupName string, resource ZKPRollup, options *ZKPRollupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ZKPRollupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, zkpRollupName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ZkpRollupsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ZKPRollupsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ZkpRollupsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ZKPRollupsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -70,9 +70,9 @@ func (client *ZkpRollupsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // createOrUpdate - Creates or replaces a ZKP rollup.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ZkpRollupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, zkpRollupName string, resource ZkpRollup, options *ZkpRollupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *ZKPRollupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, zkpRollupName string, resource ZKPRollup, options *ZKPRollupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ZkpRollupsClient.BeginCreateOrUpdate"
+	const operationName = "ZKPRollupsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -92,7 +92,7 @@ func (client *ZkpRollupsClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the createOrUpdate request.
-func (client *ZkpRollupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, resource ZkpRollup, _ *ZkpRollupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ZKPRollupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, resource ZKPRollup, _ *ZKPRollupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -125,19 +125,19 @@ func (client *ZkpRollupsClient) createOrUpdateCreateRequest(ctx context.Context,
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zkpRollupName - The name of the ZKP rollup resource.
-//   - options - ZkpRollupsClientBeginDeleteOptions contains the optional parameters for the ZkpRollupsClient.BeginDelete method.
-func (client *ZkpRollupsClient) BeginDelete(ctx context.Context, resourceGroupName string, zkpRollupName string, options *ZkpRollupsClientBeginDeleteOptions) (*runtime.Poller[ZkpRollupsClientDeleteResponse], error) {
+//   - options - ZKPRollupsClientBeginDeleteOptions contains the optional parameters for the ZKPRollupsClient.BeginDelete method.
+func (client *ZKPRollupsClient) BeginDelete(ctx context.Context, resourceGroupName string, zkpRollupName string, options *ZKPRollupsClientBeginDeleteOptions) (*runtime.Poller[ZKPRollupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, zkpRollupName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ZkpRollupsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ZKPRollupsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ZkpRollupsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ZKPRollupsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -145,9 +145,9 @@ func (client *ZkpRollupsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // deleteOperation - Delete a ZkpRollup
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ZkpRollupsClient) deleteOperation(ctx context.Context, resourceGroupName string, zkpRollupName string, options *ZkpRollupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ZKPRollupsClient) deleteOperation(ctx context.Context, resourceGroupName string, zkpRollupName string, options *ZKPRollupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ZkpRollupsClient.BeginDelete"
+	const operationName = "ZKPRollupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -167,7 +167,7 @@ func (client *ZkpRollupsClient) deleteOperation(ctx context.Context, resourceGro
 }
 
 // deleteCreateRequest creates the delete request.
-func (client *ZkpRollupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, _ *ZkpRollupsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ZKPRollupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, _ *ZKPRollupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -198,19 +198,19 @@ func (client *ZkpRollupsClient) deleteCreateRequest(ctx context.Context, resourc
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zkpRollupName - The name of the ZKP rollup resource.
 //   - properties - The resource properties to be updated.
-//   - options - ZkpRollupsClientBeginUpdateOptions contains the optional parameters for the ZkpRollupsClient.BeginUpdate method.
-func (client *ZkpRollupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, zkpRollupName string, properties ZkpRollupUpdate, options *ZkpRollupsClientBeginUpdateOptions) (*runtime.Poller[ZkpRollupsClientUpdateResponse], error) {
+//   - options - ZKPRollupsClientBeginUpdateOptions contains the optional parameters for the ZKPRollupsClient.BeginUpdate method.
+func (client *ZKPRollupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, zkpRollupName string, properties ZKPRollupUpdate, options *ZKPRollupsClientBeginUpdateOptions) (*runtime.Poller[ZKPRollupsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, zkpRollupName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ZkpRollupsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ZKPRollupsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ZkpRollupsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ZKPRollupsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -219,9 +219,9 @@ func (client *ZkpRollupsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // update - Updates rollup tags, identity attachments or configuration. Metadata-only updates complete synchronously. Configuration
 // changes reconcile the rollup and existing partition asynchronously, preserving checkpoints and discovered contracts.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ZkpRollupsClient) update(ctx context.Context, resourceGroupName string, zkpRollupName string, properties ZkpRollupUpdate, options *ZkpRollupsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ZKPRollupsClient) update(ctx context.Context, resourceGroupName string, zkpRollupName string, properties ZKPRollupUpdate, options *ZKPRollupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ZkpRollupsClient.BeginUpdate"
+	const operationName = "ZKPRollupsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -241,7 +241,7 @@ func (client *ZkpRollupsClient) update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the update request.
-func (client *ZkpRollupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, properties ZkpRollupUpdate, _ *ZkpRollupsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ZKPRollupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, properties ZKPRollupUpdate, _ *ZKPRollupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -274,27 +274,27 @@ func (client *ZkpRollupsClient) updateCreateRequest(ctx context.Context, resourc
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zkpRollupName - The name of the ZKP rollup resource.
-//   - options - ZkpRollupsClientGetOptions contains the optional parameters for the ZkpRollupsClient.Get method.
-func (client *ZkpRollupsClient) Get(ctx context.Context, resourceGroupName string, zkpRollupName string, options *ZkpRollupsClientGetOptions) (ZkpRollupsClientGetResponse, error) {
+//   - options - ZKPRollupsClientGetOptions contains the optional parameters for the ZKPRollupsClient.Get method.
+func (client *ZKPRollupsClient) Get(ctx context.Context, resourceGroupName string, zkpRollupName string, options *ZKPRollupsClientGetOptions) (ZKPRollupsClientGetResponse, error) {
 	var err error
-	const operationName = "ZkpRollupsClient.Get"
+	const operationName = "ZKPRollupsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, zkpRollupName, options)
 	if err != nil {
-		return ZkpRollupsClientGetResponse{}, err
+		return ZKPRollupsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ZkpRollupsClientGetResponse{}, err
+		return ZKPRollupsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ZkpRollupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, _ *ZkpRollupsClientGetOptions) (*policy.Request, error) {
+func (client *ZKPRollupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, zkpRollupName string, _ *ZKPRollupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -320,39 +320,39 @@ func (client *ZkpRollupsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *ZkpRollupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ZkpRollupsClientGetResponse, error) {
-	result := ZkpRollupsClientGetResponse{}
+func (client *ZKPRollupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ZKPRollupsClientGetResponse, error) {
+	result := ZKPRollupsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ZkpRollup); err != nil {
-		return ZkpRollupsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ZKPRollup); err != nil {
+		return ZKPRollupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListByResourceGroupPager - List ZkpRollup resources by resource group
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - ZkpRollupsClientListByResourceGroupOptions contains the optional parameters for the ZkpRollupsClient.NewListByResourceGroupPager
+//   - options - ZKPRollupsClientListByResourceGroupOptions contains the optional parameters for the ZKPRollupsClient.NewListByResourceGroupPager
 //     method.
-func (client *ZkpRollupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ZkpRollupsClientListByResourceGroupOptions) *runtime.Pager[ZkpRollupsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ZkpRollupsClientListByResourceGroupResponse]{
-		More: func(page ZkpRollupsClientListByResourceGroupResponse) bool {
+func (client *ZKPRollupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ZKPRollupsClientListByResourceGroupOptions) *runtime.Pager[ZKPRollupsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ZKPRollupsClientListByResourceGroupResponse]{
+		More: func(page ZKPRollupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ZkpRollupsClientListByResourceGroupResponse) (ZkpRollupsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ZkpRollupsClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *ZKPRollupsClientListByResourceGroupResponse) (ZKPRollupsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ZKPRollupsClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
-				return ZkpRollupsClientListByResourceGroupResponse{}, err
+				return ZKPRollupsClientListByResourceGroupResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ZkpRollupsClientListByResourceGroupResponse{}, err
+				return ZKPRollupsClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
@@ -361,7 +361,7 @@ func (client *ZkpRollupsClient) NewListByResourceGroupPager(resourceGroupName st
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ZkpRollupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ZkpRollupsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *ZKPRollupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ZKPRollupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -392,38 +392,38 @@ func (client *ZkpRollupsClient) listByResourceGroupCreateRequest(ctx context.Con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ZkpRollupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ZkpRollupsClientListByResourceGroupResponse, error) {
-	result := ZkpRollupsClientListByResourceGroupResponse{}
+func (client *ZKPRollupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ZKPRollupsClientListByResourceGroupResponse, error) {
+	result := ZKPRollupsClientListByResourceGroupResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ZkpRollupListResult); err != nil {
-		return ZkpRollupsClientListByResourceGroupResponse{}, err
+		return ZKPRollupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListBySubscriptionPager - List ZkpRollup resources by subscription ID
-//   - options - ZkpRollupsClientListBySubscriptionOptions contains the optional parameters for the ZkpRollupsClient.NewListBySubscriptionPager
+//   - options - ZKPRollupsClientListBySubscriptionOptions contains the optional parameters for the ZKPRollupsClient.NewListBySubscriptionPager
 //     method.
-func (client *ZkpRollupsClient) NewListBySubscriptionPager(options *ZkpRollupsClientListBySubscriptionOptions) *runtime.Pager[ZkpRollupsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ZkpRollupsClientListBySubscriptionResponse]{
-		More: func(page ZkpRollupsClientListBySubscriptionResponse) bool {
+func (client *ZKPRollupsClient) NewListBySubscriptionPager(options *ZKPRollupsClientListBySubscriptionOptions) *runtime.Pager[ZKPRollupsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ZKPRollupsClientListBySubscriptionResponse]{
+		More: func(page ZKPRollupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ZkpRollupsClientListBySubscriptionResponse) (ZkpRollupsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ZkpRollupsClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *ZKPRollupsClientListBySubscriptionResponse) (ZKPRollupsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ZKPRollupsClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return ZkpRollupsClientListBySubscriptionResponse{}, err
+				return ZKPRollupsClientListBySubscriptionResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ZkpRollupsClientListBySubscriptionResponse{}, err
+				return ZKPRollupsClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
@@ -432,7 +432,7 @@ func (client *ZkpRollupsClient) NewListBySubscriptionPager(options *ZkpRollupsCl
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ZkpRollupsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ZkpRollupsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *ZKPRollupsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ZKPRollupsClientListBySubscriptionOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -459,13 +459,13 @@ func (client *ZkpRollupsClient) listBySubscriptionCreateRequest(ctx context.Cont
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ZkpRollupsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ZkpRollupsClientListBySubscriptionResponse, error) {
-	result := ZkpRollupsClientListBySubscriptionResponse{}
+func (client *ZKPRollupsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ZKPRollupsClientListBySubscriptionResponse, error) {
+	result := ZKPRollupsClientListBySubscriptionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ZkpRollupListResult); err != nil {
-		return ZkpRollupsClientListBySubscriptionResponse{}, err
+		return ZKPRollupsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

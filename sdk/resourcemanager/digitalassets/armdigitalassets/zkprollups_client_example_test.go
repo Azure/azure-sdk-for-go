@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-09-01-preview/ZkpRollups_CreateOrUpdate.json
-func ExampleZkpRollupsClient_BeginCreateOrUpdate() {
+func ExampleZKPRollupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleZkpRollupsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewZkpRollupsClient().BeginCreateOrUpdate(ctx, "testrg", "Jack", armdigitalassets.ZkpRollup{
+	poller, err := clientFactory.NewZKPRollupsClient().BeginCreateOrUpdate(ctx, "testrg", "Jack", armdigitalassets.ZKPRollup{
 		Location: to.Ptr("eastus"),
 		Identity: &armdigitalassets.ManagedServiceIdentity{
 			Type: to.Ptr(armdigitalassets.ManagedServiceIdentityTypeUserAssigned),
@@ -31,7 +31,7 @@ func ExampleZkpRollupsClient_BeginCreateOrUpdate() {
 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/kvReader": {},
 			},
 		},
-		Properties: &armdigitalassets.ZkpRollupProperties{
+		Properties: &armdigitalassets.ZKPRollupProperties{
 			TokenOwnerAccounts: []*string{
 				to.Ptr("0x1111111111111111111111111111111111111111"),
 				to.Ptr("0x2222222222222222222222222222222222222222"),
@@ -60,8 +60,8 @@ func ExampleZkpRollupsClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdigitalassets.ZkpRollupsClientCreateOrUpdateResponse{
-	// 	ZkpRollup: armdigitalassets.ZkpRollup{
+	// res = armdigitalassets.ZKPRollupsClientCreateOrUpdateResponse{
+	// 	ZKPRollup: armdigitalassets.ZKPRollup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.DigitalAssets/zkpRollups/Jack"),
 	// 		Name: to.Ptr("Jack"),
 	// 		Type: to.Ptr("Microsoft.DigitalAssets/zkpRollups"),
@@ -85,7 +85,7 @@ func ExampleZkpRollupsClient_BeginCreateOrUpdate() {
 	// 			LastModifiedByType: to.Ptr(armdigitalassets.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
-	// 		Properties: &armdigitalassets.ZkpRollupProperties{
+	// 		Properties: &armdigitalassets.ZKPRollupProperties{
 	// 			KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.KeyVault/vaults/myKv"),
 	// 			KeyVaultUserAssignedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/kvReader"),
 	// 			TokenOwnerAccounts: []*string{
@@ -116,7 +116,7 @@ func ExampleZkpRollupsClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: 2025-09-01-preview/ZkpRollups_Delete.json
-func ExampleZkpRollupsClient_BeginDelete() {
+func ExampleZKPRollupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -126,7 +126,7 @@ func ExampleZkpRollupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewZkpRollupsClient().BeginDelete(ctx, "testrg", "Jack", nil)
+	poller, err := clientFactory.NewZKPRollupsClient().BeginDelete(ctx, "testrg", "Jack", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -137,7 +137,7 @@ func ExampleZkpRollupsClient_BeginDelete() {
 }
 
 // Generated from example definition: 2025-09-01-preview/ZkpRollups_Update.json
-func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupTagsIdentityAndBootNode() {
+func ExampleZKPRollupsClient_BeginUpdate_updateZkpRollupTagsIdentityAndBootNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -147,16 +147,16 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupTagsIdentityAndBootNode(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewZkpRollupsClient().BeginUpdate(ctx, "testrg", "Jack", armdigitalassets.ZkpRollupUpdate{
+	poller, err := clientFactory.NewZKPRollupsClient().BeginUpdate(ctx, "testrg", "Jack", armdigitalassets.ZKPRollupUpdate{
 		Tags: map[string]*string{
 			"env": to.Ptr("test"),
 		},
-		Identity: &armdigitalassets.ZkpRollupIdentityUpdate{
+		Identity: &armdigitalassets.ZKPRollupIdentityUpdate{
 			UserAssignedIdentities: map[string]*armdigitalassets.UserAssignedIdentity{
 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/additionalReader": nil,
 			},
 		},
-		Properties: &armdigitalassets.ZkpRollupPatchProperties{
+		Properties: &armdigitalassets.ZKPRollupPatchProperties{
 			BootNodeIP: to.Ptr("10.0.0.4"),
 		},
 	}, nil)
@@ -170,8 +170,8 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupTagsIdentityAndBootNode(
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdigitalassets.ZkpRollupsClientUpdateResponse{
-	// 	ZkpRollup: armdigitalassets.ZkpRollup{
+	// res = armdigitalassets.ZKPRollupsClientUpdateResponse{
+	// 	ZKPRollup: armdigitalassets.ZKPRollup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.DigitalAssets/zkpRollups/Jack"),
 	// 		Name: to.Ptr("Jack"),
 	// 		Type: to.Ptr("Microsoft.DigitalAssets/zkpRollups"),
@@ -196,7 +196,7 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupTagsIdentityAndBootNode(
 	// 			LastModifiedByType: to.Ptr(armdigitalassets.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
-	// 		Properties: &armdigitalassets.ZkpRollupProperties{
+	// 		Properties: &armdigitalassets.ZKPRollupProperties{
 	// 			KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.KeyVault/vaults/myKv"),
 	// 			KeyVaultUserAssignedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/kvReader"),
 	// 			TokenOwnerAccounts: []*string{
@@ -227,7 +227,7 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupTagsIdentityAndBootNode(
 }
 
 // Generated from example definition: 2025-09-01-preview/ZkpRollups_UpdateConfiguration.json
-func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupConfiguration() {
+func ExampleZKPRollupsClient_BeginUpdate_updateZkpRollupConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -237,8 +237,8 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupConfiguration() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewZkpRollupsClient().BeginUpdate(ctx, "testrg", "Jack", armdigitalassets.ZkpRollupUpdate{
-		Properties: &armdigitalassets.ZkpRollupPatchProperties{
+	poller, err := clientFactory.NewZKPRollupsClient().BeginUpdate(ctx, "testrg", "Jack", armdigitalassets.ZKPRollupUpdate{
+		Properties: &armdigitalassets.ZKPRollupPatchProperties{
 			TokenOwnerAccounts: []*string{
 				to.Ptr("0x2222222222222222222222222222222222222222"),
 			},
@@ -258,8 +258,8 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupConfiguration() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdigitalassets.ZkpRollupsClientUpdateResponse{
-	// 	ZkpRollup: armdigitalassets.ZkpRollup{
+	// res = armdigitalassets.ZKPRollupsClientUpdateResponse{
+	// 	ZKPRollup: armdigitalassets.ZKPRollup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.DigitalAssets/zkpRollups/Jack"),
 	// 		Name: to.Ptr("Jack"),
 	// 		Type: to.Ptr("Microsoft.DigitalAssets/zkpRollups"),
@@ -276,7 +276,7 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupConfiguration() {
 	// 				},
 	// 			},
 	// 		},
-	// 		Properties: &armdigitalassets.ZkpRollupProperties{
+	// 		Properties: &armdigitalassets.ZKPRollupProperties{
 	// 			TokenOwnerAccounts: []*string{
 	// 				to.Ptr("0x2222222222222222222222222222222222222222"),
 	// 			},
@@ -307,7 +307,7 @@ func ExampleZkpRollupsClient_BeginUpdate_updateZkpRollupConfiguration() {
 }
 
 // Generated from example definition: 2025-09-01-preview/ZkpRollups_Get.json
-func ExampleZkpRollupsClient_Get() {
+func ExampleZKPRollupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -317,15 +317,15 @@ func ExampleZkpRollupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewZkpRollupsClient().Get(ctx, "testrg", "Jack", nil)
+	res, err := clientFactory.NewZKPRollupsClient().Get(ctx, "testrg", "Jack", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdigitalassets.ZkpRollupsClientGetResponse{
-	// 	ZkpRollup: armdigitalassets.ZkpRollup{
+	// res = armdigitalassets.ZKPRollupsClientGetResponse{
+	// 	ZKPRollup: armdigitalassets.ZKPRollup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.DigitalAssets/zkpRollups/Jack"),
 	// 		Name: to.Ptr("Jack"),
 	// 		Type: to.Ptr("Microsoft.DigitalAssets/zkpRollups"),
@@ -349,7 +349,7 @@ func ExampleZkpRollupsClient_Get() {
 	// 			LastModifiedByType: to.Ptr(armdigitalassets.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
-	// 		Properties: &armdigitalassets.ZkpRollupProperties{
+	// 		Properties: &armdigitalassets.ZKPRollupProperties{
 	// 			KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.KeyVault/vaults/myKv"),
 	// 			KeyVaultUserAssignedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/kvReader"),
 	// 			TokenOwnerAccounts: []*string{
@@ -379,7 +379,7 @@ func ExampleZkpRollupsClient_Get() {
 }
 
 // Generated from example definition: 2025-09-01-preview/ZkpRollups_ListByResourceGroup.json
-func ExampleZkpRollupsClient_NewListByResourceGroupPager() {
+func ExampleZKPRollupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -389,7 +389,7 @@ func ExampleZkpRollupsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewZkpRollupsClient().NewListByResourceGroupPager("testrg", nil)
+	pager := clientFactory.NewZKPRollupsClient().NewListByResourceGroupPager("testrg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -400,9 +400,9 @@ func ExampleZkpRollupsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdigitalassets.ZkpRollupsClientListByResourceGroupResponse{
+		// page = armdigitalassets.ZKPRollupsClientListByResourceGroupResponse{
 		// 	ZkpRollupListResult: armdigitalassets.ZkpRollupListResult{
-		// 		Value: []*armdigitalassets.ZkpRollup{
+		// 		Value: []*armdigitalassets.ZKPRollup{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.DigitalAssets/zkpRollups/Jack"),
 		// 				Name: to.Ptr("Jack"),
@@ -427,7 +427,7 @@ func ExampleZkpRollupsClient_NewListByResourceGroupPager() {
 		// 					LastModifiedByType: to.Ptr(armdigitalassets.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
-		// 				Properties: &armdigitalassets.ZkpRollupProperties{
+		// 				Properties: &armdigitalassets.ZKPRollupProperties{
 		// 					KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.KeyVault/vaults/myKv"),
 		// 					KeyVaultUserAssignedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/kvReader"),
 		// 					TokenOwnerAccounts: []*string{
@@ -460,7 +460,7 @@ func ExampleZkpRollupsClient_NewListByResourceGroupPager() {
 }
 
 // Generated from example definition: 2025-09-01-preview/ZkpRollups_ListBySubscription.json
-func ExampleZkpRollupsClient_NewListBySubscriptionPager() {
+func ExampleZKPRollupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -470,7 +470,7 @@ func ExampleZkpRollupsClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewZkpRollupsClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewZKPRollupsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -481,9 +481,9 @@ func ExampleZkpRollupsClient_NewListBySubscriptionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdigitalassets.ZkpRollupsClientListBySubscriptionResponse{
+		// page = armdigitalassets.ZKPRollupsClientListBySubscriptionResponse{
 		// 	ZkpRollupListResult: armdigitalassets.ZkpRollupListResult{
-		// 		Value: []*armdigitalassets.ZkpRollup{
+		// 		Value: []*armdigitalassets.ZKPRollup{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.DigitalAssets/zkpRollups/Jack"),
 		// 				Name: to.Ptr("Jack"),
@@ -508,7 +508,7 @@ func ExampleZkpRollupsClient_NewListBySubscriptionPager() {
 		// 					LastModifiedByType: to.Ptr(armdigitalassets.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
-		// 				Properties: &armdigitalassets.ZkpRollupProperties{
+		// 				Properties: &armdigitalassets.ZKPRollupProperties{
 		// 					KeyVaultID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.KeyVault/vaults/myKv"),
 		// 					KeyVaultUserAssignedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/kvReader"),
 		// 					TokenOwnerAccounts: []*string{

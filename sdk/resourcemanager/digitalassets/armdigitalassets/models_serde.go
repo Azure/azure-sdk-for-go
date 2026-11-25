@@ -418,8 +418,8 @@ func (u *UserAssignedIdentity) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ZkpRollup.
-func (z ZkpRollup) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ZKPRollup.
+func (z ZKPRollup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", z.ID)
 	populate(objectMap, "identity", z.Identity)
@@ -432,8 +432,8 @@ func (z ZkpRollup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZkpRollup.
-func (z *ZkpRollup) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ZKPRollup.
+func (z *ZKPRollup) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
@@ -473,16 +473,16 @@ func (z *ZkpRollup) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ZkpRollupIdentityUpdate.
-func (z ZkpRollupIdentityUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ZKPRollupIdentityUpdate.
+func (z ZKPRollupIdentityUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", z.Type)
 	populate(objectMap, "userAssignedIdentities", z.UserAssignedIdentities)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZkpRollupIdentityUpdate.
-func (z *ZkpRollupIdentityUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ZKPRollupIdentityUpdate.
+func (z *ZKPRollupIdentityUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
@@ -504,39 +504,8 @@ func (z *ZkpRollupIdentityUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ZkpRollupListResult.
-func (z ZkpRollupListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", z.NextLink)
-	populate(objectMap, "value", z.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZkpRollupListResult.
-func (z *ZkpRollupListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &z.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &z.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ZkpRollupPatchProperties.
-func (z ZkpRollupPatchProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ZKPRollupPatchProperties.
+func (z ZKPRollupPatchProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "bootNodeId", z.BootNodeID)
 	populate(objectMap, "bootNodeIp", z.BootNodeIP)
@@ -546,8 +515,8 @@ func (z ZkpRollupPatchProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZkpRollupPatchProperties.
-func (z *ZkpRollupPatchProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ZKPRollupPatchProperties.
+func (z *ZKPRollupPatchProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
@@ -578,8 +547,8 @@ func (z *ZkpRollupPatchProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ZkpRollupProperties.
-func (z ZkpRollupProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ZKPRollupProperties.
+func (z ZKPRollupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "blocksPerProof", z.BlocksPerProof)
 	populate(objectMap, "bootNodeId", z.BootNodeID)
@@ -600,8 +569,8 @@ func (z ZkpRollupProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZkpRollupProperties.
-func (z *ZkpRollupProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ZKPRollupProperties.
+func (z *ZKPRollupProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
@@ -665,8 +634,8 @@ func (z *ZkpRollupProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ZkpRollupUpdate.
-func (z ZkpRollupUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ZKPRollupUpdate.
+func (z ZKPRollupUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "identity", z.Identity)
 	populate(objectMap, "properties", z.Properties)
@@ -674,8 +643,8 @@ func (z ZkpRollupUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ZkpRollupUpdate.
-func (z *ZkpRollupUpdate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ZKPRollupUpdate.
+func (z *ZKPRollupUpdate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
@@ -691,6 +660,37 @@ func (z *ZkpRollupUpdate) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, "Tags", &z.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ZkpRollupListResult.
+func (z ZkpRollupListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", z.NextLink)
+	populate(objectMap, "value", z.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ZkpRollupListResult.
+func (z *ZkpRollupListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", z, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &z.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &z.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {

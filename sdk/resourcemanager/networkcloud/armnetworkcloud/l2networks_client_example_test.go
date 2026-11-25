@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/L2Networks_Create.json
+// Generated from example definition: 2026-08-01-preview/L2Networks_Create.json
 func ExampleL2NetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleL2NetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/L2Networks_Delete.json
+// Generated from example definition: 2026-08-01-preview/L2Networks_Delete.json
 func ExampleL2NetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleL2NetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/L2Networks_Get.json
+// Generated from example definition: 2026-08-01-preview/L2Networks_Get.json
 func ExampleL2NetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleL2NetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/L2Networks_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/L2Networks_ListByResourceGroup.json
 func ExampleL2NetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleL2NetworksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/L2Networks_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/L2Networks_ListBySubscription.json
 func ExampleL2NetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleL2NetworksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/L2Networks_Patch.json
+// Generated from example definition: 2026-08-01-preview/L2Networks_Patch.json
 func ExampleL2NetworksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

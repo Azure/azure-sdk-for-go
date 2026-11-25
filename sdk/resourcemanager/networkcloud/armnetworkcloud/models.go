@@ -1282,8 +1282,18 @@ type ClusterManagerPatchParameters struct {
 	// The identity for the resource.
 	Identity *ManagedServiceIdentity
 
+	// The list of cluster manager properties to patch.
+	Properties *ClusterManagerPatchProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// ClusterManagerPatchProperties represents the cluster manager properties that may be patched.
+type ClusterManagerPatchProperties struct {
+	// The relative ordering group used to apply software updates to associated clusters. The minimum accepted value is 1; the
+	// service enforces the upper bound currently in effect, which may change over time.
+	RolloutRing *int32
 }
 
 // ClusterManagerProperties represents the properties of a cluster manager.
@@ -1299,6 +1309,10 @@ type ClusterManagerProperties struct {
 
 	// The configuration of the managed resource group associated with the resource.
 	ManagedResourceGroupConfiguration *ManagedResourceGroupConfiguration
+
+	// The relative ordering group used to apply software updates to associated clusters. The minimum accepted value is 1; the
+	// service enforces the upper bound currently in effect, which may change over time.
+	RolloutRing *int32
 
 	// The size of the Azure virtual machines to use for hosting the cluster manager resource.
 	VMSize *string
@@ -1562,6 +1576,9 @@ type ClusterProperties struct {
 	// READ-ONLY; The descriptive message about the detailed status.
 	DetailedStatusMessage *string
 
+	// READ-ONLY; The CA certificate of the edge management service.
+	EdgeManagementServiceCaCertificate *CertificateInfo
+
 	// READ-ONLY; Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom location)
 	// that represents the Hybrid AKS control plane location. This extended location is used when creating provisioned clusters
 	// (Hybrid AKS clusters).
@@ -1619,7 +1636,7 @@ type ClusterSecretArchivePatch struct {
 
 // ClusterUpdateStrategy represents the strategy for updating the cluster.
 type ClusterUpdateStrategy struct {
-	// REQUIRED; The mode of operation for runtime protection.
+	// REQUIRED; The strategy for updating the cluster.
 	StrategyType *ClusterUpdateStrategyType
 
 	// REQUIRED; Selection of how the threshold should be evaluated.
@@ -1642,7 +1659,7 @@ type ClusterUpdateStrategyPatch struct {
 	// maximum number of machines in the increment. Defaults to the whole increment size.
 	MaxUnavailable *int64
 
-	// The mode of operation for runtime protection.
+	// The strategy for updating the cluster.
 	StrategyType *ClusterUpdateStrategyType
 
 	// Selection of how the threshold should be evaluated.
@@ -1812,6 +1829,34 @@ type ControlPlaneNodePatchConfiguration struct {
 	Count *int64
 }
 
+// CyberArkSecretArchiveProviderConfiguration - The configuration for a CyberArk secret archive provider.
+type CyberArkSecretArchiveProviderConfiguration struct {
+	// REQUIRED; The CyberArk application ID.
+	ApplicationID *string
+
+	// CONSTANT; The provider of the secret archive. Literal value CyberArk.
+	// Field has constant value SecretArchiveProviderTypeCyberArk, any specified value is ignored.
+	Provider *SecretArchiveProviderType
+
+	// REQUIRED; The safe name for credential storage.
+	SafeName *string
+
+	// The folder name within the safe. When not specified, the service uses `Root`.
+	FolderName *string
+
+	// The object naming pattern within the safe. The tokens `{namespace}` and `{name}` may appear in the template and are substituted
+	// at archive time.
+	ObjectNameTemplate *string
+}
+
+// GetSecretArchiveProviderConfiguration implements the SecretArchiveProviderConfigurationClassification interface for type
+// CyberArkSecretArchiveProviderConfiguration.
+func (c *CyberArkSecretArchiveProviderConfiguration) GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration {
+	return &SecretArchiveProviderConfiguration{
+		Provider: c.Provider,
+	}
+}
+
 // EgressEndpoint represents the connection from a cloud services network to the specified endpoint for a common purpose.
 type EgressEndpoint struct {
 	// REQUIRED; The descriptive category name of endpoints accessible by the AKS agent node. For example, azure-resource-management,
@@ -1929,6 +1974,46 @@ type HardwareValidationStatus struct {
 
 	// READ-ONLY; The outcome of the hardware validation.
 	Result *BareMetalMachineHardwareValidationResult
+}
+
+// HashiCorpVaultSecretArchiveProviderConfiguration - The configuration for a HashiCorp Vault secret archive provider. Authentication
+// credentials required by the selected authenticationMethod (for example, the AppRole secret, or client certificate and private
+// key) are supplied out of band.
+type HashiCorpVaultSecretArchiveProviderConfiguration struct {
+	// REQUIRED; The authentication method used for the archive. When set to `AppRole`, `applicationRoleId` is required; when
+	// set to `ClientCertificate`, `applicationRoleId` is ignored.
+	AuthenticationMethod *VaultAuthenticationMethod
+
+	// CONSTANT; The provider of the secret archive. Literal value HashiCorpVault.
+	// Field has constant value SecretArchiveProviderTypeHashiCorpVault, any specified value is ignored.
+	Provider *SecretArchiveProviderType
+
+	// The Role ID, required when `authenticationMethod` is `AppRole`; ignored for other authentication methods.
+	ApplicationRoleID *string
+
+	// The authentication method mount path in the archive.
+	AuthenticationMountPath *string
+
+	// The key value engine version. Supports values `V1` and `V2`. When not specified, the service uses `V2`.
+	KeyValueVersion *KeyValueVersion
+
+	// The key value secrets engine mount path. When not specified, the service uses `secret`.
+	MountPath *string
+
+	// The vault namespace.
+	Namespace *string
+
+	// The secret path pattern. The tokens `{namespace}` and `{name}` may appear in the template and are substituted at archive
+	// time. When not specified, the service uses `edge-credentials/{namespace}/{name}`.
+	PathTemplate *string
+}
+
+// GetSecretArchiveProviderConfiguration implements the SecretArchiveProviderConfigurationClassification interface for type
+// HashiCorpVaultSecretArchiveProviderConfiguration.
+func (h *HashiCorpVaultSecretArchiveProviderConfiguration) GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration {
+	return &SecretArchiveProviderConfiguration{
+		Provider: h.Provider,
+	}
 }
 
 // IPAddressPool - IpAddressPool represents a pool of IP addresses that can be allocated to a service.
@@ -2810,6 +2895,46 @@ type NodePoolAdministratorConfigurationPatch struct {
 	SSHPublicKeys []*SSHPublicKey
 }
 
+// OpenBaoSecretArchiveProviderConfiguration - The configuration for an OpenBao secret archive provider. Authentication credentials
+// required by the selected authenticationMethod (for example, the AppRole secret, or client certificate and private key)
+// are supplied out of band.
+type OpenBaoSecretArchiveProviderConfiguration struct {
+	// REQUIRED; The authentication method used for the archive. When set to `AppRole`, `applicationRoleId` is required; when
+	// set to `ClientCertificate`, `applicationRoleId` is ignored.
+	AuthenticationMethod *VaultAuthenticationMethod
+
+	// CONSTANT; The provider of the secret archive. Literal value OpenBao.
+	// Field has constant value SecretArchiveProviderTypeOpenBao, any specified value is ignored.
+	Provider *SecretArchiveProviderType
+
+	// The Role ID, required when `authenticationMethod` is `AppRole`; ignored for other authentication methods.
+	ApplicationRoleID *string
+
+	// The authentication method mount path in the archive.
+	AuthenticationMountPath *string
+
+	// The key value engine version. Supports values `V1` and `V2`. When not specified, the service uses `V2`.
+	KeyValueVersion *KeyValueVersion
+
+	// The key value secrets engine mount path. When not specified, the service uses `secret`.
+	MountPath *string
+
+	// The vault namespace.
+	Namespace *string
+
+	// The secret path pattern. The tokens `{namespace}` and `{name}` may appear in the template and are substituted at archive
+	// time. When not specified, the service uses `edge-credentials/{namespace}/{name}`.
+	PathTemplate *string
+}
+
+// GetSecretArchiveProviderConfiguration implements the SecretArchiveProviderConfigurationClassification interface for type
+// OpenBaoSecretArchiveProviderConfiguration.
+func (o *OpenBaoSecretArchiveProviderConfiguration) GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration {
+	return &SecretArchiveProviderConfiguration{
+		Provider: o.Provider,
+	}
+}
+
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -3182,8 +3307,23 @@ type SSHPublicKeyPatch struct {
 	KeyData *string
 }
 
+// SecretArchiveProviderConfiguration represents the base configuration for a self-supplied secret archive provider.
+type SecretArchiveProviderConfiguration struct {
+	// REQUIRED; The provider of the secret archive.
+	Provider *SecretArchiveProviderType
+}
+
+// GetSecretArchiveProviderConfiguration implements the SecretArchiveProviderConfigurationClassification interface for type
+// SecretArchiveProviderConfiguration.
+func (s *SecretArchiveProviderConfiguration) GetSecretArchiveProviderConfiguration() *SecretArchiveProviderConfiguration {
+	return s
+}
+
 // SecretArchiveReference represents the reference to a secret in a key vault.
 type SecretArchiveReference struct {
+	// READ-ONLY; The public key used by the platform to encrypt the archived credential before it was written to the secret archive.
+	EncryptionPublicKey *string
+
 	// READ-ONLY; The resource ID of the key vault containing the secret.
 	KeyVaultID *string
 
@@ -3203,7 +3343,18 @@ type SecretArchiveSettings struct {
 	// assigned.
 	AssociatedIdentity *IdentitySelector
 
-	// The URI for the key vault used as the secret archive.
+	// The public key used to encrypt secrets before they are written to the secret archive. Expected encoding is a PEM-encoded
+	// RSA public key with a minimum key size of 3072 bits. Additional key formats or sizes may be supported in future versions.
+	EncryptionPublicKey *string
+
+	// The configuration indicating the use of self-supplied secret archive software. Specification of a provider configuration
+	// indicates that the provided configuration will be used. Exclusion of any providerConfiguration indicates the use of Azure
+	// Key Vault. If providerConfiguration is included in a PATCH, the body must be a complete, valid configuration for the chosen
+	// provider, including all fields required for that provider; omit providerConfiguration from PATCH bodies that do not change
+	// it.
+	ProviderConfiguration SecretArchiveProviderConfigurationClassification
+
+	// The URI of the secret archive endpoint. The URI must use the `https://` scheme.
 	VaultURI *string
 }
 

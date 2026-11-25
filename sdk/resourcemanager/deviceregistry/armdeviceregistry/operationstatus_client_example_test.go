@@ -7,11 +7,11 @@ package armdeviceregistry_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/Get_OperationStatus.json
+// Generated from example definition: 2026-11-01/Get_OperationStatus.json
 func ExampleOperationStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleOperationStatusClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewOperationStatusClient().Get(ctx, "testLocation", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", nil)
+	res, err := clientFactory.NewOperationStatusClient().Get(ctx, "eastus", "00000000-0000-0000-0000-000000000001", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -31,8 +31,8 @@ func ExampleOperationStatusClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.OperationStatusClientGetResponse{
 	// 	OperationStatusResult: armdeviceregistry.OperationStatusResult{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DeviceRegistry/locations/testLocation/operationStatuses/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
-	// 		Name: to.Ptr("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DeviceRegistry/locations/eastus/operationStatuses/00000000-0000-0000-0000-000000000001"),
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 		Status: to.Ptr("Succeeded"),
 	// 		PercentComplete: to.Ptr[float64](100),
 	// 		StartTime: to.Ptr(time.Date(2022, time.November, 21, 13, 27, 3, 898086900, time.UTC)),

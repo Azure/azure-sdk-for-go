@@ -16,6 +16,8 @@ func unmarshalBenefitRecommendationPropertiesClassification(rawMsg json.RawMessa
 	}
 	var b BenefitRecommendationPropertiesClassification
 	switch m["scope"] {
+	case string(ScopeManagementGroup):
+		b = &ManagementGroupScopeBenefitRecommendationProperties{}
 	case string(ScopeShared):
 		b = &SharedScopeBenefitRecommendationProperties{}
 	case string(ScopeSingle):

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/EAPriceSheetForBillingPeriod.json
+// Generated from example definition: 2026-06-01/EAPriceSheetForBillingPeriod.json
 func ExamplePriceSheetClient_BeginDownloadByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExamplePriceSheetClient_BeginDownloadByBillingAccount() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/PricesheetDownloadByBillingProfile.json
+// Generated from example definition: 2026-06-01/PricesheetDownloadByBillingProfile.json
 func ExamplePriceSheetClient_BeginDownloadByBillingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExamplePriceSheetClient_BeginDownloadByBillingProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/PricesheetDownload.json
+// Generated from example definition: 2026-06-01/PricesheetDownload.json
 func ExamplePriceSheetClient_BeginDownloadByInvoice() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

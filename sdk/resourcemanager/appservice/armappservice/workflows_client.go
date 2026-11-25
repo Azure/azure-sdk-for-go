@@ -19,7 +19,7 @@ import (
 // WorkflowsClient contains the methods for the Workflows group.
 // Don't use this type directly, use NewWorkflowsClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type WorkflowsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -97,7 +97,7 @@ func (client *WorkflowsClient) regenerateAccessKeyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, keyType); err != nil {
@@ -158,7 +158,7 @@ func (client *WorkflowsClient) validateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, validate); err != nil {

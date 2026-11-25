@@ -20,7 +20,7 @@ import (
 // WebSiteManagementClient contains the methods for the WebSiteManagement group.
 // Don't use this type directly, use NewWebSiteManagementClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type WebSiteManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,7 +82,7 @@ func (client *WebSiteManagementClient) checkNameAvailabilityCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -136,7 +136,7 @@ func (client *WebSiteManagementClient) getPublishingUserCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -191,7 +191,7 @@ func (client *WebSiteManagementClient) getSourceControlCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +299,7 @@ func (client *WebSiteManagementClient) listSKUsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -361,7 +361,7 @@ func (client *WebSiteManagementClient) moveCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, moveResourceEnvelope); err != nil {
@@ -420,7 +420,7 @@ func (client *WebSiteManagementClient) listAseRegionsCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -489,7 +489,7 @@ func (client *WebSiteManagementClient) listBillingMetersCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.BillingLocation != nil {
 			reqQP.Set("billingLocation", *options.BillingLocation)
 		}
@@ -564,7 +564,7 @@ func (client *WebSiteManagementClient) listCustomHostNameSitesCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.Hostname != nil {
 			reqQP.Set("hostname", *options.Hostname)
 		}
@@ -636,7 +636,7 @@ func (client *WebSiteManagementClient) listGeoRegionsCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.CustomModeWorkersEnabled != nil {
 			reqQP.Set("customModeWorkersEnabled", strconv.FormatBool(*options.CustomModeWorkersEnabled))
 		}
@@ -720,7 +720,7 @@ func (client *WebSiteManagementClient) listPremierAddOnOffersCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -790,7 +790,7 @@ func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameCrea
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -859,7 +859,7 @@ func (client *WebSiteManagementClient) listSourceControlsCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -882,7 +882,7 @@ func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *ht
 //
 // Check if a resource name is available for DNL sites.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - request - The request body
 //   - options - WebSiteManagementClientRegionalCheckNameAvailabilityOptions contains the optional parameters for the WebSiteManagementClient.RegionalCheckNameAvailability
 //     method.
@@ -920,7 +920,7 @@ func (client *WebSiteManagementClient) regionalCheckNameAvailabilityCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -975,7 +975,7 @@ func (client *WebSiteManagementClient) updatePublishingUserCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1035,7 +1035,7 @@ func (client *WebSiteManagementClient) updateSourceControlCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1099,7 +1099,7 @@ func (client *WebSiteManagementClient) validateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1166,7 +1166,7 @@ func (client *WebSiteManagementClient) validateMoveCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, moveResourceEnvelope); err != nil {
@@ -1214,7 +1214,7 @@ func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

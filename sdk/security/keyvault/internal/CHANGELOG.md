@@ -4,6 +4,18 @@
 
 ### Features Added
 
+- Added `NewTokenBindingPolicy`. Clients that add it to their per-call policies get mTLS PoP
+  support: the shared challenge policy signals PoP support for their requests, and the token
+  actually returned determines bearer or bound authorization. Clients built without it keep bearer
+  authentication even when they use this version of the module, because they can't retry binding
+  validation failures. The Secrets, Keys, Certificates, and Administration clients add it.
+- A specifically classified `AADSTS3921996` token-acquisition denial triggers fresh bearer
+  acquisition and case-insensitive, tenant-scoped memory for the client lifetime. Cancellation
+  and unrelated or mixed terminal failures don't permit fallback.
+- Bound HTTP 401 responses containing `[MtlsCnfClaimRequestDataValidationFailed]` in the JSON
+  error message use the configured outer retry policy rather than authentication resends
+  or bearer fallback. Response bodies and caller retry overrides are preserved.
+
 ### Breaking Changes
 
 ### Bugs Fixed

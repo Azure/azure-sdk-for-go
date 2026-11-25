@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	internalexported "github.com/Azure/azure-sdk-for-go/sdk/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
@@ -27,6 +28,43 @@ import (
 func testRetryOptions() *policy.RetryOptions {
 	return &policy.RetryOptions{
 		RetryDelay: time.Millisecond,
+	}
+}
+
+func TestRetryPolicy_ResponseClassifierError(t *testing.T) {
+	for _, nonRetriable := range []bool{false, true} {
+		t.Run(fmt.Sprint(nonRetriable), func(t *testing.T) {
+			srv, close := mock.NewServer()
+			defer close()
+			srv.SetResponse()
+			cause := errors.New("response body read failed")
+			classifications := 0
+			req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+			require.NoError(t, err)
+			req.SetOperationValue(internalexported.ResponseClassifier(func(*http.Response) (bool, error) {
+				classifications++
+				if classifications == 1 {
+					if nonRetriable {
+						return false, errorinfo.NonRetriableError(cause)
+					}
+					return false, cause
+				}
+				return false, nil
+			}))
+			pl := NewPipeline("", "", PipelineOptions{}, &policy.ClientOptions{
+				Transport: srv, Retry: policy.RetryOptions{MaxRetries: 1, RetryDelay: -1},
+			})
+			res, err := pl.Do(req)
+			if nonRetriable {
+				require.ErrorIs(t, err, cause)
+				require.Nil(t, res)
+				require.Equal(t, 1, srv.Requests())
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, http.StatusOK, res.StatusCode)
+				require.Equal(t, 2, srv.Requests())
+			}
+		})
 	}
 }
 

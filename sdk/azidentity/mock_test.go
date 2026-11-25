@@ -38,6 +38,11 @@ func (m *mockSTS) Do(req *http.Request) (*http.Response, error) {
 		tenant = fakeTenantID
 	}
 	switch s := strings.Split(req.URL.Path, "/"); s[len(s)-1] {
+	case "getplatformmetadata":
+		res.StatusCode = http.StatusNotFound
+		res.Body = io.NopCloser(strings.NewReader("{}"))
+	case "compute":
+		res.Body = io.NopCloser(strings.NewReader(`{"securityProfile":{"securityType":"Standard"}}`))
 	case "instance":
 		host := req.URL.Host
 		if ae := req.URL.Query().Get("authorization_endpoint"); ae != "" {
@@ -53,6 +58,11 @@ func (m *mockSTS) Do(req *http.Request) (*http.Response, error) {
 	case "devicecode":
 		res.Body = io.NopCloser(strings.NewReader(`{"device_code":"...","expires_in":600,"interval":60}`))
 	case "token":
+		if req.URL.Path == "/metadata/identity/oauth2/token" && req.Header.Get(headerMetadata) == "" {
+			res.StatusCode = http.StatusBadRequest
+			res.Body = io.NopCloser(strings.NewReader("{}"))
+			return res, nil
+		}
 		if err := req.ParseForm(); err != nil {
 			return nil, fmt.Errorf("mockSTS failed to parse a request body: %w", err)
 		}

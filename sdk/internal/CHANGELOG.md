@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Added `errorinfo.AuthenticationFailure` and `errorinfo.AuthenticationFailureInfo`, which let SDK
+  modules classify credential errors without depending on azidentity, and
+  `exported.ResponseClassifier`, a request-scoped response classifier shared by the authentication
+  and retry policies.
+
 ### Breaking Changes
 
 ### Bugs Fixed

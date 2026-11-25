@@ -130,6 +130,12 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			res := getResponseFromError(err)
 			err = newAuthenticationFailedError(c.name, msg, res)
 		}
+		switch e := err.(type) {
+		case *AuthenticationFailedError:
+			e.causes, e.chained = errs, true
+		case *credentialUnavailableError:
+			e.causes, e.chained = errs, true
+		}
 	}
 	return token, err
 }

@@ -51,6 +51,8 @@ type AuthenticationFailedError struct {
 
 	credType, message string
 	omitResponse      bool
+	causes            []error
+	chained           bool
 }
 
 func newAuthenticationFailedError(credType, message string, resp *http.Response) error {
@@ -67,7 +69,13 @@ func newAuthenticationFailedErrorFromMSAL(credType string, err error) error {
 	if res == nil {
 		msg = err.Error()
 	}
-	return newAuthenticationFailedError(credType, msg, res)
+	return &AuthenticationFailedError{credType: credType, message: msg, RawResponse: res, causes: []error{err}}
+}
+
+// AuthenticationFailure supports error classification by Azure SDK modules. It isn't intended for
+// application use and isn't covered by this module's compatibility guarantees.
+func (e *AuthenticationFailedError) AuthenticationFailure() errorinfo.AuthenticationFailureInfo {
+	return errorinfo.AuthenticationFailureInfo{Chained: e.chained, Causes: e.causes}
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
@@ -122,7 +130,10 @@ func (*AuthenticationFailedError) NonRetriable() {
 	// marker method
 }
 
-var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
+var (
+	_ errorinfo.AuthenticationFailure = (*AuthenticationFailedError)(nil)
+	_ errorinfo.NonRetriable          = (*AuthenticationFailedError)(nil)
+)
 
 // AuthenticationRequiredError indicates a credential's Authenticate method must be called to acquire a token
 // because the credential requires user interaction and is configured not to request it automatically.
@@ -136,7 +147,7 @@ type AuthenticationRequiredError struct {
 func newAuthenticationRequiredError(credType string, tro policy.TokenRequestOptions) error {
 	return &AuthenticationRequiredError{
 		credentialUnavailableError: credentialUnavailableError{
-			credType + " can't acquire a token without user interaction. Call Authenticate to authenticate a user interactively",
+			message: credType + " can't acquire a token without user interaction. Call Authenticate to authenticate a user interactively",
 		},
 		TokenRequestOptions: tro,
 	}
@@ -154,19 +165,27 @@ type credentialUnavailable interface {
 
 type credentialUnavailableError struct {
 	message string
+	causes  []error
+	chained bool
 }
 
 // newCredentialUnavailableError is an internal helper that ensures consistent error message formatting
 func newCredentialUnavailableError(credType, message string) error {
 	msg := fmt.Sprintf("%s: %s", credType, message)
-	return &credentialUnavailableError{msg}
+	return &credentialUnavailableError{message: msg}
 }
 
 // NewCredentialUnavailableError constructs an error indicating a credential can't attempt authentication
 // because it lacks required data or state. When [ChainedTokenCredential] receives this error it will try
 // its next credential, if any.
 func NewCredentialUnavailableError(message string) error {
-	return &credentialUnavailableError{message}
+	return &credentialUnavailableError{message: message}
+}
+
+// AuthenticationFailure supports error classification by Azure SDK modules. It isn't intended for
+// application use and isn't covered by this module's compatibility guarantees.
+func (e *credentialUnavailableError) AuthenticationFailure() errorinfo.AuthenticationFailureInfo {
+	return errorinfo.AuthenticationFailureInfo{Unavailable: true, Chained: e.chained, Causes: e.causes}
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
@@ -180,6 +199,7 @@ func (*credentialUnavailableError) NonRetriable() {}
 func (*credentialUnavailableError) credentialUnavailable() {}
 
 var (
-	_ credentialUnavailable  = (*credentialUnavailableError)(nil)
-	_ errorinfo.NonRetriable = (*credentialUnavailableError)(nil)
+	_ credentialUnavailable           = (*credentialUnavailableError)(nil)
+	_ errorinfo.AuthenticationFailure = (*credentialUnavailableError)(nil)
+	_ errorinfo.NonRetriable          = (*credentialUnavailableError)(nil)
 )

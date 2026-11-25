@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -12,8 +13,18 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/stretchr/testify/require"
 )
+
+func TestAuthenticationFailedErrorFromMSAL(t *testing.T) {
+	cause := fmt.Errorf("wrapped: %w", context.Canceled)
+	err := newAuthenticationFailedErrorFromMSAL(credNameManagedIdentity, cause)
+	var af errorinfo.AuthenticationFailure
+	require.ErrorAs(t, err, &af)
+	require.Equal(t, errorinfo.AuthenticationFailureInfo{Causes: []error{cause}}, af.AuthenticationFailure())
+	require.NotErrorIs(t, err, context.Canceled, "the MSAL error must not be exposed to errors.Is")
+}
 
 // testing our custom Error interface for the authentication failed error type
 func TestAuthenticationFailedErrorInterface(t *testing.T) {

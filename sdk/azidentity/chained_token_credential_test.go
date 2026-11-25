@@ -13,7 +13,50 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	"github.com/stretchr/testify/require"
 )
+
+func TestChainedTokenCredential_AuthenticationFailure(t *testing.T) {
+	t.Run("nested chains", func(t *testing.T) {
+		unavailable := newCredentialUnavailableError("unavailable", "not configured")
+		terminal := newAuthenticationFailedErrorFromMSAL("terminal", context.Canceled)
+		first, last, fallback := NewFakeCredential(), NewFakeCredential(), NewFakeCredential()
+		first.SetResponse(azcore.AccessToken{}, unavailable)
+		last.SetResponse(azcore.AccessToken{}, terminal)
+		fallback.SetResponse(azcore.AccessToken{Token: tokenValue}, nil)
+		inner, err := NewChainedTokenCredential([]azcore.TokenCredential{first, last}, nil)
+		require.NoError(t, err)
+		outer, err := NewChainedTokenCredential([]azcore.TokenCredential{inner, fallback}, nil)
+		require.NoError(t, err)
+		_, err = outer.GetToken(context.Background(), testTRO)
+		require.Zero(t, fallback.getTokenCalls, "an inner unavailable failure must not hide a terminal chain failure")
+
+		var af errorinfo.AuthenticationFailure
+		require.ErrorAs(t, err, &af)
+		info := af.AuthenticationFailure()
+		require.True(t, info.Chained)
+		require.False(t, info.Unavailable)
+		require.Len(t, info.Causes, 1)
+		nested, ok := info.Causes[0].(errorinfo.AuthenticationFailure)
+		require.True(t, ok)
+		require.Equal(t, errorinfo.AuthenticationFailureInfo{Chained: true, Causes: []error{unavailable, terminal}}, nested.AuthenticationFailure())
+		require.NotErrorIs(t, err, terminal, "chain errors must not expose their causes to errors.Is")
+	})
+	t.Run("all unavailable", func(t *testing.T) {
+		first := newCredentialUnavailableError("first", "not configured")
+		second := newCredentialUnavailableError("second", "not configured")
+		c1, c2 := NewFakeCredential(), NewFakeCredential()
+		c1.SetResponse(azcore.AccessToken{}, first)
+		c2.SetResponse(azcore.AccessToken{}, second)
+		cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c1, c2}, nil)
+		require.NoError(t, err)
+		_, err = cred.GetToken(context.Background(), testTRO)
+		var af errorinfo.AuthenticationFailure
+		require.ErrorAs(t, err, &af)
+		require.Equal(t, errorinfo.AuthenticationFailureInfo{Unavailable: true, Chained: true, Causes: []error{first, second}}, af.AuthenticationFailure())
+	})
+}
 
 type fakeCredentialResponse struct {
 	token azcore.AccessToken

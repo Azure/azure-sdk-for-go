@@ -66,6 +66,15 @@ Get started with our [examples][secrets_samples].
 
 ## Troubleshooting
 
+### Unreleased mTLS proof-of-possession preview
+
+With the coordinated unreleased SDK modules and the optional
+[attestation integration](../../../azidentity/attestation/README.md), eligible managed
+identity requests automatically use attested mTLS PoP. No client enable flag is required.
+Other credentials and known unsupported hosts retain bearer authentication. See the
+[shared authentication policy](../internal/README.md) for native prerequisites, narrowly
+classified tenant fallback, and bounded binding-validation retries.
+
 ### Error Handling
 
 All methods which send HTTP requests return `*azcore.ResponseError` when these requests fail. `ResponseError` has error details and the raw response from Key Vault.

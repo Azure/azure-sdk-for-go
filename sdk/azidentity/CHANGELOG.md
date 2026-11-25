@@ -4,11 +4,30 @@
 
 ### Features Added
 
+- `ManagedIdentityCredential` supports certificate-bound mTLS PoP tokens on Windows hosts with
+  Credential Guard and IMDSv2. Set `policy.TokenRequestOptions.EnableMTLSPoP` when requesting
+  tokens directly. Updated Key Vault clients automatically signal PoP support without credential
+  or service-client enable flags.
+- Importing the optional `github.com/Azure/azure-sdk-for-go/sdk/azidentity/attestation` module
+  enables automatic attested mTLS PoP selection for eligible managed identity requests, including
+  those made through `DefaultAzureCredential`. Selection requires a PoP request and MSAL
+  capabilities reporting KeyGuard support. Without the import or on a known unsupported host,
+  ordinary bearer acquisition is preserved. Selected attestation failures aren't downgraded.
+- `ManagedIdentityCredentialOptions.DisableMTLSPoP` opts a managed identity credential out of
+  bound-token acquisition.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- `DefaultAzureCredential` delegates its initial IMDS discovery to MSAL under a one-second
+  timeout, with retries disabled. Discovery now requires MSAL to detect an IMDS source rather
+  than accepting any endpoint response. The timeout doesn't apply to subsequent token acquisition.
+- Added `AuthenticationFailure` methods to `AuthenticationFailedError` and `AuthenticationRequiredError`.
+  Other Azure SDK modules use them to classify credential errors. They aren't intended for
+  application use and aren't covered by this module's compatibility guarantees.
 
 ## 1.15.0 (2026-10-14)
 

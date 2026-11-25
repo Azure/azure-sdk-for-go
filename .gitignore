@@ -25,6 +25,7 @@ coverage.html
 
 _testmain.go
 
+*.dll
 *.exe
 *.test
 *.prof

@@ -208,6 +208,7 @@ type msalConfidentialClient interface {
 
 type msalManagedIdentityClient interface {
 	AcquireToken(context.Context, string, ...managedidentity.AcquireTokenOption) (managedidentity.AuthResult, error)
+	Capabilities(context.Context) (managedidentity.Capabilities, error)
 }
 
 // enables fakes for test scenarios

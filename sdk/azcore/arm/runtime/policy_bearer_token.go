@@ -78,6 +78,9 @@ func (b *BearerTokenPolicy) onRequest(req *azpolicy.Request, authNZ func(azpolic
 	if err != nil || len(b.auxResources) == 0 {
 		return err
 	}
+	if strings.HasPrefix(req.Raw().Header.Get(shared.HeaderAuthorization), "mtls_pop ") {
+		return fmt.Errorf("mTLS PoP doesn't support auxiliary tenant authentication")
+	}
 	// add tokens for auxiliary tenants
 	as := acquiringResourceState{
 		ctx: req.Raw().Context(),
@@ -89,6 +92,9 @@ func (b *BearerTokenPolicy) onRequest(req *azpolicy.Request, authNZ func(azpolic
 		auxTk, err := er.Get(as)
 		if err != nil {
 			return err
+		}
+		if auxTk.BindingCertificate != nil {
+			return fmt.Errorf("mTLS PoP doesn't support auxiliary tenant authentication")
 		}
 		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", shared.BearerTokenPrefix, auxTk.Token))
 	}

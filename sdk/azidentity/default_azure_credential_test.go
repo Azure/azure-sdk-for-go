@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"net/http"
@@ -21,6 +22,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/managedidentity"
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -390,24 +394,15 @@ func TestDefaultAzureCredential_WorkloadIdentity(t *testing.T) {
 	})
 }
 
-// delayPolicy adds a delay to pipeline requests. Used to test timeout behavior.
-type delayPolicy struct {
-	delay time.Duration
-}
-
-func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if p.delay > 0 {
-		select {
-		case <-req.Raw().Context().Done():
-			return nil, req.Raw().Context().Err()
-		case <-time.After(p.delay):
-			// delay has elapsed, continue on
-		}
-	}
-	return req.Next()
-}
-
 func TestDefaultAzureCredential_IMDS(t *testing.T) {
+	setEnvironmentVariables(t, map[string]string{
+		azureTokenCredentials: "prod", azureTenantID: "", azureClientID: "",
+		azureClientSecret: "", azureFederatedTokenFile: "",
+		identityEndpoint: "", identityHeader: "", identityServerThumbprint: "",
+		msiEndpoint: "", msiSecret: "", arcIMDSEndpoint: "",
+		"AZURE_POD_IDENTITY_AUTHORITY_HOST": "", "MSAL_MI_DISABLE_IMDS_V2": "",
+	})
+	require.NoError(t, os.Unsetenv(azureClientID))
 	before := shellExec
 	defer func() { shellExec = before }()
 	shellExec = func(context.Context, string, string) ([]byte, error) {
@@ -415,91 +410,252 @@ func TestDefaultAzureCredential_IMDS(t *testing.T) {
 	}
 
 	t.Run("probe", func(t *testing.T) {
-		probed := false
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		// IMDSv1-only discovery avoids all native key operations, including on Windows.
+		srv.AppendResponse(mock.WithStatusCode(http.StatusNotFound))
+		srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+		srv.AppendResponse(mock.WithBody([]byte(`{"securityProfile":{"securityType":"Standard"}}`)))
+		srv.RepeatResponse(2, mock.WithBody(accessTokenRespSuccess))
+		var paths []string
 		cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
 			ClientOptions: policy.ClientOptions{
 				Retry: policy.RetryOptions{
 					MaxRetries:  5,
 					StatusCodes: []int{http.StatusInternalServerError},
 				},
-				Transport: &mockSTS{
-					tokenRequestCallback: func(req *http.Request) *http.Response {
-						hdr := req.Header.Get(headerMetadata)
-						if probed {
-							// This should be a token request. Return nil, mockSTS will respond with a token
-							require.NotEmpty(t, hdr, "credential shouldn't retry probe request")
-							return nil
-						}
-						// probe request. Respond with retriable status. The credential shouldn't retry
-						probed = true
-						require.Empty(t, hdr, "probe request shouldn't have Metadata header")
-						return &http.Response{
-							StatusCode: http.StatusInternalServerError,
-						}
-					},
-				},
+				Transport: srv,
+				PerCallPolicies: []policy.Policy{managedIdentityTestPolicy{do: func(req *policy.Request) {
+					raw := req.Raw()
+					paths = append(paths, raw.URL.Path)
+					if len(paths) <= 2 {
+						assert.Empty(t, raw.Header.Get(headerMetadata))
+						assert.NotEmpty(t, raw.Header.Get("x-ms-client-request-id"), "MSAL must construct the probe")
+						deadline, ok := raw.Context().Deadline()
+						assert.True(t, ok)
+						assert.InDelta(t, time.Second.Seconds(), time.Until(deadline).Seconds(), 0.1)
+					}
+				}}},
 			},
 		})
 		require.NoError(t, err)
-		tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
+		// MSAL's process-wide token cache survives go test -count repetitions.
+		scope := t.Name() + uuid.NewString()
+		tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 		require.NoError(t, err)
-		require.True(t, probed)
 		require.Equal(t, tokenValue, tk.Token)
-
-		t.Run("Azure Container Instances", func(t *testing.T) {
-			srv, close := mock.NewTLSServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer close()
-			srv.AppendResponse(mock.WithBody([]byte("Required metadata header not specified or not correct")), mock.WithStatusCode(http.StatusBadRequest))
-			srv.AppendResponse(mock.WithBody(accessTokenRespSuccess), mock.WithStatusCode(http.StatusOK))
-
-			cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
-				ClientOptions: policy.ClientOptions{
-					Transport: srv,
-				},
-			})
-			require.NoError(t, err)
-			tk, err := cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{t.Name()}})
-			require.NoError(t, err, "DefaultAzureCredential should accept ACI's response to the probe request")
-			require.Equal(t, tokenValue, tk.Token)
-		})
+		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope + "-second"}})
+		require.NoError(t, err)
+		assert.Equal(t, []string{
+			"/metadata/identity/getplatformmetadata", "/metadata/identity/oauth2/token",
+			"/metadata/instance/compute", "/metadata/identity/oauth2/token", "/metadata/identity/oauth2/token",
+		}, paths, "MSAL probes v2 then v1 once; acquisitions must not re-probe")
 	})
 
 	t.Run("timeout", func(t *testing.T) {
-		// shorten the timeout to speed up this test
-		before := imdsProbeTimeout
-		defer func() { imdsProbeTimeout = before }()
-		imdsProbeTimeout = 100 * time.Millisecond
-
-		dp := delayPolicy{2 * imdsProbeTimeout}
+		requests := 0
+		stall := true
 		chain, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
 			ClientOptions: policy.ClientOptions{
-				PerCallPolicies: []policy.Policy{&dp},
-				Retry:           policy.RetryOptions{MaxRetries: -1},
-				Transport:       &mockSTS{},
+				PerCallPolicies: []policy.Policy{policyFunc(func(req *policy.Request) (*http.Response, error) {
+					requests++
+					if stall {
+						<-req.Raw().Context().Done()
+						return nil, req.Raw().Context().Err()
+					}
+					return req.Next()
+				})},
+				Retry:     policy.RetryOptions{MaxRetries: 5},
+				Transport: &mockSTS{},
 			},
 		})
 		require.NoError(t, err)
 		for i := 0; i < 2; i++ {
-			// expecting an error because managed identity times out and AzureCLICredential returns an error
+			start := time.Now()
 			_, err = chain.GetToken(context.Background(), testTRO)
 			require.ErrorContains(t, err, credNameManagedIdentity+": managed identity timed out")
+			assert.InDelta(t, 1, time.Since(start).Seconds(), 0.5, "the real MSAL discovery must stop after one second")
 		}
-
-		// remove the delay so ManagedIdentityCredential can get a token from the fake STS
-		dp.delay = 0
+		assert.Equal(t, 2, requests, "timed-out probes must not retry or continue to v1")
+		stall = false
 		tk, err := chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{t.Name()}})
 		require.NoError(t, err)
 		require.Equal(t, tokenValue, tk.Token)
+	})
 
-		// now there should be no timeout on token requests
-		dp.delay = 2 * imdsProbeTimeout
-		tk, err = chain.GetToken(context.Background(), policy.TokenRequestOptions{
-			// using a different scope forces a token request by bypassing the cache
-			Scopes: []string{"not-" + testTRO.Scopes[0]},
+	t.Run("MSAL delegation and caller context", func(t *testing.T) {
+		for _, timeout := range []time.Duration{5 * time.Second, 100 * time.Millisecond} {
+			t.Run(timeout.String(), func(t *testing.T) {
+				c, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{dac: true})
+				require.NoError(t, err)
+				ctx, cancel := context.WithTimeout(context.Background(), timeout)
+				defer cancel()
+				parentDeadline, _ := ctx.Deadline()
+				probes, acquisitions := 0, 0
+				c.mic.msalClient = fakeManagedIdentityClient{
+					capabilities: func(probe context.Context) (managedidentity.Capabilities, error) {
+						probes++
+						deadline, ok := probe.Deadline()
+						require.True(t, ok)
+						if timeout < time.Second {
+							assert.Equal(t, parentDeadline, deadline)
+						} else {
+							assert.InDelta(t, 1, time.Until(deadline).Seconds(), 0.1)
+						}
+						return managedidentity.Capabilities{Source: managedidentity.DefaultToIMDS}, nil
+					},
+					acquireToken: func(actual context.Context, _ string, _ ...managedidentity.AcquireTokenOption) (managedidentity.AuthResult, error) {
+						acquisitions++
+						assert.Same(t, ctx, actual)
+						assert.NoError(t, actual.Err(), "cancelling discovery must not cancel acquisition")
+						return managedidentity.AuthResult{AccessToken: tokenValue}, nil
+					},
+				}
+				for range 2 {
+					_, err = c.mic.GetToken(ctx, testTRO)
+					require.NoError(t, err)
+				}
+				assert.Equal(t, 1, probes)
+				assert.Equal(t, 2, acquisitions)
+			})
+		}
+	})
+
+	t.Run("no detected source", func(t *testing.T) {
+		c, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{dac: true})
+		require.NoError(t, err)
+		c.mic.msalClient = fakeManagedIdentityClient{
+			capabilities: func(context.Context) (managedidentity.Capabilities, error) {
+				return managedidentity.Capabilities{ErrorReason: "offline discovery failure"}, nil
+			},
+			acquireToken: func(context.Context, string, ...managedidentity.AcquireTokenOption) (managedidentity.AuthResult, error) {
+				t.Fatal("acquisition must not run when MSAL detected no source")
+				return managedidentity.AuthResult{}, nil
+			},
+		}
+		_, err = c.GetToken(context.Background(), testTRO)
+		var unavailable credentialUnavailable
+		require.ErrorAs(t, err, &unavailable)
+		assert.ErrorContains(t, err, "offline discovery failure")
+		assert.True(t, c.mic.probeIMDS, "unsuccessful discovery must not disable later probes")
+	})
+
+	t.Run("unrelated responses aren't IMDS", func(t *testing.T) {
+		srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+		defer close()
+		srv.SetResponse(mock.WithStatusCode(http.StatusServiceUnavailable))
+		c, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+			ClientOptions: azcore.ClientOptions{Transport: srv, Retry: policy.RetryOptions{MaxRetries: 5}},
 		})
 		require.NoError(t, err)
-		require.Equal(t, tokenValue, tk.Token)
+		_, err = c.GetToken(context.Background(), testTRO)
+		require.ErrorContains(t, err, "no managed identity endpoint detected")
+		assert.Equal(t, 2, srv.Requests(), "only MSAL's v2 and v1 probes should run, without retries")
 	})
+}
+
+func TestDefaultAzureCredential_Attestation(t *testing.T) {
+	t.Setenv(azureTokenCredentials, credNameManagedIdentity)
+	for _, registered := range []bool{false, true} {
+		c, err := NewDefaultAzureCredential(nil)
+		require.NoError(t, err)
+		require.Len(t, c.chain.sources, 1)
+		mic, ok := c.chain.sources[0].(*ManagedIdentityCredential)
+		require.True(t, ok)
+		assert.False(t, mic.mic.attestationAvailable())
+		assert.False(t, mic.mic.disableMTLSPoP, "DAC must permit automatic PoP by default")
+		if registered {
+			mic.mic.attestationAvailable = func() bool { return true }
+		}
+		binding := &tls.Certificate{}
+		var want managedidentity.AcquireTokenOptions
+		managedidentity.WithClaims("claims")(&want)
+		if registered {
+			managedidentity.WithMtlsProofOfPossession()(&want)
+			managedidentity.WithAttestationSupport()(&want)
+			managedidentity.WithMtlsPoPMinStrength(managedidentity.MtlsBindingStrengthKeyGuard)(&want)
+		}
+		mic.mic.msalClient = fakeManagedIdentityClient{
+			capabilities: func(context.Context) (managedidentity.Capabilities, error) {
+				require.True(t, registered)
+				return managedidentity.Capabilities{
+					Source: managedidentity.DefaultToIMDS, MaxSupportedBindingStrength: managedidentity.MtlsBindingStrengthKeyGuard,
+				}, nil
+			},
+			acquireToken: func(_ context.Context, resource string, opts ...managedidentity.AcquireTokenOption) (managedidentity.AuthResult, error) {
+				assert.Equal(t, "https://vault.azure.net", resource)
+				var got managedidentity.AcquireTokenOptions
+				for _, opt := range opts {
+					opt(&got)
+				}
+				assert.Equal(t, want, got, "DAC must propagate PoP, attestation, and claims to MSAL")
+				return managedidentity.AuthResult{AccessToken: tokenValue, BindingCertificate: binding}, nil
+			},
+		}
+		token, err := c.GetToken(context.Background(), policy.TokenRequestOptions{
+			Scopes: []string{"https://vault.azure.net/.default"}, Claims: "claims", EnableMTLSPoP: true,
+		})
+		require.NoError(t, err)
+		assert.Same(t, binding, token.BindingCertificate, "DAC must retain MSAL's binding certificate")
+	}
+}
+
+func TestDefaultAzureCredential_AttestedProbe(t *testing.T) {
+	setEnvironmentVariables(t, map[string]string{
+		azureTokenCredentials: "prod", azureTenantID: "", azureClientID: "",
+		azureClientSecret: "", azureFederatedTokenFile: "",
+		identityEndpoint: "", identityHeader: "", identityServerThumbprint: "",
+		msiEndpoint: "", msiSecret: "", arcIMDSEndpoint: "",
+	})
+	require.NoError(t, os.Unsetenv(azureClientID))
+	c, err := NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+	var mic *ManagedIdentityCredential
+	for _, source := range c.chain.sources {
+		if candidate, ok := source.(*ManagedIdentityCredential); ok {
+			mic = candidate
+		}
+	}
+	require.NotNil(t, mic)
+	mic.mic.attestationAvailable = func() bool { return true }
+	parent, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	probes, acquisitions := 0, 0
+	mic.mic.msalClient = fakeManagedIdentityClient{
+		capabilities: func(probe context.Context) (managedidentity.Capabilities, error) {
+			probes++
+			deadline, ok := probe.Deadline()
+			require.True(t, ok)
+			assert.InDelta(t, 1, time.Until(deadline).Seconds(), 0.1)
+			return managedidentity.Capabilities{
+				Source: managedidentity.DefaultToIMDS, MaxSupportedBindingStrength: managedidentity.MtlsBindingStrengthKeyGuard,
+			}, nil
+		},
+		acquireToken: func(actual context.Context, _ string, opts ...managedidentity.AcquireTokenOption) (managedidentity.AuthResult, error) {
+			acquisitions++
+			assert.NoError(t, actual.Err(), "canceling the discovery context must not cancel acquisition")
+			deadline, ok := actual.Deadline()
+			require.True(t, ok)
+			parentDeadline, _ := parent.Deadline()
+			assert.Equal(t, parentDeadline, deadline)
+			var got, want managedidentity.AcquireTokenOptions
+			for _, opt := range opts {
+				opt(&got)
+			}
+			managedidentity.WithClaims("")(&want)
+			managedidentity.WithMtlsProofOfPossession()(&want)
+			managedidentity.WithAttestationSupport()(&want)
+			managedidentity.WithMtlsPoPMinStrength(managedidentity.MtlsBindingStrengthKeyGuard)(&want)
+			assert.Equal(t, want, got)
+			return managedidentity.AuthResult{AccessToken: tokenValue, BindingCertificate: &tls.Certificate{}}, nil
+		},
+	}
+	tk, err := c.GetToken(parent, policy.TokenRequestOptions{Scopes: []string{t.Name()}, EnableMTLSPoP: true})
+	require.NoError(t, err)
+	assert.NotNil(t, tk.BindingCertificate)
+	assert.Equal(t, 1, probes, "the initial bounded probe must also supply PoP eligibility")
+	assert.Equal(t, 1, acquisitions)
+	assert.False(t, mic.mic.probeIMDS)
 }
 
 func TestDefaultAzureCredential_UnexpectedIMDSResponse(t *testing.T) {

@@ -6,8 +6,10 @@ package exported
 import (
 	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/sanitizer"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
@@ -40,16 +42,30 @@ type Transporter interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-// used to adapt a TransportPolicy to a Policy
+// transportPolicy is the last policy in every pipeline. It selects the client for each request: the
+// pipeline's transport, or a certificate-scoped client derived from it when the request's token is bound
+// to a certificate (see MTLSRequest).
 type transportPolicy struct {
 	trans Transporter
 }
 
-func (tp transportPolicy) Do(req *Request) (*http.Response, error) {
+func (tp *transportPolicy) Do(req *Request) (*http.Response, error) {
 	if tp.trans == nil {
 		return nil, errors.New("missing transporter")
 	}
-	resp, err := tp.trans.Do(req.Raw())
+	trans := tp.trans
+	var mtls MTLSRequest
+	if req.OperationValue(&mtls) && mtls.Certificate != nil {
+		if !strings.EqualFold(req.Raw().URL.Scheme, "https") {
+			return nil, errorinfo.NonRetriableError(errors.New("mTLS PoP requires HTTPS"))
+		}
+		client, err := tp.clientFor(mtls.Certificate)
+		if err != nil {
+			return nil, errorinfo.NonRetriableError(err)
+		}
+		trans = client
+	}
+	resp, err := trans.Do(req.Raw())
 	if err != nil {
 		return nil, err
 	} else if resp == nil {
@@ -68,7 +84,7 @@ func NewPipeline(s *sanitizer.Sanitizer, transport Transporter, policies ...Poli
 		s = sanitizer.New(sanitizer.Options{})
 	}
 	// transport policy must always be the last in the slice
-	policies = append(policies, transportPolicy{trans: transport})
+	policies = append(policies, &transportPolicy{trans: transport})
 	return Pipeline{
 		policies:  policies,
 		sanitizer: s,

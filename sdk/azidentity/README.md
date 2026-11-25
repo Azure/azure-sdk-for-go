@@ -77,6 +77,87 @@ The Azure Arc agent must support user-assigned
 identities and confirm the requested identity in its token response. Otherwise, token acquisition
 fails rather than authenticating the machine's system-assigned identity.
 
+### Managed identity mTLS proof of possession
+
+`ManagedIdentityCredential`, including the instance used by `DefaultAzureCredential`, can
+automatically select attested certificate-bound (`mtls_pop`) tokens on Windows virtual machines
+with Credential Guard enabled and IMDSv2 available. Activate the optional
+[attestation integration](attestation/README.md) with a blank import:
+
+```go
+import (
+  "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+  _ "github.com/Azure/azure-sdk-for-go/sdk/azidentity/attestation"
+  "github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets"
+)
+
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+if err != nil {
+  // handle error
+}
+client, err := azsecrets.NewClient("https://<vault-name>.vault.azure.net/", cred, nil)
+if err != nil {
+  // handle error
+}
+```
+
+Activation is process-wide, including transitive imports. Merely requiring the module in
+`go.mod` doesn't activate it. Package initialization only registers availability: it doesn't
+load native libraries, contact endpoints, or create keys. Native attestation remains in MSAL
+and is performed lazily when required for issuance.
+
+The target resource must support certificate-bound tokens. Updated Key Vault clients
+automatically signal PoP support, so ordinary Key Vault client construction
+doesn't need an enable flag. Other services aren't automatically opted in; their authentication
+policies must explicitly signal support per token request. There is no client-level PoP enable
+flag. Ordinary bearer requests remain unchanged. Without the import,
+or when successful capability discovery reports an unsupported host, managed identity uses
+ordinary bearer acquisition. Discovery errors aren't treated as known lack of support.
+Set `ManagedIdentityCredentialOptions.DisableMTLSPoP: true` to opt a managed identity credential
+out of bound-token acquisition. There is no additional attestation option on
+`DefaultAzureCredential`. Other credentials in its chain retain their existing behavior.
+See the [compiled examples](attestation/example_test.go) for default construction and MIC opt-out.
+
+On eligible Windows hosts, deploy `AttestationClientLib.dll` from the
+`Microsoft.Azure.Security.KeyGuardAttestation` package (`runtimes/win-x64/native`) alongside the
+executable or into System32, and install the
+[x64 Microsoft Visual C++ 2015-2022 Redistributable](https://learn.microsoft.com/cpp/windows/latest-supported-vc-redist).
+The DLL isn't loaded from the working directory or `PATH`. Deploying the DLL alone doesn't
+activate the integration. Once attested acquisition is selected, failures, including missing
+native dependencies, are returned by the credential without retrying unattested acquisition
+or continuing the default credential chain.
+
+Key Vault has one narrowly classified exception: a token-service tenant denial with error code
+`AADSTS3921996` triggers fresh bearer acquisition and a client-lifetime, tenant-scoped decision.
+Cancellation and unrelated or mixed terminal errors don't permit fallback. The specific bound
+HTTP 401 validation marker is handled by the normal bounded retry policy, not bearer fallback.
+See the [shared Key Vault policy](../security/keyvault/internal/README.md)
+for details. This preview requires coordinated unreleased SDK modules.
+
+Configure `AZURE_CLIENT_ID` to select a UAMI with `DefaultAzureCredential`.
+When the chain includes managed identity and other credentials, its initial IMDS
+discovery is delegated to MSAL under a one-second context deadline (or the caller's
+earlier deadline), with retries disabled. MSAL must detect an IMDS source; an
+arbitrary endpoint response is not enough. After discovery, token acquisition
+uses the original caller context, not the probe deadline.
+Selecting only `ManagedIdentityCredential` through `AZURE_TOKEN_CREDENTIALS`
+continues to skip this initial probe.
+
+Bound resource connections use TLS 1.2 with client-certificate renegotiation. Redirects and ARM
+auxiliary tenant authentication aren't supported for bound requests. Custom transports for
+attested acquisition and bound resource requests must be `*http.Client` values with a standard
+`*http.Transport` (or a nil transport). Custom TLS dialing isn't supported. An incompatible
+bound-request transport produces an explicit error, not bearer fallback. Ordinary bearer requests
+preserve the caller's transport configuration.
+
+For direct token acquisition, set `policy.TokenRequestOptions.EnableMTLSPoP` and inspect the
+returned `AccessToken.BindingCertificate`. When it is non-nil, present it through
+`tls.Config.GetClientCertificate`, use the `mtls_pop` authorization scheme, and set
+`x-ms-tokenboundauth: true`. Keep the certificate alive for as long as its token and connections
+are used; don't modify it or close its private key. When no certificate is returned, use ordinary
+bearer authorization instead. Azure SDK pipelines select the authorization and transport from
+the actual returned token.
+
 ### Service Fabric transport requirements
 
 On Service Fabric, `ManagedIdentityCredential` pins the endpoint certificate to

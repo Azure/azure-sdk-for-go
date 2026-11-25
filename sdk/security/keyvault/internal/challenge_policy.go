@@ -4,6 +4,7 @@
 package internal
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -15,9 +16,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/exported"
 )
 
 const challengeMatchError = `challenge resource "%s" doesn't match the requested domain. Set DisableChallengeResourceVerification to true in your client options to disable. See https://aka.ms/azsdk/blog/vault-uri for more information`
+const tokenBindingValidationFailure = "[MtlsCnfClaimRequestDataValidationFailed]"
+
+// tokenBoundAuthHeader tells Key Vault a request carries a certificate-bound (mtls_pop) token
+const tokenBoundAuthHeader = "x-ms-tokenboundauth"
 
 type KeyVaultChallengePolicyOptions struct {
 	// DisableChallengeResourceVerification controls whether the policy requires the
@@ -35,6 +41,8 @@ type keyVaultAuthorizer struct {
 	troLock sync.RWMutex
 
 	verifyChallengeResource bool
+	credential              *tenantTokenBindingCredential
+	bearer                  *runtime.BearerTokenPolicy
 }
 
 type reqBody struct {
@@ -49,12 +57,92 @@ func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, opts *KeyVaultChall
 	kv := keyVaultAuthorizer{
 		verifyChallengeResource: !opts.DisableChallengeResourceVerification,
 	}
-	return runtime.NewBearerTokenPolicy(cred, nil, &policy.BearerTokenOptions{
+	var wrapped azcore.TokenCredential
+	if cred != nil {
+		kv.credential = &tenantTokenBindingCredential{credential: cred}
+		wrapped = kv.credential
+	}
+	kv.bearer = runtime.NewBearerTokenPolicy(wrapped, nil, &policy.BearerTokenOptions{
 		AuthorizationHandler: policy.AuthorizationHandler{
 			OnRequest:   kv.authorize,
 			OnChallenge: kv.authorizeOnChallenge,
 		},
 	})
+	return &kv
+}
+
+func (k *keyVaultAuthorizer) Do(req *policy.Request) (*http.Response, error) {
+	return k.bearer.Do(req)
+}
+
+// NewTokenBindingPolicy returns a policy that enables mTLS proof-of-possession authentication for a
+// client's requests. Add it to the client's per-call policies, alongside the per-retry policy returned
+// by NewKeyVaultChallengePolicy. It must precede the retry policy, which uses it to retry binding
+// validation failures. The challenge policy requests PoP tokens only for requests that passed through
+// this policy, so clients built before it existed keep using bearer authentication.
+func NewTokenBindingPolicy() policy.Policy {
+	return tokenBindingPolicy{}
+}
+
+type tokenBindingPolicy struct{}
+
+func (tokenBindingPolicy) Do(req *policy.Request) (*http.Response, error) {
+	req.SetOperationValue(exported.ResponseClassifier(classifyTokenBindingFailure))
+	return req.Next()
+}
+
+// classifyTokenBindingFailure reports whether res is a binding validation failure, which the retry policy
+// should retry rather than the bearer policy treating it as an authentication challenge. It reads the
+// headers from res.Request, the request actually sent, because it's installed before the per-try
+// policies that authorize each request.
+func classifyTokenBindingFailure(res *http.Response) (bool, error) {
+	if res.StatusCode != http.StatusUnauthorized || res.Request == nil {
+		return false, nil
+	}
+	if _, bound := res.Request.Header[http.CanonicalHeaderKey(tokenBoundAuthHeader)]; !bound {
+		return false, nil
+	}
+	body, err := runtime.Payload(res)
+	if err != nil {
+		return false, err
+	}
+	var document map[string]any
+	if json.Unmarshal(body, &document) != nil {
+		return false, nil
+	}
+	serviceError, ok := document["error"].(map[string]any)
+	if !ok {
+		return false, nil
+	}
+	message, _ := serviceError["message"].(string)
+	return strings.Contains(message, tokenBindingValidationFailure), nil
+}
+
+// tokenRequestOptions returns the options for authorizing req. It requests PoP only when the client
+// installed the policy returned by NewTokenBindingPolicy, because without it binding validation failures
+// can't be retried.
+func (k *keyVaultAuthorizer) tokenRequestOptions(req *policy.Request, tro policy.TokenRequestOptions) policy.TokenRequestOptions {
+	var classify exported.ResponseClassifier
+	tro.EnableMTLSPoP = req.OperationValue(&classify)
+	return k.credential.effectiveRequestOptions(tro)
+}
+
+// authorizeWith authorizes req, then sets Key Vault's token-bound header to match the authorization
+// scheme azcore chose from the returned token. Every authorization, including responses to CAE
+// challenges, passes through authorize or authorizeOnChallenge, so the header can't go stale.
+func authorizeWith(req *policy.Request, authNZ func(policy.TokenRequestOptions) error, tro policy.TokenRequestOptions) error {
+	if err := authNZ(tro); err != nil {
+		return err
+	}
+	if strings.HasPrefix(req.Raw().Header.Get("Authorization"), "mtls_pop ") {
+		req.Raw().Header.Set(tokenBoundAuthHeader, "true")
+	} else {
+		// A challenge or CAE response re-authorizes the same request within a try, and the new token
+		// may be bearer where the previous one was bound (e.g. after a tenant denies PoP), so remove
+		// any header left by an earlier authorization
+		req.Raw().Header.Del(tokenBoundAuthHeader)
+	}
+	return nil
 }
 
 func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.TokenRequestOptions) error) error {
@@ -74,7 +162,7 @@ func (k *keyVaultAuthorizer) authorize(req *policy.Request, authNZ func(policy.T
 		return nil
 	}
 	// else we know the auth parameters and can authorize the request as normal
-	return authNZ(tro)
+	return authorizeWith(req, authNZ, k.tokenRequestOptions(req, tro))
 }
 
 func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http.Response, authNZ func(policy.TokenRequestOptions) error) error {
@@ -91,7 +179,7 @@ func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http
 		}
 	}
 	// authenticate with the parameters supplied by Key Vault, authorize the request, send it again
-	return authNZ(k.getTokenRequestOptions())
+	return authorizeWith(req, authNZ, k.tokenRequestOptions(req, k.getTokenRequestOptions()))
 }
 
 // parses Tenant ID from auth challenge

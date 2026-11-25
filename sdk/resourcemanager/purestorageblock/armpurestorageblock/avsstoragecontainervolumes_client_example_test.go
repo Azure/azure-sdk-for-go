@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsStorageContainerVolumes_Delete_MaximumSet_Gen.json
 func ExampleAvsStorageContainerVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleAvsStorageContainerVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsStorageContainerVolumes_Update_MaximumSet_Gen.json
 func ExampleAvsStorageContainerVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleAvsStorageContainerVolumesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsStorageContainerVolumes_Get_MaximumSet_Gen.json
 func ExampleAvsStorageContainerVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleAvsStorageContainerVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsStorageContainerVolumes_ListByAvsStorageContainer_MaximumSet_Gen.json
 func ExampleAvsStorageContainerVolumesClient_NewListByAvsStorageContainerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Reservations_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_Create_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleReservationsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_Delete_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleReservationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_LinkSaaS_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleReservationsClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_Update_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleReservationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_Get_MaximumSet_Gen.json
 func ExampleReservationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -399,7 +399,7 @@ func ExampleReservationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_GetBillingReport_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExampleReservationsClient_GetBillingReport() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleReservationsClient_GetBillingStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
 func ExampleReservationsClient_GetResourceLimits() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -538,7 +538,7 @@ func ExampleReservationsClient_GetResourceLimits() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
 func ExampleReservationsClient_LatestLinkedSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +564,7 @@ func ExampleReservationsClient_LatestLinkedSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleReservationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -647,7 +647,7 @@ func ExampleReservationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_ListBySubscription_MaximumSet_Gen.json
 func ExampleReservationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

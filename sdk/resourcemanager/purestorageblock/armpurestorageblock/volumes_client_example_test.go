@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Volumes_Create_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleVolumesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Volumes_Delete_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Overwrite_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Volumes_Overwrite_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginOverwrite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleVolumesClient_BeginOverwrite() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Volumes_Update_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleVolumesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Volumes_Get_MaximumSet_Gen.json
 func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +226,7 @@ func ExampleVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
 func ExampleVolumesClient_NewListByVolumeGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

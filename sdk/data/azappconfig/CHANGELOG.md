@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* `SettingSelector.AcceptDateTime` is now sent as the `Accept-Datetime` header when listing settings and revisions, instead of being sent as the `After` query parameter (which is a pagination token).
 
 ### Other Changes
 

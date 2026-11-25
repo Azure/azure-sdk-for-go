@@ -68,11 +68,11 @@ func (sc SettingSelector) toGeneratedGetRevisions() *generated.AzureAppConfigura
 	}
 
 	return &generated.AzureAppConfigurationClientGetRevisionsOptions{
-		After:  dt,
-		Key:    sc.KeyFilter,
-		Label:  sc.LabelFilter,
-		Select: sf,
-		Tags:   sc.TagsFilter,
+		AcceptDatetime: dt,
+		Key:            sc.KeyFilter,
+		Label:          sc.LabelFilter,
+		Select:         sf,
+		Tags:           sc.TagsFilter,
 	}
 }
 
@@ -89,11 +89,11 @@ func (sc SettingSelector) toGeneratedGetKeyValues() *generated.AzureAppConfigura
 	}
 
 	return &generated.AzureAppConfigurationClientGetKeyValuesOptions{
-		After:  dt,
-		Key:    sc.KeyFilter,
-		Label:  sc.LabelFilter,
-		Select: sf,
-		Tags:   sc.TagsFilter,
+		AcceptDatetime: dt,
+		Key:            sc.KeyFilter,
+		Label:          sc.LabelFilter,
+		Select:         sf,
+		Tags:           sc.TagsFilter,
 	}
 }
 

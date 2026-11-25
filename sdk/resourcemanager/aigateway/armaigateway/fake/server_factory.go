@@ -15,11 +15,44 @@ import (
 
 // ServerFactory is a fake server for instances of the armaigateway.ClientFactory type.
 type ServerFactory struct {
+	// APIKeyResourcesServer contains the fakes for client APIKeyResourcesClient
+	APIKeyResourcesServer APIKeyResourcesServer
+
+	// AliasResourcesServer contains the fakes for client AliasResourcesClient
+	AliasResourcesServer AliasResourcesServer
+
+	// ModelProviderResourcesServer contains the fakes for client ModelProviderResourcesClient
+	ModelProviderResourcesServer ModelProviderResourcesServer
+
+	// ModelResourcesServer contains the fakes for client ModelResourcesClient
+	ModelResourcesServer ModelResourcesServer
+
+	// NameAvailabilityOperationsServer contains the fakes for client NameAvailabilityOperationsClient
+	NameAvailabilityOperationsServer NameAvailabilityOperationsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
 	// ResourcesServer contains the fakes for client ResourcesClient
 	ResourcesServer ResourcesServer
+
+	// TelemetryExporterResourcesServer contains the fakes for client TelemetryExporterResourcesClient
+	TelemetryExporterResourcesServer TelemetryExporterResourcesServer
+
+	// ToolServerResourcesServer contains the fakes for client ToolServerResourcesClient
+	ToolServerResourcesServer ToolServerResourcesServer
+
+	// WorkspaceModelOperationsServer contains the fakes for client WorkspaceModelOperationsClient
+	WorkspaceModelOperationsServer WorkspaceModelOperationsServer
+
+	// WorkspaceResourcesServer contains the fakes for client WorkspaceResourcesClient
+	WorkspaceResourcesServer WorkspaceResourcesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -34,10 +67,21 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armaigateway.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trOperationsServer *OperationsServerTransport
-	trResourcesServer  *ResourcesServerTransport
+	srv                                *ServerFactory
+	trMu                               sync.Mutex
+	trAPIKeyResourcesServer            *APIKeyResourcesServerTransport
+	trAliasResourcesServer             *AliasResourcesServerTransport
+	trModelProviderResourcesServer     *ModelProviderResourcesServerTransport
+	trModelResourcesServer             *ModelResourcesServerTransport
+	trNameAvailabilityOperationsServer *NameAvailabilityOperationsServerTransport
+	trOperationsServer                 *OperationsServerTransport
+	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
+	trResourcesServer                  *ResourcesServerTransport
+	trTelemetryExporterResourcesServer *TelemetryExporterResourcesServerTransport
+	trToolServerResourcesServer        *ToolServerResourcesServerTransport
+	trWorkspaceModelOperationsServer   *WorkspaceModelOperationsServerTransport
+	trWorkspaceResourcesServer         *WorkspaceResourcesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -53,12 +97,67 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "APIKeyResourcesClient":
+		initServer(&s.trMu, &s.trAPIKeyResourcesServer, func() *APIKeyResourcesServerTransport {
+			return NewAPIKeyResourcesServerTransport(&s.srv.APIKeyResourcesServer)
+		})
+		resp, err = s.trAPIKeyResourcesServer.Do(req)
+	case "AliasResourcesClient":
+		initServer(&s.trMu, &s.trAliasResourcesServer, func() *AliasResourcesServerTransport {
+			return NewAliasResourcesServerTransport(&s.srv.AliasResourcesServer)
+		})
+		resp, err = s.trAliasResourcesServer.Do(req)
+	case "ModelProviderResourcesClient":
+		initServer(&s.trMu, &s.trModelProviderResourcesServer, func() *ModelProviderResourcesServerTransport {
+			return NewModelProviderResourcesServerTransport(&s.srv.ModelProviderResourcesServer)
+		})
+		resp, err = s.trModelProviderResourcesServer.Do(req)
+	case "ModelResourcesClient":
+		initServer(&s.trMu, &s.trModelResourcesServer, func() *ModelResourcesServerTransport {
+			return NewModelResourcesServerTransport(&s.srv.ModelResourcesServer)
+		})
+		resp, err = s.trModelResourcesServer.Do(req)
+	case "NameAvailabilityOperationsClient":
+		initServer(&s.trMu, &s.trNameAvailabilityOperationsServer, func() *NameAvailabilityOperationsServerTransport {
+			return NewNameAvailabilityOperationsServerTransport(&s.srv.NameAvailabilityOperationsServer)
+		})
+		resp, err = s.trNameAvailabilityOperationsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PrivateEndpointConnectionsClient":
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
+	case "PrivateLinkResourcesClient":
+		initServer(&s.trMu, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
+		})
+		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "ResourcesClient":
 		initServer(&s.trMu, &s.trResourcesServer, func() *ResourcesServerTransport { return NewResourcesServerTransport(&s.srv.ResourcesServer) })
 		resp, err = s.trResourcesServer.Do(req)
+	case "TelemetryExporterResourcesClient":
+		initServer(&s.trMu, &s.trTelemetryExporterResourcesServer, func() *TelemetryExporterResourcesServerTransport {
+			return NewTelemetryExporterResourcesServerTransport(&s.srv.TelemetryExporterResourcesServer)
+		})
+		resp, err = s.trTelemetryExporterResourcesServer.Do(req)
+	case "ToolServerResourcesClient":
+		initServer(&s.trMu, &s.trToolServerResourcesServer, func() *ToolServerResourcesServerTransport {
+			return NewToolServerResourcesServerTransport(&s.srv.ToolServerResourcesServer)
+		})
+		resp, err = s.trToolServerResourcesServer.Do(req)
+	case "WorkspaceModelOperationsClient":
+		initServer(&s.trMu, &s.trWorkspaceModelOperationsServer, func() *WorkspaceModelOperationsServerTransport {
+			return NewWorkspaceModelOperationsServerTransport(&s.srv.WorkspaceModelOperationsServer)
+		})
+		resp, err = s.trWorkspaceModelOperationsServer.Do(req)
+	case "WorkspaceResourcesClient":
+		initServer(&s.trMu, &s.trWorkspaceResourcesServer, func() *WorkspaceResourcesServerTransport {
+			return NewWorkspaceResourcesServerTransport(&s.srv.WorkspaceResourcesServer)
+		})
+		resp, err = s.trWorkspaceResourcesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

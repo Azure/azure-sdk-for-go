@@ -7,6 +7,7 @@ package fake
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
+	"reflect"
 	"sync"
 )
 
@@ -29,6 +30,13 @@ func getHeaderValue(h http.Header, k string) string {
 		return ""
 	}
 	return v[0]
+}
+
+func getOptional[T any](v T) *T {
+	if reflect.ValueOf(v).IsZero() {
+		return nil
+	}
+	return &v
 }
 
 func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {

@@ -1,5 +1,10 @@
 # Release History
 
+## 1.8.4 (Unreleased)
+
+### Bugs Fixed
+* Fixed `GetSASURL` on blob clients to return an error when the snapshot timestamp is invalid.
+
 ## 1.8.3 (2026-11-02)
 
 ### Bugs Fixed

@@ -15,6 +15,9 @@ import "C"
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
+	"strings"
 	"unsafe"
 )
 
@@ -29,11 +32,11 @@ const (
 
 func scopeForManagementOperation(kind operationKind) managementOperationScope {
 	switch kind {
-	case operationKindCreateDatabase:
+	case operationKindCreateDatabase, operationKindQueryDatabases, operationKindQueryOffers, operationKindReadOffer, operationKindReplaceOffer:
 		return managementOperationScopeAccount
-	case operationKindReadDatabase, operationKindDeleteDatabase, operationKindCreateContainer:
+	case operationKindReadDatabase, operationKindDeleteDatabase, operationKindCreateContainer, operationKindQueryContainers:
 		return managementOperationScopeDatabase
-	case operationKindReadContainer, operationKindDeleteContainer:
+	case operationKindReadContainer, operationKindDeleteContainer, operationKindReplaceContainer:
 		return managementOperationScopeContainer
 	default:
 		return managementOperationScopeInvalid
@@ -52,65 +55,174 @@ func (c *Client) executeManagement(
 	body []byte,
 	operation OperationOptions,
 ) (ItemResponse, []byte, error) {
-	return c.driver.executeManagement(ctx, kind, databaseID, containerID, body, operation)
+	result, err := c.executeManagementRequest(ctx, managementRequest{kind: kind, databaseID: databaseID, containerID: containerID, body: body, operation: operation})
+	return result.response, result.body, err
 }
 
-// executeManagement resolves the account/database/container scope the operation needs, submits
-// it, and converts the result.
-//
-// Database references are pure value-type constructions. Container references are resolved through
-// the native driver for each operation so Rust owns metadata caching and stale-resource refresh.
-func (d *nativeDriver) executeManagement(
-	ctx context.Context,
-	kind operationKind,
-	databaseID, containerID string,
-	body []byte,
-	operation OperationOptions,
-) (ItemResponse, []byte, error) {
-	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, operation)
+func (c *Client) executeManagementRequest(ctx context.Context, req managementRequest) (managementResult, error) {
+	var err error
+	req, err = c.prepareManagementThroughput(req)
 	if err != nil {
-		return ItemResponse{}, nil, err
+		return managementResult{}, err
+	}
+	d := c.driver
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, req.operation)
+	if err != nil {
+		return managementResult{}, err
 	}
 	defer releaseSnapshot()
 
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
-		return ItemResponse{}, nil, err
+		return managementResult{}, err
 	}
 
 	var account *C.cosmos_account_ref_t
 	var database *C.cosmos_database_ref_t
 	var container *C.cosmos_container_ref_t
 
-	switch scopeForManagementOperation(kind) {
+	switch scopeForManagementOperation(req.kind) {
 	case managementOperationScopeAccount:
 		account = d.account
 	case managementOperationScopeDatabase:
-		database, err = d.createDatabaseRef(databaseID)
+		database, err = d.createDatabaseRef(req.databaseID)
 		if err != nil {
-			return ItemResponse{}, nil, err
+			return managementResult{}, err
 		}
 		defer C.cosmos_database_ref_free(database)
 	case managementOperationScopeContainer:
-		container, err = d.submitResolveContainer(ctx, driver, databaseID, containerID)
+		container, err = d.submitResolveContainer(ctx, driver, req.databaseID, req.containerID)
 		if err != nil {
-			return ItemResponse{}, nil, err
+			return managementResult{}, err
 		}
 		defer C.cosmos_container_ref_free(container)
 	}
 
 	submit := func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		request, release := buildNativeManagementRequest(kind, account, database, container, body, operation)
+		request, release := buildNativeManagementRequest(req.kind, account, database, container, req.body, req.operation)
 		defer release()
+		if req.resourceLink != "" {
+			value, allocation := toNativeString(req.resourceLink)
+			defer C.free(allocation)
+			request.resource_link = value
+		}
+		if req.precondition.kind != preconditionKindNone {
+			value, allocation := toNativeString(string(req.precondition.etag))
+			defer C.free(allocation)
+			request.precondition_kind = C.int32_t(req.precondition.kind)
+			request.precondition_etag = value
+		}
 		request.options_snapshot = snapshot
-		return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		return submitNativeManagement(driver, &request, req.throughput, queue, cookie, preError)
 	}
 
 	result, err := d.awaitCompletion(ctx, "submitting the operation", submit)
 	if err != nil {
-		return ItemResponse{}, nil, err
+		return managementResult{}, err
 	}
-	return result.response, result.body, result.err
+	if result.err != nil {
+		return managementResult{}, result.err
+	}
+	return managementResult{response: result.response, body: result.body, pending: result.httpStatus == 202 || result.offerReplacePending}, nil
+}
+
+func (c *Client) openManagementQuery(ctx context.Context, req managementRequest, options ManagementQueryOptions) (queryCursor, error) {
+	d := c.driver
+	ctx, _, releaseSnapshot, err := d.snapshot(ctx, options.Operation)
+	if err != nil {
+		return nil, err
+	}
+	defer releaseSnapshot()
+	driver, err := d.ensureDriver(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var database *C.cosmos_database_ref_t
+	if scopeForManagementOperation(req.kind) == managementOperationScopeDatabase {
+		database, err = d.createDatabaseRef(req.databaseID)
+		if err != nil {
+			return nil, err
+		}
+		defer C.cosmos_database_ref_free(database)
+	}
+	request, release := buildNativeManagementRequest(req.kind, d.account, database, nil, req.body, options.Operation)
+	defer release()
+	if options.PageSizeHint > 0 {
+		request.max_item_count = C.int32_t(options.PageSizeHint)
+	}
+	if options.ContinuationToken != "" {
+		value, allocation := toNativeString(options.ContinuationToken)
+		defer C.free(allocation)
+		request.continuation_token = value
+	}
+	cursor, err := d.openCursor(ctx, driver, request)
+	if err != nil {
+		return nil, err
+	}
+	switch req.kind {
+	case operationKindQueryDatabases:
+		cursor.managementEnvelope = "Databases"
+	case operationKindQueryContainers:
+		cursor.managementEnvelope = "DocumentCollections"
+	case operationKindQueryOffers:
+		cursor.managementEnvelope = "Offers"
+	}
+	return cursor, nil
+}
+
+func decodeManagementCursorPage(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity, field string) (queryPage, bool, error) {
+	if completion.result_kind != 2 || completion.body_kind != 1 {
+		return decodeCursorPage(completion, verbosity)
+	}
+	common := translateCompletionOutcome(&completion.common, verbosity)
+	var envelope map[string]json.RawMessage
+	err := json.Unmarshal(common.body, &envelope)
+	var items []json.RawMessage
+	if err == nil {
+		value, exists := envelope[field]
+		if !exists {
+			err = errors.New("management query response is missing its resource array")
+		} else {
+			err = json.Unmarshal(value, &items)
+			if err == nil && items == nil {
+				err = errors.New("management query resource array must not be null")
+			}
+		}
+	}
+	if err != nil {
+		return queryPage{}, false, newManagementSerializationError(common.response, common.body, "management query", err)
+	}
+	page := queryPage{Response: common.response.Response, SessionToken: common.response.SessionToken, Items: make([][]byte, len(items))}
+	for i := range items {
+		page.Items[i] = items[i]
+	}
+	return page, false, nil
+}
+
+func managementOfferReplacePending(completion *C.cosmos_completion_t) bool {
+	if completion.headers == nil {
+		return false
+	}
+	for _, header := range unsafe.Slice(completion.headers, int(completion.headers_len)) {
+		if header.id == C.COSMOS_HEADER_ID_OFFER_REPLACE_PENDING {
+			if header.value.kind == C.COSMOS_VALUE_KIND_BOOL {
+				return *(*uint8)(unsafe.Pointer(&header.value.payload)) != 0
+			}
+			return strings.EqualFold(headerString(&header.value), "true")
+		}
+	}
+	return false
+}
+
+func managementContinuationToken(completion *C.cosmos_completion_t) string {
+	if completion.headers != nil {
+		for _, header := range unsafe.Slice(completion.headers, int(completion.headers_len)) {
+			if header.id == C.COSMOS_HEADER_ID_CONTINUATION {
+				return headerString(&header.value)
+			}
+		}
+	}
+	return ""
 }
 
 // nativeManagementRequest is a converted management request in Go types, for tests that cannot

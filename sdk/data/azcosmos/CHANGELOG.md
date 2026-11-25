@@ -11,6 +11,8 @@
   raw change envelopes with optional typed decoding, pollable idle pages, opaque
   checkpoint/resume tokens, and pager lifecycle through `Close` and
   `ContinuationToken(ctx)`. See [PR 27709](https://github.com/Azure/azure-sdk-for-go/pull/27709).
+* Added management paging, conditional container replacement, and manual/autoscale throughput
+  operations ([PR 28094](https://github.com/Azure/azure-sdk-for-go/pull/28094)).
 * Added `ContainerClient.NewReadManyItemsPager[T]` for reading many items by `ItemIdentity`
   (ID and partition key, including hierarchical prefixes), with an optional filter predicate.
   Duplicate identities are deduplicated, missing items are omitted, and result order is unspecified.

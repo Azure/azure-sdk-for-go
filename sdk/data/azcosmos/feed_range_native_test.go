@@ -7,6 +7,7 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"sync"
@@ -17,6 +18,9 @@ import (
 )
 
 func TestNativeFeedRangeValueContracts(t *testing.T) {
+	missing, err := copyNativeFeedRange(nil)
+	require.Zero(t, missing)
+	require.Error(t, err)
 	left, err := NewFeedRange("", "80")
 	require.NoError(t, err)
 	right, err := NewFeedRange("80", "FF")
@@ -36,6 +40,14 @@ func TestNativeFeedRangeValueContracts(t *testing.T) {
 	parsedPoint, err := ParseFeedRange(point.String())
 	require.NoError(t, err)
 	require.Equal(t, point, parsedPoint)
+	padded, err := NewFeedRange("0a00", "0b00")
+	require.NoError(t, err)
+	require.Equal(t, "0A00", padded.MinInclusive())
+	require.Equal(t, "0B00", padded.MaxExclusive())
+	noncanonical := base64.StdEncoding.EncodeToString([]byte(`{"Range":{"min":"0a00","max":"0b00","isMinInclusive":true,"isMaxInclusive":false}}`))
+	parsedPadded, err := ParseFeedRange(noncanonical)
+	require.NoError(t, err)
+	require.Equal(t, padded, parsedPadded)
 	for _, tt := range []struct {
 		left, right     FeedRange
 		subset, overlap bool
@@ -92,16 +104,20 @@ func TestNativeFeedRangeDiscoveryAndPartitionKeyOwnership(t *testing.T) {
 	parsed, err := ParseFeedRange(logical.FeedRange.String())
 	require.NoError(t, err)
 	require.False(t, parsed.IsLogicalPartition(), "serialization intentionally preserves only bounds")
-	require.Equal(t, logical.FeedRange.MinInclusive(), parsed.MinInclusive())
-	require.Equal(t, logical.FeedRange.MaxExclusive(), parsed.MaxExclusive())
+	require.Equal(t, logical.FeedRange, parsed)
+	require.Equal(t, logical.FeedRange.MinInclusive(), logical.FeedRange.MaxExclusive())
 	prefix, err := container.GetFeedRangeForPartitionKey(t.Context(), NewPartitionKeyString("synthetic"))
 	require.NoError(t, err)
 	require.False(t, prefix.FeedRange.IsLogicalPartition())
+	require.NotEqual(t, prefix.FeedRange.MinInclusive(), prefix.FeedRange.MaxExclusive())
+	parsedPrefix, err := ParseFeedRange(prefix.FeedRange.String())
+	require.NoError(t, err)
+	require.Equal(t, prefix.FeedRange, parsedPrefix)
 	require.NoError(t, container.database.client.Close())
 	for _, value := range append(discovered.FeedRanges, logical.FeedRange, prefix.FeedRange) {
 		parsed, err := ParseFeedRange(value.String())
 		require.NoError(t, err, "values must outlive the discovery client")
-		require.Equal(t, value.MinInclusive(), parsed.MinInclusive())
+		require.Equal(t, value, parsed)
 	}
 }
 

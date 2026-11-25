@@ -1029,11 +1029,6 @@ typedef struct cosmos_driver_t cosmos_driver_t;
 typedef struct cosmos_driver_options_t cosmos_driver_options_t;
 
 /**
- * The C ABI handle for a feed range (`cosmos_feed_range_t`).
- */
-typedef struct cosmos_feed_range_t cosmos_feed_range_t;
-
-/**
  * The C ABI handle for an in-flight (or just-completed) operation
  * (`cosmos_operation_handle_t`).
  *
@@ -1225,19 +1220,22 @@ typedef struct cosmos_bytes_t {
 /**
  * Feed-range bounds, logical partition-key identity, and bounds-only serialization.
  *
- * In a [`FeedRangeListHandle`], strings are borrowed and freed with the list.
- * From [`cosmos_feed_range_inspect()`], all three strings are independently owned:
- * free each with `cosmos_string_free`. Do not modify the strings.
+ * Read directly from a feed-range handle's `info` field or a list entry.
+ * Strings are read-only and borrowed from their owner; copy them before it is freed.
+ *
+ * Bounds are uppercase hexadecimal with trailing `00` padding preserved. Compare ranges
+ * with `cosmos_feed_range_relate()`, not string equality: `3A00` and `3A0000` are one EPK.
  */
 typedef struct cosmos_feed_range_info_t {
   /**
    * NUL-terminated hexadecimal inclusive minimum, including the empty minimum.
    */
-  char *min_inclusive;
+  const char *min_inclusive;
   /**
-   * NUL-terminated hexadecimal exclusive maximum; equal bounds denote one EPK.
+   * NUL-terminated hexadecimal exclusive maximum. Bounds equal after ignoring trailing
+   * `00` bytes denote one EPK.
    */
-  char *max_exclusive;
+  const char *max_exclusive;
   /**
    * 1 if the handle retains logical partition-key identity; otherwise 0.
    */
@@ -1246,7 +1244,7 @@ typedef struct cosmos_feed_range_info_t {
    * NUL-terminated canonical serialization for [`cosmos_feed_range_parse()`].
    * Preserves bounds only, not logical partition-key identity or continuation state.
    */
-  char *serialized;
+  const char *serialized;
 } cosmos_feed_range_info_t;
 
 /**
@@ -1991,6 +1989,22 @@ typedef struct cosmos_partition_key_component_t {
    */
   union cosmos_partition_key_component_value_t value;
 } cosmos_partition_key_component_t;
+
+/**
+ * The C ABI handle for a feed range (`cosmos_feed_range_t`).
+ *
+ * `info` and its strings are read-only and valid until [`cosmos_feed_range_free()`].
+ * Copy any needed string before freeing; never modify or free the strings.
+ *
+ * Use only pointers returned by this library. The struct is the prefix of a larger
+ * allocation: never allocate it, copy it by value, or pass a copy to any API.
+ */
+typedef struct cosmos_feed_range_t {
+  /**
+   * Bounds, logical partition-key identity, and canonical serialization.
+   */
+  struct cosmos_feed_range_info_t info;
+} cosmos_feed_range_t;
 
 /**
  * Self-describing request passed to the two submit entry points. The host
@@ -3207,23 +3221,6 @@ cosmos_status_code_t cosmos_feed_range_from_epk(struct cosmos_string_view_t min,
  */
 cosmos_status_code_t cosmos_feed_range_parse(struct cosmos_string_view_t serialized,
                                              struct cosmos_feed_range_t **out);
-
-/**
- * Serializes effective bounds as base64 JSON, setting `*out` to NULL on failure.
- * Free the owned string with `cosmos_string_free`.
- */
-cosmos_status_code_t cosmos_feed_range_serialize(const struct cosmos_feed_range_t *range,
-                                                 char **out);
-
-/**
- * Returns owned bounds, logical identity, and serialization. Zeroes the output on failure.
- *
- * `out` must point to writable, aligned storage for one [`CosmosFeedRangeInfo`].
- * All three strings outlive the range handle; free them with `cosmos_string_free`.
- * Free any previous strings before reusing the output storage.
- */
-cosmos_status_code_t cosmos_feed_range_inspect(const struct cosmos_feed_range_t *range,
-                                               struct cosmos_feed_range_info_t *out);
 
 /**
  * Compares effective bounds using the driver's existing subset and overlap semantics.

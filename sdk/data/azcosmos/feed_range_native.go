@@ -53,28 +53,7 @@ func copyNativeFeedRange(handle *C.cosmos_feed_range_t) (FeedRange, error) {
 	if handle == nil {
 		return FeedRange{}, errors.New("azcosmos: native completion has no feed range")
 	}
-	var serialized *C.char
-	if status := C.cosmos_feed_range_serialize(handle, &serialized); status != 0 {
-		return FeedRange{}, statusError(status, nil, "serializing feed range")
-	}
-	defer C.cosmos_string_free(serialized)
-	canonical, status := parseNativeFeedRange(C.GoString(serialized))
-	if status != 0 {
-		return FeedRange{}, statusError(status, nil, "normalizing feed range")
-	}
-	defer C.cosmos_feed_range_free(canonical)
-	handle = canonical
-	var info C.cosmos_feed_range_info_t
-	if status := C.cosmos_feed_range_inspect(handle, &info); status != 0 {
-		return FeedRange{}, statusError(status, nil, "inspecting feed range")
-	}
-	defer C.cosmos_string_free(info.min_inclusive)
-	defer C.cosmos_string_free(info.max_exclusive)
-	defer C.cosmos_string_free(info.serialized)
-	return FeedRange{
-		serialized: C.GoString(serialized), minInclusive: C.GoString(info.min_inclusive),
-		maxExclusive: C.GoString(info.max_exclusive), logical: info.is_logical_partition != 0,
-	}, nil
+	return copyNativeFeedRangeInfo(&handle.info)
 }
 
 func compareFeedRanges(left, right FeedRange, overlaps bool) (bool, error) {
@@ -172,6 +151,18 @@ func copyFeedRangeEntries(count uintptr, read func(int) (FeedRange, error)) ([]F
 	return ranges, nil
 }
 
+func copyNativeFeedRangeInfo(info *C.cosmos_feed_range_info_t) (FeedRange, error) {
+	// Public values retain the serialized EPK bounds, not logical partition identity.
+	value := FeedRange{
+		serialized: C.GoString(info.serialized), minInclusive: C.GoString(info.min_inclusive),
+		maxExclusive: C.GoString(info.max_exclusive),
+	}
+	if value.serialized == "" {
+		return FeedRange{}, errors.New("azcosmos: native feed range has no serialized value")
+	}
+	return value, nil
+}
+
 func translateFeedRanges(completion *C.cosmos_completion_t, result *completionResult) {
 	list := C.cosmos_completion_take_feed_ranges(completion)
 	defer C.cosmos_feed_range_list_free(list)
@@ -198,15 +189,7 @@ func translateFeedRanges(completion *C.cosmos_completion_t, result *completionRe
 		entries = unsafe.Slice(list.ranges, length)
 	}
 	ranges, err := copyFeedRangeEntries(uintptr(count), func(i int) (FeedRange, error) {
-		info := &entries[i]
-		value := FeedRange{
-			serialized: C.GoString(info.serialized), minInclusive: C.GoString(info.min_inclusive),
-			maxExclusive: C.GoString(info.max_exclusive), logical: info.is_logical_partition != 0,
-		}
-		if value.serialized == "" {
-			return FeedRange{}, errors.New("azcosmos: native feed range has no serialized value")
-		}
-		return value, nil
+		return copyNativeFeedRangeInfo(&entries[i])
 	})
 	if err != nil {
 		result.err = setupChargeError(err, result.response.Response, "copying feed ranges")

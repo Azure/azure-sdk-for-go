@@ -1,6 +1,6 @@
 # Release History
 
-## 4.3.0-beta.1 (2026-09-28)
+## 4.3.0 (2026-11-25)
 ### Features Added
 
 - New enum type `BackupSolutionType` with values `BackupSolutionTypeLogicalBackup`, `BackupSolutionTypePhysicalBackup`

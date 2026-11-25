@@ -20,7 +20,7 @@ import (
 // GlobalRulestackClient contains the methods for the GlobalRulestack group.
 // Don't use this type directly, use NewGlobalRulestackClient() instead.
 //
-// Generated from API version 2025-10-08
+// Generated from API version 2026-07-29-preview
 type GlobalRulestackClient struct {
 	internal *arm.Client
 }
@@ -96,7 +96,7 @@ func (client *GlobalRulestackClient) commitCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -159,7 +159,7 @@ func (client *GlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -226,7 +226,7 @@ func (client *GlobalRulestackClient) deleteCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -265,7 +265,7 @@ func (client *GlobalRulestackClient) getCreateRequest(ctx context.Context, globa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -318,7 +318,7 @@ func (client *GlobalRulestackClient) getChangeLogCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -371,7 +371,7 @@ func (client *GlobalRulestackClient) listAdvancedSecurityObjectsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -431,7 +431,7 @@ func (client *GlobalRulestackClient) listAppIDsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	if options != nil && options.AppIDVersion != nil {
 		reqQP.Set("appIdVersion", *options.AppIDVersion)
 	}
@@ -496,7 +496,7 @@ func (client *GlobalRulestackClient) listCountriesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -555,7 +555,7 @@ func (client *GlobalRulestackClient) listFirewallsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -608,7 +608,7 @@ func (client *GlobalRulestackClient) listPredefinedURLCategoriesCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -667,7 +667,7 @@ func (client *GlobalRulestackClient) listSecurityServicesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	if options != nil && options.Skip != nil {
 		reqQP.Set("skip", *options.Skip)
 	}
@@ -736,7 +736,7 @@ func (client *GlobalRulestackClient) listCreateRequest(ctx context.Context, next
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251008)
+		reqQP.Set("api-version", version20260729Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -792,7 +792,7 @@ func (client *GlobalRulestackClient) revertCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -832,7 +832,7 @@ func (client *GlobalRulestackClient) updateCreateRequest(ctx context.Context, gl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260729Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

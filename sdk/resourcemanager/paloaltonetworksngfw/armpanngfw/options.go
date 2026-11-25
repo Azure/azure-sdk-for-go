@@ -56,6 +56,30 @@ type CertificateObjectLocalRulestackClientListByLocalRulestacksOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateOptions contains the optional parameters for the CustomCaptureConfigurationsFirewallResourcesClient.CreateOrUpdate
+// method.
+type CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientDeleteOptions contains the optional parameters for the CustomCaptureConfigurationsFirewallResourcesClient.Delete
+// method.
+type CustomCaptureConfigurationsFirewallResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientGetOptions contains the optional parameters for the CustomCaptureConfigurationsFirewallResourcesClient.Get
+// method.
+type CustomCaptureConfigurationsFirewallResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientListByFirewallOptions contains the optional parameters for the CustomCaptureConfigurationsFirewallResourcesClient.NewListByFirewallPager
+// method.
+type CustomCaptureConfigurationsFirewallResourcesClientListByFirewallOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FirewallStatusClientGetOptions contains the optional parameters for the FirewallStatusClient.Get method.
 type FirewallStatusClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -396,6 +420,30 @@ type LocalRulestacksClientRevertOptions struct {
 
 // LocalRulestacksClientUpdateOptions contains the optional parameters for the LocalRulestacksClient.Update method.
 type LocalRulestacksClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogIngestionSettingsResourcesClientCreateOrUpdateOptions contains the optional parameters for the LogIngestionSettingsResourcesClient.CreateOrUpdate
+// method.
+type LogIngestionSettingsResourcesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogIngestionSettingsResourcesClientDeleteOptions contains the optional parameters for the LogIngestionSettingsResourcesClient.Delete
+// method.
+type LogIngestionSettingsResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogIngestionSettingsResourcesClientGetOptions contains the optional parameters for the LogIngestionSettingsResourcesClient.Get
+// method.
+type LogIngestionSettingsResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogIngestionSettingsResourcesClientListByFirewallOptions contains the optional parameters for the LogIngestionSettingsResourcesClient.NewListByFirewallPager
+// method.
+type LogIngestionSettingsResourcesClientListByFirewallOptions struct {
 	// placeholder for future optional parameters
 }
 

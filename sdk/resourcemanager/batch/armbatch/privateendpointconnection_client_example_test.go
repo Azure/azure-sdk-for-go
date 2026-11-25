@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/PrivateEndpointConnectionDelete.json
+// Generated from example definition: 2026-10-01/PrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/PrivateEndpointConnectionUpdate.json
+// Generated from example definition: 2026-10-01/PrivateEndpointConnectionUpdate.json
 func ExamplePrivateEndpointConnectionClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExamplePrivateEndpointConnectionClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PrivateEndpointConnectionGet.json
+// Generated from example definition: 2026-10-01/PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExamplePrivateEndpointConnectionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PrivateEndpointConnectionsList.json
+// Generated from example definition: 2026-10-01/PrivateEndpointConnectionsList.json
 func ExamplePrivateEndpointConnectionClient_NewListByBatchAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -7,11 +7,11 @@ package armbatch_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/PrivateLinkResourceGet.json
+// Generated from example definition: 2026-10-01/PrivateLinkResourceGet.json
 func ExamplePrivateLinkResourceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExamplePrivateLinkResourceClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PrivateLinkResourceClientGetResponse{
 	// 	PrivateLinkResource: armbatch.PrivateLinkResource{
-	// 		Name: to.Ptr("sampleacct"),
+	// 		Name: to.Ptr("batchAccount"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/privateLinkResources/batchAccount"),
 	// 		Properties: &armbatch.PrivateLinkResourceProperties{
@@ -47,7 +47,7 @@ func ExamplePrivateLinkResourceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PrivateLinkResourcesList.json
+// Generated from example definition: 2026-10-01/PrivateLinkResourcesList.json
 func ExamplePrivateLinkResourceClient_NewListByBatchAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

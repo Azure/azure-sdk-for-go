@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/ApplicationCreate.json
+// Generated from example definition: 2026-10-01/ApplicationCreate.json
 func ExampleApplicationClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleApplicationClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ApplicationDelete.json
+// Generated from example definition: 2026-10-01/ApplicationDelete.json
 func ExampleApplicationClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleApplicationClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ApplicationGet.json
+// Generated from example definition: 2026-10-01/ApplicationGet.json
 func ExampleApplicationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleApplicationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/ApplicationList.json
+// Generated from example definition: 2026-10-01/ApplicationList.json
 func ExampleApplicationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleApplicationClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("app1"),
+		// 				Name: to.Ptr("app2"),
 		// 				Type: to.Ptr("Microsoft.Batch/batchAccounts/applications"),
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/applications/app2"),
 		// 				Properties: &armbatch.ApplicationProperties{
@@ -151,7 +151,7 @@ func ExampleApplicationClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/ApplicationUpdate.json
+// Generated from example definition: 2026-10-01/ApplicationUpdate.json
 func ExampleApplicationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

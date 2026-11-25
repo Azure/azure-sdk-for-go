@@ -7,11 +7,11 @@ package armbatch_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/NspConfigurationReconcile.json
+// Generated from example definition: 2026-10-01/NspConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterClient_BeginReconcileConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleNetworkSecurityPerimeterClient_BeginReconcileConfiguration() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/NspConfigurationGet.json
+// Generated from example definition: 2026-10-01/NspConfigurationGet.json
 func ExampleNetworkSecurityPerimeterClient_GetConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleNetworkSecurityPerimeterClient_GetConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/NspConfigurationsList.json
+// Generated from example definition: 2026-10-01/NspConfigurationsList.json
 func ExampleNetworkSecurityPerimeterClient_NewListConfigurationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

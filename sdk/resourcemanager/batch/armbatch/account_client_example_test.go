@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/BatchAccountCreate_BYOS.json
+// Generated from example definition: 2026-10-01/BatchAccountCreate_BYOS.json
 func ExampleAccountClient_BeginCreate_batchAccountCreateByos() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateByos() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountCreate_Default.json
+// Generated from example definition: 2026-10-01/BatchAccountCreate_Default.json
 func ExampleAccountClient_BeginCreate_batchAccountCreateDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateDefault() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountCreate_SystemAssignedIdentity.json
+// Generated from example definition: 2026-10-01/BatchAccountCreate_SystemAssignedIdentity.json
 func ExampleAccountClient_BeginCreate_batchAccountCreateSystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateSystemAssignedIdentity()
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountCreate_UserAssignedIdentity.json
+// Generated from example definition: 2026-10-01/BatchAccountCreate_UserAssignedIdentity.json
 func ExampleAccountClient_BeginCreate_batchAccountCreateUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateUserAssignedIdentity() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PrivateBatchAccountCreate.json
+// Generated from example definition: 2026-10-01/PrivateBatchAccountCreate.json
 func ExampleAccountClient_BeginCreate_privateBatchAccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +327,7 @@ func ExampleAccountClient_BeginCreate_privateBatchAccountCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountDelete.json
+// Generated from example definition: 2026-10-01/BatchAccountDelete.json
 func ExampleAccountClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleAccountClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountGet.json
+// Generated from example definition: 2026-10-01/BatchAccountGet.json
 func ExampleAccountClient_Get_batchAccountGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +398,7 @@ func ExampleAccountClient_Get_batchAccountGet() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PrivateBatchAccountGet.json
+// Generated from example definition: 2026-10-01/PrivateBatchAccountGet.json
 func ExampleAccountClient_Get_privateBatchAccountGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -456,7 +456,7 @@ func ExampleAccountClient_Get_privateBatchAccountGet() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/DetectorGet.json
+// Generated from example definition: 2026-10-01/DetectorGet.json
 func ExampleAccountClient_GetDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -486,7 +486,7 @@ func ExampleAccountClient_GetDetector() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountGetKeys.json
+// Generated from example definition: 2026-10-01/BatchAccountGetKeys.json
 func ExampleAccountClient_GetKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,7 +513,7 @@ func ExampleAccountClient_GetKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountListByResourceGroup.json
+// Generated from example definition: 2026-10-01/BatchAccountListByResourceGroup.json
 func ExampleAccountClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,7 +567,7 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/DetectorList.json
+// Generated from example definition: 2026-10-01/DetectorList.json
 func ExampleAccountClient_NewListDetectorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +606,7 @@ func ExampleAccountClient_NewListDetectorsPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountListOutboundNetworkDependenciesEndpoints.json
+// Generated from example definition: 2026-10-01/BatchAccountListOutboundNetworkDependenciesEndpoints.json
 func ExampleAccountClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +729,7 @@ func ExampleAccountClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountList.json
+// Generated from example definition: 2026-10-01/BatchAccountList.json
 func ExampleAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -783,7 +783,7 @@ func ExampleAccountClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountRegenerateKey.json
+// Generated from example definition: 2026-10-01/BatchAccountRegenerateKey.json
 func ExampleAccountClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -812,7 +812,7 @@ func ExampleAccountClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountSynchronizeAutoStorageKeys.json
+// Generated from example definition: 2026-10-01/BatchAccountSynchronizeAutoStorageKeys.json
 func ExampleAccountClient_SynchronizeAutoStorageKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -829,7 +829,7 @@ func ExampleAccountClient_SynchronizeAutoStorageKeys() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/BatchAccountUpdate.json
+// Generated from example definition: 2026-10-01/BatchAccountUpdate.json
 func ExampleAccountClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

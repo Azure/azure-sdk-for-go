@@ -1,5 +1,37 @@
 # Release History
 
+## 5.0.0 (2026-11-19)
+### Breaking Changes
+
+- Function `*PoolClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters Pool, options *PoolClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, poolName string, parameters PoolPatch, options *PoolClientUpdateOptions)`
+- Type of `FixedScaleSettings.NodeDeallocationOption` has been changed from `*ComputeNodeDeallocationOption` to `*RequestedComputeNodeDeallocationOption`
+- `AuthenticationModeTaskAuthenticationToken` from enum `AuthenticationMode` has been removed
+
+### Features Added
+
+- New enum type `RequestedComputeNodeDeallocationOption` with values `RequestedComputeNodeDeallocationOptionRequeue`, `RequestedComputeNodeDeallocationOptionTaskCompletion`, `RequestedComputeNodeDeallocationOptionTerminate`
+- New enum type `VirtualMachineSKUAllocationStrategy` with values `VirtualMachineSKUAllocationStrategyCapacityOptimized`, `VirtualMachineSKUAllocationStrategyLowestPrice`, `VirtualMachineSKUAllocationStrategyPrioritized`
+- New enum type `ZonePlacementPolicyType` with values `ZonePlacementPolicyTypeAuto`
+- New struct `DeploymentConfigurationPatch`
+- New struct `HardwareProfile`
+- New struct `MaxInstancePercentPerZonePolicy`
+- New struct `MaxInstancePercentPerZonePolicyPatch`
+- New struct `Placement`
+- New struct `PlacementPatch`
+- New struct `PoolPatch`
+- New struct `PoolPatchProperties`
+- New struct `ResiliencyPolicy`
+- New struct `ResiliencyPolicyPatch`
+- New struct `VMSizeProperties`
+- New struct `VirtualMachineConfigurationPatch`
+- New struct `VirtualMachineSKUProfile`
+- New struct `VirtualMachineSKUProfileVMSize`
+- New struct `ZoneAllocationPolicy`
+- New struct `ZoneAllocationPolicyPatch`
+- New field `VMSKUProfile` in struct `PoolProperties`
+- New field `HardwareProfile`, `Placement`, `ResiliencyPolicy` in struct `VirtualMachineConfiguration`
+
+
 ## 4.0.0 (2026-02-11)
 ### Breaking Changes
 

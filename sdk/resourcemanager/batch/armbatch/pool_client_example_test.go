@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/PoolDelete.json
+// Generated from example definition: 2026-10-01/PoolDelete.json
 func ExamplePoolClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExamplePoolClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_AcceleratedNetworking.json
+// Generated from example definition: 2026-10-01/PoolCreate_AcceleratedNetworking.json
 func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB46CB72A227E2\""),
+	// 	ETag: to.Ptr("W/\"0x8DB46CB72A227E2\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -136,7 +136,7 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_ConfidentialDiskEncryptionSet_ForUserSubscriptionAccounts.json
+// Generated from example definition: 2026-10-01/PoolCreate_ConfidentialDiskEncryptionSet_ForUserSubscriptionAccounts.json
 func ExamplePoolClient_Create_createPoolConfidentialDiskEncryptionSetForUserSubscriptionAccounts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExamplePoolClient_Create_createPoolConfidentialDiskEncryptionSetForUserSubs
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Name: to.Ptr("testpool"),
@@ -300,7 +300,7 @@ func ExamplePoolClient_Create_createPoolConfidentialDiskEncryptionSetForUserSubs
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_CustomerManagedKey_ForBatchManagedAccounts.json
+// Generated from example definition: 2026-10-01/PoolCreate_CustomerManagedKey_ForBatchManagedAccounts.json
 func ExamplePoolClient_Create_createPoolCustomerManagedKeyForBatchManagedAccounts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExamplePoolClient_Create_createPoolCustomerManagedKeyForBatchManagedAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Identity: &armbatch.PoolIdentity{
 	// 			Type: to.Ptr(armbatch.PoolIdentityTypeUserAssigned),
@@ -428,7 +428,7 @@ func ExamplePoolClient_Create_createPoolCustomerManagedKeyForBatchManagedAccount
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_DiskEncryptionSet_ForUserSubscriptionAccounts.json
+// Generated from example definition: 2026-10-01/PoolCreate_DiskEncryptionSet_ForUserSubscriptionAccounts.json
 func ExamplePoolClient_Create_createPoolDiskEncryptionSetForUserSubscriptionAccounts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +482,7 @@ func ExamplePoolClient_Create_createPoolDiskEncryptionSetForUserSubscriptionAcco
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Name: to.Ptr("testpool"),
@@ -545,7 +545,7 @@ func ExamplePoolClient_Create_createPoolDiskEncryptionSetForUserSubscriptionAcco
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_DualStackNetworking.json
+// Generated from example definition: 2026-10-01/PoolCreate_DualStackNetworking.json
 func ExamplePoolClient_Create_createPoolDualStackNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -613,7 +613,7 @@ func ExamplePoolClient_Create_createPoolDualStackNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/dualstackpool"),
 	// 		Name: to.Ptr("dualstackpool"),
@@ -695,7 +695,7 @@ func ExamplePoolClient_Create_createPoolDualStackNetworking() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_MinimalVirtualMachineConfiguration.json
+// Generated from example definition: 2026-10-01/PoolCreate_MinimalVirtualMachineConfiguration.json
 func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,7 +735,7 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -777,7 +777,7 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_NoPublicIPAddresses.json
+// Generated from example definition: 2026-10-01/PoolCreate_NoPublicIPAddresses.json
 func ExamplePoolClient_Create_createPoolNoPublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -814,7 +814,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIP() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -859,7 +859,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIP() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_PublicIPs.json
+// Generated from example definition: 2026-10-01/PoolCreate_PublicIPs.json
 func ExamplePoolClient_Create_createPoolPublicIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -899,7 +899,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -947,7 +947,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_SecurityProfile.json
+// Generated from example definition: 2026-10-01/PoolCreate_SecurityProfile.json
 func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -994,7 +994,7 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	ETag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1050,7 +1050,7 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_SharedImageGallery.json
+// Generated from example definition: 2026-10-01/PoolCreate_SharedImageGallery.json
 func ExamplePoolClient_Create_createPoolCustomImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1081,7 +1081,7 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1120,7 +1120,7 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_Tags.json
+// Generated from example definition: 2026-10-01/PoolCreate_Tags.json
 func ExamplePoolClient_Create_createPoolTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1160,7 +1160,7 @@ func ExamplePoolClient_Create_createPoolTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	ETag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1209,7 +1209,7 @@ func ExamplePoolClient_Create_createPoolTags() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_UpgradePolicy.json
+// Generated from example definition: 2026-10-01/PoolCreate_UpgradePolicy.json
 func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1273,7 +1273,7 @@ func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	ETag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1346,7 +1346,7 @@ func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_UserAssignedIdentities.json
+// Generated from example definition: 2026-10-01/PoolCreate_UserAssignedIdentities.json
 func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1393,7 +1393,7 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1448,7 +1448,7 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_VirtualMachineConfiguration.json
+// Generated from example definition: 2026-10-01/PoolCreate_VirtualMachineConfiguration.json
 func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1556,7 +1556,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1661,7 +1661,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_VirtualMachineConfiguration_Extensions.json
+// Generated from example definition: 2026-10-01/PoolCreate_VirtualMachineConfiguration_Extensions.json
 func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1714,7 +1714,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1769,7 +1769,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
+// Generated from example definition: 2026-10-01/PoolCreate_VirtualMachineConfiguration_ManagedOSDisk.json
 func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1816,7 +1816,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOSDisk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB51F14DC1A8AD\""),
+	// 	ETag: to.Ptr("W/\"0x8DB51F14DC1A8AD\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1873,7 +1873,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOSDisk() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
+// Generated from example definition: 2026-10-01/PoolCreate_VirtualMachineConfiguration_ServiceArtifactReference.json
 func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifactReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1925,9 +1925,9 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB51F14DC1A8AD\""),
+	// 	ETag: to.Ptr("W/\"0x8DB51F14DC1A8AD\""),
 	// 	Pool: armbatch.Pool{
-	// 		Name: to.Ptr("mypool41"),
+	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Properties: &armbatch.PoolProperties{
@@ -1986,7 +1986,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifa
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolDisableAutoScale.json
+// Generated from example definition: 2026-10-01/PoolDisableAutoScale.json
 func ExamplePoolClient_DisableAutoScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2005,7 +2005,7 @@ func ExamplePoolClient_DisableAutoScale() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientDisableAutoScaleResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2048,7 +2048,7 @@ func ExamplePoolClient_DisableAutoScale() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolGet.json
+// Generated from example definition: 2026-10-01/PoolGet.json
 func ExamplePoolClient_Get_getPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2067,7 +2067,7 @@ func ExamplePoolClient_Get_getPool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2200,7 +2200,7 @@ func ExamplePoolClient_Get_getPool() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolGet_AcceleratedNetworking.json
+// Generated from example definition: 2026-10-01/PoolGet_AcceleratedNetworking.json
 func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2219,7 +2219,7 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2272,7 +2272,7 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolGet_SecurityProfile.json
+// Generated from example definition: 2026-10-01/PoolGet_SecurityProfile.json
 func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2291,7 +2291,7 @@ func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
+	// 	ETag: to.Ptr("W/\"0x8DB554F8E08BCF4\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2347,7 +2347,7 @@ func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolGet_UpgradePolicy.json
+// Generated from example definition: 2026-10-01/PoolGet_UpgradePolicy.json
 func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2366,7 +2366,7 @@ func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	ETag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2439,7 +2439,7 @@ func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolGet_VirtualMachineConfiguration_Extensions.json
+// Generated from example definition: 2026-10-01/PoolGet_VirtualMachineConfiguration_Extensions.json
 func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2458,7 +2458,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2521,7 +2521,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
+// Generated from example definition: 2026-10-01/PoolGet_VirtualMachineConfiguration_MangedOSDisk.json
 func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2540,7 +2540,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOSDisk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	ETag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2597,7 +2597,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOSDisk() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
+// Generated from example definition: 2026-10-01/PoolGet_VirtualMachineConfiguration_ServiceArtifactReference.json
 func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2616,7 +2616,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactRefe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	Etag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
+	// 	ETag: to.Ptr("W/\"0x8DB51E64D3C3B69\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2677,7 +2677,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactRefe
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolList.json
+// Generated from example definition: 2026-10-01/PoolList.json
 func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2842,7 +2842,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPool() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/PoolListWithFilter.json
+// Generated from example definition: 2026-10-01/PoolListWithFilter.json
 func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2854,8 +2854,9 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewPoolClient().NewListByBatchAccountPager("default-azurebatch-japaneast", "sampleacct", &armbatch.PoolClientListByBatchAccountOptions{
-		Filter: to.Ptr("startswith(name, 'po') or (properties/allocationState eq 'Steady' and properties/provisioningStateTransitionTime lt datetime'2017-02-02')"),
-		Select: to.Ptr("properties/allocationState,properties/provisioningStateTransitionTime,properties/currentDedicatedNodes,properties/currentLowPriorityNodes")})
+		Filter:     to.Ptr("startswith(name, 'po') or (properties/allocationState eq 'Steady' and properties/provisioningStateTransitionTime lt datetime'2017-09-01')"),
+		Select:     to.Ptr("properties/allocationState,properties/provisioningStateTransitionTime,properties/currentDedicatedNodes,properties/currentLowPriorityNodes"),
+		Maxresults: to.Ptr[int32](50)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2897,7 +2898,7 @@ func ExamplePoolClient_NewListByBatchAccountPager_listPoolWithFilter() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/PoolStopResize.json
+// Generated from example definition: 2026-10-01/PoolStopResize.json
 func ExamplePoolClient_StopResize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2916,7 +2917,7 @@ func ExamplePoolClient_StopResize() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientStopResizeResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2965,7 +2966,7 @@ func ExamplePoolClient_StopResize() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolUpdate_EnableAutoScale.json
+// Generated from example definition: 2026-10-01/PoolUpdate_EnableAutoScale.json
 func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2976,8 +2977,8 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
-		Properties: &armbatch.PoolProperties{
+	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.PoolPatch{
+		Properties: &armbatch.PoolPatchProperties{
 			ScaleSettings: &armbatch.ScaleSettings{
 				AutoScale: &armbatch.AutoScaleSettings{
 					Formula: to.Ptr("$TargetDedicatedNodes=34"),
@@ -2992,7 +2993,7 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -3044,7 +3045,7 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolUpdate_OtherProperties.json
+// Generated from example definition: 2026-10-01/PoolUpdate_OtherProperties.json
 func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3055,8 +3056,8 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
-		Properties: &armbatch.PoolProperties{
+	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.PoolPatch{
+		Properties: &armbatch.PoolPatchProperties{
 			ApplicationPackages: []*armbatch.ApplicationPackageReference{
 				{
 					ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool/applications/app_1234"),
@@ -3081,7 +3082,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -3134,7 +3135,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				FixedScale: &armbatch.FixedScaleSettings{
-	// 					NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
+	// 					NodeDeallocationOption: to.Ptr(armbatch.RequestedComputeNodeDeallocationOptionTaskCompletion),
 	// 					ResizeTimeout: to.Ptr("PT8M"),
 	// 					TargetDedicatedNodes: to.Ptr[int32](1),
 	// 					TargetLowPriorityNodes: to.Ptr[int32](0),
@@ -3150,7 +3151,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolUpdate_RemoveStartTask.json
+// Generated from example definition: 2026-10-01/PoolUpdate_RemoveStartTask.json
 func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3161,8 +3162,8 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
-		Properties: &armbatch.PoolProperties{
+	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.PoolPatch{
+		Properties: &armbatch.PoolPatchProperties{
 			StartTask: &armbatch.StartTask{},
 		},
 	}, nil)
@@ -3173,7 +3174,7 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -3225,7 +3226,7 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/PoolUpdate_ResizePool.json
+// Generated from example definition: 2026-10-01/PoolUpdate_ResizePool.json
 func ExamplePoolClient_Update_updatePoolResizePool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3236,11 +3237,11 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.Pool{
-		Properties: &armbatch.PoolProperties{
+	res, err := clientFactory.NewPoolClient().Update(ctx, "default-azurebatch-japaneast", "sampleacct", "testpool", armbatch.PoolPatch{
+		Properties: &armbatch.PoolPatchProperties{
 			ScaleSettings: &armbatch.ScaleSettings{
 				FixedScale: &armbatch.FixedScaleSettings{
-					NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
+					NodeDeallocationOption: to.Ptr(armbatch.RequestedComputeNodeDeallocationOptionTaskCompletion),
 					ResizeTimeout:          to.Ptr("PT8M"),
 					TargetDedicatedNodes:   to.Ptr[int32](5),
 					TargetLowPriorityNodes: to.Ptr[int32](0),
@@ -3255,7 +3256,7 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	Etag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
+	// 	ETag: to.Ptr("W/\"0x8D4EDFEBFADF4AB\""),
 	// 	Pool: armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -3293,7 +3294,7 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	// 			},
 	// 			ScaleSettings: &armbatch.ScaleSettings{
 	// 				FixedScale: &armbatch.FixedScaleSettings{
-	// 					NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
+	// 					NodeDeallocationOption: to.Ptr(armbatch.RequestedComputeNodeDeallocationOptionTaskCompletion),
 	// 					ResizeTimeout: to.Ptr("PT8M"),
 	// 					TargetDedicatedNodes: to.Ptr[int32](1),
 	// 					TargetLowPriorityNodes: to.Ptr[int32](0),

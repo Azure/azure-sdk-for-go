@@ -5,7 +5,7 @@
 package armconfluent
 
 const (
-	version20260602Preview string = "2026-06-02-preview"
+	version20261021Preview string = "2026-10-21-preview"
 )
 
 // AuthType - Kafka Connector Auth Type
@@ -148,6 +148,25 @@ func PossibleDataFormatTypeValues() []DataFormatType {
 	}
 }
 
+// MonitoringStatus - Indicates whether a monitor is currently sending Azure logs to its configured
+// Confluent topic.
+type MonitoringStatus string
+
+const (
+	// MonitoringStatusDisabled - The monitor is not currently sending Azure logs.
+	MonitoringStatusDisabled MonitoringStatus = "Disabled"
+	// MonitoringStatusEnabled - The monitor is sending logs selected by its configured rule sets.
+	MonitoringStatusEnabled MonitoringStatus = "Enabled"
+)
+
+// PossibleMonitoringStatusValues returns the possible values for the MonitoringStatus const type.
+func PossibleMonitoringStatusValues() []MonitoringStatus {
+	return []MonitoringStatus{
+		MonitoringStatusDisabled,
+		MonitoringStatusEnabled,
+	}
+}
+
 // Package - Stream Governance Package. Supported values are ESSENTIALS and ADVANCED
 type Package string
 
@@ -245,5 +264,25 @@ func PossibleSaaSOfferStatusValues() []SaaSOfferStatus {
 		SaaSOfferStatusSuspended,
 		SaaSOfferStatusUnsubscribed,
 		SaaSOfferStatusUpdating,
+	}
+}
+
+// TagAction - Specifies whether activity logs from Azure resources matching a tag are
+// included or excluded.
+type TagAction string
+
+const (
+	// TagActionExclude - Excludes activity logs from Azure resources matching the tag filter.
+	// Exclusion takes precedence over inclusion.
+	TagActionExclude TagAction = "Exclude"
+	// TagActionInclude - Includes activity logs from Azure resources matching the tag filter.
+	TagActionInclude TagAction = "Include"
+)
+
+// PossibleTagActionValues returns the possible values for the TagAction const type.
+func PossibleTagActionValues() []TagAction {
+	return []TagAction{
+		TagActionExclude,
+		TagActionInclude,
 	}
 }

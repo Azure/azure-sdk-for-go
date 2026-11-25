@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/Validations_ValidateOrganization_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Validations_ValidateOrganization_MaximumSet_Gen.json
 func ExampleValidationsClient_ValidateOrganization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleValidationsClient_ValidateOrganization() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Validations_ValidateOrganizationV2_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Validations_ValidateOrganizationV2_MaximumSet_Gen.json
 func ExampleValidationsClient_ValidateOrganizationV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

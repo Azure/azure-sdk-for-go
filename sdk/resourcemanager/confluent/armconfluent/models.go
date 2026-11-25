@@ -674,6 +674,21 @@ type EnvironmentRecord struct {
 	Metadata *MetadataEntity
 }
 
+// FilteringTag - A tag filter that includes or excludes activity logs from matching Azure
+// resources.
+type FilteringTag struct {
+	// REQUIRED; Specifies whether logs from resources matching the tag filter are included
+	// or excluded.
+	Action *TagAction
+
+	// REQUIRED; The Azure resource tag name to match.
+	Name *string
+
+	// The Azure resource tag value to match. When omitted, the filter matches any
+	// value for the specified tag name.
+	Value *string
+}
+
 // GetEnvironmentsResponse - Result of GET request to list Confluent operations.
 type GetEnvironmentsResponse struct {
 	// REQUIRED; The SCEnvironmentRecord items on this page
@@ -1039,6 +1054,26 @@ type ListTopicsSuccessResponse struct {
 	NextLink *string
 }
 
+// LogRules - Rules that select Azure log categories and Azure resources whose logs are
+// sent to the monitor's configured Confluent topic.
+type LogRules struct {
+	// Azure resource-tag filters applied when activity logs are enabled. If only
+	// exclusion filters are present, logs from all resources except matching
+	// resources are sent. If any inclusion filter is present, logs are sent only
+	// from matching resources. Exclusion filters take precedence over inclusion
+	// filters.
+	FilteringTags []*FilteringTag
+
+	// Specifies whether Microsoft Entra ID logs are sent to Confluent.
+	SendAADLogs *bool
+
+	// Specifies whether activity logs from Azure resources are sent to Confluent.
+	SendActivityLogs *bool
+
+	// Specifies whether Azure subscription logs are sent to Confluent.
+	SendSubscriptionLogs *bool
+}
+
 // MetadataEntity - Metadata of the data record
 type MetadataEntity struct {
 	// Created Date Time
@@ -1055,6 +1090,120 @@ type MetadataEntity struct {
 
 	// Updated Date time
 	UpdatedAt *string
+}
+
+// MonitorProperties - The Confluent log destination and current status of a monitor.
+type MonitorProperties struct {
+	// REQUIRED; The identifier of the Confluent cluster containing the destination topic.
+	ClusterID *string
+
+	// REQUIRED; The identifier of the Confluent environment that contains the destination
+	// cluster.
+	EnvironmentID *string
+
+	// REQUIRED; The name of the Confluent topic that receives the selected Azure logs.
+	TopicName *string
+
+	// The display name of the Confluent cluster containing the destination topic.
+	ClusterName *string
+
+	// Additional key-value information associated with the monitor.
+	Dictionary []*KeyValuePair
+
+	// The display name of the Confluent environment that contains the destination
+	// cluster.
+	EnvironmentName *string
+
+	// The identifier of the Confluent organization that contains the destination
+	// environment.
+	OrganizationID *string
+
+	// The identifier of the Confluent topic that receives the selected Azure logs.
+	TopicID *string
+
+	// READ-ONLY; Indicates whether the monitor is currently sending Azure logs to Confluent.
+	MonitoringStatus *MonitoringStatus
+
+	// READ-ONLY; The status of the most recent operation performed on the monitor.
+	ProvisioningState *ProvisionState
+}
+
+// MonitorResource - A monitor that defines the Confluent environment, cluster, and topic to which
+// selected Azure logs are sent.
+type MonitorResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The configured Confluent log destination and current status of the monitor.
+	Properties *MonitorProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MonitorResourceListResult - The response of a MonitorResource list operation.
+type MonitorResourceListResult struct {
+	// REQUIRED; The MonitorResource items on this page
+	Value []*MonitorResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MonitorResourceUpdateParameters - The parameters for updating the Azure resource tags of a Confluent monitor.
+type MonitorResourceUpdateParameters struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// MonitorTagRule - A rule set that specifies which Azure logs are sent to a monitor's configured
+// Confluent topic.
+type MonitorTagRule struct {
+	// The rules that select Azure logs and the current status of the rule set.
+	Properties *MonitorTagRuleProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MonitorTagRuleListResult - The response of a MonitorTagRule list operation.
+type MonitorTagRuleListResult struct {
+	// REQUIRED; The MonitorTagRule items on this page
+	Value []*MonitorTagRule
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MonitorTagRuleProperties - The Azure log-selection rules and current status of a monitor rule set.
+type MonitorTagRuleProperties struct {
+	// Rules that specify which Azure logs are sent to the monitor's configured
+	// Confluent topic.
+	LogRules *LogRules
+
+	// READ-ONLY; The status of the most recent operation performed on the rule set.
+	ProvisioningState *ProvisionState
 }
 
 // NetworkGatewayProperties - Network Gateway Properties

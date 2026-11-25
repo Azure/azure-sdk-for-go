@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/Environment_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Environment_Delete_MaximumSet_Gen.json
 func ExampleEnvironmentClient_BeginDelete_environmentDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleEnvironmentClient_BeginDelete_environmentDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Environment_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Environment_Delete_MinimumSet_Gen.json
 func ExampleEnvironmentClient_BeginDelete_environmentDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleEnvironmentClient_BeginDelete_environmentDeleteMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Environment_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/Environment_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEnvironmentClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

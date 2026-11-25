@@ -143,6 +143,63 @@ type MarketplaceAgreementsClientListResponse struct {
 	AgreementResourceListResponse
 }
 
+// MonitorResourcesClientCreateOrUpdateResponse contains the response from method MonitorResourcesClient.BeginCreateOrUpdate.
+type MonitorResourcesClientCreateOrUpdateResponse struct {
+	// A monitor that defines the Confluent environment, cluster, and topic to which
+	// selected Azure logs are sent.
+	MonitorResource
+}
+
+// MonitorResourcesClientDeleteResponse contains the response from method MonitorResourcesClient.BeginDelete.
+type MonitorResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MonitorResourcesClientGetResponse contains the response from method MonitorResourcesClient.Get.
+type MonitorResourcesClientGetResponse struct {
+	// A monitor that defines the Confluent environment, cluster, and topic to which
+	// selected Azure logs are sent.
+	MonitorResource
+}
+
+// MonitorResourcesClientListByOrganizationResponse contains the response from method MonitorResourcesClient.NewListByOrganizationPager.
+type MonitorResourcesClientListByOrganizationResponse struct {
+	// The response of a MonitorResource list operation.
+	MonitorResourceListResult
+}
+
+// MonitorResourcesClientUpdateResponse contains the response from method MonitorResourcesClient.BeginUpdate.
+type MonitorResourcesClientUpdateResponse struct {
+	// A monitor that defines the Confluent environment, cluster, and topic to which
+	// selected Azure logs are sent.
+	MonitorResource
+}
+
+// MonitorTagRulesClientCreateOrUpdateResponse contains the response from method MonitorTagRulesClient.CreateOrUpdate.
+type MonitorTagRulesClientCreateOrUpdateResponse struct {
+	// A rule set that specifies which Azure logs are sent to a monitor's configured
+	// Confluent topic.
+	MonitorTagRule
+}
+
+// MonitorTagRulesClientDeleteResponse contains the response from method MonitorTagRulesClient.Delete.
+type MonitorTagRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MonitorTagRulesClientGetResponse contains the response from method MonitorTagRulesClient.Get.
+type MonitorTagRulesClientGetResponse struct {
+	// A rule set that specifies which Azure logs are sent to a monitor's configured
+	// Confluent topic.
+	MonitorTagRule
+}
+
+// MonitorTagRulesClientListByMonitorResponse contains the response from method MonitorTagRulesClient.NewListByMonitorPager.
+type MonitorTagRulesClientListByMonitorResponse struct {
+	// The response of a MonitorTagRule list operation.
+	MonitorTagRuleListResult
+}
+
 // NetworkGatewayResourcesClientCreateOrReplaceResponse contains the response from method NetworkGatewayResourcesClient.BeginCreateOrReplace.
 type NetworkGatewayResourcesClientCreateOrReplaceResponse struct {
 	// Details of network gateway record

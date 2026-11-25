@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/NetworkGatewayResources_CreateOrReplace_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/NetworkGatewayResources_CreateOrReplace_MaximumSet_Gen.json
 func ExampleNetworkGatewayResourcesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleNetworkGatewayResourcesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/NetworkGatewayResources_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/NetworkGatewayResources_Delete_MaximumSet_Gen.json
 func ExampleNetworkGatewayResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleNetworkGatewayResourcesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/NetworkGatewayResources_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/NetworkGatewayResources_Get_MaximumSet_Gen.json
 func ExampleNetworkGatewayResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleNetworkGatewayResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/NetworkGatewayResources_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-21-preview/NetworkGatewayResources_List_MaximumSet_Gen.json
 func ExampleNetworkGatewayResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleNetworkGatewayResourcesClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/DC34558A-05D3-4370-AED8-75E60B381F94/resourceGroups/rgconfluent/providers/Microsoft.Confluent/organizations/myOrganization/environments/env-abc123/networkGateways?api-version=2026-06-02-preview&$skipToken=token123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/DC34558A-05D3-4370-AED8-75E60B381F94/resourceGroups/rgconfluent/providers/Microsoft.Confluent/organizations/myOrganization/environments/env-abc123/networkGateways?api-version=2026-10-21-preview&$skipToken=token123"),
 		// 	},
 		// }
 	}

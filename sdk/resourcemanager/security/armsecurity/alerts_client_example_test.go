@@ -880,7 +880,7 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAlertsClient().NewListResourceGroupLevelByRegionPager("myRg1", "westeurope", nil)
+	pager := clientFactory.NewAlertsClient().NewListResourceGroupLevelByRegionPager("westeurope", "myRg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

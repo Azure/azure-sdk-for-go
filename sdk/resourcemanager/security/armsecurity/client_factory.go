@@ -618,14 +618,6 @@ func (c *ClientFactory) NewTopologyClient() *TopologyClient {
 	}
 }
 
-// NewTopologyResourcesClient creates a new instance of TopologyResourcesClient.
-func (c *ClientFactory) NewTopologyResourcesClient() *TopologyResourcesClient {
-	return &TopologyResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewWorkspaceSettingsClient creates a new instance of WorkspaceSettingsClient.
 func (c *ClientFactory) NewWorkspaceSettingsClient() *WorkspaceSettingsClient {
 	return &WorkspaceSettingsClient{

@@ -1534,19 +1534,19 @@ type TasksClientUpdateSubscriptionLevelTaskStateResponse struct {
 	// placeholder for future response values
 }
 
-// TopologyClientListResponse contains the response from method TopologyClient.NewListPager.
-type TopologyClientListResponse struct {
-	TopologyList
-}
-
-// TopologyResourcesClientGetResponse contains the response from method TopologyResourcesClient.Get.
-type TopologyResourcesClientGetResponse struct {
+// TopologyClientGetResponse contains the response from method TopologyClient.Get.
+type TopologyClientGetResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
 	TopologyResource
 }
 
-// TopologyResourcesClientListByHomeRegionResponse contains the response from method TopologyResourcesClient.NewListByHomeRegionPager.
-type TopologyResourcesClientListByHomeRegionResponse struct {
+// TopologyClientListByHomeRegionResponse contains the response from method TopologyClient.NewListByHomeRegionPager.
+type TopologyClientListByHomeRegionResponse struct {
+	TopologyList
+}
+
+// TopologyClientListResponse contains the response from method TopologyClient.NewListPager.
+type TopologyClientListResponse struct {
 	TopologyList
 }
 

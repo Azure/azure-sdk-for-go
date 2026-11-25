@@ -44,6 +44,144 @@ func NewTopologyClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
+// Get - Gets a specific topology component.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - topologyResourceName - Name of a topology resources collection.
+//   - options - TopologyClientGetOptions contains the optional parameters for the TopologyClient.Get method.
+func (client *TopologyClient) Get(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string, options *TopologyClientGetOptions) (TopologyClientGetResponse, error) {
+	var err error
+	const operationName = "TopologyClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, ascLocation, topologyResourceName, options)
+	if err != nil {
+		return TopologyClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return TopologyClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *TopologyClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string, _ *TopologyClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/topologies/{topologyResourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+	if topologyResourceName == "" {
+		return nil, errors.New("parameter topologyResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{topologyResourceName}", url.PathEscape(topologyResourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20200101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *TopologyClient) getHandleResponse(resp *http.Response, successCodes ...int) (TopologyClientGetResponse, error) {
+	result := TopologyClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopologyResource); err != nil {
+		return TopologyClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByHomeRegionPager - Gets a list that allows to build a topology view of a subscription and location.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - options - TopologyClientListByHomeRegionOptions contains the optional parameters for the TopologyClient.NewListByHomeRegionPager
+//     method.
+func (client *TopologyClient) NewListByHomeRegionPager(ascLocation string, options *TopologyClientListByHomeRegionOptions) *runtime.Pager[TopologyClientListByHomeRegionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TopologyClientListByHomeRegionResponse]{
+		More: func(page TopologyClientListByHomeRegionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *TopologyClientListByHomeRegionResponse) (TopologyClientListByHomeRegionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TopologyClient.NewListByHomeRegionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByHomeRegionCreateRequest(ctx, ascLocation, nextLink, options)
+			if err != nil {
+				return TopologyClientListByHomeRegionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopologyClientListByHomeRegionResponse{}, err
+			}
+			return client.listByHomeRegionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByHomeRegionCreateRequest creates the ListByHomeRegion request.
+func (client *TopologyClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, nextLink string, _ *TopologyClientListByHomeRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/topologies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByHomeRegionHandleResponse handles the ListByHomeRegion response.
+func (client *TopologyClient) listByHomeRegionHandleResponse(resp *http.Response, successCodes ...int) (TopologyClientListByHomeRegionResponse, error) {
+	result := TopologyClientListByHomeRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopologyList); err != nil {
+		return TopologyClientListByHomeRegionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets a list that allows to build a topology view of a subscription.
 //   - options - TopologyClientListOptions contains the optional parameters for the TopologyClient.NewListPager method.
 func (client *TopologyClient) NewListPager(options *TopologyClientListOptions) *runtime.Pager[TopologyClientListResponse] {

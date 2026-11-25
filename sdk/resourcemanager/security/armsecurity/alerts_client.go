@@ -384,11 +384,11 @@ func (client *AlertsClient) listHandleResponse(resp *http.Response, successCodes
 
 // NewListResourceGroupLevelByRegionPager - List all the alerts that are associated with the resource group that are stored
 // in a specific location
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AlertsClientListResourceGroupLevelByRegionOptions contains the optional parameters for the AlertsClient.NewListResourceGroupLevelByRegionPager
 //     method.
-func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(resourceGroupName string, ascLocation string, options *AlertsClientListResourceGroupLevelByRegionOptions) *runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse] {
+func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(ascLocation string, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions) *runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertsClientListResourceGroupLevelByRegionResponse]{
 		More: func(page AlertsClientListResourceGroupLevelByRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -399,7 +399,7 @@ func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listResourceGroupLevelByRegionCreateRequest(ctx, resourceGroupName, ascLocation, nextLink, options)
+			req, err := client.listResourceGroupLevelByRegionCreateRequest(ctx, ascLocation, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AlertsClientListResourceGroupLevelByRegionResponse{}, err
 			}
@@ -414,7 +414,7 @@ func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(resourceGroup
 }
 
 // listResourceGroupLevelByRegionCreateRequest creates the ListResourceGroupLevelByRegion request.
-func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, nextLink string, _ *AlertsClientListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
+func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx context.Context, ascLocation string, resourceGroupName string, nextLink string, _ *AlertsClientListResourceGroupLevelByRegionOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -424,14 +424,14 @@ func (client *AlertsClient) listResourceGroupLevelByRegionCreateRequest(ctx cont
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 		if ascLocation == "" {
 			return nil, errors.New("parameter ascLocation cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)

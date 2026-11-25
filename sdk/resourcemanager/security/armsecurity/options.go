@@ -1505,19 +1505,19 @@ type TasksClientUpdateSubscriptionLevelTaskStateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// TopologyClientGetOptions contains the optional parameters for the TopologyClient.Get method.
+type TopologyClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TopologyClientListByHomeRegionOptions contains the optional parameters for the TopologyClient.NewListByHomeRegionPager
+// method.
+type TopologyClientListByHomeRegionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TopologyClientListOptions contains the optional parameters for the TopologyClient.NewListPager method.
 type TopologyClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TopologyResourcesClientGetOptions contains the optional parameters for the TopologyResourcesClient.Get method.
-type TopologyResourcesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TopologyResourcesClientListByHomeRegionOptions contains the optional parameters for the TopologyResourcesClient.NewListByHomeRegionPager
-// method.
-type TopologyResourcesClientListByHomeRegionOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -43,7 +43,7 @@ type AlertsServer struct {
 
 	// NewListResourceGroupLevelByRegionPager is the fake for method AlertsClient.NewListResourceGroupLevelByRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListResourceGroupLevelByRegionPager func(resourceGroupName string, ascLocation string, options *armsecurity.AlertsClientListResourceGroupLevelByRegionOptions) (resp azfake.PagerResponder[armsecurity.AlertsClientListResourceGroupLevelByRegionResponse])
+	NewListResourceGroupLevelByRegionPager func(ascLocation string, resourceGroupName string, options *armsecurity.AlertsClientListResourceGroupLevelByRegionOptions) (resp azfake.PagerResponder[armsecurity.AlertsClientListResourceGroupLevelByRegionResponse])
 
 	// NewListSubscriptionLevelByRegionPager is the fake for method AlertsClient.NewListSubscriptionLevelByRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -370,15 +370,15 @@ func (a *AlertsServerTransport) dispatchNewListResourceGroupLevelByRegionPager(r
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
 		ascLocationParam, err := url.PathUnescape(matches[regex.SubexpIndex("ascLocation")])
 		if err != nil {
 			return nil, err
 		}
-		resp := a.srv.NewListResourceGroupLevelByRegionPager(resourceGroupNameParam, ascLocationParam, nil)
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListResourceGroupLevelByRegionPager(ascLocationParam, resourceGroupNameParam, nil)
 		newListResourceGroupLevelByRegionPager = &resp
 		a.newListResourceGroupLevelByRegionPager.add(req, newListResourceGroupLevelByRegionPager)
 		server.PagerResponderInjectNextLinks(newListResourceGroupLevelByRegionPager, req, func(page *armsecurity.AlertsClientListResourceGroupLevelByRegionResponse, createLink func() string) {

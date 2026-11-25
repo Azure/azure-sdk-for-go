@@ -243,9 +243,6 @@ type ServerFactory struct {
 	// TopologyServer contains the fakes for client TopologyClient
 	TopologyServer TopologyServer
 
-	// TopologyResourcesServer contains the fakes for client TopologyResourcesClient
-	TopologyResourcesServer TopologyResourcesServer
-
 	// WorkspaceSettingsServer contains the fakes for client WorkspaceSettingsClient
 	WorkspaceSettingsServer WorkspaceSettingsServer
 }
@@ -340,7 +337,6 @@ type ServerFactoryTransport struct {
 	trSubAssessmentsServer                               *SubAssessmentsServerTransport
 	trTasksServer                                        *TasksServerTransport
 	trTopologyServer                                     *TopologyServerTransport
-	trTopologyResourcesServer                            *TopologyResourcesServerTransport
 	trWorkspaceSettingsServer                            *WorkspaceSettingsServerTransport
 }
 
@@ -689,11 +685,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "TopologyClient":
 		initServer(&s.trMu, &s.trTopologyServer, func() *TopologyServerTransport { return NewTopologyServerTransport(&s.srv.TopologyServer) })
 		resp, err = s.trTopologyServer.Do(req)
-	case "TopologyResourcesClient":
-		initServer(&s.trMu, &s.trTopologyResourcesServer, func() *TopologyResourcesServerTransport {
-			return NewTopologyResourcesServerTransport(&s.srv.TopologyResourcesServer)
-		})
-		resp, err = s.trTopologyResourcesServer.Do(req)
 	case "WorkspaceSettingsClient":
 		initServer(&s.trMu, &s.trWorkspaceSettingsServer, func() *WorkspaceSettingsServerTransport {
 			return NewWorkspaceSettingsServerTransport(&s.srv.WorkspaceSettingsServer)

@@ -1,9 +1,8 @@
 # Release History
 
-## 0.16.0 (2026-11-18)
+## 0.16.0 (2026-11-25)
 ### Breaking Changes
 
-- Function `*AlertsClient.NewListResourceGroupLevelByRegionPager` parameter(s) have been changed from `(ascLocation string, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions)` to `(resourceGroupName string, ascLocation string, options *AlertsClientListResourceGroupLevelByRegionOptions)`
 - Function `*DefenderForStorageClient.CancelMalwareScan` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, scanID string, options *DefenderForStorageClientCancelMalwareScanOptions)` to `(ctx context.Context, resourceID string, settingName string, scanID string, options *DefenderForStorageClientCancelMalwareScanOptions)`
 - Function `*DefenderForStorageClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, defenderForStorageSetting DefenderForStorageSetting, options *DefenderForStorageClientCreateOptions)` to `(ctx context.Context, resourceID string, settingName string, defenderForStorageSetting DefenderForStorageSetting, options *DefenderForStorageClientCreateOptions)`
 - Function `*DefenderForStorageClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, options *DefenderForStorageClientGetOptions)` to `(ctx context.Context, resourceID string, settingName string, options *DefenderForStorageClientGetOptions)`
@@ -24,8 +23,6 @@
 - Type of `MalwareScanProperties.ScanStartTime` has been changed from `*string` to `*time.Time`
 - Type of `MalwareScanProperties.ScanStatus` has been changed from `*string` to `*MalwareScanStatus`
 - Type of `OnUploadFilters.ExcludeBlobsLargerThan` has been changed from `any` to `*int64`
-- Function `*TopologyClient.Get` has been removed
-- Function `*TopologyClient.NewListByHomeRegionPager` has been removed
 - Struct `DefenderCspmAwsOfferingCiemDiscovery` has been removed
 - Struct `PrivateLinkParameters` has been removed
 - Field `CiemDiscovery` of struct `DefenderCspmAwsOfferingCiem` has been removed
@@ -45,10 +42,6 @@
 - New function `*BatchPricingsClient.Get(ctx context.Context, scopeID string, pricingBatchName string, options *BatchPricingsClientGetOptions) (BatchPricingsClientGetResponse, error)`
 - New function `*BatchPricingsClient.NewListPager(scopeID string, options *BatchPricingsClientListOptions) *runtime.Pager[BatchPricingsClientListResponse]`
 - New function `*ClientFactory.NewBatchPricingsClient() *BatchPricingsClient`
-- New function `*ClientFactory.NewTopologyResourcesClient() *TopologyResourcesClient`
-- New function `NewTopologyResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TopologyResourcesClient, error)`
-- New function `*TopologyResourcesClient.Get(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string, options *TopologyResourcesClientGetOptions) (TopologyResourcesClientGetResponse, error)`
-- New function `*TopologyResourcesClient.NewListByHomeRegionPager(ascLocation string, options *TopologyResourcesClientListByHomeRegionOptions) *runtime.Pager[TopologyResourcesClientListByHomeRegionResponse]`
 - New struct `AwsCloudTrailConfiguration`
 - New struct `AwsCloudTrailResourceSet`
 - New struct `BlobScanFilter`

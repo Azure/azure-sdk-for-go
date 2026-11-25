@@ -20,7 +20,7 @@ import (
 // RecoveryPlansClient - Operations for managing Recovery Orchestration Plans.
 // Don't use this type directly, use NewRecoveryPlansClient() instead.
 //
-// Generated from API version 2026-10-01
+// Generated from API version 2026-11-30-preview
 type RecoveryPlansClient struct {
 	internal *arm.Client
 }
@@ -102,7 +102,7 @@ func (client *RecoveryPlansClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -174,7 +174,7 @@ func (client *RecoveryPlansClient) deleteCreateRequest(ctx context.Context, serv
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -242,7 +242,7 @@ func (client *RecoveryPlansClient) updateCreateRequest(ctx context.Context, serv
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -291,7 +291,7 @@ func (client *RecoveryPlansClient) getCreateRequest(ctx context.Context, service
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -363,7 +363,7 @@ func (client *RecoveryPlansClient) listCreateRequest(ctx context.Context, servic
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20261001)
+		reqQP.Set("api-version", version20261130Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

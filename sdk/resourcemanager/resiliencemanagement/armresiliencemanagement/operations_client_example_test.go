@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,13 +49,13 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 				ActionType: to.Ptr(armresiliencemanagement.ActionTypeInternal),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.AzureResilienceManagement/operations?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.AzureResilienceManagement/operations?api-version=2026-11-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-10-01/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,6 +79,8 @@ func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armresiliencemanagement.OperationsClientListResponse{
 		// 	OperationListResult: armresiliencemanagement.OperationListResult{
+		// 		Value: []*armresiliencemanagement.Operation{
+		// 		},
 		// 	},
 		// }
 	}

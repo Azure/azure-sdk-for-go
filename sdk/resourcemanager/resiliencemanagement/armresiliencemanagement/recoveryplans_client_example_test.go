@@ -12,8 +12,157 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_CreateOrUpdate_CyberRecovery.json
+func ExampleRecoveryPlansClient_BeginCreateOrUpdate_recoveryPlansCreateOrUpdateCyberRecovery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRecoveryPlansClient().BeginCreateOrUpdate(ctx, "contoso-service-group", "cyber-plan", armresiliencemanagement.RecoveryPlan{
+		Properties: &armresiliencemanagement.RecoveryPlanProperties{
+			PlanType:        to.Ptr(armresiliencemanagement.RecoveryPlanTypeCyberRecovery),
+			PlanDescription: to.Ptr("Cyber recovery plan"),
+			RecoveryGroupsSetting: &armresiliencemanagement.RecoveryGroupsSetting{
+				DefaultGroup: &armresiliencemanagement.RecoveryGroup{
+					Properties: &armresiliencemanagement.RecoveryGroupProperties{
+						GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+						OrderID:       to.Ptr[int32](0),
+						Description:   to.Ptr("Foundation services"),
+					},
+				},
+				AdditionalGroups: []*armresiliencemanagement.RecoveryGroup{
+					{
+						Properties: &armresiliencemanagement.RecoveryGroupProperties{
+							GroupUniqueID: to.Ptr("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+							OrderID:       to.Ptr[int32](1),
+							Description:   to.Ptr("Tier 1 applications"),
+							ResiliencyGroupProperties: &armresiliencemanagement.CyberResiliencyGroupProperties{
+								ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+								RecoveryConfigProfileAssociations: []*armresiliencemanagement.RecoveryConfigProfileAssociation{
+									{
+										WorkloadType:            to.Ptr(armresiliencemanagement.WorkloadTypeAzureVM),
+										RecoveryConfigProfileID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryConfigProfiles/azure-vm-default"),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			ResiliencyPlanProperties: &armresiliencemanagement.CyberResiliencyPlanProperties{
+				ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+				TargetEnvironment: &armresiliencemanagement.TargetEnvironment{
+					TargetSubscriptionIDs: []*string{
+						to.Ptr("12345678-1234-1234-1234-123456789012"),
+					},
+					TargetLocations: []*string{
+						to.Ptr("eastus2"),
+					},
+				},
+			},
+		},
+		Identity: &armresiliencemanagement.ManagedServiceIdentity{
+			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
+				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/cyber-recovery-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cyber-recovery-identity": {},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.RecoveryPlansClientCreateOrUpdateResponse{
+	// 	RecoveryPlan: armresiliencemanagement.RecoveryPlan{
+	// 		Properties: &armresiliencemanagement.RecoveryPlanProperties{
+	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 			PlanType: to.Ptr(armresiliencemanagement.RecoveryPlanTypeCyberRecovery),
+	// 			PlanState: to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
+	// 			PlanDescription: to.Ptr("Cyber recovery plan"),
+	// 			RecoveryGroupsSetting: &armresiliencemanagement.RecoveryGroupsSetting{
+	// 				DefaultGroup: &armresiliencemanagement.RecoveryGroup{
+	// 					Properties: &armresiliencemanagement.RecoveryGroupProperties{
+	// 						GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 						OrderID: to.Ptr[int32](0),
+	// 						Description: to.Ptr("Foundation services"),
+	// 					},
+	// 					ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryGroups/b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 					Name: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 					Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryGroups"),
+	// 				},
+	// 				AdditionalGroups: []*armresiliencemanagement.RecoveryGroup{
+	// 					{
+	// 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
+	// 							GroupUniqueID: to.Ptr("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 							OrderID: to.Ptr[int32](1),
+	// 							Description: to.Ptr("Tier 1 applications"),
+	// 							ResiliencyGroupProperties: &armresiliencemanagement.CyberResiliencyGroupProperties{
+	// 								ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+	// 								RecoveryConfigProfileAssociations: []*armresiliencemanagement.RecoveryConfigProfileAssociation{
+	// 									{
+	// 										WorkloadType: to.Ptr(armresiliencemanagement.WorkloadTypeAzureVM),
+	// 										RecoveryConfigProfileID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryConfigProfiles/azure-vm-default"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryGroups/5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 						Name: to.Ptr("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 						Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryGroups"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ResiliencyPlanProperties: &armresiliencemanagement.CyberResiliencyPlanProperties{
+	// 				ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+	// 				TargetEnvironment: &armresiliencemanagement.TargetEnvironment{
+	// 					TargetSubscriptionIDs: []*string{
+	// 						to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					},
+	// 					TargetLocations: []*string{
+	// 						to.Ptr("eastus2"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-000000000012"),
+	// 			TenantID: to.Ptr("11111111-1111-1111-1111-000000000011"),
+	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/cyber-recovery-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cyber-recovery-identity": &armresiliencemanagement.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-000000000012"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-000000000013"),
+	// 				},
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan"),
+	// 		Name: to.Ptr("cyber-plan"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans"),
+	// 		SystemData: &armresiliencemanagement.SystemData{
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.September, 28, 4, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.September, 28, 4, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
+func ExampleRecoveryPlansClient_BeginCreateOrUpdate_recoveryPlansCreateOrUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1299,7 +1448,7 @@ func ExampleRecoveryPlansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/RecoveryPlans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_Delete_MaximumSet_Gen.json
 func ExampleRecoveryPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1320,8 +1469,123 @@ func ExampleRecoveryPlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-10-01/RecoveryPlans_Update_MaximumSet_Gen.json
-func ExampleRecoveryPlansClient_BeginUpdate() {
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_Update_CyberRecovery.json
+func ExampleRecoveryPlansClient_BeginUpdate_recoveryPlansUpdateCyberRecovery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRecoveryPlansClient().BeginUpdate(ctx, "contoso-service-group", "cyber-plan", armresiliencemanagement.RecoveryPlan{
+		Properties: &armresiliencemanagement.RecoveryPlanProperties{
+			PlanDescription: to.Ptr("Updated cyber plan"),
+			ResiliencyPlanProperties: &armresiliencemanagement.CyberResiliencyPlanProperties{
+				ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+				TargetEnvironment: &armresiliencemanagement.TargetEnvironment{
+					TargetSubscriptionIDs: []*string{
+						to.Ptr("12345678-1234-1234-1234-123456789012"),
+					},
+					TargetLocations: []*string{
+						to.Ptr("eastus2"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.RecoveryPlansClientUpdateResponse{
+	// 	RecoveryPlan: armresiliencemanagement.RecoveryPlan{
+	// 		Properties: &armresiliencemanagement.RecoveryPlanProperties{
+	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 			PlanType: to.Ptr(armresiliencemanagement.RecoveryPlanTypeCyberRecovery),
+	// 			PlanState: to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
+	// 			PlanDescription: to.Ptr("Updated cyber plan"),
+	// 			RecoveryGroupsSetting: &armresiliencemanagement.RecoveryGroupsSetting{
+	// 				DefaultGroup: &armresiliencemanagement.RecoveryGroup{
+	// 					Properties: &armresiliencemanagement.RecoveryGroupProperties{
+	// 						GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 						OrderID: to.Ptr[int32](0),
+	// 						Description: to.Ptr("Foundation services"),
+	// 					},
+	// 					ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryGroups/b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 					Name: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 					Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryGroups"),
+	// 				},
+	// 				AdditionalGroups: []*armresiliencemanagement.RecoveryGroup{
+	// 					{
+	// 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
+	// 							GroupUniqueID: to.Ptr("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 							OrderID: to.Ptr[int32](1),
+	// 							Description: to.Ptr("Tier 1 applications"),
+	// 							ResiliencyGroupProperties: &armresiliencemanagement.CyberResiliencyGroupProperties{
+	// 								ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+	// 								RecoveryConfigProfileAssociations: []*armresiliencemanagement.RecoveryConfigProfileAssociation{
+	// 									{
+	// 										WorkloadType: to.Ptr(armresiliencemanagement.WorkloadTypeAzureVM),
+	// 										RecoveryConfigProfileID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryConfigProfiles/azure-vm-default"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryGroups/5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 						Name: to.Ptr("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 						Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryGroups"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ResiliencyPlanProperties: &armresiliencemanagement.CyberResiliencyPlanProperties{
+	// 				ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+	// 				TargetEnvironment: &armresiliencemanagement.TargetEnvironment{
+	// 					TargetSubscriptionIDs: []*string{
+	// 						to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					},
+	// 					TargetLocations: []*string{
+	// 						to.Ptr("eastus2"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-000000000012"),
+	// 			TenantID: to.Ptr("11111111-1111-1111-1111-000000000011"),
+	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/cyber-recovery-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cyber-recovery-identity": &armresiliencemanagement.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-000000000012"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-000000000013"),
+	// 				},
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan"),
+	// 		Name: to.Ptr("cyber-plan"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans"),
+	// 		SystemData: &armresiliencemanagement.SystemData{
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.September, 28, 4, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.September, 28, 4, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_Update_MaximumSet_Gen.json
+func ExampleRecoveryPlansClient_BeginUpdate_recoveryPlansUpdateMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -3828,8 +4092,104 @@ func ExampleRecoveryPlansClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/RecoveryPlans_Get_MaximumSet_Gen.json
-func ExampleRecoveryPlansClient_Get() {
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_Get_CyberRecovery.json
+func ExampleRecoveryPlansClient_Get_recoveryPlansGetCyberRecovery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecoveryPlansClient().Get(ctx, "contoso-service-group", "cyber-plan", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.RecoveryPlansClientGetResponse{
+	// 	RecoveryPlan: armresiliencemanagement.RecoveryPlan{
+	// 		Properties: &armresiliencemanagement.RecoveryPlanProperties{
+	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 			PlanType: to.Ptr(armresiliencemanagement.RecoveryPlanTypeCyberRecovery),
+	// 			PlanState: to.Ptr(armresiliencemanagement.RecoveryPlanStateUnderEdit),
+	// 			PlanDescription: to.Ptr("Cyber recovery plan"),
+	// 			RecoveryGroupsSetting: &armresiliencemanagement.RecoveryGroupsSetting{
+	// 				DefaultGroup: &armresiliencemanagement.RecoveryGroup{
+	// 					Properties: &armresiliencemanagement.RecoveryGroupProperties{
+	// 						GroupUniqueID: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 						OrderID: to.Ptr[int32](0),
+	// 						Description: to.Ptr("Foundation services"),
+	// 					},
+	// 					ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryGroups/b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 					Name: to.Ptr("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f"),
+	// 					Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryGroups"),
+	// 				},
+	// 				AdditionalGroups: []*armresiliencemanagement.RecoveryGroup{
+	// 					{
+	// 						Properties: &armresiliencemanagement.RecoveryGroupProperties{
+	// 							GroupUniqueID: to.Ptr("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 							OrderID: to.Ptr[int32](1),
+	// 							Description: to.Ptr("Tier 1 applications"),
+	// 							ResiliencyGroupProperties: &armresiliencemanagement.CyberResiliencyGroupProperties{
+	// 								ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+	// 								RecoveryConfigProfileAssociations: []*armresiliencemanagement.RecoveryConfigProfileAssociation{
+	// 									{
+	// 										WorkloadType: to.Ptr(armresiliencemanagement.WorkloadTypeAzureVM),
+	// 										RecoveryConfigProfileID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryConfigProfiles/azure-vm-default"),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 						ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryGroups/5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 						Name: to.Ptr("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d"),
+	// 						Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans/recoveryGroups"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ResiliencyPlanProperties: &armresiliencemanagement.CyberResiliencyPlanProperties{
+	// 				ResiliencyType: to.Ptr(armresiliencemanagement.ResiliencyTypeCyberResiliency),
+	// 				TargetEnvironment: &armresiliencemanagement.TargetEnvironment{
+	// 					TargetSubscriptionIDs: []*string{
+	// 						to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					},
+	// 					TargetLocations: []*string{
+	// 						to.Ptr("eastus2"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armresiliencemanagement.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-000000000012"),
+	// 			TenantID: to.Ptr("11111111-1111-1111-1111-000000000011"),
+	// 			Type: to.Ptr(armresiliencemanagement.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armresiliencemanagement.UserAssignedIdentity{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/cyber-recovery-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cyber-recovery-identity": &armresiliencemanagement.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-000000000012"),
+	// 					ClientID: to.Ptr("11111111-1111-1111-1111-000000000013"),
+	// 				},
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan"),
+	// 		Name: to.Ptr("cyber-plan"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/recoveryPlans"),
+	// 		SystemData: &armresiliencemanagement.SystemData{
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.September, 28, 4, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.September, 28, 4, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_Get_MaximumSet_Gen.json
+func ExampleRecoveryPlansClient_Get_recoveryPlansGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -4530,7 +4890,7 @@ func ExampleRecoveryPlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01/RecoveryPlans_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-30-preview/RecoveryPlans_List_MaximumSet_Gen.json
 func ExampleRecoveryPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5238,7 +5598,7 @@ func ExampleRecoveryPlansClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans?api-version=2026-10-01&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.AzureResilienceManagement/recoveryPlans?api-version=2026-11-30-preview&$skipToken=eyJuZXh0UGFnZSI6Mn0%3D"),
 		// 	},
 		// }
 	}

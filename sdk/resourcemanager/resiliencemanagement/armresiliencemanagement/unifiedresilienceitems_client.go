@@ -20,7 +20,7 @@ import (
 // UnifiedResilienceItemsClient contains the methods for the UnifiedResilienceItems group.
 // Don't use this type directly, use NewUnifiedResilienceItemsClient() instead.
 //
-// Generated from API version 2026-10-01
+// Generated from API version 2026-11-30-preview
 type UnifiedResilienceItemsClient struct {
 	internal *arm.Client
 }
@@ -79,7 +79,7 @@ func (client *UnifiedResilienceItemsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -152,7 +152,7 @@ func (client *UnifiedResilienceItemsClient) listCreateRequest(ctx context.Contex
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20261001)
+		reqQP.Set("api-version", version20261130Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

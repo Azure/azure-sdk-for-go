@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/FileShareSnapshot_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShareSnapshot_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFileShareSnapshotsClient_BeginCreateOrUpdateFileShareSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleFileShareSnapshotsClient_BeginCreateOrUpdateFileShareSnapshot() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShareSnapshot_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShareSnapshot_Delete_MaximumSet_Gen.json
 func ExampleFileShareSnapshotsClient_BeginDeleteFileShareSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleFileShareSnapshotsClient_BeginDeleteFileShareSnapshot() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShareSnapshot_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShareSnapshot_Update_MaximumSet_Gen.json
 func ExampleFileShareSnapshotsClient_BeginUpdateFileShareSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleFileShareSnapshotsClient_BeginUpdateFileShareSnapshot() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShareSnapshot_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShareSnapshot_Get_MaximumSet_Gen.json
 func ExampleFileShareSnapshotsClient_GetFileShareSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleFileShareSnapshotsClient_GetFileShareSnapshot() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShareSnapshot_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShareSnapshot_List_MaximumSet_Gen.json
 func ExampleFileShareSnapshotsClient_NewListByFileSharePager_fileShareSnapshotListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleFileShareSnapshotsClient_NewListByFileSharePager_fileShareSnapshotLi
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShareSnapshot_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShareSnapshot_List_MinimumSet_Gen.json
 func ExampleFileShareSnapshotsClient_NewListByFileSharePager_fileShareSnapshotListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

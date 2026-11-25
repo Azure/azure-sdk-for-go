@@ -21,6 +21,12 @@ type ClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ClientGetRedundancyConversionStatusResponse contains the response from method Client.GetRedundancyConversionStatus.
+type ClientGetRedundancyConversionStatusResponse struct {
+	// Response containing the status and details of the current or most recent redundancy conversion.
+	RedundancyConversionStatusResponse
+}
+
 // ClientGetResponse contains the response from method Client.Get.
 type ClientGetResponse struct {
 	// File share resource
@@ -37,6 +43,11 @@ type ClientListByParentResponse struct {
 type ClientListBySubscriptionResponse struct {
 	// The response of a FileShare list operation.
 	FileShareListResult
+}
+
+// ClientStartRedundancyConversionResponse contains the response from method Client.StartRedundancyConversion.
+type ClientStartRedundancyConversionResponse struct {
+	// placeholder for future response values
 }
 
 // ClientUpdateResponse contains the response from method Client.BeginUpdate.

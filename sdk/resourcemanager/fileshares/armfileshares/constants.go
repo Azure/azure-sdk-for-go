@@ -5,7 +5,7 @@
 package armfileshares
 
 const (
-	version20260601 string = "2026-06-01"
+	version20260901 string = "2026-09-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -131,10 +131,76 @@ func PossibleFileShareProvisioningStateValues() []FileShareProvisioningState {
 	}
 }
 
+// InfrastructureEncryption - (Optional) Discouraged to include in resource definition. Only needed where it is possible to
+// disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled.
+type InfrastructureEncryption string
+
+const (
+	// InfrastructureEncryptionDisabled - Encryption is disabled
+	InfrastructureEncryptionDisabled InfrastructureEncryption = "disabled"
+	// InfrastructureEncryptionEnabled - Encryption is enabled
+	InfrastructureEncryptionEnabled InfrastructureEncryption = "enabled"
+)
+
+// PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
+func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
+	return []InfrastructureEncryption{
+		InfrastructureEncryptionDisabled,
+		InfrastructureEncryptionEnabled,
+	}
+}
+
+// KeyEncryptionKeyIdentityType - The type of identity to use.
+type KeyEncryptionKeyIdentityType string
+
+const (
+	// KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity - Delegated identity
+	KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity KeyEncryptionKeyIdentityType = "delegatedResourceIdentity"
+	// KeyEncryptionKeyIdentityTypeSystemAssignedIdentity - System assigned identity
+	KeyEncryptionKeyIdentityTypeSystemAssignedIdentity KeyEncryptionKeyIdentityType = "systemAssignedIdentity"
+	// KeyEncryptionKeyIdentityTypeUserAssignedIdentity - User assigned identity
+	KeyEncryptionKeyIdentityTypeUserAssignedIdentity KeyEncryptionKeyIdentityType = "userAssignedIdentity"
+)
+
+// PossibleKeyEncryptionKeyIdentityTypeValues returns the possible values for the KeyEncryptionKeyIdentityType const type.
+func PossibleKeyEncryptionKeyIdentityTypeValues() []KeyEncryptionKeyIdentityType {
+	return []KeyEncryptionKeyIdentityType{
+		KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity,
+		KeyEncryptionKeyIdentityTypeSystemAssignedIdentity,
+		KeyEncryptionKeyIdentityTypeUserAssignedIdentity,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
 // MediaTier - Media Tier enum.
 type MediaTier string
 
 const (
+	// MediaTierHDD - HDD media tier.
+	MediaTierHDD MediaTier = "HDD"
 	// MediaTierSSD - SSD media tier.
 	MediaTierSSD MediaTier = "SSD"
 )
@@ -142,6 +208,7 @@ const (
 // PossibleMediaTierValues returns the possible values for the MediaTier const type.
 func PossibleMediaTierValues() []MediaTier {
 	return []MediaTier{
+		MediaTierHDD,
 		MediaTierSSD,
 	}
 }
@@ -261,6 +328,48 @@ func PossibleRedundancyValues() []Redundancy {
 	return []Redundancy{
 		RedundancyLocal,
 		RedundancyZone,
+	}
+}
+
+// RedundancyConversionStatus - Status of the redundancy conversion.
+type RedundancyConversionStatus string
+
+const (
+	// RedundancyConversionStatusComplete - The redundancy conversion has completed.
+	RedundancyConversionStatusComplete RedundancyConversionStatus = "Complete"
+	// RedundancyConversionStatusFailed - The redundancy conversion has failed.
+	RedundancyConversionStatusFailed RedundancyConversionStatus = "Failed"
+	// RedundancyConversionStatusInProgress - The redundancy conversion is in progress.
+	RedundancyConversionStatusInProgress RedundancyConversionStatus = "InProgress"
+	// RedundancyConversionStatusSubmittedForConversion - The redundancy conversion has been submitted.
+	RedundancyConversionStatusSubmittedForConversion RedundancyConversionStatus = "SubmittedForConversion"
+)
+
+// PossibleRedundancyConversionStatusValues returns the possible values for the RedundancyConversionStatus const type.
+func PossibleRedundancyConversionStatusValues() []RedundancyConversionStatus {
+	return []RedundancyConversionStatus{
+		RedundancyConversionStatusComplete,
+		RedundancyConversionStatusFailed,
+		RedundancyConversionStatusInProgress,
+		RedundancyConversionStatusSubmittedForConversion,
+	}
+}
+
+// ScaleMode - Scale mode for a file share.
+type ScaleMode string
+
+const (
+	// ScaleModeCompatibility - Compatibility scale mode.
+	ScaleModeCompatibility ScaleMode = "Compatibility"
+	// ScaleModeScale - Scale mode.
+	ScaleModeScale ScaleMode = "Scale"
+)
+
+// PossibleScaleModeValues returns the possible values for the ScaleMode const type.
+func PossibleScaleModeValues() []ScaleMode {
+	return []ScaleMode{
+		ScaleModeCompatibility,
+		ScaleModeScale,
 	}
 }
 

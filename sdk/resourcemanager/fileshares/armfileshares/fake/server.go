@@ -41,6 +41,10 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armfileshares.ClientGetOptions) (resp azfake.Responder[armfileshares.ClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetRedundancyConversionStatus is the fake for method Client.GetRedundancyConversionStatus
+	// HTTP status codes to indicate success: http.StatusOK
+	GetRedundancyConversionStatus func(ctx context.Context, resourceGroupName string, resourceName string, options *armfileshares.ClientGetRedundancyConversionStatusOptions) (resp azfake.Responder[armfileshares.ClientGetRedundancyConversionStatusResponse], errResp azfake.ErrorResponder)
+
 	// NewListByParentPager is the fake for method Client.NewListByParentPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByParentPager func(resourceGroupName string, options *armfileshares.ClientListByParentOptions) (resp azfake.PagerResponder[armfileshares.ClientListByParentResponse])
@@ -48,6 +52,10 @@ type Server struct {
 	// NewListBySubscriptionPager is the fake for method Client.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armfileshares.ClientListBySubscriptionOptions) (resp azfake.PagerResponder[armfileshares.ClientListBySubscriptionResponse])
+
+	// StartRedundancyConversion is the fake for method Client.StartRedundancyConversion
+	// HTTP status codes to indicate success: http.StatusNoContent
+	StartRedundancyConversion func(ctx context.Context, resourceGroupName string, resourceName string, body armfileshares.StartRedundancyConversionRequest, options *armfileshares.ClientStartRedundancyConversionOptions) (resp azfake.Responder[armfileshares.ClientStartRedundancyConversionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -106,10 +114,14 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
+			case "Client.GetRedundancyConversionStatus":
+				res.resp, res.err = s.dispatchGetRedundancyConversionStatus(req)
 			case "Client.NewListByParentPager":
 				res.resp, res.err = s.dispatchNewListByParentPager(req)
 			case "Client.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "Client.StartRedundancyConversion":
+				res.resp, res.err = s.dispatchStartRedundancyConversion(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -332,6 +344,39 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	return resp, nil
 }
 
+func (s *ServerTransport) dispatchGetRedundancyConversionStatus(req *http.Request) (*http.Response, error) {
+	if s.srv.GetRedundancyConversionStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetRedundancyConversionStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRedundancyConversionStatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.GetRedundancyConversionStatus(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RedundancyConversionStatusResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ServerTransport) dispatchNewListByParentPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByParentPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByParentPager not implemented")}
@@ -398,6 +443,43 @@ func (s *ServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) 
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchStartRedundancyConversion(req *http.Request) (*http.Response, error) {
+	if s.srv.StartRedundancyConversion == nil {
+		return nil, &nonRetriableError{errors.New("fake for method StartRedundancyConversion not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startRedundancyConversion`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armfileshares.StartRedundancyConversionRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.StartRedundancyConversion(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

@@ -19,7 +19,7 @@ import (
 // InformationalOperationsClient contains the methods for the InformationalOperations group.
 // Don't use this type directly, use NewInformationalOperationsClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-09-01
 type InformationalOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *InformationalOperationsClient) GetLimits(ctx context.Context, loca
 }
 
 // getLimitsCreateRequest creates the GetLimits request.
-func (client *InformationalOperationsClient) getLimitsCreateRequest(ctx context.Context, location string, _ *InformationalOperationsClientGetLimitsOptions) (*policy.Request, error) {
+func (client *InformationalOperationsClient) getLimitsCreateRequest(ctx context.Context, location string, options *InformationalOperationsClientGetLimitsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.FileShares/locations/{location}/getLimits"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -83,9 +83,16 @@ func (client *InformationalOperationsClient) getLimitsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
 	return req, nil
 }
 
@@ -141,7 +148,7 @@ func (client *InformationalOperationsClient) getProvisioningRecommendationCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -202,7 +209,7 @@ func (client *InformationalOperationsClient) getUsageDataCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

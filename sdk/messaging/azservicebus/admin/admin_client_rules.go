@@ -451,7 +451,15 @@ func convertRuleActionToActionDescription(action *RuleAction) (*atom.ActionDescr
 }
 
 func (ac *Client) newRulePropertiesFromEnvelope(env *atom.RuleEnvelope) (*RuleProperties, error) {
+	if env == nil || env.Content == nil {
+		return nil, fmt.Errorf("invalid rule response: missing content")
+	}
+
 	desc := env.Content.RuleDescription
+
+	if desc.Filter == nil {
+		return nil, fmt.Errorf("invalid rule response: missing filter")
+	}
 
 	props := RuleProperties{
 		Name: desc.Name,
@@ -501,6 +509,10 @@ func (ac *Client) newRulePropertiesFromEnvelope(env *atom.RuleEnvelope) (*RulePr
 		}
 
 		props.Filter = urf
+	}
+
+	if desc.Action == nil {
+		return &props, nil
 	}
 
 	const emptyRuleAction = "EmptyRuleAction"

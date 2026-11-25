@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
@@ -28,6 +29,9 @@ type RetryOptions = exported.RetryOptions
 // ProducerClientOptions contains options for the `NewProducerClient` and `NewProducerClientFromConnectionString`
 // functions.
 type ProducerClientOptions struct {
+	// Telemetry configures optional traces, metrics, and AMQP lifecycle logs.
+	Telemetry TelemetryOptions
+
 	// Application ID that will be passed to the namespace.
 	ApplicationID string
 
@@ -48,6 +52,7 @@ type ProducerClientOptions struct {
 
 // ProducerClient can be used to send events to an Event Hub.
 type ProducerClient struct {
+	diagnostics  *internal.Diagnostics
 	eventHub     string
 	links        *internal.Links[amqpwrap.AMQPSenderCloser]
 	namespace    internal.NamespaceForProducerOrConsumer
@@ -163,18 +168,25 @@ type SendEventDataBatchOptions struct {
 }
 
 // SendEventDataBatch sends an event data batch to Event Hubs.
-func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventDataBatchOptions) error {
+func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventDataBatchOptions) (err error) {
+	ctx, finish := pc.diagnostics.StartOperation(ctx, "send", tracing.SpanKindProducer)
+	var eventCount int
+	defer func() { finish(eventCount, err) }()
 	amqpMessage, err := batch.toAMQPMessage()
 
 	if err != nil {
 		return err
 	}
 
+	eventCount = len(amqpMessage.Data)
 	partID := getPartitionID(batch.partitionID)
 
 	err = pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", partID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
 		azlog.Writef(EventProducer, "[%s] Sending message with ID %v to partition %q", lwid.String(), amqpMessage.Properties.MessageID, partID)
-		return lwid.Link().Send(ctx, amqpMessage, nil)
+		ctx, end := pc.diagnostics.StartAttempt(ctx, "EventHubs.send.disposition")
+		err := lwid.Link().Send(ctx, amqpMessage, nil)
+		end(err)
+		return err
 	})
 	return internal.TransformError(err)
 }
@@ -281,8 +293,12 @@ func newProducerClientImpl(creds producerClientCreds, options *ProducerClientOpt
 	}
 
 	client.namespace = tmpNS
+	if options != nil {
+		tmpNS.Diagnostics = options.Telemetry.diagnostics(tmpNS.FQDN, client.eventHub)
+	}
+	client.diagnostics = tmpNS.Diagnostics
 
-	client.links = internal.NewLinks(tmpNS, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubProducerLink)
+	client.links = internal.NewLinks(tmpNS, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubProducerLink).WithDiagnostics(client.diagnostics, "sender")
 
 	return client, err
 }

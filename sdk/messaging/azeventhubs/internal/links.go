@@ -31,12 +31,15 @@ type LinksForPartitionClient[LinkT AMQPLink] interface {
 type Links[LinkT AMQPLink] struct {
 	ns NamespaceForAMQPLinks
 
-	linksMu *sync.RWMutex
-	links   map[string]*linkState[LinkT]
+	linksMu            sync.RWMutex
+	partitionCreation  creationGate
+	managementCreation creationGate
+	links              map[string]*linkState[LinkT]
 
-	managementLinkMu *sync.RWMutex
-	managementLink   *linkState[amqpwrap.RPCLink]
+	managementLink *linkState[amqpwrap.RPCLink]
 
+	diagnostics    *Diagnostics
+	component      string
 	managementPath string
 	newLinkFn      NewLinksFn[LinkT]
 	entityPathFn   func(partitionID string) string
@@ -49,11 +52,9 @@ type NewLinksFn[LinkT AMQPLink] func(ctx context.Context, session amqpwrap.AMQPS
 
 func NewLinks[LinkT AMQPLink](ns NamespaceForAMQPLinks, managementPath string, entityPathFn func(partitionID string) string, newLinkFn NewLinksFn[LinkT]) *Links[LinkT] {
 	l := &Links[LinkT]{
-		ns:               ns,
-		linksMu:          &sync.RWMutex{},
-		links:            map[string]*linkState[LinkT]{},
-		managementLinkMu: &sync.RWMutex{},
-		managementPath:   managementPath,
+		ns:             ns,
+		links:          map[string]*linkState[LinkT]{},
+		managementPath: managementPath,
 
 		newLinkFn:    newLinkFn,
 		entityPathFn: entityPathFn,
@@ -78,6 +79,12 @@ func NewLinks[LinkT AMQPLink](ns NamespaceForAMQPLinks, managementPath string, e
 	return l
 }
 
+// WithDiagnostics configures AMQP link telemetry before the client is published.
+func (l *Links[LinkT]) WithDiagnostics(d *Diagnostics, component string) *Links[LinkT] {
+	l.diagnostics, l.component = d, component
+	return l
+}
+
 func (l *Links[LinkT]) RetryManagement(ctx context.Context, eventName azlog.Event, operation string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error) error {
 	return l.mr.Retry(ctx, eventName, operation, "", retryOptions, fn)
 }
@@ -87,64 +94,65 @@ func (l *Links[LinkT]) Retry(ctx context.Context, eventName azlog.Event, operati
 }
 
 func (l *Links[LinkT]) GetLink(ctx context.Context, partitionID string) (LinkWithID[LinkT], error) {
-	if err := l.checkOpen(); err != nil {
-		return nil, err
-	}
-
-	l.linksMu.RLock()
-	current := l.links[partitionID]
-	l.linksMu.RUnlock()
-
-	if current != nil {
-		return current, nil
-	}
-
-	// no existing link, let's create a new one within the write lock.
-	l.linksMu.Lock()
-	defer l.linksMu.Unlock()
-
-	// check again now that we have the write lock
-	current = l.links[partitionID]
-
-	if current == nil {
-		ls, err := l.newLinkState(ctx, partitionID)
-
-		if err != nil {
-			return nil, err
-		}
-
-		l.links[partitionID] = ls
-		current = ls
-	}
-
-	return current, nil
+	return getOrCreateLink(ctx, &l.linksMu, &l.partitionCreation,
+		func() (*linkState[LinkT], bool) { return l.links[partitionID], l.links == nil },
+		func() (*linkState[LinkT], error) { return l.newLinkState(ctx, partitionID) },
+		func(link *linkState[LinkT]) { l.links[partitionID] = link })
 }
 
 func (l *Links[LinkT]) GetManagementLink(ctx context.Context) (LinkWithID[amqpwrap.RPCLink], error) {
-	if err := l.checkOpen(); err != nil {
+	return getOrCreateLink(ctx, &l.linksMu, &l.managementCreation,
+		func() (*linkState[amqpwrap.RPCLink], bool) { return l.managementLink, l.links == nil },
+		func() (*linkState[amqpwrap.RPCLink], error) { return l.newManagementLinkState(ctx) },
+		func(link *linkState[amqpwrap.RPCLink]) { l.managementLink = link })
+}
+
+// lookup and store run under the cache lock. Creation and cleanup can call
+// application code and run outside that lock.
+func getOrCreateLink[T AMQPLink](ctx context.Context, mu *sync.RWMutex, gate *creationGate,
+	lookup func() (*linkState[T], bool), create func() (*linkState[T], error), store func(*linkState[T])) (LinkWithID[T], error) {
+	mu.RLock()
+	link, closed := lookup()
+	mu.RUnlock()
+	if closed {
+		return nil, ErrClientClosed
+	}
+	if link != nil {
+		return link, nil
+	}
+	if err := gate.enter(ctx); err != nil {
 		return nil, err
 	}
-
-	l.managementLinkMu.Lock()
-	defer l.managementLinkMu.Unlock()
-
-	if l.managementLink == nil {
-		ls, err := l.newManagementLinkState(ctx)
-
-		if err != nil {
-			return nil, err
-		}
-
-		l.managementLink = ls
+	defer gate.leave()
+	mu.RLock()
+	link, closed = lookup()
+	mu.RUnlock()
+	if closed {
+		return nil, ErrClientClosed
 	}
-
-	return l.managementLink, nil
+	if link != nil {
+		return link, nil
+	}
+	link, err := create()
+	if err != nil {
+		return nil, err
+	}
+	mu.Lock()
+	_, closed = lookup()
+	if !closed {
+		store(link)
+	}
+	mu.Unlock()
+	if closed {
+		_ = link.Close(ctx)
+		return nil, ErrClientClosed
+	}
+	return link, nil
 }
 
 func (l *Links[LinkT]) newLinkState(ctx context.Context, partitionID string) (*linkState[LinkT], error) {
 	azlog.Writef(exported.EventConn, "Creating link for partition ID '%s'", partitionID)
 
-	// check again now that we have the write lock
 	ls := &linkState[LinkT]{
 		partitionID: partitionID,
 	}
@@ -169,7 +177,9 @@ func (l *Links[LinkT]) newLinkState(ctx context.Context, partitionID string) (*l
 	ls.session = session
 	ls.connID = connID
 
-	tmpLink, err := l.newLinkFn(ctx, session, l.entityPathFn(partitionID), partitionID)
+	attachCtx, end := l.diagnostics.StartLifecycle(ctx, l.component, "attach")
+	tmpLink, err := l.newLinkFn(attachCtx, session, l.entityPathFn(partitionID), partitionID)
+	end(err)
 
 	if err != nil {
 		azlog.Writef(exported.EventConn, "(%s): Failed to create link for partition ID '%s': %s", ls.String(), partitionID, err)
@@ -208,70 +218,26 @@ func (l *Links[LinkT]) newManagementLinkState(ctx context.Context) (*linkState[a
 }
 
 func (l *Links[LinkT]) Close(ctx context.Context) error {
-	return l.closeLinks(ctx, true)
-}
-
-func (l *Links[LinkT]) closeLinks(ctx context.Context, permanent bool) error {
-	cancelled := false
-
-	// clear out the management link
-	func() {
-		l.managementLinkMu.Lock()
-		defer l.managementLinkMu.Unlock()
-
-		if l.managementLink == nil {
-			return
-		}
-
-		mgmtLink := l.managementLink
-		l.managementLink = nil
-
-		if err := mgmtLink.Close(ctx); err != nil {
-			azlog.Writef(exported.EventConn, "Error while cleaning up management link while doing connection recovery: %s", err.Error())
-
-			if IsCancelError(err) {
-				cancelled = true
-			}
-		}
-	}()
-
 	l.linksMu.Lock()
-	defer l.linksMu.Unlock()
-
-	tmpLinks := l.links
-	l.links = nil
-
-	for partitionID, link := range tmpLinks {
-		if err := link.Close(ctx); err != nil {
-			azlog.Writef(exported.EventConn, "Error while cleaning up link for partition ID '%s' while doing connection recovery: %s", partitionID, err.Error())
-
-			if IsCancelError(err) {
-				cancelled = true
-			}
+	management, partitions := l.managementLink, l.links
+	l.managementLink, l.links = nil, nil
+	l.linksMu.Unlock()
+	cancelled := false
+	if management != nil {
+		if err := management.Close(ctx); err != nil {
+			azlog.Writef(exported.EventConn, "Error while cleaning up management link: %s", err.Error())
+			cancelled = IsCancelError(err)
 		}
 	}
-
-	if !permanent {
-		l.links = map[string]*linkState[LinkT]{}
+	for partitionID, link := range partitions {
+		if err := link.Close(ctx); err != nil {
+			azlog.Writef(exported.EventConn, "Error while cleaning up link for partition ID '%s': %s", partitionID, err.Error())
+			cancelled = cancelled || IsCancelError(err)
+		}
 	}
-
 	if cancelled {
-		// this is the only kind of error I'd consider usable from Close() - it'll indicate
-		// that some of the links haven't been cleanly closed.
 		return ctx.Err()
 	}
-
-	return nil
-}
-
-func (l *Links[LinkT]) checkOpen() error {
-	l.linksMu.RLock()
-	defer l.linksMu.RUnlock()
-
-	if l.links == nil {
-		return NewErrNonRetriable("client has been closed by user")
-	}
-
 	return nil
 }
 
@@ -282,40 +248,29 @@ func (l *Links[LinkT]) checkOpen() error {
 // Note that the only error that can be returned here will come from go-amqp. Cleanup of _our_ internal state
 // will always happen, if needed.
 func (l *Links[LinkT]) closePartitionLinkIfMatch(ctx context.Context, partitionID string, linkName string) error {
-	l.linksMu.RLock()
-	current, exists := l.links[partitionID]
-	l.linksMu.RUnlock()
-
-	if !exists ||
-		current.Link().LinkName() != linkName { // we've already created a new link, their link was stale.
-		return nil
-	}
-
 	l.linksMu.Lock()
-	defer l.linksMu.Unlock()
-
-	current, exists = l.links[partitionID]
-
-	if !exists ||
-		current.Link().LinkName() != linkName { // we've already created a new link, their link was stale.
+	current, exists := l.links[partitionID]
+	if !exists || current.Link().LinkName() != linkName {
+		l.linksMu.Unlock()
 		return nil
 	}
-
 	delete(l.links, partitionID)
-	return current.Close(ctx)
+	l.linksMu.Unlock()
+	err := current.Close(ctx)
+	l.diagnostics.recordLifecycle(ctx, l.component, "invalidated")
+	return err
 }
 
 func (l *Links[LinkT]) closeManagementLinkIfMatch(ctx context.Context, linkName string) error {
-	l.managementLinkMu.Lock()
-	defer l.managementLinkMu.Unlock()
-
-	if l.managementLink != nil && l.managementLink.Link().LinkName() == linkName {
-		err := l.managementLink.Close(ctx)
-		l.managementLink = nil
-		return err
+	l.linksMu.Lock()
+	link := l.managementLink
+	if link == nil || link.Link().LinkName() != linkName {
+		l.linksMu.Unlock()
+		return nil
 	}
-
-	return nil
+	l.managementLink = nil
+	l.linksMu.Unlock()
+	return link.Close(ctx)
 }
 
 type linkState[LinkT AMQPLink] struct {

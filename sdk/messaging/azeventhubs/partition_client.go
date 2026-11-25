@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
@@ -60,6 +61,7 @@ type StartPosition struct {
 //
 // This type is instantiated from the [ConsumerClient] type, using [ConsumerClient.NewPartitionClient].
 type PartitionClient struct {
+	diagnostics      *internal.Diagnostics
 	consumerGroup    string
 	eventHub         string
 	instanceID       string
@@ -97,8 +99,9 @@ type ReceiveEventsOptions struct {
 //
 //  3. Network issues can cause internal retries. To see log messages related to this use the instructions in
 //     the example function "Example_enableLogging".
-func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {
-	var events []*ReceivedEventData
+func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) (events []*ReceivedEventData, err error) {
+	ctx, finish := pc.diagnostics.StartOperation(ctx, "receive", tracing.SpanKindConsumer)
+	defer func() { finish(len(events), err) }()
 
 	prefetchDisabled := pc.prefetch < 0
 
@@ -110,7 +113,16 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 		return nil, internal.NewErrNonRetriable(fmt.Sprintf("count cannot exceed %d", defaultMaxCreditSize))
 	}
 
-	err := pc.links.Retry(ctx, EventConsumer, "ReceiveEvents", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) error {
+	err = pc.links.Retry(ctx, EventConsumer, "ReceiveEvents", pc.partitionID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPReceiverCloser]) (err error) {
+		ctx, end := pc.diagnostics.StartAttempt(ctx, "EventHubs.receive.wait")
+		defer func() {
+			// A timeout can complete a partial batch that ReceiveEvents returns successfully.
+			if len(events) > 0 && internal.IsCancelError(err) {
+				end(nil)
+			} else {
+				end(err)
+			}
+		}()
 		events = nil
 
 		if prefetchDisabled {
@@ -262,7 +274,8 @@ func (pc *PartitionClient) init(ctx context.Context) error {
 }
 
 type partitionClientArgs struct {
-	namespace internal.NamespaceForAMQPLinks
+	diagnostics *internal.Diagnostics
+	namespace   internal.NamespaceForAMQPLinks
 
 	consumerGroup string
 	eventHub      string
@@ -288,6 +301,7 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 	}
 
 	client := &PartitionClient{
+		diagnostics:      args.diagnostics,
 		consumerGroup:    args.consumerGroup,
 		eventHub:         args.eventHub,
 		offsetExpression: offsetExpr,
@@ -298,7 +312,7 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 		instanceID:       args.instanceID,
 	}
 
-	client.links = internal.NewLinks(args.namespace, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubConsumerLink)
+	client.links = internal.NewLinks(args.namespace, fmt.Sprintf("%s/$management", client.eventHub), client.getEntityPath, client.newEventHubConsumerLink).WithDiagnostics(client.diagnostics, "receiver")
 
 	return client, nil
 }

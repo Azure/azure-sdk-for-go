@@ -1,6 +1,10 @@
 # Release History
 
-## 2.0.3 (Unreleased)
+## 2.1.0 (Unreleased)
+
+### Features Added
+
+- Added optional OpenTelemetry traces, metrics, and AMQP lifecycle logs to producer and consumer clients.
 
 ### Bugs Fixed
 

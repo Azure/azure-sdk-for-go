@@ -15,6 +15,12 @@ import (
 
 // ServerFactory is a fake server for instances of the armworkloadorchestration.ClientFactory type.
 type ServerFactory struct {
+	// ConfigTemplateMetadatasServer contains the fakes for client ConfigTemplateMetadatasClient
+	ConfigTemplateMetadatasServer ConfigTemplateMetadatasServer
+
+	// ConfigTemplateSchemasServer contains the fakes for client ConfigTemplateSchemasClient
+	ConfigTemplateSchemasServer ConfigTemplateSchemasServer
+
 	// ConfigTemplateVersionsServer contains the fakes for client ConfigTemplateVersionsClient
 	ConfigTemplateVersionsServer ConfigTemplateVersionsServer
 
@@ -36,6 +42,12 @@ type ServerFactory struct {
 	// ExecutionsServer contains the fakes for client ExecutionsClient
 	ExecutionsServer ExecutionsServer
 
+	// HierarchyConfigurationMetadataVersionsServer contains the fakes for client HierarchyConfigurationMetadataVersionsClient
+	HierarchyConfigurationMetadataVersionsServer HierarchyConfigurationMetadataVersionsServer
+
+	// HierarchyConfigurationMetadatasServer contains the fakes for client HierarchyConfigurationMetadatasClient
+	HierarchyConfigurationMetadatasServer HierarchyConfigurationMetadatasServer
+
 	// InstanceHistoriesServer contains the fakes for client InstanceHistoriesClient
 	InstanceHistoriesServer InstanceHistoriesServer
 
@@ -56,6 +68,18 @@ type ServerFactory struct {
 
 	// SiteReferencesServer contains the fakes for client SiteReferencesClient
 	SiteReferencesServer SiteReferencesServer
+
+	// SolutionDeploymentsServer contains the fakes for client SolutionDeploymentsClient
+	SolutionDeploymentsServer SolutionDeploymentsServer
+
+	// SolutionMetadataVersionsServer contains the fakes for client SolutionMetadataVersionsClient
+	SolutionMetadataVersionsServer SolutionMetadataVersionsServer
+
+	// SolutionMetadatasServer contains the fakes for client SolutionMetadatasClient
+	SolutionMetadatasServer SolutionMetadatasServer
+
+	// SolutionSchemasServer contains the fakes for client SolutionSchemasClient
+	SolutionSchemasServer SolutionSchemasServer
 
 	// SolutionTemplateVersionsServer contains the fakes for client SolutionTemplateVersionsClient
 	SolutionTemplateVersionsServer SolutionTemplateVersionsServer
@@ -91,29 +115,37 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armworkloadorchestration.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                              *ServerFactory
-	trMu                             sync.Mutex
-	trConfigTemplateVersionsServer   *ConfigTemplateVersionsServerTransport
-	trConfigTemplatesServer          *ConfigTemplatesServerTransport
-	trContextsServer                 *ContextsServerTransport
-	trDiagnosticsServer              *DiagnosticsServerTransport
-	trDynamicSchemaVersionsServer    *DynamicSchemaVersionsServerTransport
-	trDynamicSchemasServer           *DynamicSchemasServerTransport
-	trExecutionsServer               *ExecutionsServerTransport
-	trInstanceHistoriesServer        *InstanceHistoriesServerTransport
-	trInstancesServer                *InstancesServerTransport
-	trJobsServer                     *JobsServerTransport
-	trSchemaReferencesServer         *SchemaReferencesServerTransport
-	trSchemaVersionsServer           *SchemaVersionsServerTransport
-	trSchemasServer                  *SchemasServerTransport
-	trSiteReferencesServer           *SiteReferencesServerTransport
-	trSolutionTemplateVersionsServer *SolutionTemplateVersionsServerTransport
-	trSolutionTemplatesServer        *SolutionTemplatesServerTransport
-	trSolutionVersionsServer         *SolutionVersionsServerTransport
-	trSolutionsServer                *SolutionsServerTransport
-	trTargetsServer                  *TargetsServerTransport
-	trWorkflowVersionsServer         *WorkflowVersionsServerTransport
-	trWorkflowsServer                *WorkflowsServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trConfigTemplateMetadatasServer                *ConfigTemplateMetadatasServerTransport
+	trConfigTemplateSchemasServer                  *ConfigTemplateSchemasServerTransport
+	trConfigTemplateVersionsServer                 *ConfigTemplateVersionsServerTransport
+	trConfigTemplatesServer                        *ConfigTemplatesServerTransport
+	trContextsServer                               *ContextsServerTransport
+	trDiagnosticsServer                            *DiagnosticsServerTransport
+	trDynamicSchemaVersionsServer                  *DynamicSchemaVersionsServerTransport
+	trDynamicSchemasServer                         *DynamicSchemasServerTransport
+	trExecutionsServer                             *ExecutionsServerTransport
+	trHierarchyConfigurationMetadataVersionsServer *HierarchyConfigurationMetadataVersionsServerTransport
+	trHierarchyConfigurationMetadatasServer        *HierarchyConfigurationMetadatasServerTransport
+	trInstanceHistoriesServer                      *InstanceHistoriesServerTransport
+	trInstancesServer                              *InstancesServerTransport
+	trJobsServer                                   *JobsServerTransport
+	trSchemaReferencesServer                       *SchemaReferencesServerTransport
+	trSchemaVersionsServer                         *SchemaVersionsServerTransport
+	trSchemasServer                                *SchemasServerTransport
+	trSiteReferencesServer                         *SiteReferencesServerTransport
+	trSolutionDeploymentsServer                    *SolutionDeploymentsServerTransport
+	trSolutionMetadataVersionsServer               *SolutionMetadataVersionsServerTransport
+	trSolutionMetadatasServer                      *SolutionMetadatasServerTransport
+	trSolutionSchemasServer                        *SolutionSchemasServerTransport
+	trSolutionTemplateVersionsServer               *SolutionTemplateVersionsServerTransport
+	trSolutionTemplatesServer                      *SolutionTemplatesServerTransport
+	trSolutionVersionsServer                       *SolutionVersionsServerTransport
+	trSolutionsServer                              *SolutionsServerTransport
+	trTargetsServer                                *TargetsServerTransport
+	trWorkflowVersionsServer                       *WorkflowVersionsServerTransport
+	trWorkflowsServer                              *WorkflowsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -129,6 +161,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ConfigTemplateMetadatasClient":
+		initServer(&s.trMu, &s.trConfigTemplateMetadatasServer, func() *ConfigTemplateMetadatasServerTransport {
+			return NewConfigTemplateMetadatasServerTransport(&s.srv.ConfigTemplateMetadatasServer)
+		})
+		resp, err = s.trConfigTemplateMetadatasServer.Do(req)
+	case "ConfigTemplateSchemasClient":
+		initServer(&s.trMu, &s.trConfigTemplateSchemasServer, func() *ConfigTemplateSchemasServerTransport {
+			return NewConfigTemplateSchemasServerTransport(&s.srv.ConfigTemplateSchemasServer)
+		})
+		resp, err = s.trConfigTemplateSchemasServer.Do(req)
 	case "ConfigTemplateVersionsClient":
 		initServer(&s.trMu, &s.trConfigTemplateVersionsServer, func() *ConfigTemplateVersionsServerTransport {
 			return NewConfigTemplateVersionsServerTransport(&s.srv.ConfigTemplateVersionsServer)
@@ -158,6 +200,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ExecutionsClient":
 		initServer(&s.trMu, &s.trExecutionsServer, func() *ExecutionsServerTransport { return NewExecutionsServerTransport(&s.srv.ExecutionsServer) })
 		resp, err = s.trExecutionsServer.Do(req)
+	case "HierarchyConfigurationMetadataVersionsClient":
+		initServer(&s.trMu, &s.trHierarchyConfigurationMetadataVersionsServer, func() *HierarchyConfigurationMetadataVersionsServerTransport {
+			return NewHierarchyConfigurationMetadataVersionsServerTransport(&s.srv.HierarchyConfigurationMetadataVersionsServer)
+		})
+		resp, err = s.trHierarchyConfigurationMetadataVersionsServer.Do(req)
+	case "HierarchyConfigurationMetadatasClient":
+		initServer(&s.trMu, &s.trHierarchyConfigurationMetadatasServer, func() *HierarchyConfigurationMetadatasServerTransport {
+			return NewHierarchyConfigurationMetadatasServerTransport(&s.srv.HierarchyConfigurationMetadatasServer)
+		})
+		resp, err = s.trHierarchyConfigurationMetadatasServer.Do(req)
 	case "InstanceHistoriesClient":
 		initServer(&s.trMu, &s.trInstanceHistoriesServer, func() *InstanceHistoriesServerTransport {
 			return NewInstanceHistoriesServerTransport(&s.srv.InstanceHistoriesServer)
@@ -187,6 +239,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSiteReferencesServerTransport(&s.srv.SiteReferencesServer)
 		})
 		resp, err = s.trSiteReferencesServer.Do(req)
+	case "SolutionDeploymentsClient":
+		initServer(&s.trMu, &s.trSolutionDeploymentsServer, func() *SolutionDeploymentsServerTransport {
+			return NewSolutionDeploymentsServerTransport(&s.srv.SolutionDeploymentsServer)
+		})
+		resp, err = s.trSolutionDeploymentsServer.Do(req)
+	case "SolutionMetadataVersionsClient":
+		initServer(&s.trMu, &s.trSolutionMetadataVersionsServer, func() *SolutionMetadataVersionsServerTransport {
+			return NewSolutionMetadataVersionsServerTransport(&s.srv.SolutionMetadataVersionsServer)
+		})
+		resp, err = s.trSolutionMetadataVersionsServer.Do(req)
+	case "SolutionMetadatasClient":
+		initServer(&s.trMu, &s.trSolutionMetadatasServer, func() *SolutionMetadatasServerTransport {
+			return NewSolutionMetadatasServerTransport(&s.srv.SolutionMetadatasServer)
+		})
+		resp, err = s.trSolutionMetadatasServer.Do(req)
+	case "SolutionSchemasClient":
+		initServer(&s.trMu, &s.trSolutionSchemasServer, func() *SolutionSchemasServerTransport {
+			return NewSolutionSchemasServerTransport(&s.srv.SolutionSchemasServer)
+		})
+		resp, err = s.trSolutionSchemasServer.Do(req)
 	case "SolutionTemplateVersionsClient":
 		initServer(&s.trMu, &s.trSolutionTemplateVersionsServer, func() *SolutionTemplateVersionsServerTransport {
 			return NewSolutionTemplateVersionsServerTransport(&s.srv.SolutionTemplateVersionsServer)

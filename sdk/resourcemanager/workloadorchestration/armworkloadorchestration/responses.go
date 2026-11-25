@@ -4,6 +4,58 @@
 
 package armworkloadorchestration
 
+// ConfigTemplateMetadatasClientCreateOrUpdateResponse contains the response from method ConfigTemplateMetadatasClient.BeginCreateOrUpdate.
+type ConfigTemplateMetadatasClientCreateOrUpdateResponse struct {
+	// ConfigTemplateMetadata Resource
+	ConfigTemplateMetadata
+}
+
+// ConfigTemplateMetadatasClientDeleteResponse contains the response from method ConfigTemplateMetadatasClient.BeginDelete.
+type ConfigTemplateMetadatasClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConfigTemplateMetadatasClientGetResponse contains the response from method ConfigTemplateMetadatasClient.Get.
+type ConfigTemplateMetadatasClientGetResponse struct {
+	// ConfigTemplateMetadata Resource
+	ConfigTemplateMetadata
+}
+
+// ConfigTemplateMetadatasClientListByConfigTemplateResponse contains the response from method ConfigTemplateMetadatasClient.NewListByConfigTemplatePager.
+type ConfigTemplateMetadatasClientListByConfigTemplateResponse struct {
+	// The response of a ConfigTemplateMetadata list operation.
+	ConfigTemplateMetadataListResult
+}
+
+// ConfigTemplateMetadatasClientUpdateResponse contains the response from method ConfigTemplateMetadatasClient.BeginUpdate.
+type ConfigTemplateMetadatasClientUpdateResponse struct {
+	// ConfigTemplateMetadata Resource
+	ConfigTemplateMetadata
+}
+
+// ConfigTemplateSchemasClientGetResponse contains the response from method ConfigTemplateSchemasClient.Get.
+type ConfigTemplateSchemasClientGetResponse struct {
+	// SolutionSchema Resource
+	ConfigTemplateSchema
+}
+
+// ConfigTemplateSchemasClientListByConfigTemplateVersionResponse contains the response from method ConfigTemplateSchemasClient.NewListByConfigTemplateVersionPager.
+type ConfigTemplateSchemasClientListByConfigTemplateVersionResponse struct {
+	// The response of a ConfigTemplateSchema list operation.
+	ConfigTemplateSchemaListResult
+}
+
+// ConfigTemplateVersionsClientCreateOrUpdateResponse contains the response from method ConfigTemplateVersionsClient.BeginCreateOrUpdate.
+type ConfigTemplateVersionsClientCreateOrUpdateResponse struct {
+	// Config Template Version Resource
+	ConfigTemplateVersion
+}
+
+// ConfigTemplateVersionsClientDeleteResponse contains the response from method ConfigTemplateVersionsClient.BeginDelete.
+type ConfigTemplateVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
 // ConfigTemplateVersionsClientGetResponse contains the response from method ConfigTemplateVersionsClient.Get.
 type ConfigTemplateVersionsClientGetResponse struct {
 	// Config Template Version Resource
@@ -14,6 +66,12 @@ type ConfigTemplateVersionsClientGetResponse struct {
 type ConfigTemplateVersionsClientListByConfigTemplateResponse struct {
 	// The response of a ConfigTemplateVersion list operation.
 	ConfigTemplateVersionListResult
+}
+
+// ConfigTemplateVersionsClientUpdateResponse contains the response from method ConfigTemplateVersionsClient.Update.
+type ConfigTemplateVersionsClientUpdateResponse struct {
+	// Config Template Version Resource
+	ConfigTemplateVersion
 }
 
 // ConfigTemplatesClientCreateOrUpdateResponse contains the response from method ConfigTemplatesClient.BeginCreateOrUpdate.
@@ -39,6 +97,11 @@ type ConfigTemplatesClientGetResponse struct {
 	ConfigTemplate
 }
 
+// ConfigTemplatesClientLinkToHierarchiesResponse contains the response from method ConfigTemplatesClient.BeginLinkToHierarchies.
+type ConfigTemplatesClientLinkToHierarchiesResponse struct {
+	// placeholder for future response values
+}
+
 // ConfigTemplatesClientListByResourceGroupResponse contains the response from method ConfigTemplatesClient.NewListByResourceGroupPager.
 type ConfigTemplatesClientListByResourceGroupResponse struct {
 	// The response of a ConfigTemplate list operation.
@@ -55,6 +118,11 @@ type ConfigTemplatesClientListBySubscriptionResponse struct {
 type ConfigTemplatesClientRemoveVersionResponse struct {
 	// Remove Version response
 	RemoveVersionResponse
+}
+
+// ConfigTemplatesClientUnLinkFromHierarchiesResponse contains the response from method ConfigTemplatesClient.BeginUnLinkFromHierarchies.
+type ConfigTemplatesClientUnLinkFromHierarchiesResponse struct {
+	// placeholder for future response values
 }
 
 // ConfigTemplatesClientUpdateResponse contains the response from method ConfigTemplatesClient.Update.
@@ -218,6 +286,30 @@ type ExecutionsClientListByWorkflowVersionResponse struct {
 type ExecutionsClientUpdateResponse struct {
 	// Execution Resource
 	Execution
+}
+
+// HierarchyConfigurationMetadataVersionsClientGetResponse contains the response from method HierarchyConfigurationMetadataVersionsClient.Get.
+type HierarchyConfigurationMetadataVersionsClientGetResponse struct {
+	// Configuration Metadata Version Resource
+	HierarchyConfigurationMetadataVersion
+}
+
+// HierarchyConfigurationMetadataVersionsClientListByParentResponse contains the response from method HierarchyConfigurationMetadataVersionsClient.NewListByParentPager.
+type HierarchyConfigurationMetadataVersionsClientListByParentResponse struct {
+	// The response of a HierarchyConfigurationMetadataVersion list operation.
+	HierarchyConfigurationMetadataVersionListResult
+}
+
+// HierarchyConfigurationMetadatasClientGetResponse contains the response from method HierarchyConfigurationMetadatasClient.Get.
+type HierarchyConfigurationMetadatasClientGetResponse struct {
+	// Hierarchy Configuration Metadata Resource attached to a Target or Site
+	HierarchyConfigurationMetadata
+}
+
+// HierarchyConfigurationMetadatasClientListByParentResponse contains the response from method HierarchyConfigurationMetadatasClient.NewListByParentPager.
+type HierarchyConfigurationMetadatasClientListByParentResponse struct {
+	// The response of a HierarchyConfigurationMetadata list operation.
+	HierarchyConfigurationMetadataListResult
 }
 
 // InstanceHistoriesClientGetResponse contains the response from method InstanceHistoriesClient.Get.
@@ -407,6 +499,77 @@ type SiteReferencesClientUpdateResponse struct {
 	SiteReference
 }
 
+// SolutionDeploymentsClientCreateOrUpdateResponse contains the response from method SolutionDeploymentsClient.BeginCreateOrUpdate.
+type SolutionDeploymentsClientCreateOrUpdateResponse struct {
+	// Solution Deployment Resource. Represents a resource to be deployed on the cloud or edge.
+	SolutionDeployment
+}
+
+// SolutionDeploymentsClientDeleteResponse contains the response from method SolutionDeploymentsClient.BeginDelete.
+type SolutionDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SolutionDeploymentsClientGetResponse contains the response from method SolutionDeploymentsClient.Get.
+type SolutionDeploymentsClientGetResponse struct {
+	// Solution Deployment Resource. Represents a resource to be deployed on the cloud or edge.
+	SolutionDeployment
+}
+
+// SolutionDeploymentsClientListByResourceGroupResponse contains the response from method SolutionDeploymentsClient.NewListByResourceGroupPager.
+type SolutionDeploymentsClientListByResourceGroupResponse struct {
+	// The response of a SolutionDeployment list operation.
+	SolutionDeploymentListResult
+}
+
+// SolutionDeploymentsClientListBySubscriptionResponse contains the response from method SolutionDeploymentsClient.NewListBySubscriptionPager.
+type SolutionDeploymentsClientListBySubscriptionResponse struct {
+	// The response of a SolutionDeployment list operation.
+	SolutionDeploymentListResult
+}
+
+// SolutionDeploymentsClientUpdateResponse contains the response from method SolutionDeploymentsClient.Update.
+type SolutionDeploymentsClientUpdateResponse struct {
+	// Solution Deployment Resource. Represents a resource to be deployed on the cloud or edge.
+	SolutionDeployment
+}
+
+// SolutionMetadataVersionsClientGetResponse contains the response from method SolutionMetadataVersionsClient.Get.
+type SolutionMetadataVersionsClientGetResponse struct {
+	// Solution Metadata Version Resource
+	SolutionMetadataVersion
+}
+
+// SolutionMetadataVersionsClientListByParentResponse contains the response from method SolutionMetadataVersionsClient.NewListByParentPager.
+type SolutionMetadataVersionsClientListByParentResponse struct {
+	// The response of a SolutionMetadataVersion list operation.
+	SolutionMetadataVersionListResult
+}
+
+// SolutionMetadatasClientGetResponse contains the response from method SolutionMetadatasClient.Get.
+type SolutionMetadatasClientGetResponse struct {
+	// Solution Metadata Resource attached to a Target or Site
+	SolutionMetadata
+}
+
+// SolutionMetadatasClientListByParentResponse contains the response from method SolutionMetadatasClient.NewListByParentPager.
+type SolutionMetadatasClientListByParentResponse struct {
+	// The response of a SolutionMetadata list operation.
+	SolutionMetadataListResult
+}
+
+// SolutionSchemasClientGetResponse contains the response from method SolutionSchemasClient.Get.
+type SolutionSchemasClientGetResponse struct {
+	// SolutionSchema Resource
+	SolutionSchema
+}
+
+// SolutionSchemasClientListBySolutionTemplateVersionResponse contains the response from method SolutionSchemasClient.NewListBySolutionTemplateVersionPager.
+type SolutionSchemasClientListBySolutionTemplateVersionResponse struct {
+	// The response of a SolutionSchema list operation.
+	SolutionSchemaListResult
+}
+
 // SolutionTemplateVersionsClientBulkDeploySolutionResponse contains the response from method SolutionTemplateVersionsClient.BeginBulkDeploySolution.
 type SolutionTemplateVersionsClientBulkDeploySolutionResponse struct {
 	// placeholder for future response values
@@ -414,6 +577,23 @@ type SolutionTemplateVersionsClientBulkDeploySolutionResponse struct {
 
 // SolutionTemplateVersionsClientBulkPublishSolutionResponse contains the response from method SolutionTemplateVersionsClient.BeginBulkPublishSolution.
 type SolutionTemplateVersionsClientBulkPublishSolutionResponse struct {
+	// placeholder for future response values
+}
+
+// SolutionTemplateVersionsClientBulkReviewSolutionResponse contains the response from method SolutionTemplateVersionsClient.BeginBulkReviewSolution.
+type SolutionTemplateVersionsClientBulkReviewSolutionResponse struct {
+	// placeholder for future response values
+}
+
+// SolutionTemplateVersionsClientCreateOrUpdateResponse contains the response from method SolutionTemplateVersionsClient.BeginCreateOrUpdate.
+type SolutionTemplateVersionsClientCreateOrUpdateResponse struct {
+	// Solution Template Version Resource. Contains configurations that use expressions which can be resolved hierarchically along
+	// with edge specifications.
+	SolutionTemplateVersion
+}
+
+// SolutionTemplateVersionsClientDeleteResponse contains the response from method SolutionTemplateVersionsClient.BeginDelete.
+type SolutionTemplateVersionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
@@ -428,6 +608,13 @@ type SolutionTemplateVersionsClientGetResponse struct {
 type SolutionTemplateVersionsClientListBySolutionTemplateResponse struct {
 	// The response of a SolutionTemplateVersion list operation.
 	SolutionTemplateVersionListResult
+}
+
+// SolutionTemplateVersionsClientUpdateResponse contains the response from method SolutionTemplateVersionsClient.Update.
+type SolutionTemplateVersionsClientUpdateResponse struct {
+	// Solution Template Version Resource. Contains configurations that use expressions which can be resolved hierarchically along
+	// with edge specifications.
+	SolutionTemplateVersion
 }
 
 // SolutionTemplatesClientCreateOrUpdateResponse contains the response from method SolutionTemplatesClient.BeginCreateOrUpdate.
@@ -595,6 +782,12 @@ type TargetsClientReviewSolutionVersionResponse struct {
 // TargetsClientUninstallSolutionResponse contains the response from method TargetsClient.BeginUninstallSolution.
 type TargetsClientUninstallSolutionResponse struct {
 	// placeholder for future response values
+}
+
+// TargetsClientUnstageSolutionVersionResponse contains the response from method TargetsClient.BeginUnstageSolutionVersion.
+type TargetsClientUnstageSolutionVersionResponse struct {
+	// Solution Version Resource. It has the resolved configuration along with edge specification.
+	SolutionVersion
 }
 
 // TargetsClientUpdateExternalValidationStatusResponse contains the response from method TargetsClient.BeginUpdateExternalValidationStatus.

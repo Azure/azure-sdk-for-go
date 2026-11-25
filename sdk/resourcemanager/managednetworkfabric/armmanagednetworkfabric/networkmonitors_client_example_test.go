@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkMonitors_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkMonitors_Create.json
 func ExampleNetworkMonitorsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleNetworkMonitorsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkMonitors_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkMonitors_Delete.json
 func ExampleNetworkMonitorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleNetworkMonitorsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkMonitors_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkMonitors_Update.json
 func ExampleNetworkMonitorsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleNetworkMonitorsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkMonitors_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkMonitors_UpdateAdministrativeState.json
 func ExampleNetworkMonitorsClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleNetworkMonitorsClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkMonitors_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkMonitors_Get.json
 func ExampleNetworkMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExampleNetworkMonitorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkMonitors_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkMonitors_ListByResourceGroup.json
 func ExampleNetworkMonitorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleNetworkMonitorsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkMonitors_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkMonitors_ListBySubscription.json
 func ExampleNetworkMonitorsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

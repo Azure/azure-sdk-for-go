@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/InternetGateways_Create.json
+// Generated from example definition: 2026-01-15-preview/InternetGateways_Create.json
 func ExampleInternetGatewaysClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleInternetGatewaysClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternetGateways_Delete.json
+// Generated from example definition: 2026-01-15-preview/InternetGateways_Delete.json
 func ExampleInternetGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleInternetGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/InternetGateways_Update.json
+// Generated from example definition: 2026-01-15-preview/InternetGateways_Update.json
 func ExampleInternetGatewaysClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleInternetGatewaysClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternetGateways_Get.json
+// Generated from example definition: 2026-01-15-preview/InternetGateways_Get.json
 func ExampleInternetGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleInternetGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternetGateways_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/InternetGateways_ListByResourceGroup.json
 func ExampleInternetGatewaysClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleInternetGatewaysClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/InternetGateways_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/InternetGateways_ListBySubscription.json
 func ExampleInternetGatewaysClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

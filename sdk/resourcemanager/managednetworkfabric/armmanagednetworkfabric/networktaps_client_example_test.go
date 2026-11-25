@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkTaps_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_Create.json
 func ExampleNetworkTapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleNetworkTapsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkTaps_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_Delete.json
 func ExampleNetworkTapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleNetworkTapsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkTaps_Resync.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_Resync.json
 func ExampleNetworkTapsClient_BeginResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleNetworkTapsClient_BeginResync() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkTaps_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_Update.json
 func ExampleNetworkTapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleNetworkTapsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkTaps_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_UpdateAdministrativeState.json
 func ExampleNetworkTapsClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,7 +337,7 @@ func ExampleNetworkTapsClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkTaps_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_Get.json
 func ExampleNetworkTapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -416,7 +416,7 @@ func ExampleNetworkTapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkTaps_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_ListByResourceGroup.json
 func ExampleNetworkTapsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,7 +505,7 @@ func ExampleNetworkTapsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkTaps_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkTaps_ListBySubscription.json
 func ExampleNetworkTapsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

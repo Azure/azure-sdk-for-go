@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/AccessControlLists_Create.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_Create.json
 func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximum
 	// }
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_Create_ControlPlaneAcl.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_Create_ControlPlaneAcl.json
 func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximum
 	// }
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_Delete.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_Delete.json
 func ExampleAccessControlListsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -509,7 +509,7 @@ func ExampleAccessControlListsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_Resync.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_Resync.json
 func ExampleAccessControlListsClient_BeginResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +552,7 @@ func ExampleAccessControlListsClient_BeginResync() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_Update.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_Update.json
 func ExampleAccessControlListsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,7 +858,7 @@ func ExampleAccessControlListsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_UpdateAdministrativeState.json
 func ExampleAccessControlListsClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -906,7 +906,7 @@ func ExampleAccessControlListsClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_ValidateConfiguration.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_ValidateConfiguration.json
 func ExampleAccessControlListsClient_BeginValidateConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -929,28 +929,50 @@ func ExampleAccessControlListsClient_BeginValidateConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
+	// 	ValidateConfigurationResponseV2: armmanagednetworkfabric.ValidateConfigurationResponseV2{
+	// 		ID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 		Name: to.Ptr("example-acl"),
+	// 		Status: to.Ptr("Succeeded"),
+	// 		PercentComplete: to.Ptr[float64](97),
+	// 		StartTime: to.Ptr(time.Date(2026, time.January, 20, 9, 23, 44, 156000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.January, 20, 9, 23, 44, 156000000, time.UTC)),
+	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 				ResourceID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 				Name: to.Ptr("example-acl"),
+	// 				Status: to.Ptr("Failed"),
+	// 				PercentComplete: to.Ptr[float64](69),
+	// 				StartTime: to.Ptr(time.Date(2025, time.June, 30, 12, 4, 42, 871000000, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2025, time.June, 30, 12, 4, 42, 871000000, time.UTC)),
+	// 				Operations: []*armmanagednetworkfabric.OperationStatusResult{
+	// 				},
+	// 				Error: &armmanagednetworkfabric.ErrorDetail{
+	// 					Code: to.Ptr("400"),
+	// 					Message: to.Ptr("Invalid request"),
+	// 					Target: to.Ptr("example-target"),
+	// 					Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 					},
+	// 					AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 						{
+	// 							Type: to.Ptr("example-type"),
+	// 							Info: map[string]any{
+	// 							},
+	// 						},
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 		URL: to.Ptr("https://ActionDetails"),
+	// 		ResourceID: to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 		Properties: &armmanagednetworkfabric.ValidateConfigurationResponseProperties{
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			URL: to.Ptr("https://ActionDetails"),
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_Get.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_Get.json
 func ExampleAccessControlListsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1127,7 +1149,7 @@ func ExampleAccessControlListsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_ListByResourceGroup.json
 func ExampleAccessControlListsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1314,7 +1336,7 @@ func ExampleAccessControlListsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/AccessControlLists_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/AccessControlLists_ListBySubscription.json
 func ExampleAccessControlListsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

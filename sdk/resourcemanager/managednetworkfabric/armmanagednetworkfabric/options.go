@@ -63,6 +63,41 @@ type AccessControlListsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// EdgeConnectorsClientBeginCreateOptions contains the optional parameters for the EdgeConnectorsClient.BeginCreate method.
+type EdgeConnectorsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeConnectorsClientBeginDeleteOptions contains the optional parameters for the EdgeConnectorsClient.BeginDelete method.
+type EdgeConnectorsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeConnectorsClientBeginUpdateOptions contains the optional parameters for the EdgeConnectorsClient.BeginUpdate method.
+type EdgeConnectorsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EdgeConnectorsClientGetOptions contains the optional parameters for the EdgeConnectorsClient.Get method.
+type EdgeConnectorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeConnectorsClientListByResourceGroupOptions contains the optional parameters for the EdgeConnectorsClient.NewListByResourceGroupPager
+// method.
+type EdgeConnectorsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EdgeConnectorsClientListBySubscriptionOptions contains the optional parameters for the EdgeConnectorsClient.NewListBySubscriptionPager
+// method.
+type EdgeConnectorsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ExternalNetworksClientBeginCreateOptions contains the optional parameters for the ExternalNetworksClient.BeginCreate method.
 type ExternalNetworksClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -110,6 +145,41 @@ type ExternalNetworksClientGetOptions struct {
 // ExternalNetworksClientListByL3IsolationDomainOptions contains the optional parameters for the ExternalNetworksClient.NewListByL3IsolationDomainPager
 // method.
 type ExternalNetworksClientListByL3IsolationDomainOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricsClientBeginCreateOptions contains the optional parameters for the FabricsClient.BeginCreate method.
+type FabricsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FabricsClientBeginDeleteOptions contains the optional parameters for the FabricsClient.BeginDelete method.
+type FabricsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FabricsClientBeginUpdateOptions contains the optional parameters for the FabricsClient.BeginUpdate method.
+type FabricsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FabricsClientGetOptions contains the optional parameters for the FabricsClient.Get method.
+type FabricsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricsClientListByResourceGroupOptions contains the optional parameters for the FabricsClient.NewListByResourceGroupPager
+// method.
+type FabricsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricsClientListBySubscriptionOptions contains the optional parameters for the FabricsClient.NewListBySubscriptionPager
+// method.
+type FabricsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -846,6 +916,9 @@ type NetworkFabricsClientBeginProvisionOptions struct {
 // NetworkFabricsClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginRefreshConfiguration
 // method.
 type NetworkFabricsClientBeginRefreshConfigurationOptions struct {
+	// Request payload.
+	Body *RefreshConfigurationRequestProperties
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

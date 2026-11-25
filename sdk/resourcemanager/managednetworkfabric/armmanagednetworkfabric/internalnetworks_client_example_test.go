@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/InternalNetworks_Create.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_Create.json
 func ExampleInternalNetworksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleInternalNetworksClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_Delete.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_Delete.json
 func ExampleInternalNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleInternalNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_Update.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_Update.json
 func ExampleInternalNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -580,7 +580,7 @@ func ExampleInternalNetworksClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_UpdateAdministrativeState.json
 func ExampleInternalNetworksClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,7 +628,7 @@ func ExampleInternalNetworksClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_UpdateBfdAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_UpdateBfdAdministrativeState.json
 func ExampleInternalNetworksClient_BeginUpdateBfdAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -683,7 +683,7 @@ func ExampleInternalNetworksClient_BeginUpdateBfdAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_UpdateBgpAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_UpdateBgpAdministrativeState.json
 func ExampleInternalNetworksClient_BeginUpdateBgpAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +729,7 @@ func ExampleInternalNetworksClient_BeginUpdateBgpAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
 func ExampleInternalNetworksClient_BeginUpdateStaticRouteBfdAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +777,7 @@ func ExampleInternalNetworksClient_BeginUpdateStaticRouteBfdAdministrativeState(
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_Get.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_Get.json
 func ExampleInternalNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -882,7 +882,7 @@ func ExampleInternalNetworksClient_Get() {
 	// 				},
 	// 				IPv4Routes: []*armmanagednetworkfabric.StaticRouteProperties{
 	// 					{
-	// 						Prefix: to.Ptr("jffgck"),
+	// 						Prefix: to.Ptr("10.0.0.1/24"),
 	// 						NextHop: []*string{
 	// 							to.Ptr("10.0.0.1"),
 	// 						},
@@ -938,7 +938,7 @@ func ExampleInternalNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/InternalNetworks_ListByL3IsolationDomain.json
+// Generated from example definition: 2026-01-15-preview/InternalNetworks_ListByL3IsolationDomain.json
 func ExampleInternalNetworksClient_NewListByL3IsolationDomainPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

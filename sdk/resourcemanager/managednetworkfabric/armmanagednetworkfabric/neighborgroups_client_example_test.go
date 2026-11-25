@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NeighborGroups_Create.json
+// Generated from example definition: 2026-01-15-preview/NeighborGroups_Create.json
 func ExampleNeighborGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,6 +92,7 @@ func ExampleNeighborGroupsClient_BeginCreate() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -123,7 +124,7 @@ func ExampleNeighborGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NeighborGroups_Delete.json
+// Generated from example definition: 2026-01-15-preview/NeighborGroups_Delete.json
 func ExampleNeighborGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +145,7 @@ func ExampleNeighborGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NeighborGroups_Resync.json
+// Generated from example definition: 2026-01-15-preview/NeighborGroups_Resync.json
 func ExampleNeighborGroupsClient_BeginResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +188,7 @@ func ExampleNeighborGroupsClient_BeginResync() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NeighborGroups_Update.json
+// Generated from example definition: 2026-01-15-preview/NeighborGroups_Update.json
 func ExampleNeighborGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,6 +267,7 @@ func ExampleNeighborGroupsClient_BeginUpdate() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -297,7 +299,7 @@ func ExampleNeighborGroupsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NeighborGroups_Get.json
+// Generated from example definition: 2026-01-15-preview/NeighborGroups_Get.json
 func ExampleNeighborGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,6 +351,7 @@ func ExampleNeighborGroupsClient_Get() {
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -380,7 +383,7 @@ func ExampleNeighborGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NeighborGroups_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NeighborGroups_ListByResourceGroup.json
 func ExampleNeighborGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,6 +441,7 @@ func ExampleNeighborGroupsClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -473,7 +477,7 @@ func ExampleNeighborGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NeighborGroups_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NeighborGroups_ListBySubscription.json
 func ExampleNeighborGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,6 +535,7 @@ func ExampleNeighborGroupsClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),

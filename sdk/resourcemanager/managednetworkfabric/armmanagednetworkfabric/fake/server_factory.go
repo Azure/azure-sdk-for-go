@@ -18,8 +18,14 @@ type ServerFactory struct {
 	// AccessControlListsServer contains the fakes for client AccessControlListsClient
 	AccessControlListsServer AccessControlListsServer
 
+	// EdgeConnectorsServer contains the fakes for client EdgeConnectorsClient
+	EdgeConnectorsServer EdgeConnectorsServer
+
 	// ExternalNetworksServer contains the fakes for client ExternalNetworksClient
 	ExternalNetworksServer ExternalNetworksServer
+
+	// FabricsServer contains the fakes for client FabricsClient
+	FabricsServer FabricsServer
 
 	// IPCommunitiesServer contains the fakes for client IPCommunitiesClient
 	IPCommunitiesServer IPCommunitiesServer
@@ -112,7 +118,9 @@ type ServerFactoryTransport struct {
 	srv                                   *ServerFactory
 	trMu                                  sync.Mutex
 	trAccessControlListsServer            *AccessControlListsServerTransport
+	trEdgeConnectorsServer                *EdgeConnectorsServerTransport
 	trExternalNetworksServer              *ExternalNetworksServerTransport
+	trFabricsServer                       *FabricsServerTransport
 	trIPCommunitiesServer                 *IPCommunitiesServerTransport
 	trIPExtendedCommunitiesServer         *IPExtendedCommunitiesServerTransport
 	trIPPrefixesServer                    *IPPrefixesServerTransport
@@ -158,11 +166,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAccessControlListsServerTransport(&s.srv.AccessControlListsServer)
 		})
 		resp, err = s.trAccessControlListsServer.Do(req)
+	case "EdgeConnectorsClient":
+		initServer(&s.trMu, &s.trEdgeConnectorsServer, func() *EdgeConnectorsServerTransport {
+			return NewEdgeConnectorsServerTransport(&s.srv.EdgeConnectorsServer)
+		})
+		resp, err = s.trEdgeConnectorsServer.Do(req)
 	case "ExternalNetworksClient":
 		initServer(&s.trMu, &s.trExternalNetworksServer, func() *ExternalNetworksServerTransport {
 			return NewExternalNetworksServerTransport(&s.srv.ExternalNetworksServer)
 		})
 		resp, err = s.trExternalNetworksServer.Do(req)
+	case "FabricsClient":
+		initServer(&s.trMu, &s.trFabricsServer, func() *FabricsServerTransport { return NewFabricsServerTransport(&s.srv.FabricsServer) })
+		resp, err = s.trFabricsServer.Do(req)
 	case "IPCommunitiesClient":
 		initServer(&s.trMu, &s.trIPCommunitiesServer, func() *IPCommunitiesServerTransport {
 			return NewIPCommunitiesServerTransport(&s.srv.IPCommunitiesServer)

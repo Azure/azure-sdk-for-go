@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/CaCertificates_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/CaCertificates_CreateOrUpdate.json
 func ExampleCaCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleCaCertificatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/CaCertificates_Delete.json
+// Generated from example definition: 2026-06-15-preview/CaCertificates_Delete.json
 func ExampleCaCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleCaCertificatesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/CaCertificates_Get.json
+// Generated from example definition: 2026-06-15-preview/CaCertificates_Get.json
 func ExampleCaCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleCaCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/CaCertificates_ListByNamespace.json
+// Generated from example definition: 2026-06-15-preview/CaCertificates_ListByNamespace.json
 func ExampleCaCertificatesClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

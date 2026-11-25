@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/TopicTypes_Get.json
+// Generated from example definition: 2026-06-15-preview/TopicTypes_Get.json
 func ExampleTopicTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleTopicTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/TopicTypes_ListEventTypes.json
+// Generated from example definition: 2026-06-15-preview/TopicTypes_ListEventTypes.json
 func ExampleTopicTypesClient_NewListEventTypesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleTopicTypesClient_NewListEventTypesPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/TopicTypes_List.json
+// Generated from example definition: 2026-06-15-preview/TopicTypes_List.json
 func ExampleTopicTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

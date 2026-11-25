@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/DomainEventSubscriptions_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/DomainEventSubscriptions_CreateOrUpdate.json
 func ExampleDomainEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleDomainEventSubscriptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainEventSubscriptions_Delete.json
+// Generated from example definition: 2026-06-15-preview/DomainEventSubscriptions_Delete.json
 func ExampleDomainEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleDomainEventSubscriptionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainEventSubscriptions_Update.json
+// Generated from example definition: 2026-06-15-preview/DomainEventSubscriptions_Update.json
 func ExampleDomainEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleDomainEventSubscriptionsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainEventSubscriptions_Get.json
+// Generated from example definition: 2026-06-15-preview/DomainEventSubscriptions_Get.json
 func ExampleDomainEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleDomainEventSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: 2026-06-15-preview/DomainEventSubscriptions_GetDeliveryAttributes.json
 func ExampleDomainEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleDomainEventSubscriptionsClient_GetDeliveryAttributes() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainEventSubscriptions_GetFullUrl.json
+// Generated from example definition: 2026-06-15-preview/DomainEventSubscriptions_GetFullUrl.json
 func ExampleDomainEventSubscriptionsClient_GetFullURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ func ExampleDomainEventSubscriptionsClient_GetFullURL() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainEventSubscriptions_List.json
+// Generated from example definition: 2026-06-15-preview/DomainEventSubscriptions_List.json
 func ExampleDomainEventSubscriptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

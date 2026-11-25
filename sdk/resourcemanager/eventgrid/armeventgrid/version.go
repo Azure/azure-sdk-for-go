@@ -6,5 +6,5 @@ package armeventgrid
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
-	moduleVersion = "v2.4.0-beta.2"
+	moduleVersion = "v2.4.0-beta.3"
 )

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-15-preview/PartnerDestinations_Activate.json
+// Generated from example definition: 2026-06-15-preview/PartnerDestinations_Activate.json
 func ExamplePartnerDestinationsClient_Activate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExamplePartnerDestinationsClient_Activate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerDestinations_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PartnerDestinations_CreateOrUpdate.json
 func ExamplePartnerDestinationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExamplePartnerDestinationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerDestinations_Delete.json
+// Generated from example definition: 2026-06-15-preview/PartnerDestinations_Delete.json
 func ExamplePartnerDestinationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExamplePartnerDestinationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerDestinations_Update.json
+// Generated from example definition: 2026-06-15-preview/PartnerDestinations_Update.json
 func ExamplePartnerDestinationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExamplePartnerDestinationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerDestinations_Get.json
+// Generated from example definition: 2026-06-15-preview/PartnerDestinations_Get.json
 func ExamplePartnerDestinationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExamplePartnerDestinationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerDestinations_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/PartnerDestinations_ListByResourceGroup.json
 func ExamplePartnerDestinationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExamplePartnerDestinationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerDestinations_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/PartnerDestinations_ListBySubscription.json
 func ExamplePartnerDestinationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/DataExportCreateOrUpdate.json
+// Generated from example definition: 2026-03-01/DataExportCreateOrUpdate.json
 func ExampleDataExportsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleDataExportsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DataExportDelete.json
+// Generated from example definition: 2026-03-01/DataExportDelete.json
 func ExampleDataExportsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleDataExportsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DataExportGet.json
+// Generated from example definition: 2026-03-01/DataExportGet.json
 func ExampleDataExportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleDataExportsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DataExportListByWorkspace.json
+// Generated from example definition: 2026-03-01/DataExportListByWorkspace.json
 func ExampleDataExportsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

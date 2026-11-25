@@ -1,5 +1,179 @@
 # Release History
 
+## 0.2.0 (2026-11-25)
+### Features Added
+
+- New enum type `ClusterAssociationIfNoneMatch` with values `ClusterAssociationIfNoneMatchWildcard`
+- New enum type `ClusterAssociationSKUName` with values `ClusterAssociationSKUNamePremium`, `ClusterAssociationSKUNameStandard`
+- New enum type `ContentInspectionPolicySourceType` with values `ContentInspectionPolicySourceTypeAddressPrefixes`, `ContentInspectionPolicySourceTypeWorkloadIDPatterns`
+- New enum type `ContentInspectionSensitivity` with values `ContentInspectionSensitivityHigh`, `ContentInspectionSensitivityLow`, `ContentInspectionSensitivityMedium`
+- New enum type `FQDNFilteringDestinationType` with values `FQDNFilteringDestinationTypeFQDNs`
+- New enum type `FQDNFilteringSourceType` with values `FQDNFilteringSourceTypeAddressPrefixes`, `FQDNFilteringSourceTypeWorkloadIDPatterns`
+- New enum type `HTTPMethod` with values `HTTPMethodDelete`, `HTTPMethodGet`, `HTTPMethodHead`, `HTTPMethodOptions`, `HTTPMethodPatch`, `HTTPMethodPost`, `HTTPMethodPut`
+- New enum type `ImagePullPolicy` with values `ImagePullPolicyAlways`, `ImagePullPolicyIfNotPresent`
+- New enum type `MCPMatchCase` with values `MCPMatchCaseCaseInsensitive`, `MCPMatchCaseCaseSensitive`
+- New enum type `MCPMatchType` with values `MCPMatchTypeContains`, `MCPMatchTypeExactMatch`, `MCPMatchTypeNotContains`, `MCPMatchTypeNotExactMatch`
+- New enum type `MCPPolicyDestinationType` with values `MCPPolicyDestinationTypeAddressPrefixes`, `MCPPolicyDestinationTypeFQDNs`, `MCPPolicyDestinationTypeWorkloadIDPatterns`
+- New enum type `MCPPolicySourceType` with values `MCPPolicySourceTypeAddressPrefixes`, `MCPPolicySourceTypeWorkloadIDPatterns`
+- New enum type `MCPPromptMethod` with values `MCPPromptMethodGet`, `MCPPromptMethodList`
+- New enum type `MCPToolMethod` with values `MCPToolMethodCall`, `MCPToolMethodList`
+- New enum type `PolicyAction` with values `PolicyActionAllow`, `PolicyActionDeny`
+- New enum type `PolicyDirection` with values `PolicyDirectionBoth`, `PolicyDirectionInbound`, `PolicyDirectionOutbound`
+- New enum type `PolicyType` with values `PolicyTypeContentInspection`, `PolicyTypeFQDNFiltering`, `PolicyTypeMCP`, `PolicyTypeTLSInspection`, `PolicyTypeURLFiltering`
+- New enum type `PromptInjectionOnDetection` with values `PromptInjectionOnDetectionAlert`, `PromptInjectionOnDetectionBlockAndAlert`, `PromptInjectionOnDetectionSanitize`
+- New enum type `ProvisioningState` with values `ProvisioningStateAccepted`, `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateProvisioning`, `ProvisioningStateSucceeded`, `ProvisioningStateUpdating`
+- New enum type `SystemAssignedServiceIdentityType` with values `SystemAssignedServiceIdentityTypeNone`, `SystemAssignedServiceIdentityTypeSystemAssigned`
+- New enum type `TLSInspectionAction` with values `TLSInspectionActionBypass`, `TLSInspectionActionInspect`
+- New enum type `TLSInspectionCertificateMode` with values `TLSInspectionCertificateModeAzureManagedCA`
+- New enum type `TLSInspectionPolicySourceType` with values `TLSInspectionPolicySourceTypeWorkloadIDPatterns`
+- New enum type `TLSInspectionRuleDestinationType` with values `TLSInspectionRuleDestinationTypeFQDNs`
+- New enum type `URLFilteringDestinationType` with values `URLFilteringDestinationTypeAddressPrefixes`, `URLFilteringDestinationTypeFQDNs`, `URLFilteringDestinationTypeWorkloadIDPatterns`
+- New enum type `URLFilteringSourceType` with values `URLFilteringSourceTypeAddressPrefixes`, `URLFilteringSourceTypeWorkloadIDPatterns`
+- New enum type `WorkloadType` with values `WorkloadTypeACI`, `WorkloadTypeAKS`, `WorkloadTypeAgentFabricSandbox`
+- New function `*AciWorkload.GetWorkloadBase() *WorkloadBase`
+- New function `*AgentFabricSandboxWorkload.GetWorkloadBase() *WorkloadBase`
+- New function `NewAgentFabricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentFabricsClient, error)`
+- New function `*AgentFabricsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, agentFabricName string, resource AgentFabric, options *AgentFabricsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AgentFabricsClientCreateOrUpdateResponse], error)`
+- New function `*AgentFabricsClient.BeginDelete(ctx context.Context, resourceGroupName string, agentFabricName string, options *AgentFabricsClientBeginDeleteOptions) (*runtime.Poller[AgentFabricsClientDeleteResponse], error)`
+- New function `*AgentFabricsClient.Get(ctx context.Context, resourceGroupName string, agentFabricName string, options *AgentFabricsClientGetOptions) (AgentFabricsClientGetResponse, error)`
+- New function `*AgentFabricsClient.NewListByResourceGroupPager(resourceGroupName string, options *AgentFabricsClientListByResourceGroupOptions) *runtime.Pager[AgentFabricsClientListByResourceGroupResponse]`
+- New function `*AgentFabricsClient.NewListBySubscriptionPager(options *AgentFabricsClientListBySubscriptionOptions) *runtime.Pager[AgentFabricsClientListBySubscriptionResponse]`
+- New function `*AgentFabricsClient.BeginUpdate(ctx context.Context, resourceGroupName string, agentFabricName string, properties AgentFabricTagsUpdate, options *AgentFabricsClientBeginUpdateOptions) (*runtime.Poller[AgentFabricsClientUpdateResponse], error)`
+- New function `*AksWorkload.GetWorkloadBase() *WorkloadBase`
+- New function `*AzureManagedCACertificate.GetTLSInspectionCertificateBase() *TLSInspectionCertificateBase`
+- New function `*ClientFactory.NewAgentFabricsClient() *AgentFabricsClient`
+- New function `*ClientFactory.NewClusterAssociationsClient() *ClusterAssociationsClient`
+- New function `*ClientFactory.NewEgressTrustBundlesClient() *EgressTrustBundlesClient`
+- New function `*ClientFactory.NewMembersClient() *MembersClient`
+- New function `*ClientFactory.NewOperationStatusClient() *OperationStatusClient`
+- New function `*ClientFactory.NewPolicyGroupsClient() *PolicyGroupsClient`
+- New function `NewClusterAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterAssociationsClient, error)`
+- New function `*ClusterAssociationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, agentFabricName string, clusterAssociationName string, resource ClusterAssociation, options *ClusterAssociationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClusterAssociationsClientCreateOrUpdateResponse], error)`
+- New function `*ClusterAssociationsClient.BeginDelete(ctx context.Context, resourceGroupName string, agentFabricName string, clusterAssociationName string, options *ClusterAssociationsClientBeginDeleteOptions) (*runtime.Poller[ClusterAssociationsClientDeleteResponse], error)`
+- New function `*ClusterAssociationsClient.Get(ctx context.Context, resourceGroupName string, agentFabricName string, clusterAssociationName string, options *ClusterAssociationsClientGetOptions) (ClusterAssociationsClientGetResponse, error)`
+- New function `*ClusterAssociationsClient.NewListByParentPager(resourceGroupName string, agentFabricName string, options *ClusterAssociationsClientListByParentOptions) *runtime.Pager[ClusterAssociationsClientListByParentResponse]`
+- New function `*ClusterAssociationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, agentFabricName string, clusterAssociationName string, properties ClusterAssociationUpdate, options *ClusterAssociationsClientBeginUpdateOptions) (*runtime.Poller[ClusterAssociationsClientUpdateResponse], error)`
+- New function `*ContentInspectionPolicy.GetPolicyBase() *PolicyBase`
+- New function `*ContentInspectionPolicyAddressPrefixesSource.GetContentInspectionPolicySource() *ContentInspectionPolicySource`
+- New function `*ContentInspectionPolicySource.GetContentInspectionPolicySource() *ContentInspectionPolicySource`
+- New function `*ContentInspectionPolicyWorkloadIDPatternsSource.GetContentInspectionPolicySource() *ContentInspectionPolicySource`
+- New function `NewEgressTrustBundlesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EgressTrustBundlesClient, error)`
+- New function `*EgressTrustBundlesClient.Get(ctx context.Context, resourceGroupName string, agentFabricName string, options *EgressTrustBundlesClientGetOptions) (EgressTrustBundlesClientGetResponse, error)`
+- New function `*EgressTrustBundlesClient.NewListByParentPager(resourceGroupName string, agentFabricName string, options *EgressTrustBundlesClientListByParentOptions) *runtime.Pager[EgressTrustBundlesClientListByParentResponse]`
+- New function `*FQDNFilteringAddressPrefixesSource.GetFQDNFilteringSource() *FQDNFilteringSource`
+- New function `*FQDNFilteringDestination.GetFQDNFilteringDestination() *FQDNFilteringDestination`
+- New function `*FQDNFilteringFQDNsDestination.GetFQDNFilteringDestination() *FQDNFilteringDestination`
+- New function `*FQDNFilteringPolicy.GetPolicyBase() *PolicyBase`
+- New function `*FQDNFilteringSource.GetFQDNFilteringSource() *FQDNFilteringSource`
+- New function `*FQDNFilteringWorkloadIDPatternsSource.GetFQDNFilteringSource() *FQDNFilteringSource`
+- New function `*MCPPolicy.GetPolicyBase() *PolicyBase`
+- New function `*MCPPolicyAddressPrefixesDestination.GetMCPPolicyDestination() *MCPPolicyDestination`
+- New function `*MCPPolicyAddressPrefixesSource.GetMCPPolicySource() *MCPPolicySource`
+- New function `*MCPPolicyDestination.GetMCPPolicyDestination() *MCPPolicyDestination`
+- New function `*MCPPolicyFQDNsDestination.GetMCPPolicyDestination() *MCPPolicyDestination`
+- New function `*MCPPolicySource.GetMCPPolicySource() *MCPPolicySource`
+- New function `*MCPPolicyWorkloadIDPatternsDestination.GetMCPPolicyDestination() *MCPPolicyDestination`
+- New function `*MCPPolicyWorkloadIDPatternsSource.GetMCPPolicySource() *MCPPolicySource`
+- New function `NewMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MembersClient, error)`
+- New function `*MembersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, agentFabricName string, memberName string, resource Member, options *MembersClientBeginCreateOrUpdateOptions) (*runtime.Poller[MembersClientCreateOrUpdateResponse], error)`
+- New function `*MembersClient.BeginDelete(ctx context.Context, resourceGroupName string, agentFabricName string, memberName string, options *MembersClientBeginDeleteOptions) (*runtime.Poller[MembersClientDeleteResponse], error)`
+- New function `*MembersClient.Get(ctx context.Context, resourceGroupName string, agentFabricName string, memberName string, options *MembersClientGetOptions) (MembersClientGetResponse, error)`
+- New function `*MembersClient.NewListByParentPager(resourceGroupName string, agentFabricName string, options *MembersClientListByParentOptions) *runtime.Pager[MembersClientListByParentResponse]`
+- New function `*MembersClient.BeginUpdate(ctx context.Context, resourceGroupName string, agentFabricName string, memberName string, properties MemberTagsUpdate, options *MembersClientBeginUpdateOptions) (*runtime.Poller[MembersClientUpdateResponse], error)`
+- New function `NewOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusClient, error)`
+- New function `*OperationStatusClient.Get(ctx context.Context, location string, operationID string, options *OperationStatusClientGetOptions) (OperationStatusClientGetResponse, error)`
+- New function `*PolicyBase.GetPolicyBase() *PolicyBase`
+- New function `NewPolicyGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyGroupsClient, error)`
+- New function `*PolicyGroupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, policyGroupName string, resource PolicyGroup, options *PolicyGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PolicyGroupsClientCreateOrUpdateResponse], error)`
+- New function `*PolicyGroupsClient.BeginDelete(ctx context.Context, resourceGroupName string, policyGroupName string, options *PolicyGroupsClientBeginDeleteOptions) (*runtime.Poller[PolicyGroupsClientDeleteResponse], error)`
+- New function `*PolicyGroupsClient.Get(ctx context.Context, resourceGroupName string, policyGroupName string, options *PolicyGroupsClientGetOptions) (PolicyGroupsClientGetResponse, error)`
+- New function `*PolicyGroupsClient.NewListByResourceGroupPager(resourceGroupName string, options *PolicyGroupsClientListByResourceGroupOptions) *runtime.Pager[PolicyGroupsClientListByResourceGroupResponse]`
+- New function `*PolicyGroupsClient.NewListBySubscriptionPager(options *PolicyGroupsClientListBySubscriptionOptions) *runtime.Pager[PolicyGroupsClientListBySubscriptionResponse]`
+- New function `*PolicyGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, policyGroupName string, properties PolicyGroupTagsUpdate, options *PolicyGroupsClientBeginUpdateOptions) (*runtime.Poller[PolicyGroupsClientUpdateResponse], error)`
+- New function `*TLSInspectionCertificateBase.GetTLSInspectionCertificateBase() *TLSInspectionCertificateBase`
+- New function `*TLSInspectionPolicy.GetPolicyBase() *PolicyBase`
+- New function `*TLSInspectionPolicySource.GetTLSInspectionPolicySource() *TLSInspectionPolicySource`
+- New function `*TLSInspectionPolicyWorkloadIDPatternsSource.GetTLSInspectionPolicySource() *TLSInspectionPolicySource`
+- New function `*TLSInspectionRuleDestination.GetTLSInspectionRuleDestination() *TLSInspectionRuleDestination`
+- New function `*TLSInspectionRuleFQDNsDestination.GetTLSInspectionRuleDestination() *TLSInspectionRuleDestination`
+- New function `*URLFilteringAddressPrefixesDestination.GetURLFilteringDestination() *URLFilteringDestination`
+- New function `*URLFilteringAddressPrefixesSource.GetURLFilteringSource() *URLFilteringSource`
+- New function `*URLFilteringDestination.GetURLFilteringDestination() *URLFilteringDestination`
+- New function `*URLFilteringFQDNsDestination.GetURLFilteringDestination() *URLFilteringDestination`
+- New function `*URLFilteringPolicy.GetPolicyBase() *PolicyBase`
+- New function `*URLFilteringSource.GetURLFilteringSource() *URLFilteringSource`
+- New function `*URLFilteringWorkloadIDPatternsDestination.GetURLFilteringDestination() *URLFilteringDestination`
+- New function `*URLFilteringWorkloadIDPatternsSource.GetURLFilteringSource() *URLFilteringSource`
+- New function `*WorkloadBase.GetWorkloadBase() *WorkloadBase`
+- New struct `AciWorkload`
+- New struct `AgentFabric`
+- New struct `AgentFabricListResult`
+- New struct `AgentFabricProperties`
+- New struct `AgentFabricSandboxEndpoint`
+- New struct `AgentFabricSandboxImage`
+- New struct `AgentFabricSandboxResources`
+- New struct `AgentFabricSandboxWorkload`
+- New struct `AgentFabricTagsUpdate`
+- New struct `AgentIdentity`
+- New struct `AksWorkload`
+- New struct `AksWorkloadPortMapping`
+- New struct `AksWorkloadReference`
+- New struct `AzureManagedCACertificate`
+- New struct `ClusterAssociation`
+- New struct `ClusterAssociationListResult`
+- New struct `ClusterAssociationProperties`
+- New struct `ClusterAssociationStatus`
+- New struct `ClusterAssociationUpdate`
+- New struct `ClusterAssociationUpdateProperties`
+- New struct `ContentInspectionPolicy`
+- New struct `ContentInspectionPolicyAddressPrefixesSource`
+- New struct `ContentInspectionPolicyWorkloadIDPatternsSource`
+- New struct `ContentInspectionProfile`
+- New struct `EgressTrustBundle`
+- New struct `EgressTrustBundleCertificate`
+- New struct `EgressTrustBundleListResult`
+- New struct `EgressTrustBundleProperties`
+- New struct `FQDNFilteringAddressPrefixesSource`
+- New struct `FQDNFilteringFQDNsDestination`
+- New struct `FQDNFilteringPolicy`
+- New struct `FQDNFilteringWorkloadIDPatternsSource`
+- New struct `MCPArgumentMatching`
+- New struct `MCPPolicy`
+- New struct `MCPPolicyAddressPrefixesDestination`
+- New struct `MCPPolicyAddressPrefixesSource`
+- New struct `MCPPolicyFQDNsDestination`
+- New struct `MCPPolicyWorkloadIDPatternsDestination`
+- New struct `MCPPolicyWorkloadIDPatternsSource`
+- New struct `MCPPromptMatching`
+- New struct `MCPRule`
+- New struct `MCPRuleDestinationMatching`
+- New struct `MCPRuleMatchingConditions`
+- New struct `MCPStringMatching`
+- New struct `MCPToolMatching`
+- New struct `Member`
+- New struct `MemberListResult`
+- New struct `MemberProperties`
+- New struct `MemberTagsUpdate`
+- New struct `MemberUpdateProperties`
+- New struct `PolicyGroup`
+- New struct `PolicyGroupListResult`
+- New struct `PolicyGroupProperties`
+- New struct `PolicyGroupTagsUpdate`
+- New struct `PromptInjectionProtection`
+- New struct `SystemAssignedServiceIdentity`
+- New struct `TLSInspectionPolicy`
+- New struct `TLSInspectionPolicyWorkloadIDPatternsSource`
+- New struct `TLSInspectionRule`
+- New struct `TLSInspectionRuleFQDNsDestination`
+- New struct `URLFilteringAddressPrefixesDestination`
+- New struct `URLFilteringAddressPrefixesSource`
+- New struct `URLFilteringFQDNsDestination`
+- New struct `URLFilteringPolicy`
+- New struct `URLFilteringRule`
+- New struct `URLFilteringWorkloadIDPatternsDestination`
+- New struct `URLFilteringWorkloadIDPatternsSource`
+
+
 ## 0.1.0 (2026-11-06)
 ### Other Changes
 

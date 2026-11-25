@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-// OperationsClient - The operations available from the Microsoft.NetworkSecurity provider.
+// OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
 // Generated from API version 2026-10-01-preview

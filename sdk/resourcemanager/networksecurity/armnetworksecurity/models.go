@@ -6,6 +6,596 @@ package armnetworksecurity
 
 import "time"
 
+// AciWorkload - ACI (Azure Container Instances) sandbox workload configuration.
+type AciWorkload struct {
+	// REQUIRED; The Azure Resource Manager resource ID of the Azure Container Instances (ACI)
+	// resource backing this member's sandbox. Starting in API version
+	// `2026-10-07-preview`, this identifies the parent SandboxGroup -- the enrollment
+	// boundary associated with the fabric through a ClusterAssociation -- rather than
+	// the individual container group.
+	ResourceID *string
+
+	// CONSTANT; The workload type.
+	// Field has constant value WorkloadTypeACI, any specified value is ignored.
+	Type *WorkloadType
+
+	// REQUIRED; The human-readable name of the ACI sandbox. The ACI resource provider supplies it at creation.
+	// It must be unique within the agent fabric and cannot be changed after the member is created.
+	// The member resource name is the sandbox GUID, not this name.
+	WorkloadID *string
+
+	// The Entra agent identity associated with the workload.
+	AgentIdentity *AgentIdentity
+
+	// The unique identifier (GUID) assigned to the member when it is created. For most workload
+	// types this is assigned by the resource provider and is read-only. Starting in API version
+	// `2026-10-07-preview`, ACI workloads instead supply this value at creation: the ACI resource
+	// provider generates the GUID for the sandbox and this field is immutable afterward. Starting in
+	// API version `2026-11-02-preview`, the ACI member resource name is this GUID: the service sets
+	// memberGuid from the member name, and a value supplied in the request must match the member name.
+	MemberGUID *string
+}
+
+// GetWorkloadBase implements the WorkloadBaseClassification interface for type AciWorkload.
+func (a *AciWorkload) GetWorkloadBase() *WorkloadBase {
+	return &WorkloadBase{
+		MemberGUID: a.MemberGUID,
+		Type:       a.Type,
+	}
+}
+
+// AgentFabric resource
+type AgentFabric struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identity assigned to this fabric. The service uses it to reach the
+	// clusters associated with the fabric on the customer's behalf.
+	Identity *SystemAssignedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *AgentFabricProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AgentFabricListResult - The response of a AgentFabric list operation.
+type AgentFabricListResult struct {
+	// REQUIRED; The AgentFabric items on this page
+	Value []*AgentFabric
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AgentFabricProperties - AgentFabric properties
+type AgentFabricProperties struct {
+	// The connection to the customer's Azure Content Safety account. For a new
+	// fabric created with API version `2026-10-07-preview` or later, omitting this profile or supplying {}
+	// requests no inspection capability and uses no platform-owned account or shared-key fallback.
+	// For an existing fabric, omitting the profile from PUT, including requests from older clients,
+	// or supplying {} preserves its customer-owned connection, legacy regional connection, or absence
+	// of connection. The empty object is a request for no connection change, not a stored replacement
+	// profile. Neither omission nor {} removes, probes, or creates a connection or cancels a pending
+	// connection update. Other Fabric fields and policy compatibility rules still apply.
+	// A nonempty request profile requires both endpoint and apiKey, even at the unchanged endpoint.
+	// PUT can rotate the key or replace the endpoint by supplying the complete pair. Tags- or
+	// identity-only PATCH requests cannot change this profile.
+	// Existing legacy fabrics without a profile retain their regional Content Safety endpoint and
+	// authentication path. Omission or {} triggers no connection probe, account-management call, key
+	// retrieval, or credential requirement. Supplying a complete profile explicitly configures a
+	// customer-owned connection; there is no automatic conversion or failed-connection fallback
+	// to regional credentials.
+	// The customer owns, pays for, and operates the account. The service does not create, reserve,
+	// manage, or delete it. The service validates new or changed endpoint/credential configuration
+	// and the required Content Safety API before activation; configuration alone does not indicate
+	// readiness or active policy enforcement. Unchanged configuration, GET, and list do not trigger
+	// a new validation request. A failed replacement preserves the existing connection and credential,
+	// including a legacy regional connection.
+	ContentInspectionProfile *ContentInspectionProfile
+
+	// The default policy groups to apply to all members of this fabric. A fabric without a configured
+	// inspection connection cannot reference a group containing any ContentInspection policy,
+	// even when that policy's selectors currently match no traffic.
+	// For an existing fabric, compatibility uses the stored configuration when PUT omits
+	// contentInspectionProfile or supplies an empty object. Existing legacy fabrics retain their regional
+	// Content Safety connection, which satisfies the inspection prerequisite without new probes.
+	// A connection still being validated is not an absent connection. Removing a group
+	// reference remains allowed, subject to other validation.
+	DefaultPolicyGroups []*string
+
+	// The trust domain that scopes this fabric's member identities. It is the leading component of
+	// each member's identity, which takes the form `<trustDomain>/<agentFabricName>/<memberName>`.
+	// Set at creation and immutable thereafter; when omitted, the shared default trust domain
+	// `microsoft.agentfabric` is used.
+	TrustDomain *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The unique identifier (GUID) assigned to the agent fabric by the resource provider when it is created.
+	ResourceGUID *string
+}
+
+// AgentFabricSandboxEndpoint - A network endpoint exposed by an Agent Fabric sandbox workload.
+type AgentFabricSandboxEndpoint struct {
+	// REQUIRED; The name of the endpoint.
+	Name *string
+
+	// REQUIRED; The network protocol used by the endpoint.
+	Protocol *string
+
+	// REQUIRED; The port exposed by the service.
+	ServicePort *int32
+
+	// REQUIRED; The port on the workload targeted by the service.
+	TargetPort *int32
+}
+
+// AgentFabricSandboxImage - The container image to run for an Agent Fabric sandbox workload.
+type AgentFabricSandboxImage struct {
+	// REQUIRED; The image reference URI (e.g., registry/repository:tag).
+	URI *string
+
+	// The image content digest used to pin an exact image version.
+	Digest *string
+
+	// The policy controlling when the image is pulled.
+	PullPolicy *ImagePullPolicy
+}
+
+// AgentFabricSandboxResources - The compute resources allocated to an Agent Fabric sandbox workload.
+type AgentFabricSandboxResources struct {
+	// REQUIRED; The amount of CPU to allocate to the workload.
+	CPU *string
+
+	// REQUIRED; The amount of memory to allocate to the workload.
+	Memory *string
+
+	// The amount of disk to allocate to the workload.
+	Disk *string
+}
+
+// AgentFabricSandboxWorkload - Agent Fabric sandbox workload configuration.
+type AgentFabricSandboxWorkload struct {
+	// REQUIRED; The resolvable DNS name assigned to the workload.
+	Domain *string
+
+	// REQUIRED; The container image to run for the workload.
+	Image *AgentFabricSandboxImage
+
+	// REQUIRED; The compute resources allocated to the workload.
+	Resources *AgentFabricSandboxResources
+
+	// CONSTANT; The workload type.
+	// Field has constant value WorkloadTypeAgentFabricSandbox, any specified value is ignored.
+	Type *WorkloadType
+
+	// The Entra agent identity associated with the workload.
+	AgentIdentity *AgentIdentity
+
+	// The network endpoints exposed by the workload.
+	Endpoints []*AgentFabricSandboxEndpoint
+
+	// The unique identifier (GUID) assigned to the member when it is created. For most workload
+	// types this is assigned by the resource provider and is read-only. Starting in API version
+	// `2026-10-07-preview`, ACI workloads instead supply this value at creation: the ACI resource
+	// provider generates the GUID for the sandbox and this field is immutable afterward. Starting in
+	// API version `2026-11-02-preview`, the ACI member resource name is this GUID: the service sets
+	// memberGuid from the member name, and a value supplied in the request must match the member name.
+	MemberGUID *string
+
+	// READ-ONLY; The unique identifier assigned to the workload by the resource provider.
+	WorkloadID *string
+}
+
+// GetWorkloadBase implements the WorkloadBaseClassification interface for type AgentFabricSandboxWorkload.
+func (a *AgentFabricSandboxWorkload) GetWorkloadBase() *WorkloadBase {
+	return &WorkloadBase{
+		MemberGUID: a.MemberGUID,
+		Type:       a.Type,
+	}
+}
+
+// AgentFabricTagsUpdate - The type used for updating tags in AgentFabric resources.
+type AgentFabricTagsUpdate struct {
+	// The managed service identity assigned to this fabric.
+	Identity *SystemAssignedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// AgentIdentity - The Entra agent identity associated with an Agent Fabric sandbox workload.
+type AgentIdentity struct {
+	// REQUIRED; The Entra agent ID representing the workload's identity.
+	AgentID *string
+
+	// REQUIRED; The Azure tenant ID that owns the agent identity.
+	TenantID *string
+
+	// The Entra agent blueprint ID that this agent identity was instantiated from. The blueprint
+	// describes the agent's declared capabilities and is used to scope the policies applied to the
+	// workload.
+	BlueprintID *string
+}
+
+// AksWorkload - AKS workload configuration. The workload already exists in the enrolled
+// cluster; the service does not create or schedule it.
+type AksWorkload struct {
+	// REQUIRED; The Azure Resource Manager resource ID of the cluster association through which this member's workload is enrolled.
+	ClusterAssociationID *string
+
+	// REQUIRED; The Azure Resource Manager resource ID of the managed cluster that hosts the workload.
+	ClusterResourceID *string
+
+	// CONSTANT; The workload type.
+	// Field has constant value WorkloadTypeAKS, any specified value is ignored.
+	Type *WorkloadType
+
+	// REQUIRED; The Kubernetes workload enrolled as this member. Reported when the workload is discovered in the enrolled cluster;
+	// member identity derives from the fabric and member name alone.
+	Workload *AksWorkloadReference
+
+	// The network endpoints exposed by the workload.
+	Endpoints []*AksWorkloadPortMapping
+
+	// The unique identifier (GUID) assigned to the member when it is created. For most workload
+	// types this is assigned by the resource provider and is read-only. Starting in API version
+	// `2026-10-07-preview`, ACI workloads instead supply this value at creation: the ACI resource
+	// provider generates the GUID for the sandbox and this field is immutable afterward. Starting in
+	// API version `2026-11-02-preview`, the ACI member resource name is this GUID: the service sets
+	// memberGuid from the member name, and a value supplied in the request must match the member name.
+	MemberGUID *string
+
+	// READ-ONLY; The unique identifier assigned to the workload by the resource provider.
+	WorkloadID *string
+}
+
+// GetWorkloadBase implements the WorkloadBaseClassification interface for type AksWorkload.
+func (a *AksWorkload) GetWorkloadBase() *WorkloadBase {
+	return &WorkloadBase{
+		MemberGUID: a.MemberGUID,
+		Type:       a.Type,
+	}
+}
+
+// AksWorkloadPortMapping - A service-to-workload port mapping for an AKS workload.
+type AksWorkloadPortMapping struct {
+	// REQUIRED; The name of the port mapping.
+	Name *string
+
+	// REQUIRED; The network protocol used by the endpoint.
+	Protocol *string
+
+	// REQUIRED; The port exposed by the service.
+	ServicePort *int32
+
+	// REQUIRED; The port on the workload targeted by the service.
+	TargetPort *int32
+}
+
+// AksWorkloadReference - A reference to the Kubernetes workload enrolled as a member.
+type AksWorkloadReference struct {
+	// REQUIRED; The API group and version of the workload, for example `apps/v1`.
+	APIVersion *string
+
+	// REQUIRED; The kind of the workload, for example `Deployment`.
+	Kind *string
+
+	// REQUIRED; The name of the workload.
+	Name *string
+
+	// REQUIRED; The namespace the workload runs in.
+	Namespace *string
+}
+
+// AzureManagedCACertificate - TLS inspection certificate issued by an Azure-managed certificate authority.
+type AzureManagedCACertificate struct {
+	// CONSTANT; The source mode of the TLS inspection certificate.
+	// Field has constant value TLSInspectionCertificateModeAzureManagedCA, any specified value is ignored.
+	Mode *TLSInspectionCertificateMode
+}
+
+// GetTLSInspectionCertificateBase implements the TLSInspectionCertificateBaseClassification interface for type AzureManagedCACertificate.
+func (a *AzureManagedCACertificate) GetTLSInspectionCertificateBase() *TLSInspectionCertificateBase {
+	return &TLSInspectionCertificateBase{
+		Mode: a.Mode,
+	}
+}
+
+// ClusterAssociation resource. Enrolls an AKS managed cluster, or an ACI
+// SandboxGroup, into this AgentFabric; deleting it removes the enrollment.
+// This is not a Member. Workloads are enrolled separately, and creating an
+// association does not create members.
+type ClusterAssociation struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ClusterAssociationProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterAssociationListResult - The response of a ClusterAssociation list operation.
+type ClusterAssociationListResult struct {
+	// REQUIRED; The ClusterAssociation items on this page
+	Value []*ClusterAssociation
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ClusterAssociationProperties - ClusterAssociation properties
+type ClusterAssociationProperties struct {
+	// REQUIRED; The AKS managed cluster or ACI SandboxGroup to enroll. The resource must be
+	// in the same subscription as the AgentFabric; a different resource group is
+	// allowed. Set at creation and immutable thereafter; to enroll a different
+	// resource, delete and recreate the association. AF rejects the request if
+	// the resource is already associated with another fabric.
+	ClusterResourceID *string
+
+	// Determines which AgentFabric components are deployed to the cluster.
+	// Defaults to Standard when omitted at creation. An update may upgrade
+	// Standard to Premium but cannot downgrade Premium to Standard. The SKU
+	// remains unchanged when omitted during an update.
+	SKU *ClusterAssociationSKUName
+
+	// The IPv4 or IPv6 address of the workload cluster gateway used for
+	// internal Agent Fabric routing. The resource provider validates the value.
+	WorkloadClusterGatewayIP *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Error code and message for a failed association. A failed association is
+	// retained rather than deleted, so the failure can be inspected and retried.
+	// Read-only.
+	Status *ClusterAssociationStatus
+}
+
+// ClusterAssociationStatus - Error information for a failed cluster association.
+type ClusterAssociationStatus struct {
+	// READ-ONLY; Stable, machine-readable error code.
+	Code *string
+
+	// READ-ONLY; Human-readable description of the failure.
+	Message *string
+}
+
+// ClusterAssociationUpdate - The request body for updating a ClusterAssociation.
+type ClusterAssociationUpdate struct {
+	// REQUIRED; The ClusterAssociation properties to update.
+	Properties *ClusterAssociationUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ClusterAssociationUpdateProperties - Properties that may be updated on a ClusterAssociation.
+type ClusterAssociationUpdateProperties struct {
+	// The existing AKS managed cluster or ACI SandboxGroup. This value is
+	// required so Azure Resource Manager can perform linked authorization and
+	// must match the immutable clusterResourceId already stored on the
+	// association.
+	ClusterResourceID *string
+
+	// Determines which AgentFabric components are deployed to the cluster.
+	// Only an upgrade from Standard to Premium is supported; Premium cannot be
+	// downgraded to Standard. When omitted, the PATCH request is an authorized
+	// no-op and the existing SKU remains unchanged.
+	SKU *ClusterAssociationSKUName
+
+	// The IPv4 or IPv6 address of the workload cluster gateway used for
+	// internal Agent Fabric routing. The resource provider validates the value.
+	WorkloadClusterGatewayIP *string
+}
+
+// ContentInspectionPolicy - Content inspection network security policy.
+type ContentInspectionPolicy struct {
+	// REQUIRED; The source details for the policy.
+	Source ContentInspectionPolicySourceClassification
+
+	// CONSTANT; The network security policy type.
+	// Field has constant value PolicyTypeContentInspection, any specified value is ignored.
+	Type *PolicyType
+
+	// The prompt injection protection configuration.
+	PromptInjectionProtection *PromptInjectionProtection
+}
+
+// GetPolicyBase implements the PolicyBaseClassification interface for type ContentInspectionPolicy.
+func (c *ContentInspectionPolicy) GetPolicyBase() *PolicyBase {
+	return &PolicyBase{
+		Type: c.Type,
+	}
+}
+
+// ContentInspectionPolicyAddressPrefixesSource - Selects content inspection sources by IP address prefixes.
+type ContentInspectionPolicyAddressPrefixesSource struct {
+	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the source(s).
+	Prefixes []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value ContentInspectionPolicySourceTypeAddressPrefixes, any specified value is ignored.
+	Type *ContentInspectionPolicySourceType
+}
+
+// GetContentInspectionPolicySource implements the ContentInspectionPolicySourceClassification interface for type ContentInspectionPolicyAddressPrefixesSource.
+func (c *ContentInspectionPolicyAddressPrefixesSource) GetContentInspectionPolicySource() *ContentInspectionPolicySource {
+	return &ContentInspectionPolicySource{
+		Type: c.Type,
+	}
+}
+
+// ContentInspectionPolicySource - Selects the source(s) that a content inspection policy applies to.
+type ContentInspectionPolicySource struct {
+	// REQUIRED; The type of source selector.
+	Type *ContentInspectionPolicySourceType
+}
+
+// GetContentInspectionPolicySource implements the ContentInspectionPolicySourceClassification interface for type ContentInspectionPolicySource.
+func (c *ContentInspectionPolicySource) GetContentInspectionPolicySource() *ContentInspectionPolicySource {
+	return c
+}
+
+// ContentInspectionPolicyWorkloadIDPatternsSource - Selects content inspection sources by workload ID patterns.
+type ContentInspectionPolicyWorkloadIDPatternsSource struct {
+	// REQUIRED; The workload ID patterns that identify the source(s).
+	Patterns []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value ContentInspectionPolicySourceTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *ContentInspectionPolicySourceType
+}
+
+// GetContentInspectionPolicySource implements the ContentInspectionPolicySourceClassification interface for type ContentInspectionPolicyWorkloadIDPatternsSource.
+func (c *ContentInspectionPolicyWorkloadIDPatternsSource) GetContentInspectionPolicySource() *ContentInspectionPolicySource {
+	return &ContentInspectionPolicySource{
+		Type: c.Type,
+	}
+}
+
+// ContentInspectionProfile - A connection to a customer-owned Azure Content Safety account. Configuring the connection
+// does not create or attach a ContentInspection policy or select traffic for inspection.
+// The endpoint routes Content Safety calls; a key alone cannot identify the account endpoint.
+// The customer supplies the key, so the service does not discover account keys through Azure
+// Resource Manager or require permission to perform the account's listKeys action.
+// Fields are schema-optional to allow an empty request object. Service cross-field validation
+// requires both endpoint and apiKey in a nonempty request profile. Read responses contain only
+// the endpoint; they are not complete connection-update inputs.
+type ContentInspectionProfile struct {
+	// The nonempty API key for the specified account. Required together with endpoint in every
+	// nonempty request profile, even when the endpoint is unchanged. Supplying a different key
+	// with the endpoint on PUT rotates the stored credential. A missing key in a nonempty profile
+	// is rejected without retrieving a saved key or comparing with the saved endpoint to permit omission.
+	// Null and empty values are rejected, not treated as removal. The key is never returned in
+	// resource, list, or long-running operation responses.
+	APIKey *string
+
+	// The HTTPS account endpoint, for example `https://contoso.cognitiveservices.azure.com/`.
+	// Only Azure Content Safety account endpoints in the service's supported Azure cloud are
+	// accepted. Credentials must not be forwarded to other destinations, including redirects.
+	// Required together with apiKey in a nonempty request profile, including key rotation.
+	// Changing the endpoint requires a key for the new account; the stored key is not reused.
+	Endpoint *string
+}
+
+// EgressTrustBundle - The egress TLS-inspection trust bundle for an agent fabric.
+// AgentFabric terminates and re-encrypts enrolled egress traffic, presenting leaf
+// certificates signed by an AgentFabric-operated certificate authority. A workload can only
+// complete those handshakes if the CA's PUBLIC anchor is already present in its trust store.
+// This singleton publishes the anchors that are installed into the fabric's sandboxes, so
+// the compute platform can install them during sandbox bring-up and so you can audit exactly
+// which authorities your workloads are being asked to trust.
+// The resource is read-only and computed: it is never created, updated or deleted through
+// ARM, and reading it neither enrolls a workload nor redirects any traffic. It returns PUBLIC
+// certificates only -- private key material never leaves AgentFabric's key vault.
+// A bundle is always returned as a list, even when it holds a single anchor, so that a CA
+// rollover can publish the outgoing and incoming anchors together.
+type EgressTrustBundle struct {
+	// The resource-specific properties for this resource.
+	Properties *EgressTrustBundleProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EgressTrustBundleCertificate - A single public certificate authority anchor within the egress trust bundle.
+type EgressTrustBundleCertificate struct {
+	// READ-ONLY; Stable identifier of this anchor, unique within the bundle. Derived from the
+	// certificate itself, so it is identical wherever the same anchor is served.
+	CertificateID *string
+
+	// READ-ONLY; The time after which the certificate is no longer valid.
+	NotAfter *time.Time
+
+	// READ-ONLY; The time from which the certificate is valid.
+	NotBefore *time.Time
+
+	// READ-ONLY; The PEM-encoded X.509 public certificate. This never contains private key material.
+	Pem *string
+
+	// READ-ONLY; Lowercase hexadecimal SHA-256 fingerprint of the certificate's DER encoding.
+	ThumbprintSHA256 *string
+}
+
+// EgressTrustBundleListResult - The response of a EgressTrustBundle list operation.
+type EgressTrustBundleListResult struct {
+	// REQUIRED; The EgressTrustBundle items on this page
+	Value []*EgressTrustBundle
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// EgressTrustBundleProperties - Properties of the platform egress TLS-inspection trust bundle.
+type EgressTrustBundleProperties struct {
+	// READ-ONLY; Opaque identifier of this bundle's content. It changes whenever the set of anchors
+	// changes and is stable otherwise, so a caller can record what a sandbox was provisioned
+	// with and detect drift without comparing certificate bytes.
+	BundleVersion *string
+
+	// READ-ONLY; The absolute deadline matching `cacheValiditySeconds`. A cached copy must not be used
+	// after this instant without re-reading. Reaching it means the earlier refresh was missed
+	// or failing; a caller that cannot obtain an acceptable bundle must fail or retry
+	// bring-up rather than silently skip anchor installation.
+	CacheExpiresAt *time.Time
+
+	// READ-ONLY; How long, in seconds, a caller may serve this bundle from its own cache. This is a
+	// ceiling, not a target: refresh well before it elapses, at roughly half this value, so a
+	// transient failure still leaves time to retry before the cached copy must be discarded.
+	// The service sets this value and may change it to steer how often callers re-read, so
+	// honour the value returned rather than hard-coding an interval. Callers are expected to
+	// cache; a synchronous dependency on this operation during every sandbox launch is not
+	// intended.
+	CacheValiditySeconds *int32
+
+	// READ-ONLY; The public certificate authority anchors that make up the bundle, ordered with the
+	// currently signing anchor first. Always contains at least one entry.
+	Certificates []*EgressTrustBundleCertificate
+
+	// READ-ONLY; The provisioning state of the resource. This resource is computed rather than
+	// provisioned, so a successful read always reports `Succeeded`.
+	ProvisioningState *ProvisioningState
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -31,6 +621,437 @@ type ErrorDetail struct {
 
 	// READ-ONLY; The error target.
 	Target *string
+}
+
+// FQDNFilteringAddressPrefixesSource - Selects FQDN filtering sources by IP address prefixes.
+type FQDNFilteringAddressPrefixesSource struct {
+	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the source(s).
+	Prefixes []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value FQDNFilteringSourceTypeAddressPrefixes, any specified value is ignored.
+	Type *FQDNFilteringSourceType
+}
+
+// GetFQDNFilteringSource implements the FQDNFilteringSourceClassification interface for type FQDNFilteringAddressPrefixesSource.
+func (f *FQDNFilteringAddressPrefixesSource) GetFQDNFilteringSource() *FQDNFilteringSource {
+	return &FQDNFilteringSource{
+		Type: f.Type,
+	}
+}
+
+// FQDNFilteringDestination - Selects the destination(s) that an FQDN filtering policy applies to.
+type FQDNFilteringDestination struct {
+	// REQUIRED; The type of destination selector.
+	Type *FQDNFilteringDestinationType
+}
+
+// GetFQDNFilteringDestination implements the FQDNFilteringDestinationClassification interface for type FQDNFilteringDestination.
+func (f *FQDNFilteringDestination) GetFQDNFilteringDestination() *FQDNFilteringDestination { return f }
+
+// FQDNFilteringFQDNsDestination - Selects FQDN filtering destinations by fully qualified domain names.
+type FQDNFilteringFQDNsDestination struct {
+	// REQUIRED; The fully qualified domain names that identify the destination(s).
+	FQDNs []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value FQDNFilteringDestinationTypeFQDNs, any specified value is ignored.
+	Type *FQDNFilteringDestinationType
+}
+
+// GetFQDNFilteringDestination implements the FQDNFilteringDestinationClassification interface for type FQDNFilteringFQDNsDestination.
+func (f *FQDNFilteringFQDNsDestination) GetFQDNFilteringDestination() *FQDNFilteringDestination {
+	return &FQDNFilteringDestination{
+		Type: f.Type,
+	}
+}
+
+// FQDNFilteringPolicy - FQDN filtering network security policy.
+type FQDNFilteringPolicy struct {
+	// REQUIRED; The source details for the policy.
+	Source FQDNFilteringSourceClassification
+
+	// CONSTANT; The network security policy type.
+	// Field has constant value PolicyTypeFQDNFiltering, any specified value is ignored.
+	Type *PolicyType
+
+	// The destination details for the policy.
+	Destination FQDNFilteringDestinationClassification
+
+	// The direction of traffic for the policy.
+	Direction *PolicyDirection
+
+	// The name of the policy.
+	Name *string
+
+	// The ports for the policy.
+	Ports []*int32
+
+	// The priority of the policy.
+	Priority *int32
+}
+
+// GetPolicyBase implements the PolicyBaseClassification interface for type FQDNFilteringPolicy.
+func (f *FQDNFilteringPolicy) GetPolicyBase() *PolicyBase {
+	return &PolicyBase{
+		Type: f.Type,
+	}
+}
+
+// FQDNFilteringSource - Selects the source(s) that an FQDN filtering policy applies to.
+type FQDNFilteringSource struct {
+	// REQUIRED; The type of source selector.
+	Type *FQDNFilteringSourceType
+}
+
+// GetFQDNFilteringSource implements the FQDNFilteringSourceClassification interface for type FQDNFilteringSource.
+func (f *FQDNFilteringSource) GetFQDNFilteringSource() *FQDNFilteringSource { return f }
+
+// FQDNFilteringWorkloadIDPatternsSource - Selects FQDN filtering sources by workload ID patterns.
+type FQDNFilteringWorkloadIDPatternsSource struct {
+	// REQUIRED; The workload ID patterns that identify the source(s).
+	Patterns []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value FQDNFilteringSourceTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *FQDNFilteringSourceType
+}
+
+// GetFQDNFilteringSource implements the FQDNFilteringSourceClassification interface for type FQDNFilteringWorkloadIDPatternsSource.
+func (f *FQDNFilteringWorkloadIDPatternsSource) GetFQDNFilteringSource() *FQDNFilteringSource {
+	return &FQDNFilteringSource{
+		Type: f.Type,
+	}
+}
+
+// MCPArgumentMatching - Compares the argument values of an MCP request with a list of values. Only string values
+// are compared, and a boolean compares as true or false. Without a path, object keys are
+// compared too.
+type MCPArgumentMatching struct {
+	// REQUIRED; How the string is compared with the values.
+	MatchType *MCPMatchType
+
+	// REQUIRED; The values to compare with: 1 to 64, or 1 to 16 non-empty values for Contains and NotContains.
+	Values []*string
+
+	// Whether the comparison is case-sensitive. The default is CaseSensitive.
+	MatchCase *MCPMatchCase
+
+	// A JSONPath into the request's params.arguments object, which is `$`: 1 to 8 segments,
+	// the first `.name` and the others `.name` or `[*]` (at most once), for example
+	// `$.repoName` or `$.paths[*]`. With a path, a missing key (also in an array element), a key
+	// that differs only in case, or a value of the wrong type on the way is a mismatch: an Allow
+	// condition holds only when there is none and every selected value passes, and a Deny
+	// condition also holds when there is one, when the path selects nothing, or when a selected
+	// value is not a string or boolean. Without a path every string or boolean argument value and
+	// every object key is compared; this is allowed only for ExactMatch or Contains in a Deny
+	// rule and for NotExactMatch or NotContains in an Allow rule.
+	Path *string
+}
+
+// MCPPolicy - MCP server network security policy.
+type MCPPolicy struct {
+	// REQUIRED; The default action to take when no rule in the policy matches.
+	DefaultAction *PolicyAction
+
+	// REQUIRED; The MCP server(s) that this policy applies to.
+	Destination MCPPolicyDestinationClassification
+
+	// REQUIRED; The list of MCP rules.
+	Rules []*MCPRule
+
+	// REQUIRED; The source(s) that this policy applies to.
+	Source MCPPolicySourceClassification
+
+	// CONSTANT; The network security policy type.
+	// Field has constant value PolicyTypeMCP, any specified value is ignored.
+	Type *PolicyType
+}
+
+// GetPolicyBase implements the PolicyBaseClassification interface for type MCPPolicy.
+func (m *MCPPolicy) GetPolicyBase() *PolicyBase {
+	return &PolicyBase{
+		Type: m.Type,
+	}
+}
+
+// MCPPolicyAddressPrefixesDestination - Selects MCP policy destinations by IP address prefixes.
+type MCPPolicyAddressPrefixesDestination struct {
+	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the destination(s).
+	Prefixes []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value MCPPolicyDestinationTypeAddressPrefixes, any specified value is ignored.
+	Type *MCPPolicyDestinationType
+}
+
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyAddressPrefixesDestination.
+func (m *MCPPolicyAddressPrefixesDestination) GetMCPPolicyDestination() *MCPPolicyDestination {
+	return &MCPPolicyDestination{
+		Type: m.Type,
+	}
+}
+
+// MCPPolicyAddressPrefixesSource - Selects MCP policy sources by IP address prefixes.
+type MCPPolicyAddressPrefixesSource struct {
+	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the source(s).
+	Prefixes []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value MCPPolicySourceTypeAddressPrefixes, any specified value is ignored.
+	Type *MCPPolicySourceType
+}
+
+// GetMCPPolicySource implements the MCPPolicySourceClassification interface for type MCPPolicyAddressPrefixesSource.
+func (m *MCPPolicyAddressPrefixesSource) GetMCPPolicySource() *MCPPolicySource {
+	return &MCPPolicySource{
+		Type: m.Type,
+	}
+}
+
+// MCPPolicyDestination - Selects the MCP server(s) that an MCP policy applies to.
+type MCPPolicyDestination struct {
+	// REQUIRED; The type of destination selector.
+	Type *MCPPolicyDestinationType
+}
+
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyDestination.
+func (m *MCPPolicyDestination) GetMCPPolicyDestination() *MCPPolicyDestination { return m }
+
+// MCPPolicyFQDNsDestination - Selects MCP policy destinations by fully qualified domain names.
+type MCPPolicyFQDNsDestination struct {
+	// REQUIRED; The fully qualified domain names that identify the destination(s).
+	FQDNs []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value MCPPolicyDestinationTypeFQDNs, any specified value is ignored.
+	Type *MCPPolicyDestinationType
+}
+
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyFQDNsDestination.
+func (m *MCPPolicyFQDNsDestination) GetMCPPolicyDestination() *MCPPolicyDestination {
+	return &MCPPolicyDestination{
+		Type: m.Type,
+	}
+}
+
+// MCPPolicySource - Selects the source(s) that an MCP policy applies to.
+type MCPPolicySource struct {
+	// REQUIRED; The type of source selector.
+	Type *MCPPolicySourceType
+}
+
+// GetMCPPolicySource implements the MCPPolicySourceClassification interface for type MCPPolicySource.
+func (m *MCPPolicySource) GetMCPPolicySource() *MCPPolicySource { return m }
+
+// MCPPolicyWorkloadIDPatternsDestination - Selects MCP policy destinations by workload ID patterns.
+type MCPPolicyWorkloadIDPatternsDestination struct {
+	// REQUIRED; The workload ID patterns that identify the destination(s).
+	Patterns []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value MCPPolicyDestinationTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *MCPPolicyDestinationType
+}
+
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyWorkloadIDPatternsDestination.
+func (m *MCPPolicyWorkloadIDPatternsDestination) GetMCPPolicyDestination() *MCPPolicyDestination {
+	return &MCPPolicyDestination{
+		Type: m.Type,
+	}
+}
+
+// MCPPolicyWorkloadIDPatternsSource - Selects MCP policy sources by workload ID patterns.
+type MCPPolicyWorkloadIDPatternsSource struct {
+	// REQUIRED; The workload ID patterns that identify the source(s).
+	Patterns []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value MCPPolicySourceTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *MCPPolicySourceType
+}
+
+// GetMCPPolicySource implements the MCPPolicySourceClassification interface for type MCPPolicyWorkloadIDPatternsSource.
+func (m *MCPPolicyWorkloadIDPatternsSource) GetMCPPolicySource() *MCPPolicySource {
+	return &MCPPolicySource{
+		Type: m.Type,
+	}
+}
+
+// MCPPromptMatching - The prompt conditions of an MCP rule. Present properties are ANDed.
+type MCPPromptMatching struct {
+	// Compared with the arguments of a prompts/get request.
+	Arguments *MCPArgumentMatching
+
+	// Compared with the description of each prompt in a prompts/list response. Needs methods List alone.
+	Descriptions *MCPStringMatching
+
+	// The prompt methods to match. Omitted means Get. Names and arguments need Get alone. Titles
+	// and descriptions need List alone.
+	Methods []*MCPPromptMethod
+
+	// Compared with the prompt name of a prompts/get request.
+	Names *MCPStringMatching
+
+	// Compared with the text of each message, result.messages[].content.text, of a prompts/get
+	// response.
+	ResponseContents *MCPStringMatching
+
+	// Compared with the title of each prompt in a prompts/list response. Needs methods List alone.
+	Titles *MCPStringMatching
+}
+
+// MCPRule - A single rule within an MCP policy.
+type MCPRule struct {
+	// The action to take for the specified MCP tools.
+	Action *PolicyAction
+
+	// The conditions of the rule. A rule without an action uses defaultAction.
+	MatchingConditions *MCPRuleMatchingConditions
+
+	// The name of the rule: 1 to 63 ASCII letters, digits, '_', '.' or '-', starting with a
+	// letter or digit, and unique within the policy ignoring case. Flow logs report the rule
+	// that decided as `mcp-<n>/<name>`.
+	Name *string
+
+	// The priority of the rule, unique within the policy. Rules are tried from the lowest value
+	// and the first rule that matches decides; a policy has 1 to 5 rules. When none
+	// matches, defaultAction applies to every MCP request except session requests (initialize,
+	// ping, notifications, the list methods, JSON-RPC responses, and requests with no body such
+	// as GET and DELETE), which pass.
+	Priority *int32
+
+	// Deprecated. Legacy MCP tool names retained for compatibility; use matchingConditions.destinations.toolMatching.names for
+	// new rules.
+	Tools []*string
+}
+
+// MCPRuleDestinationMatching - The MCP servers and requests an MCP rule matches. Present properties are ANDed. A rule has
+// at most one of toolMatching and promptMatching. Without either, it matches every request to
+// its servers.
+type MCPRuleDestinationMatching struct {
+	// Conditions on prompt requests.
+	PromptMatching *MCPPromptMatching
+
+	// Compared with params.protocolVersion of an initialize request, the protocol version such as
+	// 2025-06-18 that a client names when it starts a session. A request that names no protocol
+	// version does not match the rule, so a Deny rule blocks sessions that start with a listed version.
+	ProtocolVersions *MCPStringMatching
+
+	// The MCP servers: exact names or one leading `*.`, each inside the policy destination.
+	// Omitted means every server of the policy destination.
+	ServerFQDNs []*string
+
+	// Conditions on tool requests.
+	ToolMatching *MCPToolMatching
+}
+
+// MCPRuleMatchingConditions - The conditions of an MCP rule. The rule applies to the sources of its policy.
+type MCPRuleMatchingConditions struct {
+	// REQUIRED; The servers and requests the rule matches.
+	Destinations *MCPRuleDestinationMatching
+}
+
+// MCPStringMatching - Compares one string of an MCP request or response with a list of values. ExactMatch and
+// Contains hold when one value matches; NotExactMatch and NotContains hold when no value matches.
+type MCPStringMatching struct {
+	// REQUIRED; How the string is compared with the values.
+	MatchType *MCPMatchType
+
+	// REQUIRED; The values to compare with: 1 to 64, or 1 to 16 non-empty values for Contains and NotContains.
+	Values []*string
+
+	// Whether the comparison is case-sensitive. The default is CaseSensitive.
+	MatchCase *MCPMatchCase
+}
+
+// MCPToolMatching - The tool conditions of an MCP rule. Present properties are ANDed.
+type MCPToolMatching struct {
+	// Compared with the arguments of a tools/call request.
+	CallArguments *MCPArgumentMatching
+
+	// Compared with the description of each tool in a tools/list response. Needs methods List alone.
+	Descriptions *MCPStringMatching
+
+	// The tool methods to match. Omitted means Call. Names and callArguments need Call alone.
+	// Titles and descriptions need List alone.
+	Methods []*MCPToolMethod
+
+	// Compared with the tool name of a tools/call request.
+	Names *MCPStringMatching
+
+	// Compared with the text of each content item, result.content[].text, of a tools/call response.
+	ResponseContents *MCPStringMatching
+
+	// Compared with the title of each tool in a tools/list response. Needs methods List alone.
+	Titles *MCPStringMatching
+}
+
+// Member resource
+type Member struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *MemberProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MemberListResult - The response of a Member list operation.
+type MemberListResult struct {
+	// REQUIRED; The Member items on this page
+	Value []*Member
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MemberProperties - Member properties
+type MemberProperties struct {
+	// The customer-provided fully qualified domain name associated with the member.
+	Fqdn *string
+
+	// The workload configuration of the member. Set at creation and immutable
+	// thereafter; to change the workload, delete and recreate the member.
+	Workload WorkloadBaseClassification
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The SPIFFE ID that identifies this member's workload identity, system-assigned by the service
+	// at creation time. It takes the form `spiffe://<trustDomain>/<agentFabricName>/<memberName>`,
+	// using the owning fabric's trust domain (or the default `microsoft.agentfabric` when unset), with
+	// all segments lower-cased to conform to the SPIFFE ID scheme. Read-only.
+	SpiffeID *string
+}
+
+// MemberTagsUpdate - The type used for updating tags in Member resources.
+type MemberTagsUpdate struct {
+	// The Member properties to update.
+	Properties *MemberUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// MemberUpdateProperties - The Member properties that can be updated.
+type MemberUpdateProperties struct {
+	// The customer-provided fully qualified domain name associated with the member.
+	Fqdn *string
 }
 
 // NeuroShieldAgentHealth - Approximate Neuron agent liveness projected onto a protected resource.
@@ -524,6 +1545,107 @@ type OperationStatusResult struct {
 	ResourceID *string
 }
 
+// PolicyBase - Base network security policy configuration.
+type PolicyBase struct {
+	// REQUIRED; The network security policy type.
+	Type *PolicyType
+}
+
+// GetPolicyBase implements the PolicyBaseClassification interface for type PolicyBase.
+func (p *PolicyBase) GetPolicyBase() *PolicyBase { return p }
+
+// PolicyGroup resource.
+type PolicyGroup struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *PolicyGroupProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PolicyGroupListResult - The response of a PolicyGroup list operation.
+type PolicyGroupListResult struct {
+	// REQUIRED; The PolicyGroup items on this page
+	Value []*PolicyGroup
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PolicyGroupProperties - PolicyGroup properties.
+type PolicyGroupProperties struct {
+	// The description of the policy group.
+	Description *string
+
+	// The display name of the policy group.
+	DisplayName *string
+
+	// The list of network security policies. A PUT introducing a ContentInspection
+	// policy is incompatible if any associated fabric has no configured inspection connection,
+	// regardless of whether selectors currently match traffic. The request is rejected before
+	// persisting or distributing the proposed changes, preserving the previously
+	// accepted policies; mixed compatible and incompatible associations cannot partially apply
+	// changes or silently skip inspection. An unattached group, or one attached only to compatible
+	// fabrics, may contain ContentInspection policies. Removing ContentInspection policies remains allowed,
+	// subject to other validation.
+	NetworkSecurityPolicies []PolicyBaseClassification
+
+	// The priority of the policy group.
+	Priority *int32
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// PolicyGroupTagsUpdate - The type used for updating tags in PolicyGroup resources.
+type PolicyGroupTagsUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// PromptInjectionProtection - Prompt injection protection configuration.
+type PromptInjectionProtection struct {
+	// REQUIRED; The action to take when prompt injection is detected.
+	OnDetection *PromptInjectionOnDetection
+
+	// The JSONPath expressions selecting the parts of the request body to scan for prompt injection.
+	PromptLocations []*string
+
+	// The JSONPath expressions selecting the parts of the response body to scan for prompt injection.
+	ResponseLocations []*string
+
+	// The sensitivity level of prompt injection detection.
+	Sensitivity *ContentInspectionSensitivity
+}
+
+// SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
+type SystemAssignedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *SystemAssignedServiceIdentityType
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -544,3 +1666,290 @@ type SystemData struct {
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
 }
+
+// TLSInspectionCertificateBase - Base certificate configuration for a TLS inspection policy.
+type TLSInspectionCertificateBase struct {
+	// REQUIRED; The source mode of the TLS inspection certificate.
+	Mode *TLSInspectionCertificateMode
+}
+
+// GetTLSInspectionCertificateBase implements the TLSInspectionCertificateBaseClassification interface for type TLSInspectionCertificateBase.
+func (t *TLSInspectionCertificateBase) GetTLSInspectionCertificateBase() *TLSInspectionCertificateBase {
+	return t
+}
+
+// TLSInspectionPolicy - TLS inspection network security policy.
+type TLSInspectionPolicy struct {
+	// REQUIRED; The certificate configuration used for TLS inspection.
+	Certificate TLSInspectionCertificateBaseClassification
+
+	// REQUIRED; The source details for the policy.
+	Source TLSInspectionPolicySourceClassification
+
+	// CONSTANT; The network security policy type.
+	// Field has constant value PolicyTypeTLSInspection, any specified value is ignored.
+	Type *PolicyType
+
+	// The action for TLS connections that no rule matches, and for rules without an action. If omitted, Inspect.
+	DefaultAction *TLSInspectionAction
+
+	// The TLS inspection rules. At most one rule is supported.
+	Rules []*TLSInspectionRule
+}
+
+// GetPolicyBase implements the PolicyBaseClassification interface for type TLSInspectionPolicy.
+func (t *TLSInspectionPolicy) GetPolicyBase() *PolicyBase {
+	return &PolicyBase{
+		Type: t.Type,
+	}
+}
+
+// TLSInspectionPolicySource - Selects the source(s) that a TLS inspection policy applies to.
+type TLSInspectionPolicySource struct {
+	// REQUIRED; The type of source selector.
+	Type *TLSInspectionPolicySourceType
+}
+
+// GetTLSInspectionPolicySource implements the TLSInspectionPolicySourceClassification interface for type TLSInspectionPolicySource.
+func (t *TLSInspectionPolicySource) GetTLSInspectionPolicySource() *TLSInspectionPolicySource {
+	return t
+}
+
+// TLSInspectionPolicyWorkloadIDPatternsSource - Selects TLS inspection sources by workload ID patterns.
+type TLSInspectionPolicyWorkloadIDPatternsSource struct {
+	// REQUIRED; The workload ID patterns that identify the source(s).
+	Patterns []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value TLSInspectionPolicySourceTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *TLSInspectionPolicySourceType
+}
+
+// GetTLSInspectionPolicySource implements the TLSInspectionPolicySourceClassification interface for type TLSInspectionPolicyWorkloadIDPatternsSource.
+func (t *TLSInspectionPolicyWorkloadIDPatternsSource) GetTLSInspectionPolicySource() *TLSInspectionPolicySource {
+	return &TLSInspectionPolicySource{
+		Type: t.Type,
+	}
+}
+
+// TLSInspectionRule - A TLS inspection rule.
+type TLSInspectionRule struct {
+	// REQUIRED; The destinations that the rule matches. A connection matches the rule when it matches any of them. At most one
+	// destination is supported.
+	Destinations []TLSInspectionRuleDestinationClassification
+
+	// REQUIRED; The name of the rule, unique within the policy ignoring case.
+	Name *string
+
+	// REQUIRED; The priority of the rule, unique within the policy. Rules are evaluated in ascending priority order and the first
+	// match applies.
+	Priority *int32
+
+	// The action for TLS connections that match the rule. If omitted, the rule takes the policy's defaultAction, so it only matters
+	// for rule ordering.
+	Action *TLSInspectionAction
+}
+
+// TLSInspectionRuleDestination - Selects the destinations that a TLS inspection rule matches.
+type TLSInspectionRuleDestination struct {
+	// REQUIRED; The type of destination selector.
+	Type *TLSInspectionRuleDestinationType
+}
+
+// GetTLSInspectionRuleDestination implements the TLSInspectionRuleDestinationClassification interface for type TLSInspectionRuleDestination.
+func (t *TLSInspectionRuleDestination) GetTLSInspectionRuleDestination() *TLSInspectionRuleDestination {
+	return t
+}
+
+// TLSInspectionRuleFQDNsDestination - Selects TLS inspection rule destinations by fully qualified domain names, matched against
+// the TLS server name (SNI).
+type TLSInspectionRuleFQDNsDestination struct {
+	// REQUIRED; The fully qualified domain names. Each is an exact name, or a name after one leading '*.', which matches that
+	// name and any subdomain of it. Matching ignores case and one trailing dot.
+	FQDNs []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value TLSInspectionRuleDestinationTypeFQDNs, any specified value is ignored.
+	Type *TLSInspectionRuleDestinationType
+}
+
+// GetTLSInspectionRuleDestination implements the TLSInspectionRuleDestinationClassification interface for type TLSInspectionRuleFQDNsDestination.
+func (t *TLSInspectionRuleFQDNsDestination) GetTLSInspectionRuleDestination() *TLSInspectionRuleDestination {
+	return &TLSInspectionRuleDestination{
+		Type: t.Type,
+	}
+}
+
+// URLFilteringAddressPrefixesDestination - Selects URL filtering destinations by IP address prefixes.
+type URLFilteringAddressPrefixesDestination struct {
+	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the destination(s).
+	Prefixes []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value URLFilteringDestinationTypeAddressPrefixes, any specified value is ignored.
+	Type *URLFilteringDestinationType
+}
+
+// GetURLFilteringDestination implements the URLFilteringDestinationClassification interface for type URLFilteringAddressPrefixesDestination.
+func (u *URLFilteringAddressPrefixesDestination) GetURLFilteringDestination() *URLFilteringDestination {
+	return &URLFilteringDestination{
+		Type: u.Type,
+	}
+}
+
+// URLFilteringAddressPrefixesSource - Selects URL filtering sources by IP address prefixes.
+type URLFilteringAddressPrefixesSource struct {
+	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the source(s).
+	Prefixes []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value URLFilteringSourceTypeAddressPrefixes, any specified value is ignored.
+	Type *URLFilteringSourceType
+}
+
+// GetURLFilteringSource implements the URLFilteringSourceClassification interface for type URLFilteringAddressPrefixesSource.
+func (u *URLFilteringAddressPrefixesSource) GetURLFilteringSource() *URLFilteringSource {
+	return &URLFilteringSource{
+		Type: u.Type,
+	}
+}
+
+// URLFilteringDestination - Selects the destination(s) that a URL filtering policy applies to.
+type URLFilteringDestination struct {
+	// REQUIRED; The type of destination selector.
+	Type *URLFilteringDestinationType
+}
+
+// GetURLFilteringDestination implements the URLFilteringDestinationClassification interface for type URLFilteringDestination.
+func (u *URLFilteringDestination) GetURLFilteringDestination() *URLFilteringDestination { return u }
+
+// URLFilteringFQDNsDestination - Selects URL filtering destinations by fully qualified domain names.
+type URLFilteringFQDNsDestination struct {
+	// REQUIRED; The fully qualified domain names that identify the destination(s).
+	FQDNs []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value URLFilteringDestinationTypeFQDNs, any specified value is ignored.
+	Type *URLFilteringDestinationType
+}
+
+// GetURLFilteringDestination implements the URLFilteringDestinationClassification interface for type URLFilteringFQDNsDestination.
+func (u *URLFilteringFQDNsDestination) GetURLFilteringDestination() *URLFilteringDestination {
+	return &URLFilteringDestination{
+		Type: u.Type,
+	}
+}
+
+// URLFilteringPolicy - URL filtering network security policy.
+type URLFilteringPolicy struct {
+	// REQUIRED; The action for a request to a host that one of the policy's rules names when no rule matches,
+	// and the action of a rule that has none. Requests to other hosts are not decided by this policy.
+	DefaultAction *PolicyAction
+
+	// REQUIRED; The list of URL filtering rules. Service validation may limit rules-based policies to 1 to 5
+	// rules; the schema retains the earlier array shape for compatibility. Rules are evaluated in
+	// ascending priority order and the first matching rule decides; rule priorities must be unique
+	// within the policy. A rule without an action uses the policy defaultAction. When no rule matches
+	// a request to a host that a rule names, the policy defaultAction applies. Requests to other
+	// hosts are not decided by this policy.
+	Rules []*URLFilteringRule
+
+	// REQUIRED; The source details for the policy.
+	Source URLFilteringSourceClassification
+
+	// CONSTANT; The network security policy type.
+	// Field has constant value PolicyTypeURLFiltering, any specified value is ignored.
+	Type *PolicyType
+
+	// The destination details for the policy.
+	Destination URLFilteringDestinationClassification
+}
+
+// GetPolicyBase implements the PolicyBaseClassification interface for type URLFilteringPolicy.
+func (u *URLFilteringPolicy) GetPolicyBase() *PolicyBase {
+	return &PolicyBase{
+		Type: u.Type,
+	}
+}
+
+// URLFilteringRule - A single rule within a URL filtering policy.
+type URLFilteringRule struct {
+	// REQUIRED; The name of the rule.
+	Name *string
+
+	// REQUIRED; The priority of the rule. Rules are evaluated in ascending priority order.
+	Priority *int32
+
+	// The action to take when the rule matches. If omitted, the rule uses the policy defaultAction.
+	Action *PolicyAction
+
+	// The hostname matched by the rule, such as api.contoso.com or *.contoso.com, with no scheme,
+	// port or path. Optional in the schema for compatibility; specify it for rules-based authoring.
+	Hostname *string
+
+	// The HTTP method matched by the rule. If omitted, the rule matches any method.
+	Method *HTTPMethod
+
+	// The URL paths matched by the rule. If omitted, the rule matches any path.
+	Paths []*string
+}
+
+// URLFilteringSource - Selects the source(s) that a URL filtering policy applies to.
+type URLFilteringSource struct {
+	// REQUIRED; The type of source selector.
+	Type *URLFilteringSourceType
+}
+
+// GetURLFilteringSource implements the URLFilteringSourceClassification interface for type URLFilteringSource.
+func (u *URLFilteringSource) GetURLFilteringSource() *URLFilteringSource { return u }
+
+// URLFilteringWorkloadIDPatternsDestination - Selects URL filtering destinations by workload ID patterns.
+type URLFilteringWorkloadIDPatternsDestination struct {
+	// REQUIRED; The workload ID patterns that identify the destination(s).
+	Patterns []*string
+
+	// CONSTANT; The type of destination selector.
+	// Field has constant value URLFilteringDestinationTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *URLFilteringDestinationType
+}
+
+// GetURLFilteringDestination implements the URLFilteringDestinationClassification interface for type URLFilteringWorkloadIDPatternsDestination.
+func (u *URLFilteringWorkloadIDPatternsDestination) GetURLFilteringDestination() *URLFilteringDestination {
+	return &URLFilteringDestination{
+		Type: u.Type,
+	}
+}
+
+// URLFilteringWorkloadIDPatternsSource - Selects URL filtering sources by workload ID patterns.
+type URLFilteringWorkloadIDPatternsSource struct {
+	// REQUIRED; The workload ID patterns that identify the source(s).
+	Patterns []*string
+
+	// CONSTANT; The type of source selector.
+	// Field has constant value URLFilteringSourceTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *URLFilteringSourceType
+}
+
+// GetURLFilteringSource implements the URLFilteringSourceClassification interface for type URLFilteringWorkloadIDPatternsSource.
+func (u *URLFilteringWorkloadIDPatternsSource) GetURLFilteringSource() *URLFilteringSource {
+	return &URLFilteringSource{
+		Type: u.Type,
+	}
+}
+
+// WorkloadBase - Base workload configuration for a member.
+type WorkloadBase struct {
+	// REQUIRED; The workload type.
+	Type *WorkloadType
+
+	// The unique identifier (GUID) assigned to the member when it is created. For most workload
+	// types this is assigned by the resource provider and is read-only. Starting in API version
+	// `2026-10-07-preview`, ACI workloads instead supply this value at creation: the ACI resource
+	// provider generates the GUID for the sandbox and this field is immutable afterward. Starting in
+	// API version `2026-11-02-preview`, the ACI member resource name is this GUID: the service sets
+	// memberGuid from the member name, and a value supplied in the request must match the member name.
+	MemberGUID *string
+}
+
+// GetWorkloadBase implements the WorkloadBaseClassification interface for type WorkloadBase.
+func (w *WorkloadBase) GetWorkloadBase() *WorkloadBase { return w }

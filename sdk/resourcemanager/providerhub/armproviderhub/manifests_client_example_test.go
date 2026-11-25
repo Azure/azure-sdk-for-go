@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/Manifests_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/Manifests_CreateOrUpdate.json
 func ExampleManifestsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,7 +25,7 @@ func ExampleManifestsClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewManifestsClient().CreateOrUpdate(ctx, "Microsoft.Contoso", "prod", armproviderhub.ManifestInfo{
 		Properties: &armproviderhub.ManifestInfoProperties{
-			Manifest: to.Ptr("<<Core RP manifest>>"),
+			ManifestURI: to.Ptr("https://contoso.example/manifests/provider-manifest.json"),
 		},
 	}, nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleManifestsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Manifests_Get.json
+// Generated from example definition: 2026-10-01/Manifests_Get.json
 func ExampleManifestsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

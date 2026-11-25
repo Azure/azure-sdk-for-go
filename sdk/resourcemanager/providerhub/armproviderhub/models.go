@@ -79,6 +79,9 @@ type AppliedManifestInfo struct {
 
 	// Region to which the manifest was applied.
 	Region *string
+
+	// READ-ONLY; The root resource provider namespace.
+	RootProviderNamespace *string
 }
 
 type AsyncOperationPollingRules struct {
@@ -159,6 +162,12 @@ type CheckinManifestParams struct {
 
 	// REQUIRED; The environment supplied to the checkin manifest operation.
 	Environment *string
+
+	// The comment associated with the manifest check-in.
+	CheckinComment *string
+
+	// The URI of the signed-off OpenAPI specification pull request associated with the manifest check-in.
+	SwaggerURI *string
 }
 
 // CustomRollout - Concrete proxy resource types can be created by aliasing this type using a specific property type.
@@ -224,6 +233,9 @@ type CustomRolloutPropertiesSpecification struct {
 
 	// The rollout id.
 	RolloutID *string
+
+	// Orchestration metadata associated with the rollout.
+	RolloutOrchestrationMetadata *RolloutOrchestrationMetadata
 
 	// Whether release scope validation should be skipped.
 	SkipReleaseScopeValidation *bool
@@ -504,6 +516,81 @@ type EndpointInformation struct {
 
 	// The schema version.
 	SchemaVersion *string
+}
+
+// EndpointRegistration - An independently managed endpoint definition for a Resource Type Registration.
+type EndpointRegistration struct {
+	// REQUIRED; The endpoint configuration.
+	Properties *EndpointRegistrationProperties
+
+	// The endpoint kind used to select the routing behavior.
+	Kind *ResourceTypeEndpointKind
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EndpointRegistrationArrayResponseWithContinuation - A page of endpoint registrations.
+type EndpointRegistrationArrayResponseWithContinuation struct {
+	// The endpoint registrations in this page.
+	Value []*EndpointRegistration
+
+	// READ-ONLY; The link to the next page of endpoint registrations.
+	NextLink *string
+}
+
+// EndpointRegistrationProperties - Properties of an independently managed endpoint definition.
+type EndpointRegistrationProperties struct {
+	// Api version.
+	APIVersion *string
+
+	// The api versions.
+	APIVersions []*string
+
+	// The data boundary.
+	DataBoundary *DataBoundary
+
+	// Whether the endpoint is enabled.
+	Enabled *bool
+
+	// The endpoint type.
+	EndpointType *EndpointTypeResourceType
+
+	// The URI of the endpoint.
+	EndpointURI *string
+
+	// The extensions.
+	Extensions []*ResourceTypeExtension
+
+	// The features rule.
+	FeaturesRule *ResourceTypeEndpointFeaturesRule
+
+	// The locations.
+	Locations []*string
+
+	// The required features.
+	RequiredFeatures []*string
+
+	// The sku link.
+	SKULink *string
+
+	// The timeout.
+	Timeout *string
+
+	// The token auth configuration.
+	TokenAuthConfiguration *TokenAuthConfiguration
+
+	// List of zones.
+	Zones []*string
 }
 
 // ExtendedErrorInfo - Error information.
@@ -1329,6 +1416,9 @@ type ProviderRegistrationProperties struct {
 	// Legacy registrations.
 	LegacyRegistrations []*string
 
+	// The resource provider lifecycle information.
+	LifecycleInfo *ResourceProviderLifecycleInfo
+
 	// The linked notification rules.
 	LinkedNotificationRules []*FanoutLinkedNotificationRule
 
@@ -1608,6 +1698,21 @@ type ResourceProviderEndpointFeaturesRule struct {
 	RequiredFeaturesPolicy *FeaturesPolicy
 }
 
+// ResourceProviderLifecycleInfo - Resource provider lifecycle information.
+type ResourceProviderLifecycleInfo struct {
+	// The list of allowed subscriptions for this resource provider.
+	AllowedSubscriptions []*string
+
+	// The isolation type.
+	IsolationType *IsolationType
+
+	// The lifecycle stage.
+	LifecycleStage *LifecycleStage
+
+	// The partner category.
+	PartnerCategory *PartnerCategory
+}
+
 // ResourceProviderManagementErrorResponseMessageOptions - Options for error response messages.
 type ResourceProviderManagementErrorResponseMessageOptions struct {
 	// Type of server failure response message.
@@ -1714,6 +1819,9 @@ type ResourceProviderManifestManagement struct {
 	// List of expedited rollout submitters.
 	ExpeditedRolloutSubmitters []*string
 
+	// List of claims to approve or reject feature registration.
+	FeatureApprovalClaims []*string
+
 	// List of feature management owners.
 	FeatureManagementOwners []*string
 
@@ -1767,6 +1875,9 @@ type ResourceProviderManifestPropertiesManagement struct {
 
 	// List of expedited rollout submitters.
 	ExpeditedRolloutSubmitters []*string
+
+	// List of claims to approve or reject feature registration.
+	FeatureApprovalClaims []*string
 
 	// List of feature management owners.
 	FeatureManagementOwners []*string
@@ -2053,6 +2164,12 @@ type ResourceTypeIdentityManagement struct {
 	Type *IdentityManagementTypes
 }
 
+// ResourceTypeLifecycleInfo - Resource type lifecycle information.
+type ResourceTypeLifecycleInfo struct {
+	// The lifecycle stage.
+	LifecycleStage *LifecycleStage
+}
+
 // ResourceTypeManagedResourceGroupConfiguration - The managed resource group configuration for the resource type.
 type ResourceTypeManagedResourceGroupConfiguration struct {
 	// The application ids.
@@ -2205,6 +2322,9 @@ type ResourceTypeRegistrationProperties struct {
 
 	// The legacy policy.
 	LegacyPolicy *ResourceTypeRegistrationPropertiesLegacyPolicy
+
+	// The resource type lifecycle information.
+	LifecycleInfo *ResourceTypeLifecycleInfo
 
 	// The linked access checks.
 	LinkedAccessChecks []*LinkedAccessCheck
@@ -2415,6 +2535,9 @@ type ResourceTypeRegistrationPropertiesManagement struct {
 	// List of expedited rollout submitters.
 	ExpeditedRolloutSubmitters []*string
 
+	// List of claims to approve or reject feature registration.
+	FeatureApprovalClaims []*string
+
 	// List of feature management owners.
 	FeatureManagementOwners []*string
 
@@ -2600,6 +2723,24 @@ type ResourceTypeTemplateDeploymentPolicy struct {
 	PreflightNotifications *TemplateDeploymentPreflightNotifications
 }
 
+// RolloutOrchestrationMetadata - Orchestration metadata associated with a rollout.
+type RolloutOrchestrationMetadata struct {
+	// The deployment type associated with the rollout.
+	DeploymentType *string
+
+	// Whether the rollout is used for manifest buildout.
+	IsForManifestBuildout *bool
+
+	// The service group associated with the rollout.
+	ServiceGroup *string
+
+	// The identifier of the service associated with the rollout.
+	ServiceIdentifier *string
+
+	// The traffic ring associated with the rollout.
+	TrafficRing *string
+}
+
 type SKUCapability struct {
 	// REQUIRED; The name.
 	Name *string
@@ -2756,8 +2897,17 @@ type SwaggerSpecification struct {
 	// The api versions.
 	APIVersions []*string
 
+	// The swagger specification lifecycle information.
+	LifecycleInfo *SwaggerSpecificationLifecycleInfo
+
 	// The swagger spec folder uri.
 	SwaggerSpecFolderURI *string
+}
+
+// SwaggerSpecificationLifecycleInfo - Swagger specification lifecycle information.
+type SwaggerSpecificationLifecycleInfo struct {
+	// The lifecycle stage.
+	LifecycleStage *LifecycleStage
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

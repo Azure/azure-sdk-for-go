@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/Operations_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/Operations_CreateOrUpdate.json
 func ExampleOperationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleOperationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Operations_Delete.json
+// Generated from example definition: 2026-10-01/Operations_Delete.json
 func ExampleOperationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleOperationsClient_Delete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Operations_ListByProviderRegistration.json
+// Generated from example definition: 2026-10-01/Operations_ListByProviderRegistration.json
 func ExampleOperationsClient_ListByProviderRegistration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExampleOperationsClient_ListByProviderRegistration() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Operations_List.json
+// Generated from example definition: 2026-10-01/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

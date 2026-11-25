@@ -1,14 +1,324 @@
 # Release History
 
-## 0.1.1 (Unreleased)
+## 1.0.0 (2026-11-18)
+### Breaking Changes
+
+- Function `NewClient` parameter(s) have been changed from `(endpoint string, credential azcore.TokenCredential, opts *ClientOptions)` to `(endpoint string, credential azcore.TokenCredential, options *ClientOptions)`
+- Function `*Client.DisableJob` parameter(s) have been changed from `(ctx context.Context, jobID string, content DisableJobContent, options *DisableJobOptions)` to `(ctx context.Context, jobID string, disableOptions DisableJobContent, options *DisableJobOptions)`
+- Function `*Client.EnablePoolAutoScale` parameter(s) have been changed from `(ctx context.Context, poolID string, content EnablePoolAutoScaleContent, options *EnablePoolAutoScaleOptions)` to `(ctx context.Context, poolID string, enableAutoScaleOptions EnablePoolAutoScaleContent, options *EnablePoolAutoScaleOptions)`
+- Function `*Client.EvaluatePoolAutoScale` parameter(s) have been changed from `(ctx context.Context, poolID string, content EvaluatePoolAutoScaleContent, options *EvaluatePoolAutoScaleOptions)` to `(ctx context.Context, poolID string, evaluateAutoScaleOptions EvaluatePoolAutoScaleContent, options *EvaluatePoolAutoScaleOptions)`
+- Function `*Client.RemoveNodes` parameter(s) have been changed from `(ctx context.Context, poolID string, content RemoveNodeContent, options *RemoveNodesOptions)` to `(ctx context.Context, poolID string, removeOptions RemoveNodeContent, options *RemoveNodesOptions)`
+- Function `*Client.ReplaceNodeUser` parameter(s) have been changed from `(ctx context.Context, poolID string, nodeID string, userName string, content UpdateNodeUserContent, options *ReplaceNodeUserOptions)` to `(ctx context.Context, poolID string, nodeID string, userName string, updateOptions UpdateNodeUserContent, options *ReplaceNodeUserOptions)`
+- Function `*Client.ResizePool` parameter(s) have been changed from `(ctx context.Context, poolID string, content ResizePoolContent, options *ResizePoolOptions)` to `(ctx context.Context, poolID string, resizeOptions ResizePoolContent, options *ResizePoolOptions)`
+- Function `*Client.UploadNodeLogs` parameter(s) have been changed from `(ctx context.Context, poolID string, nodeID string, content UploadNodeLogsContent, options *UploadNodeLogsOptions)` to `(ctx context.Context, poolID string, nodeID string, uploadOptions UploadNodeLogsContent, options *UploadNodeLogsOptions)`
+- Type of `ExitOptions.JobAction` has been changed from `*JobAction` to `*JobActionKind`
+- Type of `JobSchedulingError.Category` has been changed from `*ErrorCategory` to `*ErrorSourceCategory`
+- Type of `OutputFileBlobContainerDestination.UploadHeaders` has been changed from `[]HTTPHeader` to `[]OutputFileUploadHeader`
+- Type of `SupportedImage.ImageReference` has been changed from `*ImageReference` to `*VMImageReference`
+- Type of `TaskFailureInfo.Category` has been changed from `*ErrorCategory` to `*ErrorSourceCategory`
+- Type of `VirtualMachineConfiguration.ImageReference` has been changed from `*ImageReference` to `*VMImageReference`
+- Type of `VirtualMachineInfo.ImageReference` has been changed from `*ImageReference` to `*VMImageReference`
+- `NodeDeallocateOptionRetainedData` from enum `NodeDeallocateOption` has been removed
+- `NodeDeallocationOptionRetainedData` from enum `NodeDeallocationOption` has been removed
+- `NodeReimageOptionRetainedData` from enum `NodeReimageOption` has been removed
+- Enum `AccessScope` has been removed
+- Enum `CertificateFormat` has been removed
+- Enum `CertificateState` has been removed
+- Enum `CertificateStoreLocation` has been removed
+- Enum `CertificateVisibility` has been removed
+- Enum `ErrorCategory` has been removed
+- Enum `JobAction` has been removed
+- Enum `NodeCommunicationMode` has been removed
+- Enum `NodeRebootOption` has been removed
+- Enum `OnAllTasksComplete` has been removed
+- Enum `OnTaskFailure` has been removed
+- Function `*Client.CancelCertificateDeletion` has been removed
+- Function `*Client.CreateCertificate` has been removed
+- Function `*Client.DeleteCertificate` has been removed
+- Function `*Client.GetCertificate` has been removed
+- Function `*Client.NewListCertificatesPager` has been removed
+- Struct `AddTaskCollectionResult` has been removed
+- Struct `AuthenticationTokenSettings` has been removed
+- Struct `Certificate` has been removed
+- Struct `CertificateListResult` has been removed
+- Struct `CertificateReference` has been removed
+- Struct `DeleteCertificateError` has been removed
+- Struct `HTTPHeader` has been removed
+- Struct `ImageReference` has been removed
+- Struct `OSDisk` has been removed
+- Struct `PoolUsageStatistics` has been removed
+- Struct `TaskAddResult` has been removed
+- Field `OnAllTasksComplete`, `OnTaskFailure` of struct `CreateJobContent` has been removed
+- Field `LastModified`, `RequestID` of struct `CreateJobResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `CreateJobScheduleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `CreateNodeUserResponse` has been removed
+- Field `CertificateReferences`, `ResourceTags`, `TargetNodeCommunicationMode` of struct `CreatePoolContent` has been removed
+- Field `LastModified`, `RequestID` of struct `CreatePoolResponse` has been removed
+- Field `AddTaskCollectionResult` of struct `CreateTaskCollectionResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `CreateTaskCollectionResponse` has been removed
+- Field `AuthenticationTokenSettings` of struct `CreateTaskContent` has been removed
+- Field `LastModified`, `RequestID` of struct `CreateTaskResponse` has been removed
+- Field `StorageAccountType` of struct `DataDisk` has been removed
+- Field `Parameters` of struct `DeallocateNodeOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `DeallocateNodeResponse` has been removed
+- Field `RequestID` of struct `DeleteJobResponse` has been removed
+- Field `RequestID` of struct `DeleteJobScheduleResponse` has been removed
+- Field `RequestID` of struct `DeleteNodeFileResponse` has been removed
+- Field `RequestID` of struct `DeleteNodeUserResponse` has been removed
+- Field `RequestID` of struct `DeletePoolResponse` has been removed
+- Field `RequestID` of struct `DeleteTaskFileResponse` has been removed
+- Field `RequestID` of struct `DeleteTaskResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `DisableJobResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `DisableJobScheduleResponse` has been removed
+- Field `Parameters` of struct `DisableNodeSchedulingOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `DisableNodeSchedulingResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `DisablePoolAutoScaleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `EnableJobResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `EnableJobScheduleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `EnableNodeSchedulingResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `EnablePoolAutoScaleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `EvaluatePoolAutoScaleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `GetApplicationResponse` has been removed
+- Field `SelectParam` of struct `GetJobOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `GetJobResponse` has been removed
+- Field `SelectParam` of struct `GetJobScheduleOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `GetJobScheduleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `GetJobTaskCountsResponse` has been removed
+- Field `SelectParam` of struct `GetNodeExtensionOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `GetNodeExtensionResponse` has been removed
+- Field `LastModified`, `OCPBatchFileIsDirectory`, `OCPBatchFileMode`, `OCPBatchFileURL`, `OCPCreationTime`, `RequestID` of struct `GetNodeFilePropertiesResponse` has been removed
+- Field `LastModified`, `OCPBatchFileIsDirectory`, `OCPBatchFileMode`, `OCPBatchFileURL`, `OCPCreationTime`, `RequestID` of struct `GetNodeFileResponse` has been removed
+- Field `SelectParam` of struct `GetNodeOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `GetNodeRemoteLoginSettingsResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `GetNodeResponse` has been removed
+- Field `SelectParam` of struct `GetPoolOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `GetPoolResponse` has been removed
+- Field `LastModified`, `OCPBatchFileIsDirectory`, `OCPBatchFileMode`, `OCPBatchFileURL`, `OCPCreationTime`, `RequestID` of struct `GetTaskFilePropertiesResponse` has been removed
+- Field `LastModified`, `OCPBatchFileIsDirectory`, `OCPBatchFileMode`, `OCPBatchFileURL`, `OCPCreationTime`, `RequestID` of struct `GetTaskFileResponse` has been removed
+- Field `SelectParam` of struct `GetTaskOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `GetTaskResponse` has been removed
+- Field `OnAllTasksComplete`, `OnTaskFailure`, `Stats` of struct `Job` has been removed
+- Field `AuthenticationTokenSettings` of struct `JobManagerTask` has been removed
+- Field `SkipWithdrawFromVNet` of struct `JobNetworkConfiguration` has been removed
+- Field `Stats` of struct `JobSchedule` has been removed
+- Field `LastModified`, `RequestID` of struct `JobScheduleExistsResponse` has been removed
+- Field `NumFailedTasks`, `NumSucceededTasks`, `NumTaskRetries`, `ReadIOGiB`, `WriteIOGiB` of struct `JobScheduleStatistics` has been removed
+- Field `OnAllTasksComplete`, `OnTaskFailure` of struct `JobSpecification` has been removed
+- Field `NumFailedTasks`, `NumSucceededTasks`, `NumTaskRetries`, `ReadIOGiB`, `ReadIOps`, `WriteIOGiB`, `WriteIOps` of struct `JobStatistics` has been removed
+- Field `LastModified`, `RequestID` of struct `ListApplicationsResponse` has been removed
+- Field `SelectParam` of struct `ListJobPreparationAndReleaseTaskStatusOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListJobPreparationAndReleaseTaskStatusResponse` has been removed
+- Field `SelectParam` of struct `ListJobSchedulesOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListJobSchedulesResponse` has been removed
+- Field `SelectParam` of struct `ListJobsFromScheduleOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListJobsFromScheduleResponse` has been removed
+- Field `SelectParam` of struct `ListJobsOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListJobsResponse` has been removed
+- Field `SelectParam` of struct `ListNodeExtensionsOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListNodeExtensionsResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ListNodeFilesResponse` has been removed
+- Field `SelectParam` of struct `ListNodesOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListNodesResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ListPoolNodeCountsResponse` has been removed
+- Field `SelectParam` of struct `ListPoolsOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListPoolsResponse` has been removed
+- Field `SelectParam` of struct `ListSubTasksOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListSubTasksResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ListSupportedImagesResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ListTaskFilesResponse` has been removed
+- Field `SelectParam` of struct `ListTasksOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ListTasksResponse` has been removed
+- Field `DynamicVNetAssignmentScope` of struct `NetworkConfiguration` has been removed
+- Field `CertificateReferences` of struct `Node` has been removed
+- Field `CertificateReferences`, `CurrentNodeCommunicationMode`, `ResourceTags`, `Stats`, `TargetNodeCommunicationMode` of struct `Pool` has been removed
+- Field `LastModified`, `RequestID` of struct `PoolExistsResponse` has been removed
+- Field `CertificateReferences`, `ResourceTags`, `TargetNodeCommunicationMode` of struct `PoolSpecification` has been removed
+- Field `ResourceStats`, `UsageStats` of struct `PoolStatistics` has been removed
+- Field `LastModified`, `RequestID` of struct `ReactivateTaskResponse` has been removed
+- Field `NodeRebootOption` of struct `RebootNodeContent` has been removed
+- Field `Parameters` of struct `RebootNodeOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `RebootNodeResponse` has been removed
+- Field `Parameters` of struct `ReimageNodeOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `ReimageNodeResponse` has been removed
+- Field `NodeList` of struct `RemoveNodeContent` has been removed
+- Field `LastModified`, `RequestID` of struct `RemoveNodesResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ReplaceJobResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ReplaceJobScheduleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ReplaceNodeUserResponse` has been removed
+- Field `CertificateReferences`, `TargetNodeCommunicationMode` of struct `ReplacePoolContent` has been removed
+- Field `LastModified`, `RequestID` of struct `ReplacePoolPropertiesResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ReplaceTaskResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `ResizePoolResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `StartNodeResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `StopPoolResizeResponse` has been removed
+- Field `AuthenticationTokenSettings`, `Stats` of struct `Task` has been removed
+- Field `Value` of struct `TaskGroup` has been removed
+- Field `ReadIOGiB`, `WriteIOGiB` of struct `TaskStatistics` has been removed
+- Field `Parameters` of struct `TerminateJobOptions` has been removed
+- Field `LastModified`, `RequestID` of struct `TerminateJobResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `TerminateJobScheduleResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `TerminateTaskResponse` has been removed
+- Field `OnAllTasksComplete` of struct `UpdateJobContent` has been removed
+- Field `LastModified`, `RequestID` of struct `UpdateJobResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `UpdateJobScheduleResponse` has been removed
+- Field `CertificateReferences`, `ResourceTags`, `TargetNodeCommunicationMode` of struct `UpdatePoolContent` has been removed
+- Field `LastModified`, `RequestID` of struct `UpdatePoolResponse` has been removed
+- Field `LastModified`, `RequestID` of struct `UploadNodeLogsResponse` has been removed
+- Field `OSDisk` of struct `VirtualMachineConfiguration` has been removed
 
 ### Features Added
 
-### Breaking Changes
+- New value `SecurityEncryptionTypesDiskWithVMGuestState` added to enum type `SecurityEncryptionTypes`
+- New value `ServiceName` added to enum type `ServiceName`
+- New enum type `AllTasksCompleteMode` with values `AllTasksCompleteModeNoAction`, `AllTasksCompleteModeTerminateJob`
+- New enum type `ErrorSourceCategory` with values `ErrorSourceCategoryServerError`, `ErrorSourceCategoryUserError`
+- New enum type `HostEndpointSettingsModeTypes` with values `HostEndpointSettingsModeTypesAudit`, `HostEndpointSettingsModeTypesEnforce`
+- New enum type `IPFamily` with values `IPFamilyIPv4`, `IPFamilyIPv6`
+- New enum type `JobActionKind` with values `JobActionKindDisable`, `JobActionKindNone`, `JobActionKindTerminate`
+- New enum type `JobDefaultOrder` with values `JobDefaultOrderCreationTime`, `JobDefaultOrderNone`
+- New enum type `NodeRebootKind` with values `NodeRebootKindRequeue`, `NodeRebootKindTaskCompletion`, `NodeRebootKindTerminate`
+- New enum type `TaskFailureMode` with values `TaskFailureModeNoAction`, `TaskFailureModePerformExitOptionsJobAction`
+- New enum type `VirtualMachineSKUAllocationStrategy` with values `VirtualMachineSKUAllocationStrategyCapacityOptimized`, `VirtualMachineSKUAllocationStrategyLowestPrice`, `VirtualMachineSKUAllocationStrategyPrioritized`
+- New enum type `ZonePlacementPolicyType` with values `ZonePlacementPolicyTypeAuto`
+- New struct `CreateTaskCollectionResult`
+- New struct `DiskCustomerManagedKey`
+- New struct `DiskEncryptionSetParameters`
+- New struct `HardwareProfile`
+- New struct `HostEndpointSettings`
+- New struct `IPTag`
+- New struct `MaxInstancePercentPerZonePolicy`
+- New struct `OsDisk`
+- New struct `OutputFileUploadHeader`
+- New struct `Placement`
+- New struct `PoolIdentityReference`
+- New struct `ProxyAgentSettings`
+- New struct `ResiliencyPolicy`
+- New struct `TaskCreateResult`
+- New struct `VMImageReference`
+- New struct `VMSizeProperties`
+- New struct `VirtualMachineSKUProfile`
+- New struct `VirtualMachineSKUProfileVMSize`
+- New struct `ZoneAllocationPolicy`
+- New field `AllTasksCompleteMode`, `TaskFailureMode` in struct `CreateJobContent`
+- New field `Lastmodified`, `Requestid` in struct `CreateJobResponse`
+- New field `Lastmodified`, `Requestid` in struct `CreateJobScheduleResponse`
+- New field `Lastmodified`, `Requestid` in struct `CreateNodeUserResponse`
+- New field `VMSKUProfile` in struct `CreatePoolContent`
+- New field `Lastmodified`, `Requestid` in struct `CreatePoolResponse`
+- New anonymous field `CreateTaskCollectionResult` in struct `CreateTaskCollectionResponse`
+- New field `Lastmodified`, `Requestid` in struct `CreateTaskCollectionResponse`
+- New field `Lastmodified`, `Requestid` in struct `CreateTaskResponse`
+- New field `ManagedDisk` in struct `DataDisk`
+- New field `Options` in struct `DeallocateNodeOptions`
+- New field `Lastmodified`, `Requestid` in struct `DeallocateNodeResponse`
+- New field `Requestid` in struct `DeleteJobResponse`
+- New field `Requestid` in struct `DeleteJobScheduleResponse`
+- New field `Requestid` in struct `DeleteNodeFileResponse`
+- New field `Requestid` in struct `DeleteNodeUserResponse`
+- New field `Requestid` in struct `DeletePoolResponse`
+- New field `Requestid` in struct `DeleteTaskFileResponse`
+- New field `Requestid` in struct `DeleteTaskResponse`
+- New field `Lastmodified`, `Requestid` in struct `DisableJobResponse`
+- New field `Lastmodified`, `Requestid` in struct `DisableJobScheduleResponse`
+- New field `Options` in struct `DisableNodeSchedulingOptions`
+- New field `Lastmodified`, `Requestid` in struct `DisableNodeSchedulingResponse`
+- New field `Lastmodified`, `Requestid` in struct `DisablePoolAutoScaleResponse`
+- New field `CustomerManagedKey` in struct `DiskEncryptionConfiguration`
+- New field `Lastmodified`, `Requestid` in struct `EnableJobResponse`
+- New field `Lastmodified`, `Requestid` in struct `EnableJobScheduleResponse`
+- New field `Lastmodified`, `Requestid` in struct `EnableNodeSchedulingResponse`
+- New field `Lastmodified`, `Requestid` in struct `EnablePoolAutoScaleResponse`
+- New field `Lastmodified`, `Requestid` in struct `EvaluatePoolAutoScaleResponse`
+- New field `Lastmodified`, `Requestid` in struct `GetApplicationResponse`
+- New field `Select` in struct `GetJobOptions`
+- New field `Lastmodified`, `Requestid` in struct `GetJobResponse`
+- New field `Select` in struct `GetJobScheduleOptions`
+- New field `Lastmodified`, `Requestid` in struct `GetJobScheduleResponse`
+- New field `Lastmodified`, `Requestid` in struct `GetJobTaskCountsResponse`
+- New field `Select` in struct `GetNodeExtensionOptions`
+- New field `Lastmodified`, `Requestid` in struct `GetNodeExtensionResponse`
+- New field `Lastmodified`, `Ocpbatchfileisdirectory`, `Ocpbatchfilemode`, `Ocpbatchfileurl`, `Ocpcreationtime`, `Requestid` in struct `GetNodeFilePropertiesResponse`
+- New field `Lastmodified`, `Ocpbatchfileisdirectory`, `Ocpbatchfilemode`, `Ocpbatchfileurl`, `Ocpcreationtime`, `Requestid` in struct `GetNodeFileResponse`
+- New field `Select` in struct `GetNodeOptions`
+- New field `Lastmodified`, `Requestid` in struct `GetNodeRemoteLoginSettingsResponse`
+- New field `Lastmodified`, `Requestid` in struct `GetNodeResponse`
+- New field `Select` in struct `GetPoolOptions`
+- New field `Lastmodified`, `Requestid` in struct `GetPoolResponse`
+- New field `Lastmodified`, `Ocpbatchfileisdirectory`, `Ocpbatchfilemode`, `Ocpbatchfileurl`, `Ocpcreationtime`, `Requestid` in struct `GetTaskFilePropertiesResponse`
+- New field `Lastmodified`, `Ocpbatchfileisdirectory`, `Ocpbatchfilemode`, `Ocpbatchfileurl`, `Ocpcreationtime`, `Requestid` in struct `GetTaskFileResponse`
+- New field `Select` in struct `GetTaskOptions`
+- New field `Lastmodified`, `Requestid` in struct `GetTaskResponse`
+- New field `AllTasksCompleteMode`, `JobStatistics`, `TaskFailureMode` in struct `Job`
+- New field `SkipWithdrawFromVnet` in struct `JobNetworkConfiguration`
+- New field `JobScheduleStatistics` in struct `JobSchedule`
+- New field `Lastmodified`, `Requestid` in struct `JobScheduleExistsResponse`
+- New field `FailedTasksCount`, `ReadIoGiB`, `SucceededTasksCount`, `TaskRetriesCount`, `WriteIoGiB` in struct `JobScheduleStatistics`
+- New field `AllTasksCompleteMode`, `TaskFailureMode` in struct `JobSpecification`
+- New field `FailedTasksCount`, `ReadIoGiB`, `ReadIops`, `SucceededTasksCount`, `TaskRetriesCount`, `WriteIoGiB`, `WriteIops` in struct `JobStatistics`
+- New field `Lastmodified`, `Requestid` in struct `ListApplicationsResponse`
+- New field `Select` in struct `ListJobPreparationAndReleaseTaskStatusOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListJobPreparationAndReleaseTaskStatusResponse`
+- New field `Select` in struct `ListJobSchedulesOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListJobSchedulesResponse`
+- New field `Select` in struct `ListJobsFromScheduleOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListJobsFromScheduleResponse`
+- New field `Select` in struct `ListJobsOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListJobsResponse`
+- New field `Select` in struct `ListNodeExtensionsOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListNodeExtensionsResponse`
+- New field `Lastmodified`, `Requestid` in struct `ListNodeFilesResponse`
+- New field `Select` in struct `ListNodesOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListNodesResponse`
+- New field `Lastmodified`, `Requestid` in struct `ListPoolNodeCountsResponse`
+- New field `Select` in struct `ListPoolsOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListPoolsResponse`
+- New field `Select` in struct `ListSubTasksOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListSubTasksResponse`
+- New field `Lastmodified`, `Requestid` in struct `ListSupportedImagesResponse`
+- New field `Lastmodified`, `Requestid` in struct `ListTaskFilesResponse`
+- New field `Select` in struct `ListTasksOptions`
+- New field `Lastmodified`, `Requestid` in struct `ListTasksResponse`
+- New field `DiskEncryptionSet` in struct `ManagedDisk`
+- New field `DynamicVnetAssignmentScope` in struct `NetworkConfiguration`
+- New field `IPv6Address`, `PublicIPAddress`, `PublicIPv6Address` in struct `Node`
+- New field `IPv6RemoteLoginIPAddress`, `IPv6RemoteLoginPort` in struct `NodeRemoteLoginSettings`
+- New field `PoolStatistics`, `VMSKUProfile` in struct `Pool`
+- New field `Lastmodified`, `Requestid` in struct `PoolExistsResponse`
+- New field `ResourceStatistics` in struct `PoolStatistics`
+- New field `IPFamilies`, `IPTags` in struct `PublicIPAddressConfiguration`
+- New field `Lastmodified`, `Requestid` in struct `ReactivateTaskResponse`
+- New field `NodeRebootKind` in struct `RebootNodeContent`
+- New field `Options` in struct `RebootNodeOptions`
+- New field `Lastmodified`, `Requestid` in struct `RebootNodeResponse`
+- New field `Options` in struct `ReimageNodeOptions`
+- New field `Lastmodified`, `Requestid` in struct `ReimageNodeResponse`
+- New field `NodeIDs` in struct `RemoveNodeContent`
+- New field `Lastmodified`, `Requestid` in struct `RemoveNodesResponse`
+- New field `Lastmodified`, `Requestid` in struct `ReplaceJobResponse`
+- New field `Lastmodified`, `Requestid` in struct `ReplaceJobScheduleResponse`
+- New field `Lastmodified`, `Requestid` in struct `ReplaceNodeUserResponse`
+- New field `Lastmodified`, `Requestid` in struct `ReplacePoolPropertiesResponse`
+- New field `Lastmodified`, `Requestid` in struct `ReplaceTaskResponse`
+- New field `Lastmodified`, `Requestid` in struct `ResizePoolResponse`
+- New field `ProxyAgentSettings` in struct `SecurityProfile`
+- New field `Lastmodified`, `Requestid` in struct `StartNodeResponse`
+- New field `Lastmodified`, `Requestid` in struct `StopPoolResizeResponse`
+- New field `TaskStatistics` in struct `Task`
+- New field `Values` in struct `TaskGroup`
+- New field `JobDefaultOrder` in struct `TaskSchedulingPolicy`
+- New field `ReadIoGiB`, `WriteIoGiB` in struct `TaskStatistics`
+- New field `Options` in struct `TerminateJobOptions`
+- New field `Lastmodified`, `Requestid` in struct `TerminateJobResponse`
+- New field `Lastmodified`, `Requestid` in struct `TerminateJobScheduleResponse`
+- New field `Lastmodified`, `Requestid` in struct `TerminateTaskResponse`
+- New field `AllTasksCompleteMode` in struct `UpdateJobContent`
+- New field `Lastmodified`, `Requestid` in struct `UpdateJobResponse`
+- New field `Lastmodified`, `Requestid` in struct `UpdateJobScheduleResponse`
+- New field `VMSKUProfile` in struct `UpdatePoolContent`
+- New field `Lastmodified`, `Requestid` in struct `UpdatePoolResponse`
+- New field `Lastmodified`, `Requestid` in struct `UploadNodeLogsResponse`
+- New field `HardwareProfile`, `OsDisk`, `Placement`, `ResiliencyPolicy` in struct `VirtualMachineConfiguration`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.1.0 (2025-05-06)
 

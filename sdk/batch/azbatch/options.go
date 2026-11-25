@@ -10,44 +10,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// CancelCertificateDeletionOptions contains the optional parameters for the Client.CancelCertificateDeletion method.
-type CancelCertificateDeletionOptions struct {
-	// The caller-generated request identity, in the form of a GUID with no decoration
-	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-	ClientRequestID *string
-
-	// The time the request was issued. Client libraries typically set this to the
-	// current system clock time; set it explicitly if you are calling the REST API
-	// directly.
-	OCPDate *time.Time
-
-	// Whether the server should return the client-request-id in the response.
-	ReturnClientRequestID *bool
-
-	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
-	// is larger than 30, the default will be used instead.".
-	Timeout *int32
-}
-
-// CreateCertificateOptions contains the optional parameters for the Client.CreateCertificate method.
-type CreateCertificateOptions struct {
-	// The caller-generated request identity, in the form of a GUID with no decoration
-	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-	ClientRequestID *string
-
-	// The time the request was issued. Client libraries typically set this to the
-	// current system clock time; set it explicitly if you are calling the REST API
-	// directly.
-	OCPDate *time.Time
-
-	// Whether the server should return the client-request-id in the response.
-	ReturnClientRequestID *bool
-
-	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
-	// is larger than 30, the default will be used instead.".
-	Timeout *int32
-}
-
 // CreateJobOptions contains the optional parameters for the Client.CreateJob method.
 type CreateJobOptions struct {
 	// The caller-generated request identity, in the form of a GUID with no decoration
@@ -174,26 +136,7 @@ type DeallocateNodeOptions struct {
 	OCPDate *time.Time
 
 	// The options to use for deallocating the Compute Node.
-	Parameters *DeallocateNodeContent
-
-	// Whether the server should return the client-request-id in the response.
-	ReturnClientRequestID *bool
-
-	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
-	// is larger than 30, the default will be used instead.".
-	Timeout *int32
-}
-
-// DeleteCertificateOptions contains the optional parameters for the Client.DeleteCertificate method.
-type DeleteCertificateOptions struct {
-	// The caller-generated request identity, in the form of a GUID with no decoration
-	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-	ClientRequestID *string
-
-	// The time the request was issued. Client libraries typically set this to the
-	// current system clock time; set it explicitly if you are calling the REST API
-	// directly.
-	OCPDate *time.Time
+	Options *DeallocateNodeOptions
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -526,7 +469,7 @@ type DisableNodeSchedulingOptions struct {
 	OCPDate *time.Time
 
 	// The options to use for disabling scheduling on the Compute Node.
-	Parameters *DisableNodeSchedulingContent
+	Options *DisableNodeSchedulingOptions
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -729,28 +672,6 @@ type GetApplicationOptions struct {
 	Timeout *int32
 }
 
-// GetCertificateOptions contains the optional parameters for the Client.GetCertificate method.
-type GetCertificateOptions struct {
-	// The caller-generated request identity, in the form of a GUID with no decoration
-	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-	ClientRequestID *string
-
-	// The time the request was issued. Client libraries typically set this to the
-	// current system clock time; set it explicitly if you are calling the REST API
-	// directly.
-	OCPDate *time.Time
-
-	// Whether the server should return the client-request-id in the response.
-	ReturnClientRequestID *bool
-
-	// An OData $select clause.
-	SelectParam []string
-
-	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
-	// is larger than 30, the default will be used instead.".
-	Timeout *int32
-}
-
 // GetJobOptions contains the optional parameters for the Client.GetJob method.
 type GetJobOptions struct {
 	// The caller-generated request identity, in the form of a GUID with no decoration
@@ -789,7 +710,7 @@ type GetJobOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -834,7 +755,7 @@ type GetJobScheduleOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -875,7 +796,7 @@ type GetNodeExtensionOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -959,7 +880,7 @@ type GetNodeOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1023,7 +944,7 @@ type GetPoolOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1130,7 +1051,7 @@ type GetTaskOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1199,36 +1120,6 @@ type ListApplicationsOptions struct {
 	Timeout *int32
 }
 
-// ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
-type ListCertificatesOptions struct {
-	// The caller-generated request identity, in the form of a GUID with no decoration
-	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-	ClientRequestID *string
-
-	// An OData $filter clause. For more information on constructing this filter, see
-	// https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
-	Filter *string
-
-	// The maximum number of items to return in the response. A maximum of 1000
-	// applications can be returned.
-	MaxResults *int32
-
-	// The time the request was issued. Client libraries typically set this to the
-	// current system clock time; set it explicitly if you are calling the REST API
-	// directly.
-	OCPDate *time.Time
-
-	// Whether the server should return the client-request-id in the response.
-	ReturnClientRequestID *bool
-
-	// An OData $select clause.
-	SelectParam []string
-
-	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
-	// is larger than 30, the default will be used instead.".
-	Timeout *int32
-}
-
 // ListJobPreparationAndReleaseTaskStatusOptions contains the optional parameters for the Client.NewListJobPreparationAndReleaseTaskStatusPager
 // method.
 type ListJobPreparationAndReleaseTaskStatusOptions struct {
@@ -1253,7 +1144,7 @@ type ListJobPreparationAndReleaseTaskStatusOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1286,7 +1177,7 @@ type ListJobSchedulesOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1319,7 +1210,7 @@ type ListJobsFromScheduleOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1352,7 +1243,7 @@ type ListJobsOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1378,7 +1269,7 @@ type ListNodeExtensionsOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1438,7 +1329,7 @@ type ListNodesOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1498,7 +1389,7 @@ type ListPoolsOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1520,7 +1411,7 @@ type ListSubTasksOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1611,7 +1502,7 @@ type ListTasksOptions struct {
 	ReturnClientRequestID *bool
 
 	// An OData $select clause.
-	SelectParam []string
+	Select []string
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".
@@ -1708,7 +1599,7 @@ type RebootNodeOptions struct {
 	OCPDate *time.Time
 
 	// The options to use for rebooting the Compute Node.
-	Parameters *RebootNodeContent
+	Options *RebootNodeOptions
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1730,7 +1621,7 @@ type ReimageNodeOptions struct {
 	OCPDate *time.Time
 
 	// The options to use for reimaging the Compute Node.
-	Parameters *ReimageNodeContent
+	Options *ReimageNodeOptions
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -2067,7 +1958,7 @@ type TerminateJobOptions struct {
 	OCPDate *time.Time
 
 	// The options to use for terminating the Job.
-	Parameters *TerminateJobContent
+	Options *TerminateJobOptions
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -2289,43 +2180,6 @@ type UploadNodeLogsOptions struct {
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
-
-	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
-	// is larger than 30, the default will be used instead.".
-	Timeout *int32
-}
-
-// listPoolUsageMetricsOptions contains the optional parameters for the Client.NewlistPoolUsageMetricsPager method.
-type listPoolUsageMetricsOptions struct {
-	// The caller-generated request identity, in the form of a GUID with no decoration
-	// such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
-	ClientRequestID *string
-
-	// The latest time from which to include metrics. This must be at least two hours
-	// before the current time. If not specified this defaults to the end time of the
-	// last aggregation interval currently available.
-	Endtime *time.Time
-
-	// An OData $filter clause. For more information on constructing this filter, see
-	// https://learn.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
-	Filter *string
-
-	// The maximum number of items to return in the response. A maximum of 1000
-	// applications can be returned.
-	MaxResults *int32
-
-	// The time the request was issued. Client libraries typically set this to the
-	// current system clock time; set it explicitly if you are calling the REST API
-	// directly.
-	OCPDate *time.Time
-
-	// Whether the server should return the client-request-id in the response.
-	ReturnClientRequestID *bool
-
-	// The earliest time from which to include metrics. This must be at least two and
-	// a half hours before the current time. If not specified this defaults to the
-	// start time of the last aggregation interval currently available.
-	Starttime *time.Time
 
 	// The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value
 	// is larger than 30, the default will be used instead.".

@@ -72,6 +72,34 @@ func (r *replacer) Do() error {
 
 func main() {
 	r := replacer{}
+	// Request bodies must not collide with the emitter's method options.
+	for _, name := range []string{
+		"CreateJob",
+		"CreateJobSchedule",
+		"CreateNodeUser",
+		"CreatePool",
+		"CreateTask",
+		"DeallocateNode",
+		"DisableJob",
+		"DisableNodeScheduling",
+		"EnablePoolAutoScale",
+		"EvaluatePoolAutoScale",
+		"RebootNode",
+		"ReimageNode",
+		"RemoveNode",
+		"ReplacePool",
+		"ResizePool",
+		"TerminateJob",
+		"UpdateJob",
+		"UpdateJobSchedule",
+		"UpdateNodeUser",
+		"UpdatePool",
+		"UploadNodeLogs",
+	} {
+		r.Replace([]string{"models.go", "models_serde.go"}, `\b`+name+`Options\b`, name+"Content")
+		r.Replace([]string{"client.go"}, `(\b\w+ )`+name+`Options([,)])`, "${1}"+name+"Content${2}")
+	}
+	r.Replace([]string{"client.go", "models.go", "models_serde.go", "responses.go"}, `\bEtag\b`, "ETag")
 	for before, after := range map[string]string{
 		"OcpBatchFileIsdirectory":    "OCPBatchFileIsDirectory",
 		"OcpBatchFile((?:Mode|URL))": "OCPBatchFile$1",
@@ -97,13 +125,6 @@ func main() {
 	} {
 		r.Replace([]string{"client.go"}, before, after)
 	}
-	// add import for azcore.ETag. This would break if
-	// the emitter added another import to these files
-	r.Replace(
-		[]string{"models.go", "options.go"},
-		`import "time"`,
-		"import (\n\t\"time\"\n\t\"github.com/Azure/azure-sdk-for-go/sdk/azcore\"\n)",
-	)
 	if err := r.Do(); err != nil {
 		log.Fatal(err)
 	}

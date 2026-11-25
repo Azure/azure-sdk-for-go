@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/batch/azbatch
 go 1.26.0
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.3
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.24.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.15.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.13.0
 	github.com/stretchr/testify v1.12.1

@@ -4,6 +4,6 @@
 package azbatch
 
 const (
-	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/batch/azbatch"
-	version    = "v0.1.1"
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/batch/azbatch"
+	moduleVersion = "v1.0.0"
 )

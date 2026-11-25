@@ -4,6 +4,7 @@
 package exported
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"io"
@@ -616,4 +617,42 @@ Response contained no body
 	if got := re.Error(); got != want {
 		t.Fatalf("\ngot:\n%s\nwant:\n%s\n", got, want)
 	}
+}
+
+func TestNewResponseErrorDeeplyNestedJSONBody(t *testing.T) {
+	fakeURL, err := url.Parse("https://fakeurl.com/the/path")
+	require.NoError(t, err)
+	const inner = `{"error":{"code":"Boom","message":"x"}}`
+	for _, depth := range []int{maxPrettyPrintDepth + 1, 5000, 20000} {
+		body := strings.Repeat("[", depth) + inner + strings.Repeat("]", depth)
+		err = NewResponseError(&http.Response{
+			Status:     "bad gateway",
+			StatusCode: http.StatusBadGateway,
+			Header:     http.Header{"Content-Type": []string{"application/json"}},
+			Body:       io.NopCloser(strings.NewReader(body)),
+			Request: &http.Request{
+				Method: http.MethodGet,
+				URL:    fakeURL,
+			},
+		})
+		var re *ResponseError
+		require.ErrorAs(t, err, &re)
+		msg := re.Error()
+		// too deeply nested to pretty-print, so the body is included verbatim
+		// instead of being indented to a size quadratic in the depth
+		require.Contains(t, msg, "\n"+body+"\n", "depth %d", depth)
+		require.Less(t, len(msg), len(body)+1024, "depth %d", depth)
+	}
+}
+
+func TestNewResponseErrorNestedJSONBodyWithinDepthLimit(t *testing.T) {
+	// brackets inside strings don't count toward the nesting depth
+	body := `{"error":{"code":"Boom","message":"` + strings.Repeat("[{", maxPrettyPrintDepth) + `","details":[[{"a":1}]]}}`
+	re := &ResponseError{RawResponse: &http.Response{
+		StatusCode: http.StatusBadRequest,
+		Body:       io.NopCloser(strings.NewReader(body)),
+	}}
+	var want bytes.Buffer
+	require.NoError(t, json.Indent(&want, []byte(body), "", "  "))
+	require.Contains(t, re.Error(), want.String())
 }

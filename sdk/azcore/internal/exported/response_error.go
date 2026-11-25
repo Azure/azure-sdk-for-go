@@ -154,7 +154,11 @@ func (e *ResponseError) Error() string {
 			// body is already cached (it was read in NewResponseError)
 			fmt.Fprintf(msg, "Error reading response body: %v", err)
 		} else if len(body) > 0 {
-			if err := json.Indent(msg, body, "", "  "); err != nil {
+			// pretty-printing indents each line by its nesting depth, so the output of a deeply
+			// nested body grows quadratically with the depth. dump such bodies verbatim.
+			if jsonDepthExceeds(body, maxPrettyPrintDepth) {
+				fmt.Fprint(msg, string(body))
+			} else if err := json.Indent(msg, body, "", "  "); err != nil {
 				// failed to pretty-print so just dump it verbatim
 				fmt.Fprint(msg, string(body))
 			}
@@ -168,6 +172,42 @@ func (e *ResponseError) Error() string {
 
 	e.errMsg = msg.String()
 	return e.errMsg
+}
+
+// maxPrettyPrintDepth is the deepest JSON nesting that ResponseError.Error() pretty-prints.
+const maxPrettyPrintDepth = 32
+
+// jsonDepthExceeds reports whether the JSON objects and arrays in body nest deeper than limit.
+// Brackets inside string literals aren't counted. body doesn't have to be valid JSON.
+func jsonDepthExceeds(body []byte, limit int) bool {
+	depth := 0
+	inString := false
+	escaped := false
+	for _, c := range body {
+		if inString {
+			switch {
+			case escaped:
+				escaped = false
+			case c == '\\':
+				escaped = true
+			case c == '"':
+				inString = false
+			}
+			continue
+		}
+		switch c {
+		case '"':
+			inString = true
+		case '{', '[':
+			depth++
+			if depth > limit {
+				return true
+			}
+		case '}', ']':
+			depth--
+		}
+	}
+	return false
 }
 
 // internal type used for marshaling/unmarshaling

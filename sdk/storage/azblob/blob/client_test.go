@@ -4459,6 +4459,116 @@ func (s *BlobUnrecordedTestsSuite) TestGetUserDelegationSASVersionedBlobAgainstS
 	_require.Equal(currentContent, string(data2))
 }
 
+// The tests below are offline regression tests for GetSASURL resource scoping: a malformed
+// snapshot must never silently downgrade a snapshot SAS (sr=bs) to a base-blob SAS (sr=b), and
+// a version ID must always yield a version SAS (sr=bv). They sign locally with a fake key, so
+// they run in every record mode.
+
+var getSASURLScopeTestPerms = sas.BlobPermissions{Read: true, Write: true, Delete: true}
+
+func newGetSASURLScopeTestContainerClient(t *testing.T) *container.Client {
+	cred, err := azblob.NewSharedKeyCredential(testcommon.FakeStorageAccount, "ZmFrZQ==")
+	require.NoError(t, err)
+	client, err := container.NewClientWithSharedKeyCredential(testcommon.FakeStorageURL+"/fakecontainer", cred, nil)
+	require.NoError(t, err)
+	return client
+}
+
+func getSASURLQuery(t *testing.T, sasURL string) url.Values {
+	u, err := url.Parse(sasURL)
+	require.NoError(t, err)
+	return u.Query()
+}
+
+func TestGetSASURLSnapshotScope(t *testing.T) {
+	blobClient := newGetSASURLScopeTestContainerClient(t).NewBlobClient("fakeblob")
+	expiry := time.Now().Add(time.Hour)
+
+	// Empty snapshot: base-blob SAS.
+	sasURL, err := blobClient.GetSASURL(getSASURLScopeTestPerms, expiry, nil)
+	require.NoError(t, err)
+	q := getSASURLQuery(t, sasURL)
+	require.Equal(t, "b", q.Get("sr"))
+	require.Empty(t, q.Get("snapshot"))
+
+	// Valid snapshot: snapshot SAS.
+	const snapshot = "2011-03-09T01:42:34.9360000Z"
+	snapshotClient, err := blobClient.WithSnapshot(snapshot)
+	require.NoError(t, err)
+	sasURL, err = snapshotClient.GetSASURL(getSASURLScopeTestPerms, expiry, nil)
+	require.NoError(t, err)
+	q = getSASURLQuery(t, sasURL)
+	require.Equal(t, "bs", q.Get("sr"))
+	require.Equal(t, snapshot, q.Get("snapshot"))
+}
+
+func TestGetSASURLInvalidSnapshotReturnsError(t *testing.T) {
+	containerClient := newGetSASURLScopeTestContainerClient(t)
+	expiry := time.Now().Add(time.Hour)
+
+	for _, snapshot := range []string{
+		"x",
+		"2011-03-09T01:42:34Z",         // RFC3339 without the 7-digit fractional seconds
+		"0001-01-01T00:00:00.0000000Z", // well-formed, but parses to the zero time
+	} {
+		t.Run(snapshot, func(t *testing.T) {
+			blobClient, err := containerClient.NewBlobClient("fakeblob").WithSnapshot(snapshot)
+			require.NoError(t, err)
+			blockBlobClient, err := containerClient.NewBlockBlobClient("fakeblob").WithSnapshot(snapshot)
+			require.NoError(t, err)
+			appendBlobClient, err := containerClient.NewAppendBlobClient("fakeblob").WithSnapshot(snapshot)
+			require.NoError(t, err)
+			pageBlobClient, err := containerClient.NewPageBlobClient("fakeblob").WithSnapshot(snapshot)
+			require.NoError(t, err)
+
+			for name, getSASURL := range map[string]func(sas.BlobPermissions, time.Time, *blob.GetSASURLOptions) (string, error){
+				"blob":       blobClient.GetSASURL,
+				"blockblob":  blockBlobClient.GetSASURL,
+				"appendblob": appendBlobClient.GetSASURL,
+				"pageblob":   pageBlobClient.GetSASURL,
+			} {
+				sasURL, err := getSASURL(getSASURLScopeTestPerms, expiry, nil)
+				require.Error(t, err, name)
+				require.Contains(t, err.Error(), "invalid snapshot", name)
+				require.Empty(t, sasURL, name)
+			}
+		})
+	}
+}
+
+func TestGetSASURLVersionIDScope(t *testing.T) {
+	blobClient := newGetSASURLScopeTestContainerClient(t).NewBlobClient("fakeblob")
+	expiry := time.Date(2030, 1, 1, 0, 0, 0, 0, time.UTC)
+
+	baseURL, err := blobClient.GetSASURL(getSASURLScopeTestPerms, expiry, nil)
+	require.NoError(t, err)
+	baseSig := getSASURLQuery(t, baseURL).Get("sig")
+
+	sigs := map[string]string{}
+	for _, versionID := range []string{
+		"2011-03-09T01:42:34.9360000Z", // valid version ID
+		"2011-03-09T01:42:35.9360000Z", // a different valid version ID
+		"x",                            // malformed version ID
+	} {
+		versionClient, err := blobClient.WithVersionID(versionID)
+		require.NoError(t, err)
+		sasURL, err := versionClient.GetSASURL(getSASURLScopeTestPerms, expiry, nil)
+		require.NoError(t, err)
+
+		// A version ID, well-formed or not, must never fall back to a base-blob SAS: it is always
+		// scoped to sr=bv and bound into the signature, so the service rejects the SAS for any
+		// other version or for the base blob.
+		q := getSASURLQuery(t, sasURL)
+		require.Equal(t, "bv", q.Get("sr"), versionID)
+		require.Equal(t, versionID, q.Get("versionid"), versionID)
+		require.NotEqual(t, baseSig, q.Get("sig"), versionID)
+		for otherID, otherSig := range sigs {
+			require.NotEqual(t, otherSig, q.Get("sig"), "%s vs %s", versionID, otherID)
+		}
+		sigs[versionID] = q.Get("sig")
+	}
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

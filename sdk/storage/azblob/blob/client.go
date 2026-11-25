@@ -277,10 +277,18 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 		return "", err
 	}
 
-	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
-
-	if err != nil {
-		t = time.Time{}
+	// An empty snapshot means a base blob (or version) SAS. A non-empty snapshot must parse to a
+	// non-zero time; otherwise the SAS would silently be scoped to the base blob (sr=b) instead
+	// of the snapshot (sr=bs).
+	var t time.Time
+	if urlParts.Snapshot != "" {
+		t, err = time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
+		if err != nil {
+			return "", fmt.Errorf("invalid snapshot %q: %s", urlParts.Snapshot, err)
+		}
+		if t.IsZero() {
+			return "", fmt.Errorf("invalid snapshot %q: snapshot time must not be the zero time", urlParts.Snapshot)
+		}
 	}
 	st := o.format()
 

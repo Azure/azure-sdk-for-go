@@ -6,7 +6,7 @@ After going through a minimal architects board review and preparing your package
 
 - [] Verify there are no replace directives in the go.mod file
 - [] Verify the package has a LICENSE file
-- [] Verify documentation is present and accurate for all public methods and types. Reference the [content guidelines](https://review.docs.microsoft.com/help/contribute-ref/contribute-ref-how-to-document-sdk?branch=master#api-reference) for best practices. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
+- [] Verify documentation is present and accurate for all public methods and types. You can start the `godoc` server by running `godoc -http=:6060` from the module home and navigating to `localhost:6060` in the browser.
 - [] Verify there are no broken links
 - [] Verify all links are non-localized (no "en-us" in links)
 - [] Check the package manager link goes to the correct package
@@ -23,3 +23,13 @@ After going through a minimal architects board review and preparing your package
 2. Mark the package as 'in-release' by running the `./eng/common/scripts/Prepare-Release.ps1` script and following the prompts. The script may update the version and/or `CHANGELOG.md` of the package. If changes are made, these changes need to be committed and merged before continuing with the release process.
 3. Run the pipeline from the `internal` Azure Devops. This will require you to approve the release after both the live and recorded test pipelines pass.
 4. Validate the package was released properly by running `go get <your-package>@<your-version>` (ie. `go get github.com/Azure/azure-sdk-for-go/sdk/azcore@v0.20.0`) and validating that pkg.go.dev has updated with the latest version.
+
+## API Review Hub
+
+Obtain package-name approval and any required API review approval before releasing. The internal release pipeline checks approval before creating the tag.
+
+Repository registration and authorization of the **ADO to ARH Service Connection** are required; forks also need the GitHub Apps described in the [onboarding guide](https://github.com/Azure/azure-sdk-tools/wiki/API-Review-Hub-Onboarding).
+
+API Review Hub bundles and release checks use `eng/tools/apigen` and the Go version pinned in `eng/tools/apigen-go-version.txt`. The Hub build uses `languageToolsRef`; its apigen source and Go-version file must match the target commit or review generation fails. Set `languageToolsRef` to a matching branch or tag when reviewing a release branch.
+
+The release pipeline regenerates the bundle and supplies its API hash to the approval check. The CLI can also fall back to existing APIView approval.

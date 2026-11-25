@@ -1,0 +1,20 @@
+parameters:
+  Condition: succeeded()
+  VersionFile: $(Build.SourcesDirectory)/eng/tools/apigen-go-version.txt
+
+steps:
+  - pwsh: |
+      $version = (Get-Content -LiteralPath $env:VERSION_FILE -Raw).Trim()
+      if ($version -cnotmatch '^\d+\.\d+\.\d+$') {
+        throw "Invalid apigen Go version in $env:VERSION_FILE."
+      }
+      Write-Host "##vso[task.setvariable variable=ApiReviewGoVersion]$version"
+    displayName: Read Go version for API review
+    condition: ${{ parameters.Condition }}
+    env:
+      VERSION_FILE: ${{ parameters.VersionFile }}
+  - task: GoTool@0
+    displayName: Select Go version for API review
+    condition: ${{ parameters.Condition }}
+    inputs:
+      version: $(ApiReviewGoVersion)

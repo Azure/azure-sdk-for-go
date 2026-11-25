@@ -96,14 +96,17 @@ func (k *keyVaultAuthorizer) authorizeOnChallenge(req *policy.Request, res *http
 
 // parses Tenant ID from auth challenge
 // https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000
-func parseTenant(url string) string {
+func parseTenant(url string) (string, error) {
 	if url == "" {
-		return ""
+		return "", nil
 	}
 	parts := strings.Split(url, "/")
+	if len(parts) < 4 {
+		return "", fmt.Errorf("invalid authorization %q in the WWW-Authenticate header", url)
+	}
 	tenant := parts[3]
 	tenant = strings.ReplaceAll(tenant, ",", "")
-	return tenant
+	return tenant, nil
 }
 
 // updateTokenRequestOptions parses authentication parameters from Key Vault's challenge
@@ -149,11 +152,15 @@ func (k *keyVaultAuthorizer) updateTokenRequestOptions(resp *http.Response, req 
 			return fmt.Errorf(challengeMatchError, scope)
 		}
 	}
+	tenant, err := parseTenant(vals["authorization"])
+	if err != nil {
+		return err
+	}
 	if !strings.HasSuffix(scope, "/.default") {
 		scope += "/.default"
 	}
 	k.setTokenRequestOptions(policy.TokenRequestOptions{
-		TenantID: parseTenant(vals["authorization"]),
+		TenantID: tenant,
 		Scopes:   []string{scope},
 	})
 	return nil

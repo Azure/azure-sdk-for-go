@@ -29,7 +29,7 @@ func unmarshalContentInspectionPolicySourceClassification(rawMsg json.RawMessage
 	return b, nil
 }
 
-func unmarshalFqdnFilteringDestinationClassification(rawMsg json.RawMessage) (FqdnFilteringDestinationClassification, error) {
+func unmarshalFQDNFilteringDestinationClassification(rawMsg json.RawMessage) (FQDNFilteringDestinationClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -37,12 +37,12 @@ func unmarshalFqdnFilteringDestinationClassification(rawMsg json.RawMessage) (Fq
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b FqdnFilteringDestinationClassification
+	var b FQDNFilteringDestinationClassification
 	switch m["type"] {
-	case string(FqdnFilteringDestinationTypeFqdns):
-		b = &FqdnFilteringFqdnsDestination{}
+	case string(FQDNFilteringDestinationTypeFQDNs):
+		b = &FQDNFilteringFQDNsDestination{}
 	default:
-		b = &FqdnFilteringDestination{}
+		b = &FQDNFilteringDestination{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func unmarshalFqdnFilteringDestinationClassification(rawMsg json.RawMessage) (Fq
 	return b, nil
 }
 
-func unmarshalFqdnFilteringSourceClassification(rawMsg json.RawMessage) (FqdnFilteringSourceClassification, error) {
+func unmarshalFQDNFilteringSourceClassification(rawMsg json.RawMessage) (FQDNFilteringSourceClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -58,14 +58,14 @@ func unmarshalFqdnFilteringSourceClassification(rawMsg json.RawMessage) (FqdnFil
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b FqdnFilteringSourceClassification
+	var b FQDNFilteringSourceClassification
 	switch m["type"] {
-	case string(FqdnFilteringSourceTypeAddressPrefixes):
-		b = &FqdnFilteringAddressPrefixesSource{}
-	case string(FqdnFilteringSourceTypeWorkloadIDPatterns):
-		b = &FqdnFilteringWorkloadIDPatternsSource{}
+	case string(FQDNFilteringSourceTypeAddressPrefixes):
+		b = &FQDNFilteringAddressPrefixesSource{}
+	case string(FQDNFilteringSourceTypeWorkloadIDPatterns):
+		b = &FQDNFilteringWorkloadIDPatternsSource{}
 	default:
-		b = &FqdnFilteringSource{}
+		b = &FQDNFilteringSource{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func unmarshalFqdnFilteringSourceClassification(rawMsg json.RawMessage) (FqdnFil
 	return b, nil
 }
 
-func unmarshalMcpPolicyDestinationClassification(rawMsg json.RawMessage) (McpPolicyDestinationClassification, error) {
+func unmarshalMCPPolicyDestinationClassification(rawMsg json.RawMessage) (MCPPolicyDestinationClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -81,16 +81,16 @@ func unmarshalMcpPolicyDestinationClassification(rawMsg json.RawMessage) (McpPol
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b McpPolicyDestinationClassification
+	var b MCPPolicyDestinationClassification
 	switch m["type"] {
-	case string(McpPolicyDestinationTypeAddressPrefixes):
-		b = &McpPolicyAddressPrefixesDestination{}
-	case string(McpPolicyDestinationTypeFqdns):
-		b = &McpPolicyFqdnsDestination{}
-	case string(McpPolicyDestinationTypeWorkloadIDPatterns):
-		b = &McpPolicyWorkloadIDPatternsDestination{}
+	case string(MCPPolicyDestinationTypeAddressPrefixes):
+		b = &MCPPolicyAddressPrefixesDestination{}
+	case string(MCPPolicyDestinationTypeFQDNs):
+		b = &MCPPolicyFQDNsDestination{}
+	case string(MCPPolicyDestinationTypeWorkloadIDPatterns):
+		b = &MCPPolicyWorkloadIDPatternsDestination{}
 	default:
-		b = &McpPolicyDestination{}
+		b = &MCPPolicyDestination{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func unmarshalMcpPolicyDestinationClassification(rawMsg json.RawMessage) (McpPol
 	return b, nil
 }
 
-func unmarshalMcpPolicySourceClassification(rawMsg json.RawMessage) (McpPolicySourceClassification, error) {
+func unmarshalMCPPolicySourceClassification(rawMsg json.RawMessage) (MCPPolicySourceClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
 	}
@@ -106,14 +106,14 @@ func unmarshalMcpPolicySourceClassification(rawMsg json.RawMessage) (McpPolicySo
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b McpPolicySourceClassification
+	var b MCPPolicySourceClassification
 	switch m["type"] {
-	case string(McpPolicySourceTypeAddressPrefixes):
-		b = &McpPolicyAddressPrefixesSource{}
-	case string(McpPolicySourceTypeWorkloadIDPatterns):
-		b = &McpPolicyWorkloadIDPatternsSource{}
+	case string(MCPPolicySourceTypeAddressPrefixes):
+		b = &MCPPolicyAddressPrefixesSource{}
+	case string(MCPPolicySourceTypeWorkloadIDPatterns):
+		b = &MCPPolicyWorkloadIDPatternsSource{}
 	default:
-		b = &McpPolicySource{}
+		b = &MCPPolicySource{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err
@@ -133,10 +133,10 @@ func unmarshalPolicyBaseClassification(rawMsg json.RawMessage) (PolicyBaseClassi
 	switch m["type"] {
 	case string(PolicyTypeContentInspection):
 		b = &ContentInspectionPolicy{}
-	case string(PolicyTypeFqdnFiltering):
-		b = &FqdnFilteringPolicy{}
-	case string(PolicyTypeMcp):
-		b = &McpPolicy{}
+	case string(PolicyTypeFQDNFiltering):
+		b = &FQDNFilteringPolicy{}
+	case string(PolicyTypeMCP):
+		b = &MCPPolicy{}
 	case string(PolicyTypeTLSInspection):
 		b = &TLSInspectionPolicy{}
 	case string(PolicyTypeURLFiltering):
@@ -180,7 +180,7 @@ func unmarshalTLSInspectionCertificateBaseClassification(rawMsg json.RawMessage)
 	var b TLSInspectionCertificateBaseClassification
 	switch m["mode"] {
 	case string(TLSInspectionCertificateModeAzureManagedCA):
-		b = &AzureManagedCaCertificate{}
+		b = &AzureManagedCACertificate{}
 	default:
 		b = &TLSInspectionCertificateBase{}
 	}
@@ -221,8 +221,8 @@ func unmarshalTLSInspectionRuleDestinationClassification(rawMsg json.RawMessage)
 	}
 	var b TLSInspectionRuleDestinationClassification
 	switch m["type"] {
-	case string(TLSInspectionRuleDestinationTypeFqdns):
-		b = &TLSInspectionRuleFqdnsDestination{}
+	case string(TLSInspectionRuleDestinationTypeFQDNs):
+		b = &TLSInspectionRuleFQDNsDestination{}
 	default:
 		b = &TLSInspectionRuleDestination{}
 	}
@@ -263,8 +263,8 @@ func unmarshalURLFilteringDestinationClassification(rawMsg json.RawMessage) (URL
 	switch m["type"] {
 	case string(URLFilteringDestinationTypeAddressPrefixes):
 		b = &URLFilteringAddressPrefixesDestination{}
-	case string(URLFilteringDestinationTypeFqdns):
-		b = &URLFilteringFqdnsDestination{}
+	case string(URLFilteringDestinationTypeFQDNs):
+		b = &URLFilteringFQDNsDestination{}
 	case string(URLFilteringDestinationTypeWorkloadIDPatterns):
 		b = &URLFilteringWorkloadIDPatternsDestination{}
 	default:

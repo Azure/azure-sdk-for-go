@@ -120,36 +120,36 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// FqdnFilteringDestinationType - The type of destination selector for an FQDN filtering policy.
-type FqdnFilteringDestinationType string
+// FQDNFilteringDestinationType - The type of destination selector for an FQDN filtering policy.
+type FQDNFilteringDestinationType string
 
 const (
-	// FqdnFilteringDestinationTypeFqdns - Select destinations by fully qualified domain names.
-	FqdnFilteringDestinationTypeFqdns FqdnFilteringDestinationType = "Fqdns"
+	// FQDNFilteringDestinationTypeFQDNs - Select destinations by fully qualified domain names.
+	FQDNFilteringDestinationTypeFQDNs FQDNFilteringDestinationType = "Fqdns"
 )
 
-// PossibleFqdnFilteringDestinationTypeValues returns the possible values for the FqdnFilteringDestinationType const type.
-func PossibleFqdnFilteringDestinationTypeValues() []FqdnFilteringDestinationType {
-	return []FqdnFilteringDestinationType{
-		FqdnFilteringDestinationTypeFqdns,
+// PossibleFQDNFilteringDestinationTypeValues returns the possible values for the FQDNFilteringDestinationType const type.
+func PossibleFQDNFilteringDestinationTypeValues() []FQDNFilteringDestinationType {
+	return []FQDNFilteringDestinationType{
+		FQDNFilteringDestinationTypeFQDNs,
 	}
 }
 
-// FqdnFilteringSourceType - The type of source selector for an FQDN filtering policy.
-type FqdnFilteringSourceType string
+// FQDNFilteringSourceType - The type of source selector for an FQDN filtering policy.
+type FQDNFilteringSourceType string
 
 const (
-	// FqdnFilteringSourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
-	FqdnFilteringSourceTypeAddressPrefixes FqdnFilteringSourceType = "AddressPrefixes"
-	// FqdnFilteringSourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
-	FqdnFilteringSourceTypeWorkloadIDPatterns FqdnFilteringSourceType = "WorkloadIdPatterns"
+	// FQDNFilteringSourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
+	FQDNFilteringSourceTypeAddressPrefixes FQDNFilteringSourceType = "AddressPrefixes"
+	// FQDNFilteringSourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
+	FQDNFilteringSourceTypeWorkloadIDPatterns FQDNFilteringSourceType = "WorkloadIdPatterns"
 )
 
-// PossibleFqdnFilteringSourceTypeValues returns the possible values for the FqdnFilteringSourceType const type.
-func PossibleFqdnFilteringSourceTypeValues() []FqdnFilteringSourceType {
-	return []FqdnFilteringSourceType{
-		FqdnFilteringSourceTypeAddressPrefixes,
-		FqdnFilteringSourceTypeWorkloadIDPatterns,
+// PossibleFQDNFilteringSourceTypeValues returns the possible values for the FQDNFilteringSourceType const type.
+func PossibleFQDNFilteringSourceTypeValues() []FQDNFilteringSourceType {
+	return []FQDNFilteringSourceType{
+		FQDNFilteringSourceTypeAddressPrefixes,
+		FQDNFilteringSourceTypeWorkloadIDPatterns,
 	}
 }
 
@@ -204,6 +204,123 @@ func PossibleImagePullPolicyValues() []ImagePullPolicy {
 	}
 }
 
+// MCPMatchCase - Whether an MCP string condition compares case-sensitively.
+type MCPMatchCase string
+
+const (
+	// MCPMatchCaseCaseInsensitive - Compare strings after case folding both sides: uppercase, then lowercase.
+	MCPMatchCaseCaseInsensitive MCPMatchCase = "CaseInsensitive"
+	// MCPMatchCaseCaseSensitive - Compare strings exactly. This is the default.
+	MCPMatchCaseCaseSensitive MCPMatchCase = "CaseSensitive"
+)
+
+// PossibleMCPMatchCaseValues returns the possible values for the MCPMatchCase const type.
+func PossibleMCPMatchCaseValues() []MCPMatchCase {
+	return []MCPMatchCase{
+		MCPMatchCaseCaseInsensitive,
+		MCPMatchCaseCaseSensitive,
+	}
+}
+
+// MCPMatchType - How an MCP string condition compares a request or response string with its values.
+type MCPMatchType string
+
+const (
+	// MCPMatchTypeContains - The string contains one of the values.
+	MCPMatchTypeContains MCPMatchType = "Contains"
+	// MCPMatchTypeExactMatch - The string equals one of the values.
+	MCPMatchTypeExactMatch MCPMatchType = "ExactMatch"
+	// MCPMatchTypeNotContains - The string contains none of the values.
+	MCPMatchTypeNotContains MCPMatchType = "NotContains"
+	// MCPMatchTypeNotExactMatch - The string equals none of the values.
+	MCPMatchTypeNotExactMatch MCPMatchType = "NotExactMatch"
+)
+
+// PossibleMCPMatchTypeValues returns the possible values for the MCPMatchType const type.
+func PossibleMCPMatchTypeValues() []MCPMatchType {
+	return []MCPMatchType{
+		MCPMatchTypeContains,
+		MCPMatchTypeExactMatch,
+		MCPMatchTypeNotContains,
+		MCPMatchTypeNotExactMatch,
+	}
+}
+
+// MCPPolicyDestinationType - The type of destination selector for an MCP policy.
+type MCPPolicyDestinationType string
+
+const (
+	// MCPPolicyDestinationTypeAddressPrefixes - Select destinations by IP address prefixes in CIDR notation.
+	MCPPolicyDestinationTypeAddressPrefixes MCPPolicyDestinationType = "AddressPrefixes"
+	// MCPPolicyDestinationTypeFQDNs - Select destinations by fully qualified domain names.
+	MCPPolicyDestinationTypeFQDNs MCPPolicyDestinationType = "Fqdns"
+	// MCPPolicyDestinationTypeWorkloadIDPatterns - Select destinations by workload ID patterns.
+	MCPPolicyDestinationTypeWorkloadIDPatterns MCPPolicyDestinationType = "WorkloadIdPatterns"
+)
+
+// PossibleMCPPolicyDestinationTypeValues returns the possible values for the MCPPolicyDestinationType const type.
+func PossibleMCPPolicyDestinationTypeValues() []MCPPolicyDestinationType {
+	return []MCPPolicyDestinationType{
+		MCPPolicyDestinationTypeAddressPrefixes,
+		MCPPolicyDestinationTypeFQDNs,
+		MCPPolicyDestinationTypeWorkloadIDPatterns,
+	}
+}
+
+// MCPPolicySourceType - The type of source selector for an MCP policy.
+type MCPPolicySourceType string
+
+const (
+	// MCPPolicySourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
+	MCPPolicySourceTypeAddressPrefixes MCPPolicySourceType = "AddressPrefixes"
+	// MCPPolicySourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
+	MCPPolicySourceTypeWorkloadIDPatterns MCPPolicySourceType = "WorkloadIdPatterns"
+)
+
+// PossibleMCPPolicySourceTypeValues returns the possible values for the MCPPolicySourceType const type.
+func PossibleMCPPolicySourceTypeValues() []MCPPolicySourceType {
+	return []MCPPolicySourceType{
+		MCPPolicySourceTypeAddressPrefixes,
+		MCPPolicySourceTypeWorkloadIDPatterns,
+	}
+}
+
+// MCPPromptMethod - An MCP prompt request method.
+type MCPPromptMethod string
+
+const (
+	// MCPPromptMethodGet - The prompts/get request.
+	MCPPromptMethodGet MCPPromptMethod = "Get"
+	// MCPPromptMethodList - The prompts/list request.
+	MCPPromptMethodList MCPPromptMethod = "List"
+)
+
+// PossibleMCPPromptMethodValues returns the possible values for the MCPPromptMethod const type.
+func PossibleMCPPromptMethodValues() []MCPPromptMethod {
+	return []MCPPromptMethod{
+		MCPPromptMethodGet,
+		MCPPromptMethodList,
+	}
+}
+
+// MCPToolMethod - An MCP tool request method.
+type MCPToolMethod string
+
+const (
+	// MCPToolMethodCall - The tools/call request.
+	MCPToolMethodCall MCPToolMethod = "Call"
+	// MCPToolMethodList - The tools/list request.
+	MCPToolMethodList MCPToolMethod = "List"
+)
+
+// PossibleMCPToolMethodValues returns the possible values for the MCPToolMethod const type.
+func PossibleMCPToolMethodValues() []MCPToolMethod {
+	return []MCPToolMethod{
+		MCPToolMethodCall,
+		MCPToolMethodList,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -225,123 +342,6 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
-	}
-}
-
-// McpMatchCase - Whether an MCP string condition compares case-sensitively.
-type McpMatchCase string
-
-const (
-	// McpMatchCaseCaseInsensitive - Compare strings after case folding both sides: uppercase, then lowercase.
-	McpMatchCaseCaseInsensitive McpMatchCase = "CaseInsensitive"
-	// McpMatchCaseCaseSensitive - Compare strings exactly. This is the default.
-	McpMatchCaseCaseSensitive McpMatchCase = "CaseSensitive"
-)
-
-// PossibleMcpMatchCaseValues returns the possible values for the McpMatchCase const type.
-func PossibleMcpMatchCaseValues() []McpMatchCase {
-	return []McpMatchCase{
-		McpMatchCaseCaseInsensitive,
-		McpMatchCaseCaseSensitive,
-	}
-}
-
-// McpMatchType - How an MCP string condition compares a request or response string with its values.
-type McpMatchType string
-
-const (
-	// McpMatchTypeContains - The string contains one of the values.
-	McpMatchTypeContains McpMatchType = "Contains"
-	// McpMatchTypeExactMatch - The string equals one of the values.
-	McpMatchTypeExactMatch McpMatchType = "ExactMatch"
-	// McpMatchTypeNotContains - The string contains none of the values.
-	McpMatchTypeNotContains McpMatchType = "NotContains"
-	// McpMatchTypeNotExactMatch - The string equals none of the values.
-	McpMatchTypeNotExactMatch McpMatchType = "NotExactMatch"
-)
-
-// PossibleMcpMatchTypeValues returns the possible values for the McpMatchType const type.
-func PossibleMcpMatchTypeValues() []McpMatchType {
-	return []McpMatchType{
-		McpMatchTypeContains,
-		McpMatchTypeExactMatch,
-		McpMatchTypeNotContains,
-		McpMatchTypeNotExactMatch,
-	}
-}
-
-// McpPolicyDestinationType - The type of destination selector for an MCP policy.
-type McpPolicyDestinationType string
-
-const (
-	// McpPolicyDestinationTypeAddressPrefixes - Select destinations by IP address prefixes in CIDR notation.
-	McpPolicyDestinationTypeAddressPrefixes McpPolicyDestinationType = "AddressPrefixes"
-	// McpPolicyDestinationTypeFqdns - Select destinations by fully qualified domain names.
-	McpPolicyDestinationTypeFqdns McpPolicyDestinationType = "Fqdns"
-	// McpPolicyDestinationTypeWorkloadIDPatterns - Select destinations by workload ID patterns.
-	McpPolicyDestinationTypeWorkloadIDPatterns McpPolicyDestinationType = "WorkloadIdPatterns"
-)
-
-// PossibleMcpPolicyDestinationTypeValues returns the possible values for the McpPolicyDestinationType const type.
-func PossibleMcpPolicyDestinationTypeValues() []McpPolicyDestinationType {
-	return []McpPolicyDestinationType{
-		McpPolicyDestinationTypeAddressPrefixes,
-		McpPolicyDestinationTypeFqdns,
-		McpPolicyDestinationTypeWorkloadIDPatterns,
-	}
-}
-
-// McpPolicySourceType - The type of source selector for an MCP policy.
-type McpPolicySourceType string
-
-const (
-	// McpPolicySourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
-	McpPolicySourceTypeAddressPrefixes McpPolicySourceType = "AddressPrefixes"
-	// McpPolicySourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
-	McpPolicySourceTypeWorkloadIDPatterns McpPolicySourceType = "WorkloadIdPatterns"
-)
-
-// PossibleMcpPolicySourceTypeValues returns the possible values for the McpPolicySourceType const type.
-func PossibleMcpPolicySourceTypeValues() []McpPolicySourceType {
-	return []McpPolicySourceType{
-		McpPolicySourceTypeAddressPrefixes,
-		McpPolicySourceTypeWorkloadIDPatterns,
-	}
-}
-
-// McpPromptMethod - An MCP prompt request method.
-type McpPromptMethod string
-
-const (
-	// McpPromptMethodGet - The prompts/get request.
-	McpPromptMethodGet McpPromptMethod = "Get"
-	// McpPromptMethodList - The prompts/list request.
-	McpPromptMethodList McpPromptMethod = "List"
-)
-
-// PossibleMcpPromptMethodValues returns the possible values for the McpPromptMethod const type.
-func PossibleMcpPromptMethodValues() []McpPromptMethod {
-	return []McpPromptMethod{
-		McpPromptMethodGet,
-		McpPromptMethodList,
-	}
-}
-
-// McpToolMethod - An MCP tool request method.
-type McpToolMethod string
-
-const (
-	// McpToolMethodCall - The tools/call request.
-	McpToolMethodCall McpToolMethod = "Call"
-	// McpToolMethodList - The tools/list request.
-	McpToolMethodList McpToolMethod = "List"
-)
-
-// PossibleMcpToolMethodValues returns the possible values for the McpToolMethod const type.
-func PossibleMcpToolMethodValues() []McpToolMethod {
-	return []McpToolMethod{
-		McpToolMethodCall,
-		McpToolMethodList,
 	}
 }
 
@@ -526,10 +526,10 @@ type PolicyType string
 const (
 	// PolicyTypeContentInspection - Content inspection policy type.
 	PolicyTypeContentInspection PolicyType = "ContentInspection"
-	// PolicyTypeFqdnFiltering - FQDN filtering policy type.
-	PolicyTypeFqdnFiltering PolicyType = "FqdnFiltering"
-	// PolicyTypeMcp - MCP server policy type.
-	PolicyTypeMcp PolicyType = "Mcp"
+	// PolicyTypeFQDNFiltering - FQDN filtering policy type.
+	PolicyTypeFQDNFiltering PolicyType = "FqdnFiltering"
+	// PolicyTypeMCP - MCP server policy type.
+	PolicyTypeMCP PolicyType = "Mcp"
 	// PolicyTypeTLSInspection - TLS inspection policy type.
 	PolicyTypeTLSInspection PolicyType = "TlsInspection"
 	// PolicyTypeURLFiltering - URL filtering policy type.
@@ -540,8 +540,8 @@ const (
 func PossiblePolicyTypeValues() []PolicyType {
 	return []PolicyType{
 		PolicyTypeContentInspection,
-		PolicyTypeFqdnFiltering,
-		PolicyTypeMcp,
+		PolicyTypeFQDNFiltering,
+		PolicyTypeMCP,
 		PolicyTypeTLSInspection,
 		PolicyTypeURLFiltering,
 	}
@@ -728,14 +728,14 @@ func PossibleTLSInspectionPolicySourceTypeValues() []TLSInspectionPolicySourceTy
 type TLSInspectionRuleDestinationType string
 
 const (
-	// TLSInspectionRuleDestinationTypeFqdns - Select destinations by fully qualified domain names.
-	TLSInspectionRuleDestinationTypeFqdns TLSInspectionRuleDestinationType = "Fqdns"
+	// TLSInspectionRuleDestinationTypeFQDNs - Select destinations by fully qualified domain names.
+	TLSInspectionRuleDestinationTypeFQDNs TLSInspectionRuleDestinationType = "Fqdns"
 )
 
 // PossibleTLSInspectionRuleDestinationTypeValues returns the possible values for the TLSInspectionRuleDestinationType const type.
 func PossibleTLSInspectionRuleDestinationTypeValues() []TLSInspectionRuleDestinationType {
 	return []TLSInspectionRuleDestinationType{
-		TLSInspectionRuleDestinationTypeFqdns,
+		TLSInspectionRuleDestinationTypeFQDNs,
 	}
 }
 
@@ -745,9 +745,9 @@ type URLFilteringDestinationType string
 const (
 	// URLFilteringDestinationTypeAddressPrefixes - Select destinations by IP address prefixes in CIDR notation.
 	URLFilteringDestinationTypeAddressPrefixes URLFilteringDestinationType = "AddressPrefixes"
-	// URLFilteringDestinationTypeFqdns - Deprecated. Select destinations by fully qualified domain names; use rule hostname for
+	// URLFilteringDestinationTypeFQDNs - Deprecated. Select destinations by fully qualified domain names; use rule hostname for
 	// new configurations.
-	URLFilteringDestinationTypeFqdns URLFilteringDestinationType = "Fqdns"
+	URLFilteringDestinationTypeFQDNs URLFilteringDestinationType = "Fqdns"
 	// URLFilteringDestinationTypeWorkloadIDPatterns - Select destinations by workload ID patterns.
 	URLFilteringDestinationTypeWorkloadIDPatterns URLFilteringDestinationType = "WorkloadIdPatterns"
 )
@@ -756,7 +756,7 @@ const (
 func PossibleURLFilteringDestinationTypeValues() []URLFilteringDestinationType {
 	return []URLFilteringDestinationType{
 		URLFilteringDestinationTypeAddressPrefixes,
-		URLFilteringDestinationTypeFqdns,
+		URLFilteringDestinationTypeFQDNs,
 		URLFilteringDestinationTypeWorkloadIDPatterns,
 	}
 }

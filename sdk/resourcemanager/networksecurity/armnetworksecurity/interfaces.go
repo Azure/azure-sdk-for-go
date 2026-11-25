@@ -13,46 +13,46 @@ type ContentInspectionPolicySourceClassification interface {
 	GetContentInspectionPolicySource() *ContentInspectionPolicySource
 }
 
-// FqdnFilteringDestinationClassification provides polymorphic access to related types.
-// Call the interface's GetFqdnFilteringDestination() method to access the common type.
+// FQDNFilteringDestinationClassification provides polymorphic access to related types.
+// Call the interface's GetFQDNFilteringDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *FqdnFilteringDestination, *FqdnFilteringFqdnsDestination
-type FqdnFilteringDestinationClassification interface {
-	// GetFqdnFilteringDestination returns the FqdnFilteringDestination content of the underlying type.
-	GetFqdnFilteringDestination() *FqdnFilteringDestination
+// - *FQDNFilteringDestination, *FQDNFilteringFQDNsDestination
+type FQDNFilteringDestinationClassification interface {
+	// GetFQDNFilteringDestination returns the FQDNFilteringDestination content of the underlying type.
+	GetFQDNFilteringDestination() *FQDNFilteringDestination
 }
 
-// FqdnFilteringSourceClassification provides polymorphic access to related types.
-// Call the interface's GetFqdnFilteringSource() method to access the common type.
+// FQDNFilteringSourceClassification provides polymorphic access to related types.
+// Call the interface's GetFQDNFilteringSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *FqdnFilteringAddressPrefixesSource, *FqdnFilteringSource, *FqdnFilteringWorkloadIDPatternsSource
-type FqdnFilteringSourceClassification interface {
-	// GetFqdnFilteringSource returns the FqdnFilteringSource content of the underlying type.
-	GetFqdnFilteringSource() *FqdnFilteringSource
+// - *FQDNFilteringAddressPrefixesSource, *FQDNFilteringSource, *FQDNFilteringWorkloadIDPatternsSource
+type FQDNFilteringSourceClassification interface {
+	// GetFQDNFilteringSource returns the FQDNFilteringSource content of the underlying type.
+	GetFQDNFilteringSource() *FQDNFilteringSource
 }
 
-// McpPolicyDestinationClassification provides polymorphic access to related types.
-// Call the interface's GetMcpPolicyDestination() method to access the common type.
+// MCPPolicyDestinationClassification provides polymorphic access to related types.
+// Call the interface's GetMCPPolicyDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *McpPolicyAddressPrefixesDestination, *McpPolicyDestination, *McpPolicyFqdnsDestination, *McpPolicyWorkloadIDPatternsDestination
-type McpPolicyDestinationClassification interface {
-	// GetMcpPolicyDestination returns the McpPolicyDestination content of the underlying type.
-	GetMcpPolicyDestination() *McpPolicyDestination
+// - *MCPPolicyAddressPrefixesDestination, *MCPPolicyDestination, *MCPPolicyFQDNsDestination, *MCPPolicyWorkloadIDPatternsDestination
+type MCPPolicyDestinationClassification interface {
+	// GetMCPPolicyDestination returns the MCPPolicyDestination content of the underlying type.
+	GetMCPPolicyDestination() *MCPPolicyDestination
 }
 
-// McpPolicySourceClassification provides polymorphic access to related types.
-// Call the interface's GetMcpPolicySource() method to access the common type.
+// MCPPolicySourceClassification provides polymorphic access to related types.
+// Call the interface's GetMCPPolicySource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *McpPolicyAddressPrefixesSource, *McpPolicySource, *McpPolicyWorkloadIDPatternsSource
-type McpPolicySourceClassification interface {
-	// GetMcpPolicySource returns the McpPolicySource content of the underlying type.
-	GetMcpPolicySource() *McpPolicySource
+// - *MCPPolicyAddressPrefixesSource, *MCPPolicySource, *MCPPolicyWorkloadIDPatternsSource
+type MCPPolicySourceClassification interface {
+	// GetMCPPolicySource returns the MCPPolicySource content of the underlying type.
+	GetMCPPolicySource() *MCPPolicySource
 }
 
 // PolicyBaseClassification provides polymorphic access to related types.
 // Call the interface's GetPolicyBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ContentInspectionPolicy, *FqdnFilteringPolicy, *McpPolicy, *PolicyBase, *TLSInspectionPolicy, *URLFilteringPolicy
+// - *ContentInspectionPolicy, *FQDNFilteringPolicy, *MCPPolicy, *PolicyBase, *TLSInspectionPolicy, *URLFilteringPolicy
 type PolicyBaseClassification interface {
 	// GetPolicyBase returns the PolicyBase content of the underlying type.
 	GetPolicyBase() *PolicyBase
@@ -61,7 +61,7 @@ type PolicyBaseClassification interface {
 // TLSInspectionCertificateBaseClassification provides polymorphic access to related types.
 // Call the interface's GetTLSInspectionCertificateBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureManagedCaCertificate, *TLSInspectionCertificateBase
+// - *AzureManagedCACertificate, *TLSInspectionCertificateBase
 type TLSInspectionCertificateBaseClassification interface {
 	// GetTLSInspectionCertificateBase returns the TLSInspectionCertificateBase content of the underlying type.
 	GetTLSInspectionCertificateBase() *TLSInspectionCertificateBase
@@ -79,7 +79,7 @@ type TLSInspectionPolicySourceClassification interface {
 // TLSInspectionRuleDestinationClassification provides polymorphic access to related types.
 // Call the interface's GetTLSInspectionRuleDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *TLSInspectionRuleDestination, *TLSInspectionRuleFqdnsDestination
+// - *TLSInspectionRuleDestination, *TLSInspectionRuleFQDNsDestination
 type TLSInspectionRuleDestinationClassification interface {
 	// GetTLSInspectionRuleDestination returns the TLSInspectionRuleDestination content of the underlying type.
 	GetTLSInspectionRuleDestination() *TLSInspectionRuleDestination
@@ -88,7 +88,7 @@ type TLSInspectionRuleDestinationClassification interface {
 // URLFilteringDestinationClassification provides polymorphic access to related types.
 // Call the interface's GetURLFilteringDestination() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *URLFilteringAddressPrefixesDestination, *URLFilteringDestination, *URLFilteringFqdnsDestination, *URLFilteringWorkloadIDPatternsDestination
+// - *URLFilteringAddressPrefixesDestination, *URLFilteringDestination, *URLFilteringFQDNsDestination, *URLFilteringWorkloadIDPatternsDestination
 type URLFilteringDestinationClassification interface {
 	// GetURLFilteringDestination returns the URLFilteringDestination content of the underlying type.
 	GetURLFilteringDestination() *URLFilteringDestination

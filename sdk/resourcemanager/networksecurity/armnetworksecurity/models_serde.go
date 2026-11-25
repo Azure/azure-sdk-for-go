@@ -544,15 +544,15 @@ func (a *AksWorkloadReference) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureManagedCaCertificate.
-func (a AzureManagedCaCertificate) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AzureManagedCACertificate.
+func (a AzureManagedCACertificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["mode"] = TLSInspectionCertificateModeAzureManagedCA
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureManagedCaCertificate.
-func (a *AzureManagedCaCertificate) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AzureManagedCACertificate.
+func (a *AzureManagedCACertificate) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
@@ -1182,16 +1182,16 @@ func (e *ErrorDetail) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FqdnFilteringAddressPrefixesSource.
-func (f FqdnFilteringAddressPrefixesSource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type FQDNFilteringAddressPrefixesSource.
+func (f FQDNFilteringAddressPrefixesSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "prefixes", f.Prefixes)
-	objectMap["type"] = FqdnFilteringSourceTypeAddressPrefixes
+	objectMap["type"] = FQDNFilteringSourceTypeAddressPrefixes
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FqdnFilteringAddressPrefixesSource.
-func (f *FqdnFilteringAddressPrefixesSource) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type FQDNFilteringAddressPrefixesSource.
+func (f *FQDNFilteringAddressPrefixesSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
@@ -1213,15 +1213,15 @@ func (f *FqdnFilteringAddressPrefixesSource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FqdnFilteringDestination.
-func (f FqdnFilteringDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type FQDNFilteringDestination.
+func (f FQDNFilteringDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", f.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FqdnFilteringDestination.
-func (f *FqdnFilteringDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type FQDNFilteringDestination.
+func (f *FQDNFilteringDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
@@ -1240,16 +1240,16 @@ func (f *FqdnFilteringDestination) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FqdnFilteringFqdnsDestination.
-func (f FqdnFilteringFqdnsDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type FQDNFilteringFQDNsDestination.
+func (f FQDNFilteringFQDNsDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fqdns", f.Fqdns)
-	objectMap["type"] = FqdnFilteringDestinationTypeFqdns
+	populate(objectMap, "fqdns", f.FQDNs)
+	objectMap["type"] = FQDNFilteringDestinationTypeFQDNs
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FqdnFilteringFqdnsDestination.
-func (f *FqdnFilteringFqdnsDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type FQDNFilteringFQDNsDestination.
+func (f *FQDNFilteringFQDNsDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
@@ -1258,7 +1258,7 @@ func (f *FqdnFilteringFqdnsDestination) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "fqdns":
-			err = unpopulate(val, "Fqdns", &f.Fqdns)
+			err = unpopulate(val, "FQDNs", &f.FQDNs)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &f.Type)
@@ -1271,8 +1271,8 @@ func (f *FqdnFilteringFqdnsDestination) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FqdnFilteringPolicy.
-func (f FqdnFilteringPolicy) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type FQDNFilteringPolicy.
+func (f FQDNFilteringPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "destination", f.Destination)
 	populate(objectMap, "direction", f.Direction)
@@ -1280,12 +1280,12 @@ func (f FqdnFilteringPolicy) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ports", f.Ports)
 	populate(objectMap, "priority", f.Priority)
 	populate(objectMap, "source", f.Source)
-	objectMap["type"] = PolicyTypeFqdnFiltering
+	objectMap["type"] = PolicyTypeFQDNFiltering
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FqdnFilteringPolicy.
-func (f *FqdnFilteringPolicy) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type FQDNFilteringPolicy.
+func (f *FQDNFilteringPolicy) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
@@ -1294,7 +1294,7 @@ func (f *FqdnFilteringPolicy) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "destination":
-			f.Destination, err = unmarshalFqdnFilteringDestinationClassification(val)
+			f.Destination, err = unmarshalFQDNFilteringDestinationClassification(val)
 			delete(rawMsg, key)
 		case "direction":
 			err = unpopulate(val, "Direction", &f.Direction)
@@ -1309,7 +1309,7 @@ func (f *FqdnFilteringPolicy) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Priority", &f.Priority)
 			delete(rawMsg, key)
 		case "source":
-			f.Source, err = unmarshalFqdnFilteringSourceClassification(val)
+			f.Source, err = unmarshalFQDNFilteringSourceClassification(val)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &f.Type)
@@ -1322,15 +1322,15 @@ func (f *FqdnFilteringPolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FqdnFilteringSource.
-func (f FqdnFilteringSource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type FQDNFilteringSource.
+func (f FQDNFilteringSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", f.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FqdnFilteringSource.
-func (f *FqdnFilteringSource) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type FQDNFilteringSource.
+func (f *FQDNFilteringSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
@@ -1349,16 +1349,16 @@ func (f *FqdnFilteringSource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FqdnFilteringWorkloadIDPatternsSource.
-func (f FqdnFilteringWorkloadIDPatternsSource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type FQDNFilteringWorkloadIDPatternsSource.
+func (f FQDNFilteringWorkloadIDPatternsSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "patterns", f.Patterns)
-	objectMap["type"] = FqdnFilteringSourceTypeWorkloadIDPatterns
+	objectMap["type"] = FQDNFilteringSourceTypeWorkloadIDPatterns
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FqdnFilteringWorkloadIDPatternsSource.
-func (f *FqdnFilteringWorkloadIDPatternsSource) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type FQDNFilteringWorkloadIDPatternsSource.
+func (f *FQDNFilteringWorkloadIDPatternsSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", f, err.Error())
@@ -1380,8 +1380,8 @@ func (f *FqdnFilteringWorkloadIDPatternsSource) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpArgumentMatching.
-func (m McpArgumentMatching) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPArgumentMatching.
+func (m MCPArgumentMatching) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "matchCase", m.MatchCase)
 	populate(objectMap, "matchType", m.MatchType)
@@ -1390,8 +1390,8 @@ func (m McpArgumentMatching) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpArgumentMatching.
-func (m *McpArgumentMatching) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPArgumentMatching.
+func (m *MCPArgumentMatching) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1419,19 +1419,19 @@ func (m *McpArgumentMatching) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicy.
-func (m McpPolicy) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicy.
+func (m MCPPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "defaultAction", m.DefaultAction)
 	populate(objectMap, "destination", m.Destination)
 	populate(objectMap, "rules", m.Rules)
 	populate(objectMap, "source", m.Source)
-	objectMap["type"] = PolicyTypeMcp
+	objectMap["type"] = PolicyTypeMCP
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicy.
-func (m *McpPolicy) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicy.
+func (m *MCPPolicy) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1443,13 +1443,13 @@ func (m *McpPolicy) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "DefaultAction", &m.DefaultAction)
 			delete(rawMsg, key)
 		case "destination":
-			m.Destination, err = unmarshalMcpPolicyDestinationClassification(val)
+			m.Destination, err = unmarshalMCPPolicyDestinationClassification(val)
 			delete(rawMsg, key)
 		case "rules":
 			err = unpopulate(val, "Rules", &m.Rules)
 			delete(rawMsg, key)
 		case "source":
-			m.Source, err = unmarshalMcpPolicySourceClassification(val)
+			m.Source, err = unmarshalMCPPolicySourceClassification(val)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &m.Type)
@@ -1462,16 +1462,16 @@ func (m *McpPolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicyAddressPrefixesDestination.
-func (m McpPolicyAddressPrefixesDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicyAddressPrefixesDestination.
+func (m MCPPolicyAddressPrefixesDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "prefixes", m.Prefixes)
-	objectMap["type"] = McpPolicyDestinationTypeAddressPrefixes
+	objectMap["type"] = MCPPolicyDestinationTypeAddressPrefixes
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicyAddressPrefixesDestination.
-func (m *McpPolicyAddressPrefixesDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicyAddressPrefixesDestination.
+func (m *MCPPolicyAddressPrefixesDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1493,16 +1493,16 @@ func (m *McpPolicyAddressPrefixesDestination) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicyAddressPrefixesSource.
-func (m McpPolicyAddressPrefixesSource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicyAddressPrefixesSource.
+func (m MCPPolicyAddressPrefixesSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "prefixes", m.Prefixes)
-	objectMap["type"] = McpPolicySourceTypeAddressPrefixes
+	objectMap["type"] = MCPPolicySourceTypeAddressPrefixes
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicyAddressPrefixesSource.
-func (m *McpPolicyAddressPrefixesSource) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicyAddressPrefixesSource.
+func (m *MCPPolicyAddressPrefixesSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1524,15 +1524,15 @@ func (m *McpPolicyAddressPrefixesSource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicyDestination.
-func (m McpPolicyDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicyDestination.
+func (m MCPPolicyDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicyDestination.
-func (m *McpPolicyDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicyDestination.
+func (m *MCPPolicyDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1551,16 +1551,16 @@ func (m *McpPolicyDestination) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicyFqdnsDestination.
-func (m McpPolicyFqdnsDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicyFQDNsDestination.
+func (m MCPPolicyFQDNsDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fqdns", m.Fqdns)
-	objectMap["type"] = McpPolicyDestinationTypeFqdns
+	populate(objectMap, "fqdns", m.FQDNs)
+	objectMap["type"] = MCPPolicyDestinationTypeFQDNs
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicyFqdnsDestination.
-func (m *McpPolicyFqdnsDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicyFQDNsDestination.
+func (m *MCPPolicyFQDNsDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1569,7 +1569,7 @@ func (m *McpPolicyFqdnsDestination) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "fqdns":
-			err = unpopulate(val, "Fqdns", &m.Fqdns)
+			err = unpopulate(val, "FQDNs", &m.FQDNs)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &m.Type)
@@ -1582,15 +1582,15 @@ func (m *McpPolicyFqdnsDestination) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicySource.
-func (m McpPolicySource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicySource.
+func (m MCPPolicySource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "type", m.Type)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicySource.
-func (m *McpPolicySource) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicySource.
+func (m *MCPPolicySource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1609,16 +1609,16 @@ func (m *McpPolicySource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicyWorkloadIDPatternsDestination.
-func (m McpPolicyWorkloadIDPatternsDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicyWorkloadIDPatternsDestination.
+func (m MCPPolicyWorkloadIDPatternsDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "patterns", m.Patterns)
-	objectMap["type"] = McpPolicyDestinationTypeWorkloadIDPatterns
+	objectMap["type"] = MCPPolicyDestinationTypeWorkloadIDPatterns
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicyWorkloadIDPatternsDestination.
-func (m *McpPolicyWorkloadIDPatternsDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicyWorkloadIDPatternsDestination.
+func (m *MCPPolicyWorkloadIDPatternsDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1640,16 +1640,16 @@ func (m *McpPolicyWorkloadIDPatternsDestination) UnmarshalJSON(data []byte) erro
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPolicyWorkloadIDPatternsSource.
-func (m McpPolicyWorkloadIDPatternsSource) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPolicyWorkloadIDPatternsSource.
+func (m MCPPolicyWorkloadIDPatternsSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "patterns", m.Patterns)
-	objectMap["type"] = McpPolicySourceTypeWorkloadIDPatterns
+	objectMap["type"] = MCPPolicySourceTypeWorkloadIDPatterns
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPolicyWorkloadIDPatternsSource.
-func (m *McpPolicyWorkloadIDPatternsSource) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPolicyWorkloadIDPatternsSource.
+func (m *MCPPolicyWorkloadIDPatternsSource) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1671,8 +1671,8 @@ func (m *McpPolicyWorkloadIDPatternsSource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpPromptMatching.
-func (m McpPromptMatching) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPPromptMatching.
+func (m MCPPromptMatching) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "arguments", m.Arguments)
 	populate(objectMap, "descriptions", m.Descriptions)
@@ -1683,8 +1683,8 @@ func (m McpPromptMatching) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpPromptMatching.
-func (m *McpPromptMatching) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPPromptMatching.
+func (m *MCPPromptMatching) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1718,8 +1718,8 @@ func (m *McpPromptMatching) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpRule.
-func (m McpRule) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPRule.
+func (m MCPRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "action", m.Action)
 	populate(objectMap, "matchingConditions", m.MatchingConditions)
@@ -1729,8 +1729,8 @@ func (m McpRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpRule.
-func (m *McpRule) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPRule.
+func (m *MCPRule) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1761,18 +1761,18 @@ func (m *McpRule) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpRuleDestinationMatching.
-func (m McpRuleDestinationMatching) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPRuleDestinationMatching.
+func (m MCPRuleDestinationMatching) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "promptMatching", m.PromptMatching)
 	populate(objectMap, "protocolVersions", m.ProtocolVersions)
-	populate(objectMap, "serverFqdns", m.ServerFqdns)
+	populate(objectMap, "serverFqdns", m.ServerFQDNs)
 	populate(objectMap, "toolMatching", m.ToolMatching)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpRuleDestinationMatching.
-func (m *McpRuleDestinationMatching) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPRuleDestinationMatching.
+func (m *MCPRuleDestinationMatching) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1787,7 +1787,7 @@ func (m *McpRuleDestinationMatching) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ProtocolVersions", &m.ProtocolVersions)
 			delete(rawMsg, key)
 		case "serverFqdns":
-			err = unpopulate(val, "ServerFqdns", &m.ServerFqdns)
+			err = unpopulate(val, "ServerFQDNs", &m.ServerFQDNs)
 			delete(rawMsg, key)
 		case "toolMatching":
 			err = unpopulate(val, "ToolMatching", &m.ToolMatching)
@@ -1800,15 +1800,15 @@ func (m *McpRuleDestinationMatching) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpRuleMatchingConditions.
-func (m McpRuleMatchingConditions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPRuleMatchingConditions.
+func (m MCPRuleMatchingConditions) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "destinations", m.Destinations)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpRuleMatchingConditions.
-func (m *McpRuleMatchingConditions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPRuleMatchingConditions.
+func (m *MCPRuleMatchingConditions) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1827,8 +1827,8 @@ func (m *McpRuleMatchingConditions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpStringMatching.
-func (m McpStringMatching) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPStringMatching.
+func (m MCPStringMatching) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "matchCase", m.MatchCase)
 	populate(objectMap, "matchType", m.MatchType)
@@ -1836,8 +1836,8 @@ func (m McpStringMatching) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpStringMatching.
-func (m *McpStringMatching) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPStringMatching.
+func (m *MCPStringMatching) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -1862,8 +1862,8 @@ func (m *McpStringMatching) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type McpToolMatching.
-func (m McpToolMatching) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type MCPToolMatching.
+func (m MCPToolMatching) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "callArguments", m.CallArguments)
 	populate(objectMap, "descriptions", m.Descriptions)
@@ -1874,8 +1874,8 @@ func (m McpToolMatching) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type McpToolMatching.
-func (m *McpToolMatching) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type MCPToolMatching.
+func (m *MCPToolMatching) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
@@ -3687,16 +3687,16 @@ func (t *TLSInspectionRuleDestination) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TLSInspectionRuleFqdnsDestination.
-func (t TLSInspectionRuleFqdnsDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type TLSInspectionRuleFQDNsDestination.
+func (t TLSInspectionRuleFQDNsDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fqdns", t.Fqdns)
-	objectMap["type"] = TLSInspectionRuleDestinationTypeFqdns
+	populate(objectMap, "fqdns", t.FQDNs)
+	objectMap["type"] = TLSInspectionRuleDestinationTypeFQDNs
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type TLSInspectionRuleFqdnsDestination.
-func (t *TLSInspectionRuleFqdnsDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type TLSInspectionRuleFQDNsDestination.
+func (t *TLSInspectionRuleFQDNsDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
@@ -3705,7 +3705,7 @@ func (t *TLSInspectionRuleFqdnsDestination) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "fqdns":
-			err = unpopulate(val, "Fqdns", &t.Fqdns)
+			err = unpopulate(val, "FQDNs", &t.FQDNs)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &t.Type)
@@ -3807,16 +3807,16 @@ func (u *URLFilteringDestination) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type URLFilteringFqdnsDestination.
-func (u URLFilteringFqdnsDestination) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type URLFilteringFQDNsDestination.
+func (u URLFilteringFQDNsDestination) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "fqdns", u.Fqdns)
-	objectMap["type"] = URLFilteringDestinationTypeFqdns
+	populate(objectMap, "fqdns", u.FQDNs)
+	objectMap["type"] = URLFilteringDestinationTypeFQDNs
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type URLFilteringFqdnsDestination.
-func (u *URLFilteringFqdnsDestination) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type URLFilteringFQDNsDestination.
+func (u *URLFilteringFQDNsDestination) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
@@ -3825,7 +3825,7 @@ func (u *URLFilteringFqdnsDestination) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "fqdns":
-			err = unpopulate(val, "Fqdns", &u.Fqdns)
+			err = unpopulate(val, "FQDNs", &u.FQDNs)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &u.Type)

@@ -303,15 +303,15 @@ type AksWorkloadReference struct {
 	Namespace *string
 }
 
-// AzureManagedCaCertificate - TLS inspection certificate issued by an Azure-managed certificate authority.
-type AzureManagedCaCertificate struct {
+// AzureManagedCACertificate - TLS inspection certificate issued by an Azure-managed certificate authority.
+type AzureManagedCACertificate struct {
 	// CONSTANT; The source mode of the TLS inspection certificate.
 	// Field has constant value TLSInspectionCertificateModeAzureManagedCA, any specified value is ignored.
 	Mode *TLSInspectionCertificateMode
 }
 
-// GetTLSInspectionCertificateBase implements the TLSInspectionCertificateBaseClassification interface for type AzureManagedCaCertificate.
-func (a *AzureManagedCaCertificate) GetTLSInspectionCertificateBase() *TLSInspectionCertificateBase {
+// GetTLSInspectionCertificateBase implements the TLSInspectionCertificateBaseClassification interface for type AzureManagedCACertificate.
+func (a *AzureManagedCACertificate) GetTLSInspectionCertificateBase() *TLSInspectionCertificateBase {
 	return &TLSInspectionCertificateBase{
 		Mode: a.Mode,
 	}
@@ -623,60 +623,60 @@ type ErrorDetail struct {
 	Target *string
 }
 
-// FqdnFilteringAddressPrefixesSource - Selects FQDN filtering sources by IP address prefixes.
-type FqdnFilteringAddressPrefixesSource struct {
+// FQDNFilteringAddressPrefixesSource - Selects FQDN filtering sources by IP address prefixes.
+type FQDNFilteringAddressPrefixesSource struct {
 	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the source(s).
 	Prefixes []*string
 
 	// CONSTANT; The type of source selector.
-	// Field has constant value FqdnFilteringSourceTypeAddressPrefixes, any specified value is ignored.
-	Type *FqdnFilteringSourceType
+	// Field has constant value FQDNFilteringSourceTypeAddressPrefixes, any specified value is ignored.
+	Type *FQDNFilteringSourceType
 }
 
-// GetFqdnFilteringSource implements the FqdnFilteringSourceClassification interface for type FqdnFilteringAddressPrefixesSource.
-func (f *FqdnFilteringAddressPrefixesSource) GetFqdnFilteringSource() *FqdnFilteringSource {
-	return &FqdnFilteringSource{
+// GetFQDNFilteringSource implements the FQDNFilteringSourceClassification interface for type FQDNFilteringAddressPrefixesSource.
+func (f *FQDNFilteringAddressPrefixesSource) GetFQDNFilteringSource() *FQDNFilteringSource {
+	return &FQDNFilteringSource{
 		Type: f.Type,
 	}
 }
 
-// FqdnFilteringDestination - Selects the destination(s) that an FQDN filtering policy applies to.
-type FqdnFilteringDestination struct {
+// FQDNFilteringDestination - Selects the destination(s) that an FQDN filtering policy applies to.
+type FQDNFilteringDestination struct {
 	// REQUIRED; The type of destination selector.
-	Type *FqdnFilteringDestinationType
+	Type *FQDNFilteringDestinationType
 }
 
-// GetFqdnFilteringDestination implements the FqdnFilteringDestinationClassification interface for type FqdnFilteringDestination.
-func (f *FqdnFilteringDestination) GetFqdnFilteringDestination() *FqdnFilteringDestination { return f }
+// GetFQDNFilteringDestination implements the FQDNFilteringDestinationClassification interface for type FQDNFilteringDestination.
+func (f *FQDNFilteringDestination) GetFQDNFilteringDestination() *FQDNFilteringDestination { return f }
 
-// FqdnFilteringFqdnsDestination - Selects FQDN filtering destinations by fully qualified domain names.
-type FqdnFilteringFqdnsDestination struct {
+// FQDNFilteringFQDNsDestination - Selects FQDN filtering destinations by fully qualified domain names.
+type FQDNFilteringFQDNsDestination struct {
 	// REQUIRED; The fully qualified domain names that identify the destination(s).
-	Fqdns []*string
+	FQDNs []*string
 
 	// CONSTANT; The type of destination selector.
-	// Field has constant value FqdnFilteringDestinationTypeFqdns, any specified value is ignored.
-	Type *FqdnFilteringDestinationType
+	// Field has constant value FQDNFilteringDestinationTypeFQDNs, any specified value is ignored.
+	Type *FQDNFilteringDestinationType
 }
 
-// GetFqdnFilteringDestination implements the FqdnFilteringDestinationClassification interface for type FqdnFilteringFqdnsDestination.
-func (f *FqdnFilteringFqdnsDestination) GetFqdnFilteringDestination() *FqdnFilteringDestination {
-	return &FqdnFilteringDestination{
+// GetFQDNFilteringDestination implements the FQDNFilteringDestinationClassification interface for type FQDNFilteringFQDNsDestination.
+func (f *FQDNFilteringFQDNsDestination) GetFQDNFilteringDestination() *FQDNFilteringDestination {
+	return &FQDNFilteringDestination{
 		Type: f.Type,
 	}
 }
 
-// FqdnFilteringPolicy - FQDN filtering network security policy.
-type FqdnFilteringPolicy struct {
+// FQDNFilteringPolicy - FQDN filtering network security policy.
+type FQDNFilteringPolicy struct {
 	// REQUIRED; The source details for the policy.
-	Source FqdnFilteringSourceClassification
+	Source FQDNFilteringSourceClassification
 
 	// CONSTANT; The network security policy type.
-	// Field has constant value PolicyTypeFqdnFiltering, any specified value is ignored.
+	// Field has constant value PolicyTypeFQDNFiltering, any specified value is ignored.
 	Type *PolicyType
 
 	// The destination details for the policy.
-	Destination FqdnFilteringDestinationClassification
+	Destination FQDNFilteringDestinationClassification
 
 	// The direction of traffic for the policy.
 	Direction *PolicyDirection
@@ -691,51 +691,51 @@ type FqdnFilteringPolicy struct {
 	Priority *int32
 }
 
-// GetPolicyBase implements the PolicyBaseClassification interface for type FqdnFilteringPolicy.
-func (f *FqdnFilteringPolicy) GetPolicyBase() *PolicyBase {
+// GetPolicyBase implements the PolicyBaseClassification interface for type FQDNFilteringPolicy.
+func (f *FQDNFilteringPolicy) GetPolicyBase() *PolicyBase {
 	return &PolicyBase{
 		Type: f.Type,
 	}
 }
 
-// FqdnFilteringSource - Selects the source(s) that an FQDN filtering policy applies to.
-type FqdnFilteringSource struct {
+// FQDNFilteringSource - Selects the source(s) that an FQDN filtering policy applies to.
+type FQDNFilteringSource struct {
 	// REQUIRED; The type of source selector.
-	Type *FqdnFilteringSourceType
+	Type *FQDNFilteringSourceType
 }
 
-// GetFqdnFilteringSource implements the FqdnFilteringSourceClassification interface for type FqdnFilteringSource.
-func (f *FqdnFilteringSource) GetFqdnFilteringSource() *FqdnFilteringSource { return f }
+// GetFQDNFilteringSource implements the FQDNFilteringSourceClassification interface for type FQDNFilteringSource.
+func (f *FQDNFilteringSource) GetFQDNFilteringSource() *FQDNFilteringSource { return f }
 
-// FqdnFilteringWorkloadIDPatternsSource - Selects FQDN filtering sources by workload ID patterns.
-type FqdnFilteringWorkloadIDPatternsSource struct {
+// FQDNFilteringWorkloadIDPatternsSource - Selects FQDN filtering sources by workload ID patterns.
+type FQDNFilteringWorkloadIDPatternsSource struct {
 	// REQUIRED; The workload ID patterns that identify the source(s).
 	Patterns []*string
 
 	// CONSTANT; The type of source selector.
-	// Field has constant value FqdnFilteringSourceTypeWorkloadIDPatterns, any specified value is ignored.
-	Type *FqdnFilteringSourceType
+	// Field has constant value FQDNFilteringSourceTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *FQDNFilteringSourceType
 }
 
-// GetFqdnFilteringSource implements the FqdnFilteringSourceClassification interface for type FqdnFilteringWorkloadIDPatternsSource.
-func (f *FqdnFilteringWorkloadIDPatternsSource) GetFqdnFilteringSource() *FqdnFilteringSource {
-	return &FqdnFilteringSource{
+// GetFQDNFilteringSource implements the FQDNFilteringSourceClassification interface for type FQDNFilteringWorkloadIDPatternsSource.
+func (f *FQDNFilteringWorkloadIDPatternsSource) GetFQDNFilteringSource() *FQDNFilteringSource {
+	return &FQDNFilteringSource{
 		Type: f.Type,
 	}
 }
 
-// McpArgumentMatching - Compares the argument values of an MCP request with a list of values. Only string values
+// MCPArgumentMatching - Compares the argument values of an MCP request with a list of values. Only string values
 // are compared, and a boolean compares as true or false. Without a path, object keys are
 // compared too.
-type McpArgumentMatching struct {
+type MCPArgumentMatching struct {
 	// REQUIRED; How the string is compared with the values.
-	MatchType *McpMatchType
+	MatchType *MCPMatchType
 
 	// REQUIRED; The values to compare with: 1 to 64, or 1 to 16 non-empty values for Contains and NotContains.
 	Values []*string
 
 	// Whether the comparison is case-sensitive. The default is CaseSensitive.
-	MatchCase *McpMatchCase
+	MatchCase *MCPMatchCase
 
 	// A JSONPath into the request's params.arguments object, which is `$`: 1 to 8 segments,
 	// the first `.name` and the others `.name` or `[*]` (at most once), for example
@@ -749,165 +749,165 @@ type McpArgumentMatching struct {
 	Path *string
 }
 
-// McpPolicy - MCP server network security policy.
-type McpPolicy struct {
+// MCPPolicy - MCP server network security policy.
+type MCPPolicy struct {
 	// REQUIRED; The default action to take when no rule in the policy matches.
 	DefaultAction *PolicyAction
 
 	// REQUIRED; The MCP server(s) that this policy applies to.
-	Destination McpPolicyDestinationClassification
+	Destination MCPPolicyDestinationClassification
 
 	// REQUIRED; The list of MCP rules.
-	Rules []*McpRule
+	Rules []*MCPRule
 
 	// REQUIRED; The source(s) that this policy applies to.
-	Source McpPolicySourceClassification
+	Source MCPPolicySourceClassification
 
 	// CONSTANT; The network security policy type.
-	// Field has constant value PolicyTypeMcp, any specified value is ignored.
+	// Field has constant value PolicyTypeMCP, any specified value is ignored.
 	Type *PolicyType
 }
 
-// GetPolicyBase implements the PolicyBaseClassification interface for type McpPolicy.
-func (m *McpPolicy) GetPolicyBase() *PolicyBase {
+// GetPolicyBase implements the PolicyBaseClassification interface for type MCPPolicy.
+func (m *MCPPolicy) GetPolicyBase() *PolicyBase {
 	return &PolicyBase{
 		Type: m.Type,
 	}
 }
 
-// McpPolicyAddressPrefixesDestination - Selects MCP policy destinations by IP address prefixes.
-type McpPolicyAddressPrefixesDestination struct {
+// MCPPolicyAddressPrefixesDestination - Selects MCP policy destinations by IP address prefixes.
+type MCPPolicyAddressPrefixesDestination struct {
 	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the destination(s).
 	Prefixes []*string
 
 	// CONSTANT; The type of destination selector.
-	// Field has constant value McpPolicyDestinationTypeAddressPrefixes, any specified value is ignored.
-	Type *McpPolicyDestinationType
+	// Field has constant value MCPPolicyDestinationTypeAddressPrefixes, any specified value is ignored.
+	Type *MCPPolicyDestinationType
 }
 
-// GetMcpPolicyDestination implements the McpPolicyDestinationClassification interface for type McpPolicyAddressPrefixesDestination.
-func (m *McpPolicyAddressPrefixesDestination) GetMcpPolicyDestination() *McpPolicyDestination {
-	return &McpPolicyDestination{
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyAddressPrefixesDestination.
+func (m *MCPPolicyAddressPrefixesDestination) GetMCPPolicyDestination() *MCPPolicyDestination {
+	return &MCPPolicyDestination{
 		Type: m.Type,
 	}
 }
 
-// McpPolicyAddressPrefixesSource - Selects MCP policy sources by IP address prefixes.
-type McpPolicyAddressPrefixesSource struct {
+// MCPPolicyAddressPrefixesSource - Selects MCP policy sources by IP address prefixes.
+type MCPPolicyAddressPrefixesSource struct {
 	// REQUIRED; The IP address prefixes, in CIDR notation, that identify the source(s).
 	Prefixes []*string
 
 	// CONSTANT; The type of source selector.
-	// Field has constant value McpPolicySourceTypeAddressPrefixes, any specified value is ignored.
-	Type *McpPolicySourceType
+	// Field has constant value MCPPolicySourceTypeAddressPrefixes, any specified value is ignored.
+	Type *MCPPolicySourceType
 }
 
-// GetMcpPolicySource implements the McpPolicySourceClassification interface for type McpPolicyAddressPrefixesSource.
-func (m *McpPolicyAddressPrefixesSource) GetMcpPolicySource() *McpPolicySource {
-	return &McpPolicySource{
+// GetMCPPolicySource implements the MCPPolicySourceClassification interface for type MCPPolicyAddressPrefixesSource.
+func (m *MCPPolicyAddressPrefixesSource) GetMCPPolicySource() *MCPPolicySource {
+	return &MCPPolicySource{
 		Type: m.Type,
 	}
 }
 
-// McpPolicyDestination - Selects the MCP server(s) that an MCP policy applies to.
-type McpPolicyDestination struct {
+// MCPPolicyDestination - Selects the MCP server(s) that an MCP policy applies to.
+type MCPPolicyDestination struct {
 	// REQUIRED; The type of destination selector.
-	Type *McpPolicyDestinationType
+	Type *MCPPolicyDestinationType
 }
 
-// GetMcpPolicyDestination implements the McpPolicyDestinationClassification interface for type McpPolicyDestination.
-func (m *McpPolicyDestination) GetMcpPolicyDestination() *McpPolicyDestination { return m }
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyDestination.
+func (m *MCPPolicyDestination) GetMCPPolicyDestination() *MCPPolicyDestination { return m }
 
-// McpPolicyFqdnsDestination - Selects MCP policy destinations by fully qualified domain names.
-type McpPolicyFqdnsDestination struct {
+// MCPPolicyFQDNsDestination - Selects MCP policy destinations by fully qualified domain names.
+type MCPPolicyFQDNsDestination struct {
 	// REQUIRED; The fully qualified domain names that identify the destination(s).
-	Fqdns []*string
+	FQDNs []*string
 
 	// CONSTANT; The type of destination selector.
-	// Field has constant value McpPolicyDestinationTypeFqdns, any specified value is ignored.
-	Type *McpPolicyDestinationType
+	// Field has constant value MCPPolicyDestinationTypeFQDNs, any specified value is ignored.
+	Type *MCPPolicyDestinationType
 }
 
-// GetMcpPolicyDestination implements the McpPolicyDestinationClassification interface for type McpPolicyFqdnsDestination.
-func (m *McpPolicyFqdnsDestination) GetMcpPolicyDestination() *McpPolicyDestination {
-	return &McpPolicyDestination{
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyFQDNsDestination.
+func (m *MCPPolicyFQDNsDestination) GetMCPPolicyDestination() *MCPPolicyDestination {
+	return &MCPPolicyDestination{
 		Type: m.Type,
 	}
 }
 
-// McpPolicySource - Selects the source(s) that an MCP policy applies to.
-type McpPolicySource struct {
+// MCPPolicySource - Selects the source(s) that an MCP policy applies to.
+type MCPPolicySource struct {
 	// REQUIRED; The type of source selector.
-	Type *McpPolicySourceType
+	Type *MCPPolicySourceType
 }
 
-// GetMcpPolicySource implements the McpPolicySourceClassification interface for type McpPolicySource.
-func (m *McpPolicySource) GetMcpPolicySource() *McpPolicySource { return m }
+// GetMCPPolicySource implements the MCPPolicySourceClassification interface for type MCPPolicySource.
+func (m *MCPPolicySource) GetMCPPolicySource() *MCPPolicySource { return m }
 
-// McpPolicyWorkloadIDPatternsDestination - Selects MCP policy destinations by workload ID patterns.
-type McpPolicyWorkloadIDPatternsDestination struct {
+// MCPPolicyWorkloadIDPatternsDestination - Selects MCP policy destinations by workload ID patterns.
+type MCPPolicyWorkloadIDPatternsDestination struct {
 	// REQUIRED; The workload ID patterns that identify the destination(s).
 	Patterns []*string
 
 	// CONSTANT; The type of destination selector.
-	// Field has constant value McpPolicyDestinationTypeWorkloadIDPatterns, any specified value is ignored.
-	Type *McpPolicyDestinationType
+	// Field has constant value MCPPolicyDestinationTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *MCPPolicyDestinationType
 }
 
-// GetMcpPolicyDestination implements the McpPolicyDestinationClassification interface for type McpPolicyWorkloadIDPatternsDestination.
-func (m *McpPolicyWorkloadIDPatternsDestination) GetMcpPolicyDestination() *McpPolicyDestination {
-	return &McpPolicyDestination{
+// GetMCPPolicyDestination implements the MCPPolicyDestinationClassification interface for type MCPPolicyWorkloadIDPatternsDestination.
+func (m *MCPPolicyWorkloadIDPatternsDestination) GetMCPPolicyDestination() *MCPPolicyDestination {
+	return &MCPPolicyDestination{
 		Type: m.Type,
 	}
 }
 
-// McpPolicyWorkloadIDPatternsSource - Selects MCP policy sources by workload ID patterns.
-type McpPolicyWorkloadIDPatternsSource struct {
+// MCPPolicyWorkloadIDPatternsSource - Selects MCP policy sources by workload ID patterns.
+type MCPPolicyWorkloadIDPatternsSource struct {
 	// REQUIRED; The workload ID patterns that identify the source(s).
 	Patterns []*string
 
 	// CONSTANT; The type of source selector.
-	// Field has constant value McpPolicySourceTypeWorkloadIDPatterns, any specified value is ignored.
-	Type *McpPolicySourceType
+	// Field has constant value MCPPolicySourceTypeWorkloadIDPatterns, any specified value is ignored.
+	Type *MCPPolicySourceType
 }
 
-// GetMcpPolicySource implements the McpPolicySourceClassification interface for type McpPolicyWorkloadIDPatternsSource.
-func (m *McpPolicyWorkloadIDPatternsSource) GetMcpPolicySource() *McpPolicySource {
-	return &McpPolicySource{
+// GetMCPPolicySource implements the MCPPolicySourceClassification interface for type MCPPolicyWorkloadIDPatternsSource.
+func (m *MCPPolicyWorkloadIDPatternsSource) GetMCPPolicySource() *MCPPolicySource {
+	return &MCPPolicySource{
 		Type: m.Type,
 	}
 }
 
-// McpPromptMatching - The prompt conditions of an MCP rule. Present properties are ANDed.
-type McpPromptMatching struct {
+// MCPPromptMatching - The prompt conditions of an MCP rule. Present properties are ANDed.
+type MCPPromptMatching struct {
 	// Compared with the arguments of a prompts/get request.
-	Arguments *McpArgumentMatching
+	Arguments *MCPArgumentMatching
 
 	// Compared with the description of each prompt in a prompts/list response. Needs methods List alone.
-	Descriptions *McpStringMatching
+	Descriptions *MCPStringMatching
 
 	// The prompt methods to match. Omitted means Get. Names and arguments need Get alone. Titles
 	// and descriptions need List alone.
-	Methods []*McpPromptMethod
+	Methods []*MCPPromptMethod
 
 	// Compared with the prompt name of a prompts/get request.
-	Names *McpStringMatching
+	Names *MCPStringMatching
 
 	// Compared with the text of each message, result.messages[].content.text, of a prompts/get
 	// response.
-	ResponseContents *McpStringMatching
+	ResponseContents *MCPStringMatching
 
 	// Compared with the title of each prompt in a prompts/list response. Needs methods List alone.
-	Titles *McpStringMatching
+	Titles *MCPStringMatching
 }
 
-// McpRule - A single rule within an MCP policy.
-type McpRule struct {
+// MCPRule - A single rule within an MCP policy.
+type MCPRule struct {
 	// The action to take for the specified MCP tools.
 	Action *PolicyAction
 
 	// The conditions of the rule. A rule without an action uses defaultAction.
-	MatchingConditions *McpRuleMatchingConditions
+	MatchingConditions *MCPRuleMatchingConditions
 
 	// The name of the rule: 1 to 63 ASCII letters, digits, '_', '.' or '-', starting with a
 	// letter or digit, and unique within the policy ignoring case. Flow logs report the rule
@@ -926,65 +926,65 @@ type McpRule struct {
 	Tools []*string
 }
 
-// McpRuleDestinationMatching - The MCP servers and requests an MCP rule matches. Present properties are ANDed. A rule has
+// MCPRuleDestinationMatching - The MCP servers and requests an MCP rule matches. Present properties are ANDed. A rule has
 // at most one of toolMatching and promptMatching. Without either, it matches every request to
 // its servers.
-type McpRuleDestinationMatching struct {
+type MCPRuleDestinationMatching struct {
 	// Conditions on prompt requests.
-	PromptMatching *McpPromptMatching
+	PromptMatching *MCPPromptMatching
 
 	// Compared with params.protocolVersion of an initialize request, the protocol version such as
 	// 2025-06-18 that a client names when it starts a session. A request that names no protocol
 	// version does not match the rule, so a Deny rule blocks sessions that start with a listed version.
-	ProtocolVersions *McpStringMatching
+	ProtocolVersions *MCPStringMatching
 
 	// The MCP servers: exact names or one leading `*.`, each inside the policy destination.
 	// Omitted means every server of the policy destination.
-	ServerFqdns []*string
+	ServerFQDNs []*string
 
 	// Conditions on tool requests.
-	ToolMatching *McpToolMatching
+	ToolMatching *MCPToolMatching
 }
 
-// McpRuleMatchingConditions - The conditions of an MCP rule. The rule applies to the sources of its policy.
-type McpRuleMatchingConditions struct {
+// MCPRuleMatchingConditions - The conditions of an MCP rule. The rule applies to the sources of its policy.
+type MCPRuleMatchingConditions struct {
 	// REQUIRED; The servers and requests the rule matches.
-	Destinations *McpRuleDestinationMatching
+	Destinations *MCPRuleDestinationMatching
 }
 
-// McpStringMatching - Compares one string of an MCP request or response with a list of values. ExactMatch and
+// MCPStringMatching - Compares one string of an MCP request or response with a list of values. ExactMatch and
 // Contains hold when one value matches; NotExactMatch and NotContains hold when no value matches.
-type McpStringMatching struct {
+type MCPStringMatching struct {
 	// REQUIRED; How the string is compared with the values.
-	MatchType *McpMatchType
+	MatchType *MCPMatchType
 
 	// REQUIRED; The values to compare with: 1 to 64, or 1 to 16 non-empty values for Contains and NotContains.
 	Values []*string
 
 	// Whether the comparison is case-sensitive. The default is CaseSensitive.
-	MatchCase *McpMatchCase
+	MatchCase *MCPMatchCase
 }
 
-// McpToolMatching - The tool conditions of an MCP rule. Present properties are ANDed.
-type McpToolMatching struct {
+// MCPToolMatching - The tool conditions of an MCP rule. Present properties are ANDed.
+type MCPToolMatching struct {
 	// Compared with the arguments of a tools/call request.
-	CallArguments *McpArgumentMatching
+	CallArguments *MCPArgumentMatching
 
 	// Compared with the description of each tool in a tools/list response. Needs methods List alone.
-	Descriptions *McpStringMatching
+	Descriptions *MCPStringMatching
 
 	// The tool methods to match. Omitted means Call. Names and callArguments need Call alone.
 	// Titles and descriptions need List alone.
-	Methods []*McpToolMethod
+	Methods []*MCPToolMethod
 
 	// Compared with the tool name of a tools/call request.
-	Names *McpStringMatching
+	Names *MCPStringMatching
 
 	// Compared with the text of each content item, result.content[].text, of a tools/call response.
-	ResponseContents *McpStringMatching
+	ResponseContents *MCPStringMatching
 
 	// Compared with the title of each tool in a tools/list response. Needs methods List alone.
-	Titles *McpStringMatching
+	Titles *MCPStringMatching
 }
 
 // Member resource
@@ -1761,20 +1761,20 @@ func (t *TLSInspectionRuleDestination) GetTLSInspectionRuleDestination() *TLSIns
 	return t
 }
 
-// TLSInspectionRuleFqdnsDestination - Selects TLS inspection rule destinations by fully qualified domain names, matched against
+// TLSInspectionRuleFQDNsDestination - Selects TLS inspection rule destinations by fully qualified domain names, matched against
 // the TLS server name (SNI).
-type TLSInspectionRuleFqdnsDestination struct {
+type TLSInspectionRuleFQDNsDestination struct {
 	// REQUIRED; The fully qualified domain names. Each is an exact name, or a name after one leading '*.', which matches that
 	// name and any subdomain of it. Matching ignores case and one trailing dot.
-	Fqdns []*string
+	FQDNs []*string
 
 	// CONSTANT; The type of destination selector.
-	// Field has constant value TLSInspectionRuleDestinationTypeFqdns, any specified value is ignored.
+	// Field has constant value TLSInspectionRuleDestinationTypeFQDNs, any specified value is ignored.
 	Type *TLSInspectionRuleDestinationType
 }
 
-// GetTLSInspectionRuleDestination implements the TLSInspectionRuleDestinationClassification interface for type TLSInspectionRuleFqdnsDestination.
-func (t *TLSInspectionRuleFqdnsDestination) GetTLSInspectionRuleDestination() *TLSInspectionRuleDestination {
+// GetTLSInspectionRuleDestination implements the TLSInspectionRuleDestinationClassification interface for type TLSInspectionRuleFQDNsDestination.
+func (t *TLSInspectionRuleFQDNsDestination) GetTLSInspectionRuleDestination() *TLSInspectionRuleDestination {
 	return &TLSInspectionRuleDestination{
 		Type: t.Type,
 	}
@@ -1823,18 +1823,18 @@ type URLFilteringDestination struct {
 // GetURLFilteringDestination implements the URLFilteringDestinationClassification interface for type URLFilteringDestination.
 func (u *URLFilteringDestination) GetURLFilteringDestination() *URLFilteringDestination { return u }
 
-// URLFilteringFqdnsDestination - Selects URL filtering destinations by fully qualified domain names.
-type URLFilteringFqdnsDestination struct {
+// URLFilteringFQDNsDestination - Selects URL filtering destinations by fully qualified domain names.
+type URLFilteringFQDNsDestination struct {
 	// REQUIRED; The fully qualified domain names that identify the destination(s).
-	Fqdns []*string
+	FQDNs []*string
 
 	// CONSTANT; The type of destination selector.
-	// Field has constant value URLFilteringDestinationTypeFqdns, any specified value is ignored.
+	// Field has constant value URLFilteringDestinationTypeFQDNs, any specified value is ignored.
 	Type *URLFilteringDestinationType
 }
 
-// GetURLFilteringDestination implements the URLFilteringDestinationClassification interface for type URLFilteringFqdnsDestination.
-func (u *URLFilteringFqdnsDestination) GetURLFilteringDestination() *URLFilteringDestination {
+// GetURLFilteringDestination implements the URLFilteringDestinationClassification interface for type URLFilteringFQDNsDestination.
+func (u *URLFilteringFQDNsDestination) GetURLFilteringDestination() *URLFilteringDestination {
 	return &URLFilteringDestination{
 		Type: u.Type,
 	}

@@ -6,5 +6,5 @@ package armdatatransfer
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datatransfer/armdatatransfer"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.2.0"
 )

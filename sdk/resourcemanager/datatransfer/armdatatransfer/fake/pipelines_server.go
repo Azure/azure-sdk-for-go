@@ -26,6 +26,10 @@ type PipelinesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginApproveConnection func(ctx context.Context, resourceGroupName string, pipelineName string, connection armdatatransfer.ResourceBody, options *armdatatransfer.PipelinesClientBeginApproveConnectionOptions) (resp azfake.PollerResponder[armdatatransfer.PipelinesClientApproveConnectionResponse], errResp azfake.ErrorResponder)
 
+	// BeginApproveTransferFlow is the fake for method PipelinesClient.BeginApproveTransferFlow
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginApproveTransferFlow func(ctx context.Context, resourceGroupName string, pipelineName string, body armdatatransfer.TransferFlowRequestBody, options *armdatatransfer.PipelinesClientBeginApproveTransferFlowOptions) (resp azfake.PollerResponder[armdatatransfer.PipelinesClientApproveTransferFlowResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method PipelinesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, pipelineName string, pipeline armdatatransfer.Pipeline, options *armdatatransfer.PipelinesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdatatransfer.PipelinesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -41,6 +45,10 @@ type PipelinesServer struct {
 	// BeginRejectConnection is the fake for method PipelinesClient.BeginRejectConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRejectConnection func(ctx context.Context, resourceGroupName string, pipelineName string, connection armdatatransfer.ResourceBody, options *armdatatransfer.PipelinesClientBeginRejectConnectionOptions) (resp azfake.PollerResponder[armdatatransfer.PipelinesClientRejectConnectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginRejectTransferFlow is the fake for method PipelinesClient.BeginRejectTransferFlow
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginRejectTransferFlow func(ctx context.Context, resourceGroupName string, pipelineName string, body armdatatransfer.TransferFlowRequestBody, options *armdatatransfer.PipelinesClientBeginRejectTransferFlowOptions) (resp azfake.PollerResponder[armdatatransfer.PipelinesClientRejectTransferFlowResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method PipelinesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -65,6 +73,10 @@ type PipelinesServer struct {
 	// NewListBySubscriptionPager is the fake for method PipelinesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armdatatransfer.PipelinesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armdatatransfer.PipelinesClientListBySubscriptionResponse])
+
+	// NewListTransferFlowsPager is the fake for method PipelinesClient.NewListTransferFlowsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListTransferFlowsPager func(resourceGroupName string, pipelineName string, options *armdatatransfer.PipelinesClientListTransferFlowsOptions) (resp azfake.PagerResponder[armdatatransfer.PipelinesClientListTransferFlowsResponse])
 }
 
 // NewPipelinesServerTransport creates a new instance of PipelinesServerTransport with the provided implementation.
@@ -74,13 +86,16 @@ func NewPipelinesServerTransport(srv *PipelinesServer) *PipelinesServerTransport
 	return &PipelinesServerTransport{
 		srv:                         srv,
 		beginApproveConnection:      newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientApproveConnectionResponse]](),
+		beginApproveTransferFlow:    newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientApproveTransferFlowResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientDeleteResponse]](),
 		beginExecuteAction:          newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientExecuteActionResponse]](),
 		beginRejectConnection:       newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientRejectConnectionResponse]](),
+		beginRejectTransferFlow:     newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientRejectTransferFlowResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armdatatransfer.PipelinesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdatatransfer.PipelinesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armdatatransfer.PipelinesClientListBySubscriptionResponse]](),
+		newListTransferFlowsPager:   newTracker[azfake.PagerResponder[armdatatransfer.PipelinesClientListTransferFlowsResponse]](),
 	}
 }
 
@@ -89,13 +104,16 @@ func NewPipelinesServerTransport(srv *PipelinesServer) *PipelinesServerTransport
 type PipelinesServerTransport struct {
 	srv                         *PipelinesServer
 	beginApproveConnection      *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientApproveConnectionResponse]]
+	beginApproveTransferFlow    *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientApproveTransferFlowResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientDeleteResponse]]
 	beginExecuteAction          *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientExecuteActionResponse]]
 	beginRejectConnection       *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientRejectConnectionResponse]]
+	beginRejectTransferFlow     *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientRejectTransferFlowResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armdatatransfer.PipelinesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdatatransfer.PipelinesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armdatatransfer.PipelinesClientListBySubscriptionResponse]]
+	newListTransferFlowsPager   *tracker[azfake.PagerResponder[armdatatransfer.PipelinesClientListTransferFlowsResponse]]
 }
 
 // Do implements the policy.Transporter interface for PipelinesServerTransport.
@@ -121,6 +139,8 @@ func (p *PipelinesServerTransport) dispatchToMethodFake(req *http.Request, metho
 			switch method {
 			case "PipelinesClient.BeginApproveConnection":
 				res.resp, res.err = p.dispatchBeginApproveConnection(req)
+			case "PipelinesClient.BeginApproveTransferFlow":
+				res.resp, res.err = p.dispatchBeginApproveTransferFlow(req)
 			case "PipelinesClient.BeginCreateOrUpdate":
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PipelinesClient.BeginDelete":
@@ -129,6 +149,8 @@ func (p *PipelinesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = p.dispatchBeginExecuteAction(req)
 			case "PipelinesClient.BeginRejectConnection":
 				res.resp, res.err = p.dispatchBeginRejectConnection(req)
+			case "PipelinesClient.BeginRejectTransferFlow":
+				res.resp, res.err = p.dispatchBeginRejectTransferFlow(req)
 			case "PipelinesClient.BeginUpdate":
 				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PipelinesClient.Get":
@@ -141,6 +163,8 @@ func (p *PipelinesServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "PipelinesClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
+			case "PipelinesClient.NewListTransferFlowsPager":
+				res.resp, res.err = p.dispatchNewListTransferFlowsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -200,6 +224,54 @@ func (p *PipelinesServerTransport) dispatchBeginApproveConnection(req *http.Requ
 	}
 	if !server.PollerResponderMore(beginApproveConnection) {
 		p.beginApproveConnection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PipelinesServerTransport) dispatchBeginApproveTransferFlow(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginApproveTransferFlow == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginApproveTransferFlow not implemented")}
+	}
+	beginApproveTransferFlow := p.beginApproveTransferFlow.get(req)
+	if beginApproveTransferFlow == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureDataTransfer/pipelines/(?P<pipelineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/approveTransferFlow`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatatransfer.TransferFlowRequestBody](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		pipelineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pipelineName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginApproveTransferFlow(req.Context(), resourceGroupNameParam, pipelineNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginApproveTransferFlow = &respr
+		p.beginApproveTransferFlow.add(req, beginApproveTransferFlow)
+	}
+
+	resp, err := server.PollerResponderNext(beginApproveTransferFlow, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginApproveTransferFlow.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginApproveTransferFlow) {
+		p.beginApproveTransferFlow.remove(req)
 	}
 
 	return resp, nil
@@ -388,6 +460,54 @@ func (p *PipelinesServerTransport) dispatchBeginRejectConnection(req *http.Reque
 	}
 	if !server.PollerResponderMore(beginRejectConnection) {
 		p.beginRejectConnection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PipelinesServerTransport) dispatchBeginRejectTransferFlow(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginRejectTransferFlow == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRejectTransferFlow not implemented")}
+	}
+	beginRejectTransferFlow := p.beginRejectTransferFlow.get(req)
+	if beginRejectTransferFlow == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureDataTransfer/pipelines/(?P<pipelineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rejectTransferFlow`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatatransfer.TransferFlowRequestBody](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		pipelineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pipelineName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginRejectTransferFlow(req.Context(), resourceGroupNameParam, pipelineNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRejectTransferFlow = &respr
+		p.beginRejectTransferFlow.add(req, beginRejectTransferFlow)
+	}
+
+	resp, err := server.PollerResponderNext(beginRejectTransferFlow, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginRejectTransferFlow.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRejectTransferFlow) {
+		p.beginRejectTransferFlow.remove(req)
 	}
 
 	return resp, nil
@@ -620,6 +740,57 @@ func (p *PipelinesServerTransport) dispatchNewListBySubscriptionPager(req *http.
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		p.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PipelinesServerTransport) dispatchNewListTransferFlowsPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListTransferFlowsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListTransferFlowsPager not implemented")}
+	}
+	newListTransferFlowsPager := p.newListTransferFlowsPager.get(req)
+	if newListTransferFlowsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureDataTransfer/pipelines/(?P<pipelineName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listTransferFlows`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armdatatransfer.ListTransferFlowsByPipelineRequestBody](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		pipelineNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("pipelineName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armdatatransfer.PipelinesClientListTransferFlowsOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armdatatransfer.PipelinesClientListTransferFlowsOptions{
+				Body: &body,
+			}
+		}
+		resp := p.srv.NewListTransferFlowsPager(resourceGroupNameParam, pipelineNameParam, options)
+		newListTransferFlowsPager = &resp
+		p.newListTransferFlowsPager.add(req, newListTransferFlowsPager)
+		server.PagerResponderInjectNextLinks(newListTransferFlowsPager, req, func(page *armdatatransfer.PipelinesClientListTransferFlowsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListTransferFlowsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListTransferFlowsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListTransferFlowsPager) {
+		p.newListTransferFlowsPager.remove(req)
 	}
 	return resp, nil
 }

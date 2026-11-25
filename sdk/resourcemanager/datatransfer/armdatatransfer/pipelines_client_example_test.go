@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-06-preview/approveConnection.json
+// Generated from example definition: 2026-06-29-preview/approveConnection.json
 func ExamplePipelinesClient_BeginApproveConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,51 @@ func ExamplePipelinesClient_BeginApproveConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/createOrUpdatePipeline.json
+// Generated from example definition: 2026-06-29-preview/approveTransferFlow.json
+func ExamplePipelinesClient_BeginApproveTransferFlow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatatransfer.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPipelinesClient().BeginApproveTransferFlow(ctx, "testRG", "testPipeline", armdatatransfer.TransferFlowRequestBody{
+		ID: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/storageTransferFlows/testStorageTransferFlow"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/testMessagingTransferFlow"),
+		},
+		StatusReason: to.Ptr("Example reason"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatatransfer.PipelinesClientApproveTransferFlowResponse{
+	// 	TransferFlowResponseBody: armdatatransfer.TransferFlowResponseBody{
+	// 		ID: []*armdatatransfer.TransferFlowIDBody{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/storageTransferFlows/testStorageTransferFlow"),
+	// 				Status: to.Ptr(armdatatransfer.CommonTransferFlowStatusApprovedWaitingToBeLinked),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/testMessagingTransferFlow"),
+	// 				Status: to.Ptr(armdatatransfer.CommonTransferFlowStatusApprovedWaitingToBeLinked),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-29-preview/createOrUpdatePipeline.json
 func ExamplePipelinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +131,7 @@ func ExamplePipelinesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/deletePipeline.json
+// Generated from example definition: 2026-06-29-preview/deletePipeline.json
 func ExamplePipelinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +152,7 @@ func ExamplePipelinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/executeAction.json
+// Generated from example definition: 2026-06-29-preview/executeAction.json
 func ExamplePipelinesClient_BeginExecuteAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +189,7 @@ func ExamplePipelinesClient_BeginExecuteAction() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/rejectConnection.json
+// Generated from example definition: 2026-06-29-preview/rejectConnection.json
 func ExamplePipelinesClient_BeginRejectConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +228,51 @@ func ExamplePipelinesClient_BeginRejectConnection() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/patchPipeline.json
+// Generated from example definition: 2026-06-29-preview/rejectTransferFlow.json
+func ExamplePipelinesClient_BeginRejectTransferFlow() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatatransfer.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPipelinesClient().BeginRejectTransferFlow(ctx, "testRG", "testPipeline", armdatatransfer.TransferFlowRequestBody{
+		ID: []*string{
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/storageTransferFlows/testStorageTransferFlow"),
+			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/testMessagingTransferFlow"),
+		},
+		StatusReason: to.Ptr("Example reason"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatatransfer.PipelinesClientRejectTransferFlowResponse{
+	// 	TransferFlowResponseBody: armdatatransfer.TransferFlowResponseBody{
+	// 		ID: []*armdatatransfer.TransferFlowIDBody{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/storageTransferFlows/testStorageTransferFlow"),
+	// 				Status: to.Ptr(armdatatransfer.CommonTransferFlowStatusRejected),
+	// 			},
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/testMessagingTransferFlow"),
+	// 				Status: to.Ptr(armdatatransfer.CommonTransferFlowStatusRejected),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-29-preview/patchPipeline.json
 func ExamplePipelinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +298,7 @@ func ExamplePipelinesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getPipeline.json
+// Generated from example definition: 2026-06-29-preview/getPipeline.json
 func ExamplePipelinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +325,7 @@ func ExamplePipelinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/listFlowsByPipeline.json
+// Generated from example definition: 2026-06-29-preview/listFlowsByPipeline.json
 func ExamplePipelinesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +395,7 @@ func ExamplePipelinesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/listSchemas.json
+// Generated from example definition: 2026-06-29-preview/listSchemas.json
 func ExamplePipelinesClient_ListSchemasList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +428,7 @@ func ExamplePipelinesClient_ListSchemasList() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/listPipelinesByResourceGroup.json
+// Generated from example definition: 2026-06-29-preview/listPipelinesByResourceGroup.json
 func ExamplePipelinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +477,7 @@ func ExamplePipelinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/listPipelinesBySubscription.json
+// Generated from example definition: 2026-06-29-preview/listPipelinesBySubscription.json
 func ExamplePipelinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,6 +521,71 @@ func ExamplePipelinesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-29-preview/listTransferFlowsByPipeline.json
+func ExamplePipelinesClient_NewListTransferFlowsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatatransfer.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPipelinesClient().NewListTransferFlowsPager("testRG", "testPipeline", &armdatatransfer.PipelinesClientListTransferFlowsOptions{
+		Body: &armdatatransfer.ListTransferFlowsByPipelineRequestBody{
+			Flows: &armdatatransfer.ListTransferFlowsRequestBody{
+				Status: to.Ptr(armdatatransfer.CommonTransferFlowStatusEnabled),
+				DataClassTypes: []*armdatatransfer.DataClassType{
+					to.Ptr(armdatatransfer.DataClassTypeFiles),
+					to.Ptr(armdatatransfer.DataClassTypeMessaging),
+				},
+			},
+		}})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdatatransfer.PipelinesClientListTransferFlowsResponse{
+		// 	ListTransferFlowsByPipelineResult: armdatatransfer.ListTransferFlowsByPipelineResult{
+		// 		Value: []*armdatatransfer.TransferFlowSummary{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/storageTransferFlows/testStorageTransferFlow"),
+		// 				Status: to.Ptr(armdatatransfer.CommonTransferFlowStatusEnabled),
+		// 				TransferRole: to.Ptr(armdatatransfer.TransferRoleSource),
+		// 				FlowProfileName: to.Ptr("flowProfileName"),
+		// 				RemoteTransferFlowResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/remoteRG/providers/Microsoft.AzureDataTransfer/storageTransferFlows/remoteStorageTransferFlow"),
+		// 				DataResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.Storage/storageAccounts/testsa/blobServices/default/containers/testcontainer"),
+		// 				Requestor: to.Ptr("user@contoso.com"),
+		// 				Pipeline: to.Ptr("testPipeline"),
+		// 				DataClassType: to.Ptr(armdatatransfer.DataClassTypeFiles),
+		// 				TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/testMessagingTransferFlow"),
+		// 				Status: to.Ptr(armdatatransfer.CommonTransferFlowStatusAwaitingApproval),
+		// 				TransferRole: to.Ptr(armdatatransfer.TransferRoleSource),
+		// 				FlowProfileName: to.Ptr("flowProfileName"),
+		// 				RemoteTransferFlowResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/remoteRG/providers/Microsoft.AzureDataTransfer/messagingTransferFlows/remoteMessagingTransferFlow"),
+		// 				DataResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.ServiceBus/namespaces/testnamespace/queues/testqueue"),
+		// 				Requestor: to.Ptr("user@contoso.com"),
+		// 				Pipeline: to.Ptr("testPipeline"),
+		// 				DataClassType: to.Ptr(armdatatransfer.DataClassTypeMessaging),
+		// 				TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.AzureDataTransfer/pipelines/testPipeline/listTransferFlows?api-version=2026-06-29-preview&$skipToken=abc123"),
 		// 	},
 		// }
 	}

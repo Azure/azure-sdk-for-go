@@ -5,7 +5,7 @@
 package armdatatransfer
 
 const (
-	version20260206Preview string = "2026-02-06-preview"
+	version20260629Preview string = "2026-06-29-preview"
 )
 
 // APIMode - Remote Calling Mode in the Azure Data Transfer API Flow, which describes how the API Flow will be invoked
@@ -94,6 +94,34 @@ func PossibleCasingValues() []Casing {
 	return []Casing{
 		CasingInsensitive,
 		CasingSensitive,
+	}
+}
+
+// CommonTransferFlowStatus - Status of the storage transfer flow.
+type CommonTransferFlowStatus string
+
+const (
+	// CommonTransferFlowStatusApprovedWaitingToBeLinked - This flow has been approved by the admin approver and is waiting for
+	// the remote side to link.
+	CommonTransferFlowStatusApprovedWaitingToBeLinked CommonTransferFlowStatus = "ApprovedWaitingToBeLinked"
+	// CommonTransferFlowStatusAwaitingApproval - This flow has been created but is under review by the admin approver.
+	CommonTransferFlowStatusAwaitingApproval CommonTransferFlowStatus = "AwaitingApproval"
+	// CommonTransferFlowStatusDisabled - This flow has been disabled.
+	CommonTransferFlowStatusDisabled CommonTransferFlowStatus = "Disabled"
+	// CommonTransferFlowStatusEnabled - This flow has been enabled and is ready to send or receive data.
+	CommonTransferFlowStatusEnabled CommonTransferFlowStatus = "Enabled"
+	// CommonTransferFlowStatusRejected - This flow has been rejected by the admin approver and cannot be used.
+	CommonTransferFlowStatusRejected CommonTransferFlowStatus = "Rejected"
+)
+
+// PossibleCommonTransferFlowStatusValues returns the possible values for the CommonTransferFlowStatus const type.
+func PossibleCommonTransferFlowStatusValues() []CommonTransferFlowStatus {
+	return []CommonTransferFlowStatus{
+		CommonTransferFlowStatusApprovedWaitingToBeLinked,
+		CommonTransferFlowStatusAwaitingApproval,
+		CommonTransferFlowStatusDisabled,
+		CommonTransferFlowStatusEnabled,
+		CommonTransferFlowStatusRejected,
 	}
 }
 
@@ -678,8 +706,12 @@ const (
 	TargetTypeFlowProfile TargetType = "FlowProfile"
 	// TargetTypeFlowType - The action executing is targeting a flow type.
 	TargetTypeFlowType TargetType = "FlowType"
+	// TargetTypeMessagingTransferFlow - The action executing is targeting a messaging flow.
+	TargetTypeMessagingTransferFlow TargetType = "MessagingTransferFlow"
 	// TargetTypePipeline - The action executing is targeting a pipeline.
 	TargetTypePipeline TargetType = "Pipeline"
+	// TargetTypeStorageTransferFlow - The action executing is targeting a storage flow.
+	TargetTypeStorageTransferFlow TargetType = "StorageTransferFlow"
 )
 
 // PossibleTargetTypeValues returns the possible values for the TargetType const type.
@@ -688,7 +720,27 @@ func PossibleTargetTypeValues() []TargetType {
 		TargetTypeConnection,
 		TargetTypeFlowProfile,
 		TargetTypeFlowType,
+		TargetTypeMessagingTransferFlow,
 		TargetTypePipeline,
+		TargetTypeStorageTransferFlow,
+	}
+}
+
+// TransferRole - Transfer role indicating the role of data movement
+type TransferRole string
+
+const (
+	// TransferRoleDestination - The role is on the destination side for the paired flow.
+	TransferRoleDestination TransferRole = "Destination"
+	// TransferRoleSource - The role is on the source side for the paired flow.
+	TransferRoleSource TransferRole = "Source"
+)
+
+// PossibleTransferRoleValues returns the possible values for the TransferRole const type.
+func PossibleTransferRoleValues() []TransferRole {
+	return []TransferRole{
+		TransferRoleDestination,
+		TransferRoleSource,
 	}
 }
 

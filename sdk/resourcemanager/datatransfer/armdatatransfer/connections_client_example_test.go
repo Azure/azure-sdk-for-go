@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-06-preview/createOrUpdateConnection.json
+// Generated from example definition: 2026-06-29-preview/createOrUpdateConnection.json
 func ExampleConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleConnectionsClient_BeginCreateOrUpdate() {
 			RequirementID: to.Ptr("id"),
 			FlowProfileList: []*armdatatransfer.FlowProfileMetadata{
 				{
-					Pipeline:            to.Ptr("pipelinea"),
+					Pipeline:            to.Ptr("testPipeline"),
 					Name:                to.Ptr("flowProfileNamea"),
 					FlowProfileID:       to.Ptr("25f2c41a-6e29-4c40-a033-b4de81d4a681"),
 					ReplicationScenario: to.Ptr(armdatatransfer.DataClassTypeFiles),
@@ -39,9 +39,9 @@ func ExampleConnectionsClient_BeginCreateOrUpdate() {
 					Description:         to.Ptr("Testing 123"),
 				},
 				{
-					Pipeline:            to.Ptr("pipelinea"),
+					Pipeline:            to.Ptr("testPipeline"),
 					Name:                to.Ptr("flowProfileNameb"),
-					FlowProfileID:       to.Ptr("66b00598-cabb-4a85-b3d8-88905ac899b8"),
+					FlowProfileID:       to.Ptr("25f2c41a-6e29-4c40-a033-b4de81d4a681"),
 					ReplicationScenario: to.Ptr(armdatatransfer.DataClassTypeFiles),
 					Status:              to.Ptr(armdatatransfer.FlowProfileStatusEnabled),
 					Description:         to.Ptr("Testing 123"),
@@ -73,7 +73,7 @@ func ExampleConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/deleteConnection.json
+// Generated from example definition: 2026-06-29-preview/deleteConnection.json
 func ExampleConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/linkConnection.json
+// Generated from example definition: 2026-06-29-preview/linkConnection.json
 func ExampleConnectionsClient_BeginLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleConnectionsClient_BeginLink() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/patchConnection.json
+// Generated from example definition: 2026-06-29-preview/patchConnection.json
 func ExampleConnectionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleConnectionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/getConnection.json
+// Generated from example definition: 2026-06-29-preview/getConnection.json
 func ExampleConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +180,7 @@ func ExampleConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-06-preview/listConnectionsByResourceGroup.json
+// Generated from example definition: 2026-06-29-preview/listConnectionsByResourceGroup.json
 func ExampleConnectionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleConnectionsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/listConnectionsBySubscription.json
+// Generated from example definition: 2026-06-29-preview/listConnectionsBySubscription.json
 func ExampleConnectionsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleConnectionsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/listPendingConnections.json
+// Generated from example definition: 2026-06-29-preview/listPendingConnections.json
 func ExampleConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-06-preview/listPendingFlows.json
+// Generated from example definition: 2026-06-29-preview/listPendingFlows.json
 func ExampleConnectionsClient_NewListPendingFlowsListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

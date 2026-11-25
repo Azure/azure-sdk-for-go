@@ -528,6 +528,8 @@ func (d DirectionSettings) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "flowTypesAvailable", d.FlowTypesAvailable)
 	populate(objectMap, "messagingFlowTypeSchemaValidation", d.MessagingFlowTypeSchemaValidation)
 	populate(objectMap, "messagingFlowsPricingOptions", d.MessagingFlowsPricingOptions)
+	populate(objectMap, "messagingLocationMappings", d.MessagingLocationMappings)
+	populate(objectMap, "storageLocationMappings", d.StorageLocationMappings)
 	return json.Marshal(objectMap)
 }
 
@@ -560,6 +562,12 @@ func (d *DirectionSettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "messagingFlowsPricingOptions":
 			err = unpopulate(val, "MessagingFlowsPricingOptions", &d.MessagingFlowsPricingOptions)
+			delete(rawMsg, key)
+		case "messagingLocationMappings":
+			err = unpopulate(val, "MessagingLocationMappings", &d.MessagingLocationMappings)
+			delete(rawMsg, key)
+		case "storageLocationMappings":
+			err = unpopulate(val, "StorageLocationMappings", &d.StorageLocationMappings)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1536,6 +1544,153 @@ func (l *ListPipelineMetadataResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ListTransferFlowsByPipelineRequestBody.
+func (l ListTransferFlowsByPipelineRequestBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "flows", l.Flows)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ListTransferFlowsByPipelineRequestBody.
+func (l *ListTransferFlowsByPipelineRequestBody) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "flows":
+			err = unpopulate(val, "Flows", &l.Flows)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListTransferFlowsByPipelineResult.
+func (l ListTransferFlowsByPipelineResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", l.NextLink)
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ListTransferFlowsByPipelineResult.
+func (l *ListTransferFlowsByPipelineResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &l.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &l.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListTransferFlowsParameterBody.
+func (l ListTransferFlowsParameterBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "body", l.Body)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ListTransferFlowsParameterBody.
+func (l *ListTransferFlowsParameterBody) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "body":
+			err = unpopulate(val, "Body", &l.Body)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListTransferFlowsRequestBody.
+func (l ListTransferFlowsRequestBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dataClassTypes", l.DataClassTypes)
+	populate(objectMap, "status", l.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ListTransferFlowsRequestBody.
+func (l *ListTransferFlowsRequestBody) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dataClassTypes":
+			err = unpopulate(val, "DataClassTypes", &l.DataClassTypes)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &l.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type LocationMapping.
+func (l LocationMapping) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "location", l.Location)
+	populate(objectMap, "pairedLocation", l.PairedLocation)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type LocationMapping.
+func (l *LocationMapping) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "location":
+			err = unpopulate(val, "Location", &l.Location)
+			delete(rawMsg, key)
+		case "pairedLocation":
+			err = unpopulate(val, "PairedLocation", &l.PairedLocation)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
 func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1597,6 +1752,190 @@ func (m *MessagingOptions) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "performancePriority":
 			err = unpopulate(val, "PerformancePriority", &m.PerformancePriority)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MessagingTransferFlow.
+func (m MessagingTransferFlow) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "identity", m.Identity)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
+	populate(objectMap, "properties", m.Properties)
+	populate(objectMap, "systemData", m.SystemData)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MessagingTransferFlow.
+func (m *MessagingTransferFlow) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &m.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, "Identity", &m.Identity)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &m.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &m.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &m.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &m.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &m.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &m.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MessagingTransferFlowListResult.
+func (m MessagingTransferFlowListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", m.NextLink)
+	populate(objectMap, "value", m.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MessagingTransferFlowListResult.
+func (m *MessagingTransferFlowListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &m.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &m.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MessagingTransferFlowProperties.
+func (m MessagingTransferFlowProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "consumerGroup", m.ConsumerGroup)
+	populate(objectMap, "flowId", m.FlowID)
+	populate(objectMap, "flowProfileName", m.FlowProfileName)
+	populate(objectMap, "forceDisabledStatus", m.ForceDisabledStatus)
+	populate(objectMap, "messagingDataResourceId", m.MessagingDataResourceID)
+	populate(objectMap, "messagingOptions", m.MessagingOptions)
+	populate(objectMap, "pipeline", m.Pipeline)
+	populate(objectMap, "provisioningState", m.ProvisioningState)
+	populate(objectMap, "remoteTransferFlowResourceId", m.RemoteTransferFlowResourceID)
+	populate(objectMap, "status", m.Status)
+	populate(objectMap, "transferRole", m.TransferRole)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MessagingTransferFlowProperties.
+func (m *MessagingTransferFlowProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "consumerGroup":
+			err = unpopulate(val, "ConsumerGroup", &m.ConsumerGroup)
+			delete(rawMsg, key)
+		case "flowId":
+			err = unpopulate(val, "FlowID", &m.FlowID)
+			delete(rawMsg, key)
+		case "flowProfileName":
+			err = unpopulate(val, "FlowProfileName", &m.FlowProfileName)
+			delete(rawMsg, key)
+		case "forceDisabledStatus":
+			err = unpopulate(val, "ForceDisabledStatus", &m.ForceDisabledStatus)
+			delete(rawMsg, key)
+		case "messagingDataResourceId":
+			err = unpopulate(val, "MessagingDataResourceID", &m.MessagingDataResourceID)
+			delete(rawMsg, key)
+		case "messagingOptions":
+			err = unpopulate(val, "MessagingOptions", &m.MessagingOptions)
+			delete(rawMsg, key)
+		case "pipeline":
+			err = unpopulate(val, "Pipeline", &m.Pipeline)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &m.ProvisioningState)
+			delete(rawMsg, key)
+		case "remoteTransferFlowResourceId":
+			err = unpopulate(val, "RemoteTransferFlowResourceID", &m.RemoteTransferFlowResourceID)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &m.Status)
+			delete(rawMsg, key)
+		case "transferRole":
+			err = unpopulate(val, "TransferRole", &m.TransferRole)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MessagingTransferFlowsPatch.
+func (m MessagingTransferFlowsPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "identity", m.Identity)
+	populate(objectMap, "tags", m.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MessagingTransferFlowsPatch.
+func (m *MessagingTransferFlowsPatch) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "identity":
+			err = unpopulate(val, "Identity", &m.Identity)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &m.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2857,6 +3196,182 @@ func (s *SetStreamPassphrase) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type StorageTransferFlow.
+func (s StorageTransferFlow) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", s.ID)
+	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "location", s.Location)
+	populate(objectMap, "name", s.Name)
+	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "systemData", s.SystemData)
+	populate(objectMap, "tags", s.Tags)
+	populate(objectMap, "type", s.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageTransferFlow.
+func (s *StorageTransferFlow) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &s.ID)
+			delete(rawMsg, key)
+		case "identity":
+			err = unpopulate(val, "Identity", &s.Identity)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &s.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &s.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &s.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &s.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &s.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &s.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageTransferFlowListResult.
+func (s StorageTransferFlowListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", s.NextLink)
+	populate(objectMap, "value", s.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageTransferFlowListResult.
+func (s *StorageTransferFlowListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &s.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &s.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageTransferFlowProperties.
+func (s StorageTransferFlowProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "flowId", s.FlowID)
+	populate(objectMap, "flowProfileName", s.FlowProfileName)
+	populate(objectMap, "forceDisabledStatus", s.ForceDisabledStatus)
+	populate(objectMap, "pipeline", s.Pipeline)
+	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "remoteTransferFlowResourceId", s.RemoteTransferFlowResourceID)
+	populate(objectMap, "status", s.Status)
+	populate(objectMap, "storageDataResourceId", s.StorageDataResourceID)
+	populate(objectMap, "transferRole", s.TransferRole)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageTransferFlowProperties.
+func (s *StorageTransferFlowProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "flowId":
+			err = unpopulate(val, "FlowID", &s.FlowID)
+			delete(rawMsg, key)
+		case "flowProfileName":
+			err = unpopulate(val, "FlowProfileName", &s.FlowProfileName)
+			delete(rawMsg, key)
+		case "forceDisabledStatus":
+			err = unpopulate(val, "ForceDisabledStatus", &s.ForceDisabledStatus)
+			delete(rawMsg, key)
+		case "pipeline":
+			err = unpopulate(val, "Pipeline", &s.Pipeline)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "remoteTransferFlowResourceId":
+			err = unpopulate(val, "RemoteTransferFlowResourceID", &s.RemoteTransferFlowResourceID)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &s.Status)
+			delete(rawMsg, key)
+		case "storageDataResourceId":
+			err = unpopulate(val, "StorageDataResourceID", &s.StorageDataResourceID)
+			delete(rawMsg, key)
+		case "transferRole":
+			err = unpopulate(val, "TransferRole", &s.TransferRole)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type StorageTransferFlowsPatch.
+func (s StorageTransferFlowsPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "identity", s.Identity)
+	populate(objectMap, "tags", s.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type StorageTransferFlowsPatch.
+func (s *StorageTransferFlowsPatch) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "identity":
+			err = unpopulate(val, "Identity", &s.Identity)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &s.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type StreamSourceAddresses.
 func (s StreamSourceAddresses) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3015,6 +3530,158 @@ func (t *TextMatchingRulesetDeny) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "text":
 			err = unpopulate(val, "Text", &t.Text)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TransferFlowIDBody.
+func (t TransferFlowIDBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "status", t.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TransferFlowIDBody.
+func (t *TransferFlowIDBody) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &t.ID)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &t.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TransferFlowRequestBody.
+func (t TransferFlowRequestBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "statusReason", t.StatusReason)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TransferFlowRequestBody.
+func (t *TransferFlowRequestBody) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &t.ID)
+			delete(rawMsg, key)
+		case "statusReason":
+			err = unpopulate(val, "StatusReason", &t.StatusReason)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TransferFlowResponseBody.
+func (t TransferFlowResponseBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", t.ID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TransferFlowResponseBody.
+func (t *TransferFlowResponseBody) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &t.ID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TransferFlowSummary.
+func (t TransferFlowSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dataClassType", t.DataClassType)
+	populate(objectMap, "dataResourceId", t.DataResourceID)
+	populate(objectMap, "flowProfileName", t.FlowProfileName)
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "pipeline", t.Pipeline)
+	populate(objectMap, "remoteTransferFlowResourceId", t.RemoteTransferFlowResourceID)
+	populate(objectMap, "requestor", t.Requestor)
+	populate(objectMap, "status", t.Status)
+	populate(objectMap, "tenantId", t.TenantID)
+	populate(objectMap, "transferRole", t.TransferRole)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TransferFlowSummary.
+func (t *TransferFlowSummary) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dataClassType":
+			err = unpopulate(val, "DataClassType", &t.DataClassType)
+			delete(rawMsg, key)
+		case "dataResourceId":
+			err = unpopulate(val, "DataResourceID", &t.DataResourceID)
+			delete(rawMsg, key)
+		case "flowProfileName":
+			err = unpopulate(val, "FlowProfileName", &t.FlowProfileName)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, "ID", &t.ID)
+			delete(rawMsg, key)
+		case "pipeline":
+			err = unpopulate(val, "Pipeline", &t.Pipeline)
+			delete(rawMsg, key)
+		case "remoteTransferFlowResourceId":
+			err = unpopulate(val, "RemoteTransferFlowResourceID", &t.RemoteTransferFlowResourceID)
+			delete(rawMsg, key)
+		case "requestor":
+			err = unpopulate(val, "Requestor", &t.Requestor)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &t.Status)
+			delete(rawMsg, key)
+		case "tenantId":
+			err = unpopulate(val, "TenantID", &t.TenantID)
+			delete(rawMsg, key)
+		case "transferRole":
+			err = unpopulate(val, "TransferRole", &t.TransferRole)
 			delete(rawMsg, key)
 		}
 		if err != nil {

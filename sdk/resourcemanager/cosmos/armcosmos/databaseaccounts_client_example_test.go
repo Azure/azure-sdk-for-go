@@ -13,14 +13,14 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountCreateMax.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountCreateMax.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -64,6 +64,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 					IsZoneRedundant:  to.Ptr(false),
 				},
 			},
+			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelBoundedStaleness),
 				MaxIntervalInSeconds:    to.Ptr[int32](10),
@@ -75,15 +76,10 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 			APIProperties: &armcosmos.APIProperties{
 				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
 			},
-			EnableAnalyticalStorage:              to.Ptr(true),
-			EnableBurstCapacity:                  to.Ptr(true),
-			EnablePriorityBasedExecution:         to.Ptr(true),
-			DefaultPriorityLevel:                 to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+			EnableAnalyticalStorage: to.Ptr(true),
 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 			},
-			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 			BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
 				Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
@@ -91,7 +87,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 					BackupRetentionIntervalInHours: to.Ptr[int32](8),
 					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 				},
-				BackupRetentionLockExpirationTimestamp: to.Ptr(time.Date(2030, time.January, 1, 0, 0, 0, 0, time.UTC)),
 			},
 			Cors: []*armcosmos.CorsPolicy{
 				{
@@ -105,9 +100,15 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 			Capacity: &armcosmos.Capacity{
 				TotalThroughputLimit: to.Ptr[int32](2000),
 			},
+			CapacityMode:            to.Ptr(armcosmos.CapacityModeProvisioned),
+			EnableMaterializedViews: to.Ptr(false),
+			EnableBurstCapacity:     to.Ptr(true),
 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-			PerPartitionAutomaticFailoverEnabled:       to.Ptr(true),
 			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTls12),
+			EnablePriorityBasedExecution:               to.Ptr(true),
+			DefaultPriorityLevel:                       to.Ptr(armcosmos.DefaultPriorityLevelLow),
+			EnablePerRegionPerPartitionAutoscale:       to.Ptr(true),
+			EnableAllVersionsAndDeletesChangeFeed:      to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {
@@ -136,7 +137,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
 	// 				},
 	// 			},
 	// 		},
@@ -225,9 +226,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
 	// 			},
 	// 			EnableAnalyticalStorage: to.Ptr(true),
-	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			EnablePriorityBasedExecution: to.Ptr(true),
-	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
 	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 	// 			},
@@ -240,7 +238,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 					BackupRetentionIntervalInHours: to.Ptr[int32](8),
 	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 	// 				},
-	// 				BackupRetentionLockExpirationTimestamp: to.Ptr(time.Date(2030, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			Cors: []*armcosmos.CorsPolicy{
 	// 				{
@@ -254,23 +251,35 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			Capacity: &armcosmos.Capacity{
 	// 				TotalThroughputLimit: to.Ptr[int32](2000),
 	// 			},
+	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 			EnableMaterializedViews: to.Ptr(false),
+	// 			EnableEmbeddingGenerator: to.Ptr(false),
+	// 			EnableBurstCapacity: to.Ptr(true),
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTls12),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 			},
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-	// 			PerPartitionAutomaticFailoverEnabled: to.Ptr(true),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTls12),
+	// 			EnablePriorityBasedExecution: to.Ptr(true),
+	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](0),
+	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](0),
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
 	// 			CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
@@ -279,14 +288,14 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountCreateMin.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountCreateMin.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -294,7 +303,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 		Location: to.Ptr("westus"),
 		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
 			DatabaseAccountOfferType: to.Ptr("Standard"),
-			CreateMode:               to.Ptr(armcosmos.CreateModeDefault),
 			Locations: []*armcosmos.Location{
 				{
 					FailoverPriority: to.Ptr[int32](0),
@@ -302,6 +310,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 					IsZoneRedundant:  to.Ptr(false),
 				},
 			},
+			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 		},
 	}, nil)
 	if err != nil {
@@ -387,21 +396,30 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 	// 				},
 	// 			},
+	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 			EnableMaterializedViews: to.Ptr(false),
+	// 			EnableEmbeddingGenerator: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 			},
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](0),
+	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](0),
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
 	// 			CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
@@ -410,7 +428,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBRestoreDatabaseAccountCreateUpdate.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAccountCreateUpdateJson() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,41 +440,11 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabaseAccountsClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
-		Location: to.Ptr("westus"),
-		Tags:     map[string]*string{},
 		Kind:     to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
+		Location: to.Ptr("westus"),
 		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
-			DatabaseAccountOfferType: to.Ptr("Standard"),
-			Locations: []*armcosmos.Location{
-				{
-					FailoverPriority: to.Ptr[int32](0),
-					LocationName:     to.Ptr("southcentralus"),
-					IsZoneRedundant:  to.Ptr(false),
-				},
-			},
-			CreateMode: to.Ptr(armcosmos.CreateModeRestore),
-			RestoreParameters: &armcosmos.RestoreParameters{
-				RestoreMode:            to.Ptr(armcosmos.RestoreModePointInTime),
-				RestoreSource:          to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
-				RestoreTimestampInUTC:  to.Ptr(time.Date(2021, time.March, 11, 22, 5, 9, 0, time.UTC)),
-				RestoreWithTTLDisabled: to.Ptr(false),
-				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
-					{
-						DatabaseName: to.Ptr("db1"),
-						CollectionNames: []*string{
-							to.Ptr("collection1"),
-							to.Ptr("collection2"),
-						},
-					},
-					{
-						DatabaseName: to.Ptr("db2"),
-						CollectionNames: []*string{
-							to.Ptr("collection3"),
-							to.Ptr("collection4"),
-						},
-					},
-				},
-				SourceBackupLocation: to.Ptr("westus"),
+			APIProperties: &armcosmos.APIProperties{
+				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
 			},
 			BackupPolicy: &armcosmos.ContinuousModeBackupPolicy{
 				Type: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
@@ -469,15 +457,46 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 				MaxIntervalInSeconds:    to.Ptr[int32](10),
 				MaxStalenessPrefix:      to.Ptr[int64](200),
 			},
-			KeyVaultKeyURI: to.Ptr("https://myKeyVault.vault.azure.net"),
-			EnableFreeTier: to.Ptr(false),
-			APIProperties: &armcosmos.APIProperties{
-				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
+			CreateMode:               to.Ptr(armcosmos.CreateModeRestore),
+			DatabaseAccountOfferType: to.Ptr("Standard"),
+			EnableAnalyticalStorage:  to.Ptr(true),
+			EnableFreeTier:           to.Ptr(false),
+			EnableMaterializedViews:  to.Ptr(false),
+			KeyVaultKeyURI:           to.Ptr("https://myKeyVault.vault.azure.net"),
+			Locations: []*armcosmos.Location{
+				{
+					FailoverPriority: to.Ptr[int32](0),
+					IsZoneRedundant:  to.Ptr(false),
+					LocationName:     to.Ptr("southcentralus"),
+				},
 			},
-			EnableAnalyticalStorage:                    to.Ptr(true),
 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTLS),
+			RestoreParameters: &armcosmos.RestoreParameters{
+				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
+					{
+						CollectionNames: []*string{
+							to.Ptr("collection1"),
+							to.Ptr("collection2"),
+						},
+						DatabaseName: to.Ptr("db1"),
+					},
+					{
+						CollectionNames: []*string{
+							to.Ptr("collection3"),
+							to.Ptr("collection4"),
+						},
+						DatabaseName: to.Ptr("db2"),
+					},
+				},
+				RestoreMode:            to.Ptr(armcosmos.RestoreModePointInTime),
+				RestoreSource:          to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
+				RestoreTimestampInUTC:  to.Ptr(time.Date(2021, time.March, 11, 22, 5, 9, 0, time.UTC)),
+				RestoreWithTTLDisabled: to.Ptr(false),
+				SourceBackupLocation:   to.Ptr("westus"),
+			},
 		},
+		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -491,59 +510,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
 	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
-	// 		Location: to.Ptr("West US"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
-	// 		Tags: map[string]*string{
-	// 		},
+	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armcosmos.DatabaseAccountGetProperties{
-	// 			ProvisioningState: to.Ptr("Initializing"),
-	// 			IPRules: []*armcosmos.IPAddressOrRange{
-	// 			},
-	// 			DatabaseAccountOfferType: to.Ptr("Standard"),
-	// 			DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
-	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-	// 			CreateMode: to.Ptr(armcosmos.CreateModeRestore),
-	// 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
-	// 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
-	// 				MaxIntervalInSeconds: to.Ptr[int32](5),
-	// 				MaxStalenessPrefix: to.Ptr[int64](100),
-	// 			},
-	// 			WriteLocations: []*armcosmos.Location{
-	// 				{
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 					ProvisioningState: to.Ptr("Initializing"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 					IsZoneRedundant: to.Ptr(false),
-	// 				},
-	// 			},
-	// 			ReadLocations: []*armcosmos.Location{
-	// 				{
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 					ProvisioningState: to.Ptr("Initializing"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 					IsZoneRedundant: to.Ptr(false),
-	// 				},
-	// 			},
-	// 			Locations: []*armcosmos.Location{
-	// 				{
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 					ProvisioningState: to.Ptr("Initializing"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 					IsZoneRedundant: to.Ptr(false),
-	// 				},
-	// 			},
-	// 			FailoverPolicies: []*armcosmos.FailoverPolicy{
-	// 				{
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 				},
+	// 			APIProperties: &armcosmos.APIProperties{
 	// 			},
 	// 			BackupPolicy: &armcosmos.ContinuousModeBackupPolicy{
 	// 				Type: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
@@ -551,35 +524,90 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// 					Tier: to.Ptr(armcosmos.ContinuousTierContinuous30Days),
 	// 				},
 	// 			},
-	// 			EnableFreeTier: to.Ptr(false),
-	// 			APIProperties: &armcosmos.APIProperties{
+	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+	// 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
+	// 				MaxIntervalInSeconds: to.Ptr[int32](5),
+	// 				MaxStalenessPrefix: to.Ptr[int64](100),
 	// 			},
+	// 			CreateMode: to.Ptr(armcosmos.CreateModeRestore),
+	// 			DatabaseAccountOfferType: to.Ptr("Standard"),
+	// 			DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
 	// 			EnableAnalyticalStorage: to.Ptr(false),
+	// 			EnableFreeTier: to.Ptr(false),
+	// 			EnableMaterializedViews: to.Ptr(false),
+	// 			FailoverPolicies: []*armcosmos.FailoverPolicy{
+	// 				{
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 				},
+	// 			},
+	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+	// 			IPRules: []*armcosmos.IPAddressOrRange{
+	// 			},
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
-	// 				},
-	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+	// 				},
+	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
+	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
+	// 				},
+	// 			},
+	// 			Locations: []*armcosmos.Location{
+	// 				{
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					IsZoneRedundant: to.Ptr(false),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 					ProvisioningState: to.Ptr("Initializing"),
 	// 				},
 	// 			},
 	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
+	// 			NetworkACLBypassResourceIDs: []*string{
+	// 			},
+	// 			ProvisioningState: to.Ptr("Initializing"),
+	// 			ReadLocations: []*armcosmos.Location{
+	// 				{
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					IsZoneRedundant: to.Ptr(false),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 					ProvisioningState: to.Ptr("Initializing"),
+	// 				},
+	// 			},
+	// 			WriteLocations: []*armcosmos.Location{
+	// 				{
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					IsZoneRedundant: to.Ptr(false),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 					ProvisioningState: to.Ptr("Initializing"),
+	// 				},
+	// 			},
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
 	// 			CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountDelete.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountDelete.json
 func ExampleDatabaseAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +628,7 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountFailoverPriorityChange.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountFailoverPriorityChange.json
 func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -614,12 +642,12 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	poller, err := clientFactory.NewDatabaseAccountsClient().BeginFailoverPriorityChange(ctx, "rg1", "ddb1-failover", armcosmos.FailoverPolicies{
 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 			{
-				LocationName:     to.Ptr("eastus"),
 				FailoverPriority: to.Ptr[int32](0),
+				LocationName:     to.Ptr("eastus"),
 			},
 			{
-				LocationName:     to.Ptr("westus"),
 				FailoverPriority: to.Ptr[int32](1),
+				LocationName:     to.Ptr("westus"),
 			},
 		},
 	}, nil)
@@ -632,7 +660,7 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountOfflineRegion.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountOfflineRegion.json
 func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,7 +688,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountOnlineRegion.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountOnlineRegion.json
 func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,7 +716,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountRegenerateKey.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountRegenerateKey.json
 func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -700,7 +728,8 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabaseAccountsClient().BeginRegenerateKey(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountRegenerateKeyParameters{
-		KeyKind: to.Ptr(armcosmos.KeyKindPrimary),
+		KeyKind:                       to.Ptr(armcosmos.KeyKindPrimary),
+		SkipAccountKeysLastUsageCheck: to.Ptr(false),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -716,14 +745,14 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountPatch.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountPatch.json
 func ExampleDatabaseAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -759,13 +788,9 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 				MaxIntervalInSeconds:    to.Ptr[int32](10),
 				MaxStalenessPrefix:      to.Ptr[int64](200),
 			},
-			DefaultIdentity:                      to.Ptr("FirstPartyIdentity"),
-			EnableFreeTier:                       to.Ptr(false),
-			EnableAnalyticalStorage:              to.Ptr(true),
-			EnableBurstCapacity:                  to.Ptr(true),
-			EnablePriorityBasedExecution:         to.Ptr(true),
-			DefaultPriorityLevel:                 to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+			DefaultIdentity:         to.Ptr("FirstPartyIdentity"),
+			EnableFreeTier:          to.Ptr(false),
+			EnableAnalyticalStorage: to.Ptr(true),
 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 			},
@@ -774,9 +799,8 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
 					BackupIntervalInMinutes:        to.Ptr[int32](240),
 					BackupRetentionIntervalInHours: to.Ptr[int32](720),
-					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyLocal),
+					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 				},
-				BackupRetentionLockExpirationTimestamp: to.Ptr(time.Date(2030, time.June, 1, 0, 0, 0, 0, time.UTC)),
 			},
 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassAzureServices),
 			NetworkACLBypassResourceIDs: []*string{
@@ -785,10 +809,17 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 			Capacity: &armcosmos.Capacity{
 				TotalThroughputLimit: to.Ptr[int32](2000),
 			},
+			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
+				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
+			},
 			EnablePartitionMerge:                       to.Ptr(true),
+			EnableBurstCapacity:                        to.Ptr(true),
 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-			PerPartitionAutomaticFailoverEnabled:       to.Ptr(true),
 			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTLS),
+			EnablePriorityBasedExecution:               to.Ptr(true),
+			DefaultPriorityLevel:                       to.Ptr(armcosmos.DefaultPriorityLevelLow),
+			EnablePerRegionPerPartitionAutoscale:       to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -818,7 +849,7 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 			UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
 	// 				},
 	// 			},
 	// 		},
@@ -875,6 +906,8 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 					FailoverPriority: to.Ptr[int32](0),
 	// 				},
 	// 			},
+	// 			Cors: []*armcosmos.CorsPolicy{
+	// 			},
 	// 			VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
@@ -895,16 +928,13 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			Cors: []*armcosmos.CorsPolicy{
-	// 			},
 	// 			DefaultIdentity: to.Ptr("FirstPartyIdentity"),
 	// 			EnableFreeTier: to.Ptr(false),
 	// 			APIProperties: &armcosmos.APIProperties{
 	// 			},
 	// 			EnableAnalyticalStorage: to.Ptr(true),
-	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			EnablePriorityBasedExecution: to.Ptr(true),
-	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+	// 			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 	// 			},
@@ -913,9 +943,8 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
 	// 					BackupIntervalInMinutes: to.Ptr[int32](240),
 	// 					BackupRetentionIntervalInHours: to.Ptr[int32](720),
-	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyLocal),
+	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 	// 				},
-	// 				BackupRetentionLockExpirationTimestamp: to.Ptr(time.Date(2030, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassAzureServices),
 	// 			NetworkACLBypassResourceIDs: []*string{
@@ -924,30 +953,56 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 			Capacity: &armcosmos.Capacity{
 	// 				TotalThroughputLimit: to.Ptr[int32](2000),
 	// 			},
+	// 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
+	// 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
+	// 			},
+	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 			CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
+	// 				CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
+	// 				CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
+	// 				CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+	// 				CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+	// 				CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 				PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
+	// 			},
+	// 			EnableMaterializedViews: to.Ptr(false),
+	// 			EnableEmbeddingGenerator: to.Ptr(false),
+	// 			EnableBurstCapacity: to.Ptr(true),
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 			},
-	// 			EnablePartitionMerge: to.Ptr(true),
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-	// 			PerPartitionAutomaticFailoverEnabled: to.Ptr(true),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+	// 			EnablePriorityBasedExecution: to.Ptr(true),
+	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+	// 			EnableAllVersionsAndDeletesChangeFeed: to.Ptr(true),
+	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
+	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
+	// 		},
+	// 		SystemData: &armcosmos.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountCheckNameExists.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountCheckNameExists.json
 func ExampleDatabaseAccountsClient_CheckNameExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -969,14 +1024,14 @@ func ExampleDatabaseAccountsClient_CheckNameExists() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountGet.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountGet.json
 func ExampleDatabaseAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1066,10 +1121,6 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 			APIProperties: &armcosmos.APIProperties{
 	// 			},
 	// 			EnableAnalyticalStorage: to.Ptr(true),
-	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			EnablePriorityBasedExecution: to.Ptr(true),
-	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
 	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 	// 			},
@@ -1087,29 +1138,51 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 					TargetType: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
 	// 					StartTime: to.Ptr(time.Date(2021, time.June, 9, 21, 7, 16, 0, time.UTC)),
 	// 				},
-	// 				BackupRetentionLockExpirationTimestamp: to.Ptr(time.Date(2030, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
 	// 			NetworkACLBypassResourceIDs: []*string{
 	// 			},
+	// 			EnablePartitionMerge: to.Ptr(true),
+	// 			EnableBurstCapacity: to.Ptr(true),
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+	// 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
+	// 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryFalse),
+	// 			},
+	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 			CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
+	// 				CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
+	// 				CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
+	// 				CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+	// 				CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+	// 				CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+	// 				PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
+	// 			},
+	// 			EnableMaterializedViews: to.Ptr(false),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+	// 					ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 	// 				},
 	// 			},
-	// 			EnablePartitionMerge: to.Ptr(true),
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-	// 			PerPartitionAutomaticFailoverEnabled: to.Ptr(true),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+	// 			EnablePriorityBasedExecution: to.Ptr(true),
+	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+	// 			EnableAllVersionsAndDeletesChangeFeed: to.Ptr(true),
+	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
+	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
 	// 		},
 	// 		Identity: &armcosmos.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -1126,7 +1199,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1152,7 +1225,7 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountListConnectionStrings.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountListConnectionStrings.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1174,17 +1247,17 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
-	// 				ConnectionString: to.Ptr("connection-string"),
-	// 				Description: to.Ptr("Primary SQL Connection String"),
-	// 				KeyKind: to.Ptr(armcosmos.KindPrimary),
 	// 				Type: to.Ptr(armcosmos.TypeSQL),
+	// 				Description: to.Ptr("Primary SQL Connection String"),
+	// 				ConnectionString: to.Ptr("connection-string"),
+	// 				KeyKind: to.Ptr(armcosmos.KindPrimary),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountListConnectionStringsMongo.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStringsMongo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1206,15 +1279,15 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
-	// 				ConnectionString: to.Ptr("connection-string"),
 	// 				Description: to.Ptr("Name of the connection string"),
+	// 				ConnectionString: to.Ptr("connection-string"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountListKeys.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountListKeys.json
 func ExampleDatabaseAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1235,14 +1308,14 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	// res = armcosmos.DatabaseAccountsClientListKeysResponse{
 	// 	DatabaseAccountListKeysResult: armcosmos.DatabaseAccountListKeysResult{
 	// 		PrimaryMasterKey: to.Ptr("primaryMasterKey"),
-	// 		SecondaryMasterKey: to.Ptr("secondaryMasterKey"),
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
+	// 		SecondaryMasterKey: to.Ptr("secondaryMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountListReadOnlyKeys.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1268,14 +1341,14 @@ func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountListByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountListByResourceGroup.json
 func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1350,26 +1423,55 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 					Cors: []*armcosmos.CorsPolicy{
 		// 					},
 		// 					EnableFreeTier: to.Ptr(false),
+		// 					InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+		// 					CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 		// 					DefaultIdentity: to.Ptr("FirstPartyIdentity"),
+		// 					BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
+		// 						Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
+		// 						PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
+		// 							BackupIntervalInMinutes: to.Ptr[int32](240),
+		// 							BackupRetentionIntervalInHours: to.Ptr[int32](720),
+		// 							BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+		// 						},
+		// 					},
 		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
 		// 					NetworkACLBypassResourceIDs: []*string{
 		// 					},
+		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
+		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
+		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
+		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
+		// 					},
+		// 					EnableMaterializedViews: to.Ptr(false),
+		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 					},
-		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
+		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
+		// 				},
+		// 				SystemData: &armcosmos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
 		// 				},
 		// 				Identity: &armcosmos.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -1389,7 +1491,7 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountGetMetricDefinitions.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountGetMetricDefinitions.json
 func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1415,27 +1517,27 @@ func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 		// 	MetricDefinitionsListResult: armcosmos.MetricDefinitionsListResult{
 		// 		Value: []*armcosmos.MetricDefinition{
 		// 			{
+		// 				Name: &armcosmos.MetricName{
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 					Value: to.Ptr("Total Requests"),
+		// 				},
 		// 				MetricAvailabilities: []*armcosmos.MetricAvailability{
 		// 					{
-		// 						TimeGrain: to.Ptr("PT5M"),
 		// 						Retention: to.Ptr("P2D"),
+		// 						TimeGrain: to.Ptr("PT5M"),
 		// 					},
 		// 					{
-		// 						TimeGrain: to.Ptr("PT1H"),
 		// 						Retention: to.Ptr("P14D"),
+		// 						TimeGrain: to.Ptr("PT1H"),
 		// 					},
 		// 					{
-		// 						TimeGrain: to.Ptr("P1D"),
 		// 						Retention: to.Ptr("P60D"),
+		// 						TimeGrain: to.Ptr("P1D"),
 		// 					},
 		// 				},
 		// 				PrimaryAggregationType: to.Ptr(armcosmos.PrimaryAggregationTypeTotal),
+		// 				ResourceURI: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
-		// 				ResourceURI: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
-		// 				Name: &armcosmos.MetricName{
-		// 					Value: to.Ptr("Total Requests"),
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -1443,7 +1545,7 @@ func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountGetMetrics.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountGetMetrics.json
 func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1469,40 +1571,40 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 		// 	MetricListResult: armcosmos.MetricListResult{
 		// 		Value: []*armcosmos.Metric{
 		// 			{
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				Name: &armcosmos.MetricName{
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 					Value: to.Ptr("Total Requests"),
+		// 				},
 		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				MetricValues: []*armcosmos.MetricValue{
 		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 3, 55, 278000000, time.UTC)),
 		// 						Total: to.Ptr[float64](0),
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 8, 55, 278000000, time.UTC)),
-		// 						Total: to.Ptr[float64](0),
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 20, 0, 8, 55, 278000000, time.UTC)),
+		// 						Total: to.Ptr[float64](0),
 		// 					},
 		// 				},
-		// 				Name: &armcosmos.MetricName{
-		// 					Value: to.Ptr("Total Requests"),
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 				},
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 			},
 		// 		},
 		// 	},
@@ -1510,14 +1612,14 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountList.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountList.json
 func ExampleDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1610,10 +1712,6 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					APIProperties: &armcosmos.APIProperties{
 		// 					},
 		// 					EnableAnalyticalStorage: to.Ptr(true),
-		// 					EnableBurstCapacity: to.Ptr(true),
-		// 					EnablePriorityBasedExecution: to.Ptr(true),
-		// 					DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-		// 					EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
 		// 					AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 		// 						SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 		// 					},
@@ -1630,23 +1728,43 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
 		// 					NetworkACLBypassResourceIDs: []*string{
 		// 					},
+		// 					EnablePartitionMerge: to.Ptr(true),
+		// 					EnableBurstCapacity: to.Ptr(true),
+		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
+		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 16, 274725300, time.UTC)),
+		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
+		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CapacityModeTransitionEndTimestamp: to.Ptr(time.Date(2024, time.March, 24, 3, 2, 18, 875832900, time.UTC)),
+		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
+		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
+		// 					},
+		// 					EnableMaterializedViews: to.Ptr(false),
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(time.Date(2022, time.February, 25, 20, 30, 11, 0, time.UTC)),
+		// 							ApproximateLastUsageTime: to.Ptr(time.Date(2024, time.October, 9, 11, 45, 33, 0, time.UTC)),
 		// 						},
 		// 					},
-		// 					EnablePartitionMerge: to.Ptr(true),
-		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
+		// 					EnablePriorityBasedExecution: to.Ptr(true),
+		// 					DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+		// 					EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
+		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
 		// 				},
 		// 				SystemData: &armcosmos.SystemData{
 		// 					CreatedAt: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
@@ -1669,7 +1787,7 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/CosmosDBDatabaseAccountGetUsages.json
+// Generated from example definition: 2026-09-01-preview/CosmosDBDatabaseAccountGetUsages.json
 func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1696,14 +1814,14 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 		// 	UsagesResult: armcosmos.UsagesResult{
 		// 		Value: []*armcosmos.Usage{
 		// 			{
-		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
-		// 				QuotaPeriod: to.Ptr("P1D"),
-		// 				Limit: to.Ptr[int64](10737418240),
-		// 				CurrentValue: to.Ptr[int64](0),
 		// 				Name: &armcosmos.MetricName{
-		// 					Value: to.Ptr("Storage"),
 		// 					LocalizedValue: to.Ptr("Storage"),
+		// 					Value: to.Ptr("Storage"),
 		// 				},
+		// 				CurrentValue: to.Ptr[int64](0),
+		// 				Limit: to.Ptr[int64](10737418240),
+		// 				QuotaPeriod: to.Ptr("P1D"),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
 		// 			},
 		// 		},
 		// 	},

@@ -19,7 +19,7 @@ import (
 // RestorableGremlinGraphsClient contains the methods for the RestorableGremlinGraphs group.
 // Don't use this type directly, use NewRestorableGremlinGraphsClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01-preview
 type RestorableGremlinGraphsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -104,7 +104,7 @@ func (client *RestorableGremlinGraphsClient) listCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
+		reqQP.Set("api-version", version20260901Preview)
 		if options != nil && options.EndTime != nil {
 			reqQP.Set("endTime", *options.EndTime)
 		}

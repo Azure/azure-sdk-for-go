@@ -235,13 +235,13 @@ func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, 
 	client, clientRevision, err := ns.GetAMQPClientImpl(ctx)
 
 	if err != nil {
-		return nil, 0, err
+		return nil, clientRevision, err
 	}
 
 	session, err := client.NewSession(ctx, nil)
 
 	if err != nil {
-		return nil, 0, err
+		return nil, clientRevision, err
 	}
 
 	return session, clientRevision, err

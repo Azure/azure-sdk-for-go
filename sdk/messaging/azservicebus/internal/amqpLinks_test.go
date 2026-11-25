@@ -967,3 +967,64 @@ func requireNewLinkNewConn(t *testing.T, oldLWID *LinksWithID, newLWID *LinksWit
 	require.NotEqual(t, oldLWID.Sender.LinkName(), newLWID.Sender.LinkName(), "Link should have a new ID because it was recreated")
 	require.Equal(t, oldLWID.ID.Conn+1, newLWID.ID.Conn, "Connection ID should be recreated")
 }
+
+// revisionNS models revision checks on a broken cached connection.
+type revisionNS struct {
+	FakeNS
+	revision            uint64
+	broken, failSession bool
+	recoveries          []uint64
+}
+
+func (ns *revisionNS) NewAMQPSession(context.Context) (amqpwrap.AMQPSession, uint64, error) {
+	if ns.broken && ns.failSession {
+		return nil, ns.revision, &amqp.ConnError{}
+	}
+	return &FakeAMQPSession{}, ns.revision, nil
+}
+
+func (ns *revisionNS) Recover(ctx context.Context, revision uint64) (bool, error) {
+	ns.recoveries = append(ns.recoveries, revision)
+	if revision != ns.revision {
+		return false, nil
+	}
+	ns.revision++
+	ns.broken = ns.revision == 2
+	return true, nil
+}
+
+func TestAMQPLinksRetryFailedInitialization(t *testing.T) {
+	for _, duringRecovery := range []bool{false, true} {
+		for _, failSession := range []bool{false, true} {
+			t.Run(fmt.Sprintf("recovery=%v/session=%v", duringRecovery, failSession), func(t *testing.T) {
+				ns := &revisionNS{revision: 1, failSession: failSession}
+				if !duringRecovery {
+					ns.revision, ns.broken = 2, true
+				}
+				links := NewAMQPLinks(NewAMQPLinksArgs{
+					NS: ns, EntityPath: "entity", GetRecoveryKindFunc: GetRecoveryKind,
+					CreateLinkFunc: func(context.Context, amqpwrap.AMQPSession) (amqpwrap.AMQPSenderCloser, amqpwrap.AMQPReceiverCloser, error) {
+						if ns.broken {
+							return nil, nil, &amqp.ConnError{}
+						}
+						return &FakeAMQPSender{}, nil, nil
+					},
+				})
+				defer func() { require.NoError(t, links.Close(context.Background(), true)) }()
+				err := links.Retry(context.Background(), exported.EventConn, "test", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+					if lwid.ID.Conn == 1 {
+						return &amqp.ConnError{}
+					}
+					require.EqualValues(t, 3, lwid.ID.Conn)
+					return nil
+				}, exported.RetryOptions{MaxRetries: 3, RetryDelay: time.Millisecond, MaxRetryDelay: time.Millisecond})
+				require.NoError(t, err)
+				if duringRecovery {
+					require.Equal(t, []uint64{1, 2}, ns.recoveries)
+				} else {
+					require.Equal(t, []uint64{2}, ns.recoveries)
+				}
+			})
+		}
+	}
+}

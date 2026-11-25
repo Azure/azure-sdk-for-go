@@ -7,11 +7,11 @@ package armenclave_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/Operations_List.json
+// Generated from example definition: 2026-10-01-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

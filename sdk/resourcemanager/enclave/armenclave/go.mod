@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2
 
 go 1.26.0
 

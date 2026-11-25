@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_CreateOrUpdate.json
 func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,6 +34,7 @@ func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
 					},
 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+					Direction:            to.Ptr(armenclave.RuleDirectionOutbound),
 				},
 			},
 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
@@ -65,6 +66,7 @@ func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
 	// 					},
 	// 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 					Direction: to.Ptr(armenclave.RuleDirectionOutbound),
 	// 				},
 	// 			},
 	// 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
@@ -74,7 +76,7 @@ func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity/communityendpoints/TestMyCommunityEndpoint"),
+	// 		ID: to.Ptr("/subscriptions/73CEECEF-2C30-488E-946F-D20F414D99BA/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity/communityEndpoints/TestMyCommunityEndpoint"),
 	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
 	// 		Type: to.Ptr("Microsoft.Mission/communties/communityendpoints"),
 	// 		SystemData: &armenclave.SystemData{
@@ -89,7 +91,7 @@ func ExampleCommunityEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_Delete.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_Delete.json
 func ExampleCommunityEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +112,7 @@ func ExampleCommunityEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_HandleApprovalCreation.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_HandleApprovalCreation.json
 func ExampleCommunityEndpointsClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +144,7 @@ func ExampleCommunityEndpointsClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_HandleApprovalDeletion.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
 func ExampleCommunityEndpointsClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +175,53 @@ func ExampleCommunityEndpointsClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_Update.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_Sync.json
+func ExampleCommunityEndpointsClient_BeginSync() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armenclave.NewClientFactory("CA1CB369-DD26-4DB2-9D43-9AFEF0F22093", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCommunityEndpointsClient().BeginSync(ctx, "rgopenapi", "TestMyCommunity", "TestMyCommunityEndpoint", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armenclave.CommunityEndpointsClientSyncResponse{
+	// 	CommunityEndpointResource: armenclave.CommunityEndpointResource{
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity/communityEndpoints/TestMyCommunityEndpoint"),
+	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
+	// 		Type: to.Ptr("Microsoft.Mission/communities/communityEndpoints"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armenclave.CommunityEndpointProperties{
+	// 			RuleCollection: []*armenclave.CommunityEndpointDestinationRule{
+	// 				{
+	// 					EndpointRuleName: to.Ptr("rule1"),
+	// 					DestinationType: to.Ptr(armenclave.DestinationTypeFQDN),
+	// 					Destination: to.Ptr("foo.example.com"),
+	// 					Ports: to.Ptr("443"),
+	// 					Protocols: []*armenclave.CommunityEndpointProtocol{
+	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_Update.json
 func ExampleCommunityEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,6 +246,7 @@ func ExampleCommunityEndpointsClient_BeginUpdate() {
 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
 					},
 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+					Direction:            to.Ptr(armenclave.RuleDirectionOutbound),
 				},
 			},
 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
@@ -225,6 +274,7 @@ func ExampleCommunityEndpointsClient_BeginUpdate() {
 	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
 	// 					},
 	// 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 					Direction: to.Ptr(armenclave.RuleDirectionOutbound),
 	// 				},
 	// 			},
 	// 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
@@ -234,7 +284,7 @@ func ExampleCommunityEndpointsClient_BeginUpdate() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity/communityendpoints/TestMyCommunityEndpoint"),
+	// 		ID: to.Ptr("/subscriptions/73CEECEF-2C30-488E-946F-D20F414D99BA/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity/communityEndpoints/TestMyCommunityEndpoint"),
 	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
 	// 		Type: to.Ptr("Microsoft.Mission/communities/communityendpoints"),
 	// 		SystemData: &armenclave.SystemData{
@@ -249,7 +299,7 @@ func ExampleCommunityEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_Get.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_Get.json
 func ExampleCommunityEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,6 +329,7 @@ func ExampleCommunityEndpointsClient_Get() {
 	// 						to.Ptr(armenclave.CommunityEndpointProtocolTCP),
 	// 					},
 	// 					TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 					Direction: to.Ptr(armenclave.RuleDirectionOutbound),
 	// 				},
 	// 			},
 	// 			UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
@@ -288,7 +339,7 @@ func ExampleCommunityEndpointsClient_Get() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity/communityendpoints/TestMyCommunityEndpoint"),
+	// 		ID: to.Ptr("/subscriptions/73CEECEF-2C30-488E-946F-D20F414D99BA/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity/communityEndpoints/TestMyCommunityEndpoint"),
 	// 		Name: to.Ptr("TestMyCommunityEndpoint"),
 	// 		Type: to.Ptr("Microsoft.Mission/communities/communityendpoints"),
 	// 		SystemData: &armenclave.SystemData{
@@ -303,7 +354,7 @@ func ExampleCommunityEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_ListByCommunityResource.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_ListByCommunityResource.json
 func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,6 +390,7 @@ func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 		// 								to.Ptr(armenclave.CommunityEndpointProtocolTCP),
 		// 							},
 		// 							TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+		// 							Direction: to.Ptr(armenclave.RuleDirectionOutbound),
 		// 						},
 		// 					},
 		// 					UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),
@@ -367,7 +419,7 @@ func ExampleCommunityEndpointsClient_NewListByCommunityResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/CommunityEndpoints_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/CommunityEndpoints_ListBySubscription.json
 func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,6 +455,7 @@ func ExampleCommunityEndpointsClient_NewListBySubscriptionPager() {
 		// 								to.Ptr(armenclave.CommunityEndpointProtocolTCP),
 		// 							},
 		// 							TransitHubResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+		// 							Direction: to.Ptr(armenclave.RuleDirectionOutbound),
 		// 						},
 		// 					},
 		// 					UpdateMode: to.Ptr(armenclave.UpdateModeAutomatic),

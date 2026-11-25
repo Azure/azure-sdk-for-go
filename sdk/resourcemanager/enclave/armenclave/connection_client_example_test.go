@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_CreateOrUpdate.json
 func ExampleConnectionClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleConnectionClient_BeginCreateOrUpdate() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection"),
+	// 		ID: to.Ptr("/subscriptions/73CEECEF-2C30-488E-946F-D20F414D99BA/resourceGroups/rgopenapi/providers/Microsoft.Mission/enclaveConnections/TestMyEnclaveConnection"),
 	// 		Name: to.Ptr("TestMyEnclaveConnection"),
 	// 		Type: to.Ptr("Microsoft.Mission/enclaveconnections"),
 	// 		SystemData: &armenclave.SystemData{
@@ -74,7 +74,7 @@ func ExampleConnectionClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_Delete.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_Delete.json
 func ExampleConnectionClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleConnectionClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_HandleApprovalCreation.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_HandleApprovalCreation.json
 func ExampleConnectionClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleConnectionClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_HandleApprovalDeletion.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_HandleApprovalDeletion.json
 func ExampleConnectionClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleConnectionClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_Update.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_Update.json
 func ExampleConnectionClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleConnectionClient_BeginUpdate() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection"),
+	// 		ID: to.Ptr("/subscriptions/73CEECEF-2C30-488E-946F-D20F414D99BA/resourceGroups/rgopenapi/providers/Microsoft.Mission/enclaveConnections/TestMyEnclaveConnection"),
 	// 		Name: to.Ptr("TestMyEnclaveConnection"),
 	// 		Type: to.Ptr("Microsoft.Mission/enclaveconnections"),
 	// 		SystemData: &armenclave.SystemData{
@@ -217,7 +217,7 @@ func ExampleConnectionClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_Get.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_Get.json
 func ExampleConnectionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,7 +249,7 @@ func ExampleConnectionClient_Get() {
 	// 			"sampletag": to.Ptr("samplevalue"),
 	// 		},
 	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection"),
+	// 		ID: to.Ptr("/subscriptions/73CEECEF-2C30-488E-946F-D20F414D99BA/resourceGroups/rgopenapi/providers/Microsoft.Mission/enclaveConnections/TestMyEnclaveConnection"),
 	// 		Name: to.Ptr("TestMyEnclaveConnection"),
 	// 		Type: to.Ptr("Microsoft.Mission/enclaveconnections"),
 	// 		SystemData: &armenclave.SystemData{
@@ -264,7 +264,7 @@ func ExampleConnectionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_ListByResourceGroup.json
 func ExampleConnectionClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleConnectionClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/EnclaveConnection_ListBySubscription.json
 func ExampleConnectionClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

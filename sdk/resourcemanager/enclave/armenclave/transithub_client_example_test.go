@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/TransitHub_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/TransitHub_CreateOrUpdate.json
 func ExampleTransitHubClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleTransitHubClient_BeginCreateOrUpdate() {
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
 	// 		Name: to.Ptr("TestThName"),
 	// 		Type: to.Ptr("microsoft.mission/communities/transithubs"),
 	// 		SystemData: &armenclave.SystemData{
@@ -84,7 +84,7 @@ func ExampleTransitHubClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/TransitHub_Delete.json
+// Generated from example definition: 2026-10-01-preview/TransitHub_Delete.json
 func ExampleTransitHubClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleTransitHubClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/TransitHub_Update.json
+// Generated from example definition: 2026-10-01-preview/TransitHub_Update.json
 func ExampleTransitHubClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleTransitHubClient_BeginUpdate() {
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
 	// 		Name: to.Ptr("TestThName"),
 	// 		Type: to.Ptr("microsoft.mission/communities/transithubs"),
 	// 		SystemData: &armenclave.SystemData{
@@ -176,7 +176,7 @@ func ExampleTransitHubClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/TransitHub_Get.json
+// Generated from example definition: 2026-10-01-preview/TransitHub_Get.json
 func ExampleTransitHubClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleTransitHubClient_Get() {
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName"),
 	// 		Name: to.Ptr("TestThName"),
 	// 		Type: to.Ptr("microsoft.mission/communities/transithubs"),
 	// 		SystemData: &armenclave.SystemData{
@@ -229,7 +229,7 @@ func ExampleTransitHubClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/TransitHub_ListByCommunityResource.json
+// Generated from example definition: 2026-10-01-preview/TransitHub_ListByCommunityResource.json
 func ExampleTransitHubClient_NewListByCommunityResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleTransitHubClient_NewListByCommunityResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/TransitHub_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/TransitHub_ListBySubscription.json
 func ExampleTransitHubClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

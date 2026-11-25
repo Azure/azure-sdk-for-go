@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/enclave/armenclave/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/Workload_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/Workload_CreateOrUpdate.json
 func ExampleWorkloadClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,8 +53,8 @@ func ExampleWorkloadClient_BeginCreateOrUpdate() {
 	// 			"TestKey": to.Ptr("TestValue"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave/workloads/kxzylwqnmxtivpmupnlho"),
-	// 		Name: to.Ptr("kxzylwqnmxtivpmupnlho"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/virtualEnclaves/TestMyEnclave/workloads/TestMyWorkload"),
+	// 		Name: to.Ptr("TestMyWorkload"),
 	// 		Type: to.Ptr("microsoft.mission/virtualenclaves/workloads"),
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
@@ -68,7 +68,7 @@ func ExampleWorkloadClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Workload_Delete.json
+// Generated from example definition: 2026-10-01-preview/Workload_Delete.json
 func ExampleWorkloadClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleWorkloadClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/Workload_Update.json
+// Generated from example definition: 2026-10-01-preview/Workload_Update.json
 func ExampleWorkloadClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,8 +132,8 @@ func ExampleWorkloadClient_BeginUpdate() {
 	// 			"TestKey": to.Ptr("TestValue"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave/workloads/kxzylwqnmxtivpmupnlho"),
-	// 		Name: to.Ptr("kxzylwqnmxtivpmupnlho"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/virtualEnclaves/TestMyEnclave/workloads/TestMyWorkload"),
+	// 		Name: to.Ptr("TestMyWorkload"),
 	// 		Type: to.Ptr("microsoft.mission/virtualenclaves/workloads"),
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
@@ -147,7 +147,7 @@ func ExampleWorkloadClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Workload_Get.json
+// Generated from example definition: 2026-10-01-preview/Workload_Get.json
 func ExampleWorkloadClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,8 +184,8 @@ func ExampleWorkloadClient_Get() {
 	// 			"TestKey": to.Ptr("TestValue"),
 	// 		},
 	// 		Location: to.Ptr("westcentralus"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave/workloads/kxzylwqnmxtivpmupnlho"),
-	// 		Name: to.Ptr("kxzylwqnmxtivpmupnlho"),
+	// 		ID: to.Ptr("/subscriptions/CA1CB369-DD26-4DB2-9D43-9AFEF0F22093/resourceGroups/rgopenapi/providers/Microsoft.Mission/virtualEnclaves/TestMyEnclave/workloads/TestMyWorkload"),
+	// 		Name: to.Ptr("TestMyWorkload"),
 	// 		Type: to.Ptr("microsoft.mission/virtualenclaves/workloads"),
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
@@ -199,7 +199,7 @@ func ExampleWorkloadClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Workload_ListByEnclaveResource.json
+// Generated from example definition: 2026-10-01-preview/Workload_ListByEnclaveResource.json
 func ExampleWorkloadClient_NewListByEnclaveResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleWorkloadClient_NewListByEnclaveResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/Workload_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/Workload_ListBySubscription.json
 func ExampleWorkloadClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

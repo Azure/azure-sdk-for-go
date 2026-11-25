@@ -18,6 +18,8 @@ import (
 
 // GroupQuotasClient contains the methods for the GroupQuotas group.
 // Don't use this type directly, use NewGroupQuotasClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotasClient struct {
 	internal *arm.Client
 }
@@ -42,8 +44,6 @@ func NewGroupQuotasClient(credential azcore.TokenCredential, options *arm.Client
 // Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
 // be checked.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - groupQuotaPutRequestBody - The GroupQuota body details for creation or update of a GroupQuota entity.
@@ -66,14 +66,12 @@ func (client *GroupQuotasClient) BeginCreateOrUpdate(ctx context.Context, manage
 	}
 }
 
-// CreateOrUpdate - Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status
+// createOrUpdate - Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status
 // can be polled periodically. The status Async polling is using standards defined at - https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
 // Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in retry-after header.
 // Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
 // be checked.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *GroupQuotasClient) createOrUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotaPutRequestBody GroupQuotasEntity, options *GroupQuotasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotasClient.BeginCreateOrUpdate"
@@ -95,7 +93,7 @@ func (client *GroupQuotasClient) createOrUpdate(ctx context.Context, managementG
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GroupQuotasClient) createOrUpdateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotaPutRequestBody GroupQuotasEntity, _ *GroupQuotasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
 	if managementGroupID == "" {
@@ -111,8 +109,8 @@ func (client *GroupQuotasClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, groupQuotaPutRequestBody); err != nil {
@@ -123,8 +121,6 @@ func (client *GroupQuotasClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - options - GroupQuotasClientBeginDeleteOptions contains the optional parameters for the GroupQuotasClient.BeginDelete method.
@@ -145,10 +141,9 @@ func (client *GroupQuotasClient) BeginDelete(ctx context.Context, managementGrou
 	}
 }
 
-// Delete - Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
+// deleteOperation - Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be
+// lost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *GroupQuotasClient) deleteOperation(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotasClient.BeginDelete"
@@ -170,7 +165,7 @@ func (client *GroupQuotasClient) deleteOperation(ctx context.Context, management
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GroupQuotasClient) deleteCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotasClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
 	if managementGroupID == "" {
@@ -186,126 +181,9 @@ func (client *GroupQuotasClient) deleteCreateRequest(ctx context.Context, manage
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets the GroupQuotas for the name passed. It will return the GroupQuotas properties only. The details on group quota
-// can be access from the group quota APIs.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
-//   - managementGroupID - The management group ID.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - options - GroupQuotasClientGetOptions contains the optional parameters for the GroupQuotasClient.Get method.
-func (client *GroupQuotasClient) Get(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotasClientGetOptions) (GroupQuotasClientGetResponse, error) {
-	var err error
-	const operationName = "GroupQuotasClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, managementGroupID, groupQuotaName, options)
-	if err != nil {
-		return GroupQuotasClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GroupQuotasClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotasClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *GroupQuotasClient) getCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotasClientGetOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *GroupQuotasClient) getHandleResponse(resp *http.Response) (GroupQuotasClientGetResponse, error) {
-	result := GroupQuotasClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotasEntity); err != nil {
-		return GroupQuotasClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists GroupQuotas for the scope passed. It will return the GroupQuotas QuotaEntity properties only.The details
-// on group quota can be access from the group quota APIs.
-//
-// Generated from API version 2025-09-01
-//   - managementGroupID - The management group ID.
-//   - options - GroupQuotasClientListOptions contains the optional parameters for the GroupQuotasClient.NewListPager method.
-func (client *GroupQuotasClient) NewListPager(managementGroupID string, options *GroupQuotasClientListOptions) *runtime.Pager[GroupQuotasClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GroupQuotasClientListResponse]{
-		More: func(page GroupQuotasClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GroupQuotasClientListResponse) (GroupQuotasClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GroupQuotasClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, managementGroupID, options)
-			}, nil)
-			if err != nil {
-				return GroupQuotasClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *GroupQuotasClient) listCreateRequest(ctx context.Context, managementGroupID string, _ *GroupQuotasClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *GroupQuotasClient) listHandleResponse(resp *http.Response) (GroupQuotasClientListResponse, error) {
-	result := GroupQuotasClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotaList); err != nil {
-		return GroupQuotasClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The
@@ -316,11 +194,9 @@ func (client *GroupQuotasClient) listHandleResponse(resp *http.Response) (GroupQ
 // Any change in the filters will be applicable to the future quota assignments, existing quota allocated to subscriptions
 // from the GroupQuotas remains unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - GroupQuotasPatchRequestBody - The GroupQuotas Patch Request.
+//   - groupQuotasPatchRequestBody - The GroupQuotas Patch Request.
 //   - options - GroupQuotasClientBeginUpdateOptions contains the optional parameters for the GroupQuotasClient.BeginUpdate method.
 func (client *GroupQuotasClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, options *GroupQuotasClientBeginUpdateOptions) (*runtime.Poller[GroupQuotasClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -339,7 +215,7 @@ func (client *GroupQuotasClient) BeginUpdate(ctx context.Context, managementGrou
 	}
 }
 
-// Update - Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
+// update - Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
 // can be polled periodically. The status Async polling is using standards defined at - https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
 // Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in retry-after header.
 // Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
@@ -347,8 +223,6 @@ func (client *GroupQuotasClient) BeginUpdate(ctx context.Context, managementGrou
 // Any change in the filters will be applicable to the future quota assignments, existing quota allocated to subscriptions
 // from the GroupQuotas remains unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *GroupQuotasClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, options *GroupQuotasClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotasClient.BeginUpdate"
@@ -370,7 +244,7 @@ func (client *GroupQuotasClient) update(ctx context.Context, managementGroupID s
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *GroupQuotasClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, _ *GroupQuotasClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
 	if managementGroupID == "" {
@@ -386,12 +260,138 @@ func (client *GroupQuotasClient) updateCreateRequest(ctx context.Context, manage
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, groupQuotasPatchRequestBody); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets the GroupQuotas for the name passed. It will return the GroupQuotas properties only. The details on group quota
+// can be access from the group quota APIs.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - managementGroupID - The management group ID.
+//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+//   - options - GroupQuotasClientGetOptions contains the optional parameters for the GroupQuotasClient.Get method.
+func (client *GroupQuotasClient) Get(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotasClientGetOptions) (GroupQuotasClientGetResponse, error) {
+	var err error
+	const operationName = "GroupQuotasClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, managementGroupID, groupQuotaName, options)
+	if err != nil {
+		return GroupQuotasClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GroupQuotasClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *GroupQuotasClient) getCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotasClientGetOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	if groupQuotaName == "" {
+		return nil, errors.New("parameter groupQuotaName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *GroupQuotasClient) getHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotasClientGetResponse, error) {
+	result := GroupQuotasClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotasEntity); err != nil {
+		return GroupQuotasClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists GroupQuotas for the scope passed. It will return the GroupQuotas QuotaEntity properties only.The details
+// on group quota can be access from the group quota APIs.
+//   - managementGroupID - The management group ID.
+//   - options - GroupQuotasClientListOptions contains the optional parameters for the GroupQuotasClient.NewListPager method.
+func (client *GroupQuotasClient) NewListPager(managementGroupID string, options *GroupQuotasClientListOptions) *runtime.Pager[GroupQuotasClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GroupQuotasClientListResponse]{
+		More: func(page GroupQuotasClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GroupQuotasClientListResponse) (GroupQuotasClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GroupQuotasClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, managementGroupID, nextLink, options)
+			if err != nil {
+				return GroupQuotasClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GroupQuotasClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *GroupQuotasClient) listCreateRequest(ctx context.Context, managementGroupID string, nextLink string, _ *GroupQuotasClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *GroupQuotasClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotasClientListResponse, error) {
+	result := GroupQuotasClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotaList); err != nil {
+		return GroupQuotasClientListResponse{}, err
+	}
+	return result, nil
 }

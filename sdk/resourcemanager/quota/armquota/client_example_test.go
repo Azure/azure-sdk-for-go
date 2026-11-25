@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/putComputeOneSkuQuotaRequest.json
+// Generated from example definition: 2026-09-01-preview/putComputeOneSkuQuotaRequest.json
 func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,13 +39,13 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForCompute() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.ClientCreateOrUpdateResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
 	// 		Name: to.Ptr("standardFSv2Family"),
 	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
 	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/quotas/standardFSv2Family"),
@@ -62,7 +62,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForCompute() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/putMachineLearningServicesQuotaRequestLowPriority.json
+// Generated from example definition: 2026-09-01-preview/putMachineLearningServicesQuotaRequestLowPriority.json
 func ExampleClient_BeginCreateOrUpdate_quotasRequestForMachineLearningServicesLowPriorityResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,13 +90,13 @@ func ExampleClient_BeginCreateOrUpdate_quotasRequestForMachineLearningServicesLo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.ClientCreateOrUpdateResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
 	// 		Name: to.Ptr("TotalLowPriorityCores"),
 	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
 	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.MachineLearningServices/locations/eastus/providers/Microsoft.Quota/quotas/TotalLowPriorityCores"),
@@ -114,7 +114,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasRequestForMachineLearningServicesLo
 	// }
 }
 
-// Generated from example definition: 2025-09-01/putNetworkOneSkuQuotaRequest.json
+// Generated from example definition: 2026-09-01-preview/putNetworkOneSkuQuotaRequest.json
 func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,13 +142,13 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetwork() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.ClientCreateOrUpdateResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
 	// 		Name: to.Ptr("2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
 	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
 	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/quotaRequests/2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
@@ -166,7 +166,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetwork() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/putNetworkOneSkuQuotaRequestStandardSkuPublicIpAddresses.json
+// Generated from example definition: 2026-09-01-preview/putNetworkOneSkuQuotaRequestStandardSkuPublicIpAddresses.json
 func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetworkStandardSkuPublicIPAddressesResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,13 +194,13 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetworkStandardSkuPubl
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.ClientCreateOrUpdateResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
 	// 		Name: to.Ptr("2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
 	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
 	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/quotaRequests/2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
@@ -218,7 +218,110 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetworkStandardSkuPubl
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getComputeOneSkuQuotaLimit.json
+// Generated from example definition: 2026-09-01-preview/patchComputeQuotaRequest.json
+func ExampleClient_BeginUpdate_quotasRequestPatchForCompute() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "standardFSv2Family", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", armquota.CurrentQuotaLimitBase{
+		Properties: &armquota.Properties{
+			Name: &armquota.ResourceName{
+				Value: to.Ptr("standardFSv2Family"),
+			},
+			Limit: &armquota.LimitObject{
+				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
+				Value:           to.Ptr[int32](10),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armquota.ClientUpdateResponse{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
+	// 		Name: to.Ptr("standardFSv2Family"),
+	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
+	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/quotas/standardFSv2Family"),
+	// 		Properties: &armquota.Properties{
+	// 			Name: &armquota.ResourceName{
+	// 				LocalizedValue: to.Ptr("Standard FSv2 Family vCPUs"),
+	// 				Value: to.Ptr("standardFSv2Family"),
+	// 			},
+	// 			Limit: &armquota.LimitObject{
+	// 				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
+	// 				Value: to.Ptr[int32](10),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/patchNetworkOneSkuQuotaRequest.json
+func ExampleClient_BeginUpdate_quotasRequestPatchForNetwork() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "MinPublicIpInterNetworkPrefixLength", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", armquota.CurrentQuotaLimitBase{
+		Properties: &armquota.Properties{
+			Name: &armquota.ResourceName{
+				Value: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
+			},
+			Limit: &armquota.LimitObject{
+				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
+				Value:           to.Ptr[int32](10),
+			},
+			ResourceType: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armquota.ClientUpdateResponse{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
+	// 		Name: to.Ptr("2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
+	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
+	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/quotaRequests/2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
+	// 		Properties: &armquota.Properties{
+	// 			Name: &armquota.ResourceName{
+	// 				Value: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
+	// 			},
+	// 			Limit: &armquota.LimitObject{
+	// 				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
+	// 				Value: to.Ptr[int32](10),
+	// 			},
+	// 			ResourceType: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/getComputeOneSkuQuotaLimit.json
 func ExampleClient_Get_quotasGetRequestForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +340,7 @@ func ExampleClient_Get_quotasGetRequestForCompute() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.ClientGetResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
 	// 		Name: to.Ptr("standardNDSFamily"),
 	// 		Type: to.Ptr("Microsoft.Quota/Quotas"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/Quotas/standardNDSFamily"),
@@ -258,7 +361,7 @@ func ExampleClient_Get_quotasGetRequestForCompute() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getNetworkOneSkuQuotaLimit.json
+// Generated from example definition: 2026-09-01-preview/getNetworkOneSkuQuotaLimit.json
 func ExampleClient_Get_quotasUsagesRequestForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +380,7 @@ func ExampleClient_Get_quotasUsagesRequestForNetwork() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.ClientGetResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
+	// 	CurrentQuotaLimitBase: armquota.CurrentQuotaLimitBase{
 	// 		Name: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
 	// 		Type: to.Ptr("Microsoft.Quota/Quotas"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/Quotas/MinPublicIpInterNetworkPrefixLength"),
@@ -298,7 +401,7 @@ func ExampleClient_Get_quotasUsagesRequestForNetwork() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getComputeQuotaLimits.json
+// Generated from example definition: 2026-09-01-preview/getComputeQuotaLimits.json
 func ExampleClient_NewListPager_quotasListQuotaLimitsForCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -534,7 +637,7 @@ func ExampleClient_NewListPager_quotasListQuotaLimitsForCompute() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/getMachineLearningServicesQuotaLimits.json
+// Generated from example definition: 2026-09-01-preview/getMachineLearningServicesQuotaLimits.json
 func ExampleClient_NewListPager_quotasListQuotaLimitsMachineLearningServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -599,7 +702,7 @@ func ExampleClient_NewListPager_quotasListQuotaLimitsMachineLearningServices() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/getNetworkQuotaLimits.json
+// Generated from example definition: 2026-09-01-preview/getNetworkQuotaLimits.json
 func ExampleClient_NewListPager_quotasListQuotaLimitsForNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1351,107 +1454,4 @@ func ExampleClient_NewListPager_quotasListQuotaLimitsForNetwork() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-09-01/patchComputeQuotaRequest.json
-func ExampleClient_BeginUpdate_quotasRequestPatchForCompute() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "standardFSv2Family", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", armquota.CurrentQuotaLimitBase{
-		Properties: &armquota.Properties{
-			Name: &armquota.ResourceName{
-				Value: to.Ptr("standardFSv2Family"),
-			},
-			Limit: &armquota.LimitObject{
-				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
-				Value:           to.Ptr[int32](10),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armquota.ClientUpdateResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
-	// 		Name: to.Ptr("standardFSv2Family"),
-	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
-	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/quotas/standardFSv2Family"),
-	// 		Properties: &armquota.Properties{
-	// 			Name: &armquota.ResourceName{
-	// 				LocalizedValue: to.Ptr("Standard FSv2 Family vCPUs"),
-	// 				Value: to.Ptr("standardFSv2Family"),
-	// 			},
-	// 			Limit: &armquota.LimitObject{
-	// 				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
-	// 				Value: to.Ptr[int32](10),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/patchNetworkOneSkuQuotaRequest.json
-func ExampleClient_BeginUpdate_quotasRequestPatchForNetwork() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "MinPublicIpInterNetworkPrefixLength", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", armquota.CurrentQuotaLimitBase{
-		Properties: &armquota.Properties{
-			Name: &armquota.ResourceName{
-				Value: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
-			},
-			Limit: &armquota.LimitObject{
-				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
-				Value:           to.Ptr[int32](10),
-			},
-			ResourceType: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armquota.ClientUpdateResponse{
-	// 	CurrentQuotaLimitBase: &armquota.CurrentQuotaLimitBase{
-	// 		Name: to.Ptr("2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
-	// 		Type: to.Ptr("Microsoft.Quota/quotas"),
-	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/quotaRequests/2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
-	// 		Properties: &armquota.Properties{
-	// 			Name: &armquota.ResourceName{
-	// 				Value: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
-	// 			},
-	// 			Limit: &armquota.LimitObject{
-	// 				LimitObjectType: to.Ptr(armquota.LimitTypeLimitValue),
-	// 				Value: to.Ptr[int32](10),
-	// 			},
-	// 			ResourceType: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
-	// 		},
-	// 	},
-	// }
 }

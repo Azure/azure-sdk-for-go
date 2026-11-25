@@ -431,6 +431,21 @@ type AzureDevOpsReposClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BatchPricingsClientCreateOrUpdateOptions contains the optional parameters for the BatchPricingsClient.CreateOrUpdate method.
+type BatchPricingsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BatchPricingsClientGetOptions contains the optional parameters for the BatchPricingsClient.Get method.
+type BatchPricingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BatchPricingsClientListOptions contains the optional parameters for the BatchPricingsClient.NewListPager method.
+type BatchPricingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ComplianceResultsClientGetOptions contains the optional parameters for the ComplianceResultsClient.Get method.
 type ComplianceResultsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -576,7 +591,8 @@ type DefenderForStorageClientListOptions struct {
 // DefenderForStorageClientStartMalwareScanOptions contains the optional parameters for the DefenderForStorageClient.StartMalwareScan
 // method.
 type DefenderForStorageClientStartMalwareScanOptions struct {
-	// placeholder for future optional parameters
+	// Optional request body to filter which blobs and files to scan.
+	Body *StartMalwareScanRequest
 }
 
 // DevOpsConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevOpsConfigurationsClient.BeginCreateOrUpdate
@@ -1051,12 +1067,6 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
-type PrivateLinkParameters struct {
-	// The name of the private link resource.
-	PrivateLinkName string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.

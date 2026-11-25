@@ -443,6 +443,24 @@ type AzureDevOpsReposClientUpdateResponse struct {
 	AzureDevOpsRepository
 }
 
+// BatchPricingsClientCreateOrUpdateResponse contains the response from method BatchPricingsClient.CreateOrUpdate.
+type BatchPricingsClientCreateOrUpdateResponse struct {
+	// Pricing batch resource for updating multiple pricing configurations.
+	PricingBatch
+}
+
+// BatchPricingsClientGetResponse contains the response from method BatchPricingsClient.Get.
+type BatchPricingsClientGetResponse struct {
+	// Pricing batch resource for updating multiple pricing configurations.
+	PricingBatch
+}
+
+// BatchPricingsClientListResponse contains the response from method BatchPricingsClient.NewListPager.
+type BatchPricingsClientListResponse struct {
+	// A list of pricing batch resources.
+	PricingBatchList
+}
+
 // ComplianceResultsClientGetResponse contains the response from method ComplianceResultsClient.Get.
 type ComplianceResultsClientGetResponse struct {
 	// a compliance result

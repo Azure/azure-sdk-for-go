@@ -48,7 +48,7 @@ func (g *GitHubIssuesServerTransport) Do(req *http.Request) (*http.Response, err
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)
@@ -88,7 +88,7 @@ func (g *GitHubIssuesServerTransport) dispatchBeginCreate(req *http.Request) (*h
 	}
 	beginCreate := g.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/gitHubOwners/(?P<ownerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/repos/(?P<repoName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/issues`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/gitHubOwners/(?P<ownerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/repos/(?P<repoName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/issues`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

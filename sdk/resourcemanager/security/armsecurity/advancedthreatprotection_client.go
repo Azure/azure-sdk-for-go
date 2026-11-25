@@ -58,11 +58,7 @@ func (client *AdvancedThreatProtectionClient) Create(ctx context.Context, resour
 	if err != nil {
 		return AdvancedThreatProtectionClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AdvancedThreatProtectionClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -90,8 +86,11 @@ func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Co
 }
 
 // createHandleResponse handles the Create response.
-func (client *AdvancedThreatProtectionClient) createHandleResponse(resp *http.Response) (AdvancedThreatProtectionClientCreateResponse, error) {
+func (client *AdvancedThreatProtectionClient) createHandleResponse(resp *http.Response, successCodes ...int) (AdvancedThreatProtectionClientCreateResponse, error) {
 	result := AdvancedThreatProtectionClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedThreatProtectionSetting); err != nil {
 		return AdvancedThreatProtectionClientCreateResponse{}, err
 	}
@@ -117,11 +116,7 @@ func (client *AdvancedThreatProtectionClient) Get(ctx context.Context, resourceI
 	if err != nil {
 		return AdvancedThreatProtectionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AdvancedThreatProtectionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -145,8 +140,11 @@ func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdvancedThreatProtectionClient) getHandleResponse(resp *http.Response) (AdvancedThreatProtectionClientGetResponse, error) {
+func (client *AdvancedThreatProtectionClient) getHandleResponse(resp *http.Response, successCodes ...int) (AdvancedThreatProtectionClientGetResponse, error) {
 	result := AdvancedThreatProtectionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvancedThreatProtectionSetting); err != nil {
 		return AdvancedThreatProtectionClientGetResponse{}, err
 	}

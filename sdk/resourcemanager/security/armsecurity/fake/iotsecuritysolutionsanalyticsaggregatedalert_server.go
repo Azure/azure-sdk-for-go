@@ -57,7 +57,7 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) Do(req *ht
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return i.dispatchToMethodFake(req, method)
@@ -99,7 +99,7 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchDi
 	if i.srv.Dismiss == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Dismiss not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels/default/aggregatedAlerts/(?P<aggregatedAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dismiss`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyticsModels/default/aggregatedAlerts/(?P<aggregatedAlertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dismiss`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -136,7 +136,7 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchGe
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels/default/aggregatedAlerts/(?P<aggregatedAlertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyticsModels/default/aggregatedAlerts/(?P<aggregatedAlertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -175,7 +175,7 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchNe
 	}
 	newListPager := i.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels/default/aggregatedAlerts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyticsModels/default/aggregatedAlerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -191,11 +191,8 @@ func (i *IotSecuritySolutionsAnalyticsAggregatedAlertServerTransport) dispatchNe
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

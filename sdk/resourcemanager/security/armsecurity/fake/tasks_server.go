@@ -29,10 +29,6 @@ type TasksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSubscriptionLevelTask func(ctx context.Context, ascLocation string, taskName string, options *armsecurity.TasksClientGetSubscriptionLevelTaskOptions) (resp azfake.Responder[armsecurity.TasksClientGetSubscriptionLevelTaskResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method TasksClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.TasksClientListOptions) (resp azfake.PagerResponder[armsecurity.TasksClientListResponse])
-
 	// NewListByHomeRegionPager is the fake for method TasksClient.NewListByHomeRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByHomeRegionPager func(ascLocation string, options *armsecurity.TasksClientListByHomeRegionOptions) (resp azfake.PagerResponder[armsecurity.TasksClientListByHomeRegionResponse])
@@ -40,6 +36,10 @@ type TasksServer struct {
 	// NewListByResourceGroupPager is the fake for method TasksClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, ascLocation string, options *armsecurity.TasksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsecurity.TasksClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method TasksClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.TasksClientListOptions) (resp azfake.PagerResponder[armsecurity.TasksClientListResponse])
 
 	// UpdateResourceGroupLevelTaskState is the fake for method TasksClient.UpdateResourceGroupLevelTaskState
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -56,9 +56,9 @@ type TasksServer struct {
 func NewTasksServerTransport(srv *TasksServer) *TasksServerTransport {
 	return &TasksServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armsecurity.TasksClientListResponse]](),
 		newListByHomeRegionPager:    newTracker[azfake.PagerResponder[armsecurity.TasksClientListByHomeRegionResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armsecurity.TasksClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armsecurity.TasksClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ func NewTasksServerTransport(srv *TasksServer) *TasksServerTransport {
 // Don't use this type directly, use NewTasksServerTransport instead.
 type TasksServerTransport struct {
 	srv                         *TasksServer
-	newListPager                *tracker[azfake.PagerResponder[armsecurity.TasksClientListResponse]]
 	newListByHomeRegionPager    *tracker[azfake.PagerResponder[armsecurity.TasksClientListByHomeRegionResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armsecurity.TasksClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armsecurity.TasksClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TasksServerTransport.
@@ -76,7 +76,7 @@ func (t *TasksServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return t.dispatchToMethodFake(req, method)
@@ -96,12 +96,12 @@ func (t *TasksServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = t.dispatchGetResourceGroupLevelTask(req)
 			case "TasksClient.GetSubscriptionLevelTask":
 				res.resp, res.err = t.dispatchGetSubscriptionLevelTask(req)
-			case "TasksClient.NewListPager":
-				res.resp, res.err = t.dispatchNewListPager(req)
 			case "TasksClient.NewListByHomeRegionPager":
 				res.resp, res.err = t.dispatchNewListByHomeRegionPager(req)
 			case "TasksClient.NewListByResourceGroupPager":
 				res.resp, res.err = t.dispatchNewListByResourceGroupPager(req)
+			case "TasksClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
 			case "TasksClient.UpdateResourceGroupLevelTaskState":
 				res.resp, res.err = t.dispatchUpdateResourceGroupLevelTaskState(req)
 			case "TasksClient.UpdateSubscriptionLevelTaskState":
@@ -126,7 +126,7 @@ func (t *TasksServerTransport) dispatchGetResourceGroupLevelTask(req *http.Reque
 	if t.srv.GetResourceGroupLevelTask == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetResourceGroupLevelTask not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tasks/(?P<taskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -163,7 +163,7 @@ func (t *TasksServerTransport) dispatchGetSubscriptionLevelTask(req *http.Reques
 	if t.srv.GetSubscriptionLevelTask == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSubscriptionLevelTask not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tasks/(?P<taskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -192,54 +192,13 @@ func (t *TasksServerTransport) dispatchGetSubscriptionLevelTask(req *http.Reques
 	return resp, nil
 }
 
-func (t *TasksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := t.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/tasks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armsecurity.TasksClientListOptions
-		if filterParam != nil {
-			options = &armsecurity.TasksClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := t.srv.NewListPager(options)
-		newListPager = &resp
-		t.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.TasksClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		t.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (t *TasksServerTransport) dispatchNewListByHomeRegionPager(req *http.Request) (*http.Response, error) {
 	if t.srv.NewListByHomeRegionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByHomeRegionPager not implemented")}
 	}
 	newListByHomeRegionPager := t.newListByHomeRegionPager.get(req)
 	if newListByHomeRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tasks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -284,7 +243,7 @@ func (t *TasksServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 	}
 	newListByResourceGroupPager := t.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tasks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -327,11 +286,52 @@ func (t *TasksServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 	return resp, nil
 }
 
+func (t *TasksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/tasks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armsecurity.TasksClientListOptions
+		if filterParam != nil {
+			options = &armsecurity.TasksClientListOptions{
+				Filter: filterParam,
+			}
+		}
+		resp := t.srv.NewListPager(options)
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.TasksClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (t *TasksServerTransport) dispatchUpdateResourceGroupLevelTaskState(req *http.Request) (*http.Response, error) {
 	if t.srv.UpdateResourceGroupLevelTaskState == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateResourceGroupLevelTaskState not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<taskUpdateActionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tasks/(?P<taskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<taskUpdateActionType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -378,7 +378,7 @@ func (t *TasksServerTransport) dispatchUpdateSubscriptionLevelTaskState(req *htt
 	if t.srv.UpdateSubscriptionLevelTaskState == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSubscriptionLevelTaskState not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<taskUpdateActionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/tasks/(?P<taskName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<taskUpdateActionType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

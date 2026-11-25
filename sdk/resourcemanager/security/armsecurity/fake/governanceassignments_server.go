@@ -60,7 +60,7 @@ func (g *GovernanceAssignmentsServerTransport) Do(req *http.Request) (*http.Resp
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)
@@ -104,7 +104,7 @@ func (g *GovernanceAssignmentsServerTransport) dispatchCreateOrUpdate(req *http.
 	if g.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments/(?P<assignmentKey>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/governanceAssignments/(?P<assignmentKey>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -114,10 +114,7 @@ func (g *GovernanceAssignmentsServerTransport) dispatchCreateOrUpdate(req *http.
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	assessmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assessmentName")])
 	if err != nil {
 		return nil, err
@@ -145,16 +142,13 @@ func (g *GovernanceAssignmentsServerTransport) dispatchDelete(req *http.Request)
 	if g.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments/(?P<assignmentKey>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/governanceAssignments/(?P<assignmentKey>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	assessmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assessmentName")])
 	if err != nil {
 		return nil, err
@@ -182,16 +176,13 @@ func (g *GovernanceAssignmentsServerTransport) dispatchGet(req *http.Request) (*
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments/(?P<assignmentKey>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/governanceAssignments/(?P<assignmentKey>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	assessmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assessmentName")])
 	if err != nil {
 		return nil, err
@@ -221,16 +212,13 @@ func (g *GovernanceAssignmentsServerTransport) dispatchNewListPager(req *http.Re
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/governanceAssignments`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/assessments/(?P<assessmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/governanceAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		assessmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("assessmentName")])
 		if err != nil {
 			return nil, err

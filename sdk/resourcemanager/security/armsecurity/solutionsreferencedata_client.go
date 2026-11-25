@@ -30,6 +30,9 @@ type SolutionsReferenceDataClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSolutionsReferenceDataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionsReferenceDataClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -59,11 +62,7 @@ func (client *SolutionsReferenceDataClient) List(ctx context.Context, options *S
 	if err != nil {
 		return SolutionsReferenceDataClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionsReferenceDataClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -71,7 +70,7 @@ func (client *SolutionsReferenceDataClient) List(ctx context.Context, options *S
 func (client *SolutionsReferenceDataClient) listCreateRequest(ctx context.Context, _ *SolutionsReferenceDataClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securitySolutionsReferenceData"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -86,8 +85,11 @@ func (client *SolutionsReferenceDataClient) listCreateRequest(ctx context.Contex
 }
 
 // listHandleResponse handles the List response.
-func (client *SolutionsReferenceDataClient) listHandleResponse(resp *http.Response) (SolutionsReferenceDataClientListResponse, error) {
+func (client *SolutionsReferenceDataClient) listHandleResponse(resp *http.Response, successCodes ...int) (SolutionsReferenceDataClientListResponse, error) {
 	result := SolutionsReferenceDataClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionsReferenceDataList); err != nil {
 		return SolutionsReferenceDataClientListResponse{}, err
 	}
@@ -113,11 +115,7 @@ func (client *SolutionsReferenceDataClient) ListByHomeRegion(ctx context.Context
 	if err != nil {
 		return SolutionsReferenceDataClientListByHomeRegionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionsReferenceDataClientListByHomeRegionResponse{}, err
-	}
-	resp, err := client.listByHomeRegionHandleResponse(httpResp)
+	resp, err := client.listByHomeRegionHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -125,7 +123,7 @@ func (client *SolutionsReferenceDataClient) ListByHomeRegion(ctx context.Context
 func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *SolutionsReferenceDataClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/securitySolutionsReferenceData"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {
@@ -144,8 +142,11 @@ func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx co
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *SolutionsReferenceDataClient) listByHomeRegionHandleResponse(resp *http.Response) (SolutionsReferenceDataClientListByHomeRegionResponse, error) {
+func (client *SolutionsReferenceDataClient) listByHomeRegionHandleResponse(resp *http.Response, successCodes ...int) (SolutionsReferenceDataClientListByHomeRegionResponse, error) {
 	result := SolutionsReferenceDataClientListByHomeRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionsReferenceDataList); err != nil {
 		return SolutionsReferenceDataClientListByHomeRegionResponse{}, err
 	}

@@ -30,6 +30,9 @@ type GitLabGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGitLabGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitLabGroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *GitLabGroupsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return GitLabGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GitLabGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *GitLabGroupsClient) Get(ctx context.Context, resourceGroupName str
 func (client *GitLabGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, groupFQName string, _ *GitLabGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitLabGroups/{groupFQName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,74 +100,13 @@ func (client *GitLabGroupsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *GitLabGroupsClient) getHandleResponse(resp *http.Response) (GitLabGroupsClientGetResponse, error) {
+func (client *GitLabGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (GitLabGroupsClientGetResponse, error) {
 	result := GitLabGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitLabGroup); err != nil {
 		return GitLabGroupsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Returns a list of GitLab groups onboarded to the connector.
-//
-// Returns a list of GitLab groups onboarded to the connector.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - securityConnectorName - The security connector name.
-//   - options - GitLabGroupsClientListOptions contains the optional parameters for the GitLabGroupsClient.NewListPager method.
-func (client *GitLabGroupsClient) NewListPager(resourceGroupName string, securityConnectorName string, options *GitLabGroupsClientListOptions) *runtime.Pager[GitLabGroupsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GitLabGroupsClientListResponse]{
-		More: func(page GitLabGroupsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GitLabGroupsClientListResponse) (GitLabGroupsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GitLabGroupsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
-			}, nil)
-			if err != nil {
-				return GitLabGroupsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *GitLabGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *GitLabGroupsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitLabGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *GitLabGroupsClient) listHandleResponse(resp *http.Response) (GitLabGroupsClientListResponse, error) {
-	result := GitLabGroupsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GitLabGroupListResponse); err != nil {
-		return GitLabGroupsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -195,11 +133,7 @@ func (client *GitLabGroupsClient) ListAvailable(ctx context.Context, resourceGro
 	if err != nil {
 		return GitLabGroupsClientListAvailableResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GitLabGroupsClientListAvailableResponse{}, err
-	}
-	resp, err := client.listAvailableHandleResponse(httpResp)
+	resp, err := client.listAvailableHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -207,7 +141,7 @@ func (client *GitLabGroupsClient) ListAvailable(ctx context.Context, resourceGro
 func (client *GitLabGroupsClient) listAvailableCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *GitLabGroupsClientListAvailableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/listAvailableGitLabGroups"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,10 +164,91 @@ func (client *GitLabGroupsClient) listAvailableCreateRequest(ctx context.Context
 }
 
 // listAvailableHandleResponse handles the ListAvailable response.
-func (client *GitLabGroupsClient) listAvailableHandleResponse(resp *http.Response) (GitLabGroupsClientListAvailableResponse, error) {
+func (client *GitLabGroupsClient) listAvailableHandleResponse(resp *http.Response, successCodes ...int) (GitLabGroupsClientListAvailableResponse, error) {
 	result := GitLabGroupsClientListAvailableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitLabGroupListResponse); err != nil {
 		return GitLabGroupsClientListAvailableResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Returns a list of GitLab groups onboarded to the connector.
+//
+// Returns a list of GitLab groups onboarded to the connector.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - options - GitLabGroupsClientListOptions contains the optional parameters for the GitLabGroupsClient.NewListPager method.
+func (client *GitLabGroupsClient) NewListPager(resourceGroupName string, securityConnectorName string, options *GitLabGroupsClientListOptions) *runtime.Pager[GitLabGroupsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GitLabGroupsClientListResponse]{
+		More: func(page GitLabGroupsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GitLabGroupsClientListResponse) (GitLabGroupsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GitLabGroupsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, nextLink, options)
+			if err != nil {
+				return GitLabGroupsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GitLabGroupsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *GitLabGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, nextLink string, _ *GitLabGroupsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitLabGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if securityConnectorName == "" {
+			return nil, errors.New("parameter securityConnectorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *GitLabGroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (GitLabGroupsClientListResponse, error) {
+	result := GitLabGroupsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GitLabGroupListResponse); err != nil {
+		return GitLabGroupsClientListResponse{}, err
 	}
 	return result, nil
 }

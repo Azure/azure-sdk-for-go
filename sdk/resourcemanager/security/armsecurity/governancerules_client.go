@@ -38,70 +38,6 @@ func NewGovernanceRulesClient(credential azcore.TokenCredential, options *arm.Cl
 	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates a governance rule over a given scope
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - scope - The fully qualified Azure Resource manager identifier of the resource.
-//   - ruleID - The governance rule key - unique key for the standard governance rule (GUID)
-//   - governanceRule - Governance rule over a given scope
-//   - options - GovernanceRulesClientCreateOrUpdateOptions contains the optional parameters for the GovernanceRulesClient.CreateOrUpdate
-//     method.
-func (client *GovernanceRulesClient) CreateOrUpdate(ctx context.Context, scope string, ruleID string, governanceRule GovernanceRule, options *GovernanceRulesClientCreateOrUpdateOptions) (GovernanceRulesClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "GovernanceRulesClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, scope, ruleID, governanceRule, options)
-	if err != nil {
-		return GovernanceRulesClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GovernanceRulesClientCreateOrUpdateResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return GovernanceRulesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GovernanceRulesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, ruleID string, governanceRule GovernanceRule, _ *GovernanceRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if ruleID == "" {
-		return nil, errors.New("parameter ruleID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, governanceRule); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *GovernanceRulesClient) createOrUpdateHandleResponse(resp *http.Response) (GovernanceRulesClientCreateOrUpdateResponse, error) {
-	result := GovernanceRulesClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GovernanceRule); err != nil {
-		return GovernanceRulesClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginDelete - Delete a Governance rule over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
@@ -125,7 +61,7 @@ func (client *GovernanceRulesClient) BeginDelete(ctx context.Context, scope stri
 	}
 }
 
-// Delete - Delete a Governance rule over a given scope
+// deleteOperation - Delete a Governance rule over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GovernanceRulesClient) deleteOperation(ctx context.Context, scope string, ruleID string, options *GovernanceRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -148,7 +84,7 @@ func (client *GovernanceRulesClient) deleteOperation(ctx context.Context, scope 
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GovernanceRulesClient) deleteCreateRequest(ctx context.Context, scope string, ruleID string, _ *GovernanceRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}"
 	if scope == "" {
@@ -192,7 +128,7 @@ func (client *GovernanceRulesClient) BeginExecute(ctx context.Context, scope str
 	}
 }
 
-// Execute - Execute a governance rule
+// execute - Execute a governance rule
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GovernanceRulesClient) execute(ctx context.Context, scope string, ruleID string, options *GovernanceRulesClientBeginExecuteOptions) (*http.Response, error) {
 	var err error
@@ -215,7 +151,7 @@ func (client *GovernanceRulesClient) execute(ctx context.Context, scope string, 
 	return httpResp, nil
 }
 
-// executeCreateRequest creates the Execute request.
+// executeCreateRequest creates the execute request.
 func (client *GovernanceRulesClient) executeCreateRequest(ctx context.Context, scope string, ruleID string, options *GovernanceRulesClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}/execute"
 	if scope == "" {
@@ -243,6 +179,69 @@ func (client *GovernanceRulesClient) executeCreateRequest(ctx context.Context, s
 	return req, nil
 }
 
+// CreateOrUpdate - Creates or updates a governance rule over a given scope
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - scope - The fully qualified Azure Resource manager identifier of the resource.
+//   - ruleID - The governance rule key - unique key for the standard governance rule (GUID)
+//   - governanceRule - Governance rule over a given scope
+//   - options - GovernanceRulesClientCreateOrUpdateOptions contains the optional parameters for the GovernanceRulesClient.CreateOrUpdate
+//     method.
+func (client *GovernanceRulesClient) CreateOrUpdate(ctx context.Context, scope string, ruleID string, governanceRule GovernanceRule, options *GovernanceRulesClientCreateOrUpdateOptions) (GovernanceRulesClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "GovernanceRulesClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, scope, ruleID, governanceRule, options)
+	if err != nil {
+		return GovernanceRulesClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GovernanceRulesClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *GovernanceRulesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, ruleID string, governanceRule GovernanceRule, _ *GovernanceRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if ruleID == "" {
+		return nil, errors.New("parameter ruleID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20220101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, governanceRule); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *GovernanceRulesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (GovernanceRulesClientCreateOrUpdateResponse, error) {
+	result := GovernanceRulesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GovernanceRule); err != nil {
+		return GovernanceRulesClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Get a specific governance rule for the requested scope by ruleId
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
@@ -262,11 +261,7 @@ func (client *GovernanceRulesClient) Get(ctx context.Context, scope string, rule
 	if err != nil {
 		return GovernanceRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GovernanceRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -293,8 +288,11 @@ func (client *GovernanceRulesClient) getCreateRequest(ctx context.Context, scope
 }
 
 // getHandleResponse handles the Get response.
-func (client *GovernanceRulesClient) getHandleResponse(resp *http.Response) (GovernanceRulesClientGetResponse, error) {
+func (client *GovernanceRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (GovernanceRulesClientGetResponse, error) {
 	result := GovernanceRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GovernanceRule); err != nil {
 		return GovernanceRulesClientGetResponse{}, err
 	}
@@ -316,39 +314,53 @@ func (client *GovernanceRulesClient) NewListPager(scope string, options *Governa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return GovernanceRulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GovernanceRulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GovernanceRulesClient) listCreateRequest(ctx context.Context, scope string, _ *GovernanceRulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/governanceRules"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *GovernanceRulesClient) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *GovernanceRulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/governanceRules"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20220101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GovernanceRulesClient) listHandleResponse(resp *http.Response) (GovernanceRulesClientListResponse, error) {
+func (client *GovernanceRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (GovernanceRulesClientListResponse, error) {
 	result := GovernanceRulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GovernanceRuleList); err != nil {
 		return GovernanceRulesClientListResponse{}, err
 	}
@@ -376,11 +388,7 @@ func (client *GovernanceRulesClient) OperationResults(ctx context.Context, scope
 	if err != nil {
 		return GovernanceRulesClientOperationResultsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return GovernanceRulesClientOperationResultsResponse{}, err
-	}
-	resp, err := client.operationResultsHandleResponse(httpResp)
+	resp, err := client.operationResultsHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 	return resp, err
 }
 
@@ -411,8 +419,11 @@ func (client *GovernanceRulesClient) operationResultsCreateRequest(ctx context.C
 }
 
 // operationResultsHandleResponse handles the OperationResults response.
-func (client *GovernanceRulesClient) operationResultsHandleResponse(resp *http.Response) (GovernanceRulesClientOperationResultsResponse, error) {
+func (client *GovernanceRulesClient) operationResultsHandleResponse(resp *http.Response, successCodes ...int) (GovernanceRulesClientOperationResultsResponse, error) {
 	result := GovernanceRulesClientOperationResultsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}

@@ -32,6 +32,9 @@ type IotSecuritySolutionsAnalyticsAggregatedAlertClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionsAnalyticsAggregatedAlertClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -75,7 +78,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Dismiss(ctx co
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, _ *IotSecuritySolutionsAnalyticsAggregatedAlertClientDismissOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts/{aggregatedAlertName}/dismiss"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -122,11 +125,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx contex
 	if err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -134,7 +133,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx contex
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string, _ *IotSecuritySolutionsAnalyticsAggregatedAlertClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts/{aggregatedAlertName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -161,8 +160,11 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateReque
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse, error) {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleResponse(resp *http.Response, successCodes ...int) (IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse, error) {
 	result := IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedAlert); err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse{}, err
 	}
@@ -185,50 +187,64 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) NewListPager(r
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, solutionName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, solutionName, nextLink, options)
 			if err != nil {
 				return IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, nextLink string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if solutionName == "" {
+			return nil, errors.New("parameter solutionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if solutionName == "" {
-		return nil, errors.New("parameter solutionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20190801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20190801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse, error) {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listHandleResponse(resp *http.Response, successCodes ...int) (IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse, error) {
 	result := IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedAlertList); err != nil {
 		return IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse{}, err
 	}

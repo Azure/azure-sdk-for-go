@@ -157,6 +157,13 @@ func (c *ClientFactory) NewAzureDevOpsReposClient() *AzureDevOpsReposClient {
 	}
 }
 
+// NewBatchPricingsClient creates a new instance of BatchPricingsClient.
+func (c *ClientFactory) NewBatchPricingsClient() *BatchPricingsClient {
+	return &BatchPricingsClient{
+		internal: c.internal,
+	}
+}
+
 // NewComplianceResultsClient creates a new instance of ComplianceResultsClient.
 func (c *ClientFactory) NewComplianceResultsClient() *ComplianceResultsClient {
 	return &ComplianceResultsClient{

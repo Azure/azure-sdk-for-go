@@ -47,7 +47,7 @@ func (i *IotSecuritySolutionAnalyticsServerTransport) Do(req *http.Request) (*ht
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return i.dispatchToMethodFake(req, method)
@@ -87,7 +87,7 @@ func (i *IotSecuritySolutionAnalyticsServerTransport) dispatchGet(req *http.Requ
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyticsModels/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -120,7 +120,7 @@ func (i *IotSecuritySolutionAnalyticsServerTransport) dispatchList(req *http.Req
 	if i.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/analyticsModels`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/iotSecuritySolutions/(?P<solutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/analyticsModels`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

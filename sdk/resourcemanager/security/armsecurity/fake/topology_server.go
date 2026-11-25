@@ -25,13 +25,13 @@ type TopologyServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string, options *armsecurity.TopologyClientGetOptions) (resp azfake.Responder[armsecurity.TopologyClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method TopologyClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.TopologyClientListOptions) (resp azfake.PagerResponder[armsecurity.TopologyClientListResponse])
-
 	// NewListByHomeRegionPager is the fake for method TopologyClient.NewListByHomeRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByHomeRegionPager func(ascLocation string, options *armsecurity.TopologyClientListByHomeRegionOptions) (resp azfake.PagerResponder[armsecurity.TopologyClientListByHomeRegionResponse])
+
+	// NewListPager is the fake for method TopologyClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.TopologyClientListOptions) (resp azfake.PagerResponder[armsecurity.TopologyClientListResponse])
 }
 
 // NewTopologyServerTransport creates a new instance of TopologyServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type TopologyServer struct {
 func NewTopologyServerTransport(srv *TopologyServer) *TopologyServerTransport {
 	return &TopologyServerTransport{
 		srv:                      srv,
-		newListPager:             newTracker[azfake.PagerResponder[armsecurity.TopologyClientListResponse]](),
 		newListByHomeRegionPager: newTracker[azfake.PagerResponder[armsecurity.TopologyClientListByHomeRegionResponse]](),
+		newListPager:             newTracker[azfake.PagerResponder[armsecurity.TopologyClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewTopologyServerTransport(srv *TopologyServer) *TopologyServerTransport {
 // Don't use this type directly, use NewTopologyServerTransport instead.
 type TopologyServerTransport struct {
 	srv                      *TopologyServer
-	newListPager             *tracker[azfake.PagerResponder[armsecurity.TopologyClientListResponse]]
 	newListByHomeRegionPager *tracker[azfake.PagerResponder[armsecurity.TopologyClientListByHomeRegionResponse]]
+	newListPager             *tracker[azfake.PagerResponder[armsecurity.TopologyClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for TopologyServerTransport.
@@ -58,7 +58,7 @@ func (t *TopologyServerTransport) Do(req *http.Request) (*http.Response, error) 
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return t.dispatchToMethodFake(req, method)
@@ -76,10 +76,10 @@ func (t *TopologyServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "TopologyClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
-			case "TopologyClient.NewListPager":
-				res.resp, res.err = t.dispatchNewListPager(req)
 			case "TopologyClient.NewListByHomeRegionPager":
 				res.resp, res.err = t.dispatchNewListByHomeRegionPager(req)
+			case "TopologyClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,7 +100,7 @@ func (t *TopologyServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topologies/(?P<topologyResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topologies/(?P<topologyResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -133,46 +133,13 @@ func (t *TopologyServerTransport) dispatchGet(req *http.Request) (*http.Response
 	return resp, nil
 }
 
-func (t *TopologyServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if t.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := t.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/topologies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := t.srv.NewListPager(nil)
-		newListPager = &resp
-		t.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.TopologyClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		t.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		t.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (t *TopologyServerTransport) dispatchNewListByHomeRegionPager(req *http.Request) (*http.Response, error) {
 	if t.srv.NewListByHomeRegionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByHomeRegionPager not implemented")}
 	}
 	newListByHomeRegionPager := t.newListByHomeRegionPager.get(req)
 	if newListByHomeRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topologies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/topologies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -199,6 +166,39 @@ func (t *TopologyServerTransport) dispatchNewListByHomeRegionPager(req *http.Req
 	}
 	if !server.PagerResponderMore(newListByHomeRegionPager) {
 		t.newListByHomeRegionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *TopologyServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := t.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/topologies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := t.srv.NewListPager(nil)
+		newListPager = &resp
+		t.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.TopologyClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		t.newListPager.remove(req)
 	}
 	return resp, nil
 }

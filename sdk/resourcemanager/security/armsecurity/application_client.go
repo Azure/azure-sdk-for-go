@@ -30,6 +30,9 @@ type ApplicationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *ApplicationClient) CreateOrUpdate(ctx context.Context, application
 	if err != nil {
 		return ApplicationClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *ApplicationClient) CreateOrUpdate(ctx context.Context, application
 func (client *ApplicationClient) createOrUpdateCreateRequest(ctx context.Context, applicationID string, application Application, _ *ApplicationClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if applicationID == "" {
@@ -96,8 +95,11 @@ func (client *ApplicationClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ApplicationClient) createOrUpdateHandleResponse(resp *http.Response) (ApplicationClientCreateOrUpdateResponse, error) {
+func (client *ApplicationClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ApplicationClientCreateOrUpdateResponse, error) {
 	result := ApplicationClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
 		return ApplicationClientCreateOrUpdateResponse{}, err
 	}
@@ -133,7 +135,7 @@ func (client *ApplicationClient) Delete(ctx context.Context, applicationID strin
 func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, applicationID string, _ *ApplicationClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if applicationID == "" {
@@ -168,11 +170,7 @@ func (client *ApplicationClient) Get(ctx context.Context, applicationID string, 
 	if err != nil {
 		return ApplicationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -180,7 +178,7 @@ func (client *ApplicationClient) Get(ctx context.Context, applicationID string, 
 func (client *ApplicationClient) getCreateRequest(ctx context.Context, applicationID string, _ *ApplicationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if applicationID == "" {
@@ -199,8 +197,11 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, applicati
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationClient) getHandleResponse(resp *http.Response) (ApplicationClientGetResponse, error) {
+func (client *ApplicationClient) getHandleResponse(resp *http.Response, successCodes ...int) (ApplicationClientGetResponse, error) {
 	result := ApplicationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Application); err != nil {
 		return ApplicationClientGetResponse{}, err
 	}

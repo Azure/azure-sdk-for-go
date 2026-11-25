@@ -30,6 +30,9 @@ type AzureDevOpsOrgsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAzureDevOpsOrgsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureDevOpsOrgsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *AzureDevOpsOrgsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates or updates monitored Azure DevOps organization details.
+// createOrUpdate - Creates or updates monitored Azure DevOps organization details.
 //
 // Creates or updates monitored Azure DevOps organization details.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -92,11 +95,11 @@ func (client *AzureDevOpsOrgsClient) createOrUpdate(ctx context.Context, resourc
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AzureDevOpsOrgsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, _ *AzureDevOpsOrgsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,6 +115,91 @@ func (client *AzureDevOpsOrgsClient) createOrUpdateCreateRequest(ctx context.Con
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{orgName}", url.PathEscape(orgName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, azureDevOpsOrg); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates monitored Azure DevOps organization details.
+//
+// Updates monitored Azure DevOps organization details.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - azureDevOpsOrg - The Azure DevOps organization resource payload.
+//   - options - AzureDevOpsOrgsClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsOrgsClient.BeginUpdate
+//     method.
+func (client *AzureDevOpsOrgsClient) BeginUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgsClientBeginUpdateOptions) (*runtime.Poller[AzureDevOpsOrgsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, securityConnectorName, orgName, azureDevOpsOrg, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureDevOpsOrgsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AzureDevOpsOrgsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates monitored Azure DevOps organization details.
+//
+// Updates monitored Azure DevOps organization details.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AzureDevOpsOrgsClient) update(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AzureDevOpsOrgsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, securityConnectorName, orgName, azureDevOpsOrg, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AzureDevOpsOrgsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, _ *AzureDevOpsOrgsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if securityConnectorName == "" {
+		return nil, errors.New("parameter securityConnectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+	if orgName == "" {
+		return nil, errors.New("parameter orgName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{orgName}", url.PathEscape(orgName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,11 +235,7 @@ func (client *AzureDevOpsOrgsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AzureDevOpsOrgsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AzureDevOpsOrgsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -159,7 +243,7 @@ func (client *AzureDevOpsOrgsClient) Get(ctx context.Context, resourceGroupName 
 func (client *AzureDevOpsOrgsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, _ *AzureDevOpsOrgsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -186,75 +270,13 @@ func (client *AzureDevOpsOrgsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AzureDevOpsOrgsClient) getHandleResponse(resp *http.Response) (AzureDevOpsOrgsClientGetResponse, error) {
+func (client *AzureDevOpsOrgsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AzureDevOpsOrgsClientGetResponse, error) {
 	result := AzureDevOpsOrgsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsOrg); err != nil {
 		return AzureDevOpsOrgsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Returns a list of Azure DevOps organizations onboarded to the connector.
-//
-// Returns a list of Azure DevOps organizations onboarded to the connector.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - securityConnectorName - The security connector name.
-//   - options - AzureDevOpsOrgsClientListOptions contains the optional parameters for the AzureDevOpsOrgsClient.NewListPager
-//     method.
-func (client *AzureDevOpsOrgsClient) NewListPager(resourceGroupName string, securityConnectorName string, options *AzureDevOpsOrgsClientListOptions) *runtime.Pager[AzureDevOpsOrgsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AzureDevOpsOrgsClientListResponse]{
-		More: func(page AzureDevOpsOrgsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AzureDevOpsOrgsClientListResponse) (AzureDevOpsOrgsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureDevOpsOrgsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
-			}, nil)
-			if err != nil {
-				return AzureDevOpsOrgsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AzureDevOpsOrgsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *AzureDevOpsOrgsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AzureDevOpsOrgsClient) listHandleResponse(resp *http.Response) (AzureDevOpsOrgsClientListResponse, error) {
-	result := AzureDevOpsOrgsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsOrgListResponse); err != nil {
-		return AzureDevOpsOrgsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -281,11 +303,7 @@ func (client *AzureDevOpsOrgsClient) ListAvailable(ctx context.Context, resource
 	if err != nil {
 		return AzureDevOpsOrgsClientListAvailableResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AzureDevOpsOrgsClientListAvailableResponse{}, err
-	}
-	resp, err := client.listAvailableHandleResponse(httpResp)
+	resp, err := client.listAvailableHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -293,7 +311,7 @@ func (client *AzureDevOpsOrgsClient) ListAvailable(ctx context.Context, resource
 func (client *AzureDevOpsOrgsClient) listAvailableCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *AzureDevOpsOrgsClientListAvailableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/listAvailableAzureDevOpsOrgs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -316,95 +334,92 @@ func (client *AzureDevOpsOrgsClient) listAvailableCreateRequest(ctx context.Cont
 }
 
 // listAvailableHandleResponse handles the ListAvailable response.
-func (client *AzureDevOpsOrgsClient) listAvailableHandleResponse(resp *http.Response) (AzureDevOpsOrgsClientListAvailableResponse, error) {
+func (client *AzureDevOpsOrgsClient) listAvailableHandleResponse(resp *http.Response, successCodes ...int) (AzureDevOpsOrgsClientListAvailableResponse, error) {
 	result := AzureDevOpsOrgsClientListAvailableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsOrgListResponse); err != nil {
 		return AzureDevOpsOrgsClientListAvailableResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Updates monitored Azure DevOps organization details.
+// NewListPager - Returns a list of Azure DevOps organizations onboarded to the connector.
 //
-// Updates monitored Azure DevOps organization details.
-// If the operation fails it returns an *azcore.ResponseError type.
+// Returns a list of Azure DevOps organizations onboarded to the connector.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - securityConnectorName - The security connector name.
-//   - azureDevOpsOrg - The Azure DevOps organization resource payload.
-//   - options - AzureDevOpsOrgsClientBeginUpdateOptions contains the optional parameters for the AzureDevOpsOrgsClient.BeginUpdate
+//   - options - AzureDevOpsOrgsClientListOptions contains the optional parameters for the AzureDevOpsOrgsClient.NewListPager
 //     method.
-func (client *AzureDevOpsOrgsClient) BeginUpdate(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgsClientBeginUpdateOptions) (*runtime.Poller[AzureDevOpsOrgsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, securityConnectorName, orgName, azureDevOpsOrg, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AzureDevOpsOrgsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AzureDevOpsOrgsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+func (client *AzureDevOpsOrgsClient) NewListPager(resourceGroupName string, securityConnectorName string, options *AzureDevOpsOrgsClientListOptions) *runtime.Pager[AzureDevOpsOrgsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AzureDevOpsOrgsClientListResponse]{
+		More: func(page AzureDevOpsOrgsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AzureDevOpsOrgsClientListResponse) (AzureDevOpsOrgsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AzureDevOpsOrgsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, nextLink, options)
+			if err != nil {
+				return AzureDevOpsOrgsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AzureDevOpsOrgsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Update - Updates monitored Azure DevOps organization details.
-//
-// Updates monitored Azure DevOps organization details.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AzureDevOpsOrgsClient) update(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, options *AzureDevOpsOrgsClientBeginUpdateOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *AzureDevOpsOrgsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, nextLink string, _ *AzureDevOpsOrgsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "AzureDevOpsOrgsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, securityConnectorName, orgName, azureDevOpsOrg, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if securityConnectorName == "" {
+			return nil, errors.New("parameter securityConnectorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AzureDevOpsOrgsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, orgName string, azureDevOpsOrg AzureDevOpsOrg, _ *AzureDevOpsOrgsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/azureDevOpsOrgs/{orgName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	if orgName == "" {
-		return nil, errors.New("parameter orgName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{orgName}", url.PathEscape(orgName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, azureDevOpsOrg); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AzureDevOpsOrgsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AzureDevOpsOrgsClientListResponse, error) {
+	result := AzureDevOpsOrgsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AzureDevOpsOrgListResponse); err != nil {
+		return AzureDevOpsOrgsClientListResponse{}, err
+	}
+	return result, nil
 }

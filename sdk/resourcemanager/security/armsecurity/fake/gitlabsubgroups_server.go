@@ -43,7 +43,7 @@ func (g *GitLabSubgroupsServerTransport) Do(req *http.Request) (*http.Response, 
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)
@@ -81,7 +81,7 @@ func (g *GitLabSubgroupsServerTransport) dispatchList(req *http.Request) (*http.
 	if g.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/gitLabGroups/(?P<groupFQName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSubgroups`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/gitLabGroups/(?P<groupFQName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listSubgroups`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

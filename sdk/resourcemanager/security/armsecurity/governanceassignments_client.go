@@ -60,11 +60,7 @@ func (client *GovernanceAssignmentsClient) CreateOrUpdate(ctx context.Context, s
 	if err != nil {
 		return GovernanceAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return GovernanceAssignmentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -99,8 +95,11 @@ func (client *GovernanceAssignmentsClient) createOrUpdateCreateRequest(ctx conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *GovernanceAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (GovernanceAssignmentsClientCreateOrUpdateResponse, error) {
+func (client *GovernanceAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (GovernanceAssignmentsClientCreateOrUpdateResponse, error) {
 	result := GovernanceAssignmentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GovernanceAssignment); err != nil {
 		return GovernanceAssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -181,11 +180,7 @@ func (client *GovernanceAssignmentsClient) Get(ctx context.Context, scope string
 	if err != nil {
 		return GovernanceAssignmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GovernanceAssignmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -216,8 +211,11 @@ func (client *GovernanceAssignmentsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *GovernanceAssignmentsClient) getHandleResponse(resp *http.Response) (GovernanceAssignmentsClientGetResponse, error) {
+func (client *GovernanceAssignmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (GovernanceAssignmentsClientGetResponse, error) {
 	result := GovernanceAssignmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GovernanceAssignment); err != nil {
 		return GovernanceAssignmentsClientGetResponse{}, err
 	}
@@ -240,43 +238,57 @@ func (client *GovernanceAssignmentsClient) NewListPager(scope string, assessment
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, assessmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, assessmentName, nextLink, options)
 			if err != nil {
 				return GovernanceAssignmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GovernanceAssignmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GovernanceAssignmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, _ *GovernanceAssignmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *GovernanceAssignmentsClient) listCreateRequest(ctx context.Context, scope string, assessmentName string, nextLink string, _ *GovernanceAssignmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		if assessmentName == "" {
+			return nil, errors.New("parameter assessmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if assessmentName == "" {
-		return nil, errors.New("parameter assessmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20220101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GovernanceAssignmentsClient) listHandleResponse(resp *http.Response) (GovernanceAssignmentsClientListResponse, error) {
+func (client *GovernanceAssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (GovernanceAssignmentsClientListResponse, error) {
 	result := GovernanceAssignmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GovernanceAssignmentsList); err != nil {
 		return GovernanceAssignmentsClientListResponse{}, err
 	}

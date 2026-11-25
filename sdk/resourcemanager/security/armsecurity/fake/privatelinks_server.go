@@ -23,31 +23,31 @@ import (
 type PrivateLinksServer struct {
 	// BeginCreate is the fake for method PrivateLinksClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate func(ctx context.Context, resourceGroupName string, privateLink armsecurity.PrivateLinkResource, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateLinksClientBeginCreateOptions) (resp azfake.PollerResponder[armsecurity.PrivateLinksClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink armsecurity.PrivateLinkResource, options *armsecurity.PrivateLinksClientBeginCreateOptions) (resp azfake.PollerResponder[armsecurity.PrivateLinksClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PrivateLinksClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateLinksClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecurity.PrivateLinksClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, privateLinkName string, options *armsecurity.PrivateLinksClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecurity.PrivateLinksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateLinksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateLinksClientGetOptions) (resp azfake.Responder[armsecurity.PrivateLinksClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, privateLinkName string, options *armsecurity.PrivateLinksClientGetOptions) (resp azfake.Responder[armsecurity.PrivateLinksClientGetResponse], errResp azfake.ErrorResponder)
 
 	// Head is the fake for method PrivateLinksClient.Head
 	// HTTP status codes to indicate success: http.StatusOK
-	Head func(ctx context.Context, resourceGroupName string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateLinksClientHeadOptions) (resp azfake.Responder[armsecurity.PrivateLinksClientHeadResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method PrivateLinksClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armsecurity.PrivateLinksClientListOptions) (resp azfake.PagerResponder[armsecurity.PrivateLinksClientListResponse])
+	Head func(ctx context.Context, resourceGroupName string, privateLinkName string, options *armsecurity.PrivateLinksClientHeadOptions) (resp azfake.Responder[armsecurity.PrivateLinksClientHeadResponse], errResp azfake.ErrorResponder)
 
 	// NewListBySubscriptionPager is the fake for method PrivateLinksClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armsecurity.PrivateLinksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armsecurity.PrivateLinksClientListBySubscriptionResponse])
 
+	// NewListPager is the fake for method PrivateLinksClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armsecurity.PrivateLinksClientListOptions) (resp azfake.PagerResponder[armsecurity.PrivateLinksClientListResponse])
+
 	// Update is the fake for method PrivateLinksClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, privateLink armsecurity.PrivateLinkUpdate, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateLinksClientUpdateOptions) (resp azfake.Responder[armsecurity.PrivateLinksClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink armsecurity.PrivateLinkUpdate, options *armsecurity.PrivateLinksClientUpdateOptions) (resp azfake.Responder[armsecurity.PrivateLinksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPrivateLinksServerTransport creates a new instance of PrivateLinksServerTransport with the provided implementation.
@@ -58,8 +58,8 @@ func NewPrivateLinksServerTransport(srv *PrivateLinksServer) *PrivateLinksServer
 		srv:                        srv,
 		beginCreate:                newTracker[azfake.PollerResponder[armsecurity.PrivateLinksClientCreateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armsecurity.PrivateLinksClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armsecurity.PrivateLinksClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armsecurity.PrivateLinksClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armsecurity.PrivateLinksClientListResponse]](),
 	}
 }
 
@@ -69,8 +69,8 @@ type PrivateLinksServerTransport struct {
 	srv                        *PrivateLinksServer
 	beginCreate                *tracker[azfake.PollerResponder[armsecurity.PrivateLinksClientCreateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armsecurity.PrivateLinksClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armsecurity.PrivateLinksClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armsecurity.PrivateLinksClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armsecurity.PrivateLinksClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateLinksServerTransport.
@@ -78,7 +78,7 @@ func (p *PrivateLinksServerTransport) Do(req *http.Request) (*http.Response, err
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return p.dispatchToMethodFake(req, method)
@@ -102,10 +102,10 @@ func (p *PrivateLinksServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = p.dispatchGet(req)
 			case "PrivateLinksClient.Head":
 				res.resp, res.err = p.dispatchHead(req)
-			case "PrivateLinksClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateLinksClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
+			case "PrivateLinksClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			case "PrivateLinksClient.Update":
 				res.resp, res.err = p.dispatchUpdate(req)
 			default:
@@ -130,7 +130,7 @@ func (p *PrivateLinksServerTransport) dispatchBeginCreate(req *http.Request) (*h
 	}
 	beginCreate := p.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -148,10 +148,7 @@ func (p *PrivateLinksServerTransport) dispatchBeginCreate(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		privateLinkName := armsecurity.PrivateLinkParameters{
-			PrivateLinkName: privateLinkNameParam,
-		}
-		respr, errRespr := p.srv.BeginCreate(req.Context(), resourceGroupNameParam, body, privateLinkName, nil)
+		respr, errRespr := p.srv.BeginCreate(req.Context(), resourceGroupNameParam, privateLinkNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -181,7 +178,7 @@ func (p *PrivateLinksServerTransport) dispatchBeginDelete(req *http.Request) (*h
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -195,10 +192,7 @@ func (p *PrivateLinksServerTransport) dispatchBeginDelete(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		privateLinkName := armsecurity.PrivateLinkParameters{
-			PrivateLinkName: privateLinkNameParam,
-		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, privateLinkName, nil)
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, privateLinkNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -226,7 +220,7 @@ func (p *PrivateLinksServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -240,10 +234,7 @@ func (p *PrivateLinksServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
-	privateLinkName := armsecurity.PrivateLinkParameters{
-		PrivateLinkName: privateLinkNameParam,
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, privateLinkName, nil)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, privateLinkNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -262,7 +253,7 @@ func (p *PrivateLinksServerTransport) dispatchHead(req *http.Request) (*http.Res
 	if p.srv.Head == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Head not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -276,10 +267,7 @@ func (p *PrivateLinksServerTransport) dispatchHead(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	privateLinkName := armsecurity.PrivateLinkParameters{
-		PrivateLinkName: privateLinkNameParam,
-	}
-	respr, errRespr := p.srv.Head(req.Context(), resourceGroupNameParam, privateLinkName, nil)
+	respr, errRespr := p.srv.Head(req.Context(), resourceGroupNameParam, privateLinkNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -294,13 +282,46 @@ func (p *PrivateLinksServerTransport) dispatchHead(req *http.Request) (*http.Res
 	return resp, nil
 }
 
+func (p *PrivateLinksServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armsecurity.PrivateLinksClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		p.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PrivateLinksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -331,44 +352,11 @@ func (p *PrivateLinksServerTransport) dispatchNewListPager(req *http.Request) (*
 	return resp, nil
 }
 
-func (p *PrivateLinksServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armsecurity.PrivateLinksClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		p.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PrivateLinksServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -386,10 +374,7 @@ func (p *PrivateLinksServerTransport) dispatchUpdate(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	privateLinkName := armsecurity.PrivateLinkParameters{
-		PrivateLinkName: privateLinkNameParam,
-	}
-	respr, errRespr := p.srv.Update(req.Context(), resourceGroupNameParam, body, privateLinkName, nil)
+	respr, errRespr := p.srv.Update(req.Context(), resourceGroupNameParam, privateLinkNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

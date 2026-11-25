@@ -57,11 +57,7 @@ func (client *HealthReportsClient) Get(ctx context.Context, resourceID string, h
 	if err != nil {
 		return HealthReportsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HealthReportsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -88,8 +84,11 @@ func (client *HealthReportsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *HealthReportsClient) getHandleResponse(resp *http.Response) (HealthReportsClientGetResponse, error) {
+func (client *HealthReportsClient) getHandleResponse(resp *http.Response, successCodes ...int) (HealthReportsClientGetResponse, error) {
 	result := HealthReportsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthReport); err != nil {
 		return HealthReportsClientGetResponse{}, err
 	}
@@ -111,39 +110,53 @@ func (client *HealthReportsClient) NewListPager(scope string, options *HealthRep
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return HealthReportsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return HealthReportsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *HealthReportsClient) listCreateRequest(ctx context.Context, scope string, _ *HealthReportsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/healthReports"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *HealthReportsClient) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *HealthReportsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/healthReports"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *HealthReportsClient) listHandleResponse(resp *http.Response) (HealthReportsClientListResponse, error) {
+func (client *HealthReportsClient) listHandleResponse(resp *http.Response, successCodes ...int) (HealthReportsClientListResponse, error) {
 	result := HealthReportsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HealthReportsList); err != nil {
 		return HealthReportsClientListResponse{}, err
 	}

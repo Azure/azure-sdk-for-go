@@ -63,11 +63,7 @@ func (client *StandardAssignmentsClient) Create(ctx context.Context, resourceID 
 	if err != nil {
 		return StandardAssignmentsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return StandardAssignmentsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -98,8 +94,11 @@ func (client *StandardAssignmentsClient) createCreateRequest(ctx context.Context
 }
 
 // createHandleResponse handles the Create response.
-func (client *StandardAssignmentsClient) createHandleResponse(resp *http.Response) (StandardAssignmentsClientCreateResponse, error) {
+func (client *StandardAssignmentsClient) createHandleResponse(resp *http.Response, successCodes ...int) (StandardAssignmentsClientCreateResponse, error) {
 	result := StandardAssignmentsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StandardAssignment); err != nil {
 		return StandardAssignmentsClientCreateResponse{}, err
 	}
@@ -178,11 +177,7 @@ func (client *StandardAssignmentsClient) Get(ctx context.Context, resourceID str
 	if err != nil {
 		return StandardAssignmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return StandardAssignmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -209,8 +204,11 @@ func (client *StandardAssignmentsClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *StandardAssignmentsClient) getHandleResponse(resp *http.Response) (StandardAssignmentsClientGetResponse, error) {
+func (client *StandardAssignmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (StandardAssignmentsClientGetResponse, error) {
 	result := StandardAssignmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StandardAssignment); err != nil {
 		return StandardAssignmentsClientGetResponse{}, err
 	}
@@ -232,39 +230,53 @@ func (client *StandardAssignmentsClient) NewListPager(scope string, options *Sta
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return StandardAssignmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return StandardAssignmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *StandardAssignmentsClient) listCreateRequest(ctx context.Context, scope string, _ *StandardAssignmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/standardAssignments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *StandardAssignmentsClient) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *StandardAssignmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/standardAssignments"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *StandardAssignmentsClient) listHandleResponse(resp *http.Response) (StandardAssignmentsClientListResponse, error) {
+func (client *StandardAssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (StandardAssignmentsClientListResponse, error) {
 	result := StandardAssignmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StandardAssignmentsList); err != nil {
 		return StandardAssignmentsClientListResponse{}, err
 	}

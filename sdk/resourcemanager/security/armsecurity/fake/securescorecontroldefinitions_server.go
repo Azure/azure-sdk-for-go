@@ -19,13 +19,13 @@ import (
 
 // SecureScoreControlDefinitionsServer is a fake server for instances of the armsecurity.SecureScoreControlDefinitionsClient type.
 type SecureScoreControlDefinitionsServer struct {
-	// NewListPager is the fake for method SecureScoreControlDefinitionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.SecureScoreControlDefinitionsClientListOptions) (resp azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method SecureScoreControlDefinitionsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armsecurity.SecureScoreControlDefinitionsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method SecureScoreControlDefinitionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.SecureScoreControlDefinitionsClientListOptions) (resp azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListResponse])
 }
 
 // NewSecureScoreControlDefinitionsServerTransport creates a new instance of SecureScoreControlDefinitionsServerTransport with the provided implementation.
@@ -34,8 +34,8 @@ type SecureScoreControlDefinitionsServer struct {
 func NewSecureScoreControlDefinitionsServerTransport(srv *SecureScoreControlDefinitionsServer) *SecureScoreControlDefinitionsServerTransport {
 	return &SecureScoreControlDefinitionsServerTransport{
 		srv:                        srv,
-		newListPager:               newTracker[azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListResponse]](),
 	}
 }
 
@@ -43,8 +43,8 @@ func NewSecureScoreControlDefinitionsServerTransport(srv *SecureScoreControlDefi
 // Don't use this type directly, use NewSecureScoreControlDefinitionsServerTransport instead.
 type SecureScoreControlDefinitionsServerTransport struct {
 	srv                        *SecureScoreControlDefinitionsServer
-	newListPager               *tracker[azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armsecurity.SecureScoreControlDefinitionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SecureScoreControlDefinitionsServerTransport.
@@ -52,7 +52,7 @@ func (s *SecureScoreControlDefinitionsServerTransport) Do(req *http.Request) (*h
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return s.dispatchToMethodFake(req, method)
@@ -68,10 +68,10 @@ func (s *SecureScoreControlDefinitionsServerTransport) dispatchToMethodFake(req 
 		}
 		if !intercepted {
 			switch method {
-			case "SecureScoreControlDefinitionsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "SecureScoreControlDefinitionsClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "SecureScoreControlDefinitionsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -86,6 +86,39 @@ func (s *SecureScoreControlDefinitionsServerTransport) dispatchToMethodFake(req 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (s *SecureScoreControlDefinitionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/secureScoreControlDefinitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armsecurity.SecureScoreControlDefinitionsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		s.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
 }
 
 func (s *SecureScoreControlDefinitionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -111,39 +144,6 @@ func (s *SecureScoreControlDefinitionsServerTransport) dispatchNewListPager(req 
 	}
 	if !server.PagerResponderMore(newListPager) {
 		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (s *SecureScoreControlDefinitionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/secureScoreControlDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armsecurity.SecureScoreControlDefinitionsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		s.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

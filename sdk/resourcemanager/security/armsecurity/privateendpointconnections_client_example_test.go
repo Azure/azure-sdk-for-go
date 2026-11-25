@@ -23,7 +23,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreateOrUpdate(ctx, "rg", "pe", armsecurity.PrivateEndpointConnection{
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreateOrUpdate(ctx, "rg", "pls", "pe", armsecurity.PrivateEndpointConnection{
 		Properties: &armsecurity.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armsecurity.PrivateLinkServiceConnectionState{
 				Description:     to.Ptr("Approved by administrator"),
@@ -31,7 +31,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 				Status:          to.Ptr(armsecurity.PrivateEndpointServiceConnectionStatusApproved),
 			},
 		},
-	}, armsecurity.PrivateLinkParameters{PrivateLinkName: "pls"}, nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,7 +76,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "rg", "pe", armsecurity.PrivateLinkParameters{PrivateLinkName: "pls"}, nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginDelete(ctx, "rg", "pls", "pe", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -97,7 +97,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "rg", "pe", armsecurity.PrivateLinkParameters{PrivateLinkName: "pls"}, nil)
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().Get(ctx, "rg", "pls", "pe", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,7 +138,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListPager("rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "pls"}, nil)
+	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListPager("rg", "pls", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

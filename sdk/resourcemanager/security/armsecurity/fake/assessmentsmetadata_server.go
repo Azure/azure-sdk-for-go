@@ -37,13 +37,13 @@ type AssessmentsMetadataServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetInSubscription func(ctx context.Context, assessmentMetadataName string, options *armsecurity.AssessmentsMetadataClientGetInSubscriptionOptions) (resp azfake.Responder[armsecurity.AssessmentsMetadataClientGetInSubscriptionResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AssessmentsMetadataClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.AssessmentsMetadataClientListOptions) (resp azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method AssessmentsMetadataClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armsecurity.AssessmentsMetadataClientListBySubscriptionOptions) (resp azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method AssessmentsMetadataClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.AssessmentsMetadataClientListOptions) (resp azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListResponse])
 }
 
 // NewAssessmentsMetadataServerTransport creates a new instance of AssessmentsMetadataServerTransport with the provided implementation.
@@ -52,8 +52,8 @@ type AssessmentsMetadataServer struct {
 func NewAssessmentsMetadataServerTransport(srv *AssessmentsMetadataServer) *AssessmentsMetadataServerTransport {
 	return &AssessmentsMetadataServerTransport{
 		srv:                        srv,
-		newListPager:               newTracker[azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ func NewAssessmentsMetadataServerTransport(srv *AssessmentsMetadataServer) *Asse
 // Don't use this type directly, use NewAssessmentsMetadataServerTransport instead.
 type AssessmentsMetadataServerTransport struct {
 	srv                        *AssessmentsMetadataServer
-	newListPager               *tracker[azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armsecurity.AssessmentsMetadataClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AssessmentsMetadataServerTransport.
@@ -70,7 +70,7 @@ func (a *AssessmentsMetadataServerTransport) Do(req *http.Request) (*http.Respon
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -94,10 +94,10 @@ func (a *AssessmentsMetadataServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = a.dispatchGet(req)
 			case "AssessmentsMetadataClient.GetInSubscription":
 				res.resp, res.err = a.dispatchGetInSubscription(req)
-			case "AssessmentsMetadataClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AssessmentsMetadataClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
+			case "AssessmentsMetadataClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchCreateInSubscription(req *h
 	if a.srv.CreateInSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateInSubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -151,7 +151,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchDeleteInSubscription(req *h
 	if a.srv.DeleteInSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteInSubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -180,7 +180,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchGet(req *http.Request) (*ht
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -209,7 +209,7 @@ func (a *AssessmentsMetadataServerTransport) dispatchGetInSubscription(req *http
 	if a.srv.GetInSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetInSubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/assessmentMetadata/(?P<assessmentMetadataName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -230,6 +230,39 @@ func (a *AssessmentsMetadataServerTransport) dispatchGetInSubscription(req *http
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AssessmentMetadataResponse, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AssessmentsMetadataServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/assessmentMetadata`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armsecurity.AssessmentsMetadataClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }
@@ -257,39 +290,6 @@ func (a *AssessmentsMetadataServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	if !server.PagerResponderMore(newListPager) {
 		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AssessmentsMetadataServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/assessmentMetadata`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armsecurity.AssessmentsMetadataClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		a.newListBySubscriptionPager.remove(req)
 	}
 	return resp, nil
 }

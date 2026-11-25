@@ -56,8 +56,8 @@ func ExampleAlertsSuppressionRulesClient_Get() {
 	// 		Properties: &armsecurity.AlertsSuppressionRuleProperties{
 	// 			AlertType: to.Ptr("IpAnomaly"),
 	// 			Comment: to.Ptr("Test VM"),
-	// 			ExpirationDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T19:50:47.083633Z"); return t}()),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-31T19:50:47.083633Z"); return t}()),
+	// 			ExpirationDateUTC: to.Ptr(time.Date(2019, time.December, 1, 19, 50, 47, 83633000, time.UTC)),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.July, 31, 19, 50, 47, 83633000, time.UTC)),
 	// 			Reason: to.Ptr("FalsePositive"),
 	// 			State: to.Ptr(armsecurity.RuleStateEnabled),
 	// 			SuppressionAlertsScope: &armsecurity.SuppressionAlertsScope{
@@ -116,8 +116,8 @@ func ExampleAlertsSuppressionRulesClient_NewListPager_getSuppressionAlertRuleFor
 		// 				Properties: &armsecurity.AlertsSuppressionRuleProperties{
 		// 					AlertType: to.Ptr("IpAnomaly"),
 		// 					Comment: to.Ptr("Test VM"),
-		// 					ExpirationDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T19:50:47.083633Z"); return t}()),
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-31T19:50:47.083633Z"); return t}()),
+		// 					ExpirationDateUTC: to.Ptr(time.Date(2019, time.December, 1, 19, 50, 47, 83633000, time.UTC)),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2019, time.July, 31, 19, 50, 47, 83633000, time.UTC)),
 		// 					Reason: to.Ptr("FalsePositive"),
 		// 					State: to.Ptr(armsecurity.RuleStateEnabled),
 		// 					SuppressionAlertsScope: &armsecurity.SuppressionAlertsScope{
@@ -179,8 +179,8 @@ func ExampleAlertsSuppressionRulesClient_NewListPager_getSuppressionRulesForSubs
 		// 				Properties: &armsecurity.AlertsSuppressionRuleProperties{
 		// 					AlertType: to.Ptr("IpAnomaly"),
 		// 					Comment: to.Ptr("Test VM"),
-		// 					ExpirationDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T19:50:47.083633Z"); return t}()),
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-31T19:50:47.083633Z"); return t}()),
+		// 					ExpirationDateUTC: to.Ptr(time.Date(2019, time.December, 1, 19, 50, 47, 83633000, time.UTC)),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2019, time.July, 31, 19, 50, 47, 83633000, time.UTC)),
 		// 					Reason: to.Ptr("FalsePositive"),
 		// 					State: to.Ptr(armsecurity.RuleStateEnabled),
 		// 					SuppressionAlertsScope: &armsecurity.SuppressionAlertsScope{
@@ -210,8 +210,8 @@ func ExampleAlertsSuppressionRulesClient_NewListPager_getSuppressionRulesForSubs
 		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/alertsSuppressionRules/dismissDataExfiltrationAnomalyAlertsOnTestVMs"),
 		// 				Properties: &armsecurity.AlertsSuppressionRuleProperties{
 		// 					AlertType: to.Ptr("DataExfiltrationAnomaly"),
-		// 					ExpirationDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T19:50:47.083633Z"); return t}()),
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-31T19:50:47.083633Z"); return t}()),
+		// 					ExpirationDateUTC: to.Ptr(time.Date(2019, time.December, 1, 19, 50, 47, 83633000, time.UTC)),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2019, time.July, 31, 19, 50, 47, 83633000, time.UTC)),
 		// 					Reason: to.Ptr("FalsePositive"),
 		// 					State: to.Ptr(armsecurity.RuleStateEnabled),
 		// 				},
@@ -237,7 +237,7 @@ func ExampleAlertsSuppressionRulesClient_Update() {
 		Properties: &armsecurity.AlertsSuppressionRuleProperties{
 			AlertType:         to.Ptr("IpAnomaly"),
 			Comment:           to.Ptr("Test VM"),
-			ExpirationDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T19:50:47.083633Z"); return t }()),
+			ExpirationDateUTC: to.Ptr(time.Date(2019, time.December, 1, 19, 50, 47, 83633000, time.UTC)),
 			Reason:            to.Ptr("FalsePositive"),
 			State:             to.Ptr(armsecurity.RuleStateEnabled),
 			SuppressionAlertsScope: &armsecurity.SuppressionAlertsScope{
@@ -275,8 +275,8 @@ func ExampleAlertsSuppressionRulesClient_Update() {
 	// 		Properties: &armsecurity.AlertsSuppressionRuleProperties{
 	// 			AlertType: to.Ptr("IpAnomaly"),
 	// 			Comment: to.Ptr("Test VM"),
-	// 			ExpirationDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T19:50:47.083633Z"); return t}()),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-31T19:50:47.083633Z"); return t}()),
+	// 			ExpirationDateUTC: to.Ptr(time.Date(2019, time.December, 1, 19, 50, 47, 83633000, time.UTC)),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.July, 31, 19, 50, 47, 83633000, time.UTC)),
 	// 			Reason: to.Ptr("FalsePositive"),
 	// 			State: to.Ptr(armsecurity.RuleStateEnabled),
 	// 			SuppressionAlertsScope: &armsecurity.SuppressionAlertsScope{

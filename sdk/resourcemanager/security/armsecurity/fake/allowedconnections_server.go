@@ -25,13 +25,13 @@ type AllowedConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ascLocation string, connectionType armsecurity.ConnectionType, options *armsecurity.AllowedConnectionsClientGetOptions) (resp azfake.Responder[armsecurity.AllowedConnectionsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AllowedConnectionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.AllowedConnectionsClientListOptions) (resp azfake.PagerResponder[armsecurity.AllowedConnectionsClientListResponse])
-
 	// NewListByHomeRegionPager is the fake for method AllowedConnectionsClient.NewListByHomeRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByHomeRegionPager func(ascLocation string, options *armsecurity.AllowedConnectionsClientListByHomeRegionOptions) (resp azfake.PagerResponder[armsecurity.AllowedConnectionsClientListByHomeRegionResponse])
+
+	// NewListPager is the fake for method AllowedConnectionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.AllowedConnectionsClientListOptions) (resp azfake.PagerResponder[armsecurity.AllowedConnectionsClientListResponse])
 }
 
 // NewAllowedConnectionsServerTransport creates a new instance of AllowedConnectionsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type AllowedConnectionsServer struct {
 func NewAllowedConnectionsServerTransport(srv *AllowedConnectionsServer) *AllowedConnectionsServerTransport {
 	return &AllowedConnectionsServerTransport{
 		srv:                      srv,
-		newListPager:             newTracker[azfake.PagerResponder[armsecurity.AllowedConnectionsClientListResponse]](),
 		newListByHomeRegionPager: newTracker[azfake.PagerResponder[armsecurity.AllowedConnectionsClientListByHomeRegionResponse]](),
+		newListPager:             newTracker[azfake.PagerResponder[armsecurity.AllowedConnectionsClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewAllowedConnectionsServerTransport(srv *AllowedConnectionsServer) *Allowe
 // Don't use this type directly, use NewAllowedConnectionsServerTransport instead.
 type AllowedConnectionsServerTransport struct {
 	srv                      *AllowedConnectionsServer
-	newListPager             *tracker[azfake.PagerResponder[armsecurity.AllowedConnectionsClientListResponse]]
 	newListByHomeRegionPager *tracker[azfake.PagerResponder[armsecurity.AllowedConnectionsClientListByHomeRegionResponse]]
+	newListPager             *tracker[azfake.PagerResponder[armsecurity.AllowedConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AllowedConnectionsServerTransport.
@@ -58,7 +58,7 @@ func (a *AllowedConnectionsServerTransport) Do(req *http.Request) (*http.Respons
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -76,10 +76,10 @@ func (a *AllowedConnectionsServerTransport) dispatchToMethodFake(req *http.Reque
 			switch method {
 			case "AllowedConnectionsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AllowedConnectionsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AllowedConnectionsClient.NewListByHomeRegionPager":
 				res.resp, res.err = a.dispatchNewListByHomeRegionPager(req)
+			case "AllowedConnectionsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,7 +100,7 @@ func (a *AllowedConnectionsServerTransport) dispatchGet(req *http.Request) (*htt
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/allowedConnections/(?P<connectionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/allowedConnections/(?P<connectionType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -139,46 +139,13 @@ func (a *AllowedConnectionsServerTransport) dispatchGet(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (a *AllowedConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/allowedConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListPager(nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.AllowedConnectionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AllowedConnectionsServerTransport) dispatchNewListByHomeRegionPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByHomeRegionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByHomeRegionPager not implemented")}
 	}
 	newListByHomeRegionPager := a.newListByHomeRegionPager.get(req)
 	if newListByHomeRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/allowedConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/allowedConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -205,6 +172,39 @@ func (a *AllowedConnectionsServerTransport) dispatchNewListByHomeRegionPager(req
 	}
 	if !server.PagerResponderMore(newListByHomeRegionPager) {
 		a.newListByHomeRegionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AllowedConnectionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/allowedConnections`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListPager(nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.AllowedConnectionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
 	}
 	return resp, nil
 }

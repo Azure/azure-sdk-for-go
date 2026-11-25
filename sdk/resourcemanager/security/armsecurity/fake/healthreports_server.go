@@ -52,7 +52,7 @@ func (h *HealthReportsServerTransport) Do(req *http.Request) (*http.Response, er
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return h.dispatchToMethodFake(req, method)
@@ -92,16 +92,13 @@ func (h *HealthReportsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if h.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/healthReports/(?P<healthReportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/healthReports/(?P<healthReportName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 	healthReportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("healthReportName")])
 	if err != nil {
 		return nil, err
@@ -127,16 +124,13 @@ func (h *HealthReportsServerTransport) dispatchNewListPager(req *http.Request) (
 	}
 	newListPager := h.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/healthReports`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/healthReports`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		resp := h.srv.NewListPager(scopeParam, nil)
 		newListPager = &resp
 		h.newListPager.add(req, newListPager)

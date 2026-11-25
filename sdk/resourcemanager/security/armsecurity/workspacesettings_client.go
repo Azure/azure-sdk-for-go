@@ -30,6 +30,9 @@ type WorkspaceSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *WorkspaceSettingsClient) Create(ctx context.Context, workspaceSett
 	if err != nil {
 		return WorkspaceSettingsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceSettingsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *WorkspaceSettingsClient) Create(ctx context.Context, workspaceSett
 func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, _ *WorkspaceSettingsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workspaceSettingName == "" {
@@ -96,8 +95,11 @@ func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *WorkspaceSettingsClient) createHandleResponse(resp *http.Response) (WorkspaceSettingsClientCreateResponse, error) {
+func (client *WorkspaceSettingsClient) createHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceSettingsClientCreateResponse, error) {
 	result := WorkspaceSettingsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSetting); err != nil {
 		return WorkspaceSettingsClientCreateResponse{}, err
 	}
@@ -134,7 +136,7 @@ func (client *WorkspaceSettingsClient) Delete(ctx context.Context, workspaceSett
 func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, workspaceSettingName string, _ *WorkspaceSettingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workspaceSettingName == "" {
@@ -170,11 +172,7 @@ func (client *WorkspaceSettingsClient) Get(ctx context.Context, workspaceSetting
 	if err != nil {
 		return WorkspaceSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -182,7 +180,7 @@ func (client *WorkspaceSettingsClient) Get(ctx context.Context, workspaceSetting
 func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, workspaceSettingName string, _ *WorkspaceSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workspaceSettingName == "" {
@@ -201,8 +199,11 @@ func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, wor
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceSettingsClient) getHandleResponse(resp *http.Response) (WorkspaceSettingsClientGetResponse, error) {
+func (client *WorkspaceSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceSettingsClientGetResponse, error) {
 	result := WorkspaceSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSetting); err != nil {
 		return WorkspaceSettingsClientGetResponse{}, err
 	}
@@ -224,39 +225,53 @@ func (client *WorkspaceSettingsClient) NewListPager(options *WorkspaceSettingsCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WorkspaceSettingsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkspaceSettingsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, _ *WorkspaceSettingsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, nextLink string, _ *WorkspaceSettingsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20170801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20170801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceSettingsClient) listHandleResponse(resp *http.Response) (WorkspaceSettingsClientListResponse, error) {
+func (client *WorkspaceSettingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceSettingsClientListResponse, error) {
 	result := WorkspaceSettingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSettingList); err != nil {
 		return WorkspaceSettingsClientListResponse{}, err
 	}
@@ -283,11 +298,7 @@ func (client *WorkspaceSettingsClient) Update(ctx context.Context, workspaceSett
 	if err != nil {
 		return WorkspaceSettingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceSettingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -295,7 +306,7 @@ func (client *WorkspaceSettingsClient) Update(ctx context.Context, workspaceSett
 func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, workspaceSettingName string, workspaceSetting WorkspaceSetting, _ *WorkspaceSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workspaceSettingName == "" {
@@ -318,8 +329,11 @@ func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WorkspaceSettingsClient) updateHandleResponse(resp *http.Response) (WorkspaceSettingsClientUpdateResponse, error) {
+func (client *WorkspaceSettingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceSettingsClientUpdateResponse, error) {
 	result := WorkspaceSettingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceSetting); err != nil {
 		return WorkspaceSettingsClientUpdateResponse{}, err
 	}

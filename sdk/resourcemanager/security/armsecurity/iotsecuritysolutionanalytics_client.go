@@ -30,6 +30,9 @@ type IotSecuritySolutionAnalyticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionAnalyticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return IotSecuritySolutionAnalyticsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IotSecuritySolutionAnalyticsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resou
 func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, _ *IotSecuritySolutionAnalyticsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,8 +95,11 @@ func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionAnalyticsClientGetResponse, error) {
+func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *http.Response, successCodes ...int) (IotSecuritySolutionAnalyticsClientGetResponse, error) {
 	result := IotSecuritySolutionAnalyticsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionAnalyticsModel); err != nil {
 		return IotSecuritySolutionAnalyticsClientGetResponse{}, err
 	}
@@ -124,11 +126,7 @@ func (client *IotSecuritySolutionAnalyticsClient) List(ctx context.Context, reso
 	if err != nil {
 		return IotSecuritySolutionAnalyticsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IotSecuritySolutionAnalyticsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -136,7 +134,7 @@ func (client *IotSecuritySolutionAnalyticsClient) List(ctx context.Context, reso
 func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.Context, resourceGroupName string, solutionName string, _ *IotSecuritySolutionAnalyticsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -159,8 +157,11 @@ func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *IotSecuritySolutionAnalyticsClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionAnalyticsClientListResponse, error) {
+func (client *IotSecuritySolutionAnalyticsClient) listHandleResponse(resp *http.Response, successCodes ...int) (IotSecuritySolutionAnalyticsClientListResponse, error) {
 	result := IotSecuritySolutionAnalyticsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionAnalyticsModelList); err != nil {
 		return IotSecuritySolutionAnalyticsClientListResponse{}, err
 	}

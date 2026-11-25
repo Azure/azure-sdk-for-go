@@ -21,6 +21,10 @@ import (
 
 // AlertsServer is a fake server for instances of the armsecurity.AlertsClient type.
 type AlertsServer struct {
+	// BeginSimulate is the fake for method AlertsClient.BeginSimulate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginSimulate func(ctx context.Context, ascLocation string, alertSimulatorRequestBody armsecurity.AlertSimulatorRequestBody, options *armsecurity.AlertsClientBeginSimulateOptions) (resp azfake.PollerResponder[armsecurity.AlertsClientSimulateResponse], errResp azfake.ErrorResponder)
+
 	// GetResourceGroupLevel is the fake for method AlertsClient.GetResourceGroupLevel
 	// HTTP status codes to indicate success: http.StatusOK
 	GetResourceGroupLevel func(ctx context.Context, resourceGroupName string, ascLocation string, alertName string, options *armsecurity.AlertsClientGetResourceGroupLevelOptions) (resp azfake.Responder[armsecurity.AlertsClientGetResourceGroupLevelResponse], errResp azfake.ErrorResponder)
@@ -29,13 +33,13 @@ type AlertsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetSubscriptionLevel func(ctx context.Context, ascLocation string, alertName string, options *armsecurity.AlertsClientGetSubscriptionLevelOptions) (resp azfake.Responder[armsecurity.AlertsClientGetSubscriptionLevelResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AlertsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.AlertsClientListOptions) (resp azfake.PagerResponder[armsecurity.AlertsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method AlertsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armsecurity.AlertsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsecurity.AlertsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method AlertsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.AlertsClientListOptions) (resp azfake.PagerResponder[armsecurity.AlertsClientListResponse])
 
 	// NewListResourceGroupLevelByRegionPager is the fake for method AlertsClient.NewListResourceGroupLevelByRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,10 +48,6 @@ type AlertsServer struct {
 	// NewListSubscriptionLevelByRegionPager is the fake for method AlertsClient.NewListSubscriptionLevelByRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSubscriptionLevelByRegionPager func(ascLocation string, options *armsecurity.AlertsClientListSubscriptionLevelByRegionOptions) (resp azfake.PagerResponder[armsecurity.AlertsClientListSubscriptionLevelByRegionResponse])
-
-	// BeginSimulate is the fake for method AlertsClient.BeginSimulate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginSimulate func(ctx context.Context, ascLocation string, alertSimulatorRequestBody armsecurity.AlertSimulatorRequestBody, options *armsecurity.AlertsClientBeginSimulateOptions) (resp azfake.PollerResponder[armsecurity.AlertsClientSimulateResponse], errResp azfake.ErrorResponder)
 
 	// UpdateResourceGroupLevelStateToActivate is the fake for method AlertsClient.UpdateResourceGroupLevelStateToActivate
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -88,11 +88,11 @@ type AlertsServer struct {
 func NewAlertsServerTransport(srv *AlertsServer) *AlertsServerTransport {
 	return &AlertsServerTransport{
 		srv:                                    srv,
-		newListPager:                           newTracker[azfake.PagerResponder[armsecurity.AlertsClientListResponse]](),
+		beginSimulate:                          newTracker[azfake.PollerResponder[armsecurity.AlertsClientSimulateResponse]](),
 		newListByResourceGroupPager:            newTracker[azfake.PagerResponder[armsecurity.AlertsClientListByResourceGroupResponse]](),
+		newListPager:                           newTracker[azfake.PagerResponder[armsecurity.AlertsClientListResponse]](),
 		newListResourceGroupLevelByRegionPager: newTracker[azfake.PagerResponder[armsecurity.AlertsClientListResourceGroupLevelByRegionResponse]](),
 		newListSubscriptionLevelByRegionPager:  newTracker[azfake.PagerResponder[armsecurity.AlertsClientListSubscriptionLevelByRegionResponse]](),
-		beginSimulate:                          newTracker[azfake.PollerResponder[armsecurity.AlertsClientSimulateResponse]](),
 	}
 }
 
@@ -100,11 +100,11 @@ func NewAlertsServerTransport(srv *AlertsServer) *AlertsServerTransport {
 // Don't use this type directly, use NewAlertsServerTransport instead.
 type AlertsServerTransport struct {
 	srv                                    *AlertsServer
-	newListPager                           *tracker[azfake.PagerResponder[armsecurity.AlertsClientListResponse]]
+	beginSimulate                          *tracker[azfake.PollerResponder[armsecurity.AlertsClientSimulateResponse]]
 	newListByResourceGroupPager            *tracker[azfake.PagerResponder[armsecurity.AlertsClientListByResourceGroupResponse]]
+	newListPager                           *tracker[azfake.PagerResponder[armsecurity.AlertsClientListResponse]]
 	newListResourceGroupLevelByRegionPager *tracker[azfake.PagerResponder[armsecurity.AlertsClientListResourceGroupLevelByRegionResponse]]
 	newListSubscriptionLevelByRegionPager  *tracker[azfake.PagerResponder[armsecurity.AlertsClientListSubscriptionLevelByRegionResponse]]
-	beginSimulate                          *tracker[azfake.PollerResponder[armsecurity.AlertsClientSimulateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AlertsServerTransport.
@@ -112,7 +112,7 @@ func (a *AlertsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -128,20 +128,20 @@ func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method s
 		}
 		if !intercepted {
 			switch method {
+			case "AlertsClient.BeginSimulate":
+				res.resp, res.err = a.dispatchBeginSimulate(req)
 			case "AlertsClient.GetResourceGroupLevel":
 				res.resp, res.err = a.dispatchGetResourceGroupLevel(req)
 			case "AlertsClient.GetSubscriptionLevel":
 				res.resp, res.err = a.dispatchGetSubscriptionLevel(req)
-			case "AlertsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AlertsClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AlertsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AlertsClient.NewListResourceGroupLevelByRegionPager":
 				res.resp, res.err = a.dispatchNewListResourceGroupLevelByRegionPager(req)
 			case "AlertsClient.NewListSubscriptionLevelByRegionPager":
 				res.resp, res.err = a.dispatchNewListSubscriptionLevelByRegionPager(req)
-			case "AlertsClient.BeginSimulate":
-				res.resp, res.err = a.dispatchBeginSimulate(req)
 			case "AlertsClient.UpdateResourceGroupLevelStateToActivate":
 				res.resp, res.err = a.dispatchUpdateResourceGroupLevelStateToActivate(req)
 			case "AlertsClient.UpdateResourceGroupLevelStateToDismiss":
@@ -174,11 +174,55 @@ func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method s
 	}
 }
 
+func (a *AlertsServerTransport) dispatchBeginSimulate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginSimulate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginSimulate not implemented")}
+	}
+	beginSimulate := a.beginSimulate.get(req)
+	if beginSimulate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/default/simulate`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsecurity.AlertSimulatorRequestBody](req)
+		if err != nil {
+			return nil, err
+		}
+		ascLocationParam, err := url.PathUnescape(matches[regex.SubexpIndex("ascLocation")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginSimulate(req.Context(), ascLocationParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginSimulate = &respr
+		a.beginSimulate.add(req, beginSimulate)
+	}
+
+	resp, err := server.PollerResponderNext(beginSimulate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginSimulate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginSimulate) {
+		a.beginSimulate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (a *AlertsServerTransport) dispatchGetResourceGroupLevel(req *http.Request) (*http.Response, error) {
 	if a.srv.GetResourceGroupLevel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetResourceGroupLevel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -215,7 +259,7 @@ func (a *AlertsServerTransport) dispatchGetSubscriptionLevel(req *http.Request) 
 	if a.srv.GetSubscriptionLevel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSubscriptionLevel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -244,46 +288,13 @@ func (a *AlertsServerTransport) dispatchGetSubscriptionLevel(req *http.Request) 
 	return resp, nil
 }
 
-func (a *AlertsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/alerts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListPager(nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.AlertsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AlertsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/alerts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/alerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -314,13 +325,46 @@ func (a *AlertsServerTransport) dispatchNewListByResourceGroupPager(req *http.Re
 	return resp, nil
 }
 
+func (a *AlertsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/alerts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListPager(nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.AlertsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (a *AlertsServerTransport) dispatchNewListResourceGroupLevelByRegionPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListResourceGroupLevelByRegionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListResourceGroupLevelByRegionPager not implemented")}
 	}
 	newListResourceGroupLevelByRegionPager := a.newListResourceGroupLevelByRegionPager.get(req)
 	if newListResourceGroupLevelByRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -361,7 +405,7 @@ func (a *AlertsServerTransport) dispatchNewListSubscriptionLevelByRegionPager(re
 	}
 	newListSubscriptionLevelByRegionPager := a.newListSubscriptionLevelByRegionPager.get(req)
 	if newListSubscriptionLevelByRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -392,55 +436,11 @@ func (a *AlertsServerTransport) dispatchNewListSubscriptionLevelByRegionPager(re
 	return resp, nil
 }
 
-func (a *AlertsServerTransport) dispatchBeginSimulate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginSimulate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginSimulate not implemented")}
-	}
-	beginSimulate := a.beginSimulate.get(req)
-	if beginSimulate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/default/simulate`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armsecurity.AlertSimulatorRequestBody](req)
-		if err != nil {
-			return nil, err
-		}
-		ascLocationParam, err := url.PathUnescape(matches[regex.SubexpIndex("ascLocation")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginSimulate(req.Context(), ascLocationParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginSimulate = &respr
-		a.beginSimulate.add(req, beginSimulate)
-	}
-
-	resp, err := server.PollerResponderNext(beginSimulate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		a.beginSimulate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginSimulate) {
-		a.beginSimulate.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (a *AlertsServerTransport) dispatchUpdateResourceGroupLevelStateToActivate(req *http.Request) (*http.Response, error) {
 	if a.srv.UpdateResourceGroupLevelStateToActivate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateResourceGroupLevelStateToActivate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/activate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/activate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -477,7 +477,7 @@ func (a *AlertsServerTransport) dispatchUpdateResourceGroupLevelStateToDismiss(r
 	if a.srv.UpdateResourceGroupLevelStateToDismiss == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateResourceGroupLevelStateToDismiss not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dismiss`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dismiss`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -514,7 +514,7 @@ func (a *AlertsServerTransport) dispatchUpdateResourceGroupLevelStateToInProgres
 	if a.srv.UpdateResourceGroupLevelStateToInProgress == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateResourceGroupLevelStateToInProgress not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inProgress`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inProgress`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -551,7 +551,7 @@ func (a *AlertsServerTransport) dispatchUpdateResourceGroupLevelStateToResolve(r
 	if a.srv.UpdateResourceGroupLevelStateToResolve == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateResourceGroupLevelStateToResolve not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolve`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resolve`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -588,7 +588,7 @@ func (a *AlertsServerTransport) dispatchUpdateSubscriptionLevelStateToActivate(r
 	if a.srv.UpdateSubscriptionLevelStateToActivate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSubscriptionLevelStateToActivate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/activate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/activate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -621,7 +621,7 @@ func (a *AlertsServerTransport) dispatchUpdateSubscriptionLevelStateToDismiss(re
 	if a.srv.UpdateSubscriptionLevelStateToDismiss == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSubscriptionLevelStateToDismiss not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/dismiss`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/dismiss`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -654,7 +654,7 @@ func (a *AlertsServerTransport) dispatchUpdateSubscriptionLevelStateToInProgress
 	if a.srv.UpdateSubscriptionLevelStateToInProgress == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSubscriptionLevelStateToInProgress not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/inProgress`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/inProgress`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -687,7 +687,7 @@ func (a *AlertsServerTransport) dispatchUpdateSubscriptionLevelStateToResolve(re
 	if a.srv.UpdateSubscriptionLevelStateToResolve == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSubscriptionLevelStateToResolve not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts/(?P<alertName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolve`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/alerts/(?P<alertName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resolve`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

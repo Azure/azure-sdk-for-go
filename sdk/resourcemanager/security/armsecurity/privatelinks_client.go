@@ -30,6 +30,9 @@ type PrivateLinksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -46,12 +49,12 @@ func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredent
 // is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
+//   - privateLinkName - The name of the private link resource.
 //   - options - PrivateLinksClientBeginCreateOptions contains the optional parameters for the PrivateLinksClient.BeginCreate
 //     method.
-func (client *PrivateLinksClient) BeginCreate(ctx context.Context, resourceGroupName string, privateLink PrivateLinkResource, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginCreateOptions) (*runtime.Poller[PrivateLinksClientCreateResponse], error) {
+func (client *PrivateLinksClient) BeginCreate(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink PrivateLinkResource, options *PrivateLinksClientBeginCreateOptions) (*runtime.Poller[PrivateLinksClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, privateLink, privateLinkName, options)
+		resp, err := client.create(ctx, resourceGroupName, privateLinkName, privateLink, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,17 +69,17 @@ func (client *PrivateLinksClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Create a private link resource. This operation creates the necessary infrastructure to enable private endpoint
+// create - Create a private link resource. This operation creates the necessary infrastructure to enable private endpoint
 // connections to Microsoft Defender for Cloud services. For updates to existing resources, use the PATCH operation. The operation
 // is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateLinksClient) create(ctx context.Context, resourceGroupName string, privateLink PrivateLinkResource, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginCreateOptions) (*http.Response, error) {
+func (client *PrivateLinksClient) create(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink PrivateLinkResource, options *PrivateLinksClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinksClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, privateLink, privateLinkName, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, privateLinkName, privateLink, options)
 	if err != nil {
 		return nil, err
 	}
@@ -91,21 +94,21 @@ func (client *PrivateLinksClient) create(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
-func (client *PrivateLinksClient) createCreateRequest(ctx context.Context, resourceGroupName string, privateLink PrivateLinkResource, privateLinkName PrivateLinkParameters, _ *PrivateLinksClientBeginCreateOptions) (*policy.Request, error) {
+// createCreateRequest creates the create request.
+func (client *PrivateLinksClient) createCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink PrivateLinkResource, _ *PrivateLinksClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateLinkName.PrivateLinkName == "" {
-		return nil, errors.New("parameter privateLinkName.PrivateLinkName cannot be empty")
+	if privateLinkName == "" {
+		return nil, errors.New("parameter privateLinkName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName.PrivateLinkName))
+	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -125,10 +128,10 @@ func (client *PrivateLinksClient) createCreateRequest(ctx context.Context, resou
 // all associated private endpoints. This operation is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
+//   - privateLinkName - The name of the private link resource.
 //   - options - PrivateLinksClientBeginDeleteOptions contains the optional parameters for the PrivateLinksClient.BeginDelete
 //     method.
-func (client *PrivateLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginDeleteOptions) (*runtime.Poller[PrivateLinksClientDeleteResponse], error) {
+func (client *PrivateLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, privateLinkName string, options *PrivateLinksClientBeginDeleteOptions) (*runtime.Poller[PrivateLinksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, privateLinkName, options)
 		if err != nil {
@@ -146,10 +149,10 @@ func (client *PrivateLinksClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete a private link resource. This operation will remove the private link infrastructure and disconnect all
-// associated private endpoints. This operation is asynchronous and may take several minutes to complete.
+// deleteOperation - Delete a private link resource. This operation will remove the private link infrastructure and disconnect
+// all associated private endpoints. This operation is asynchronous and may take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PrivateLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateLinkName string, options *PrivateLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateLinksClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -170,21 +173,21 @@ func (client *PrivateLinksClient) deleteOperation(ctx context.Context, resourceG
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
-func (client *PrivateLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, _ *PrivateLinksClientBeginDeleteOptions) (*policy.Request, error) {
+// deleteCreateRequest creates the delete request.
+func (client *PrivateLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName string, _ *PrivateLinksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateLinkName.PrivateLinkName == "" {
-		return nil, errors.New("parameter privateLinkName.PrivateLinkName cannot be empty")
+	if privateLinkName == "" {
+		return nil, errors.New("parameter privateLinkName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName.PrivateLinkName))
+	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -199,9 +202,9 @@ func (client *PrivateLinksClient) deleteCreateRequest(ctx context.Context, resou
 // Defender for Cloud services in the specified region.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
+//   - privateLinkName - The name of the private link resource.
 //   - options - PrivateLinksClientGetOptions contains the optional parameters for the PrivateLinksClient.Get method.
-func (client *PrivateLinksClient) Get(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientGetOptions) (PrivateLinksClientGetResponse, error) {
+func (client *PrivateLinksClient) Get(ctx context.Context, resourceGroupName string, privateLinkName string, options *PrivateLinksClientGetOptions) (PrivateLinksClientGetResponse, error) {
 	var err error
 	const operationName = "PrivateLinksClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -215,29 +218,25 @@ func (client *PrivateLinksClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return PrivateLinksClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinksClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, _ *PrivateLinksClientGetOptions) (*policy.Request, error) {
+func (client *PrivateLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName string, _ *PrivateLinksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateLinkName.PrivateLinkName == "" {
-		return nil, errors.New("parameter privateLinkName.PrivateLinkName cannot be empty")
+	if privateLinkName == "" {
+		return nil, errors.New("parameter privateLinkName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName.PrivateLinkName))
+	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -250,8 +249,11 @@ func (client *PrivateLinksClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinksClient) getHandleResponse(resp *http.Response) (PrivateLinksClientGetResponse, error) {
+func (client *PrivateLinksClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinksClientGetResponse, error) {
 	result := PrivateLinksClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return PrivateLinksClientGetResponse{}, err
 	}
@@ -260,9 +262,9 @@ func (client *PrivateLinksClient) getHandleResponse(resp *http.Response) (Privat
 
 // Head - Checks whether private link exists.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
+//   - privateLinkName - The name of the private link resource.
 //   - options - PrivateLinksClientHeadOptions contains the optional parameters for the PrivateLinksClient.Head method.
-func (client *PrivateLinksClient) Head(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientHeadOptions) (PrivateLinksClientHeadResponse, error) {
+func (client *PrivateLinksClient) Head(ctx context.Context, resourceGroupName string, privateLinkName string, options *PrivateLinksClientHeadOptions) (PrivateLinksClientHeadResponse, error) {
 	var err error
 	const operationName = "PrivateLinksClient.Head"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -284,20 +286,20 @@ func (client *PrivateLinksClient) Head(ctx context.Context, resourceGroupName st
 }
 
 // headCreateRequest creates the Head request.
-func (client *PrivateLinksClient) headCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, _ *PrivateLinksClientHeadOptions) (*policy.Request, error) {
+func (client *PrivateLinksClient) headCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName string, _ *PrivateLinksClientHeadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateLinkName.PrivateLinkName == "" {
-		return nil, errors.New("parameter privateLinkName.PrivateLinkName cannot be empty")
+	if privateLinkName == "" {
+		return nil, errors.New("parameter privateLinkName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName.PrivateLinkName))
+	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName))
 	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -306,65 +308,6 @@ func (client *PrivateLinksClient) headCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// NewListPager - Lists all the private links in the specified resource group. private links enable secure, private connectivity
-// to Microsoft Defender for Cloud services without exposing traffic to the public internet. Use the 'nextLink' property in
-// the response to get the next page of private links for the specified resource group.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.NewListPager method.
-func (client *PrivateLinksClient) NewListPager(resourceGroupName string, options *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateLinksClientListResponse]{
-		More: func(page PrivateLinksClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PrivateLinksClientListResponse) (PrivateLinksClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinksClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
-			if err != nil {
-				return PrivateLinksClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *PrivateLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *PrivateLinksClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *PrivateLinksClient) listHandleResponse(resp *http.Response) (PrivateLinksClientListResponse, error) {
-	result := PrivateLinksClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinksList); err != nil {
-		return PrivateLinksClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // NewListBySubscriptionPager - Lists all the private links in the specified subscription. private links enable secure, private
@@ -383,41 +326,128 @@ func (client *PrivateLinksClient) NewListBySubscriptionPager(options *PrivateLin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PrivateLinksClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateLinksClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PrivateLinksClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PrivateLinksClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/privateLinks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateLinksClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PrivateLinksClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/privateLinks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PrivateLinksClient) listBySubscriptionHandleResponse(resp *http.Response) (PrivateLinksClientListBySubscriptionResponse, error) {
+func (client *PrivateLinksClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinksClientListBySubscriptionResponse, error) {
 	result := PrivateLinksClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinksList); err != nil {
 		return PrivateLinksClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all the private links in the specified resource group. private links enable secure, private connectivity
+// to Microsoft Defender for Cloud services without exposing traffic to the public internet. Use the 'nextLink' property in
+// the response to get the next page of private links for the specified resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.NewListPager method.
+func (client *PrivateLinksClient) NewListPager(resourceGroupName string, options *PrivateLinksClientListOptions) *runtime.Pager[PrivateLinksClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinksClientListResponse]{
+		More: func(page PrivateLinksClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PrivateLinksClientListResponse) (PrivateLinksClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinksClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return PrivateLinksClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateLinksClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *PrivateLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PrivateLinksClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *PrivateLinksClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinksClientListResponse, error) {
+	result := PrivateLinksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinksList); err != nil {
+		return PrivateLinksClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -426,15 +456,15 @@ func (client *PrivateLinksClient) listBySubscriptionHandleResponse(resp *http.Re
 // without affecting the entire resource configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateLinkName - PrivateLinkParameters contains a group of parameters for the PrivateLinkResourcesClient.Get method.
+//   - privateLinkName - The name of the private link resource.
 //   - options - PrivateLinksClientUpdateOptions contains the optional parameters for the PrivateLinksClient.Update method.
-func (client *PrivateLinksClient) Update(ctx context.Context, resourceGroupName string, privateLink PrivateLinkUpdate, privateLinkName PrivateLinkParameters, options *PrivateLinksClientUpdateOptions) (PrivateLinksClientUpdateResponse, error) {
+func (client *PrivateLinksClient) Update(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink PrivateLinkUpdate, options *PrivateLinksClientUpdateOptions) (PrivateLinksClientUpdateResponse, error) {
 	var err error
 	const operationName = "PrivateLinksClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateLink, privateLinkName, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateLinkName, privateLink, options)
 	if err != nil {
 		return PrivateLinksClientUpdateResponse{}, err
 	}
@@ -442,29 +472,25 @@ func (client *PrivateLinksClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return PrivateLinksClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinksClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PrivateLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateLink PrivateLinkUpdate, privateLinkName PrivateLinkParameters, _ *PrivateLinksClientUpdateOptions) (*policy.Request, error) {
+func (client *PrivateLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink PrivateLinkUpdate, _ *PrivateLinksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateLinkName.PrivateLinkName == "" {
-		return nil, errors.New("parameter privateLinkName.PrivateLinkName cannot be empty")
+	if privateLinkName == "" {
+		return nil, errors.New("parameter privateLinkName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName.PrivateLinkName))
+	urlPath = strings.ReplaceAll(urlPath, "{privateLinkName}", url.PathEscape(privateLinkName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -481,8 +507,11 @@ func (client *PrivateLinksClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PrivateLinksClient) updateHandleResponse(resp *http.Response) (PrivateLinksClientUpdateResponse, error) {
+func (client *PrivateLinksClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinksClientUpdateResponse, error) {
 	result := PrivateLinksClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return PrivateLinksClientUpdateResponse{}, err
 	}

@@ -85,6 +85,12 @@ type CapabilityHostsClientGetResponse struct {
 	CapabilityHost
 }
 
+// CapabilityHostsClientListResponse contains the response from method CapabilityHostsClient.NewListPager.
+type CapabilityHostsClientListResponse struct {
+	// The response of a CapabilityHost list operation.
+	CapabilityHostListResult
+}
+
 // CodeContainersClientCreateOrUpdateResponse contains the response from method CodeContainersClient.CreateOrUpdate.
 type CodeContainersClientCreateOrUpdateResponse struct {
 	// Azure Resource Manager resource envelope.

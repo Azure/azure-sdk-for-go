@@ -96,6 +96,11 @@ type CapabilityHostsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CapabilityHostsClientListOptions contains the optional parameters for the CapabilityHostsClient.NewListPager method.
+type CapabilityHostsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CodeContainersClientCreateOrUpdateOptions contains the optional parameters for the CodeContainersClient.CreateOrUpdate
 // method.
 type CodeContainersClientCreateOrUpdateOptions struct {

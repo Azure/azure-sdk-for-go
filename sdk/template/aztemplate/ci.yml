@@ -23,6 +23,9 @@ pr:
     - eng/
 
 parameters:
+  - name: ReleasePlanId
+    type: string
+    default: '0'
   # Switch to canary to test canary 1es branch. 1es template validation will set this parameter
   # to canary on run.
   - name: oneESTemplateTag
@@ -35,6 +38,7 @@ parameters:
 extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
+    ReleasePlanId: ${{ parameters.ReleasePlanId }}
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     ServiceDirectory: 'template/aztemplate'
     TriggeringPaths:

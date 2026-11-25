@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 * Fixed negative `policy.RetryOptions.RetryDelay` values using `MaxRetryDelay` instead of retrying without delay.
-* Fixed `ResponseError` allocating memory quadratic in the nesting depth of a deeply nested JSON error body. Such bodies are now included verbatim, and the error message is only built for logging when the `ResponseError` log event is enabled.
+* Fixed `ResponseError` allocating memory quadratic in the nesting depth of a deeply nested JSON error body. Bodies nested more than 32 levels deep are now included verbatim instead of pretty-printed.
 
 ### Other Changes
 

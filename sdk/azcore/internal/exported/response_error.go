@@ -51,9 +51,7 @@ func NewResponseErrorWithErrorCode(resp *http.Response, errorCode string) error 
 		StatusCode:  resp.StatusCode,
 		RawResponse: resp,
 	}
-	if log.Should(log.EventResponseError) {
-		log.Write(log.EventResponseError, respErr.Error())
-	}
+	log.Write(log.EventResponseError, respErr.Error())
 	return respErr
 }
 
@@ -177,7 +175,7 @@ func (e *ResponseError) Error() string {
 }
 
 // maxPrettyPrintDepth is the deepest JSON nesting that ResponseError.Error() pretty-prints.
-const maxPrettyPrintDepth = 64
+const maxPrettyPrintDepth = 32
 
 // jsonDepthExceeds reports whether the JSON objects and arrays in body nest deeper than limit.
 // Brackets inside string literals aren't counted. body doesn't have to be valid JSON.

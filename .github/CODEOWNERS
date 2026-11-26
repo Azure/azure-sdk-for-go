@@ -657,7 +657,7 @@
 # Eng Sys
 ###########
 /eng/                              @Azure/azure-sdk-eng
-/eng/common/                       @Azure/azure-sdk-eng
+/eng/common/                       @Azure/azure-sdk-eng @Azure/azure-sdk-sync-approvers
 /eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
 /.config/1espt/                    @Azure/azure-sdk-eng
 /.github/workflows/                @Azure/azure-sdk-eng
@@ -677,4 +677,4 @@
 
 
 # Add owners for notifications for specific pipelines
-/eng/common/pipelines/codeowners-linter.yml       @rickwinter @xirzec
+/eng/common/pipelines/codeowners-linter.yml       @rickwinter @xirzec @Azure/azure-sdk-sync-approvers

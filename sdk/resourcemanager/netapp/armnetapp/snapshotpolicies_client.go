@@ -19,7 +19,7 @@ import (
 // SnapshotPoliciesClient contains the methods for the SnapshotPolicies group.
 // Don't use this type directly, use NewSnapshotPoliciesClient() instead.
 //
-// Generated from API version 2026-09-01
+// Generated from API version 2026-09-15-preview
 type SnapshotPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -115,7 +115,7 @@ func (client *SnapshotPoliciesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -192,7 +192,7 @@ func (client *SnapshotPoliciesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -251,7 +251,7 @@ func (client *SnapshotPoliciesClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -321,7 +321,7 @@ func (client *SnapshotPoliciesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -388,7 +388,7 @@ func (client *SnapshotPoliciesClient) listVolumesCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -464,7 +464,7 @@ func (client *SnapshotPoliciesClient) listCreateRequest(ctx context.Context, res
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901)
+		reqQP.Set("api-version", version20260915Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

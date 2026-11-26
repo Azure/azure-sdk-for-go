@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Create_Custom.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Create_Custom.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 		Properties: &armnetapp.VolumeGroupProperties{
 			GroupMetaData: &armnetapp.VolumeGroupMetaData{
 				ApplicationIdentifier: to.Ptr("CU2"),
-				ApplicationType:       to.Ptr(armnetapp.ApplicationType("CUSTOM")),
+				ApplicationType:       to.Ptr(armnetapp.ApplicationTypeCUSTOM),
 				GroupDescription:      to.Ptr("Volume group"),
 			},
 			Volumes: []*armnetapp.VolumeGroupVolumeProperties{
@@ -60,11 +60,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data1"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data1"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -98,11 +99,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data2"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data2"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -136,11 +138,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data3"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data3"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -174,11 +177,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data4"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data4"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -212,11 +216,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data5"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data5"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -250,11 +255,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data6"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data6"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -288,11 +294,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data7"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data7"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -326,11 +333,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data8"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data8"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -364,11 +372,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data9"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data9"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -402,11 +411,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data10"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data10"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -440,11 +450,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data11"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data11"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -478,11 +489,12 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 						ProtocolTypes: []*string{
 							to.Ptr("NFSv4.1"),
 						},
-						ServiceLevel:    to.Ptr(armnetapp.ServiceLevelPremium),
-						SubnetID:        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-						ThroughputMibps: to.Ptr[float32](10),
-						UsageThreshold:  to.Ptr[int64](107374182400),
-						VolumeSpecName:  to.Ptr("cus-data12"),
+						ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
+						SubnetID:                to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+						ThroughputMibps:         to.Ptr[float32](10),
+						UsageThreshold:          to.Ptr[int64](107374182400),
+						VolumeSpecName:          to.Ptr("data12"),
+						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -500,7 +512,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustom() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Create_Custom_SMB.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Create_Custom_SMB.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +528,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 		Properties: &armnetapp.VolumeGroupProperties{
 			GroupMetaData: &armnetapp.VolumeGroupMetaData{
 				ApplicationIdentifier: to.Ptr("CU2"),
-				ApplicationType:       to.Ptr(armnetapp.ApplicationType("CUSTOM")),
+				ApplicationType:       to.Ptr(armnetapp.ApplicationTypeCUSTOM),
 				GroupDescription:      to.Ptr("Volume group"),
 			},
 			Volumes: []*armnetapp.VolumeGroupVolumeProperties{
@@ -532,12 +544,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data1"),
+						VolumeSpecName:            to.Ptr("data1"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -555,12 +568,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data2"),
+						VolumeSpecName:            to.Ptr("data2"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -578,12 +592,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data3"),
+						VolumeSpecName:            to.Ptr("data3"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -601,12 +616,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data4"),
+						VolumeSpecName:            to.Ptr("data4"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -624,12 +640,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data5"),
+						VolumeSpecName:            to.Ptr("data5"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -647,12 +664,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data6"),
+						VolumeSpecName:            to.Ptr("data6"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -670,12 +688,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data7"),
+						VolumeSpecName:            to.Ptr("data7"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -693,12 +712,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data8"),
+						VolumeSpecName:            to.Ptr("data8"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -716,12 +736,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data9"),
+						VolumeSpecName:            to.Ptr("data9"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -739,12 +760,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data10"),
+						VolumeSpecName:            to.Ptr("data10"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -762,12 +784,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data11"),
+						VolumeSpecName:            to.Ptr("data11"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -785,12 +808,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 						SubnetID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 						ThroughputMibps:           to.Ptr[float32](10),
 						UsageThreshold:            to.Ptr[int64](107374182400),
-						VolumeSpecName:            to.Ptr("cus-data12"),
+						VolumeSpecName:            to.Ptr("data12"),
 						SmbEncryption:             to.Ptr(false),
 						SmbContinuouslyAvailable:  to.Ptr(false),
 						SmbNonBrowsable:           to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 						AvsDataStore:              to.Ptr(armnetapp.AvsDataStoreDisabled),
+						WorkloadApplicationType:   to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 					},
 					Zones: []*string{
 						to.Ptr("1"),
@@ -808,7 +832,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateCustomSmb() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Create_Oracle.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Create_Oracle.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1296,7 +1320,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Create_SapHana.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Create_SapHana.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1508,7 +1532,7 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Delete.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Delete.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1534,7 +1558,7 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Get_Custom.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Get_Custom.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1561,7 +1585,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 		Properties: &armnetapp.VolumeGroupProperties{
 	// 			GroupMetaData: &armnetapp.VolumeGroupMetaData{
 	// 				ApplicationIdentifier: to.Ptr("CU2"),
-	// 				ApplicationType: to.Ptr(armnetapp.ApplicationType("CUSTOM")),
+	// 				ApplicationType: to.Ptr(armnetapp.ApplicationTypeCUSTOM),
 	// 				GroupDescription: to.Ptr("Volume group"),
 	// 				VolumesCount: to.Ptr[int64](12),
 	// 			},
@@ -1601,7 +1625,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data1"),
+	// 						VolumeSpecName: to.Ptr("data1"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1641,7 +1666,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data2"),
+	// 						VolumeSpecName: to.Ptr("data2"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1681,7 +1707,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data3"),
+	// 						VolumeSpecName: to.Ptr("data3"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1721,7 +1748,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data4"),
+	// 						VolumeSpecName: to.Ptr("data4"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1761,7 +1789,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data5"),
+	// 						VolumeSpecName: to.Ptr("data5"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1801,7 +1830,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data6"),
+	// 						VolumeSpecName: to.Ptr("data6"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1841,7 +1871,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data7"),
+	// 						VolumeSpecName: to.Ptr("data7"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1881,7 +1912,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data8"),
+	// 						VolumeSpecName: to.Ptr("data8"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1890,7 +1922,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data9"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data9"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data9"),
 	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -1921,7 +1953,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data9"),
+	// 						VolumeSpecName: to.Ptr("data9"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1930,7 +1963,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data10"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data10"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data10"),
 	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -1961,7 +1994,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data10"),
+	// 						VolumeSpecName: to.Ptr("data10"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -1970,7 +2004,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data11"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data11"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data11"),
 	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -2001,7 +2035,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data11"),
+	// 						VolumeSpecName: to.Ptr("data11"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2010,7 +2045,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data12"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data12"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data12"),
 	// 						ExportPolicy: &armnetapp.VolumePropertiesExportPolicy{
@@ -2041,7 +2076,8 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data12"),
+	// 						VolumeSpecName: to.Ptr("data12"),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2053,7 +2089,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustom() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Get_Custom_SMB.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Get_Custom_SMB.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2080,7 +2116,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 		Properties: &armnetapp.VolumeGroupProperties{
 	// 			GroupMetaData: &armnetapp.VolumeGroupMetaData{
 	// 				ApplicationIdentifier: to.Ptr("CU2"),
-	// 				ApplicationType: to.Ptr(armnetapp.ApplicationType("CUSTOM")),
+	// 				ApplicationType: to.Ptr(armnetapp.ApplicationTypeCUSTOM),
 	// 				GroupDescription: to.Ptr("Volume group"),
 	// 				VolumesCount: to.Ptr[int64](12),
 	// 			},
@@ -2099,12 +2135,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data1"),
+	// 						VolumeSpecName: to.Ptr("data1"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2123,12 +2160,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data2"),
+	// 						VolumeSpecName: to.Ptr("data2"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2147,12 +2185,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data3"),
+	// 						VolumeSpecName: to.Ptr("data3"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2171,12 +2210,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data4"),
+	// 						VolumeSpecName: to.Ptr("data4"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2195,12 +2235,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data5"),
+	// 						VolumeSpecName: to.Ptr("data5"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2219,12 +2260,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data6"),
+	// 						VolumeSpecName: to.Ptr("data6"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2243,12 +2285,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data7"),
+	// 						VolumeSpecName: to.Ptr("data7"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2267,12 +2310,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data8"),
+	// 						VolumeSpecName: to.Ptr("data8"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2281,7 +2325,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data9"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data9"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data9"),
 	// 						ProtocolTypes: []*string{
@@ -2291,12 +2335,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data9"),
+	// 						VolumeSpecName: to.Ptr("data9"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2305,7 +2350,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data10"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data10"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data10"),
 	// 						ProtocolTypes: []*string{
@@ -2315,12 +2360,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data10"),
+	// 						VolumeSpecName: to.Ptr("data10"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2329,7 +2375,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data11"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data11"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data11"),
 	// 						ProtocolTypes: []*string{
@@ -2339,12 +2385,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data11"),
+	// 						VolumeSpecName: to.Ptr("data11"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2353,7 +2400,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 				{
 	// 					Name: to.Ptr("account1/pool1/test-cus-data12"),
 	// 					Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data8"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/test-cus-data12"),
 	// 					Properties: &armnetapp.VolumeProperties{
 	// 						CreationToken: to.Ptr("test-cus-data12"),
 	// 						ProtocolTypes: []*string{
@@ -2363,12 +2410,13 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// 						SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 						ThroughputMibps: to.Ptr[float32](10),
 	// 						UsageThreshold: to.Ptr[int64](107374182400),
-	// 						VolumeSpecName: to.Ptr("cus-data12"),
+	// 						VolumeSpecName: to.Ptr("data12"),
 	// 						SmbEncryption: to.Ptr(false),
 	// 						SmbContinuouslyAvailable: to.Ptr(false),
 	// 						SmbNonBrowsable: to.Ptr(armnetapp.SmbNonBrowsableDisabled),
 	// 						SmbAccessBasedEnumeration: to.Ptr(armnetapp.SmbAccessBasedEnumerationDisabled),
 	// 						AvsDataStore: to.Ptr(armnetapp.AvsDataStoreDisabled),
+	// 						WorkloadApplicationType: to.Ptr(armnetapp.WorkloadApplicationTypeAVDFSLogix),
 	// 					},
 	// 					Zones: []*string{
 	// 						to.Ptr("1"),
@@ -2380,7 +2428,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetCustomSmb() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Get_Oracle.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Get_Oracle.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2899,7 +2947,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_Get_SapHana.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_Get_SapHana.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3128,7 +3176,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_List_Custom.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_List_Custom.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListCustom() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3161,7 +3209,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListCusto
 		// 				Properties: &armnetapp.VolumeGroupListProperties{
 		// 					GroupMetaData: &armnetapp.VolumeGroupMetaData{
 		// 						ApplicationIdentifier: to.Ptr("DEV"),
-		// 						ApplicationType: to.Ptr(armnetapp.ApplicationType("CUSTOM")),
+		// 						ApplicationType: to.Ptr(armnetapp.ApplicationTypeCUSTOM),
 		// 						GroupDescription: to.Ptr("Volume group"),
 		// 						VolumesCount: to.Ptr[int64](12),
 		// 					},
@@ -3174,7 +3222,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListCusto
 	}
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_List_Oracle.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_List_Oracle.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3220,7 +3268,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracl
 	}
 }
 
-// Generated from example definition: 2026-09-01/VolumeGroups_List_SapHana.json
+// Generated from example definition: 2026-09-15-preview/VolumeGroups_List_SapHana.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

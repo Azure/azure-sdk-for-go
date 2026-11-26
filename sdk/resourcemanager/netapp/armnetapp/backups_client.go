@@ -19,7 +19,7 @@ import (
 // BackupsClient contains the methods for the Backups group.
 // Don't use this type directly, use NewBackupsClient() instead.
 //
-// Generated from API version 2026-09-01
+// Generated from API version 2026-09-15-preview
 type BackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -120,7 +120,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -205,7 +205,7 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -286,7 +286,7 @@ func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -349,7 +349,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -420,7 +420,7 @@ func (client *BackupsClient) getLatestStatusCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -492,7 +492,7 @@ func (client *BackupsClient) getVolumeLatestRestoreStatusCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -575,7 +575,7 @@ func (client *BackupsClient) listByVaultCreateRequest(ctx context.Context, resou
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260901)
+		reqQP.Set("api-version", version20260915Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

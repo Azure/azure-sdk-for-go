@@ -31,27 +31,39 @@ func (a *AzureAppConfigurationClient) Tracer() tracing.Tracer {
 }
 
 func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithNextLinks(options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
-	return newPagerWithNextLinks(client,
+	if options == nil {
+		options = &AzureAppConfigurationClientGetKeyValuesOptions{}
+	}
+	return newPagerWithNextLinks(client, options.AcceptDatetime,
 		func(ctx context.Context) (*policy.Request, error) {
 			return client.getKeyValuesCreateRequest(ctx, options)
 		},
-		client.getKeyValuesHandleResponse,
+		client.getKeyValuesHandleResponseWithLinkHeader,
 		func(page AzureAppConfigurationClientGetKeyValuesResponse) *string { return page.NextLink },
 	)
 }
 
 func (client *AzureAppConfigurationClient) NewGetRevisionsPagerWithNextLinks(options *AzureAppConfigurationClientGetRevisionsOptions) *runtime.Pager[AzureAppConfigurationClientGetRevisionsResponse] {
-	return newPagerWithNextLinks(client,
+	if options == nil {
+		options = &AzureAppConfigurationClientGetRevisionsOptions{}
+	}
+	return newPagerWithNextLinks(client, options.AcceptDatetime,
 		func(ctx context.Context) (*policy.Request, error) {
 			return client.getRevisionsCreateRequest(ctx, options)
 		},
-		client.getRevisionsHandleResponse,
+		func(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
+			result, err := client.getRevisionsHandleResponse(resp)
+			if err == nil && result.NextLink == nil {
+				result.NextLink = nextLinkFromHeader(resp.Header)
+			}
+			return result, err
+		},
 		func(page AzureAppConfigurationClientGetRevisionsResponse) *string { return page.NextLink },
 	)
 }
 
 func (client *AzureAppConfigurationClient) NewGetSnapshotsPagerWithNextLinks(options *AzureAppConfigurationClientGetSnapshotsOptions) *runtime.Pager[AzureAppConfigurationClientGetSnapshotsResponse] {
-	return newPagerWithNextLinks(client,
+	return newPagerWithNextLinks(client, nil,
 		func(ctx context.Context) (*policy.Request, error) {
 			return client.getSnapshotsCreateRequest(ctx, options)
 		},
@@ -61,7 +73,7 @@ func (client *AzureAppConfigurationClient) NewGetSnapshotsPagerWithNextLinks(opt
 }
 
 // The service can return endpoint-relative next links, which the generated pagers don't resolve.
-func newPagerWithNextLinks[T any](client *AzureAppConfigurationClient, createRequest func(context.Context) (*policy.Request, error), handleResponse func(*http.Response) (T, error), getNextLink func(T) *string) *runtime.Pager[T] {
+func newPagerWithNextLinks[T any](client *AzureAppConfigurationClient, acceptDatetime *string, createRequest func(context.Context) (*policy.Request, error), handleResponse func(*http.Response) (T, error), getNextLink func(T) *string) *runtime.Pager[T] {
 	return runtime.NewPager(runtime.PagingHandler[T]{
 		More: func(page T) bool {
 			nextLink := getNextLink(page)
@@ -73,7 +85,7 @@ func newPagerWithNextLinks[T any](client *AzureAppConfigurationClient, createReq
 				nextLink = *getNextLink(*page)
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, createRequest, &runtime.FetcherForNextLinkOptions{
-				NextReq: client.getNextPageCreateRequest,
+				NextReq: client.nextPageRequest(http.MethodGet, acceptDatetime, azcore.MatchConditions{}),
 			})
 			if err != nil {
 				var zero T
@@ -105,9 +117,7 @@ func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithMatchConditio
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.getKeyValuesCreateRequest(ctx, options)
 			}, &runtime.FetcherForNextLinkOptions{
-				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
-					return client.getNextPageCreateRequestWithMatchConditions(ctx, encodedNextLink, curCondition)
-				},
+				NextReq:     client.nextPageRequest(http.MethodGet, options.AcceptDatetime, curCondition),
 				StatusCodes: []int{http.StatusNotModified},
 			})
 			if err != nil {
@@ -118,40 +128,10 @@ func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithMatchConditio
 	})
 }
 
-// adds match conditions to the request created in getNextPageCreateRequest
-func (a *AzureAppConfigurationClient) getNextPageCreateRequestWithMatchConditions(ctx context.Context, nextLink string, matchConditions azcore.MatchConditions) (*policy.Request, error) {
-	req, err := a.getNextPageCreateRequest(ctx, nextLink)
-	if err != nil {
-		return nil, err
-	}
-	if matchConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*(*string)(matchConditions.IfMatch)}
-	}
-	if matchConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*(*string)(matchConditions.IfNoneMatch)}
-	}
-	return req, nil
-}
-
-// parses the nextLink URL from the Link response header
 func (a *AzureAppConfigurationClient) getKeyValuesHandleResponseWithLinkHeader(resp *http.Response) (AzureAppConfigurationClientGetKeyValuesResponse, error) {
 	result, err := a.getKeyValuesHandleResponse(resp)
-	if err != nil {
-		return AzureAppConfigurationClientGetKeyValuesResponse{}, err
-	}
-	if result.NextLink != nil {
-		return result, err
-	}
-
-	link := resp.Header.Get("Link")
-	if link == "" {
-		return result, err
-	}
-
-	// the link header format is <nextLinkURL>; rel="next"
-	// extract the values between < and >
-	if endIndex := strings.Index(link, ">"); endIndex > 0 {
-		result.NextLink = to.Ptr(link[1:endIndex])
+	if err == nil && result.NextLink == nil {
+		result.NextLink = nextLinkFromHeader(resp.Header)
 	}
 	return result, err
 }
@@ -187,9 +167,7 @@ func (client *AzureAppConfigurationClient) NewCheckKeyValuesPagerWithMatchCondit
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.checkKeyValuesCreateRequest(ctx, options)
 			}, &runtime.FetcherForNextLinkOptions{
-				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
-					return client.checkNextPageCreateRequestWithMatchConditions(ctx, encodedNextLink, curCondition)
-				},
+				NextReq:     client.nextPageRequest(http.MethodHead, options.AcceptDatetime, curCondition),
 				StatusCodes: []int{http.StatusNotModified},
 			})
 			if err != nil {
@@ -200,43 +178,16 @@ func (client *AzureAppConfigurationClient) NewCheckKeyValuesPagerWithMatchCondit
 	})
 }
 
-// adds match conditions to the HEAD request for the next page
-func (a *AzureAppConfigurationClient) checkNextPageCreateRequestWithMatchConditions(ctx context.Context, nextLink string, matchConditions azcore.MatchConditions) (*policy.Request, error) {
-	req, err := runtime.NewRequestForNextLink(ctx, http.MethodHead, a.endpoint, nextLink)
-	if err != nil {
-		return nil, err
-	}
-	if matchConditions.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*(*string)(matchConditions.IfMatch)}
-	}
-	if matchConditions.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*(*string)(matchConditions.IfNoneMatch)}
-	}
-	return req, nil
-}
-
-// parses the nextLink URL from the Link response header for HEAD requests
 func (a *AzureAppConfigurationClient) checkKeyValuesHandleResponseWithLinkHeader(resp *http.Response) (CheckKeyValuesPagerResponse, error) {
 	genResult, err := a.checkKeyValuesHandleResponse(resp)
 	if err != nil {
 		return CheckKeyValuesPagerResponse{}, err
 	}
 
-	result := CheckKeyValuesPagerResponse{
+	return CheckKeyValuesPagerResponse{
 		AzureAppConfigurationClientCheckKeyValuesResponse: genResult,
-	}
-
-	link := resp.Header.Get("Link")
-	if link == "" {
-		return result, nil
-	}
-
-	// the link header format is <nextLinkURL>; rel="next"
-	// extract the values between < and >
-	if endIndex := strings.Index(link, ">"); endIndex > 0 {
-		result.NextLink = to.Ptr(link[1:endIndex])
-	}
-	return result, nil
+		NextLink: nextLinkFromHeader(resp.Header),
+	}, nil
 }
 
 // CreateSnapshot exports internal createSnapshot
@@ -244,12 +195,80 @@ func (a *AzureAppConfigurationClient) CreateSnapshot(ctx context.Context, conten
 	return a.createSnapshot(ctx, contentType, name, entity, options)
 }
 
-// getNextPageCreateRequest creates the getNextPageCreateRequest request.
-func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
-	req, err := runtime.NewRequestForNextLink(ctx, http.MethodGet, client.endpoint, nextLink)
-	if err != nil {
-		return nil, err
+func (client *AzureAppConfigurationClient) nextPageRequest(method string, acceptDatetime *string, conditions azcore.MatchConditions) func(context.Context, string) (*policy.Request, error) {
+	return func(ctx context.Context, nextLink string) (*policy.Request, error) {
+		req, err := runtime.NewRequestForNextLink(ctx, method, client.endpoint, nextLink)
+		if err != nil {
+			return nil, err
+		}
+		h := req.Raw().Header
+		if method == http.MethodGet {
+			h.Set("Accept", "application/json")
+		}
+		if acceptDatetime != nil {
+			h.Set("Accept-Datetime", *acceptDatetime)
+		}
+		if conditions.IfMatch != nil {
+			h.Set("If-Match", string(*conditions.IfMatch))
+		}
+		if conditions.IfNoneMatch != nil {
+			h.Set("If-None-Match", string(*conditions.IfNoneMatch))
+		}
+		return req, nil
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
+}
+
+// Historical responses can contain both rel="original" and rel="next".
+func nextLinkFromHeader(h http.Header) *string {
+	for _, links := range h.Values("Link") {
+		for links != "" {
+			target, params, ok := strings.Cut(strings.TrimSpace(links), ">")
+			if !ok || !strings.HasPrefix(target, "<") {
+				break
+			}
+			links = strings.TrimSpace(params)
+			for strings.HasPrefix(links, ";") {
+				var param string
+				param, links = cutLinkParam(links[1:])
+				name, value, ok := strings.Cut(param, "=")
+				if !ok || !strings.EqualFold(strings.TrimSpace(name), "rel") {
+					continue
+				}
+				value = strings.TrimSpace(value)
+				if len(value) >= 2 && value[0] == '"' && value[len(value)-1] == '"' {
+					value = value[1 : len(value)-1]
+				}
+				for rel := range strings.FieldsSeq(value) {
+					if strings.EqualFold(rel, "next") {
+						return to.Ptr(target[1:])
+					}
+				}
+			}
+			links, ok = strings.CutPrefix(links, ",")
+			if !ok {
+				break
+			}
+		}
+	}
+	return nil
+}
+
+// Commas and semicolons inside a quoted link parameter aren't separators.
+func cutLinkParam(s string) (string, string) {
+	quoted := false
+	for i := 0; i < len(s); i++ {
+		switch s[i] {
+		case '"':
+			quoted = !quoted
+		case '\\':
+			if quoted {
+				i++
+			}
+		case ',', ';':
+			if !quoted {
+				return s[:i], s[i:]
+			}
+		}
+	}
+	return s, ""
 }

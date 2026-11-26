@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.DigitalAssets": "2025-09-01-preview"
+  },
+  "emitterVersion": "0.19.0"
+}

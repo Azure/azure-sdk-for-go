@@ -1,5 +1,18 @@
 # Release History
 
+## 1.9.0-beta.2 (Unreleased)
+
+### Features Added
+* Added `DownloadWriterAt` to `blob.Client`, `blockblob.Client`, `appendblob.Client`, `pageblob.Client` and
+  `azblob.Client`. It downloads a blob in parallel into any `io.WriterAt`, the same way `DownloadBuffer` and
+  `DownloadFile` do for a `[]byte` and an `*os.File`.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.9.0-beta.1 (2026-11-12)
 
 ### Features Added

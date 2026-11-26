@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2021-11-01/Employees_CreateOrUpdate.json
+// Generated from example definition: 2021-10-01-preview/Employees_CreateOrUpdate.json
 func ExampleEmployeesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleEmployeesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2021-11-01/Employees_Delete.json
+// Generated from example definition: 2021-10-01-preview/Employees_Delete.json
 func ExampleEmployeesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleEmployeesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2021-11-01/Employees_Get.json
+// Generated from example definition: 2021-10-01-preview/Employees_Get.json
 func ExampleEmployeesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleEmployeesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2021-11-01/Employees_ListByResourceGroup.json
+// Generated from example definition: 2021-10-01-preview/Employees_ListByResourceGroup.json
 func ExampleEmployeesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleEmployeesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2021-11-01/Employees_ListBySubscription.json
+// Generated from example definition: 2021-10-01-preview/Employees_ListBySubscription.json
 func ExampleEmployeesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleEmployeesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2021-11-01/Employees_Update.json
+// Generated from example definition: 2021-10-01-preview/Employees_Update.json
 func ExampleEmployeesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

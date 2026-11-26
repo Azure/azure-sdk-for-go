@@ -5,7 +5,7 @@
 package armcontoso
 
 const (
-	version20211101 string = "2021-11-01"
+	version20211001Preview string = "2021-10-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

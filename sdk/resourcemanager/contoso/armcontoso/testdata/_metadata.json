@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.Contoso": "2021-11-01"
+    "Microsoft.Contoso": "2021-10-01-preview"
   },
   "emitterVersion": "0.19.0"
 }

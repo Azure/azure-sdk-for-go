@@ -127,6 +127,10 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
+	// tests assume Azure Public Cloud unless they specify otherwise
+	if err := os.Unsetenv(azureEnvironment); err != nil {
+		panic(err)
+	}
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		var err error
 		proxy, err = recording.StartTestProxy(recordingDirectory, nil)

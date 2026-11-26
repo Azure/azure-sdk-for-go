@@ -33,7 +33,9 @@ type ClientOptions struct {
 	// Set with caution as this package version has not been tested with arbitrary service versions.
 	APIVersion string
 
-	// Cloud specifies a cloud for the client. The default is Azure Public Cloud.
+	// Cloud specifies a cloud for the client. The default is Azure Public Cloud. Azure Resource Manager
+	// clients instead default to the well-known cloud named by the environment variable AZURE_ENVIRONMENT,
+	// when it's set. See the cloud package's documentation for details.
 	Cloud cloud.Configuration
 
 	// InsecureAllowCredentialWithHTTP enables authenticated requests over HTTP.

@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -49,6 +50,8 @@ func assertPages[T any](t *testing.T, pager *runtime.Pager[T], expected []T) {
 }
 
 func TestPagersNextLinks(t *testing.T) {
+	const asOf = "2026-11-01T02:03:04.123456789Z"
+	selector := azappconfig.SettingSelector{AcceptDateTime: to.Ptr(time.Date(2026, 11, 1, 2, 3, 4, 123456789, time.UTC))}
 	settings := []azappconfig.Setting{
 		{Key: to.Ptr("first"), Value: to.Ptr("value")},
 		{Key: to.Ptr("second"), Value: to.Ptr("value")},
@@ -63,32 +66,33 @@ func TestPagersNextLinks(t *testing.T) {
 		path       string
 		method     string
 		itemFormat string
+		dateHeader string
 		run        func(*testing.T, *azappconfig.Client)
 	}{
 		{
-			name: "Revisions", path: "/revisions", method: http.MethodGet,
+			name: "Revisions", path: "/revisions", method: http.MethodGet, dateHeader: asOf,
 			itemFormat: `{"key":%q,"value":"value"}`,
 			run: func(t *testing.T, client *azappconfig.Client) {
-				assertPages(t, client.NewListRevisionsPager(azappconfig.SettingSelector{}, nil), []azappconfig.ListRevisionsPageResponse{
+				assertPages(t, client.NewListRevisionsPager(selector, nil), []azappconfig.ListRevisionsPageResponse{
 					{Settings: settings[:1], SyncToken: pagingSyncToken},
 					{Settings: settings[1:], SyncToken: pagingSyncToken},
 				})
 			},
 		},
 		{
-			name: "Settings", path: "/kv", method: http.MethodGet,
+			name: "Settings", path: "/kv", method: http.MethodGet, dateHeader: asOf,
 			itemFormat: `{"key":%q,"value":"value"}`,
 			run: func(t *testing.T, client *azappconfig.Client) {
-				assertPages(t, client.NewListSettingsPager(azappconfig.SettingSelector{}, nil), []azappconfig.ListSettingsPageResponse{
+				assertPages(t, client.NewListSettingsPager(selector, nil), []azappconfig.ListSettingsPageResponse{
 					{Settings: settings[:1], ETag: &etags[0], SyncToken: pagingSyncToken},
 					{Settings: settings[1:], ETag: &etags[1], SyncToken: pagingSyncToken},
 				})
 			},
 		},
 		{
-			name: "CheckSettings", path: "/kv", method: http.MethodHead,
+			name: "CheckSettings", path: "/kv", method: http.MethodHead, dateHeader: asOf,
 			run: func(t *testing.T, client *azappconfig.Client) {
-				assertPages(t, client.NewCheckSettingsPager(azappconfig.SettingSelector{}, nil), []azappconfig.CheckSettingsPageResponse{
+				assertPages(t, client.NewCheckSettingsPager(selector, nil), []azappconfig.CheckSettingsPageResponse{
 					{ETag: &etags[0], SyncToken: pagingSyncToken},
 					{ETag: &etags[1], SyncToken: pagingSyncToken},
 				})
@@ -105,10 +109,10 @@ func TestPagersNextLinks(t *testing.T) {
 			},
 		},
 		{
-			name: "SnapshotSettings", path: "/kv", method: http.MethodGet,
+			name: "SnapshotSettings", path: "/kv", method: http.MethodGet, dateHeader: asOf,
 			itemFormat: `{"key":%q,"value":"value"}`,
 			run: func(t *testing.T, client *azappconfig.Client) {
-				assertPages(t, client.NewListSettingsForSnapshotPager("snapshot", nil), []azappconfig.ListSettingsForSnapshotResponse{
+				assertPages(t, client.NewListSettingsForSnapshotPager("snapshot", &azappconfig.ListSettingsForSnapshotOptions{AcceptDatetime: to.Ptr(asOf)}), []azappconfig.ListSettingsForSnapshotResponse{
 					{Settings: settings[:1], SyncToken: pagingSyncToken},
 					{Settings: settings[1:], SyncToken: pagingSyncToken},
 				})
@@ -128,11 +132,15 @@ func TestPagersNextLinks(t *testing.T) {
 						srv.AppendResponse(mock.WithPredicate(func(req *http.Request) bool {
 							assert.Equal(t, tt.method, req.Method)
 							assert.Equal(t, tt.path, req.URL.Path)
+							assert.Equal(t, tt.dateHeader, req.Header.Get("Accept-Datetime"))
 							if i == 1 {
 								assert.Equal(t, "cursor+/=", req.URL.Query().Get("after"))
 								assert.Equal(t, "next-version", req.URL.Query().Get("api-version"))
-							} else if tt.name == "SnapshotSettings" {
-								assert.Equal(t, "snapshot", req.URL.Query().Get("snapshot"))
+							} else {
+								assert.False(t, req.URL.Query().Has("after"), "first page must not have a cursor")
+								if tt.name == "SnapshotSettings" {
+									assert.Equal(t, "snapshot", req.URL.Query().Get("snapshot"))
+								}
 							}
 							return false
 						}))
@@ -173,6 +181,10 @@ func TestSettingsPagersMatchConditions(t *testing.T) {
 				srv.AppendResponse(mock.WithPredicate(func(req *http.Request) bool {
 					assert.Equal(t, method, req.Method)
 					assert.Equal(t, "/kv", req.URL.Path)
+					assert.NotContains(t, req.Header, "Accept-Datetime")
+					if i > 0 {
+						assert.Equal(t, fmt.Sprint(i), req.URL.Query().Get("after"))
+					}
 					switch i {
 					case 0:
 						assert.Equal(t, `"first"`, req.Header.Get("If-None-Match"))
@@ -195,8 +207,14 @@ func TestSettingsPagersMatchConditions(t *testing.T) {
 				} else if method == http.MethodGet {
 					response = append(response, mock.WithHeader("Content-Type", "application/json"), mock.WithBody([]byte(`{"items":[]}`)))
 				}
-				if i < 2 {
-					response = append(response, mock.WithHeader("Link", fmt.Sprintf("</kv?after=%d>; rel=\"next\"", i+1)))
+				const original = `</kv?key=a,b>; title="past; rel=next, not a continuation"; rel="original"`
+				switch i {
+				case 0:
+					response = append(response, mock.WithHeader("Link", original+`, </kv?after=1>; rel="next"`))
+				case 1:
+					response = append(response, mock.WithHeader("Link", original), mock.WithHeader("Link", `</kv?after=2>; rel=next`))
+				case 2:
+					response = append(response, mock.WithHeader("Link", original))
 				}
 				srv.AppendResponse(response...)
 			}
@@ -223,6 +241,27 @@ func TestSettingsPagersMatchConditions(t *testing.T) {
 			assert.Equal(t, 3, srv.Requests())
 		})
 	}
+}
+
+func TestRevisionsPagerLinkHeader(t *testing.T) {
+	client, srv := newPagingClient(t)
+	for _, page := range []struct{ after, link string }{
+		{"", `</revisions?after=cursor>; rel="next"`},
+		{"cursor", `</revisions>; rel="original"`},
+	} {
+		srv.AppendResponse(mock.WithPredicate(func(req *http.Request) bool {
+			assert.Equal(t, page.after, req.URL.Query().Get("after"))
+			assert.NotContains(t, req.Header, "Accept-Datetime")
+			return false
+		}))
+		srv.AppendResponse(
+			mock.WithHeader("Link", page.link),
+			mock.WithHeader("Sync-Token", string(pagingSyncToken)),
+			mock.WithBody([]byte(`{"items":[]}`)),
+		)
+	}
+	emptyPage := azappconfig.ListRevisionsPageResponse{Settings: []azappconfig.Setting{}, SyncToken: pagingSyncToken}
+	assertPages(t, client.NewListRevisionsPager(azappconfig.SettingSelector{}, nil), []azappconfig.ListRevisionsPageResponse{emptyPage, emptyPage})
 }
 
 func TestRevisionsPagerErrors(t *testing.T) {

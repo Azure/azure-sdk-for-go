@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed historical settings and revision queries to send `Accept-Datetime` on every page and follow only `rel="next"` pagination links ([#27980](https://github.com/Azure/azure-sdk-for-go/issues/27980)).
+
 ### Other Changes
 
 ## 2.3.1 (2026-11-19)

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `policy.WithTokenRefresh` to bypass a client's bearer-token cache for an explicit request, using nonempty claims to request credential refresh.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"sync"
+	"sync/atomic"
 
 	"errors"
 	"net/http"
@@ -58,6 +60,241 @@ func defaultTestPipeline(srv policy.Transporter, scope string) Pipeline {
 		PipelineOptions{PerRetry: []policy.Policy{b}},
 		&policy.ClientOptions{Retry: retryOpts, Transport: srv},
 	)
+}
+
+func TestBearerTokenPolicy_ExplicitRefresh(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	var options []policy.TokenRequestOptions
+	cachedToken := "A"
+	cred := mockCredential{getTokenImpl: func(ctx context.Context, tro policy.TokenRequestOptions) (exported.AccessToken, error) {
+		require.Nil(t, ctx.Value(shared.CtxWithTokenRefreshKey{}))
+		options = append(options, tro)
+		if tro.Claims != "" {
+			cachedToken = fmt.Sprintf("refreshed-%d", len(options))
+		}
+		return exported.AccessToken{Token: cachedToken, ExpiresOn: time.Now().Add(time.Hour)}, nil
+	}}
+	b := NewBearerTokenPolicy(cred, []string{scope}, nil)
+	pl := newTestPipeline(&policy.ClientOptions{
+		Transport: srv, PerRetryPolicies: []policy.Policy{b},
+		Retry: policy.RetryOptions{RetryDelay: time.Millisecond},
+	})
+	send := func(ctx context.Context, expected string) {
+		t.Helper()
+		req, err := NewRequest(ctx, http.MethodGet, srv.URL())
+		require.NoError(t, err)
+		resp, err := pl.Do(req)
+		require.NoError(t, err)
+		require.Equal(t, "Bearer "+expected, resp.Request.Header.Get(shared.HeaderAuthorization))
+	}
+
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	send(context.Background(), "A")
+	refreshCtx := policy.WithTokenRefresh(context.Background())
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	send(refreshCtx, "refreshed-2")
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	send(context.Background(), "refreshed-2")
+	require.Len(t, options, 2)
+	require.Equal(t, policy.TokenRequestOptions{Scopes: []string{scope}, Claims: "{}", EnableCAE: true}, options[1])
+
+	// Reusing the context for a different request requests another refresh.
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	send(refreshCtx, "refreshed-3")
+	require.Len(t, options, 3)
+	require.Equal(t, 5, srv.Requests())
+}
+
+func TestBearerTokenPolicy_ExplicitRefreshFailure(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	acquisitionErr := errors.New("refresh failed")
+	calls := 0
+	cred := mockCredential{getTokenImpl: func(_ context.Context, tro policy.TokenRequestOptions) (exported.AccessToken, error) {
+		calls++
+		if tro.Claims != "" {
+			return exported.AccessToken{}, acquisitionErr
+		}
+		return exported.AccessToken{Token: "A", ExpiresOn: time.Now().Add(time.Hour)}, nil
+	}}
+	b := NewBearerTokenPolicy(cred, []string{scope}, nil)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.NoError(t, err)
+	req, err = NewRequest(policy.WithTokenRefresh(context.Background()), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	resp, err := pl.Do(req)
+	require.ErrorIs(t, err, acquisitionErr)
+	require.Nil(t, resp)
+	var nonRetriable errorinfo.NonRetriable
+	require.ErrorAs(t, err, &nonRetriable)
+	require.Equal(t, 2, calls)
+	require.Equal(t, 1, srv.Requests())
+}
+
+func TestBearerTokenPolicy_ExplicitRefreshClaims(t *testing.T) {
+	const claims = `{"access_token":{"test":{"essential":true}}}`
+	for _, challenge := range []bool{false, true} {
+		t.Run(fmt.Sprintf("challenge=%v", challenge), func(t *testing.T) {
+			srv, close := mock.NewTLSServer()
+			defer close()
+			var options []policy.TokenRequestOptions
+			cred := mockCredential{getTokenImpl: func(_ context.Context, tro policy.TokenRequestOptions) (exported.AccessToken, error) {
+				options = append(options, tro)
+				return exported.AccessToken{Token: fmt.Sprint(len(options)), ExpiresOn: time.Now().Add(time.Hour)}, nil
+			}}
+			handler := policy.AuthorizationHandler{
+				OnRequest: func(_ *policy.Request, authorize func(policy.TokenRequestOptions) error) error {
+					tro := policy.TokenRequestOptions{Scopes: []string{"custom-scope"}, TenantID: "custom-tenant"}
+					if !challenge {
+						tro.Claims = claims
+					}
+					return authorize(tro)
+				},
+			}
+			b := NewBearerTokenPolicy(cred, nil, &policy.BearerTokenOptions{AuthorizationHandler: handler})
+			pl := newTestPipeline(&policy.ClientOptions{
+				Transport: srv, PerRetryPolicies: []policy.Policy{b},
+				Retry: policy.RetryOptions{RetryDelay: time.Millisecond},
+			})
+			if challenge {
+				srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized),
+					mock.WithHeader(shared.HeaderWWWAuthenticate, `Bearer error="insufficient_claims", claims="`+base64.StdEncoding.EncodeToString([]byte(claims))+`"`))
+			}
+			srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+			req, err := NewRequest(policy.WithTokenRefresh(context.Background()), http.MethodGet, srv.URL())
+			require.NoError(t, err)
+			_, err = pl.Do(req)
+			require.NoError(t, err)
+			wantCalls := 1
+			if challenge {
+				wantCalls = 2
+				require.Equal(t, "{}", options[0].Claims)
+			}
+			require.Len(t, options, wantCalls)
+			require.Equal(t, policy.TokenRequestOptions{
+				Claims: claims, Scopes: []string{"custom-scope"}, TenantID: "custom-tenant", EnableCAE: true,
+			}, options[len(options)-1])
+		})
+	}
+}
+
+func TestBearerTokenPolicy_ExplicitRefreshDeferredAuthorization(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	calls := 0
+	cred := mockCredential{getTokenImpl: func(_ context.Context, tro policy.TokenRequestOptions) (exported.AccessToken, error) {
+		calls++
+		require.Equal(t, policy.TokenRequestOptions{
+			Claims: "{}", Scopes: []string{"validated-resource"}, TenantID: "validated-tenant", EnableCAE: true,
+		}, tro)
+		return exported.AccessToken{Token: "B", ExpiresOn: time.Now().Add(time.Hour)}, nil
+	}}
+	handler := policy.AuthorizationHandler{
+		OnRequest: func(_ *policy.Request, _ func(policy.TokenRequestOptions) error) error {
+			return nil
+		},
+		OnChallenge: func(_ *policy.Request, _ *http.Response, authorize func(policy.TokenRequestOptions) error) error {
+			require.Zero(t, calls, "refresh must wait for the handler to validate the challenge")
+			return authorize(policy.TokenRequestOptions{Scopes: []string{"validated-resource"}, TenantID: "validated-tenant"})
+		},
+	}
+	b := NewBearerTokenPolicy(cred, nil, &policy.BearerTokenOptions{AuthorizationHandler: handler})
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized), mock.WithHeader(shared.HeaderWWWAuthenticate, "Custom challenge"))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	req, err := NewRequest(policy.WithTokenRefresh(context.Background()), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, "Bearer B", resp.Request.Header.Get(shared.HeaderAuthorization))
+	require.Equal(t, 1, calls)
+}
+
+func TestBearerTokenPolicy_ExplicitRefreshInFlightAcquisition(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	started, release := make(chan struct{}), make(chan struct{})
+	var calls atomic.Int32
+	cred := mockCredential{getTokenImpl: func(ctx context.Context, tro policy.TokenRequestOptions) (exported.AccessToken, error) {
+		if calls.Add(1) == 1 {
+			close(started)
+			select {
+			case <-release:
+			case <-ctx.Done():
+				return exported.AccessToken{}, ctx.Err()
+			}
+		}
+		token := "A"
+		if tro.Claims != "" {
+			token = "B"
+		}
+		return exported.AccessToken{Token: token, ExpiresOn: time.Now().Add(time.Hour)}, nil
+	}}
+	b := NewBearerTokenPolicy(cred, []string{scope}, nil)
+	oldReq, err := NewRequest(ctx, http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	done := make(chan error, 1)
+	go func() {
+		done <- b.authenticateAndAuthorize(oldReq)(policy.TokenRequestOptions{Scopes: []string{scope}})
+	}()
+	select {
+	case <-started:
+	case <-ctx.Done():
+		t.Fatal(ctx.Err())
+	}
+	refreshReq, err := NewRequest(policy.WithTokenRefresh(ctx), http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	require.NoError(t, b.authenticateAndAuthorize(refreshReq)(policy.TokenRequestOptions{Scopes: []string{scope}}))
+	require.Equal(t, "Bearer B", refreshReq.Raw().Header.Get(shared.HeaderAuthorization))
+	close(release)
+	require.NoError(t, <-done)
+	require.Equal(t, "Bearer A", oldReq.Raw().Header.Get(shared.HeaderAuthorization))
+
+	req, err := NewRequest(ctx, http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	require.NoError(t, b.authenticateAndAuthorize(req)(policy.TokenRequestOptions{Scopes: []string{scope}}))
+	require.Equal(t, "Bearer B", req.Raw().Header.Get(shared.HeaderAuthorization))
+	require.Equal(t, int32(2), calls.Load())
+}
+
+func TestBearerTokenPolicy_ExplicitRefreshConcurrentRequests(t *testing.T) {
+	var calls atomic.Int32
+	cred := mockCredential{getTokenImpl: func(_ context.Context, _ policy.TokenRequestOptions) (exported.AccessToken, error) {
+		return exported.AccessToken{Token: fmt.Sprint(calls.Add(1)), ExpiresOn: time.Now().Add(time.Hour)}, nil
+	}}
+	b := NewBearerTokenPolicy(cred, []string{scope}, nil)
+	ctx := policy.WithTokenRefresh(context.Background())
+	const count = 20
+	errs := make(chan error, count)
+	var wg sync.WaitGroup
+	for range count {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			req, err := NewRequest(ctx, http.MethodGet, "https://example.com")
+			if err == nil {
+				err = b.authenticateAndAuthorize(req)(policy.TokenRequestOptions{Scopes: []string{scope}})
+			}
+			errs <- err
+		}()
+	}
+	wg.Wait()
+	for range count {
+		require.NoError(t, <-errs)
+	}
+	require.Equal(t, int32(count), calls.Load())
+	req, err := NewRequest(context.Background(), http.MethodGet, "https://example.com")
+	require.NoError(t, err)
+	require.NoError(t, b.authenticateAndAuthorize(req)(policy.TokenRequestOptions{Scopes: []string{scope}}))
+	require.Equal(t, fmt.Sprintf("Bearer %d", count), req.Raw().Header.Get(shared.HeaderAuthorization))
+	require.Equal(t, int32(count), calls.Load())
 }
 
 func TestBearerPolicy_SuccessGetToken(t *testing.T) {

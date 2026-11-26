@@ -193,3 +193,24 @@ func WithHTTPHeader(parent context.Context, header http.Header) context.Context 
 func WithRetryOptions(parent context.Context, options RetryOptions) context.Context {
 	return context.WithValue(parent, shared.CtxWithRetryOptionsKey{}, options)
 }
+
+// WithTokenRefresh requests token refresh when an SDK client's bearer token policy
+// authorizes an HTTP request. The policy bypasses its token cache and sets Claims to
+// "{}" when no claims were supplied by the client's authorization handler.
+// This requires a credential that bypasses its access-token cache for nonempty
+// claims, such as azidentity.ClientCertificateCredential or ClientSecretCredential.
+// Other credentials may ignore claims or return an error.
+//
+// Successful acquisition updates the policy cache for subsequent normal calls.
+// Acquisition errors are returned without sending the request with the old token.
+// Each HTTP request using the returned context refreshes once per authentication
+// context (tenant, scopes, and claims), not once per transport retry.
+// Use the original context for subsequent pages and long-running operation polls
+// unless each of those requests also needs refresh.
+//
+// This function doesn't retry authorization failures or guarantee that a newly
+// acquired token reflects recent authorization changes. It doesn't refresh ARM
+// auxiliary-tenant tokens or other clients' policy caches.
+func WithTokenRefresh(parent context.Context) context.Context {
+	return context.WithValue(parent, shared.CtxWithTokenRefreshKey{}, true)
+}

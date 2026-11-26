@@ -41,3 +41,13 @@ func ExampleWithRetryOptions() {
 	// the behavior of the retry policy will correspond to the values provided in customRetryPolicy
 	_ = ctx
 }
+
+func ExampleWithTokenRefresh() {
+	ctx := context.TODO()
+	refreshCtx := policy.WithTokenRefresh(ctx)
+	// After deciding an operation is safe to retry with a fresh token, use the
+	// existing client and a credential that refreshes for nonempty claims:
+	// resp, err := client.SomeMethod(refreshCtx, ...)
+	// Use ctx again for later calls, pages, and polls to retain normal caching.
+	_ = refreshCtx
+}

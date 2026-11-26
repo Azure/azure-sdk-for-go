@@ -427,6 +427,11 @@ func TestRequestToUpdateGEMPreservesIncomingContextWithoutCancellation(t *testin
 		t.Fatalf("expected context to be canceled, got %v", err)
 	}
 
+	// The main request returns as soon as its context is done, while the GEM
+	// update keeps running in the background. Wait for it to finish.
+	require.Eventually(t, func() bool { return !mockGem.hasInflight() }, 5*time.Second, 5*time.Millisecond,
+		"expected the GEM update to complete")
+
 	// Make sure we actually got a request to get account properties
 	if len(capturePolicy.CapturedRequests) != 1 {
 		t.Fatalf("expected to capture the request to the GEM, got %d requests", len(capturePolicy.CapturedRequests))

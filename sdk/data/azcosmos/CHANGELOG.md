@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+* Fixed a client's first requests ignoring their context deadline and cancellation while the client fetched the account properties, which could block them for up to 60 seconds against an unresponsive endpoint. The shared fetch still completes in the background for later requests. See [issue 27989](https://github.com/Azure/azure-sdk-for-go/issues/27989).
+
 ### Other Changes
 
 ## 1.6.0-beta.6 (2026-11-12)

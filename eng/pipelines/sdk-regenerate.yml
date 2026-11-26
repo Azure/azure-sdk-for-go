@@ -34,6 +34,9 @@ parameters:
   - name: UseDevPackage
     default: false
     type: boolean
+  - name: UseNextVersion
+    default: false
+    type: boolean
   - name: TypeSpecAzureRef
     displayName: "Azure/typespec-azure branch to build the dev emitter from (dev mode only)"
     type: string
@@ -125,7 +128,7 @@ jobs:
         displayName: 'Install tsp-client'
 
       - script: |
-          python3 $(sdkRoot)/eng/scripts/sdk_regenerate.py --sdk-root=$(sdkRoot) --typespec-go-root="$(emitterRoot)" --use-latest-spec=${{ parameters.UseLatestSpec }} --service-filter="${{ parameters.ServiceFilter }}" --use-dev-package=${{ parameters.UseDevPackage }} --result-file=$(Build.ArtifactStagingDirectory)/regenerate-sdk-result.json
+          python3 $(sdkRoot)/eng/scripts/sdk_regenerate.py --sdk-root=$(sdkRoot) --typespec-go-root="$(emitterRoot)" --use-latest-spec=${{ parameters.UseLatestSpec }} --service-filter="${{ parameters.ServiceFilter }}" --use-dev-package=${{ parameters.UseDevPackage }} --use-next-version=${{ parameters.UseNextVersion }} --result-file=$(Build.ArtifactStagingDirectory)/regenerate-sdk-result.json
         displayName: 'Generate SDK'
         workingDirectory: $(sdkRoot)
 

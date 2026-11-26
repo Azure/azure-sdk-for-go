@@ -153,55 +153,7 @@ def resolve_extra_dependencies(emitter_package: dict, unresolved: List[str], use
         logging.info(f"Resolved extra dependency {package_name} to version {version}")
 
 
-def build_and_pack_workspace_package(pkg_dir: Path, pnpm_cmd: str) -> Path:
-    """Build a workspace package if it defines a build script, pack it with pnpm,
-    and return the path to the generated .tgz."""
-    package_json_path = pkg_dir / "package.json"
-    with open(package_json_path, "r", encoding="utf-8") as f:
-        pkg_json = json.load(f)
-
-    if "build" in pkg_json.get("scripts", {}):
-        logging.info(f"Building workspace package at {pkg_dir}")
-        check_call([pnpm_cmd, "build"], cwd=str(pkg_dir))
-
-    logging.info(f"Packing workspace package at {pkg_dir}")
-    output = check_output([pnpm_cmd, "pack"], cwd=str(pkg_dir), text=True)
-    lines = [line.strip() for line in output.splitlines() if line.strip()]
-    if not lines:
-        raise RuntimeError(f"pnpm pack produced no output in {pkg_dir}")
-
-    tgz_candidate = Path(lines[-1])
-    tgz_path = tgz_candidate if tgz_candidate.is_absolute() else (pkg_dir / tgz_candidate)
-    if not tgz_path.exists():
-        raise FileNotFoundError(f"Packed .tgz not found at {tgz_path}")
-    return tgz_path
-
-
-def pack_workspace_dev_dependencies(emitter_package: dict, typespec_go_root: str) -> None:
-    """In dev mode, build and pack any sibling typespec-azure/packages/* workspace
-    packages listed in devDependencies and point both devDependencies and overrides
-    at their packed .tgz paths so npm/tsp-client uses the local dev builds."""
-    if not typespec_go_root or "devDependencies" not in emitter_package:
-        return
-
-    pnpm_cmd = shutil.which("pnpm") or "pnpm"
-    packages_root = Path(typespec_go_root).parent
-    overrides = emitter_package.setdefault("overrides", {})
-
-    for package_name in list(emitter_package["devDependencies"].keys()):
-        dir_name = package_name.split("/", 1)[-1]
-        pkg_dir = packages_root / dir_name
-        if not (pkg_dir / "package.json").exists():
-            continue
-
-        tgz_path = build_and_pack_workspace_package(pkg_dir, pnpm_cmd)
-        tgz_posix = tgz_path.absolute().as_posix()
-        emitter_package["devDependencies"][package_name] = tgz_posix
-        overrides[package_name] = tgz_posix
-        logging.info(f"Pinned dev workspace dependency {package_name} to {tgz_posix}")
-
-
-def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package: bool):
+def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package: bool, use_next_version: bool = False):
     # Load existing emitter-package.json
     emitter_package_path = Path(sdk_root) / "eng/emitter-package.json"
     if not emitter_package_path.exists():
@@ -225,7 +177,6 @@ def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package
         # Update devDependencies in emitter_package
         unresolved = update_dev_dependencies(emitter_package, dev_deps)
         resolve_extra_dependencies(emitter_package, unresolved, use_dev_package=True, typespec_go_root=typespec_go_root)
-        pack_workspace_dev_dependencies(emitter_package, typespec_go_root)
 
         # Update emitter-package.json to use the dev package path
         emitter_package["dependencies"]["@azure-tools/typespec-go"] = typespec_go_tgz.absolute().as_posix()
@@ -253,7 +204,21 @@ def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package
     # Write the updated emitter-package.json
     with open(emitter_package_path, "w", encoding="utf-8") as f:
         json.dump(emitter_package, f, indent=2)
-    
+
+    if use_next_version:
+        logging.info("Bumping TypeSpec dependencies to @next via @azure-tools/typespec-bump-deps")
+        npx_cmd = shutil.which("npx") or "npx"
+        check_call(
+            [
+                npx_cmd,
+                "--yes",
+                "@azure-tools/typespec-bump-deps",
+                "eng/emitter-package.json",
+                "--add-npm-overrides",
+            ],
+            cwd=sdk_root,
+        )
+
     # Update emitter-package-lock.json
     logging.info("Update emitter-package-lock.json")
     try:
@@ -475,7 +440,7 @@ def regenerate_sdk(use_latest_spec: bool, service_filter: str, sdk_root: str, ty
     return result
 
 
-def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_filter: str, use_dev_package: bool, result_file: str):
+def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_filter: str, use_dev_package: bool, result_file: str, use_next_version: bool = False):
     # Configure logging for better pipeline visibility
     logging.basicConfig(
         level=logging.INFO,
@@ -489,7 +454,7 @@ def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_fi
     # that invokes this script. This script is responsible only for updating
     # eng/emitter-package.json and regenerating the SDKs, leaving the resulting
     # changes in the working tree for the pipeline to commit.
-    update_emitter_package(sdk_root, typespec_go_root, use_dev_package)
+    update_emitter_package(sdk_root, typespec_go_root, use_dev_package, use_next_version=use_next_version)
     result = regenerate_sdk(use_latest_spec, service_filter, sdk_root, typespec_go_root)
     # The regeneration report is a build artifact, not part of the SDK change set.
     # The pipeline points --result-file outside the SDK working tree so it is never
@@ -539,6 +504,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--use-next-version",
+        help="Whether to bump TypeSpec dependencies to @next using @azure-tools/typespec-bump-deps",
+        type=lambda x: x.lower() == 'true',
+        default=False,
+    )
+
+    parser.add_argument(
         "--result-file",
         help="Path to write the regeneration report JSON to. Point this outside the "
              "SDK working tree so it is not committed to the pull request.",
@@ -548,4 +520,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    main(args.sdk_root, args.typespec_go_root, args.use_latest_spec, args.service_filter, args.use_dev_package, args.result_file)
+    main(args.sdk_root, args.typespec_go_root, args.use_latest_spec, args.service_filter, args.use_dev_package, args.result_file, args.use_next_version)

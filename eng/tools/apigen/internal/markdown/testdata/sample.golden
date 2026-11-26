@@ -1,0 +1,106 @@
+# sample
+
+## Module
+
+```text
+module example.com/sample/v2
+
+go 1.26.0
+```
+
+## Package sample
+
+```go
+package sample
+
+import (
+	"context"
+)
+
+const (
+	Separator = 'a'
+	Version = 1
+)
+
+type Code int
+
+const (
+	CodeAlpha Code = 1
+	CodeZulu Code = 2
+)
+
+type ETag string
+
+const (
+	ETagAny ETag = "*"
+	ETagZulu ETag = "z"
+)
+
+func NewETag(value string) ETag
+func PossibleETagValues() []ETag
+
+func (ETag) String() string
+
+var (
+	// Inferred type of Alternate: Config
+	Alternate = Config{Value: nil}
+	// Inferred type of Default: Config
+	Default = Config{}
+)
+
+func GetRecord[T any](value T) Record
+func Identity[T any](value T) T
+
+type AContract = ZContract
+
+// Alias of example.com/sample/v2/internal/model.Contract.
+type IContract interface {
+	Alpha()
+	Zulu()
+}
+
+type ZContract interface {
+	Alpha()
+	Zulu()
+}
+
+type Client struct {
+	// contains filtered or unexported fields
+}
+
+func NewClient() (*Client, error)
+
+func (*Client) Send(ctx context.Context, value string) error
+
+type Config struct {
+	Enabled bool
+	Value *string
+	// contains filtered or unexported fields
+}
+
+// Alias of example.com/sample/v2/internal/model.Record.
+type Record struct {
+	Name string
+	// contains filtered or unexported fields
+}
+
+func NewRecord() Record
+
+func (*Record) Reset()
+```
+
+## Package arm/policy
+
+```go
+package policy
+
+type ARM string
+```
+
+## Package policy
+
+```go
+package policy
+
+type Policy string
+```

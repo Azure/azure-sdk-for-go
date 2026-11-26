@@ -158,6 +158,28 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |[ClientAssertionCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientAssertionCredential)|Authenticate a service principal with a signed client assertion
 |[ClientCertificateCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientCertificateCredential)|Authenticate a service principal with a certificate
 |[ClientSecretCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#ClientSecretCredential)|Authenticate a service principal with a secret
+|[GitHubActionsCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#GitHubActionsCredential)|Authenticate in a GitHub Actions workflow with workload identity federation
+
+#### GitHub Actions
+
+`GitHubActionsCredential` authenticates a Microsoft Entra application or user-assigned managed
+identity federated with a GitHub Actions workflow. Configure the federated identity credential as
+described in the [GitHub documentation](https://docs.github.com/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure),
+grant the workflow `permissions: id-token: write`, and set `AZURE_TENANT_ID` and `AZURE_CLIENT_ID`.
+GitHub provides `ACTIONS_ID_TOKEN_REQUEST_URL` and `ACTIONS_ID_TOKEN_REQUEST_TOKEN` automatically.
+
+```go
+cred, err := azidentity.NewGitHubActionsCredential(nil)
+if err != nil {
+  // handle error
+}
+```
+
+The credential derives the federation audience from the authority host set in `ClientOptions.Cloud`
+or `AZURE_AUTHORITY_HOST`, defaulting to Azure Public. Supported clouds are Azure Public, Azure China,
+Azure US Government, France Government, Germany Government, and Singapore Government.
+`GitHubActionsCredential` isn't included in `DefaultAzureCredential`; use it directly or in a
+`ChainedTokenCredential`.
 
 ### Authenticating Users
 

@@ -1,5 +1,10 @@
 # Release History
 
+## 1.8.0-beta.2 (Unreleased)
+
+### Bugs Fixed
+* Fixed a nil pointer dereference in `directory.Client.SetAccessControlRecursive`, `UpdateAccessControlRecursive` and `RemoveAccessControlRecursive` when the service omits `directoriesSuccessful`, `filesSuccessful` or `failureCount` from a response. A missing count is now treated as zero.
+
 ## 1.8.0-beta.1 (2026-11-13)
 
 ### Features Added

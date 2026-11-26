@@ -121,7 +121,7 @@ func (c *ClusterVersionsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsListResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsResultListResult, req)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ func (c *ClusterVersionsServerTransport) dispatchGetByEnvironment(req *http.Requ
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsListResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsResultListResult, req)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +193,7 @@ func (c *ClusterVersionsServerTransport) dispatchList(req *http.Request) (*http.
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsListResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsResultListResult, req)
 	if err != nil {
 		return nil, err
 	}
@@ -232,7 +232,7 @@ func (c *ClusterVersionsServerTransport) dispatchListByEnvironment(req *http.Req
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsListResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterCodeVersionsResultListResult, req)
 	if err != nil {
 		return nil, err
 	}

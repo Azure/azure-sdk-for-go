@@ -82,25 +82,25 @@ type ApplicationsClientUpdateResponse struct {
 // ClusterVersionsClientGetByEnvironmentResponse contains the response from method ClusterVersionsClient.GetByEnvironment.
 type ClusterVersionsClientGetByEnvironmentResponse struct {
 	// The response of a ClusterCodeVersions list operation.
-	ClusterCodeVersionsListResult
+	ClusterCodeVersionsResultListResult
 }
 
 // ClusterVersionsClientGetResponse contains the response from method ClusterVersionsClient.Get.
 type ClusterVersionsClientGetResponse struct {
 	// The response of a ClusterCodeVersions list operation.
-	ClusterCodeVersionsListResult
+	ClusterCodeVersionsResultListResult
 }
 
 // ClusterVersionsClientListByEnvironmentResponse contains the response from method ClusterVersionsClient.ListByEnvironment.
 type ClusterVersionsClientListByEnvironmentResponse struct {
 	// The response of a ClusterCodeVersions list operation.
-	ClusterCodeVersionsListResult
+	ClusterCodeVersionsResultListResult
 }
 
 // ClusterVersionsClientListResponse contains the response from method ClusterVersionsClient.List.
 type ClusterVersionsClientListResponse struct {
 	// The response of a ClusterCodeVersions list operation.
-	ClusterCodeVersionsListResult
+	ClusterCodeVersionsResultListResult
 }
 
 // ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.

@@ -101,7 +101,7 @@ func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response, succ
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsResultListResult); err != nil {
 		return ClusterVersionsClientGetResponse{}, err
 	}
 	return result, nil
@@ -170,7 +170,7 @@ func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.R
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsResultListResult); err != nil {
 		return ClusterVersionsClientGetByEnvironmentResponse{}, err
 	}
 	return result, nil
@@ -228,7 +228,7 @@ func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response, suc
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsResultListResult); err != nil {
 		return ClusterVersionsClientListResponse{}, err
 	}
 	return result, nil
@@ -292,7 +292,7 @@ func (client *ClusterVersionsClient) listByEnvironmentHandleResponse(resp *http.
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsResultListResult); err != nil {
 		return ClusterVersionsClientListByEnvironmentResponse{}, err
 	}
 	return result, nil

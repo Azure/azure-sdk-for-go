@@ -14,6 +14,7 @@ import logging
 import json
 import re
 import glob
+import shutil
 import urllib.request
 
 
@@ -152,6 +153,54 @@ def resolve_extra_dependencies(emitter_package: dict, unresolved: List[str], use
         logging.info(f"Resolved extra dependency {package_name} to version {version}")
 
 
+def build_and_pack_workspace_package(pkg_dir: Path, pnpm_cmd: str) -> Path:
+    """Build a workspace package if it defines a build script, pack it with pnpm,
+    and return the path to the generated .tgz."""
+    package_json_path = pkg_dir / "package.json"
+    with open(package_json_path, "r", encoding="utf-8") as f:
+        pkg_json = json.load(f)
+
+    if "build" in pkg_json.get("scripts", {}):
+        logging.info(f"Building workspace package at {pkg_dir}")
+        check_call([pnpm_cmd, "build"], cwd=str(pkg_dir))
+
+    logging.info(f"Packing workspace package at {pkg_dir}")
+    output = check_output([pnpm_cmd, "pack"], cwd=str(pkg_dir), text=True)
+    lines = [line.strip() for line in output.splitlines() if line.strip()]
+    if not lines:
+        raise RuntimeError(f"pnpm pack produced no output in {pkg_dir}")
+
+    tgz_candidate = Path(lines[-1])
+    tgz_path = tgz_candidate if tgz_candidate.is_absolute() else (pkg_dir / tgz_candidate)
+    if not tgz_path.exists():
+        raise FileNotFoundError(f"Packed .tgz not found at {tgz_path}")
+    return tgz_path
+
+
+def pack_workspace_dev_dependencies(emitter_package: dict, typespec_go_root: str) -> None:
+    """In dev mode, build and pack any sibling typespec-azure/packages/* workspace
+    packages listed in devDependencies and point both devDependencies and overrides
+    at their packed .tgz paths so npm/tsp-client uses the local dev builds."""
+    if not typespec_go_root or "devDependencies" not in emitter_package:
+        return
+
+    pnpm_cmd = shutil.which("pnpm") or "pnpm"
+    packages_root = Path(typespec_go_root).parent
+    overrides = emitter_package.setdefault("overrides", {})
+
+    for package_name in list(emitter_package["devDependencies"].keys()):
+        dir_name = package_name.split("/", 1)[-1]
+        pkg_dir = packages_root / dir_name
+        if not (pkg_dir / "package.json").exists():
+            continue
+
+        tgz_path = build_and_pack_workspace_package(pkg_dir, pnpm_cmd)
+        tgz_posix = tgz_path.absolute().as_posix()
+        emitter_package["devDependencies"][package_name] = tgz_posix
+        overrides[package_name] = tgz_posix
+        logging.info(f"Pinned dev workspace dependency {package_name} to {tgz_posix}")
+
+
 def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package: bool):
     # Load existing emitter-package.json
     emitter_package_path = Path(sdk_root) / "eng/emitter-package.json"
@@ -176,6 +225,7 @@ def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package
         # Update devDependencies in emitter_package
         unresolved = update_dev_dependencies(emitter_package, dev_deps)
         resolve_extra_dependencies(emitter_package, unresolved, use_dev_package=True, typespec_go_root=typespec_go_root)
+        pack_workspace_dev_dependencies(emitter_package, typespec_go_root)
 
         # Update emitter-package.json to use the dev package path
         emitter_package["dependencies"]["@azure-tools/typespec-go"] = typespec_go_tgz.absolute().as_posix()

@@ -6,6 +6,8 @@ const { readFileSync } = require("node:fs");
 const path = require("node:path");
 const { test } = require("node:test");
 const { routeReviewRequest, prepareReview } = require("./review-request.cjs");
+const { assertReviewCurrent } = require("./generated-provenance.cjs");
+const { assertReviewResults, prepareAgentOutput } = require("./review-output.cjs");
 
 const sha = "a".repeat(40);
 const nextSha = "b".repeat(40);
@@ -45,9 +47,10 @@ function fixture() {
     pr: {
       number: 42,
       state: "open",
-      base: { repo: { id: 1 } },
+      base: { repo: { id: 1 }, sha: nextSha, ref: "main" },
       head: { repo: { id: 2 }, sha },
       labels: [{ name: needed }],
+      draft: false, mergeable: true, mergeable_state: "clean",
     },
     events: [
       {
@@ -377,14 +380,118 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   ));
   const agent = config("GH_AW_SAFE_OUTPUTS_CONFIG");
   const publisher = config("GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG");
-  for (const handler of ["add_comment", "add_labels", "remove_labels"]) {
+  for (const handler of ["add_comment"]) {
     assert.equal(agent[handler].target, "${{ needs.validate_request.outputs.pr_number }}");
     assert.deepEqual(agent[handler], publisher[handler]);
   }
-  assert.deepEqual(agent.add_labels.allowed, ["mgmt-review-analyzed"]);
-  assert.deepEqual(agent.remove_labels.allowed, ["mgmt-review-in-progress"]);
+  for (const handler of ["add_labels", "remove_labels"]) {
+    assert.equal(agent[handler], undefined, "agents cannot change completion labels");
+    assert.equal(publisher[handler], undefined, "safe-output label actions cannot follow a failed comment");
+  }
   const safeOutputs = compiled.slice(compiled.indexOf("\n  safe_outputs:\n"));
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
+  assert.match(safeOutputs, /needs:\n(?:      - [\w-]+\n)*      - provenance\n/);
+  assert.ok(safeOutputs.indexOf("Checkout trusted provenance publisher") < safeOutputs.indexOf("Reject stale review outputs"));
+  assert.match(safeOutputs, /assertReviewCurrent/);
+  assert.match(safeOutputs, /if \(result.status !== 'pass'\)/);
+  assert.match(compiled, /^  agent:\n(?:    name:[^\n]*\n)?    needs:\n(?:      - [\w-]+\n)*      - provenance\n/m);
+});
+
+test("compiled blocker reporting is independent of the agent and threat detection", () => {
+  const source = text("mgmt-review.md");
+  const compiled = text("mgmt-review.lock.yml");
+  assert.match(source, /^if: .*needs\.provenance\.outputs\.status == 'pass' && needs\.review_checks\.outputs\.status == 'completed'"?$/m);
+  assert.match(compiled, /^  activation:\n(?:    name:[^\n]*\n)?    needs:\n(?:      - [\w-]+\n)*      - provenance\n/m);
+  const agent = compiled.split("\n  agent:\n")[1].split("\n  conclusion:\n")[0];
+  const condition = (job) => job.match(/^    if: ([^\n]*(?:\n      [^\n]+)*)/m)[1]
+    .replace(/^>\s*/, "").replace(/\n\s+/g, " ").trim();
+  const agentCondition = condition(agent);
+  assert.match(agentCondition, /needs\.provenance\.outputs\.status == 'pass'/);
+  assert.match(agentCondition, /!cancelled\(\) && !failure\(\)/);
+  const eligible = new Function("needs", "failure", "cancelled", `return ${agentCondition};`);
+  const needs = {
+    activation: { outputs: { daily_ai_credits_exceeded: "false" } },
+    validate_request: { outputs: { ready: "true" } },
+    provenance: { outputs: { status: "pass" } },
+    provenance_report: { result: "skipped" },
+    review_checks: { outputs: { status: "completed" } },
+    review_checks_report: { result: "skipped" },
+  };
+  assert.equal(eligible(needs, () => false, () => false), true, "skipping the blocker reporter must not skip the agent");
+  assert.equal(eligible(needs, () => true, () => false), false, "upstream failures must still block the agent");
+  assert.equal(eligible(needs, () => false, () => true), false, "cancellation must still block the agent");
+  needs.review_checks.outputs.status = "pending";
+  assert.equal(eligible(needs, () => false, () => false), false, "pending CI must use the deterministic reporter");
+  needs.review_checks.outputs.status = "completed";
+  needs.provenance.outputs.status = "manual-edits";
+  assert.equal(eligible(needs, () => false, () => false), false, "non-passing results must not run the agent");
+  const report = compiled.split("\n  provenance_report:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.ok(report, "compiled workflow has a separate trusted reporting job");
+  const dependencies = report.match(/^    needs:\n((?:      - [\w-]+\n)+)/m)?.[1];
+  assert.ok(dependencies);
+  assert.deepEqual([...dependencies.matchAll(/- ([\w-]+)/g)].map((match) => match[1]).sort(),
+    ["provenance", "validate_request"]);
+  assert.match(condition(report), /needs\.provenance\.outputs\.status != 'pass'/);
+  assert.match(condition(report), /!cancelled\(\)/);
+  const reportEligible = new Function("needs", "cancelled", `return ${condition(report)};`);
+  assert.equal(reportEligible({
+    validate_request: { outputs: { ready: "true" }, result: "success" },
+    provenance: { outputs: {}, result: "failure" },
+  }, () => false), true, "failed provenance setup without outputs still reports");
+  assert.match(report, /publishProvenance/);
+  assert.match(report, /ref: \$\{\{ github.sha \}\}/);
+  assert.doesNotMatch(report, /needs\.(agent|activation|detection)|GH_AW_AGENT_OUTPUT|GH_AW_DETECTION/);
+  const mechanicalReport = compiled.split("\n  review_checks_report:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.ok(mechanicalReport, "pending CI and execution failures have a trusted reporter");
+  assert.match(condition(mechanicalReport), /!cancelled\(\)/);
+  assert.match(condition(mechanicalReport), /needs\.review_checks\.outputs\.status != 'completed'/);
+  assert.doesNotMatch(mechanicalReport, /needs\.(agent|activation|detection)|GH_AW_AGENT_OUTPUT|GH_AW_DETECTION/);
+  const safeOutputs = compiled.split("\n  safe_outputs:\n")[1];
+  assert.match(safeOutputs, /REVIEW_CHECKS: \$\{\{ needs.review_checks.outputs.result \}\}/);
+  assert.ok(safeOutputs.indexOf("Setup agent output environment variable") < safeOutputs.indexOf("Reject stale review outputs"));
+  assert.match(safeOutputs, /prepareAgentOutput/);
+  const reviewChecks = compiled.split("\n  review_checks:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.match(reviewChecks, /AZURE_DEVOPS_PAT: \$\{\{ secrets.AZURE_DEVOPS_PAT \}\}/);
+  assert.equal(compiled.split("${{ secrets.AZURE_DEVOPS_PAT }}").length - 1, 1, "ADO credentials belong only to the trusted review step");
+});
+
+test("completion labels require successful safe outputs and a confirmed comment ID", () => {
+  const compiled = text("mgmt-review.lock.yml");
+  const complete = compiled.split("\n  review_complete:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.ok(complete);
+  assert.match(complete, /- safe_outputs/);
+  assert.match(complete, /completePublishedReview/);
+  assert.match(complete, /REVIEW_COMMENT_ID: \$\{\{ needs.safe_outputs.outputs.comment_id \}\}/);
+  let condition = complete.match(/^    if: ([^\n]*(?:\n      [^\n]+)*)/m)[1]
+    .replace(/^>\s*/, "").replace(/\n\s+/g, " ").trim();
+  if (condition.startsWith('"')) condition = JSON.parse(condition);
+  condition = condition.replace(/^\$\{\{\s*|\s*\}\}$/g, "");
+  assert.match(condition, /needs.safe_outputs.result == 'success'/);
+  assert.match(condition, /needs.safe_outputs.outputs.comment_id != ''/);
+  const eligible = new Function("needs", "success", `return ${condition};`);
+  const needs = { safe_outputs: { result: "success", outputs: { comment_id: "123" } },
+    detection: { result: "success", outputs: { detection_success: "true" } } };
+  assert.equal(eligible(needs, () => true), true);
+  needs.safe_outputs.outputs.comment_id = "";
+  assert.equal(eligible(needs, () => true), false, "skipped or cancelled comment creation leaves labels unchanged");
+  needs.safe_outputs = { result: "failure", outputs: { comment_id: "123" } };
+  assert.equal(eligible(needs, () => true), false, "failed publication leaves labels unchanged");
+  const agent = compiled.split("\n  agent:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.doesNotMatch(agent, /- review_complete/, "completion must not become an agent prerequisite");
+});
+
+test("reviewer can read current PR content without allowing other repositories", () => {
+  const source = text("mgmt-review.md");
+  const github = source.match(/^tools:\n  github:\n((?:    [^\n]*\n)+)/m)?.[1];
+  assert.ok(github, "source configures GitHub tools");
+  assert.match(github, /^    min-integrity: none$/m);
+  assert.match(github, /^    allowed-repos: "\$\{\{ github.repository \}\}"$/m);
+  const compiled = text("mgmt-review.lock.yml");
+  const config = compiled.match(/"guard-policies": \{\s*"allow-only": (\{[\s\S]*?\n\s+\})/);
+  assert.ok(config, "compiled reviewer configures a GitHub guard policy");
+  const policy = JSON.parse(config[1].replace(/\$\{GH_AW_GUARD_[A-Z_]+\}/g, "[]"));
+  assert.equal(policy["min-integrity"], "none", "PR files and diffs must not be filtered");
+  assert.deepEqual(policy.repos, ["${{ github.repository }}"], "only the workflow repository is accessible");
 });
 
 test("reviewer scopes unendorsed PR content reads and write sinks to the current repository", () => {
@@ -425,12 +532,29 @@ test("collector credentials stay outside the agent and detection environments", 
 test("the actual safe-output guard cleans up rejected reviews without consuming new requests", async (t) => {
   const source = text("mgmt-review.md");
   const script = source.split("    - name: Reject stale review outputs\n")[1]
-    .split("  threat-detection:")[0].split("        script: |\n")[1]
+    .split("\n  threat-detection:")[0].split("        script: |\n")[1]
     .split("\n").map((line) => line.slice(10)).join("\n");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-  const guard = new AsyncFunction("github", "context", "process", "core", script);
-  const process = { env: { REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: sha } };
-  const run = (state) => guard(state.github, state.context, process, state.core);
+  const guard = new AsyncFunction("require", "github", "context", "process", "core", script);
+  const provenance = {
+    status: "pass", pr_number: 42, head_sha: sha, base_sha: nextSha, base_ref: "main", findings: [], errors: [],
+  };
+  const review = {
+    pr_number: 42, head_sha: sha, base_sha: nextSha, base_ref: "main", status: "completed",
+    modules: [], onboarding: [], breaking_changes: [], mergeability_errors: [], errors: [],
+    draft: { status: "ready" }, pipeline: { status: "completed", failures: [], classification_required: false },
+    mergeable: true, mergeable_state: "clean",
+  };
+  const mockRequire = (name) => {
+    if (name === "./eng/tools/pr-review/generated-provenance.cjs") return { assertReviewCurrent };
+    if (name === "./eng/tools/pr-review/review-output.cjs") return { assertReviewResults, prepareAgentOutput };
+    assert.equal(name, "node:fs");
+    return { readFileSync: () => '{"items":[{"type":"add_comment","body":"## PR is ready to merge"}]}', writeFileSync: () => {} };
+  };
+  const run = (state, result = provenance) => guard(mockRequire, state.github, state.context, { env: {
+    REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: sha, REVIEW_PROVENANCE: JSON.stringify(result),
+    REVIEW_CHECKS: JSON.stringify(review), GH_AW_AGENT_OUTPUT: "agent_output.json",
+  } }, state.core);
 
   await t.test("current head proceeds without removing labels", async () => {
     const state = fixture();
@@ -442,7 +566,15 @@ test("the actual safe-output guard cleans up rejected reviews without consuming 
 
   for (const [name, mutate] of [
     ["changed head", (state) => state.pr.head.sha = nextSha],
+    ["changed base SHA", (state) => state.pr.base.sha = "c".repeat(40)],
+    ["retargeted base ref at the same SHA", (state) => state.pr.base.ref = "release"],
     ["closed PR", (state) => state.pr.state = "closed"],
+    ["returned to draft", (state) => state.pr.draft = true],
+    ["new merge block", (state) => state.pr.mergeable_state = "blocked"],
+    ["new merge conflict", (state) => state.pr.mergeable = false],
+    ["unknown mergeability", (state) => state.pr.mergeable_state = "unknown"],
+    ["unavailable mergeability", (state) => state.pr.mergeable = null],
+    ["unavailable draft state", (state) => delete state.pr.draft],
   ]) {
     await t.test(name, async () => {
       const state = fixture();
@@ -457,6 +589,12 @@ test("the actual safe-output guard cleans up rejected reviews without consuming 
       }]);
     });
   }
+
+  await t.test("non-passing results cannot publish agent outputs", async () => {
+    const state = fixture();
+    await assert.rejects(run(state, { ...provenance, status: "unverifiable", errors: ["API unavailable"] }),
+      /Non-passing provenance/);
+  });
 
   await t.test("already-absent in-progress label still rejects stale output", async () => {
     const state = fixture();

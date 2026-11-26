@@ -1,6 +1,6 @@
-# Azure Professionalservice Module for Go
+# Azure Professional Service Module for Go
 
-The `armprofessionalservice` module provides operations for working with Azure Professionalservice.
+The `armprofessionalservice` module provides operations for working with Azure Professional Service.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/professionalservice/armprofessionalservice)
 
@@ -15,7 +15,7 @@ The `armprofessionalservice` module provides operations for working with Azure P
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Professionalservice module:
+Install the Azure Professional Service module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/professionalservice/armprofessionalservice
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/professionalservice
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Professionalservice.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Professional Service.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Professionalservice module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Professional Service module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armprofessionalservice.NewClientFactory(<subscription ID>, cred, nil)

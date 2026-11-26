@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed `BeginCreateSnapshot` poller results losing the key and label of each `SettingFilter` in `Snapshot.Filters`.
 
 ### Other Changes
 

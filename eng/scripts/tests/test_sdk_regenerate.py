@@ -84,7 +84,6 @@ class TestSdkRegenerate(unittest.TestCase):
 
             calls = []
             with (
-                patch("sdk_regenerate.shutil.which", return_value="npx"),
                 patch("sdk_regenerate.check_call", side_effect=lambda cmd, cwd=None: calls.append((cmd, cwd))),
                 patch("sdk_regenerate.get_registry_latest_version", return_value="0.14.0"),
             ):
@@ -102,22 +101,7 @@ class TestSdkRegenerate(unittest.TestCase):
             self.assertEqual(updated["devDependencies"]["@azure-tools/typespec-liftr-base"], "0.14.0")
             self.assertEqual(updated["devDependencies"]["@typespec/compiler"], "1.18.0")
             self.assertNotIn("overrides", updated)
-            self.assertEqual(
-                calls,
-                [
-                    (
-                        [
-                            "npx",
-                            "--yes",
-                            "@azure-tools/typespec-bump-deps",
-                            "eng/emitter-package.json",
-                            "--add-npm-overrides",
-                        ],
-                        str(sdk_root),
-                    ),
-                    (["tsp-client", "generate-lock-file"], str(sdk_root)),
-                ],
-            )
+            self.assertEqual(calls, [(["tsp-client", "generate-lock-file"], str(sdk_root))])
 
     def test_update_emitter_package_released_mode(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -153,6 +137,55 @@ class TestSdkRegenerate(unittest.TestCase):
             self.assertEqual(updated["dependencies"]["@azure-tools/typespec-go"], "0.19.0")
             self.assertEqual(updated["devDependencies"]["@typespec/compiler"], "1.18.0")
             self.assertEqual(calls, [(["tsp-client", "generate-lock-file"], str(sdk_root))])
+
+    def test_update_emitter_package_next_version_runs_bump_deps_before_lock_file(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sdk_root = Path(tmpdir) / "azure-sdk-for-go"
+            (sdk_root / "eng").mkdir(parents=True)
+            emitter_package_path = sdk_root / "eng" / "emitter-package.json"
+            emitter_package_path.write_text(
+                json.dumps(
+                    {
+                        "main": "dist/src/index.js",
+                        "dependencies": {"@azure-tools/typespec-go": "0.18.0"},
+                        "devDependencies": {"@typespec/compiler": "1.17.0"},
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            calls = []
+            with (
+                patch(
+                    "sdk_regenerate.get_latest_typespec_go_package_info",
+                    return_value={
+                        "version": "0.19.0",
+                        "devDependencies": {"@typespec/compiler": "1.18.0"},
+                    },
+                ),
+                patch("sdk_regenerate.shutil.which", return_value="npx"),
+                patch("sdk_regenerate.check_call", side_effect=lambda cmd, cwd=None: calls.append((cmd, cwd))),
+            ):
+                sdk_regenerate.update_emitter_package(
+                    str(sdk_root), "", use_dev_package=False, use_next_version=True
+                )
+
+            self.assertEqual(
+                calls,
+                [
+                    (
+                        [
+                            "npx",
+                            "--yes",
+                            "@azure-tools/typespec-bump-deps",
+                            "eng/emitter-package.json",
+                            "--add-npm-overrides",
+                        ],
+                        str(sdk_root),
+                    ),
+                    (["tsp-client", "generate-lock-file"], str(sdk_root)),
+                ],
+            )
 
 
 if __name__ == "__main__":

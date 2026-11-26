@@ -65,6 +65,41 @@ type AccountsClientUpdateResponse struct {
 	Account
 }
 
+// ActiveDirectoryConfigsClientCreateOrUpdateResponse contains the response from method ActiveDirectoryConfigsClient.BeginCreateOrUpdate.
+type ActiveDirectoryConfigsClientCreateOrUpdateResponse struct {
+	// Active Directory Configuration resource
+	ActiveDirectoryConfig
+}
+
+// ActiveDirectoryConfigsClientDeleteResponse contains the response from method ActiveDirectoryConfigsClient.BeginDelete.
+type ActiveDirectoryConfigsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ActiveDirectoryConfigsClientGetResponse contains the response from method ActiveDirectoryConfigsClient.Get.
+type ActiveDirectoryConfigsClientGetResponse struct {
+	// Active Directory Configuration resource
+	ActiveDirectoryConfig
+}
+
+// ActiveDirectoryConfigsClientListByResourceGroupResponse contains the response from method ActiveDirectoryConfigsClient.NewListByResourceGroupPager.
+type ActiveDirectoryConfigsClientListByResourceGroupResponse struct {
+	// The response of a ActiveDirectoryConfig list operation.
+	ActiveDirectoryConfigListResult
+}
+
+// ActiveDirectoryConfigsClientListBySubscriptionResponse contains the response from method ActiveDirectoryConfigsClient.NewListBySubscriptionPager.
+type ActiveDirectoryConfigsClientListBySubscriptionResponse struct {
+	// The response of a ActiveDirectoryConfig list operation.
+	ActiveDirectoryConfigListResult
+}
+
+// ActiveDirectoryConfigsClientUpdateResponse contains the response from method ActiveDirectoryConfigsClient.BeginUpdate.
+type ActiveDirectoryConfigsClientUpdateResponse struct {
+	// Active Directory Configuration resource
+	ActiveDirectoryConfig
+}
+
 // BackupPoliciesClientCreateResponse contains the response from method BackupPoliciesClient.BeginCreate.
 type BackupPoliciesClientCreateResponse struct {
 	// Backup policy information
@@ -271,6 +306,388 @@ type CachesClientUpdateResponse struct {
 	Cache
 }
 
+// ClusterPeersClientGetResponse contains the response from method ClusterPeersClient.Get.
+type ClusterPeersClientGetResponse struct {
+	// Cluster Peer resource, represents a peer relationship between an external cluster and an Azure NetApp Files cluster
+	ClusterPeer
+}
+
+// ClusterPeersClientListByParentResponse contains the response from method ClusterPeersClient.NewListByParentPager.
+type ClusterPeersClientListByParentResponse struct {
+	// The response of a ClusterPeer list operation.
+	ClusterPeerListResult
+}
+
+// ElasticAccountsClientCreateOrUpdateResponse contains the response from method ElasticAccountsClient.BeginCreateOrUpdate.
+type ElasticAccountsClientCreateOrUpdateResponse struct {
+	// NetApp elastic account resource
+	ElasticAccount
+}
+
+// ElasticAccountsClientDeleteResponse contains the response from method ElasticAccountsClient.BeginDelete.
+type ElasticAccountsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticAccountsClientGetResponse contains the response from method ElasticAccountsClient.Get.
+type ElasticAccountsClientGetResponse struct {
+	// NetApp elastic account resource
+	ElasticAccount
+}
+
+// ElasticAccountsClientListByResourceGroupResponse contains the response from method ElasticAccountsClient.NewListByResourceGroupPager.
+type ElasticAccountsClientListByResourceGroupResponse struct {
+	// The response of a ElasticAccount list operation.
+	ElasticAccountListResult
+}
+
+// ElasticAccountsClientListBySubscriptionResponse contains the response from method ElasticAccountsClient.NewListBySubscriptionPager.
+type ElasticAccountsClientListBySubscriptionResponse struct {
+	// The response of a ElasticAccount list operation.
+	ElasticAccountListResult
+}
+
+// ElasticAccountsClientUpdateResponse contains the response from method ElasticAccountsClient.BeginUpdate.
+type ElasticAccountsClientUpdateResponse struct {
+	// NetApp elastic account resource
+	ElasticAccount
+}
+
+// ElasticBackupPoliciesClientCreateOrUpdateResponse contains the response from method ElasticBackupPoliciesClient.BeginCreateOrUpdate.
+type ElasticBackupPoliciesClientCreateOrUpdateResponse struct {
+	// NetApp Elastic Backup Policy resource
+	ElasticBackupPolicy
+}
+
+// ElasticBackupPoliciesClientDeleteResponse contains the response from method ElasticBackupPoliciesClient.BeginDelete.
+type ElasticBackupPoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticBackupPoliciesClientGetResponse contains the response from method ElasticBackupPoliciesClient.Get.
+type ElasticBackupPoliciesClientGetResponse struct {
+	// NetApp Elastic Backup Policy resource
+	ElasticBackupPolicy
+}
+
+// ElasticBackupPoliciesClientListByElasticAccountResponse contains the response from method ElasticBackupPoliciesClient.NewListByElasticAccountPager.
+type ElasticBackupPoliciesClientListByElasticAccountResponse struct {
+	// The response of a ElasticBackupPolicy list operation.
+	ElasticBackupPolicyListResult
+}
+
+// ElasticBackupPoliciesClientUpdateResponse contains the response from method ElasticBackupPoliciesClient.BeginUpdate.
+type ElasticBackupPoliciesClientUpdateResponse struct {
+	// NetApp Elastic Backup Policy resource
+	ElasticBackupPolicy
+}
+
+// ElasticBackupVaultsClientCreateOrUpdateResponse contains the response from method ElasticBackupVaultsClient.BeginCreateOrUpdate.
+type ElasticBackupVaultsClientCreateOrUpdateResponse struct {
+	// NetApp elastic backup vault resource
+	ElasticBackupVault
+}
+
+// ElasticBackupVaultsClientDeleteResponse contains the response from method ElasticBackupVaultsClient.BeginDelete.
+type ElasticBackupVaultsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticBackupVaultsClientGetResponse contains the response from method ElasticBackupVaultsClient.Get.
+type ElasticBackupVaultsClientGetResponse struct {
+	// NetApp elastic backup vault resource
+	ElasticBackupVault
+}
+
+// ElasticBackupVaultsClientListByElasticAccountResponse contains the response from method ElasticBackupVaultsClient.NewListByElasticAccountPager.
+type ElasticBackupVaultsClientListByElasticAccountResponse struct {
+	// The response of a ElasticBackupVault list operation.
+	ElasticBackupVaultListResult
+}
+
+// ElasticBackupVaultsClientUpdateResponse contains the response from method ElasticBackupVaultsClient.BeginUpdate.
+type ElasticBackupVaultsClientUpdateResponse struct {
+	// NetApp elastic backup vault resource
+	ElasticBackupVault
+}
+
+// ElasticBackupsClientCreateOrUpdateResponse contains the response from method ElasticBackupsClient.BeginCreateOrUpdate.
+type ElasticBackupsClientCreateOrUpdateResponse struct {
+	// NetApp Elastic Backup under an elastic Backup Vault
+	ElasticBackup
+}
+
+// ElasticBackupsClientDeleteResponse contains the response from method ElasticBackupsClient.BeginDelete.
+type ElasticBackupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticBackupsClientGetResponse contains the response from method ElasticBackupsClient.Get.
+type ElasticBackupsClientGetResponse struct {
+	// NetApp Elastic Backup under an elastic Backup Vault
+	ElasticBackup
+}
+
+// ElasticBackupsClientListByVaultResponse contains the response from method ElasticBackupsClient.NewListByVaultPager.
+type ElasticBackupsClientListByVaultResponse struct {
+	// The response of a ElasticBackup list operation.
+	ElasticBackupListResult
+}
+
+// ElasticBackupsClientUpdateResponse contains the response from method ElasticBackupsClient.BeginUpdate.
+type ElasticBackupsClientUpdateResponse struct {
+	// NetApp Elastic Backup under an elastic Backup Vault
+	ElasticBackup
+}
+
+// ElasticCapacityPoolsClientChangeZoneResponse contains the response from method ElasticCapacityPoolsClient.BeginChangeZone.
+type ElasticCapacityPoolsClientChangeZoneResponse struct {
+	// NetApp Elastic Capacity Pool resource
+	ElasticCapacityPool
+}
+
+// ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse contains the response from method ElasticCapacityPoolsClient.CheckVolumeFilePathAvailability.
+type ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse struct {
+	// Information regarding availability of a resource.
+	CheckElasticResourceAvailabilityResponse
+}
+
+// ElasticCapacityPoolsClientCreateOrUpdateResponse contains the response from method ElasticCapacityPoolsClient.BeginCreateOrUpdate.
+type ElasticCapacityPoolsClientCreateOrUpdateResponse struct {
+	// NetApp Elastic Capacity Pool resource
+	ElasticCapacityPool
+}
+
+// ElasticCapacityPoolsClientDeleteResponse contains the response from method ElasticCapacityPoolsClient.BeginDelete.
+type ElasticCapacityPoolsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticCapacityPoolsClientGetResponse contains the response from method ElasticCapacityPoolsClient.Get.
+type ElasticCapacityPoolsClientGetResponse struct {
+	// NetApp Elastic Capacity Pool resource
+	ElasticCapacityPool
+}
+
+// ElasticCapacityPoolsClientListByElasticAccountResponse contains the response from method ElasticCapacityPoolsClient.NewListByElasticAccountPager.
+type ElasticCapacityPoolsClientListByElasticAccountResponse struct {
+	// The response of a ElasticCapacityPool list operation.
+	ElasticCapacityPoolListResult
+}
+
+// ElasticCapacityPoolsClientUpdateResponse contains the response from method ElasticCapacityPoolsClient.BeginUpdate.
+type ElasticCapacityPoolsClientUpdateResponse struct {
+	// NetApp Elastic Capacity Pool resource
+	ElasticCapacityPool
+}
+
+// ElasticSnapshotPoliciesClientCreateOrUpdateResponse contains the response from method ElasticSnapshotPoliciesClient.BeginCreateOrUpdate.
+type ElasticSnapshotPoliciesClientCreateOrUpdateResponse struct {
+	// NetApp Elastic Snapshot Policy under an Elastic Account
+	ElasticSnapshotPolicy
+}
+
+// ElasticSnapshotPoliciesClientDeleteResponse contains the response from method ElasticSnapshotPoliciesClient.BeginDelete.
+type ElasticSnapshotPoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticSnapshotPoliciesClientGetResponse contains the response from method ElasticSnapshotPoliciesClient.Get.
+type ElasticSnapshotPoliciesClientGetResponse struct {
+	// NetApp Elastic Snapshot Policy under an Elastic Account
+	ElasticSnapshotPolicy
+}
+
+// ElasticSnapshotPoliciesClientListByElasticAccountResponse contains the response from method ElasticSnapshotPoliciesClient.NewListByElasticAccountPager.
+type ElasticSnapshotPoliciesClientListByElasticAccountResponse struct {
+	// The response of a ElasticSnapshotPolicy list operation.
+	ElasticSnapshotPolicyListResult
+}
+
+// ElasticSnapshotPoliciesClientListElasticVolumesResponse contains the response from method ElasticSnapshotPoliciesClient.NewListElasticVolumesPager.
+type ElasticSnapshotPoliciesClientListElasticVolumesResponse struct {
+	// Elastic Volumes associated with Elastic Snapshot Policy
+	ElasticSnapshotPolicyVolumeList
+}
+
+// ElasticSnapshotPoliciesClientUpdateResponse contains the response from method ElasticSnapshotPoliciesClient.BeginUpdate.
+type ElasticSnapshotPoliciesClientUpdateResponse struct {
+	// NetApp Elastic Snapshot Policy under an Elastic Account
+	ElasticSnapshotPolicy
+}
+
+// ElasticSnapshotsClientCreateOrUpdateResponse contains the response from method ElasticSnapshotsClient.BeginCreateOrUpdate.
+type ElasticSnapshotsClientCreateOrUpdateResponse struct {
+	// NetApp Elastic Snapshot under an Elastic Volume
+	ElasticSnapshot
+}
+
+// ElasticSnapshotsClientDeleteResponse contains the response from method ElasticSnapshotsClient.BeginDelete.
+type ElasticSnapshotsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticSnapshotsClientGetResponse contains the response from method ElasticSnapshotsClient.Get.
+type ElasticSnapshotsClientGetResponse struct {
+	// NetApp Elastic Snapshot under an Elastic Volume
+	ElasticSnapshot
+}
+
+// ElasticSnapshotsClientListByElasticVolumeResponse contains the response from method ElasticSnapshotsClient.NewListByElasticVolumePager.
+type ElasticSnapshotsClientListByElasticVolumeResponse struct {
+	// The response of a ElasticSnapshot list operation.
+	ElasticSnapshotListResult
+}
+
+// ElasticVolumesClientCreateOrUpdateResponse contains the response from method ElasticVolumesClient.BeginCreateOrUpdate.
+type ElasticVolumesClientCreateOrUpdateResponse struct {
+	// NetApp Elastic Volume resource
+	ElasticVolume
+}
+
+// ElasticVolumesClientDeleteResponse contains the response from method ElasticVolumesClient.BeginDelete.
+type ElasticVolumesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ElasticVolumesClientGetResponse contains the response from method ElasticVolumesClient.Get.
+type ElasticVolumesClientGetResponse struct {
+	// NetApp Elastic Volume resource
+	ElasticVolume
+}
+
+// ElasticVolumesClientListByElasticPoolResponse contains the response from method ElasticVolumesClient.NewListByElasticPoolPager.
+type ElasticVolumesClientListByElasticPoolResponse struct {
+	// The response of a ElasticVolume list operation.
+	ElasticVolumeListResult
+}
+
+// ElasticVolumesClientRevertResponse contains the response from method ElasticVolumesClient.BeginRevert.
+type ElasticVolumesClientRevertResponse struct {
+	// NetApp Elastic Volume resource
+	ElasticVolume
+}
+
+// ElasticVolumesClientUpdateResponse contains the response from method ElasticVolumesClient.BeginUpdate.
+type ElasticVolumesClientUpdateResponse struct {
+	// NetApp Elastic Volume resource
+	ElasticVolume
+}
+
+// ExternalCacheConnectionsClientCreateOrUpdateResponse contains the response from method ExternalCacheConnectionsClient.BeginCreateOrUpdate.
+type ExternalCacheConnectionsClientCreateOrUpdateResponse struct {
+	// External Cache Connection resource, representing a cache connection relationship between External and Azure NetApp Files
+	// volumes
+	ExternalCacheConnection
+}
+
+// ExternalCacheConnectionsClientDeleteResponse contains the response from method ExternalCacheConnectionsClient.BeginDelete.
+type ExternalCacheConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExternalCacheConnectionsClientGetResponse contains the response from method ExternalCacheConnectionsClient.Get.
+type ExternalCacheConnectionsClientGetResponse struct {
+	// External Cache Connection resource, representing a cache connection relationship between External and Azure NetApp Files
+	// volumes
+	ExternalCacheConnection
+}
+
+// ExternalCacheConnectionsClientListByResourceGroupResponse contains the response from method ExternalCacheConnectionsClient.NewListByResourceGroupPager.
+type ExternalCacheConnectionsClientListByResourceGroupResponse struct {
+	// List of External Cache Connection resources
+	ExternalCacheConnectionList
+}
+
+// ExternalCacheConnectionsClientListBySubscriptionResponse contains the response from method ExternalCacheConnectionsClient.NewListBySubscriptionPager.
+type ExternalCacheConnectionsClientListBySubscriptionResponse struct {
+	// List of External Cache Connection resources
+	ExternalCacheConnectionList
+}
+
+// ExternalCacheConnectionsClientUpdateResponse contains the response from method ExternalCacheConnectionsClient.BeginUpdate.
+type ExternalCacheConnectionsClientUpdateResponse struct {
+	// External Cache Connection resource, representing a cache connection relationship between External and Azure NetApp Files
+	// volumes
+	ExternalCacheConnection
+}
+
+// ExternalCachesClientGetResponse contains the response from method ExternalCachesClient.Get.
+type ExternalCachesClientGetResponse struct {
+	// External Cache resource, representing a cache volume on an external ONTAP system
+	ExternalCache
+}
+
+// ExternalCachesClientListByParentResponse contains the response from method ExternalCachesClient.NewListByParentPager.
+type ExternalCachesClientListByParentResponse struct {
+	// The response of a ExternalCache list operation.
+	ExternalCacheListResult
+}
+
+// ExternalClustersClientCreateOrUpdateResponse contains the response from method ExternalClustersClient.BeginCreateOrUpdate.
+type ExternalClustersClientCreateOrUpdateResponse struct {
+	// External Cluster resource, representing a cluster on an external NetApp ONTAP system
+	ExternalCluster
+}
+
+// ExternalClustersClientDeleteResponse contains the response from method ExternalClustersClient.BeginDelete.
+type ExternalClustersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExternalClustersClientGetResponse contains the response from method ExternalClustersClient.Get.
+type ExternalClustersClientGetResponse struct {
+	// External Cluster resource, representing a cluster on an external NetApp ONTAP system
+	ExternalCluster
+}
+
+// ExternalClustersClientListByResourceGroupResponse contains the response from method ExternalClustersClient.NewListByResourceGroupPager.
+type ExternalClustersClientListByResourceGroupResponse struct {
+	// List of External Cluster resources
+	ExternalClusterList
+}
+
+// ExternalClustersClientListBySubscriptionResponse contains the response from method ExternalClustersClient.NewListBySubscriptionPager.
+type ExternalClustersClientListBySubscriptionResponse struct {
+	// List of External Cluster resources
+	ExternalClusterList
+}
+
+// ExternalClustersClientUpdateResponse contains the response from method ExternalClustersClient.BeginUpdate.
+type ExternalClustersClientUpdateResponse struct {
+	// External Cluster resource, representing a cluster on an external NetApp ONTAP system
+	ExternalCluster
+}
+
+// ExternalSVMsClientCreateOrUpdateResponse contains the response from method ExternalSVMsClient.BeginCreateOrUpdate.
+type ExternalSVMsClientCreateOrUpdateResponse struct {
+	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
+	ExternalSVM
+}
+
+// ExternalSVMsClientDeleteResponse contains the response from method ExternalSVMsClient.BeginDelete.
+type ExternalSVMsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExternalSVMsClientGetResponse contains the response from method ExternalSVMsClient.Get.
+type ExternalSVMsClientGetResponse struct {
+	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
+	ExternalSVM
+}
+
+// ExternalSVMsClientListByParentResponse contains the response from method ExternalSVMsClient.NewListByParentPager.
+type ExternalSVMsClientListByParentResponse struct {
+	// The response of a ExternalSvm list operation.
+	ExternalSvmListResult
+}
+
+// ExternalSVMsClientUpdateResponse contains the response from method ExternalSVMsClient.BeginUpdate.
+type ExternalSVMsClientUpdateResponse struct {
+	// External SVM (Storage Virtual Machine, Vserver) resource, representing an SVM on an external NetApp ONTAP system
+	ExternalSVM
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -410,6 +827,18 @@ type ResourceUsagesClientGetResponse struct {
 type ResourceUsagesClientListResponse struct {
 	// Usages result
 	UsagesListResult
+}
+
+// SVMPeersClientGetResponse contains the response from method SVMPeersClient.Get.
+type SVMPeersClientGetResponse struct {
+	// SVM Peer resource, represents a peer relationship between an external SVM and an Azure NetApp Files SVM
+	SVMPeer
+}
+
+// SVMPeersClientListByParentResponse contains the response from method SVMPeersClient.NewListByParentPager.
+type SVMPeersClientListByParentResponse struct {
+	// The response of a SvmPeer list operation.
+	SvmPeerListResult
 }
 
 // SnapshotPoliciesClientCreateResponse contains the response from method SnapshotPoliciesClient.Create.

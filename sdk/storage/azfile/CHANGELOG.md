@@ -18,6 +18,7 @@
 ### Bugs Fixed
 * Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 * Fixed `NewListFilesAndDirectoriesPager` failing the whole page when the service returned a file name, directory name or prefix with a malformed URL encoding. The value is now returned as sent by the service.
+* Fixed WASM compilation by using heap-allocated buffers on JS targets.
 
 ### Other Changes
 * Updated `azcore` version to `1.23.2`

@@ -4,9 +4,11 @@
 # Migrated from the Azure DevOps sdk-regenerate.yml pipeline that previously lived
 # in Azure/autorest.go and now lives alongside the SDK it regenerates.
 #
-# Two emitter modes (mirroring the original pipeline):
-#   * released (default): pin eng/emitter-package.json to the latest published
+# Three emitter modes:
+#   * latest (default): pin eng/emitter-package.json to the latest published
 #     @azure-tools/typespec-go from npm.
+#   * next: bump TypeSpec dependencies in eng/emitter-package.json to @next via
+#     @azure-tools/typespec-bump-deps (without checking out or building typespec-azure).
 #   * dev: build the emitter from an Azure/typespec-azure branch, `pnpm pack` it,
 #     and point eng/emitter-package.json at the resulting tarball.
 
@@ -34,6 +36,9 @@ parameters:
   - name: UseDevPackage
     default: false
     type: boolean
+  - name: UseNextVersion
+    default: false
+    type: boolean
   - name: TypeSpecAzureRef
     displayName: "Azure/typespec-azure branch to build the dev emitter from (dev mode only)"
     type: string
@@ -52,11 +57,15 @@ variables:
         value: $(Build.SourcesDirectory)/azure-sdk-for-go
       - name: emitterRoot
         value: $(Build.SourcesDirectory)/typespec-azure/packages/typespec-go
+      - name: scriptDirectory
+        value: azure-sdk-for-go/eng/common/scripts
   - ${{ else }}:
       - name: sdkRoot
         value: $(Build.SourcesDirectory)
       - name: emitterRoot
         value: ''
+      - name: scriptDirectory
+        value: eng/common/scripts
 
 pool:
   name: $(LINUXPOOL)
@@ -125,7 +134,7 @@ jobs:
         displayName: 'Install tsp-client'
 
       - script: |
-          python3 $(sdkRoot)/eng/scripts/sdk_regenerate.py --sdk-root=$(sdkRoot) --typespec-go-root="$(emitterRoot)" --use-latest-spec=${{ parameters.UseLatestSpec }} --service-filter="${{ parameters.ServiceFilter }}" --use-dev-package=${{ parameters.UseDevPackage }} --result-file=$(Build.ArtifactStagingDirectory)/regenerate-sdk-result.json
+          python3 $(sdkRoot)/eng/scripts/sdk_regenerate.py --sdk-root=$(sdkRoot) --typespec-go-root="$(emitterRoot)" --use-latest-spec=${{ parameters.UseLatestSpec }} --service-filter="${{ parameters.ServiceFilter }}" --use-dev-package=${{ parameters.UseDevPackage }} --use-next-version=${{ parameters.UseNextVersion }} --result-file=$(Build.ArtifactStagingDirectory)/regenerate-sdk-result.json
         displayName: 'Generate SDK'
         workingDirectory: $(sdkRoot)
 
@@ -142,6 +151,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
         parameters:
           WorkingDirectory: $(sdkRoot)
+          ScriptDirectory: $(scriptDirectory)
           RepoOwner: Azure
           RepoName: azure-sdk-for-go
           PROwner: Azure

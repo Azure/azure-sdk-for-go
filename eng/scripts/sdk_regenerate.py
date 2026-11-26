@@ -14,6 +14,7 @@ import logging
 import json
 import re
 import glob
+import shutil
 import urllib.request
 
 
@@ -152,7 +153,7 @@ def resolve_extra_dependencies(emitter_package: dict, unresolved: List[str], use
         logging.info(f"Resolved extra dependency {package_name} to version {version}")
 
 
-def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package: bool):
+def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package: bool, use_next_version: bool = False):
     # Load existing emitter-package.json
     emitter_package_path = Path(sdk_root) / "eng/emitter-package.json"
     if not emitter_package_path.exists():
@@ -203,7 +204,21 @@ def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package
     # Write the updated emitter-package.json
     with open(emitter_package_path, "w", encoding="utf-8") as f:
         json.dump(emitter_package, f, indent=2)
-    
+
+    if use_next_version:
+        logging.info("Bumping TypeSpec dependencies to @next via @azure-tools/typespec-bump-deps")
+        npx_cmd = shutil.which("npx") or "npx"
+        check_call(
+            [
+                npx_cmd,
+                "--yes",
+                "@azure-tools/typespec-bump-deps",
+                "eng/emitter-package.json",
+                "--add-npm-overrides",
+            ],
+            cwd=sdk_root,
+        )
+
     # Update emitter-package-lock.json
     logging.info("Update emitter-package-lock.json")
     try:
@@ -425,7 +440,7 @@ def regenerate_sdk(use_latest_spec: bool, service_filter: str, sdk_root: str, ty
     return result
 
 
-def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_filter: str, use_dev_package: bool, result_file: str):
+def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_filter: str, use_dev_package: bool, result_file: str, use_next_version: bool = False):
     # Configure logging for better pipeline visibility
     logging.basicConfig(
         level=logging.INFO,
@@ -439,7 +454,7 @@ def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_fi
     # that invokes this script. This script is responsible only for updating
     # eng/emitter-package.json and regenerating the SDKs, leaving the resulting
     # changes in the working tree for the pipeline to commit.
-    update_emitter_package(sdk_root, typespec_go_root, use_dev_package)
+    update_emitter_package(sdk_root, typespec_go_root, use_dev_package, use_next_version=use_next_version)
     result = regenerate_sdk(use_latest_spec, service_filter, sdk_root, typespec_go_root)
     # The regeneration report is a build artifact, not part of the SDK change set.
     # The pipeline points --result-file outside the SDK working tree so it is never
@@ -489,6 +504,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--use-next-version",
+        help="Whether to bump TypeSpec dependencies to @next using @azure-tools/typespec-bump-deps",
+        type=lambda x: x.lower() == 'true',
+        default=False,
+    )
+
+    parser.add_argument(
         "--result-file",
         help="Path to write the regeneration report JSON to. Point this outside the "
              "SDK working tree so it is not committed to the pull request.",
@@ -498,4 +520,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    main(args.sdk_root, args.typespec_go_root, args.use_latest_spec, args.service_filter, args.use_dev_package, args.result_file)
+    main(args.sdk_root, args.typespec_go_root, args.use_latest_spec, args.service_filter, args.use_dev_package, args.result_file, args.use_next_version)

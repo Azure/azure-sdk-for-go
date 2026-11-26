@@ -473,15 +473,6 @@ type Cluster struct {
 	Type *string
 }
 
-// ClusterCodeVersionsListResult - The response of a ClusterCodeVersions list operation.
-type ClusterCodeVersionsListResult struct {
-	// REQUIRED; The ClusterCodeVersions items on this page
-	Value []*ClusterCodeVersionsResult
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // ClusterCodeVersionsResult - The result of the Service Fabric runtime versions
 type ClusterCodeVersionsResult struct {
 	// The identification of the result
@@ -495,6 +486,15 @@ type ClusterCodeVersionsResult struct {
 
 	// The result resource type
 	Type *string
+}
+
+// ClusterCodeVersionsResultListResult - The response of a ClusterCodeVersions list operation.
+type ClusterCodeVersionsResultListResult struct {
+	// REQUIRED; The ClusterCodeVersions items on this page
+	Value []*ClusterCodeVersionsResult
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ClusterHealthPolicy - Defines a health policy used to evaluate the health of the cluster or of a cluster node.

@@ -762,11 +762,14 @@ func TestPlatformManaged(t *testing.T) {
 	certName := getName(t, "platformmanaged")
 	dnsName := "sanitized.example.invalid"
 	policy := azcertificates.CertificatePolicy{
-		PlatformManaged: azcertificates.NewPlatformManaged("PublicTLSServerAuth", map[string]any{
-			"sans": map[string]any{
-				"dns_names": []string{dnsName},
+		PlatformManaged: &azcertificates.PlatformManaged{
+			CertificateUsage: to.Ptr("PublicTLSServerAuth"),
+			Metadata: map[string]any{
+				"sans": map[string]any{
+					"dns_names": []string{dnsName},
+				},
 			},
-		}),
+		},
 	}
 	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
 	testSerde(t, &createParams)

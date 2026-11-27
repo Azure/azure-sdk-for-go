@@ -1,5 +1,18 @@
 # Release History
 
+## 1.1.0-beta.3 (2026-11-23)
+### Features Added
+
+- New enum type `AllocationStrategy` with values `AllocationStrategyCapacityOptimized`, `AllocationStrategyLowestPrice`, `AllocationStrategyPrioritized`
+- New enum type `DiskCachingType` with values `DiskCachingTypeNone`, `DiskCachingTypeReadOnly`, `DiskCachingTypeReadWrite`
+- New function `*NodeTypesClient.BeginReimageAllDisks(ctx context.Context, resourceGroupName string, clusterName string, nodeTypeName string, parameters ReimageAllDisksParameters, options *NodeTypesClientBeginReimageAllDisksOptions) (*runtime.Poller[NodeTypesClientReimageAllDisksResponse], error)`
+- New struct `ReimageAllDisksParameters`
+- New struct `SKUProfile`
+- New struct `SKUProfileVMSize`
+- New field `DataDiskCaching`, `DataDiskIOPSReadWrite`, `DataDiskMBpsReadWrite`, `DataDiskWriteAcceleratorEnabled`, `SKUProfile` in struct `NodeTypeProperties`
+- New field `Caching`, `DiskIOPSReadWrite`, `DiskMBpsReadWrite`, `WriteAcceleratorEnabled` in struct `VmssDataDisk`
+
+
 ## 1.1.0-beta.2 (2026-08-31)
 ### Other Changes
 

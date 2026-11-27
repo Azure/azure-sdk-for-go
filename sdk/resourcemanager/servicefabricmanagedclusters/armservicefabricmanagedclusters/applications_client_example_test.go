@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ApplicationPutOperation_example_max.json
+// Generated from example definition: 2026-09-01-preview/ApplicationPutOperation_example_max.json
 func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumPa
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationPutOperation_example_min.json
+// Generated from example definition: 2026-09-01-preview/ApplicationPutOperation_example_min.json
 func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumPa
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationDeleteOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationDeleteOperation_example.json
 func ExampleApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleApplicationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionFetchHealth_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationActionFetchHealth_example.json
 func ExampleApplicationsClient_BeginFetchHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleApplicationsClient_BeginFetchHealth() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionGetUpgrade_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationActionGetUpgrade_example.json
 func ExampleApplicationsClient_BeginReadUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +271,7 @@ func ExampleApplicationsClient_BeginReadUpgrade() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionRestartDeployedCodePackage_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationActionRestartDeployedCodePackage_example.json
 func ExampleApplicationsClient_BeginRestartDeployedCodePackage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +298,7 @@ func ExampleApplicationsClient_BeginRestartDeployedCodePackage() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionResumeUpgrade_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationActionResumeUpgrade_example.json
 func ExampleApplicationsClient_BeginResumeUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleApplicationsClient_BeginResumeUpgrade() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionStartRollback_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationActionStartRollback_example.json
 func ExampleApplicationsClient_BeginStartRollback() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +342,7 @@ func ExampleApplicationsClient_BeginStartRollback() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationPatchOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationPatchOperation_example.json
 func ExampleApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,7 +426,7 @@ func ExampleApplicationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationActionUpdateUpgrade_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationActionUpdateUpgrade_example.json
 func ExampleApplicationsClient_BeginUpdateUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,7 +476,7 @@ func ExampleApplicationsClient_BeginUpdateUpgrade() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationGetOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationGetOperation_example.json
 func ExampleApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,7 +544,7 @@ func ExampleApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ApplicationListOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ApplicationListOperation_example.json
 func ExampleApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

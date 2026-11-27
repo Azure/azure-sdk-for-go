@@ -19,7 +19,7 @@ import (
 // ManagedApplyMaintenanceWindowClient contains the methods for the ManagedApplyMaintenanceWindow group.
 // Don't use this type directly, use NewManagedApplyMaintenanceWindowClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-09-01-preview
 type ManagedApplyMaintenanceWindowClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *ManagedApplyMaintenanceWindowClient) postCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

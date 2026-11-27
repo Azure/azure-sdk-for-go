@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterPutOperation_example_max.json
+// Generated from example definition: 2026-09-01-preview/ManagedClusterPutOperation_example_max.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterPutOperation_example_min.json
+// Generated from example definition: 2026-09-01-preview/ManagedClusterPutOperation_example_min.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,7 +442,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumPara
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterDeleteOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ManagedClusterDeleteOperation_example.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,7 +463,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/ManagedClusterStartFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/ManagedClusterStartFaultSimulation_example.json
 func ExampleManagedClustersClient_BeginStartFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -491,7 +491,7 @@ func ExampleManagedClustersClient_BeginStartFaultSimulation() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/ManagedClusterStopFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/ManagedClusterStopFaultSimulation_example.json
 func ExampleManagedClustersClient_BeginStopFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +514,7 @@ func ExampleManagedClustersClient_BeginStopFaultSimulation() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterPatchOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ManagedClusterPatchOperation_example.json
 func ExampleManagedClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +636,7 @@ func ExampleManagedClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterGetOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ManagedClusterGetOperation_example.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -720,7 +720,7 @@ func ExampleManagedClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/ManagedClusterGetFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/ManagedClusterGetFaultSimulation_example.json
 func ExampleManagedClustersClient_GetFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +772,7 @@ func ExampleManagedClustersClient_GetFaultSimulation() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterListByResourceGroupOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ManagedClusterListByResourceGroupOperation_example.json
 func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -886,7 +886,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ManagedClusterListBySubscriptionOperation_example.json
+// Generated from example definition: 2026-09-01-preview/ManagedClusterListBySubscriptionOperation_example.json
 func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1000,7 +1000,7 @@ func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/ManagedClusterListFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/ManagedClusterListFaultSimulation_example.json
 func ExampleManagedClustersClient_NewListFaultSimulationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

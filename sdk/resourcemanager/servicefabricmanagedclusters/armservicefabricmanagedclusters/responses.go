@@ -287,6 +287,11 @@ type NodeTypesClientRedeployResponse struct {
 	// placeholder for future response values
 }
 
+// NodeTypesClientReimageAllDisksResponse contains the response from method NodeTypesClient.BeginReimageAllDisks.
+type NodeTypesClientReimageAllDisksResponse struct {
+	// placeholder for future response values
+}
+
 // NodeTypesClientReimageResponse contains the response from method NodeTypesClient.BeginReimage.
 type NodeTypesClientReimageResponse struct {
 	// placeholder for future response values

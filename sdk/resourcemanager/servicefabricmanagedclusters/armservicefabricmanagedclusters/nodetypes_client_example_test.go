@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationAutoScale_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperationAutoScale_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParamet
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationCustomImage_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperationCustomImage_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCustomVMImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCu
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationDedicatedHost_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperationDedicatedHost_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() 
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationStateless_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperationStateless_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTemporaryDiskForServiceFabric() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,7 +426,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTempor
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationVmImagePlan_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperationVmImagePlan_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -497,7 +497,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperation_example_max.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperation_example_max.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,16 +512,24 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 		Properties: &armservicefabricmanagedclusters.NodeTypeProperties{
 			AdditionalDataDisks: []*armservicefabricmanagedclusters.VmssDataDisk{
 				{
-					DiskLetter: to.Ptr("F"),
-					DiskSizeGB: to.Ptr[int32](256),
-					DiskType:   to.Ptr(armservicefabricmanagedclusters.DiskTypeStandardSSDLRS),
-					Lun:        to.Ptr[int32](1),
+					DiskLetter:              to.Ptr("F"),
+					DiskSizeGB:              to.Ptr[int32](256),
+					DiskType:                to.Ptr(armservicefabricmanagedclusters.DiskTypeStandardSSDLRS),
+					Lun:                     to.Ptr[int32](1),
+					Caching:                 to.Ptr(armservicefabricmanagedclusters.DiskCachingTypeReadOnly),
+					WriteAcceleratorEnabled: to.Ptr(false),
+					DiskIOPSReadWrite:       to.Ptr[int32](3000),
+					DiskMBpsReadWrite:       to.Ptr[int32](125),
 				},
 				{
-					DiskLetter: to.Ptr("G"),
-					DiskSizeGB: to.Ptr[int32](150),
-					DiskType:   to.Ptr(armservicefabricmanagedclusters.DiskTypePremiumLRS),
-					Lun:        to.Ptr[int32](2),
+					DiskLetter:              to.Ptr("G"),
+					DiskSizeGB:              to.Ptr[int32](150),
+					DiskType:                to.Ptr(armservicefabricmanagedclusters.DiskTypePremiumLRS),
+					Lun:                     to.Ptr[int32](2),
+					Caching:                 to.Ptr(armservicefabricmanagedclusters.DiskCachingTypeReadOnly),
+					WriteAcceleratorEnabled: to.Ptr(false),
+					DiskIOPSReadWrite:       to.Ptr[int32](3000),
+					DiskMBpsReadWrite:       to.Ptr[int32](125),
 				},
 			},
 			AdditionalNetworkInterfaceConfigurations: []*armservicefabricmanagedclusters.AdditionalNetworkInterfaceConfiguration{
@@ -679,7 +687,24 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 				to.Ptr(armservicefabricmanagedclusters.VMSetupActionEnableContainers),
 				to.Ptr(armservicefabricmanagedclusters.VMSetupActionEnableHyperV),
 			},
-			VMSize: to.Ptr("Standard_DS3"),
+			VMSize: to.Ptr("Mix"),
+			SKUProfile: &armservicefabricmanagedclusters.SKUProfile{
+				VMSizes: []*armservicefabricmanagedclusters.SKUProfileVMSize{
+					{
+						Name: to.Ptr("Standard_D2s_v3"),
+						Rank: to.Ptr[int32](1),
+					},
+					{
+						Name: to.Ptr("Standard_D4s_v3"),
+						Rank: to.Ptr[int32](2),
+					},
+				},
+				AllocationStrategy: to.Ptr(armservicefabricmanagedclusters.AllocationStrategyPrioritized),
+			},
+			DataDiskCaching:                 to.Ptr(armservicefabricmanagedclusters.DiskCachingTypeReadOnly),
+			DataDiskWriteAcceleratorEnabled: to.Ptr(false),
+			DataDiskIOPSReadWrite:           to.Ptr[int32](5000),
+			DataDiskMBpsReadWrite:           to.Ptr[int32](200),
 		},
 	}, nil)
 	if err != nil {
@@ -704,12 +729,20 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// 					DiskSizeGB: to.Ptr[int32](256),
 	// 					DiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypeStandardSSDLRS),
 	// 					Lun: to.Ptr[int32](1),
+	// 					Caching: to.Ptr(armservicefabricmanagedclusters.DiskCachingTypeReadOnly),
+	// 					WriteAcceleratorEnabled: to.Ptr(false),
+	// 					DiskIOPSReadWrite: to.Ptr[int32](3000),
+	// 					DiskMBpsReadWrite: to.Ptr[int32](125),
 	// 				},
 	// 				{
 	// 					DiskLetter: to.Ptr("G"),
 	// 					DiskSizeGB: to.Ptr[int32](150),
 	// 					DiskType: to.Ptr(armservicefabricmanagedclusters.DiskTypePremiumLRS),
 	// 					Lun: to.Ptr[int32](2),
+	// 					Caching: to.Ptr(armservicefabricmanagedclusters.DiskCachingTypeReadOnly),
+	// 					WriteAcceleratorEnabled: to.Ptr(false),
+	// 					DiskIOPSReadWrite: to.Ptr[int32](3000),
+	// 					DiskMBpsReadWrite: to.Ptr[int32](125),
 	// 				},
 	// 			},
 	// 			AdditionalNetworkInterfaceConfigurations: []*armservicefabricmanagedclusters.AdditionalNetworkInterfaceConfiguration{
@@ -865,12 +898,29 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// 				to.Ptr(armservicefabricmanagedclusters.VMSetupActionEnableContainers),
 	// 				to.Ptr(armservicefabricmanagedclusters.VMSetupActionEnableHyperV),
 	// 			},
-	// 			VMSize: to.Ptr("Standard_DS3"),
+	// 			VMSize: to.Ptr("Mix"),
 	// 			Zones: []*string{
 	// 				to.Ptr("1"),
 	// 				to.Ptr("2"),
 	// 				to.Ptr("3"),
 	// 			},
+	// 			SKUProfile: &armservicefabricmanagedclusters.SKUProfile{
+	// 				VMSizes: []*armservicefabricmanagedclusters.SKUProfileVMSize{
+	// 					{
+	// 						Name: to.Ptr("Standard_D2s_v3"),
+	// 						Rank: to.Ptr[int32](1),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Standard_D4s_v3"),
+	// 						Rank: to.Ptr[int32](2),
+	// 					},
+	// 				},
+	// 				AllocationStrategy: to.Ptr(armservicefabricmanagedclusters.AllocationStrategyPrioritized),
+	// 			},
+	// 			DataDiskCaching: to.Ptr(armservicefabricmanagedclusters.DiskCachingTypeReadOnly),
+	// 			DataDiskWriteAcceleratorEnabled: to.Ptr(false),
+	// 			DataDiskIOPSReadWrite: to.Ptr[int32](5000),
+	// 			DataDiskMBpsReadWrite: to.Ptr[int32](200),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -878,7 +928,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePutOperation_example_min.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePutOperation_example_min.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -939,7 +989,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameter
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/DeallocateNodes_example.json
+// Generated from example definition: 2026-09-01-preview/DeallocateNodes_example.json
 func ExampleNodeTypesClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -965,7 +1015,7 @@ func ExampleNodeTypesClient_BeginDeallocate() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypeDeleteOperation_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypeDeleteOperation_example.json
 func ExampleNodeTypesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -986,7 +1036,7 @@ func ExampleNodeTypesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/DeleteNodes_example.json
+// Generated from example definition: 2026-09-01-preview/DeleteNodes_example.json
 func ExampleNodeTypesClient_BeginDeleteNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +1062,7 @@ func ExampleNodeTypesClient_BeginDeleteNode() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/RedeployNodes_UD_example.json
+// Generated from example definition: 2026-09-01-preview/RedeployNodes_UD_example.json
 func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1035,7 +1085,7 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/RedeployNodes_example.json
+// Generated from example definition: 2026-09-01-preview/RedeployNodes_example.json
 func ExampleNodeTypesClient_BeginRedeploy_redeployNodes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1061,7 +1111,7 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployNodes() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ReimageNodes_UD_example.json
+// Generated from example definition: 2026-09-01-preview/ReimageNodes_UD_example.json
 func ExampleNodeTypesClient_BeginReimage_reimageAllNodesByUpgradeDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1084,7 +1134,7 @@ func ExampleNodeTypesClient_BeginReimage_reimageAllNodesByUpgradeDomain() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ReimageNodes_example.json
+// Generated from example definition: 2026-09-01-preview/ReimageNodes_example.json
 func ExampleNodeTypesClient_BeginReimage_reimageNodes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1110,7 +1160,33 @@ func ExampleNodeTypesClient_BeginReimage_reimageNodes() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/RestartNodes_example.json
+// Generated from example definition: 2026-09-01-preview/ReimageAllDisks_example.json
+func ExampleNodeTypesClient_BeginReimageAllDisks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNodeTypesClient().BeginReimageAllDisks(ctx, "resRg", "myCluster", "BE", armservicefabricmanagedclusters.ReimageAllDisksParameters{
+		Nodes: []*string{
+			to.Ptr("BE_0"),
+		},
+		Force: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-09-01-preview/RestartNodes_example.json
 func ExampleNodeTypesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1136,7 +1212,7 @@ func ExampleNodeTypesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StartNodes_example.json
+// Generated from example definition: 2026-09-01-preview/StartNodes_example.json
 func ExampleNodeTypesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1162,7 +1238,7 @@ func ExampleNodeTypesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
 func ExampleNodeTypesClient_BeginStartFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1190,7 +1266,7 @@ func ExampleNodeTypesClient_BeginStartFaultSimulation() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
 func ExampleNodeTypesClient_BeginStopFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1213,7 +1289,7 @@ func ExampleNodeTypesClient_BeginStopFaultSimulation() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePatchOperationAutoScale_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePatchOperationAutoScale_example.json
 func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1313,7 +1389,7 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypePatchOperation_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypePatchOperation_example.json
 func ExampleNodeTypesClient_BeginUpdate_patchANodeType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1403,7 +1479,7 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeType() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypeGetOperation_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypeGetOperation_example.json
 func ExampleNodeTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1461,7 +1537,7 @@ func ExampleNodeTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
 func ExampleNodeTypesClient_GetFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1513,7 +1589,7 @@ func ExampleNodeTypesClient_GetFaultSimulation() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/NodeTypeListOperation_example.json
+// Generated from example definition: 2026-09-01-preview/NodeTypeListOperation_example.json
 func ExampleNodeTypesClient_NewListByManagedClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1627,7 +1703,7 @@ func ExampleNodeTypesClient_NewListByManagedClustersPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
+// Generated from example definition: 2026-09-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
 func ExampleNodeTypesClient_NewListFaultSimulationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

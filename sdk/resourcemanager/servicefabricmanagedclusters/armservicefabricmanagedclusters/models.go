@@ -1216,14 +1216,26 @@ type NodeTypeProperties struct {
 	// the node type name.
 	ComputerNamePrefix *string
 
+	// Specifies the caching requirements for the primary Service Fabric data disk. Possible values include: None, ReadOnly, ReadWrite.
+	DataDiskCaching *DiskCachingType
+
+	// Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+	DataDiskIOPSReadWrite *int32
+
 	// Managed data disk letter. It can not use the reserved letter C or D and it can not change after created.
 	DataDiskLetter *string
+
+	// Specifies the bandwidth in MB per second for the primary Service Fabric data disk.
+	DataDiskMBpsReadWrite *int32
 
 	// Disk size for the managed disk attached to the vms on the node type in GBs.
 	DataDiskSizeGB *int32
 
 	// Managed data disk type. Specifies the storage account type for the managed disk
 	DataDiskType *DiskType
+
+	// Specifies whether write accelerator should be enabled or disabled on the primary Service Fabric data disk.
+	DataDiskWriteAcceleratorEnabled *bool
 
 	// Specifies the resource id of the DSCP configuration to apply to the node type network interface.
 	DscpConfigurationID *string
@@ -1294,6 +1306,10 @@ type NodeTypeProperties struct {
 
 	// Specifies the settings for the proxy agent on the node type.
 	ProxyAgentSettings *ProxyAgentSettings
+
+	// Specifies the sku profile for the node type when vmSize is set to Mix. This allows specifying multiple VM sizes and an
+	// allocation strategy for Instance Mix scenarios.
+	SKUProfile *SKUProfile
 
 	// Specifies the scale in policy for the node type, which will be used when scale in happens on the cluster. If not specified,
 	// the default is Default which means the platform will decide which nodes to remove during scale in.
@@ -1513,6 +1529,15 @@ type ProxyAgentSettings struct {
 	WireServer *HostEndpointSettings
 }
 
+// ReimageAllDisksParameters - Parameters for the operation that reimages all disks on a single node.
+type ReimageAllDisksParameters struct {
+	// REQUIRED; The name of the node to reimage.
+	Nodes []*string
+
+	// Force the action to go through.
+	Force *bool
+}
+
 // ResourceAzStatus - Describes Az Resiliency status of Base resources
 type ResourceAzStatus struct {
 	// READ-ONLY; Zone resiliency status details for the resource.
@@ -1728,6 +1753,24 @@ type RuntimeUpdateApplicationUpgradeParameters struct {
 type SKU struct {
 	// REQUIRED; Sku Name.
 	Name *SKUName
+}
+
+// SKUProfile - Specifies the sku profile for Instance Mix scenarios on a node type.
+type SKUProfile struct {
+	// REQUIRED; Specifies the VM sizes for the node type.
+	VMSizes []*SKUProfileVMSize
+
+	// Specifies the allocation strategy for the VM sizes in the sku profile.
+	AllocationStrategy *AllocationStrategy
+}
+
+// SKUProfileVMSize - Specifies a VM size in the sku profile.
+type SKUProfileVMSize struct {
+	// REQUIRED; The name of the VM size. For example, Standard_D2s_v3.
+	Name *string
+
+	// Specifies the rank or priority of the VM size when allocationStrategy is Prioritized. Lower values indicate higher priority.
+	Rank *int32
 }
 
 // ScaleInPolicy - Scale in policy for a node type. This is used to specify the mode for scale in operations on a node type.
@@ -2445,6 +2488,18 @@ type VmssDataDisk struct {
 	// REQUIRED; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
 	// therefore must be unique for each data disk attached to a VM. Lun 0 is reserved for the service fabric data disk.
 	Lun *int32
+
+	// Specifies the caching requirements for the managed data disk. Possible values include: None, ReadOnly, ReadWrite.
+	Caching *DiskCachingType
+
+	// Specifies the Read-Write IOPS for the managed data disk.
+	DiskIOPSReadWrite *int32
+
+	// Specifies the bandwidth in MB per second for the managed data disk.
+	DiskMBpsReadWrite *int32
+
+	// Specifies whether write accelerator should be enabled or disabled on the managed data disk.
+	WriteAcceleratorEnabled *bool
 }
 
 // ZoneFaultSimulationContent - Parameters for Zone Fault Simulation action.

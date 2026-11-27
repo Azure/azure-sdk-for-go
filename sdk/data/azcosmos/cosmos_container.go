@@ -856,6 +856,13 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 // PK-range substatus trigger a cache refresh and bounded retry. The continuation
 // token is a multi-range composite; subsequent calls drain remaining ranges.
 //
+// When options.PartitionKey identifies one logical partition, FeedRange isn't
+// required and is ignored: requests carry the partition key without a
+// partition key range ID, so the service routes each one to the physical
+// partition that holds the key, and the continuation token tracks that key
+// alone.
+// A continuation token issued for a FeedRange can resume such a read.
+//
 // Returns ErrFeedRangeUnresolved (wrapped) when the customer's FeedRange/token
 // doesn't overlap any current physical range even after a forced refresh — a
 // signal to re-derive FeedRanges from ReadFeedRanges.
@@ -882,7 +889,11 @@ func (c *ContainerClient) ReadChangeFeed(
 	// ResourceID when a continuation token carries one to validate. Building
 	// the initial queue takes care of that lazily so the no-token path stays
 	// at one extra request (pk-ranges fetch).
-	token, partitionKeyRanges, err := c.buildChangeFeedInitialQueue(ctx, options)
+	pkEPK, err := c.changeFeedPartitionKeyEPK(ctx, options)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
+	token, partitionKeyRanges, err := c.buildChangeFeedInitialQueue(ctx, options, pkEPK)
 	if err != nil {
 		return ChangeFeedResponse{}, err
 	}
@@ -892,7 +903,7 @@ func (c *ContainerClient) ReadChangeFeed(
 	// serialization errors, ErrFeedRangeUnresolved) instead of recording
 	// success on every drain that actually failed.
 	var resp ChangeFeedResponse
-	resp, err = c.getChangeFeedForQueue(ctx, options, token, partitionKeyRanges)
+	resp, err = c.getChangeFeedForQueue(ctx, options, token, partitionKeyRanges, pkEPK)
 	return resp, err
 }
 

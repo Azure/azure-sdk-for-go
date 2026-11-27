@@ -6,9 +6,13 @@
 
 ### Features Added
 
+* `ContainerClient.ReadChangeFeed` no longer requires `ChangeFeedOptions.FeedRange` when `ChangeFeedOptions.PartitionKey` is set.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed `ContainerClient.ReadChangeFeed` failing with 410 Gone (substatus 1002) when `ChangeFeedOptions.PartitionKey` is set on a container with more than one physical partition. Requests now carry the partition key without a partition key range ID, so the service routes them to the physical partition that holds the key, including after a split, and the continuation token tracks only that partition key. A continuation token issued for a `FeedRange` can resume a partition key read.
 
 ### Other Changes
 

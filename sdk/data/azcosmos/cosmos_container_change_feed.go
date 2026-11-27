@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -21,11 +22,16 @@ import (
 // the drain loop can reuse it without re-fetching on every iteration; the
 // 410-retry path re-fetches on its own.
 //
+// When pkEPK is set, the read is scoped to one logical partition: the queue
+// holds a single entry for the point [pkEPK, pkEPK], FeedRange isn't needed,
+// and a continuation token is reduced to the entry that covers pkEPK.
+//
 // Returns (token, snapshot, nil) on success. Returns ErrFeedRangeUnresolved
 // (wrapped) when no overlap exists even after the cache is fresh.
 func (c *ContainerClient) buildChangeFeedInitialQueue(
 	ctx context.Context,
 	options *ChangeFeedOptions,
+	pkEPK string,
 ) (*compositeContinuationToken, []partitionKeyRange, error) {
 	// Path A: continuation token drives the queue.
 	if options.Continuation != nil && *options.Continuation != "" {
@@ -46,6 +52,17 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 				)
 			}
 			queue := append([]changeFeedRange(nil), compositeToken.Continuation...)
+			if pkEPK != "" {
+				scoped, scopeErr := scopeChangeFeedQueueToEPK(queue, pkEPK)
+				if scopeErr != nil {
+					return nil, nil, scopeErr
+				}
+				queue = scoped
+			} else if isPartitionKeyChangeFeedQueue(queue) {
+				// Without the partition key, the request would carry no key
+				// and the service would return the whole physical partition.
+				return nil, nil, errors.New("the continuation token was issued for a partition key read; set ChangeFeedOptions.PartitionKey to the same partition key to resume it")
+			}
 			token := compositeToken
 			token.Continuation = queue
 			// Populate ResourceID at construction time so the cross-container
@@ -56,7 +73,11 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 			}
 
 			// Fetch a PK-range snapshot for the drain loop. Reused so the
-			// loop doesn't issue an extra request per iteration.
+			// loop doesn't issue an extra request per iteration. Partition
+			// key reads are routed by the service and don't need one.
+			if pkEPK != "" {
+				return &token, nil, nil
+			}
 			pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
 			if err != nil {
 				return nil, nil, err
@@ -70,16 +91,23 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 		// will start fresh.
 	}
 
-	// Path B: FeedRange drives the queue.
-	if options.FeedRange == nil {
-		return nil, nil, fmt.Errorf("ReadChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
+	// Path B: PartitionKey or FeedRange drives the queue.
+	var entries []changeFeedRange
+	var pkrs []partitionKeyRange
+	if pkEPK != "" {
+		// The service routes partition key reads, so no routing map is needed.
+		entries = []changeFeedRange{{MinInclusive: pkEPK, MaxExclusive: pkEPK}}
+	} else {
+		if options.FeedRange == nil {
+			return nil, nil, fmt.Errorf("ReadChangeFeed requires a FeedRange or PartitionKey to be set in the options, or a continuation token that contains a composite continuation token")
+		}
+		children, ranges, err := c.resolveFeedRangeToChildren(ctx, *options.FeedRange)
+		if err != nil {
+			return nil, nil, err
+		}
+		pkrs = ranges
+		entries = buildChildQueueEntries(children, nil)
 	}
-
-	children, pkrs, err := c.resolveFeedRangeToChildren(ctx, *options.FeedRange)
-	if err != nil {
-		return nil, nil, err
-	}
-	entries := buildChildQueueEntries(children, nil)
 	// Populate ResourceID at construction time so a token persisted from a
 	// 304-only first call still triggers the cross-container guard on resume.
 	currentRID, ridErr := c.getContainerRID(ctx)
@@ -193,6 +221,12 @@ func clampChildrenToParent(children []partitionKeyRange, parent changeFeedRange)
 // length is fully consumed (with budget bumps on splits). On 410, refreshes
 // the cache, re-resolves the head, and retries — capped at maxPKRangeGoneRetries.
 //
+// When pkEPK is set, the queue holds one entry for that partition key, and
+// requests carry the partition key but no partition key range ID, so the
+// service routes each one to the physical partition that holds the key, as
+// the .NET and JavaScript SDKs do. Splits are therefore handled by the
+// service, and the entry is never split-expanded.
+//
 // partitionKeyRanges is the snapshot fetched once at the start of the call;
 // the loop reuses it instead of re-fetching per iteration. The 410-retry path
 // re-fetches and replaces the snapshot.
@@ -209,6 +243,7 @@ func (c *ContainerClient) getChangeFeedForQueue(
 	options *ChangeFeedOptions,
 	token *compositeContinuationToken,
 	partitionKeyRanges []partitionKeyRange,
+	pkEPK string,
 ) (ChangeFeedResponse, error) {
 	if token == nil || len(token.Continuation) == 0 {
 		return ChangeFeedResponse{}, fmt.Errorf("ReadChangeFeed has nothing to drain: no FeedRange and no continuation token entries")
@@ -256,61 +291,65 @@ func (c *ContainerClient) getChangeFeedForQueue(
 			break
 		}
 
-		// Resolve the head's EPK range to a single PK-range ID against the
-		// current routing-map snapshot.
-		headFeedRange := FeedRange{MinInclusive: head.MinInclusive, MaxExclusive: head.MaxExclusive}
-		overlaps := overlappingPartitionKeyRanges(headFeedRange, partitionKeyRanges)
-		if len(overlaps) == 0 {
-			// No overlap on the cached map. Force a refresh and re-fetch; if
-			// still no overlap, the head is unresolvable.
-			if c.database.client.getPKRangeCache() != nil {
-				if refreshErr := c.refreshPKRangeCache(ctx); refreshErr != nil {
-					return ChangeFeedResponse{}, refreshErr
-				}
-			}
-			pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
-			if err != nil {
-				return ChangeFeedResponse{}, err
-			}
-			partitionKeyRanges = pkrResp.PartitionKeyRanges
-			overlaps = overlappingPartitionKeyRanges(headFeedRange, partitionKeyRanges)
-			if len(overlaps) == 0 {
-				return ChangeFeedResponse{}, &feedRangeUnresolvedError{feedRange: headFeedRange}
-			}
-		}
-
+		// A partition key read names no physical partition; the service
+		// routes it by the partition key header.
 		var resolvedPKRangeID string
-		if len(overlaps) > 1 {
-			// Split-expansion. Replace the head with N children inheriting
-			// the head's ETag, and bump the rotation budget so newly-inserted
-			// children get visited in this call. Reset the 410 budget too —
-			// each newly-inserted child is a fresh physical head and deserves
-			// its own retry allowance. Children are clamped to the parent
-			// head's bounds to preserve the customer's original sub-range
-			// intent (matches Java's createChildRanges behavior).
-			clamped := clampChildrenToParent(overlaps, *head)
-			if len(clamped) == 0 {
-				// Defensive: every overlap fell outside the parent. Treat as
-				// unresolvable rather than spin in an empty loop.
-				return ChangeFeedResponse{}, &feedRangeUnresolvedError{feedRange: headFeedRange}
-			}
-			children := buildChildQueueEntries(clamped, head.ContinuationToken)
-			token.replaceHeadWithChildren(children)
-			originalQueueLen += len(children) - 1
-			if originalQueueLen > maxQueueLen {
-				// Hit the safety cap. This shouldn't happen in practice
-				// (bounded by the service's physical-partition limit), but a
-				// bug in overlap resolution producing duplicate children
-				// would otherwise spin forever. Return what we have so far.
-				if lastResp.RawResponse != nil {
-					return finalize(lastResp)
+		if pkEPK == "" {
+			// Resolve the head's EPK range to a single PK-range ID against the
+			// current routing-map snapshot.
+			headFeedRange := FeedRange{MinInclusive: head.MinInclusive, MaxExclusive: head.MaxExclusive}
+			overlaps := overlappingPartitionKeyRanges(headFeedRange, partitionKeyRanges)
+			if len(overlaps) == 0 {
+				// No overlap on the cached map. Force a refresh and re-fetch; if
+				// still no overlap, the head is unresolvable.
+				if c.database.client.getPKRangeCache() != nil {
+					if refreshErr := c.refreshPKRangeCache(ctx); refreshErr != nil {
+						return ChangeFeedResponse{}, refreshErr
+					}
 				}
-				return ChangeFeedResponse{}, fmt.Errorf("ReadChangeFeed: drain queue exceeded safety cap of %d entries; suspected overlap-resolution bug", maxQueueLen)
+				pkrResp, err := c.getPartitionKeyRanges(ctx, nil)
+				if err != nil {
+					return ChangeFeedResponse{}, err
+				}
+				partitionKeyRanges = pkrResp.PartitionKeyRanges
+				overlaps = overlappingPartitionKeyRanges(headFeedRange, partitionKeyRanges)
+				if len(overlaps) == 0 {
+					return ChangeFeedResponse{}, &feedRangeUnresolvedError{feedRange: headFeedRange}
+				}
 			}
-			pkRangeGoneAttempts = 0
-			continue
+
+			if len(overlaps) > 1 {
+				// Split-expansion. Replace the head with N children inheriting
+				// the head's ETag, and bump the rotation budget so newly-inserted
+				// children get visited in this call. Reset the 410 budget too —
+				// each newly-inserted child is a fresh physical head and deserves
+				// its own retry allowance. Children are clamped to the parent
+				// head's bounds to preserve the customer's original sub-range
+				// intent (matches Java's createChildRanges behavior).
+				clamped := clampChildrenToParent(overlaps, *head)
+				if len(clamped) == 0 {
+					// Defensive: every overlap fell outside the parent. Treat as
+					// unresolvable rather than spin in an empty loop.
+					return ChangeFeedResponse{}, &feedRangeUnresolvedError{feedRange: headFeedRange}
+				}
+				children := buildChildQueueEntries(clamped, head.ContinuationToken)
+				token.replaceHeadWithChildren(children)
+				originalQueueLen += len(children) - 1
+				if originalQueueLen > maxQueueLen {
+					// Hit the safety cap. This shouldn't happen in practice
+					// (bounded by the service's physical-partition limit), but a
+					// bug in overlap resolution producing duplicate children
+					// would otherwise spin forever. Return what we have so far.
+					if lastResp.RawResponse != nil {
+						return finalize(lastResp)
+					}
+					return ChangeFeedResponse{}, fmt.Errorf("ReadChangeFeed: drain queue exceeded safety cap of %d entries; suspected overlap-resolution bug", maxQueueLen)
+				}
+				pkRangeGoneAttempts = 0
+				continue
+			}
+			resolvedPKRangeID = overlaps[0].ID
 		}
-		resolvedPKRangeID = overlaps[0].ID
 
 		headers, headerErr := options.buildRequestHeaders(*head, resolvedPKRangeID)
 		if headerErr != nil {

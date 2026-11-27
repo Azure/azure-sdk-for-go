@@ -22,10 +22,17 @@ type ChangeFeedOptions struct {
 	StartFrom *time.Time
 
 	// PartitionKey is the logical partition key value for the request.
-	// Use this to read from a specific logical partition.
+	// Use this to read from a specific logical partition. When it identifies a
+	// single logical partition, FeedRange isn't required and is ignored, and the
+	// continuation token tracks only this partition key. To resume from that
+	// token, set the same PartitionKey with Continuation. A prefix of a
+	// hierarchical partition key still requires FeedRange, or a Continuation
+	// from a FeedRange read, and is sent to every physical partition it covers.
 	PartitionKey *PartitionKey
 
-	// Feed Range specifies the range of pk values that map to a logical partition.
+	// FeedRange specifies the range of effective partition key values to read.
+	// It's required unless Continuation is set or PartitionKey identifies a
+	// single logical partition.
 	FeedRange *FeedRange
 
 	// CompositeContinuation is used to continue reading the change feed from a specific point.

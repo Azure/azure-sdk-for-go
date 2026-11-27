@@ -6,9 +6,13 @@
 
 ### Features Added
 
+* `ContainerClient.ReadChangeFeed` no longer requires `ChangeFeedOptions.FeedRange` when `ChangeFeedOptions.PartitionKey` identifies a single logical partition. See [PR 28136](https://github.com/Azure/azure-sdk-for-go/pull/28136).
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed `ContainerClient.ReadChangeFeed` failing with 410 Gone (substatus 1002) when `ChangeFeedOptions.PartitionKey` identifies a single logical partition on a container with more than one physical partition. Requests now carry the partition key without a partition key range ID, so the service routes them to the physical partition that holds the key, including after a split, and the continuation token tracks only that partition key. Resuming from that token requires the same `PartitionKey`. A continuation token issued for a `FeedRange` can resume a partition key read. Prefixes of hierarchical partition keys are unchanged. See [PR 28136](https://github.com/Azure/azure-sdk-for-go/pull/28136).
 
 ### Other Changes
 

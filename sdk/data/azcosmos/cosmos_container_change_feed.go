@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -57,6 +58,10 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 					return nil, nil, scopeErr
 				}
 				queue = scoped
+			} else if isPartitionKeyChangeFeedQueue(queue) {
+				// Without the partition key, the request would carry no key
+				// and the service would return the whole physical partition.
+				return nil, nil, errors.New("the continuation token was issued for a partition key read; set ChangeFeedOptions.PartitionKey to the same partition key to resume it")
 			}
 			token := compositeToken
 			token.Continuation = queue

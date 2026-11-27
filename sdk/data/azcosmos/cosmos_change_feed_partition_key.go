@@ -82,3 +82,15 @@ func changeFeedRangeContainsEPK(entry changeFeedRange, value string) bool {
 	return epk.CompareEPK(entry.MinInclusive, value) <= 0 &&
 		epk.CompareEPK(value, normalizeMaxBoundary(entry.MaxExclusive)) < 0
 }
+
+// isPartitionKeyChangeFeedQueue reports whether queue was issued for a read
+// scoped to one partition key. Such a queue holds an entry whose bounds are
+// the same EPK point, which never describes a FeedRange.
+func isPartitionKeyChangeFeedQueue(queue []changeFeedRange) bool {
+	for _, entry := range queue {
+		if entry.MinInclusive == entry.MaxExclusive {
+			return true
+		}
+	}
+	return false
+}

@@ -202,6 +202,36 @@ func TestReadChangeFeed_PartitionKey_RejectsTokenForOtherKey(t *testing.T) {
 	assert.ErrorContains(t, err, "doesn't cover ChangeFeedOptions.PartitionKey")
 }
 
+// TestReadChangeFeed_PartitionKeyToken_RequiresPartitionKey checks that a
+// token from a partition key read can't resume without the partition key.
+// Without it the request would carry no key, so the error must say what's
+// missing instead of reporting an unresolved FeedRange.
+func TestReadChangeFeed_PartitionKeyToken_RequiresPartitionKey(t *testing.T) {
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+
+	recorder := &changeFeedRequestRecorder{}
+	ranges := []partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF", ResourceID: "testRID"}}
+	client := createChangeFeedTestClient(t, srv, []policy.Policy{recorder}, ranges)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	pkEPK := testPartitionKeyEPK(t, NewPartitionKeyString("customer-42"))
+	etag := azcore.ETag(`"etag-42"`)
+	tokenJSON, err := json.Marshal(compositeContinuationToken{
+		Version:      cosmosCompositeContinuationTokenVersion,
+		ResourceID:   "testRID",
+		Continuation: []changeFeedRange{{MinInclusive: pkEPK, MaxExclusive: pkEPK, ContinuationToken: &etag}},
+	})
+	require.NoError(t, err)
+	tokenStr := string(tokenJSON)
+
+	_, err = container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{Continuation: &tokenStr})
+	require.ErrorContains(t, err, "set ChangeFeedOptions.PartitionKey to the same partition key")
+	assert.NotErrorIs(t, err, ErrFeedRangeUnresolved)
+	assert.Empty(t, recorder.recorded(), "no change feed request may be sent without the partition key")
+}
+
 func TestScopeChangeFeedQueueToEPK(t *testing.T) {
 	etagA, etagB := azcore.ETag(`"a"`), azcore.ETag(`"b"`)
 	queue := []changeFeedRange{

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-06-preview/Operations_List_MaximumSet_Gen copy.json
+// Generated from example definition: 2026-10-16/Operations_List_MaximumSet_Gen copy.json
 func ExampleOperationsClient_NewListPager_twoOperationsListMaximumSetGenExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleOperationsClient_NewListPager_twoOperationsListMaximumSetGenExample(
 	}
 }
 
-// Generated from example definition: 2026-10-06-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-16/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
 	}
 }
 
-// Generated from example definition: 2026-10-06-preview/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-10-16/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumGenExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

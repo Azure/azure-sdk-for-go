@@ -48,48 +48,10 @@ func (c *ClientFactory) NewBulkCreateCustomClient() *BulkCreateCustomClient {
 	}
 }
 
-// NewOccurrenceExtensionClient creates a new instance of OccurrenceExtensionClient.
-func (c *ClientFactory) NewOccurrenceExtensionClient() *OccurrenceExtensionClient {
-	return &OccurrenceExtensionClient{
-		internal: c.internal,
-	}
-}
-
-// NewOccurrencesClient creates a new instance of OccurrencesClient.
-func (c *ClientFactory) NewOccurrencesClient() *OccurrencesClient {
-	return &OccurrencesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
-	}
-}
-
-// NewScheduledActionExtensionClient creates a new instance of ScheduledActionExtensionClient.
-func (c *ClientFactory) NewScheduledActionExtensionClient() *ScheduledActionExtensionClient {
-	return &ScheduledActionExtensionClient{
-		internal: c.internal,
-	}
-}
-
-// NewScheduledActionOperationStatusClient creates a new instance of ScheduledActionOperationStatusClient.
-func (c *ClientFactory) NewScheduledActionOperationStatusClient() *ScheduledActionOperationStatusClient {
-	return &ScheduledActionOperationStatusClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewScheduledActionsClient creates a new instance of ScheduledActionsClient.
-func (c *ClientFactory) NewScheduledActionsClient() *ScheduledActionsClient {
-	return &ScheduledActionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
 	}
 }
 

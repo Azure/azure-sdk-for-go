@@ -13,14 +13,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
 // BulkCreateCustomClient contains the methods for the BulkCreateCustom group.
 // Don't use this type directly, use NewBulkCreateCustomClient() instead.
 //
-// Generated from API version 2026-10-06-preview
+// Generated from API version 2026-10-16
 type BulkCreateCustomClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,116 +44,40 @@ func NewBulkCreateCustomClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginCancel - Cancels BulkCreateCustom instances that have not yet launched.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The location name.
-//   - name - The name of the BulkCreateCustom. The value must be an UUID.
-//   - options - BulkCreateCustomClientBeginCancelOptions contains the optional parameters for the BulkCreateCustomClient.BeginCancel
-//     method.
-func (client *BulkCreateCustomClient) BeginCancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginCancelOptions) (*runtime.Poller[BulkCreateCustomClientCancelResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.cancel(ctx, resourceGroupName, location, name, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BulkCreateCustomClientCancelResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BulkCreateCustomClientCancelResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// cancel - Cancels BulkCreateCustom instances that have not yet launched.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BulkCreateCustomClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginCancelOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BulkCreateCustomClient.BeginCancel"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.cancelCreateRequest(ctx, resourceGroupName, location, name, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// cancelCreateRequest creates the cancel request.
-func (client *BulkCreateCustomClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateCustomClientBeginCancelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/cancel"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261006Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginCreateOrUpdate - Creates or updates BulkCreateCustoms.
+// BeginCreate - Creates virtual machines in bulk with custom settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The location name.
 //   - name - The name of the BulkCreateCustom. The value must be an UUID.
 //   - resource - Resource create parameters.
-//   - options - BulkCreateCustomClientBeginCreateOrUpdateOptions contains the optional parameters for the BulkCreateCustomClient.BeginCreateOrUpdate
+//   - options - BulkCreateCustomClientBeginCreateOptions contains the optional parameters for the BulkCreateCustomClient.BeginCreate
 //     method.
-func (client *BulkCreateCustomClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*runtime.Poller[BulkCreateCustomClientCreateOrUpdateResponse], error) {
+func (client *BulkCreateCustomClient) BeginCreate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOptions) (*runtime.Poller[BulkCreateCustomClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, location, name, resource, options)
+		resp, err := client.create(ctx, resourceGroupName, location, name, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BulkCreateCustomClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BulkCreateCustomClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BulkCreateCustomClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BulkCreateCustomClientCreateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// createOrUpdate - Creates or updates BulkCreateCustoms.
+// create - Creates virtual machines in bulk with custom settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *BulkCreateCustomClient) create(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "BulkCreateCustomClient.BeginCreateOrUpdate"
+	const operationName = "BulkCreateCustomClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, location, name, resource, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, location, name, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +92,8 @@ func (client *BulkCreateCustomClient) createOrUpdate(ctx context.Context, resour
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the createOrUpdate request.
-func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, _ *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+// createCreateRequest creates the create request.
+func (client *BulkCreateCustomClient) createCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, _ *BulkCreateCustomClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -193,92 +116,13 @@ func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261006Preview)
+	reqQP.Set("api-version", version20261016)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
-	return req, nil
-}
-
-// BeginDelete - Deletes BulkCreateCustoms.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - location - The location name.
-//   - name - The name of the BulkCreateCustom. The value must be an UUID.
-//   - options - BulkCreateCustomClientBeginDeleteOptions contains the optional parameters for the BulkCreateCustomClient.BeginDelete
-//     method.
-func (client *BulkCreateCustomClient) BeginDelete(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*runtime.Poller[BulkCreateCustomClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, location, name, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BulkCreateCustomClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BulkCreateCustomClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// deleteOperation - Deletes BulkCreateCustoms.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BulkCreateCustomClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "BulkCreateCustomClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, location, name, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the delete request.
-func (client *BulkCreateCustomClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261006Preview)
-	if options != nil && options.DeleteInstances != nil {
-		reqQP.Set("deleteInstances", strconv.FormatBool(*options.DeleteInstances))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -330,7 +174,7 @@ func (client *BulkCreateCustomClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261006Preview)
+	reqQP.Set("api-version", version20261016)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -392,7 +236,7 @@ func (client *BulkCreateCustomClient) getAsyncOperationStatusCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261006Preview)
+	reqQP.Set("api-version", version20261016)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -468,7 +312,7 @@ func (client *BulkCreateCustomClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261006Preview)
+		reqQP.Set("api-version", version20261016)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -540,7 +384,7 @@ func (client *BulkCreateCustomClient) listBySubscriptionCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261006Preview)
+		reqQP.Set("api-version", version20261016)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -622,7 +466,7 @@ func (client *BulkCreateCustomClient) virtualMachinesGetOperationStatusCreateReq
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261006Preview)
+		reqQP.Set("api-version", version20261016)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

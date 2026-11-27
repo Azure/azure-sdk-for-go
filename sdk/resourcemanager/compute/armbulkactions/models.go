@@ -12,24 +12,6 @@ type APIEntityReference struct {
 	ID *string
 }
 
-// AcknowledgeBulkOperationErrorsRequest - The operations for which errors should be acknowledged.
-type AcknowledgeBulkOperationErrorsRequest struct {
-	// REQUIRED; The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
-	OperationIDs []*string
-}
-
-// AcknowledgeBulkOperationErrorsResponse - The result of acknowledging errors for specified operations.
-type AcknowledgeBulkOperationErrorsResponse struct {
-	// REQUIRED; The Bulk Action Operation Ids that identify operations with acknowledged errors.
-	Acknowledged []*string
-
-	// REQUIRED; The Bulk Action Operation Ids that were not found or are no longer available.
-	NotFound []*string
-
-	// REQUIRED; The Bulk Action Operation Ids that identify operations with errors that could not be acknowledged.
-	Skipped []*string
-}
-
 // AdditionalCapabilities - Enables or disables a capability on the virtual machine or virtual machine scale set.
 type AdditionalCapabilities struct {
 	// The flag that enables or disables hibernation capability on the VM.
@@ -364,13 +346,6 @@ type BulkactionVMProperties struct {
 	VMExtensions []*BulkactionVMExtension
 }
 
-// CancelOccurrenceRequest - Request body for canceling a recurring bulk action occurrence.
-type CancelOccurrenceRequest struct {
-	// REQUIRED; The resources for which operations should be canceled. An empty array cancels all operations for all resources
-	// for the occurrence.
-	ResourceIDs []*string
-}
-
 // CancelOperationsContent - The eligible operations to cancel.
 type CancelOperationsContent struct {
 	// REQUIRED; The Bulk Action Operation Ids that identify the operations to cancel.
@@ -539,15 +514,6 @@ type DeallocateResourceOperationResponse struct {
 	Results []*ResourceOperation
 }
 
-// DelayRequest - Request body for delaying a recurring bulk action occurrence.
-type DelayRequest struct {
-	// REQUIRED; The new date and time for the occurrence, including the UTC offset.
-	Delay *time.Time
-
-	// REQUIRED; The resources to delay. An empty array delays all resources in the occurrence.
-	ResourceIDs []*string
-}
-
 // DeleteResourceOperationResponse - The result of a bulk delete action.
 type DeleteResourceOperationResponse struct {
 	// REQUIRED; A description of the bulk action result.
@@ -609,24 +575,6 @@ type EncryptionIdentity struct {
 	UserAssignedIdentityResourceID *string
 }
 
-// Error - The error object.
-type Error struct {
-	// REQUIRED; One of a server-defined set of error codes.
-	Code *string
-
-	// REQUIRED; A human-readable representation of the error.
-	Message *string
-
-	// An array of details about specific errors that led to this reported error.
-	Details []*Error
-
-	// An object containing more specific information than the current object about the error.
-	Innererror *InnerError
-
-	// The target of the error.
-	Target *string
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -668,12 +616,8 @@ type ExecuteDeallocateContent struct {
 	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// The target virtual machines.
+	// REQUIRED; The target virtual machines.
 	Resources *Resources
-
-	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
-	// one must be specified.
-	ResourcesWithContext *ResourcesWithContext
 }
 
 // ExecuteDeleteContent - The virtual machines and execution settings for a bulk delete action.
@@ -681,15 +625,11 @@ type ExecuteDeleteContent struct {
 	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// Indicates whether Bulk Actions uses forced deletion for the target virtual machines.
-	ForceDeletion *bool
-
-	// The target virtual machines.
+	// REQUIRED; The target virtual machines.
 	Resources *Resources
 
-	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
-	// one must be specified.
-	ResourcesWithContext *ResourcesWithContext
+	// Indicates whether Bulk Actions uses forced deletion for the target virtual machines.
+	ForceDeletion *bool
 }
 
 // ExecuteHibernateContent - The virtual machines and execution settings for a bulk hibernate action.
@@ -697,28 +637,8 @@ type ExecuteHibernateContent struct {
 	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// The target virtual machines.
+	// REQUIRED; The target virtual machines.
 	Resources *Resources
-
-	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
-	// one must be specified.
-	ResourcesWithContext *ResourcesWithContext
-}
-
-// ExecuteReimageRequest - The virtual machines and configuration for a bulk reimage action.
-type ExecuteReimageRequest struct {
-	// REQUIRED; The execution settings for the bulk action.
-	ExecutionParameters *ExecutionParameters
-
-	// The shared and per-virtual-machine reimage configuration.
-	ReimageParameters *ReimagePayload
-
-	// The target virtual machines.
-	Resources *Resources
-
-	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
-	// one must be specified.
-	ResourcesWithContext *ResourcesWithContext
 }
 
 // ExecuteStartContent - The virtual machines and execution settings for a bulk start action.
@@ -726,12 +646,8 @@ type ExecuteStartContent struct {
 	// REQUIRED; The execution settings for the bulk action.
 	ExecutionParameters *ExecutionParameters
 
-	// The target virtual machines.
+	// REQUIRED; The target virtual machines.
 	Resources *Resources
-
-	// The resources for the request with resource context information. Cannot be provided together with `resources` - exactly
-	// one must be specified.
-	ResourcesWithContext *ResourcesWithContext
 }
 
 // ExecutionParameters - The execution settings for a bulk action.
@@ -861,15 +777,6 @@ type ImageReference struct {
 	Version *string
 }
 
-// InnerError - An object containing more specific information about the error. As per Azure REST API guidelines - https://aka.ms/AzureRestApiGuidelines#handling-errors.
-type InnerError struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// Inner error.
-	Innererror *InnerError
-}
-
 // KeyVaultKeyReference - Describes a reference to Key Vault Key
 type KeyVaultKeyReference struct {
 	// REQUIRED; The URL referencing a key encryption key in Key Vault.
@@ -936,15 +843,6 @@ type LinuxVMGuestPatchAutomaticByPlatformSettings struct {
 	RebootSetting *LinuxVMGuestPatchAutomaticByPlatformRebootSetting
 }
 
-// ListBulkOperationErrorsResponse - A paged list of recent bulk action errors.
-type ListBulkOperationErrorsResponse struct {
-	// REQUIRED; The ResourceOperation items on this page
-	Value []*ResourceOperation
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // LocationBasedBulkCreate - Location based BulkCreate resource. The location is part of the resource path.
 type LocationBasedBulkCreate struct {
 	// The extended location of the virtual machines created by the BulkCreate operation.
@@ -961,9 +859,6 @@ type LocationBasedBulkCreate struct {
 
 	// The resource-specific properties for this resource.
 	Properties *BulkCreateProperties
-
-	// Resource tags.
-	Tags map[string]*string
 
 	// Zones in which the BulkCreate is available
 	Zones []*string
@@ -997,9 +892,6 @@ type LocationBasedBulkCreateCustom struct {
 
 	// The resource-specific properties for this resource.
 	Properties *BulkCreateCustomProperties
-
-	// Resource tags.
-	Tags map[string]*string
 
 	// Zones in which the BulkCreateCustom is available
 	Zones []*string
@@ -1077,21 +969,6 @@ type NetworkProfile struct {
 
 	// Specifies the list of resource Ids for the network interfaces associated with the virtual machine.
 	NetworkInterfaces []*NetworkInterfaceReference
-}
-
-// NotificationProperties - Settings for notifications about upcoming recurring bulk action operations.
-type NotificationProperties struct {
-	// REQUIRED; The notification destination. For email notifications, specify a valid email address.
-	Destination *string
-
-	// REQUIRED; The language used for the notification.
-	Language *Language
-
-	// REQUIRED; The notification delivery method.
-	Type *NotificationType
-
-	// If true, notifications to this destination are disabled.
-	Disabled *bool
 }
 
 // OSDisk - Specifies information about the operating system disk used by the virtual machine. For more information about
@@ -1205,153 +1082,6 @@ type OSProfile struct {
 
 	// Specifies Windows operating system settings on the virtual machine.
 	WindowsConfiguration *WindowsConfiguration
-}
-
-// OSProfileProvisioningData - Additional parameters for reimaging a virtual machine that does not use an ephemeral operating
-// system disk.
-type OSProfileProvisioningData struct {
-	// The password for the virtual machine administrator account. The password must be 8 to 123 characters long for Windows virtual
-	// machines or 6 to 72 characters long for Linux virtual machines. It must contain characters from at least three of these
-	// categories: lowercase letters, uppercase letters, digits, and special characters. The following values are not allowed:
-	// `abc@123`, `P@$$w0rd`, `P@ssw0rd`, `P@ssword123`, `Pa$$word`, `pass@word1`, `Password!`, `Password1`, `Password22`, and
-	// `iloveyou!`. This secret is accepted only in the request and is not returned in responses.
-	AdminPassword *string
-
-	// Base64-encoded custom data provided to the virtual machine. The decoded data can contain up to 65,535 bytes. Do not include
-	// secrets or passwords.
-	CustomData *string
-}
-
-// Occurrence - One scheduled execution of a recurring bulk action.
-type Occurrence struct {
-	// The resource-specific properties for this resource.
-	Properties *OccurrenceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// OccurrenceExtensionProperties - An occurrence associated with a specific compute resource.
-type OccurrenceExtensionProperties struct {
-	// REQUIRED; The Azure resource ID of the targeted virtual machine.
-	ResourceID *string
-
-	// REQUIRED; The Azure resource ID of the recurring bulk action that owns the occurrence.
-	ScheduledActionID *string
-
-	// READ-ONLY; Read-only. The UTC date and time when the operation is scheduled for this resource.
-	ScheduledTime *time.Time
-
-	// Notification settings that apply only to this resource.
-	NotificationSettings []*NotificationProperties
-
-	// READ-ONLY; Read-only. Error details when the operation fails for this resource.
-	ErrorDetails *Error
-
-	// READ-ONLY; Read-only. The current state of the operation for this resource.
-	ProvisioningState *OccurrenceResourceProvisioningState
-}
-
-// OccurrenceExtensionResource - A recurring bulk action occurrence associated with a specific compute resource.
-type OccurrenceExtensionResource struct {
-	// The resource-specific properties for this resource.
-	Properties *OccurrenceExtensionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// OccurrenceExtensionResourceListResult - The response of a OccurrenceExtensionResource list operation.
-type OccurrenceExtensionResourceListResult struct {
-	// REQUIRED; The OccurrenceExtensionResource items on this page
-	Value []*OccurrenceExtensionResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OccurrenceListResult - The response of a Occurrence list operation.
-type OccurrenceListResult struct {
-	// REQUIRED; The Occurrence items on this page
-	Value []*Occurrence
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OccurrenceProperties - Properties of a recurring bulk action occurrence.
-type OccurrenceProperties struct {
-	// READ-ONLY; Read-only. The result summary after the occurrence reaches a final state.
-	ResultSummary *OccurrenceResultSummary
-
-	// READ-ONLY; Read-only. The UTC date and time when the occurrence is scheduled to run.
-	ScheduledTime *time.Time
-
-	// READ-ONLY; Read-only. The current state of the occurrence.
-	ProvisioningState *OccurrenceState
-}
-
-// OccurrenceResource - Scheduling and status details for a resource included in a recurring bulk action occurrence.
-type OccurrenceResource struct {
-	// REQUIRED; The Azure resource ID of the targeted virtual machine.
-	ResourceID *string
-
-	// Notification settings that apply only to this resource.
-	NotificationSettings []*NotificationProperties
-
-	// READ-ONLY; Read-only. The Azure resource ID of the association resource.
-	ID *string
-
-	// READ-ONLY; Read-only. The name of the association resource.
-	Name *string
-
-	// READ-ONLY; Read-only. The UTC date and time when the operation is scheduled for this resource.
-	ScheduledTime *time.Time
-
-	// READ-ONLY; Read-only. Error details when the operation fails for this resource.
-	ErrorDetails *Error
-
-	// READ-ONLY; Read-only. The current state of the operation for this resource.
-	ProvisioningState *OccurrenceResourceProvisioningState
-
-	// READ-ONLY; Read-only. The Azure resource type of the associated resource.
-	Type *string
-}
-
-// OccurrenceResourceListResponse - Paged list of resources included in a recurring bulk action occurrence.
-type OccurrenceResourceListResponse struct {
-	// REQUIRED; The OccurrenceResource items on this page
-	Value []*OccurrenceResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// OccurrenceResultSummary - Summary of results for a recurring bulk action occurrence.
-type OccurrenceResultSummary struct {
-	// REQUIRED; Resource counts grouped by result code.
-	Statuses []*ResourceResultSummary
-
-	// REQUIRED; The number of resources targeted by the occurrence.
-	Total *int32
 }
 
 // Operation - REST API Operation
@@ -1526,60 +1256,6 @@ type PublicIPAddressSKU struct {
 	Tier *PublicIPAddressSKUTier
 }
 
-// ReimagePayload - The shared and per-virtual-machine configuration for a bulk reimage action.
-type ReimagePayload struct {
-	// The reimage configuration applied to every virtual machine unless a per-virtual-machine override is provided.
-	BaseProfile *VirtualMachineReimageParameters
-
-	// The reimage configuration overrides for individual virtual machines.
-	ResourceOverrides []*ReimageResourceOverride
-}
-
-// ReimageResourceOperationResponse - The result of a bulk reimage action.
-type ReimageResourceOperationResponse struct {
-	// REQUIRED; A description of the bulk action result.
-	Description *string
-
-	// REQUIRED; The Azure region where Bulk Actions processes the request.
-	Location *string
-
-	// REQUIRED; The type of resources targeted by the bulk action.
-	Type *string
-
-	// The result for each virtual machine.
-	Results []*ResourceOperation
-}
-
-// ReimageResourceOverride - A reimage configuration override for one virtual machine.
-type ReimageResourceOverride struct {
-	// REQUIRED; The reimage configuration for this virtual machine.
-	Profile *VirtualMachineReimageParameters
-
-	// REQUIRED; The Azure resource ID of the virtual machine to which the override applies.
-	ResourceID *string
-}
-
-// ResourceAttachRequest - Resources to attach to a recurring bulk action.
-type ResourceAttachRequest struct {
-	// REQUIRED; The list of resources to attach to the recurring bulk action.
-	Resources []*ScheduledActionResourceInput
-}
-
-// ResourceDetachRequest - Resources to remove from a recurring bulk action.
-type ResourceDetachRequest struct {
-	// REQUIRED; The Azure resource IDs of the resources to remove.
-	Resources []*string
-}
-
-// ResourceListResponse - A paged list of compute resources associated with a recurring bulk action.
-type ResourceListResponse struct {
-	// REQUIRED; The compute resources associated with the recurring bulk action.
-	Value []*ScheduledActionResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // ResourceNotificationDetails - Caller-provided context associated with a virtual machine operation.
 type ResourceNotificationDetails struct {
 	// Caller-provided context string returned with the virtual machine operation result notification. Do not include secrets
@@ -1659,64 +1335,10 @@ type ResourceOperationError struct {
 	ErrorDetails *string
 }
 
-// ResourceOperationResponse - Results of a recurring bulk action operation for targeted resources.
-type ResourceOperationResponse struct {
-	// REQUIRED; The operation result for each resource.
-	ResourcesStatuses []*ResourceStatus
-
-	// REQUIRED; The number of resources included in the operation.
-	TotalResources *int32
-}
-
-// ResourcePatchRequest - Resource-specific settings to update in a recurring bulk action.
-type ResourcePatchRequest struct {
-	// REQUIRED; The resources and notification settings to update.
-	Resources []*ScheduledActionResourceInput
-}
-
-// ResourceResultSummary - Summary of operation results across targeted resources.
-type ResourceResultSummary struct {
-	// REQUIRED; The result code shared by the resources in this group. A successful result uses `Success`.
-	Code *string
-
-	// REQUIRED; The number of resources with this result code.
-	Count *int32
-
-	// Error details for failed resources. This property is omitted for successful results.
-	ErrorDetails *Error
-}
-
-// ResourceStatus - Current status for a targeted resource in a recurring bulk action occurrence.
-type ResourceStatus struct {
-	// REQUIRED; The Azure resource ID of the targeted resource.
-	ResourceID *string
-
-	// REQUIRED; The result of the operation for the resource.
-	Status *ResourceOperationStatus
-
-	// Error details when the operation fails for the resource.
-	Error *Error
-}
-
-// ResourceWithContext - The resources needed for the user request with the resourceContext
-type ResourceWithContext struct {
-	// REQUIRED; The operational context of the resourceId
-	ResourceContext *string
-
-	// REQUIRED; The resource ids used for the request
-	ResourceID *string
-}
-
 // Resources - The virtual machines targeted by a bulk action.
 type Resources struct {
 	// REQUIRED; The Azure resource IDs of the target virtual machines.
 	IDs []*string
-}
-
-// ResourcesWithContext - The resources needed for the user request with the context for tracking purposes
-type ResourcesWithContext struct {
-	// REQUIRED; The resource ids used for the request
-	Resources []*ResourceWithContext
 }
 
 // RetryPolicy - The retry settings for a bulk action.
@@ -1747,249 +1369,6 @@ type SSHPublicKey struct {
 	// Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key
 	// is appended to the file. Example: /home/user/.ssh/authorized_keys
 	Path *string
-}
-
-// ScheduledAction - A recurring bulk action that operates on specified compute resources.
-type ScheduledAction struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The resource-specific properties for this resource.
-	Properties *ScheduledActionProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ScheduledActionListResult - The response of a ScheduledAction list operation.
-type ScheduledActionListResult struct {
-	// REQUIRED; The ScheduledAction items on this page
-	Value []*ScheduledAction
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ScheduledActionProperties - Configuration and status of a recurring bulk action.
-type ScheduledActionProperties struct {
-	// REQUIRED; The operation performed on the targeted resources.
-	ActionType *ScheduledActionType
-
-	// REQUIRED; Notification settings that apply to the recurring bulk action.
-	NotificationSettings []*NotificationProperties
-
-	// REQUIRED; The type of compute resource targeted by the action.
-	ResourceType *ResourceType
-
-	// REQUIRED; The recurring schedule.
-	Schedule *ScheduledActionsSchedule
-
-	// REQUIRED; The date and time, including UTC offset, when the schedule becomes active.
-	StartTime *time.Time
-
-	// Indicates whether new occurrences are disabled.
-	Disabled *bool
-
-	// The date and time, including UTC offset, after which no new occurrences are scheduled.
-	EndTime *time.Time
-
-	// READ-ONLY; Read-only. The provisioning state of the recurring bulk action.
-	ProvisioningState *ScheduledActionsProvisioningState
-}
-
-// ScheduledActionResource - A compute resource associated with a recurring bulk action.
-type ScheduledActionResource struct {
-	// REQUIRED; The Azure resource ID of the targeted virtual machine.
-	ResourceID *string
-
-	// Notification settings that apply only to this resource.
-	NotificationSettings []*NotificationProperties
-
-	// READ-ONLY; Read-only. The Azure resource ID of the association resource.
-	ID *string
-
-	// READ-ONLY; Read-only. The name of the association resource.
-	Name *string
-
-	// READ-ONLY; Read-only. The Azure resource type of the associated resource.
-	Type *string
-}
-
-// ScheduledActionResourceInput - A compute resource to add to or update in a recurring bulk action.
-type ScheduledActionResourceInput struct {
-	// REQUIRED; The Azure resource ID of the targeted virtual machine.
-	ResourceID *string
-
-	// Notification settings that apply only to this resource.
-	NotificationSettings []*NotificationProperties
-}
-
-// ScheduledActionResources - A recurring bulk action associated with a specific compute resource.
-type ScheduledActionResources struct {
-	// The resource-specific properties for this resource.
-	Properties *ScheduledActionsExtensionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ScheduledActionResourcesListResult - The response of a ScheduledActionResources list operation.
-type ScheduledActionResourcesListResult struct {
-	// REQUIRED; The ScheduledActionResources items on this page
-	Value []*ScheduledActionResources
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// ScheduledActionUpdate - The type used for update operations of the ScheduledAction.
-type ScheduledActionUpdate struct {
-	// The resource-specific properties for this resource.
-	Properties *ScheduledActionUpdateProperties
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// ScheduledActionUpdateProperties - The updatable properties of the ScheduledAction.
-type ScheduledActionUpdateProperties struct {
-	// The operation performed on the targeted resources.
-	ActionType *ScheduledActionType
-
-	// Indicates whether new occurrences are disabled.
-	Disabled *bool
-
-	// The date and time, including UTC offset, after which no new occurrences are scheduled.
-	EndTime *time.Time
-
-	// Notification settings that apply to the recurring bulk action.
-	NotificationSettings []*NotificationProperties
-
-	// The type of compute resource targeted by the action.
-	ResourceType *ResourceType
-
-	// Changes to the recurring schedule.
-	Schedule *ScheduledActionsScheduleUpdate
-
-	// The date and time, including UTC offset, when the schedule becomes active.
-	StartTime *time.Time
-}
-
-// ScheduledActionsExecutionParameters - Settings that control how the recurring bulk action operation is executed.
-type ScheduledActionsExecutionParameters struct {
-	// The retry settings for failed resource operations.
-	RetryPolicy *ScheduledActionsRetryPolicy
-}
-
-// ScheduledActionsExtensionProperties - A recurring bulk action associated with a specific compute resource.
-type ScheduledActionsExtensionProperties struct {
-	// REQUIRED; The operation performed on the targeted resources.
-	ActionType *ScheduledActionType
-
-	// REQUIRED; Notification settings that apply to the recurring bulk action.
-	NotificationSettings []*NotificationProperties
-
-	// REQUIRED; The type of compute resource targeted by the action.
-	ResourceType *ResourceType
-
-	// REQUIRED; The recurring schedule.
-	Schedule *ScheduledActionsSchedule
-
-	// REQUIRED; The date and time, including UTC offset, when the schedule becomes active.
-	StartTime *time.Time
-
-	// Indicates whether new occurrences are disabled.
-	Disabled *bool
-
-	// The date and time, including UTC offset, after which no new occurrences are scheduled.
-	EndTime *time.Time
-
-	// READ-ONLY; Read-only. The provisioning state of the recurring bulk action.
-	ProvisioningState *ScheduledActionsProvisioningState
-
-	// READ-ONLY; Read-only. Notification settings that apply only to the specified compute resource.
-	ResourceNotificationSettings []*NotificationProperties
-}
-
-// ScheduledActionsRetryPolicy - Retry settings for a recurring bulk action operation.
-type ScheduledActionsRetryPolicy struct {
-	// The resource operation to retry after a failure.
-	OnFailureAction *ScheduledActionsResourceOperationType
-
-	// The maximum number of retry attempts.
-	RetryCount *int32
-
-	// The time window, in minutes, during which retries can occur.
-	RetryWindowInMinutes *int32
-}
-
-// ScheduledActionsSchedule - The recurring schedule for a recurring bulk action.
-type ScheduledActionsSchedule struct {
-	// REQUIRED; The local time of day when the recurring bulk action runs.
-	ScheduledTime *time.Time
-
-	// REQUIRED; The time zone used to interpret the scheduled time.
-	TimeZone *string
-
-	// How the scheduled time is interpreted. The default is `InitiateAt`.
-	DeadlineType *ScheduledActionsDeadlineType
-
-	// Settings that control operation execution and retries.
-	ExecutionParameters *ScheduledActionsExecutionParameters
-
-	// The calendar days when the action runs. An empty array means every day of the month.
-	RequestedDaysOfTheMonth []*int32
-
-	// The months when the action runs. An empty array means every month.
-	RequestedMonths []*Month
-
-	// The days of the week when the action runs. An empty array means every day of the week.
-	RequestedWeekDays []*WeekDay
-}
-
-// ScheduledActionsScheduleUpdate - Schedule changes for a recurring bulk action. Omitted properties keep their current values.
-type ScheduledActionsScheduleUpdate struct {
-	// How the scheduled time is interpreted. The default is `InitiateAt`.
-	DeadlineType *ScheduledActionsDeadlineType
-
-	// Settings that control operation execution and retries.
-	ExecutionParameters *ScheduledActionsExecutionParameters
-
-	// The calendar days when the action runs. An empty array means every day of the month.
-	RequestedDaysOfTheMonth []*int32
-
-	// The months when the action runs. An empty array means every month.
-	RequestedMonths []*Month
-
-	// The days of the week when the action runs. An empty array means every day of the week.
-	RequestedWeekDays []*WeekDay
-
-	// The local time of day when the recurring bulk action runs.
-	ScheduledTime *time.Time
-
-	// The time zone used to interpret the scheduled time.
-	TimeZone *string
 }
 
 // ScheduledEventsAdditionalPublishingTargets - Specifies additional publishing targets for scheduled events.
@@ -2425,20 +1804,6 @@ type VirtualMachinePublicIPAddressDNSSettingsConfiguration struct {
 	// The Domain name label scope of the PublicIPAddress resources that will be created. The generated name label is the concatenation
 	// of the hashed domain name label with policy according to the domain name label scope and vm network profile unique ID.
 	DomainNameLabelScope *DomainNameLabelScopeTypes
-}
-
-// VirtualMachineReimageParameters - The parameters for reimaging a virtual machine. The operating system disk is always reimaged.
-type VirtualMachineReimageParameters struct {
-	// The exact image version to use when reimaging the operating system disk. When omitted, the disk is reimaged to its current
-	// image version.
-	ExactVersion *string
-
-	// The operating system profile used when reimaging a non-ephemeral operating system disk.
-	OSProfile *OSProfileProvisioningData
-
-	// Indicates whether to reimage the temporary disk. The default value is `false`. This option is supported only for virtual
-	// machines or virtual machine scale sets that use an ephemeral operating system disk.
-	TempDisk *bool
 }
 
 // WinRMConfiguration - Describes Windows Remote Management configuration of the VM

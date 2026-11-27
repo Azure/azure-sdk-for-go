@@ -1,5 +1,120 @@
 # Release History
 
+## 1.0.0 (2026-11-20)
+### Breaking Changes
+
+- Enum `Language` has been removed
+- Enum `Month` has been removed
+- Enum `NotificationType` has been removed
+- Enum `OccurrenceResourceProvisioningState` has been removed
+- Enum `OccurrenceState` has been removed
+- Enum `ResourceOperationStatus` has been removed
+- Enum `ResourceType` has been removed
+- Enum `ScheduledActionType` has been removed
+- Enum `ScheduledActionsDeadlineType` has been removed
+- Enum `ScheduledActionsProvisioningState` has been removed
+- Enum `ScheduledActionsResourceOperationType` has been removed
+- Enum `WeekDay` has been removed
+- Function `*BulkCreateClient.BeginCancel` has been removed
+- Function `*BulkCreateClient.BeginCreateOrUpdate` has been removed
+- Function `*BulkCreateClient.BeginDelete` has been removed
+- Function `*BulkCreateCustomClient.BeginCancel` has been removed
+- Function `*BulkCreateCustomClient.BeginCreateOrUpdate` has been removed
+- Function `*BulkCreateCustomClient.BeginDelete` has been removed
+- Function `*ClientFactory.NewOccurrenceExtensionClient` has been removed
+- Function `*ClientFactory.NewOccurrencesClient` has been removed
+- Function `*ClientFactory.NewScheduledActionExtensionClient` has been removed
+- Function `*ClientFactory.NewScheduledActionOperationStatusClient` has been removed
+- Function `*ClientFactory.NewScheduledActionsClient` has been removed
+- Function `NewOccurrenceExtensionClient` has been removed
+- Function `*OccurrenceExtensionClient.NewListOccurrenceByVMsPager` has been removed
+- Function `NewOccurrencesClient` has been removed
+- Function `*OccurrencesClient.BeginCancel` has been removed
+- Function `*OccurrencesClient.BeginDelay` has been removed
+- Function `*OccurrencesClient.Get` has been removed
+- Function `*OccurrencesClient.NewListByScheduledActionPager` has been removed
+- Function `*OccurrencesClient.NewListResourcesPager` has been removed
+- Function `NewScheduledActionExtensionClient` has been removed
+- Function `*ScheduledActionExtensionClient.NewListByVMsPager` has been removed
+- Function `NewScheduledActionOperationStatusClient` has been removed
+- Function `*ScheduledActionOperationStatusClient.Get` has been removed
+- Function `NewScheduledActionsClient` has been removed
+- Function `*ScheduledActionsClient.BeginAttachResources` has been removed
+- Function `*ScheduledActionsClient.BeginCancelNextOccurrence` has been removed
+- Function `*ScheduledActionsClient.BeginCreateOrUpdate` has been removed
+- Function `*ScheduledActionsClient.BeginDelete` has been removed
+- Function `*ScheduledActionsClient.BeginDetachResources` has been removed
+- Function `*ScheduledActionsClient.BeginDisable` has been removed
+- Function `*ScheduledActionsClient.BeginEnable` has been removed
+- Function `*ScheduledActionsClient.Get` has been removed
+- Function `*ScheduledActionsClient.NewListByResourceGroupPager` has been removed
+- Function `*ScheduledActionsClient.NewListBySubscriptionPager` has been removed
+- Function `*ScheduledActionsClient.NewListResourcesPager` has been removed
+- Function `*ScheduledActionsClient.PatchResources` has been removed
+- Function `*ScheduledActionsClient.BeginTriggerManualOccurrence` has been removed
+- Function `*ScheduledActionsClient.BeginUpdate` has been removed
+- Function `*VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors` has been removed
+- Function `*VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager` has been removed
+- Function `*VirtualMachineBulkOperationsClient.BulkReimageOperation` has been removed
+- Struct `AcknowledgeBulkOperationErrorsRequest` has been removed
+- Struct `AcknowledgeBulkOperationErrorsResponse` has been removed
+- Struct `CancelOccurrenceRequest` has been removed
+- Struct `DelayRequest` has been removed
+- Struct `Error` has been removed
+- Struct `ExecuteReimageRequest` has been removed
+- Struct `InnerError` has been removed
+- Struct `ListBulkOperationErrorsResponse` has been removed
+- Struct `NotificationProperties` has been removed
+- Struct `OSProfileProvisioningData` has been removed
+- Struct `Occurrence` has been removed
+- Struct `OccurrenceExtensionProperties` has been removed
+- Struct `OccurrenceExtensionResource` has been removed
+- Struct `OccurrenceExtensionResourceListResult` has been removed
+- Struct `OccurrenceListResult` has been removed
+- Struct `OccurrenceProperties` has been removed
+- Struct `OccurrenceResource` has been removed
+- Struct `OccurrenceResourceListResponse` has been removed
+- Struct `OccurrenceResultSummary` has been removed
+- Struct `ReimagePayload` has been removed
+- Struct `ReimageResourceOperationResponse` has been removed
+- Struct `ReimageResourceOverride` has been removed
+- Struct `ResourceAttachRequest` has been removed
+- Struct `ResourceDetachRequest` has been removed
+- Struct `ResourceListResponse` has been removed
+- Struct `ResourceOperationResponse` has been removed
+- Struct `ResourcePatchRequest` has been removed
+- Struct `ResourceResultSummary` has been removed
+- Struct `ResourceStatus` has been removed
+- Struct `ResourceWithContext` has been removed
+- Struct `ResourcesWithContext` has been removed
+- Struct `ScheduledAction` has been removed
+- Struct `ScheduledActionListResult` has been removed
+- Struct `ScheduledActionProperties` has been removed
+- Struct `ScheduledActionResource` has been removed
+- Struct `ScheduledActionResourceInput` has been removed
+- Struct `ScheduledActionResources` has been removed
+- Struct `ScheduledActionResourcesListResult` has been removed
+- Struct `ScheduledActionUpdate` has been removed
+- Struct `ScheduledActionUpdateProperties` has been removed
+- Struct `ScheduledActionsExecutionParameters` has been removed
+- Struct `ScheduledActionsExtensionProperties` has been removed
+- Struct `ScheduledActionsRetryPolicy` has been removed
+- Struct `ScheduledActionsSchedule` has been removed
+- Struct `ScheduledActionsScheduleUpdate` has been removed
+- Struct `VirtualMachineReimageParameters` has been removed
+- Field `ResourcesWithContext` of struct `ExecuteDeallocateContent` has been removed
+- Field `ResourcesWithContext` of struct `ExecuteDeleteContent` has been removed
+- Field `ResourcesWithContext` of struct `ExecuteHibernateContent` has been removed
+- Field `ResourcesWithContext` of struct `ExecuteStartContent` has been removed
+- Field `Tags` of struct `LocationBasedBulkCreate` has been removed
+- Field `Tags` of struct `LocationBasedBulkCreateCustom` has been removed
+
+### Features Added
+
+- New function `*BulkCreateClient.BeginCreate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreate, options *BulkCreateClientBeginCreateOptions) (*runtime.Poller[BulkCreateClientCreateResponse], error)`
+- New function `*BulkCreateCustomClient.BeginCreate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOptions) (*runtime.Poller[BulkCreateCustomClientCreateResponse], error)`
+
+
 ## 0.7.0 (2026-10-13)
 ### Breaking Changes
 

@@ -12,44 +12,30 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-06-preview/BulkCreate_Cancel_MaximumSet_Gen.json
-func ExampleBulkCreateClient_BeginCancel() {
+// Generated from example definition: 2026-10-16/BulkCreate_Create.json
+func ExampleBulkCreateClient_BeginCreate_createTwoLinuxVirtualMachinesWithASharedProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewBulkCreateClient().BeginCancel(ctx, "rgBulkactions", "eastus", "20496756-e4bc-402c-8e7e-8ffed8e00c41", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-10-06-preview/BulkCreate_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleBulkCreateClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBulkCreateClient().BeginCreateOrUpdate(ctx, "rgBulkactions", "eastus", "89f31926-145c-410c-a56a-5bc97359274c", armbulkactions.LocationBasedBulkCreate{
+	poller, err := clientFactory.NewBulkCreateClient().BeginCreate(ctx, "rg-bulk-create", "eastus", "fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e", armbulkactions.LocationBasedBulkCreate{
+		Zones: []*string{
+			to.Ptr("1"),
+		},
 		Properties: &armbulkactions.BulkCreateProperties{
 			Capacity:     to.Ptr[int32](2),
 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
 			ComputeProfile: &armbulkactions.ComputeProfile{
+				ComputeAPIVersion: to.Ptr("2024-11-01"),
 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
+					HardwareProfile: &armbulkactions.HardwareProfile{
+						VMSize: to.Ptr("Standard_D2s_v5"),
+					},
 					StorageProfile: &armbulkactions.StorageProfile{
 						ImageReference: &armbulkactions.ImageReference{
 							Publisher: to.Ptr("Canonical"),
@@ -58,8 +44,6 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 							Version:   to.Ptr("latest"),
 						},
 						OSDisk: &armbulkactions.OSDisk{
-							OSType:       to.Ptr(armbulkactions.OperatingSystemTypesLinux),
-							Caching:      to.Ptr(armbulkactions.CachingTypesReadWrite),
 							CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
 							ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
 								StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
@@ -67,11 +51,8 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
 						},
 					},
-					HardwareProfile: &armbulkactions.HardwareProfile{
-						VMSize: to.Ptr("Standard_D2s_v5"),
-					},
 					OSProfile: &armbulkactions.OSProfile{
-						ComputerName:  to.Ptr("bulkvm"),
+						ComputerName:  to.Ptr("batchvm"),
 						AdminUsername: to.Ptr("azureuser"),
 						LinuxConfiguration: &armbulkactions.LinuxConfiguration{
 							DisablePasswordAuthentication: to.Ptr(true),
@@ -79,27 +60,32 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 								PublicKeys: []*armbulkactions.SSHPublicKey{
 									{
 										Path:    to.Ptr("/home/azureuser/.ssh/authorized_keys"),
-										KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDExampleKeyReplaceWithYourOwn azureuser@bulklaunch"),
+										KeyData: to.Ptr("ssh-rsa <your-public-key>"),
 									},
 								},
+							},
+							ProvisionVMAgent: to.Ptr(true),
+							PatchSettings: &armbulkactions.LinuxPatchSettings{
+								PatchMode:      to.Ptr(armbulkactions.LinuxVMGuestPatchModeAutomaticByPlatform),
+								AssessmentMode: to.Ptr(armbulkactions.LinuxPatchAssessmentModeAutomaticByPlatform),
 							},
 						},
 					},
 					NetworkProfile: &armbulkactions.NetworkProfile{
-						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20201101),
+						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20221101),
 						NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
 							{
-								Name: to.Ptr("bulkvm-nic"),
+								Name: to.Ptr("vm-nic"),
 								Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
 									Primary:      to.Ptr(true),
 									DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
 									IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
 										{
-											Name: to.Ptr("bulkvm-ipconfig"),
+											Name: to.Ptr("ipconfig"),
 											Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
 												Primary: to.Ptr(true),
 												Subnet: &armbulkactions.SubResource{
-													ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"),
+													ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Network/virtualNetworks/batch-vnet/subnets/default"),
 												},
 											},
 										},
@@ -108,45 +94,8 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 							},
 						},
 					},
-					Priority:       to.Ptr(armbulkactions.PriorityTypeSpot),
-					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDeallocate),
-					BillingProfile: &armbulkactions.BillingProfile{
-						MaxPrice: to.Ptr[float64](0.05),
-					},
-				},
-				ComputeAPIVersion: to.Ptr("2024-11-01"),
-			},
-			ExecutionParameters: &armbulkactions.ExecutionParameters{
-				RetryPolicy: &armbulkactions.RetryPolicy{
-					RetryWindowInMinutes: to.Ptr[int32](30),
-					OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeDelete),
 				},
 			},
-		},
-		Zones: []*string{
-			to.Ptr("1"),
-			to.Ptr("2"),
-		},
-		ExtendedLocation: &armbulkactions.ExtendedLocation{
-			Name: to.Ptr("microsoftlosangeles1"),
-			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
-		},
-		Placement: &armbulkactions.Placement{
-			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
-			IncludeZones: []*string{
-				to.Ptr("1"),
-				to.Ptr("2"),
-			},
-			ExcludeZones: []*string{
-				to.Ptr("3"),
-			},
-		},
-		Tags: map[string]*string{
-			"workload": to.Ptr("batch-render"),
-			"env":      to.Ptr("prod"),
-		},
-		Identity: &armbulkactions.ManagedServiceIdentity{
-			Type: to.Ptr(armbulkactions.ManagedServiceIdentityTypeSystemAssigned),
 		},
 	}, nil)
 	if err != nil {
@@ -159,15 +108,23 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.BulkCreateClientCreateOrUpdateResponse{
+	// res = armbulkactions.BulkCreateClientCreateResponse{
 	// 	LocationBasedBulkCreate: armbulkactions.LocationBasedBulkCreate{
+	// 		ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/locations/eastus/bulkCreate/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+	// 		Name: to.Ptr("fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+	// 		Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
 	// 		Properties: &armbulkactions.BulkCreateProperties{
-	// 			CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](2),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
+	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
+	// 					HardwareProfile: &armbulkactions.HardwareProfile{
+	// 						VMSize: to.Ptr("Standard_D2s_v5"),
+	// 					},
 	// 					StorageProfile: &armbulkactions.StorageProfile{
 	// 						ImageReference: &armbulkactions.ImageReference{
 	// 							Publisher: to.Ptr("Canonical"),
@@ -176,8 +133,6 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 							Version: to.Ptr("latest"),
 	// 						},
 	// 						OSDisk: &armbulkactions.OSDisk{
-	// 							OSType: to.Ptr(armbulkactions.OperatingSystemTypesLinux),
-	// 							Caching: to.Ptr(armbulkactions.CachingTypesReadWrite),
 	// 							CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
 	// 							ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
 	// 								StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
@@ -185,11 +140,8 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
 	// 						},
 	// 					},
-	// 					HardwareProfile: &armbulkactions.HardwareProfile{
-	// 						VMSize: to.Ptr("Standard_D2s_v5"),
-	// 					},
 	// 					OSProfile: &armbulkactions.OSProfile{
-	// 						ComputerName: to.Ptr("bulkvm"),
+	// 						ComputerName: to.Ptr("batchvm"),
 	// 						AdminUsername: to.Ptr("azureuser"),
 	// 						LinuxConfiguration: &armbulkactions.LinuxConfiguration{
 	// 							DisablePasswordAuthentication: to.Ptr(true),
@@ -197,27 +149,217 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 								PublicKeys: []*armbulkactions.SSHPublicKey{
 	// 									{
 	// 										Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
-	// 										KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDExampleKeyReplaceWithYourOwn azureuser@bulklaunch"),
+	// 										KeyData: to.Ptr("ssh-rsa <your-public-key>"),
 	// 									},
 	// 								},
+	// 							},
+	// 							ProvisionVMAgent: to.Ptr(true),
+	// 							PatchSettings: &armbulkactions.LinuxPatchSettings{
+	// 								PatchMode: to.Ptr(armbulkactions.LinuxVMGuestPatchModeAutomaticByPlatform),
+	// 								AssessmentMode: to.Ptr(armbulkactions.LinuxPatchAssessmentModeAutomaticByPlatform),
 	// 							},
 	// 						},
 	// 					},
 	// 					NetworkProfile: &armbulkactions.NetworkProfile{
-	// 						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20201101),
+	// 						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20221101),
 	// 						NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
 	// 							{
-	// 								Name: to.Ptr("bulkvm-nic"),
+	// 								Name: to.Ptr("vm-nic"),
 	// 								Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
 	// 									Primary: to.Ptr(true),
 	// 									DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
 	// 									IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
 	// 										{
-	// 											Name: to.Ptr("bulkvm-ipconfig"),
+	// 											Name: to.Ptr("ipconfig"),
 	// 											Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
 	// 												Primary: to.Ptr(true),
 	// 												Subnet: &armbulkactions.SubResource{
-	// 													ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"),
+	// 													ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Network/virtualNetworks/batch-vnet/subnets/default"),
+	// 												},
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.October, 16, 10, 0, 0, 0, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-16/BulkCreate_Create_Spot.json
+func ExampleBulkCreateClient_BeginCreate_createTwoSpotVirtualMachinesWithASharedProfile() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBulkCreateClient().BeginCreate(ctx, "rg-bulk-create", "eastus", "c06999ea-a1b6-494c-9f90-47d6e081719d", armbulkactions.LocationBasedBulkCreate{
+		Zones: []*string{
+			to.Ptr("1"),
+		},
+		Properties: &armbulkactions.BulkCreateProperties{
+			Capacity:     to.Ptr[int32](2),
+			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
+			ComputeProfile: &armbulkactions.ComputeProfile{
+				ComputeAPIVersion: to.Ptr("2024-11-01"),
+				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
+					HardwareProfile: &armbulkactions.HardwareProfile{
+						VMSize: to.Ptr("Standard_D2s_v5"),
+					},
+					StorageProfile: &armbulkactions.StorageProfile{
+						ImageReference: &armbulkactions.ImageReference{
+							Publisher: to.Ptr("Canonical"),
+							Offer:     to.Ptr("0001-com-ubuntu-server-jammy"),
+							SKU:       to.Ptr("22_04-lts-gen2"),
+							Version:   to.Ptr("latest"),
+						},
+						OSDisk: &armbulkactions.OSDisk{
+							CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
+							ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
+								StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
+							},
+							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
+						},
+					},
+					OSProfile: &armbulkactions.OSProfile{
+						ComputerName:  to.Ptr("batchvm"),
+						AdminUsername: to.Ptr("azureuser"),
+						LinuxConfiguration: &armbulkactions.LinuxConfiguration{
+							DisablePasswordAuthentication: to.Ptr(true),
+							SSH: &armbulkactions.SSHConfiguration{
+								PublicKeys: []*armbulkactions.SSHPublicKey{
+									{
+										Path:    to.Ptr("/home/azureuser/.ssh/authorized_keys"),
+										KeyData: to.Ptr("ssh-rsa <your-public-key>"),
+									},
+								},
+							},
+							ProvisionVMAgent: to.Ptr(true),
+							PatchSettings: &armbulkactions.LinuxPatchSettings{
+								PatchMode:      to.Ptr(armbulkactions.LinuxVMGuestPatchModeAutomaticByPlatform),
+								AssessmentMode: to.Ptr(armbulkactions.LinuxPatchAssessmentModeAutomaticByPlatform),
+							},
+						},
+					},
+					NetworkProfile: &armbulkactions.NetworkProfile{
+						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20221101),
+						NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
+							{
+								Name: to.Ptr("vm-nic"),
+								Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
+									Primary:      to.Ptr(true),
+									DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
+									IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
+										{
+											Name: to.Ptr("ipconfig"),
+											Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
+												Primary: to.Ptr(true),
+												Subnet: &armbulkactions.SubResource{
+													ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Network/virtualNetworks/batch-vnet/subnets/default"),
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					Priority:       to.Ptr(armbulkactions.PriorityTypeSpot),
+					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
+					BillingProfile: &armbulkactions.BillingProfile{
+						MaxPrice: to.Ptr[float64](-1),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.BulkCreateClientCreateResponse{
+	// 	LocationBasedBulkCreate: armbulkactions.LocationBasedBulkCreate{
+	// 		ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/locations/eastus/bulkCreate/c06999ea-a1b6-494c-9f90-47d6e081719d"),
+	// 		Name: to.Ptr("c06999ea-a1b6-494c-9f90-47d6e081719d"),
+	// 		Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 		Properties: &armbulkactions.BulkCreateProperties{
+	// 			Capacity: to.Ptr[int32](2),
+	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
+	// 			ComputeProfile: &armbulkactions.ComputeProfile{
+	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
+	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
+	// 					HardwareProfile: &armbulkactions.HardwareProfile{
+	// 						VMSize: to.Ptr("Standard_D2s_v5"),
+	// 					},
+	// 					StorageProfile: &armbulkactions.StorageProfile{
+	// 						ImageReference: &armbulkactions.ImageReference{
+	// 							Publisher: to.Ptr("Canonical"),
+	// 							Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
+	// 							SKU: to.Ptr("22_04-lts-gen2"),
+	// 							Version: to.Ptr("latest"),
+	// 						},
+	// 						OSDisk: &armbulkactions.OSDisk{
+	// 							CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
+	// 							ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
+	// 								StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
+	// 							},
+	// 							DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
+	// 						},
+	// 					},
+	// 					OSProfile: &armbulkactions.OSProfile{
+	// 						ComputerName: to.Ptr("batchvm"),
+	// 						AdminUsername: to.Ptr("azureuser"),
+	// 						LinuxConfiguration: &armbulkactions.LinuxConfiguration{
+	// 							DisablePasswordAuthentication: to.Ptr(true),
+	// 							SSH: &armbulkactions.SSHConfiguration{
+	// 								PublicKeys: []*armbulkactions.SSHPublicKey{
+	// 									{
+	// 										Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
+	// 										KeyData: to.Ptr("ssh-rsa <your-public-key>"),
+	// 									},
+	// 								},
+	// 							},
+	// 							ProvisionVMAgent: to.Ptr(true),
+	// 							PatchSettings: &armbulkactions.LinuxPatchSettings{
+	// 								PatchMode: to.Ptr(armbulkactions.LinuxVMGuestPatchModeAutomaticByPlatform),
+	// 								AssessmentMode: to.Ptr(armbulkactions.LinuxPatchAssessmentModeAutomaticByPlatform),
+	// 							},
+	// 						},
+	// 					},
+	// 					NetworkProfile: &armbulkactions.NetworkProfile{
+	// 						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20221101),
+	// 						NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
+	// 							{
+	// 								Name: to.Ptr("vm-nic"),
+	// 								Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
+	// 									Primary: to.Ptr(true),
+	// 									DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
+	// 									IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
+	// 										{
+	// 											Name: to.Ptr("ipconfig"),
+	// 											Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
+	// 												Primary: to.Ptr(true),
+	// 												Subnet: &armbulkactions.SubResource{
+	// 													ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Network/virtualNetworks/batch-vnet/subnets/default"),
 	// 												},
 	// 											},
 	// 										},
@@ -227,96 +369,31 @@ func ExampleBulkCreateClient_BeginCreateOrUpdate() {
 	// 						},
 	// 					},
 	// 					Priority: to.Ptr(armbulkactions.PriorityTypeSpot),
-	// 					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDeallocate),
+	// 					EvictionPolicy: to.Ptr(armbulkactions.EvictionPolicyDelete),
 	// 					BillingProfile: &armbulkactions.BillingProfile{
-	// 						MaxPrice: to.Ptr[float64](0.05),
+	// 						MaxPrice: to.Ptr[float64](-1),
 	// 					},
 	// 				},
-	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 	// 			},
-	// 			ExecutionParameters: &armbulkactions.ExecutionParameters{
-	// 				RetryPolicy: &armbulkactions.RetryPolicy{
-	// 					RetryWindowInMinutes: to.Ptr[int32](30),
-	// 					OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
-	// 				},
-	// 			},
-	// 		},
-	// 		Zones: []*string{
-	// 			to.Ptr("1"),
-	// 			to.Ptr("2"),
-	// 		},
-	// 		ExtendedLocation: &armbulkactions.ExtendedLocation{
-	// 			Name: to.Ptr("microsoftlosangeles1"),
-	// 			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		Placement: &armbulkactions.Placement{
-	// 			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
-	// 			IncludeZones: []*string{
-	// 				to.Ptr("1"),
-	// 				to.Ptr("2"),
-	// 			},
-	// 			ExcludeZones: []*string{
-	// 				to.Ptr("3"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"workload": to.Ptr("batch-render"),
-	// 			"env": to.Ptr("prod"),
-	// 		},
-	// 		Identity: &armbulkactions.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armbulkactions.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-	// 			TenantID: to.Ptr("11111111-2222-3333-4444-555555555555"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate/89f31926-145c-410c-a56a-5bc97359274c"),
-	// 		Name: to.Ptr("89f31926-145c-410c-a56a-5bc97359274c"),
-	// 		Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
-	// 		SystemData: &armbulkactions.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
-	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.October, 16, 10, 0, 0, 0, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/BulkCreate_Delete_MaximumSet_Gen.json
-func ExampleBulkCreateClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewBulkCreateClient().BeginDelete(ctx, "rgBulkactions", "eastus", "709c2556-6a82-45ee-ba68-b935bb4e8ba0", &armbulkactions.BulkCreateClientBeginDeleteOptions{
-		DeleteInstances: to.Ptr(true)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-10-06-preview/BulkCreate_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-16/BulkCreate_Get.json
 func ExampleBulkCreateClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBulkCreateClient().Get(ctx, "rgBulkactions", "eastus", "85c374f7-9857-4fd7-9267-81019219c362", nil)
+	res, err := clientFactory.NewBulkCreateClient().Get(ctx, "rg-bulk-create", "eastus", "fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -325,13 +402,21 @@ func ExampleBulkCreateClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.BulkCreateClientGetResponse{
 	// 	LocationBasedBulkCreate: armbulkactions.LocationBasedBulkCreate{
+	// 		ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/locations/eastus/bulkCreate/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+	// 		Name: to.Ptr("fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+	// 		Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
 	// 		Properties: &armbulkactions.BulkCreateProperties{
-	// 			CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
-	// 			Capacity: to.Ptr[int32](10),
+	// 			Capacity: to.Ptr[int32](2),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
 	// 			ComputeProfile: &armbulkactions.ComputeProfile{
+	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 	// 				VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
+	// 					HardwareProfile: &armbulkactions.HardwareProfile{
+	// 						VMSize: to.Ptr("Standard_D2s_v5"),
+	// 					},
 	// 					StorageProfile: &armbulkactions.StorageProfile{
 	// 						ImageReference: &armbulkactions.ImageReference{
 	// 							Publisher: to.Ptr("Canonical"),
@@ -340,8 +425,6 @@ func ExampleBulkCreateClient_Get() {
 	// 							Version: to.Ptr("latest"),
 	// 						},
 	// 						OSDisk: &armbulkactions.OSDisk{
-	// 							OSType: to.Ptr(armbulkactions.OperatingSystemTypesLinux),
-	// 							Caching: to.Ptr(armbulkactions.CachingTypesReadWrite),
 	// 							CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
 	// 							ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
 	// 								StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
@@ -350,7 +433,7 @@ func ExampleBulkCreateClient_Get() {
 	// 						},
 	// 					},
 	// 					OSProfile: &armbulkactions.OSProfile{
-	// 						ComputerName: to.Ptr("bulkvm"),
+	// 						ComputerName: to.Ptr("batchvm"),
 	// 						AdminUsername: to.Ptr("azureuser"),
 	// 						LinuxConfiguration: &armbulkactions.LinuxConfiguration{
 	// 							DisablePasswordAuthentication: to.Ptr(true),
@@ -358,27 +441,32 @@ func ExampleBulkCreateClient_Get() {
 	// 								PublicKeys: []*armbulkactions.SSHPublicKey{
 	// 									{
 	// 										Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
-	// 										KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDExampleKeyReplaceWithYourOwn azureuser@bulklaunch"),
+	// 										KeyData: to.Ptr("ssh-rsa <your-public-key>"),
 	// 									},
 	// 								},
+	// 							},
+	// 							ProvisionVMAgent: to.Ptr(true),
+	// 							PatchSettings: &armbulkactions.LinuxPatchSettings{
+	// 								PatchMode: to.Ptr(armbulkactions.LinuxVMGuestPatchModeAutomaticByPlatform),
+	// 								AssessmentMode: to.Ptr(armbulkactions.LinuxPatchAssessmentModeAutomaticByPlatform),
 	// 							},
 	// 						},
 	// 					},
 	// 					NetworkProfile: &armbulkactions.NetworkProfile{
-	// 						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20201101),
+	// 						NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20221101),
 	// 						NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
 	// 							{
-	// 								Name: to.Ptr("bulkvm-nic"),
+	// 								Name: to.Ptr("vm-nic"),
 	// 								Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
 	// 									Primary: to.Ptr(true),
 	// 									DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
 	// 									IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
 	// 										{
-	// 											Name: to.Ptr("bulkvm-ipconfig"),
+	// 											Name: to.Ptr("ipconfig"),
 	// 											Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
 	// 												Primary: to.Ptr(true),
 	// 												Subnet: &armbulkactions.SubResource{
-	// 													ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"),
+	// 													ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Network/virtualNetworks/batch-vnet/subnets/default"),
 	// 												},
 	// 											},
 	// 										},
@@ -388,69 +476,26 @@ func ExampleBulkCreateClient_Get() {
 	// 						},
 	// 					},
 	// 				},
-	// 				ComputeAPIVersion: to.Ptr("2024-11-01"),
 	// 			},
-	// 			ExecutionParameters: &armbulkactions.ExecutionParameters{
-	// 				RetryPolicy: &armbulkactions.RetryPolicy{
-	// 					RetryWindowInMinutes: to.Ptr[int32](30),
-	// 					OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
-	// 				},
-	// 			},
-	// 		},
-	// 		Zones: []*string{
-	// 			to.Ptr("1"),
-	// 			to.Ptr("2"),
-	// 		},
-	// 		ExtendedLocation: &armbulkactions.ExtendedLocation{
-	// 			Name: to.Ptr("microsoftlosangeles1"),
-	// 			Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		Placement: &armbulkactions.Placement{
-	// 			ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
-	// 			IncludeZones: []*string{
-	// 				to.Ptr("1"),
-	// 				to.Ptr("2"),
-	// 			},
-	// 			ExcludeZones: []*string{
-	// 				to.Ptr("3"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"workload": to.Ptr("batch-render"),
-	// 			"env": to.Ptr("prod"),
-	// 		},
-	// 		Identity: &armbulkactions.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armbulkactions.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-	// 			TenantID: to.Ptr("11111111-2222-3333-4444-555555555555"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate/85c374f7-9857-4fd7-9267-81019219c362"),
-	// 		Name: to.Ptr("85c374f7-9857-4fd7-9267-81019219c362"),
-	// 		Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
-	// 		SystemData: &armbulkactions.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
-	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.October, 16, 10, 0, 0, 0, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/BulkCreate_GetAsyncOperationStatus_MaximumSet_Gen.json
-func ExampleBulkCreateClient_GetAsyncOperationStatus() {
+// Generated from example definition: 2026-10-16/BulkCreate_GetAsyncOperationStatus.json
+func ExampleBulkCreateClient_GetAsyncOperationStatus_getTheStatusOfACompletedBulkCreateOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBulkCreateClient().GetAsyncOperationStatus(ctx, "eastus", "f1ac145b-9d8b-417d-8101-9962d03c0904", nil)
+	res, err := clientFactory.NewBulkCreateClient().GetAsyncOperationStatus(ctx, "eastus", "58dcb168-d2d0-42a2-8c38-b2650682c369", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -459,68 +504,60 @@ func ExampleBulkCreateClient_GetAsyncOperationStatus() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.BulkCreateClientGetAsyncOperationStatusResponse{
 	// 	OperationStatusResult: armbulkactions.OperationStatusResult{
-	// 		ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreate/f1ac145b-9d8b-417d-8101-9962d03c0904"),
-	// 		Name: to.Ptr("f1ac145b-9d8b-417d-8101-9962d03c0904"),
+	// 		ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/providers/Microsoft.Compute/locations/eastus/bulkCreate/58dcb168-d2d0-42a2-8c38-b2650682c369"),
+	// 		Name: to.Ptr("58dcb168-d2d0-42a2-8c38-b2650682c369"),
+	// 		Status: to.Ptr("Succeeded"),
+	// 		StartTime: to.Ptr(time.Date(2026, time.October, 16, 10, 0, 0, 0, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.October, 16, 10, 5, 0, 0, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-16/BulkCreate_GetAsyncOperationStatus_Failed.json
+func ExampleBulkCreateClient_GetAsyncOperationStatus_getTheStatusOfAFailedBulkCreateOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBulkCreateClient().GetAsyncOperationStatus(ctx, "eastus", "cbdbac52-dad1-4c54-81e1-972427ecd140", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.BulkCreateClientGetAsyncOperationStatusResponse{
+	// 	OperationStatusResult: armbulkactions.OperationStatusResult{
+	// 		ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/providers/Microsoft.Compute/locations/eastus/bulkCreate/cbdbac52-dad1-4c54-81e1-972427ecd140"),
+	// 		Name: to.Ptr("cbdbac52-dad1-4c54-81e1-972427ecd140"),
 	// 		Status: to.Ptr("Failed"),
-	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-	// 		EndTime: to.Ptr(time.Date(2026, time.July, 8, 18, 35, 0, 0, time.UTC)),
-	// 		Operations: []*armbulkactions.OperationStatusResult{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreate/9d8e1f2a-3b4c-4d5e-6f7a-8b9c0d1e2f3a"),
-	// 				Name: to.Ptr("9d8e1f2a-3b4c-4d5e-6f7a-8b9c0d1e2f3a"),
-	// 				ResourceID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/virtualMachines/bulkvm-payments-0"),
-	// 				Status: to.Ptr("Failed"),
-	// 				PercentComplete: to.Ptr[float64](100),
-	// 				StartTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-	// 				EndTime: to.Ptr(time.Date(2026, time.July, 8, 18, 32, 0, 0, time.UTC)),
-	// 				Operations: []*armbulkactions.OperationStatusResult{
-	// 				},
-	// 				Error: &armbulkactions.ErrorDetail{
-	// 					Code: to.Ptr("OverconstrainedAllocationRequest"),
-	// 					Message: to.Ptr("Allocation failed. The requested VM size Standard_D2s_v5 is not available in zone 1 of region eastus."),
-	// 					Target: to.Ptr("bulkvm-payments-0"),
-	// 					Details: []*armbulkactions.ErrorDetail{
-	// 					},
-	// 					AdditionalInfo: []*armbulkactions.ErrorAdditionalInfo{
-	// 						{
-	// 							Type: to.Ptr("AllocationFailureDetails"),
-	// 							Info: map[string]any{
-	// 								"availableZones": []any{
-	// 									"2",
-	// 									"3",
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
+	// 		StartTime: to.Ptr(time.Date(2026, time.October, 16, 10, 0, 0, 0, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.October, 16, 10, 5, 0, 0, time.UTC)),
 	// 		Error: &armbulkactions.ErrorDetail{
-	// 			Code: to.Ptr("PartialAllocationFailure"),
-	// 			Message: to.Ptr("One or more virtual machines in the bulk operation failed to allocate."),
-	// 			Target: to.Ptr("bulkCreate"),
-	// 			Details: []*armbulkactions.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armbulkactions.ErrorAdditionalInfo{
-	// 			},
+	// 			Code: to.Ptr("AllocationFailed"),
+	// 			Message: to.Ptr("The requested virtual machine capacity could not be allocated in the selected availability zone."),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-10-06-preview/BulkCreate_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-16/BulkCreate_ListByResourceGroup.json
 func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBulkCreateClient().NewListByResourceGroupPager("rgBulkactions", "eastus", nil)
+	pager := clientFactory.NewBulkCreateClient().NewListByResourceGroupPager("rg-bulk-create", "eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -535,244 +572,99 @@ func ExampleBulkCreateClient_NewListByResourceGroupPager() {
 		// 	BulkCreateListResult: armbulkactions.BulkCreateListResult{
 		// 		Value: []*armbulkactions.LocationBasedBulkCreate{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/locations/eastus/bulkCreate/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+		// 				Name: to.Ptr("fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+		// 				Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
 		// 				Properties: &armbulkactions.BulkCreateProperties{
-		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
+		// 					ComputeProfile: &armbulkactions.ComputeProfile{
+		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
+		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
+		// 							HardwareProfile: &armbulkactions.HardwareProfile{
+		// 								VMSize: to.Ptr("Standard_D2s_v5"),
+		// 							},
+		// 							StorageProfile: &armbulkactions.StorageProfile{
+		// 								ImageReference: &armbulkactions.ImageReference{
+		// 									Publisher: to.Ptr("Canonical"),
+		// 									Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
+		// 									SKU: to.Ptr("22_04-lts-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSDisk: &armbulkactions.OSDisk{
+		// 									CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
+		// 									ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
+		// 										StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
+		// 									},
+		// 									DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
+		// 								},
+		// 							},
+		// 							OSProfile: &armbulkactions.OSProfile{
+		// 								ComputerName: to.Ptr("batchvm"),
+		// 								AdminUsername: to.Ptr("azureuser"),
+		// 								LinuxConfiguration: &armbulkactions.LinuxConfiguration{
+		// 									DisablePasswordAuthentication: to.Ptr(true),
+		// 									SSH: &armbulkactions.SSHConfiguration{
+		// 										PublicKeys: []*armbulkactions.SSHPublicKey{
+		// 											{
+		// 												Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
+		// 												KeyData: to.Ptr("ssh-rsa <your-public-key>"),
+		// 											},
+		// 										},
+		// 									},
+		// 									ProvisionVMAgent: to.Ptr(true),
+		// 									PatchSettings: &armbulkactions.LinuxPatchSettings{
+		// 										PatchMode: to.Ptr(armbulkactions.LinuxVMGuestPatchModeAutomaticByPlatform),
+		// 										AssessmentMode: to.Ptr(armbulkactions.LinuxPatchAssessmentModeAutomaticByPlatform),
+		// 									},
+		// 								},
+		// 							},
+		// 							NetworkProfile: &armbulkactions.NetworkProfile{
+		// 								NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20221101),
+		// 								NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
+		// 									{
+		// 										Name: to.Ptr("vm-nic"),
+		// 										Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
+		// 											Primary: to.Ptr(true),
+		// 											DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
+		// 											IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
+		// 												{
+		// 													Name: to.Ptr("ipconfig"),
+		// 													Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
+		// 														Primary: to.Ptr(true),
+		// 														Subnet: &armbulkactions.SubResource{
+		// 															ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Network/virtualNetworks/batch-vnet/subnets/default"),
+		// 														},
+		// 													},
+		// 												},
+		// 											},
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.October, 16, 10, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
-		// 					Capacity: to.Ptr[int32](10),
-		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					ComputeProfile: &armbulkactions.ComputeProfile{
-		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
-		// 							StorageProfile: &armbulkactions.StorageProfile{
-		// 								ImageReference: &armbulkactions.ImageReference{
-		// 									Publisher: to.Ptr("Canonical"),
-		// 									Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
-		// 									SKU: to.Ptr("22_04-lts-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSDisk: &armbulkactions.OSDisk{
-		// 									OSType: to.Ptr(armbulkactions.OperatingSystemTypesLinux),
-		// 									Caching: to.Ptr(armbulkactions.CachingTypesReadWrite),
-		// 									CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
-		// 									ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
-		// 										StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
-		// 									},
-		// 									DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
-		// 								},
-		// 							},
-		// 							OSProfile: &armbulkactions.OSProfile{
-		// 								ComputerName: to.Ptr("bulkvm"),
-		// 								AdminUsername: to.Ptr("azureuser"),
-		// 								LinuxConfiguration: &armbulkactions.LinuxConfiguration{
-		// 									DisablePasswordAuthentication: to.Ptr(true),
-		// 									SSH: &armbulkactions.SSHConfiguration{
-		// 										PublicKeys: []*armbulkactions.SSHPublicKey{
-		// 											{
-		// 												Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
-		// 												KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDExampleKeyReplaceWithYourOwn azureuser@bulklaunch"),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							NetworkProfile: &armbulkactions.NetworkProfile{
-		// 								NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20201101),
-		// 								NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
-		// 									{
-		// 										Name: to.Ptr("bulkvm-nic"),
-		// 										Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
-		// 											Primary: to.Ptr(true),
-		// 											DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
-		// 											IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
-		// 												{
-		// 													Name: to.Ptr("bulkvm-ipconfig"),
-		// 													Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
-		// 														Primary: to.Ptr(true),
-		// 														Subnet: &armbulkactions.SubResource{
-		// 															ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"),
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
-		// 					},
-		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
-		// 						RetryPolicy: &armbulkactions.RetryPolicy{
-		// 							RetryWindowInMinutes: to.Ptr[int32](30),
-		// 							OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
-		// 						},
-		// 					},
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("1"),
-		// 					to.Ptr("2"),
-		// 				},
-		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
-		// 					Name: to.Ptr("microsoftlosangeles1"),
-		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
-		// 				},
-		// 				Placement: &armbulkactions.Placement{
-		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
-		// 					IncludeZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 					},
-		// 					ExcludeZones: []*string{
-		// 						to.Ptr("3"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"workload": to.Ptr("batch-render"),
-		// 					"env": to.Ptr("prod"),
-		// 				},
-		// 				Identity: &armbulkactions.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armbulkactions.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-		// 					TenantID: to.Ptr("11111111-2222-3333-4444-555555555555"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate/85c374f7-9857-4fd7-9267-81019219c362"),
-		// 				Name: to.Ptr("85c374f7-9857-4fd7-9267-81019219c362"),
-		// 				Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 			{
-		// 				Properties: &armbulkactions.BulkCreateProperties{
-		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
-		// 					Capacity: to.Ptr[int32](10),
-		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					ComputeProfile: &armbulkactions.ComputeProfile{
-		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
-		// 							StorageProfile: &armbulkactions.StorageProfile{
-		// 								ImageReference: &armbulkactions.ImageReference{
-		// 									Publisher: to.Ptr("Canonical"),
-		// 									Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
-		// 									SKU: to.Ptr("22_04-lts-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSDisk: &armbulkactions.OSDisk{
-		// 									OSType: to.Ptr(armbulkactions.OperatingSystemTypesLinux),
-		// 									Caching: to.Ptr(armbulkactions.CachingTypesReadWrite),
-		// 									CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
-		// 									ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
-		// 										StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
-		// 									},
-		// 									DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
-		// 								},
-		// 							},
-		// 							OSProfile: &armbulkactions.OSProfile{
-		// 								ComputerName: to.Ptr("bulkvm"),
-		// 								AdminUsername: to.Ptr("azureuser"),
-		// 								LinuxConfiguration: &armbulkactions.LinuxConfiguration{
-		// 									DisablePasswordAuthentication: to.Ptr(true),
-		// 									SSH: &armbulkactions.SSHConfiguration{
-		// 										PublicKeys: []*armbulkactions.SSHPublicKey{
-		// 											{
-		// 												Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
-		// 												KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDExampleKeyReplaceWithYourOwn azureuser@bulklaunch"),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							NetworkProfile: &armbulkactions.NetworkProfile{
-		// 								NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20201101),
-		// 								NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
-		// 									{
-		// 										Name: to.Ptr("bulkvm-nic"),
-		// 										Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
-		// 											Primary: to.Ptr(true),
-		// 											DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
-		// 											IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
-		// 												{
-		// 													Name: to.Ptr("bulkvm-ipconfig"),
-		// 													Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
-		// 														Primary: to.Ptr(true),
-		// 														Subnet: &armbulkactions.SubResource{
-		// 															ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"),
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
-		// 					},
-		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
-		// 						RetryPolicy: &armbulkactions.RetryPolicy{
-		// 							RetryWindowInMinutes: to.Ptr[int32](30),
-		// 							OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
-		// 						},
-		// 					},
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("1"),
-		// 					to.Ptr("2"),
-		// 				},
-		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
-		// 					Name: to.Ptr("microsoftlosangeles1"),
-		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
-		// 				},
-		// 				Placement: &armbulkactions.Placement{
-		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
-		// 					IncludeZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 					},
-		// 					ExcludeZones: []*string{
-		// 						to.Ptr("3"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"workload": to.Ptr("batch-render"),
-		// 					"env": to.Ptr("prod"),
-		// 				},
-		// 				Identity: &armbulkactions.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armbulkactions.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-		// 					TenantID: to.Ptr("11111111-2222-3333-4444-555555555555"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate/b1d0f6a2-3c4e-4f5a-8b7c-9d0e1f2a3b4c"),
-		// 				Name: to.Ptr("b1d0f6a2-3c4e-4f5a-8b7c-9d0e1f2a3b4c"),
-		// 				Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-10-06-preview/BulkCreate_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-16/BulkCreate_ListBySubscription.json
 func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -791,248 +683,103 @@ func ExampleBulkCreateClient_NewListBySubscriptionPager() {
 		// 	BulkCreateListResult: armbulkactions.BulkCreateListResult{
 		// 		Value: []*armbulkactions.LocationBasedBulkCreate{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/locations/eastus/bulkCreate/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+		// 				Name: to.Ptr("fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e"),
+		// 				Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
+		// 				Zones: []*string{
+		// 					to.Ptr("1"),
+		// 				},
 		// 				Properties: &armbulkactions.BulkCreateProperties{
-		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
+		// 					ComputeProfile: &armbulkactions.ComputeProfile{
+		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
+		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
+		// 							HardwareProfile: &armbulkactions.HardwareProfile{
+		// 								VMSize: to.Ptr("Standard_D2s_v5"),
+		// 							},
+		// 							StorageProfile: &armbulkactions.StorageProfile{
+		// 								ImageReference: &armbulkactions.ImageReference{
+		// 									Publisher: to.Ptr("Canonical"),
+		// 									Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
+		// 									SKU: to.Ptr("22_04-lts-gen2"),
+		// 									Version: to.Ptr("latest"),
+		// 								},
+		// 								OSDisk: &armbulkactions.OSDisk{
+		// 									CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
+		// 									ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
+		// 										StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
+		// 									},
+		// 									DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
+		// 								},
+		// 							},
+		// 							OSProfile: &armbulkactions.OSProfile{
+		// 								ComputerName: to.Ptr("batchvm"),
+		// 								AdminUsername: to.Ptr("azureuser"),
+		// 								LinuxConfiguration: &armbulkactions.LinuxConfiguration{
+		// 									DisablePasswordAuthentication: to.Ptr(true),
+		// 									SSH: &armbulkactions.SSHConfiguration{
+		// 										PublicKeys: []*armbulkactions.SSHPublicKey{
+		// 											{
+		// 												Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
+		// 												KeyData: to.Ptr("ssh-rsa <your-public-key>"),
+		// 											},
+		// 										},
+		// 									},
+		// 									ProvisionVMAgent: to.Ptr(true),
+		// 									PatchSettings: &armbulkactions.LinuxPatchSettings{
+		// 										PatchMode: to.Ptr(armbulkactions.LinuxVMGuestPatchModeAutomaticByPlatform),
+		// 										AssessmentMode: to.Ptr(armbulkactions.LinuxPatchAssessmentModeAutomaticByPlatform),
+		// 									},
+		// 								},
+		// 							},
+		// 							NetworkProfile: &armbulkactions.NetworkProfile{
+		// 								NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20221101),
+		// 								NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
+		// 									{
+		// 										Name: to.Ptr("vm-nic"),
+		// 										Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
+		// 											Primary: to.Ptr(true),
+		// 											DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
+		// 											IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
+		// 												{
+		// 													Name: to.Ptr("ipconfig"),
+		// 													Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
+		// 														Primary: to.Ptr(true),
+		// 														Subnet: &armbulkactions.SubResource{
+		// 															ID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Network/virtualNetworks/batch-vnet/subnets/default"),
+		// 														},
+		// 													},
+		// 												},
+		// 											},
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.October, 16, 10, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
-		// 					Capacity: to.Ptr[int32](10),
-		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					ComputeProfile: &armbulkactions.ComputeProfile{
-		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
-		// 							StorageProfile: &armbulkactions.StorageProfile{
-		// 								ImageReference: &armbulkactions.ImageReference{
-		// 									Publisher: to.Ptr("Canonical"),
-		// 									Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
-		// 									SKU: to.Ptr("22_04-lts-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSDisk: &armbulkactions.OSDisk{
-		// 									OSType: to.Ptr(armbulkactions.OperatingSystemTypesLinux),
-		// 									Caching: to.Ptr(armbulkactions.CachingTypesReadWrite),
-		// 									CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
-		// 									ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
-		// 										StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
-		// 									},
-		// 									DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
-		// 								},
-		// 							},
-		// 							OSProfile: &armbulkactions.OSProfile{
-		// 								ComputerName: to.Ptr("bulkvm"),
-		// 								AdminUsername: to.Ptr("azureuser"),
-		// 								LinuxConfiguration: &armbulkactions.LinuxConfiguration{
-		// 									DisablePasswordAuthentication: to.Ptr(true),
-		// 									SSH: &armbulkactions.SSHConfiguration{
-		// 										PublicKeys: []*armbulkactions.SSHPublicKey{
-		// 											{
-		// 												Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
-		// 												KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDExampleKeyReplaceWithYourOwn azureuser@bulklaunch"),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							NetworkProfile: &armbulkactions.NetworkProfile{
-		// 								NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20201101),
-		// 								NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
-		// 									{
-		// 										Name: to.Ptr("bulkvm-nic"),
-		// 										Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
-		// 											Primary: to.Ptr(true),
-		// 											DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
-		// 											IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
-		// 												{
-		// 													Name: to.Ptr("bulkvm-ipconfig"),
-		// 													Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
-		// 														Primary: to.Ptr(true),
-		// 														Subnet: &armbulkactions.SubResource{
-		// 															ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"),
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
-		// 					},
-		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
-		// 						RetryPolicy: &armbulkactions.RetryPolicy{
-		// 							RetryWindowInMinutes: to.Ptr[int32](30),
-		// 							OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
-		// 						},
-		// 					},
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("1"),
-		// 					to.Ptr("2"),
-		// 				},
-		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
-		// 					Name: to.Ptr("microsoftlosangeles1"),
-		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
-		// 				},
-		// 				Placement: &armbulkactions.Placement{
-		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
-		// 					IncludeZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 					},
-		// 					ExcludeZones: []*string{
-		// 						to.Ptr("3"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"workload": to.Ptr("batch-render"),
-		// 					"env": to.Ptr("prod"),
-		// 				},
-		// 				Identity: &armbulkactions.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armbulkactions.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-		// 					TenantID: to.Ptr("11111111-2222-3333-4444-555555555555"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate/85c374f7-9857-4fd7-9267-81019219c362"),
-		// 				Name: to.Ptr("85c374f7-9857-4fd7-9267-81019219c362"),
-		// 				Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
-		// 				},
-		// 			},
-		// 			{
-		// 				Properties: &armbulkactions.BulkCreateProperties{
-		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
-		// 					Capacity: to.Ptr[int32](10),
-		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
-		// 					ComputeProfile: &armbulkactions.ComputeProfile{
-		// 						VirtualMachineProfile: &armbulkactions.BulkactionVMProperties{
-		// 							StorageProfile: &armbulkactions.StorageProfile{
-		// 								ImageReference: &armbulkactions.ImageReference{
-		// 									Publisher: to.Ptr("Canonical"),
-		// 									Offer: to.Ptr("0001-com-ubuntu-server-jammy"),
-		// 									SKU: to.Ptr("22_04-lts-gen2"),
-		// 									Version: to.Ptr("latest"),
-		// 								},
-		// 								OSDisk: &armbulkactions.OSDisk{
-		// 									OSType: to.Ptr(armbulkactions.OperatingSystemTypesLinux),
-		// 									Caching: to.Ptr(armbulkactions.CachingTypesReadWrite),
-		// 									CreateOption: to.Ptr(armbulkactions.DiskCreateOptionTypesFromImage),
-		// 									ManagedDisk: &armbulkactions.ManagedDiskParametersContent{
-		// 										StorageAccountType: to.Ptr(armbulkactions.StorageAccountTypesPremiumLRS),
-		// 									},
-		// 									DeleteOption: to.Ptr(armbulkactions.DiskDeleteOptionTypesDelete),
-		// 								},
-		// 							},
-		// 							OSProfile: &armbulkactions.OSProfile{
-		// 								ComputerName: to.Ptr("bulkvm"),
-		// 								AdminUsername: to.Ptr("azureuser"),
-		// 								LinuxConfiguration: &armbulkactions.LinuxConfiguration{
-		// 									DisablePasswordAuthentication: to.Ptr(true),
-		// 									SSH: &armbulkactions.SSHConfiguration{
-		// 										PublicKeys: []*armbulkactions.SSHPublicKey{
-		// 											{
-		// 												Path: to.Ptr("/home/azureuser/.ssh/authorized_keys"),
-		// 												KeyData: to.Ptr("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDExampleKeyReplaceWithYourOwn azureuser@bulklaunch"),
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							NetworkProfile: &armbulkactions.NetworkProfile{
-		// 								NetworkAPIVersion: to.Ptr(armbulkactions.NetworkAPIVersion20201101),
-		// 								NetworkInterfaceConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceConfiguration{
-		// 									{
-		// 										Name: to.Ptr("bulkvm-nic"),
-		// 										Properties: &armbulkactions.VirtualMachineNetworkInterfaceConfigurationProperties{
-		// 											Primary: to.Ptr(true),
-		// 											DeleteOption: to.Ptr(armbulkactions.DeleteOptionsDelete),
-		// 											IPConfigurations: []*armbulkactions.VirtualMachineNetworkInterfaceIPConfiguration{
-		// 												{
-		// 													Name: to.Ptr("bulkvm-ipconfig"),
-		// 													Properties: &armbulkactions.VirtualMachineNetworkInterfaceIPConfigurationProperties{
-		// 														Primary: to.Ptr(true),
-		// 														Subnet: &armbulkactions.SubResource{
-		// 															ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"),
-		// 														},
-		// 													},
-		// 												},
-		// 											},
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 						ComputeAPIVersion: to.Ptr("2024-11-01"),
-		// 					},
-		// 					ExecutionParameters: &armbulkactions.ExecutionParameters{
-		// 						RetryPolicy: &armbulkactions.RetryPolicy{
-		// 							RetryWindowInMinutes: to.Ptr[int32](30),
-		// 							OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
-		// 						},
-		// 					},
-		// 				},
-		// 				Zones: []*string{
-		// 					to.Ptr("1"),
-		// 					to.Ptr("2"),
-		// 				},
-		// 				ExtendedLocation: &armbulkactions.ExtendedLocation{
-		// 					Name: to.Ptr("microsoftlosangeles1"),
-		// 					Type: to.Ptr(armbulkactions.ExtendedLocationTypeEdgeZone),
-		// 				},
-		// 				Placement: &armbulkactions.Placement{
-		// 					ZonePlacementPolicy: to.Ptr(armbulkactions.ZonePlacementPolicyTypeAuto),
-		// 					IncludeZones: []*string{
-		// 						to.Ptr("1"),
-		// 						to.Ptr("2"),
-		// 					},
-		// 					ExcludeZones: []*string{
-		// 						to.Ptr("3"),
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"workload": to.Ptr("batch-render"),
-		// 					"env": to.Ptr("prod"),
-		// 				},
-		// 				Identity: &armbulkactions.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armbulkactions.ManagedServiceIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
-		// 					TenantID: to.Ptr("11111111-2222-3333-4444-555555555555"),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/eastus/bulkCreate/b1d0f6a2-3c4e-4f5a-8b7c-9d0e1f2a3b4c"),
-		// 				Name: to.Ptr("b1d0f6a2-3c4e-4f5a-8b7c-9d0e1f2a3b4c"),
-		// 				Type: to.Ptr("Microsoft.Compute/locations/bulkCreate"),
-		// 				SystemData: &armbulkactions.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreate?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-10-06-preview/BulkCreate_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-16/BulkCreate_VirtualMachinesGetOperationStatus.json
 func ExampleBulkCreateClient_NewVirtualMachinesGetOperationStatusPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("700935bc-adf2-4176-b9ad-c571731c09fc", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("57018409-63ae-4ec4-91ef-57bafe128d74", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBulkCreateClient().NewVirtualMachinesGetOperationStatusPager("local-test-rg", "eastus", "00000000-0000-0000-0000-000000000102", nil)
+	pager := clientFactory.NewBulkCreateClient().NewVirtualMachinesGetOperationStatusPager("rg-bulk-create", "eastus", "fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1047,29 +794,38 @@ func ExampleBulkCreateClient_NewVirtualMachinesGetOperationStatusPager() {
 		// 	BulkCreateOperationStatusListResult: armbulkactions.BulkCreateOperationStatusListResult{
 		// 		Results: []*armbulkactions.ResourceOperation{
 		// 			{
-		// 				ResourceID: to.Ptr("/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/virtualMachines/vm-001"),
+		// 				ResourceID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/virtualMachines/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e_0"),
 		// 				Operation: &armbulkactions.ResourceOperationDetails{
-		// 					OperationID: to.Ptr("3303b164-d533-4f5d-8cb2-54f9585fc55c"),
-		// 					ResourceID: to.Ptr("/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/virtualMachines/vm-001"),
+		// 					OperationID: to.Ptr("8fb50491-7b2a-4cf6-b354-d6dafab81bd8"),
+		// 					ResourceID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/virtualMachines/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e_0"),
 		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeCreate),
-		// 					SubscriptionID: to.Ptr("700935bc-adf2-4176-b9ad-c571731c09fc"),
-		// 					Deadline: to.Ptr(time.Date(2026, time.August, 4, 15, 40, 8, 280208200, time.UTC)),
-		// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-		// 					State: to.Ptr(armbulkactions.OperationStateScheduled),
-		// 					Timezone: to.Ptr("UTC"),
-		// 					RetryPolicy: &armbulkactions.RetryPolicy{
-		// 						RetryCount: to.Ptr[int32](1),
-		// 						RetryWindowInMinutes: to.Ptr[int32](60),
-		// 					},
+		// 					SubscriptionID: to.Ptr("57018409-63ae-4ec4-91ef-57bafe128d74"),
+		// 					State: to.Ptr(armbulkactions.OperationStateSucceeded),
+		// 					CompletedAt: to.Ptr(time.Date(2026, time.October, 16, 10, 5, 0, 0, time.UTC)),
 		// 				},
 		// 				VirtualMachineInfo: &armbulkactions.VirtualMachineInfo{
-		// 					VMSize: to.Ptr("Standard_D4as_v5"),
+		// 					Name: to.Ptr("fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e_0"),
+		// 					VMSize: to.Ptr("Standard_D2s_v5"),
 		// 					Zone: to.Ptr("1"),
-		// 					Name: to.Ptr("vm-001"),
+		// 				},
+		// 			},
+		// 			{
+		// 				ResourceID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/virtualMachines/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e_1"),
+		// 				Operation: &armbulkactions.ResourceOperationDetails{
+		// 					OperationID: to.Ptr("d2842ee3-c4d1-4440-bea6-cbce1e0dc822"),
+		// 					ResourceID: to.Ptr("/subscriptions/57018409-63ae-4ec4-91ef-57bafe128d74/resourceGroups/rg-bulk-create/providers/Microsoft.Compute/virtualMachines/fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e_1"),
+		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeCreate),
+		// 					SubscriptionID: to.Ptr("57018409-63ae-4ec4-91ef-57bafe128d74"),
+		// 					State: to.Ptr(armbulkactions.OperationStateSucceeded),
+		// 					CompletedAt: to.Ptr(time.Date(2026, time.October, 16, 10, 5, 0, 0, time.UTC)),
+		// 				},
+		// 				VirtualMachineInfo: &armbulkactions.VirtualMachineInfo{
+		// 					Name: to.Ptr("fb5e3fe5-f509-4d7c-8f6a-fe65eeef921e_1"),
+		// 					VMSize: to.Ptr("Standard_D2s_v5"),
+		// 					Zone: to.Ptr("1"),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/700935bc-adf2-4176-b9ad-c571731c09fc/resourceGroups/local-test-rg/providers/Microsoft.Compute/locations/eastus/bulkCreate/00000000-0000-0000-0000-000000000102/virtualMachinesGetOperationStatus?api-version=2026-10-06-preview&$skiptoken=page2"),
 		// 	},
 		// }
 	}

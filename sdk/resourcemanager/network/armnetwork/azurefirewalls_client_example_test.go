@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/AzureFirewallPut.json
+// Generated from example definition: 2026-05-01/AzureFirewallPut.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +367,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPutInHub.json
+// Generated from example definition: 2026-05-01/AzureFirewallPutInHub.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +457,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtua
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPutWithAdditionalProperties.json
+// Generated from example definition: 2026-05-01/AzureFirewallPutWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -814,7 +814,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPutWithAfcConfiguration.json
+// Generated from example definition: 2026-05-01/AzureFirewallPutWithAfcConfiguration.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAfcControlPlane() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -907,7 +907,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAfcC
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPutWithAiSecurityAddOn.json
+// Generated from example definition: 2026-05-01/AzureFirewallPutWithAiSecurityAddOn.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAiSecurityAddOn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -998,7 +998,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAiSe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPutWithIpGroups.json
+// Generated from example definition: 2026-05-01/AzureFirewallPutWithIpGroups.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIPGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1349,7 +1349,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIPGr
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPutWithMgmtSubnet.json
+// Generated from example definition: 2026-05-01/AzureFirewallPutWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1711,7 +1711,95 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPutWithZones.json
+// Generated from example definition: 2026-05-01/AzureFirewallPutWithTcpIdleTimeout.json
+func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithTcpIdleTimeout() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
+		Location: to.Ptr("West US"),
+		Properties: &armnetwork.AzureFirewallPropertiesFormat{
+			IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
+				{
+					Name: to.Ptr("azureFirewallIpConfiguration"),
+					Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
+						PublicIPAddress: &armnetwork.SubResource{
+							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"),
+						},
+						Subnet: &armnetwork.SubResource{
+							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"),
+						},
+					},
+				},
+			},
+			SKU: &armnetwork.AzureFirewallSKU{
+				Name: to.Ptr(armnetwork.AzureFirewallSKUNameAZFWVnet),
+				Tier: to.Ptr(armnetwork.AzureFirewallSKUTierPremium),
+			},
+			TCPIdleTimeoutInMinutes: to.Ptr[int32](15),
+			ThreatIntelMode:         to.Ptr(armnetwork.AzureFirewallThreatIntelModeAlert),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.AzureFirewallsClientCreateOrUpdateResponse{
+	// 	AzureFirewall: armnetwork.AzureFirewall{
+	// 		Name: to.Ptr("azurefirewall"),
+	// 		Type: to.Ptr("Microsoft.Network/azureFirewalls"),
+	// 		Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armnetwork.AzureFirewallPropertiesFormat{
+	// 			IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("azureFirewallIpConfiguration"),
+	// 					Etag: to.Ptr("w/\\00000000-0000-0000-0000-000000000000\\"),
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/azureFirewalls/azurefirewall/ipConfigurations/azureFirewallIpConfiguration"),
+	// 					Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
+	// 						PrivateIPAddress: to.Ptr("10.0.0.4"),
+	// 						ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 						PublicIPAddress: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"),
+	// 						},
+	// 						Subnet: &armnetwork.SubResource{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 			SKU: &armnetwork.AzureFirewallSKU{
+	// 				Name: to.Ptr(armnetwork.AzureFirewallSKUNameAZFWVnet),
+	// 				Tier: to.Ptr(armnetwork.AzureFirewallSKUTierPremium),
+	// 			},
+	// 			TCPIdleTimeoutInMinutes: to.Ptr[int32](15),
+	// 			ThreatIntelMode: to.Ptr(armnetwork.AzureFirewallThreatIntelModeAlert),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01/AzureFirewallPutWithZones.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2071,7 +2159,7 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallDelete.json
+// Generated from example definition: 2026-05-01/AzureFirewallDelete.json
 func ExampleAzureFirewallsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2097,7 +2185,7 @@ func ExampleAzureFirewallsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallListLearnedIPPrefixes.json
+// Generated from example definition: 2026-05-01/AzureFirewallListLearnedIPPrefixes.json
 func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2129,7 +2217,7 @@ func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPacketCapture.json
+// Generated from example definition: 2026-05-01/AzureFirewallPacketCapture.json
 func ExampleAzureFirewallsClient_BeginPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2190,7 +2278,7 @@ func ExampleAzureFirewallsClient_BeginPacketCapture() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallPacketCaptureOperation.json
+// Generated from example definition: 2026-05-01/AzureFirewallPacketCaptureOperation.json
 func ExampleAzureFirewallsClient_BeginPacketCaptureOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2261,7 +2349,7 @@ func ExampleAzureFirewallsClient_BeginPacketCaptureOperation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallUpdateTags.json
+// Generated from example definition: 2026-05-01/AzureFirewallUpdateTags.json
 func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2306,7 +2394,7 @@ func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallGet.json
+// Generated from example definition: 2026-05-01/AzureFirewallGet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2504,7 +2592,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallGetWithAdditionalProperties.json
+// Generated from example definition: 2026-05-01/AzureFirewallGetWithAdditionalProperties.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2697,7 +2785,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallGetWithAfcConfiguration.json
+// Generated from example definition: 2026-05-01/AzureFirewallGetWithAfcConfiguration.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAfcControlPlane() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2759,7 +2847,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAfcControlPlane() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallGetWithIpGroups.json
+// Generated from example definition: 2026-05-01/AzureFirewallGetWithIpGroups.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIPGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2963,7 +3051,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIPGroups() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallGetWithMgmtSubnet.json
+// Generated from example definition: 2026-05-01/AzureFirewallGetWithMgmtSubnet.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3168,7 +3256,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallGetWithZones.json
+// Generated from example definition: 2026-05-01/AzureFirewallGetWithZones.json
 func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3364,7 +3452,7 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallListBySubscription.json
+// Generated from example definition: 2026-05-01/AzureFirewallListBySubscription.json
 func ExampleAzureFirewallsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3578,7 +3666,7 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AzureFirewallListByResourceGroup.json
+// Generated from example definition: 2026-05-01/AzureFirewallListByResourceGroup.json
 func ExampleAzureFirewallsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

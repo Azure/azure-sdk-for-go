@@ -67,6 +67,7 @@ type ListSettingsPageResponse struct {
 // CheckSettingsPageResponse contains the response from the NewCheckSettingsPager method.
 type CheckSettingsPageResponse struct {
 	// An ETag indicating the state of a page of configuration settings within a configuration store.
+	// A 304 Not Modified response can also include this ETag.
 	ETag *azcore.ETag
 
 	// SyncToken contains the value returned in the Sync-Token header.

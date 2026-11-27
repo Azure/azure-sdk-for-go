@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/NetworkManagerDelete.json
+// Generated from example definition: 2026-05-01/NetworkManagerDelete.json
 func ExampleManagersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleManagersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerPut.json
+// Generated from example definition: 2026-05-01/NetworkManagerPut.json
 func ExampleManagersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleManagersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerGet.json
+// Generated from example definition: 2026-05-01/NetworkManagerGet.json
 func ExampleManagersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleManagersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerListAll.json
+// Generated from example definition: 2026-05-01/NetworkManagerListAll.json
 func ExampleManagersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleManagersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerList.json
+// Generated from example definition: 2026-05-01/NetworkManagerList.json
 func ExampleManagersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +278,7 @@ func ExampleManagersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerPatch.json
+// Generated from example definition: 2026-05-01/NetworkManagerPatch.json
 func ExampleManagersClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/FirstPartyServiceTagCreate.json
+// Generated from example definition: 2026-05-01/FirstPartyServiceTagCreate.json
 func ExampleFirstPartyServiceTagsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleFirstPartyServiceTagsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/FirstPartyServiceTagDelete.json
+// Generated from example definition: 2026-05-01/FirstPartyServiceTagDelete.json
 func ExampleFirstPartyServiceTagsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleFirstPartyServiceTagsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/FirstPartyServiceTagUpdateTags.json
+// Generated from example definition: 2026-05-01/FirstPartyServiceTagUpdateTags.json
 func ExampleFirstPartyServiceTagsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleFirstPartyServiceTagsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/FirstPartyServiceTagGet.json
+// Generated from example definition: 2026-05-01/FirstPartyServiceTagGet.json
 func ExampleFirstPartyServiceTagsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleFirstPartyServiceTagsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/FirstPartyServiceTagListAll.json
+// Generated from example definition: 2026-05-01/FirstPartyServiceTagListAll.json
 func ExampleFirstPartyServiceTagsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleFirstPartyServiceTagsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/FirstPartyServiceTagList.json
+// Generated from example definition: 2026-05-01/FirstPartyServiceTagList.json
 func ExampleFirstPartyServiceTagsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

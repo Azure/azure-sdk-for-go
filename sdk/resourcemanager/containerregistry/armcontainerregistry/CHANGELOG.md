@@ -1,5 +1,20 @@
 # Release History
 
+## 3.1.0 (2026-11-20)
+### Features Added
+
+- New enum type `EndpointProtocol` with values `EndpointProtocolIPv4`, `EndpointProtocolIPv4AndIPv6`
+- New enum type `RegionalEndpoints` with values `RegionalEndpointsDisabled`, `RegionalEndpointsEnabled`
+- New struct `VirtualNetworkRule`
+- New field `VirtualNetworkRules` in struct `NetworkRuleSet`
+- New field `EndpointProtocol`, `RegionalEndpointHostNames`, `RegionalEndpoints` in struct `RegistryProperties`
+- New field `EndpointProtocol`, `RegionalEndpoints` in struct `RegistryPropertiesUpdateParameters`
+
+### Other Changes
+
+- `SyncProperties.TokenID` is no longer marked as required. Its type remains `*string`, and JSON serialization is unchanged.
+
+
 ## 4.0.0-beta.1 (2026-11-11)
 ### Breaking Changes
 

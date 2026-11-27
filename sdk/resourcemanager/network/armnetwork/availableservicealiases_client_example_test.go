@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/AvailableServiceAliasesListByResourceGroup.json
+// Generated from example definition: 2026-05-01/AvailableServiceAliasesListByResourceGroup.json
 func ExampleAvailableServiceAliasesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleAvailableServiceAliasesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AvailableServiceAliasesList.json
+// Generated from example definition: 2026-05-01/AvailableServiceAliasesList.json
 func ExampleAvailableServiceAliasesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionCreate.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionCreate.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionDelete.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionDelete.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionGetIkeSas.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionGetIkeSas.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginGetIkeSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +280,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginGetIkeSas() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionReset.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionReset.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetConnection() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionResetSharedKey.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionResetSharedKey.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetSharedKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionSetSharedKey.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionSetSharedKey.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginSetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,7 +364,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginSetSharedKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionStartPacketCapture.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionStartPacketCapture.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayConnectionWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,7 +391,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_start
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayConnectionWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -421,7 +421,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_start
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionStopPacketCapture.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionStopPacketCapture.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -450,7 +450,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStopPacketCapture() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionUpdateTags.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionUpdateTags.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,7 +544,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionGet.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionGet.json
 func ExampleVirtualNetworkGatewayConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -649,7 +649,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionGetSharedKey.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionGetSharedKey.json
 func ExampleVirtualNetworkGatewayConnectionsClient_GetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -675,7 +675,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_GetSharedKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/VirtualNetworkGatewayConnectionsList.json
+// Generated from example definition: 2026-05-01/VirtualNetworkGatewayConnectionsList.json
 func ExampleVirtualNetworkGatewayConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

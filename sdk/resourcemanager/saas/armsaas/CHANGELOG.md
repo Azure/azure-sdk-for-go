@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-11-25)
+## 1.0.0 (2026-11-27)
 ### Breaking Changes
 
 - Function `*SubscriptionLevelClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceCreation, options *SubscriptionLevelClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, resourceName string, resource Resource, options *SubscriptionLevelClientBeginCreateOrUpdateOptions)`

@@ -8,8 +8,6 @@ import (
 	"net"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/http2"
 )
 
 // DefaultHTTPClient is the default configured http.Client used by all clients.
@@ -32,13 +30,12 @@ func init() {
 			MinVersion:    tls.VersionTLS12,
 			Renegotiation: tls.RenegotiateFreelyAsClient,
 		},
-	}
-	// TODO: evaluate removing this once https://github.com/golang/go/issues/59690 has been fixed
-	if http2Transport, err := http2.ConfigureTransports(defaultTransport); err == nil {
-		// if the connection has been idle for 10 seconds, send a ping frame for a health check
-		http2Transport.ReadIdleTimeout = 10 * time.Second
-		// if there's no response to the ping within the timeout, the connection will be closed
-		http2Transport.PingTimeout = 5 * time.Second
+		HTTP2: &http.HTTP2Config{
+			// if the connection has been idle for 10 seconds, send a ping frame for a health check
+			SendPingTimeout: 10 * time.Second,
+			// if there's no response to the ping within the timeout, the connection will be closed
+			PingTimeout: 5 * time.Second,
+		},
 	}
 	DefaultHTTPClient = &http.Client{
 		Transport: defaultTransport,

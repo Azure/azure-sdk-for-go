@@ -64,6 +64,169 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceG
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedLockTimeBasedImmutabilityManagedInstanceLongTermRetentionBackup.json
+func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginLockTimeBasedImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionManagedInstanceBackupsClient().BeginLockTimeBasedImmutabilityByResourceGroup(ctx, "testResourceGroup", "japaneast", "testInstance", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Archive", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionManagedInstanceBackupsClientLockTimeBasedImmutabilityByResourceGroupResponse{
+	// 	ManagedInstanceLongTermRetentionBackup: armsql.ManagedInstanceLongTermRetentionBackup{
+	// 		Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionManagedInstances/testInstance/longTermRetentionDatabases/testDatabase/longTermRetentionManagedInstanceBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
+	// 			BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
+	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			BackupTime: to.Ptr(time.Date(2018, time.August, 23, 8, 0, 0, 0, time.UTC)),
+	// 			DatabaseName: to.Ptr("testDatabase"),
+	// 			IsBackupImmutable: to.Ptr(true),
+	// 			ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.September, 1, 8, 0, 0, 0, time.UTC)),
+	// 			ManagedInstanceName: to.Ptr("testInstance"),
+	// 			TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+	// 			TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedRemoveLegalHoldImmutabilityManagedInstanceLongTermRetentionBackup.json
+func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginRemoveLegalHoldImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionManagedInstanceBackupsClient().BeginRemoveLegalHoldImmutabilityByResourceGroup(ctx, "testResourceGroup", "japaneast", "testInstance", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Archive", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionManagedInstanceBackupsClientRemoveLegalHoldImmutabilityByResourceGroupResponse{
+	// 	ManagedInstanceLongTermRetentionBackup: armsql.ManagedInstanceLongTermRetentionBackup{
+	// 		Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionManagedInstances/testInstance/longTermRetentionDatabases/testDatabase/longTermRetentionManagedInstanceBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
+	// 			BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
+	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			BackupTime: to.Ptr(time.Date(2018, time.August, 23, 8, 0, 0, 0, time.UTC)),
+	// 			DatabaseName: to.Ptr("testDatabase"),
+	// 			LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+	// 			ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.September, 1, 8, 0, 0, 0, time.UTC)),
+	// 			ManagedInstanceName: to.Ptr("testInstance"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedRemoveTimeBasedImmutabilityManagedInstanceLongTermRetentionBackup.json
+func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginRemoveTimeBasedImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionManagedInstanceBackupsClient().BeginRemoveTimeBasedImmutabilityByResourceGroup(ctx, "testResourceGroup", "japaneast", "testInstance", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Archive", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionManagedInstanceBackupsClientRemoveTimeBasedImmutabilityByResourceGroupResponse{
+	// 	ManagedInstanceLongTermRetentionBackup: armsql.ManagedInstanceLongTermRetentionBackup{
+	// 		Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionManagedInstances/testInstance/longTermRetentionDatabases/testDatabase/longTermRetentionManagedInstanceBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
+	// 			BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
+	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			BackupTime: to.Ptr(time.Date(2018, time.August, 23, 8, 0, 0, 0, time.UTC)),
+	// 			DatabaseName: to.Ptr("testDatabase"),
+	// 			ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.September, 1, 8, 0, 0, 0, time.UTC)),
+	// 			ManagedInstanceName: to.Ptr("testInstance"),
+	// 			TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityDisabled),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ResourceGroupBasedSetLegalHoldImmutabilityManagedInstanceLongTermRetentionBackup.json
+func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginSetLegalHoldImmutabilityByResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewLongTermRetentionManagedInstanceBackupsClient().BeginSetLegalHoldImmutabilityByResourceGroup(ctx, "testResourceGroup", "japaneast", "testInstance", "testDatabase", "55555555-6666-7777-8888-999999999999;131637960820000000;Archive", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.LongTermRetentionManagedInstanceBackupsClientSetLegalHoldImmutabilityByResourceGroupResponse{
+	// 	ManagedInstanceLongTermRetentionBackup: armsql.ManagedInstanceLongTermRetentionBackup{
+	// 		Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionManagedInstances/testInstance/longTermRetentionDatabases/testDatabase/longTermRetentionManagedInstanceBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Archive"),
+	// 		Properties: &armsql.ManagedInstanceLongTermRetentionBackupProperties{
+	// 			BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierArchive),
+	// 			BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+	// 			BackupTime: to.Ptr(time.Date(2018, time.August, 23, 8, 0, 0, 0, time.UTC)),
+	// 			DatabaseName: to.Ptr("testDatabase"),
+	// 			IsBackupImmutable: to.Ptr(true),
+	// 			LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityEnabled),
+	// 			ManagedInstanceCreateTime: to.Ptr(time.Date(2017, time.September, 1, 8, 0, 0, 0, time.UTC)),
+	// 			ManagedInstanceName: to.Ptr("testInstance"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/ManagedInstanceLongTermRetentionBackupGet.json
 func ExampleLongTermRetentionManagedInstanceBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
